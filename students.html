@@ -1,0 +1,636 @@
+<!DOCTYPE html>
+<html lang="ja" class="no-js">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>学生の皆さんへ - 木村祐太 / Yuta Kimura</title>
+<meta name="description" content="For students interested in graduation research or joint work with Yuta Kimura: research directions, student-led results, how research proceeds, and a guide to the courses taught. Part of Yuta Kimura's research site.">
+<link rel="canonical" href="https://ykimu.github.io/students.html">
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<meta property="og:site_name" content="Yuta Kimura / 木村祐太">
+<meta property="og:type" content="article">
+<meta property="og:title" content="学生の皆さんへ - 木村祐太 / Yuta Kimura">
+<meta property="og:description" content="For students interested in graduation research or joint work with Yuta Kimura: research directions, student-led results, how research proceeds, and a guide to the courses taught. Part of Yuta Kimura's research site.">
+<meta property="og:url" content="https://ykimu.github.io/students.html">
+<meta property="og:image" content="https://ykimu.github.io/assets/og.png">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="color-scheme" content="light">
+<script>document.documentElement.className="js";</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&family=Noto+Sans+JP:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#FBFCFB; --bg-2:#F3F6F4; --bg-3:#EBEFED; --card:#FFFFFF;
+    --ink:#101312; --ink-2:#3C4340; --muted:#6B746F; --faint:#B7C0BB;
+    --line:#E7ECE9; --hair:rgba(16,19,18,.08); --shell:rgba(16,19,18,.035);
+    --accent:#0E6F5C; --accent-2:#0A5748; --accent-soft:rgba(14,111,92,.08);
+    --soft:0 1px 2px rgba(16,19,18,.04), 0 24px 60px -28px rgba(16,19,18,.16);
+    --inhi:inset 0 1px 0 rgba(255,255,255,.85);
+    --ease:cubic-bezier(.32,.72,0,1);
+    --sans:"Plus Jakarta Sans","Noto Sans JP",-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+    --disp:"Space Grotesk","Plus Jakarta Sans","Noto Sans JP",sans-serif;
+    --maxw:1440px; --readw:clamp(680px, 62vw, 1060px);
+  }
+  html{color-scheme:light}
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth; -webkit-text-size-adjust:100%}
+  body{margin:0; background:var(--bg); color:var(--ink); font-family:var(--sans);
+    font-size:17px; line-height:1.75; font-weight:400; -webkit-font-smoothing:antialiased; text-rendering:optimizeLegibility}
+  body.lang-ja [lang=en]{display:none}
+  body.lang-en [lang=ja]{display:none}
+  ::selection{background:rgba(14,111,92,.16)}
+  .num{font-variant-numeric:tabular-nums; font-feature-settings:"tnum" 1; font-family:var(--disp)}
+  h1,h2,h3{margin:0; color:var(--ink); font-weight:500; line-height:1.16; letter-spacing:-.02em; font-family:var(--disp); text-wrap:balance}
+  body.lang-ja h1,body.lang-ja h2,body.lang-ja h3{letter-spacing:0; font-family:var(--sans)}
+  p,.lead,.hook,.byline,figcaption,.cite,.muted-s{text-wrap:pretty}
+  [lang="en"]{line-break:auto}
+  [lang="ja"]{line-break:strict; word-break:normal}
+  h1 [lang="ja"],h2 [lang="ja"],h3 [lang="ja"]{word-break:auto-phrase}
+  p{margin:0 0 1em}
+  a{color:var(--accent-2); text-decoration:none; transition:color .3s var(--ease)}
+  a:hover{color:var(--accent)}
+  a:focus-visible,button:focus-visible,.btn:focus-visible,[tabindex]:focus-visible{outline:2px solid var(--accent); outline-offset:3px; border-radius:8px}
+  .wrap{max-width:var(--maxw); margin:0 auto; padding:0 40px}
+  [id]{scroll-margin-top:96px}
+  section{padding:130px 0}
+
+  .skip{position:fixed; top:10px; left:10px; padding:10px 16px; background:var(--ink); color:#fff; border-radius:999px; transform:translateY(-200%); transition:none; z-index:100}
+  .skip:focus{transform:none}
+
+  /* film grain overlay */
+  body::after{content:""; position:fixed; inset:0; z-index:1; pointer-events:none; opacity:.02;
+    background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='g'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23g)'/%3E%3C/svg%3E")}
+
+  h2.big{font-size:clamp(1.9rem,3.2vw,2.7rem); font-weight:500; letter-spacing:-.025em; max-width:26ch}
+  body.lang-ja h2.big{letter-spacing:-.01em}
+  .eyebrow,.kick{display:inline-flex; align-items:center; gap:8px; width:max-content; max-width:100%;
+    padding:5px 13px 5px 11px; border-radius:999px; border:1px solid var(--hair); background:#fff;
+    font:600 .66rem/1 var(--disp); letter-spacing:.14em; text-transform:uppercase; color:var(--ink-2); margin:0 0 18px}
+  .eyebrow::before,.kick::before{content:""; flex:0 0 auto; width:6px; height:6px; border-radius:50%; background:var(--accent)}
+  .lead{font-size:1.12rem; color:var(--ink-2); line-height:1.78; font-weight:400}
+
+  /* motion */
+  .js .reveal{opacity:0; transform:translateY(18px); filter:blur(6px); transition:opacity .9s var(--ease), transform .9s var(--ease), filter .9s var(--ease)}
+  .js .reveal.in{opacity:1; transform:none; filter:none}
+  @media (prefers-reduced-motion:reduce){
+    .js .reveal{opacity:1!important; transform:none!important; filter:none!important}
+    .btn:active,.btn.ink:hover .ic,.tcard:hover,.lcard:hover,.tile:hover,.btn:hover{transform:none!important}
+  }
+
+  /* floating island nav */
+  header.bar{position:sticky; top:18px; z-index:60; background:transparent; border-bottom:none}
+  .bar .wrap{display:flex; align-items:center; justify-content:space-between;
+    width:max-content; max-width:calc(100% - 32px); margin:0 auto; height:auto;
+    padding:9px 12px 9px 20px; gap:20px; border-radius:999px;
+    background:rgba(255,255,255,.72); -webkit-backdrop-filter:saturate(1.4) blur(18px); backdrop-filter:saturate(1.4) blur(18px);
+    border:1px solid var(--hair); box-shadow:var(--soft)}
+  .brand{font-weight:600; font-size:.92rem; letter-spacing:-.01em; color:var(--ink); display:inline-flex; align-items:center; gap:8px}
+  .brand span.sep{color:var(--muted); font-weight:400; margin:0 2px}
+  .navlinks{display:flex; gap:22px; align-items:center}
+  .navlinks a{font-size:.86rem; font-weight:500; color:var(--ink-2); transition:color .3s var(--ease)}
+  .navlinks a:hover{color:var(--ink)}
+  @media(max-width:860px){.navlinks{display:none}}
+  .bar-right{display:flex; align-items:center; gap:8px}
+
+  /* buttons */
+  .btn{display:inline-flex; align-items:center; gap:10px; font:500 .85rem/1 var(--sans); padding:10px 18px;
+    border-radius:999px; border:1px solid var(--hair); background:#fff; color:var(--ink); cursor:pointer;
+    transition:transform .4s var(--ease), box-shadow .4s var(--ease), border-color .3s var(--ease), background .3s var(--ease), color .3s var(--ease)}
+  .btn:hover{border-color:var(--ink); transform:translateY(-1px); color:var(--ink)}
+  .btn:active{transform:scale(.98)}
+  .btn.ink{background:var(--ink); border-color:var(--ink); color:#fff; padding:10px 10px 10px 22px;
+    box-shadow:0 12px 26px -14px rgba(16,19,18,.5)}
+  .btn.ink:not(:has(.ic)){padding:10px 22px}
+  .btn.ink:hover{box-shadow:0 16px 32px -14px rgba(16,19,18,.55); color:#fff}
+  .btn .ic{width:32px; height:32px; border-radius:999px; background:rgba(255,255,255,.18); display:grid; place-items:center;
+    transition:transform .45s var(--ease); flex:0 0 auto}
+  .btn.ink:hover .ic{transform:translate(3px,-1px)}
+  .tlink{display:inline-flex; align-items:center; gap:8px; font-weight:500; font-size:.95rem; color:var(--ink)}
+  .tlink .ar{transition:transform .4s var(--ease)}
+  .tlink:hover .ar{transform:translateX(4px)}
+
+  /* hero */
+  .hero{position:relative; overflow:hidden}
+  .hero > .wrap{position:relative; z-index:1}
+  .hero::before{content:""; position:absolute; z-index:0; width:640px; height:640px; right:-150px; top:-240px;
+    border-radius:50%; pointer-events:none; opacity:.55;
+    background:radial-gradient(circle, var(--accent-soft), transparent 62%); filter:blur(20px)}
+  .hero .wrap{padding-top:72px; padding-bottom:80px}
+  .hero h1{font-size:clamp(2.6rem,5vw,4.2rem); font-weight:500; letter-spacing:-.03em; line-height:1.08; color:var(--ink); max-width:20ch}
+  body.lang-ja .hero h1{font-size:clamp(2rem,4.2vw,3.1rem); font-weight:500; letter-spacing:0; line-height:1.24}
+  .hero h1 em{font-style:normal; color:var(--accent)}
+  .hero .lead{max-width:var(--readw); margin-top:24px}
+  .hero-cta{display:flex; gap:20px; align-items:center; flex-wrap:wrap; margin-top:30px}
+
+  .soft-sec{background:var(--bg-2); border-top:1px solid var(--line); border-bottom:1px solid var(--line)}
+
+  /* research direction cards (double-bezel tiles) */
+  .tcards{display:grid; grid-template-columns:repeat(3,1fr); gap:16px; margin-top:44px}
+  .tcard{border-radius:21px; padding:28px 26px 26px; background:var(--card); position:relative; display:flex; flex-direction:column;
+    box-shadow:0 0 0 7px var(--shell), 0 0 0 7.5px var(--hair), var(--soft);
+    transition:transform .4s var(--ease), box-shadow .4s var(--ease)}
+  .tcard:hover{transform:translateY(-3px); box-shadow:0 0 0 7px var(--shell), 0 0 0 7.5px var(--hair), 0 1px 2px rgba(16,19,18,.05), 0 34px 70px -30px rgba(16,19,18,.24)}
+  .tcard .no{font:600 .78rem/1 var(--disp); color:var(--accent-2); letter-spacing:.04em}
+  .tcard h3{font-size:1.06rem; font-weight:600; margin:15px 0 .5em; font-family:var(--sans); letter-spacing:0}
+  .tcard h3 .en-tag{display:block; font-size:.74rem; font-weight:500; color:var(--muted); letter-spacing:.02em; margin-top:4px; font-family:var(--disp)}
+  body.lang-en .tcard h3 .en-tag{display:none}
+  .tcard p{margin:0; color:var(--ink-2); font-size:.93rem}
+  .tcard .basis{margin:12px 0 0; color:var(--muted); font-size:.83rem; line-height:1.6}
+  .tcard .plinks{display:flex; flex-wrap:wrap; gap:8px; margin-top:auto; padding-top:18px}
+  @media(max-width:980px){.tcards{grid-template-columns:repeat(2,1fr)}}
+  @media(max-width:620px){.tcards{grid-template-columns:1fr}}
+
+  .pill-link{display:inline-flex; align-items:center; gap:7px; white-space:nowrap; font-weight:500;
+    font-size:.8rem; padding:8px 14px; border-radius:999px; border:1px solid var(--hair); background:#fff;
+    color:var(--ink); transition:border-color .3s var(--ease), transform .3s var(--ease), box-shadow .3s var(--ease)}
+  .pill-link:hover{border-color:var(--ink); transform:translateY(-1px); color:var(--ink); box-shadow:var(--soft)}
+  .pill-link .ar{color:var(--accent); transition:transform .3s var(--ease)}
+  .pill-link:hover .ar{transform:translateX(3px)}
+
+  /* student results: highlight card + hairline list */
+  .highlight{border-radius:21px; padding:32px 34px; margin-top:44px; background:var(--accent-soft);
+    box-shadow:0 0 0 7px var(--shell), 0 0 0 7.5px var(--hair), var(--soft)}
+  .highlight .tag{display:inline-flex; align-items:center; gap:8px; font:600 .66rem/1 var(--disp); letter-spacing:.12em;
+    text-transform:uppercase; color:var(--accent-2); margin-bottom:14px}
+  .highlight .tag::before{content:""; width:6px; height:6px; border-radius:50%; background:var(--accent)}
+  .highlight h3{font-size:1.22rem; font-weight:600; font-family:var(--sans); letter-spacing:0; line-height:1.4}
+  .highlight p{margin:.7em 0 0; color:var(--ink-2); font-size:.97rem; max-width:64ch}
+  .highlight .plinks{display:flex; flex-wrap:wrap; gap:10px; margin-top:20px}
+
+  .rlist{list-style:none; margin:32px 0 0; padding:0; border-top:1px solid var(--line)}
+  .ritem{display:grid; grid-template-columns:1fr auto; gap:14px 32px; align-items:baseline;
+    padding:24px 0; border-bottom:1px solid var(--line)}
+  .ritem .rmeta{display:flex; align-items:center; gap:9px; margin-bottom:9px; font-size:.72rem;
+    letter-spacing:.06em; text-transform:uppercase; color:var(--muted); font-family:var(--disp)}
+  .ritem .rmeta .lead-by{color:var(--accent-2); font-weight:600}
+  .ritem .rmeta .dot{width:3px; height:3px; border-radius:999px; background:var(--faint)}
+  .ritem .rtitle{font-size:1.06rem; font-weight:600; line-height:1.45; letter-spacing:-.005em}
+  body.lang-ja .ritem .rtitle{letter-spacing:0}
+  .ritem .rby{margin:.5em 0 0; color:var(--ink-2); font-size:.9rem; line-height:1.55}
+  .ritem .rby .me{color:var(--ink); font-weight:600}
+  .ritem .rvenue{white-space:nowrap; color:var(--muted); font-size:.82rem; font-family:var(--disp); align-self:center}
+  @media(max-width:640px){.ritem{grid-template-columns:1fr; gap:8px}.ritem .rvenue{align-self:start}}
+  .results-cta{margin-top:34px}
+
+  /* steps (how research proceeds) */
+  .steps{display:grid; grid-template-columns:repeat(3,1fr); gap:24px; margin-top:44px}
+  .step{padding-top:20px; border-top:2px solid var(--ink)}
+  .step .no{font-size:.78rem; font-weight:600; color:var(--muted); font-variant-numeric:tabular-nums; font-family:var(--disp)}
+  .step h3{font-size:1.02rem; font-weight:600; margin:.7em 0 .4em; font-family:var(--sans); letter-spacing:0}
+  .step p{margin:0; color:var(--ink-2); font-size:.93rem}
+  @media(max-width:760px){.steps{grid-template-columns:1fr; gap:22px}}
+  .callout{border-radius:21px; box-shadow:0 0 0 7px var(--shell), 0 0 0 7.5px var(--hair), var(--soft);
+    padding:22px 26px; margin-top:40px; background:var(--accent-soft); max-width:var(--readw)}
+  .callout b{color:var(--accent-2)}
+
+  /* who it suits: tiles */
+  .tiles{display:grid; grid-template-columns:repeat(4,1fr); gap:16px; margin-top:44px}
+  .tile{border-radius:21px; padding:26px 24px 28px; background:var(--card); position:relative;
+    box-shadow:0 0 0 7px var(--shell), 0 0 0 7.5px var(--hair), var(--soft);
+    transition:transform .4s var(--ease), box-shadow .4s var(--ease)}
+  .tile:hover{transform:translateY(-3px); box-shadow:0 0 0 7px var(--shell), 0 0 0 7.5px var(--hair), 0 1px 2px rgba(16,19,18,.05), 0 34px 70px -30px rgba(16,19,18,.24)}
+  .tile .no{font:600 .78rem/1 var(--disp); color:var(--accent-2); letter-spacing:.04em}
+  .tile h3{font-size:1.02rem; font-weight:600; margin:15px 0 .5em; font-family:var(--sans); letter-spacing:0}
+  .tile p{margin:0; color:var(--ink-2); font-size:.9rem}
+  @media(max-width:980px){.tiles{grid-template-columns:repeat(2,1fr)}}
+  @media(max-width:540px){.tiles{grid-template-columns:1fr}}
+
+  /* course guide: hairline list */
+  .courses{list-style:none; margin:44px 0 0; padding:0; border-top:1px solid var(--line)}
+  .course{display:grid; grid-template-columns:200px 1fr; gap:12px 36px; align-items:baseline;
+    padding:22px 0; border-bottom:1px solid var(--line)}
+  .course .cname{font-size:1.04rem; font-weight:600; font-family:var(--sans); letter-spacing:0; color:var(--ink)}
+  .course .cname .en-name{display:block; font-size:.76rem; font-weight:500; color:var(--muted); font-family:var(--disp); margin-top:4px; letter-spacing:.01em}
+  body.lang-en .course .cname .en-name{display:none}
+  .course .cdesc{color:var(--ink-2); font-size:.95rem}
+  .course .cdesc .plinks{display:inline-flex; flex-wrap:wrap; gap:8px; margin-top:12px}
+  @media(max-width:640px){.course{grid-template-columns:1fr; gap:8px}}
+  .syllabus-note{margin-top:26px; color:var(--muted); font-size:.86rem}
+
+  /* contact */
+  .contact-box{border-radius:21px; padding:40px 40px 42px; margin-top:40px; background:var(--card);
+    box-shadow:0 0 0 7px var(--shell), 0 0 0 7.5px var(--hair), var(--soft), var(--inhi); max-width:var(--readw)}
+  .contact-box p{margin:0 0 1em; color:var(--ink-2)}
+  .contact-box p:last-of-type{margin-bottom:0}
+  .contact-cta{display:flex; gap:20px; align-items:center; flex-wrap:wrap; margin-top:26px}
+
+  footer{border-top:1px solid var(--line); padding:64px 0 46px; background:var(--bg)}
+  footer h3{font-size:.72rem; font-weight:600; letter-spacing:.12em; text-transform:uppercase; color:var(--muted); margin:0 0 1em; font-family:var(--disp)}
+  .foot-grid{display:grid; grid-template-columns:1.4fr 1fr 1fr; gap:44px}
+  .cite{font-size:.98rem; color:var(--ink-2); line-height:1.7; max-width:56ch; margin-bottom:36px}
+  .muted-s{color:var(--muted); font-size:.9rem; line-height:1.9}
+  .muted-s a{color:var(--ink-2)}
+  .muted-s a:hover{color:var(--accent)}
+  .muted-s b{color:var(--ink); font-weight:600}
+  .foot-rule{height:1px; background:var(--line); margin:44px 0 20px}
+  .foot-note{color:var(--muted); font-size:.82rem}
+  @media(max-width:760px){.foot-grid{grid-template-columns:1fr 1fr}}
+  @media(max-width:560px){.foot-grid{grid-template-columns:1fr}}
+
+  @media(max-width:860px){
+    section{padding:72px 0}
+    .hero .wrap{padding-top:52px; padding-bottom:56px}
+    .wrap{padding:0 24px}
+  }
+  @media(max-width:640px){
+    .bar-right .btn:not(.ink){display:none}
+    .brand{font-size:.82rem}
+    .contact-box{padding:30px 26px 32px}
+    .highlight{padding:28px 26px}
+  }
+</style>
+</head>
+<body class="lang-ja">
+
+<a class="skip" href="#main"><span lang="ja">本文へスキップ</span><span lang="en">Skip to content</span></a>
+
+<header class="bar">
+  <div class="wrap">
+    <a class="brand" href="index.html">
+      <span aria-hidden="true">&lsaquo;</span>
+      <span lang="ja">木村祐太</span><span lang="en">Yuta Kimura</span>
+      <span class="sep">·</span><span lang="ja">学生の皆さんへ</span><span lang="en">For students</span>
+    </a>
+    <nav class="navlinks" aria-label="メイン">
+      <a href="publications.html"><span lang="ja">業績</span><span lang="en">Publications</span></a>
+      <a href="activities.html"><span lang="ja">活動</span><span lang="en">Activities</span></a>
+      <a href="software-engineering.html"><span lang="ja">分野紹介</span><span lang="en">Guides</span></a>
+      <a href="technical-debt.html"><span lang="ja">技術的負債</span><span lang="en">Tech Debt</span></a>
+    </nav>
+    <div class="bar-right">
+      <a class="btn" href="https://researchmap.jp/kimura_yuta" target="_blank" rel="noopener">researchmap</a>
+      <button class="btn ink" onclick="toggleLang()" aria-label="Switch language">
+        <span lang="ja">EN</span><span lang="en">日本語</span>
+      </button>
+    </div>
+  </div>
+</header>
+
+<main id="main">
+
+<!-- HERO -->
+<div class="hero">
+  <div class="wrap">
+    <p class="kick">For Students</p>
+    <h1>
+      <span lang="ja">一緒に、ソフトウェアの<em>「なぜ」</em>を調べよう</span>
+      <span lang="en">Let's investigate the <em>whys</em> of software together</span>
+    </h1>
+    <p class="lead">
+      <span lang="ja">卒業研究や共同研究に興味のある学生の皆さんへ向けた案内です。ソフトウェア開発の実態をデータから読み解いたり、身近な課題をものづくりで解いたり。ここでは、取り組めるテーマの方向性、これまで学生が中心となって形にした成果、研究の進め方、そして担当科目の一覧をまとめています。</span>
+      <span lang="en">A guide for students interested in graduation research or joint work. From reading the realities of software development out of data, to solving everyday problems by building things. This page gathers the directions you could take, the results students have shaped, how research proceeds, and a guide to the courses taught.</span>
+    </p>
+    <div class="hero-cta">
+      <a class="btn ink" href="#themes" style="padding:12px 22px">
+        <span lang="ja">テーマの方向性を見る</span><span lang="en">See research directions</span>
+      </a>
+      <a class="tlink" href="#contact">
+        <span lang="ja">見学・相談について</span><span lang="en">Visits and questions</span>
+        <span class="ar" aria-hidden="true">&rsaquo;</span>
+      </a>
+    </div>
+  </div>
+</div>
+
+<!-- 2. RESEARCH DIRECTIONS -->
+<section id="themes" style="padding-top:0">
+  <div class="wrap reveal">
+    <p class="eyebrow"><span lang="ja">テーマの方向性</span><span lang="en">Research directions</span></p>
+    <h2 class="big"><span lang="ja">卒業研究で取り組める、五つの方向</span><span lang="en">Five directions for graduation research</span></h2>
+    <p class="lead" style="max-width:var(--readw); margin-top:20px">
+      <span lang="ja">テーマは大きく次の五つの方向に広がります。いずれも、これまでの研究や学生の成果に接地したものです。関心のある入り口から、関連するページものぞいてみてください。</span>
+      <span lang="en">Themes spread across five broad directions. Each is grounded in past studies and in what students have built. Follow whichever entry point interests you, and browse the related pages.</span>
+    </p>
+    <div class="tcards reveal">
+      <div class="tcard">
+        <div class="no">01</div>
+        <h3><span lang="ja">リポジトリマイニング</span><span lang="en">Repository mining</span><span class="en-tag">Repository mining / MSR</span></h3>
+        <p><span lang="ja">GitHub などの開発データから、ソフトウェア開発の実態を明らかにします。コミットや課題票を集めて分析するアプローチです。</span><span lang="en">Uncovering the realities of software development from data such as GitHub. An approach that gathers and analyzes commits and issue tickets.</span></p>
+        <div class="plinks">
+          <a class="pill-link" href="research/technical-debt-metrics.html"><span lang="ja">メトリクスによる分類</span><span lang="en">Metrics-based study</span><span class="ar" aria-hidden="true">&rsaquo;</span></a>
+        </div>
+      </div>
+      <div class="tcard">
+        <div class="no">02</div>
+        <h3><span lang="ja">技術的負債とコード品質</span><span lang="en">Technical debt and code quality</span><span class="en-tag">Technical debt / code quality</span></h3>
+        <p><span lang="ja">開発の「借金」である技術的負債を、どう検出し、返済し、品質として分析するか。負債とコードの関係を追いかけます。</span><span lang="en">How to detect, repay, and analyze technical debt, development's own kind of borrowing, as a matter of quality. Tracing the link between debt and code.</span></p>
+        <div class="plinks">
+          <a class="pill-link" href="technical-debt.html"><span lang="ja">技術的負債とは</span><span lang="en">What is tech debt</span><span class="ar" aria-hidden="true">&rsaquo;</span></a>
+          <a class="pill-link" href="research/td-repayment-refactoring.html"><span lang="ja">返済とリファクタリング</span><span lang="en">Repayment</span><span class="ar" aria-hidden="true">&rsaquo;</span></a>
+        </div>
+      </div>
+      <div class="tcard">
+        <div class="no">03</div>
+        <h3><span lang="ja">生成AI・LLMと開発者支援</span><span lang="en">Generative AI, LLMs, and developer support</span><span class="en-tag">Generative AI / LLMs</span></h3>
+        <p><span lang="ja">ChatGPT の利用の仕方を分析したり、AIエージェントを開発支援に応用したり。生成AIと開発者の関わりを調べます。</span><span lang="en">Analyzing how ChatGPT is used, and applying AI agents to development support. Studying how generative AI meets developers.</span></p>
+        <p class="basis"><span lang="ja">接地: 祐谷が筆頭の成果（FOSE 2025）、共著の自動フィードバック研究（FOSE 2025）。</span><span lang="en">Grounded in: a student-led study by Yuya (FOSE 2025) and a co-authored feedback study (FOSE 2025).</span></p>
+      </div>
+      <div class="tcard">
+        <div class="no">04</div>
+        <h3><span lang="ja">機械学習による開発データ分析</span><span lang="en">Machine learning on development data</span><span class="en-tag">Machine learning</span></h3>
+        <p><span lang="ja">開発データから予測・分類のモデルを組み立てます。深層学習による予測や、技術的負債の課題票の分類などが例です。</span><span lang="en">Building prediction and classification models from development data. Examples include deep-learning prediction and classifying technical-debt issue tickets.</span></p>
+        <div class="plinks">
+          <a class="pill-link" href="research/satd-issue-classification.html"><span lang="ja">TD-Issue の自動分類</span><span lang="en">TD-Issue classification</span><span class="ar" aria-hidden="true">&rsaquo;</span></a>
+        </div>
+      </div>
+      <div class="tcard">
+        <div class="no">05</div>
+        <h3><span lang="ja">アプリ開発・実践</span><span lang="en">Building apps in practice</span><span class="en-tag">Building apps / practice</span></h3>
+        <p><span lang="ja">社会や学校の課題を、ものづくりで解きます。防災アプリや学食モバイルオーダーアプリなど、手を動かして形にするテーマです。</span><span lang="en">Solving problems in society and school by building. Themes you shape with your hands, such as a disaster-prevention app or a cafeteria ordering app.</span></p>
+        <div class="plinks">
+          <a class="pill-link" href="publications.html"><span lang="ja">高専学会2025の発表</span><span lang="en">2025 conference talks</span><span class="ar" aria-hidden="true">&rsaquo;</span></a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 3. STUDENT RESULTS -->
+<section id="results" class="soft-sec">
+  <div class="wrap">
+    <p class="eyebrow reveal"><span lang="ja">学生との研究成果</span><span lang="en">Results with students</span></p>
+    <h2 class="big reveal"><span lang="ja">学生が中心となって、形にしてきたもの</span><span lang="en">What students have shaped as lead authors</span></h2>
+    <p class="lead reveal" style="max-width:var(--readw); margin-top:20px">
+      <span lang="ja">これまで、学生が筆頭または共著で数多くの成果を発表してきました。学会発表から論文誌への掲載まで、いずれも実際に残っている記録です。</span>
+      <span lang="en">Students have presented many results as lead or co-authors, from conference talks to journal publication. Every item below is part of the actual record.</span>
+    </p>
+
+    <div class="highlight reveal">
+      <span class="tag"><span lang="ja">査読付き論文誌に掲載</span><span lang="en">Published in a refereed journal</span></span>
+      <h3><span lang="ja">池原大貴さんが学生筆頭で、論文誌に採録</span><span lang="en">Daiki Ikehara, as student lead author, in a journal</span></h3>
+      <p><span lang="ja">「課題管理システムにおける技術的負債の返済とリファクタリングの関係の調査」は、FOSE 2024 での発表を経て、査読付き論文誌『コンピュータソフトウェア』（Vol.43, No.1, 2026年）に学生筆頭で掲載されました。</span><span lang="en">"Investigating the Relationship between Technical Debt Repayment and Refactoring in Issue Management Systems" was presented at FOSE 2024 and then published, with the student as lead author, in the refereed journal Computer Software (Vol.43, No.1, 2026).</span></p>
+      <div class="plinks">
+        <a class="pill-link" href="research/td-repayment-refactoring.html"><span lang="ja">研究紹介を読む</span><span lang="en">Read the highlight</span><span class="ar" aria-hidden="true">&rsaquo;</span></a>
+      </div>
+    </div>
+
+    <ul class="rlist reveal">
+      <li class="ritem">
+        <div class="rmain">
+          <div class="rmeta"><span class="lead-by"><span lang="ja">学生筆頭</span><span lang="en">Student lead</span></span><span class="dot"></span><span>FOSE 2025</span></div>
+          <div class="rtitle"><span lang="ja">GitHub Issues を通じた ChatGPT の開発者利用におけるプロンプトの特徴の調査</span><span lang="en">A Study of Prompt Characteristics in Developers' Use of ChatGPT via GitHub Issues</span></div>
+          <p class="rby"><span lang="ja">祐谷創, <span class="me">木村祐太</span></span><span lang="en">H. Yuya, <span class="me">Y. Kimura</span></span></p>
+        </div>
+        <div class="rvenue"><span lang="ja">2025年</span><span lang="en">2025</span></div>
+      </li>
+      <li class="ritem">
+        <div class="rmain">
+          <div class="rmeta"><span class="lead-by"><span lang="ja">学生筆頭</span><span lang="en">Student lead</span></span><span class="dot"></span><span>FOSE 2025</span></div>
+          <div class="rtitle"><span lang="ja">Stack Overflow と GitHub Discussions における技術的負債の投稿の傾向と内容の違いの調査</span><span lang="en">Comparing Trends and Content of Technical-Debt Posts on Stack Overflow and GitHub Discussions</span></div>
+          <p class="rby"><span lang="ja">桑原大昇, <span class="me">木村祐太</span></span><span lang="en">D. Kuwahara, <span class="me">Y. Kimura</span></span></p>
+        </div>
+        <div class="rvenue"><span lang="ja">2025年</span><span lang="en">2025</span></div>
+      </li>
+      <li class="ritem">
+        <div class="rmain">
+          <div class="rmeta"><span class="lead-by"><span lang="ja">学生筆頭</span><span lang="en">Student lead</span></span><span class="dot"></span><span>FOSE 2024</span></div>
+          <div class="rtitle"><span lang="ja">深層学習を用いた実装機能の時系列の予測</span><span lang="en">Time-Series Prediction of Implemented Features Using Deep Learning</span></div>
+          <p class="rby"><span lang="ja">森壮平, <span class="me">木村祐太</span></span><span lang="en">S. Mori, <span class="me">Y. Kimura</span></span></p>
+        </div>
+        <div class="rvenue"><span lang="ja">2024年</span><span lang="en">2024</span></div>
+      </li>
+      <li class="ritem">
+        <div class="rmain">
+          <div class="rmeta"><span class="lead-by"><span lang="ja">学生筆頭</span><span lang="en">Student lead</span></span><span class="dot"></span><span lang="ja">日本高専学会 2025</span><span lang="en">JACT 2025</span></div>
+          <div class="rtitle"><span lang="ja">総合型防災アプリ: 防災備蓄管理・天気情報・避難所情報の統合</span><span lang="en">An Integrated Disaster-Prevention App: Unifying Stockpile Management, Weather, and Shelter Information</span></div>
+          <p class="rby"><span lang="ja">石見心人, 大武功, 根津步弥, 山内優弥, <span class="me">木村祐太</span>, 北野健一</span><span lang="en">K. Ishimi, I. Otake, A. Nezu, Y. Yamauchi, <span class="me">Y. Kimura</span>, K. Kitano</span></p>
+        </div>
+        <div class="rvenue"><span lang="ja">2025年</span><span lang="en">2025</span></div>
+      </li>
+      <li class="ritem">
+        <div class="rmain">
+          <div class="rmeta"><span class="lead-by"><span lang="ja">学生筆頭</span><span lang="en">Student lead</span></span><span class="dot"></span><span lang="ja">日本高専学会 2025</span><span lang="en">JACT 2025</span></div>
+          <div class="rtitle"><span lang="ja">学食モバイルオーダーアプリの開発</span><span lang="en">Development of a Mobile Ordering App for the School Cafeteria</span></div>
+          <p class="rby"><span lang="ja">菅野葵, 行方遥希, 原田航, 近藤蒼一郎, <span class="me">木村祐太</span>, 北野健一</span><span lang="en">A. Kanno, H. Namekata, W. Harada, S. Kondo, <span class="me">Y. Kimura</span>, K. Kitano</span></p>
+        </div>
+        <div class="rvenue"><span lang="ja">2025年</span><span lang="en">2025</span></div>
+      </li>
+    </ul>
+
+    <div class="hero-cta results-cta reveal">
+      <a class="tlink" href="publications.html">
+        <span lang="ja">全業績リストで詳しく見る</span><span lang="en">See the full publication list</span>
+        <span class="ar" aria-hidden="true">&rsaquo;</span>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- 4. HOW RESEARCH PROCEEDS -->
+<section id="how">
+  <div class="wrap">
+    <p class="eyebrow reveal"><span lang="ja">研究の進め方</span><span lang="en">How research proceeds</span></p>
+    <h2 class="big reveal"><span lang="ja">相談してテーマを決め、少しずつ形にする</span><span lang="en">Decide a theme together, then shape it step by step</span></h2>
+    <p class="lead reveal" style="max-width:var(--readw); margin-top:20px">
+      <span lang="ja">研究は、おおまかに次のような流れで進みます。無理のない範囲で一歩ずつ進め、まとまった成果は学会発表や論文誌への掲載を目標にできます。</span>
+      <span lang="en">Research proceeds, broadly, along the flow below. You move a step at a time at a comfortable pace, and completed results can aim for a conference talk or journal publication.</span>
+    </p>
+    <div class="steps reveal">
+      <div class="step">
+        <div class="no">1</div>
+        <h3><span lang="ja">テーマを決める</span><span lang="en">Decide a theme</span></h3>
+        <p><span lang="ja">興味や得意なことを相談しながら、取り組むテーマを一緒に決めていきます。上の五つの方向が出発点になります。</span><span lang="en">We decide the theme together, talking through your interests and strengths. The five directions above make a starting point.</span></p>
+      </div>
+      <div class="step">
+        <div class="no">2</div>
+        <h3><span lang="ja">データを集めて分析、あるいは開発</span><span lang="en">Gather and analyze, or build</span></h3>
+        <p><span lang="ja">開発データを集めて分析したり、アプリなどを実際に開発したり。テーマに合わせて手を動かしていきます。</span><span lang="en">Gathering and analyzing development data, or actually building an app. You work with your hands to fit the theme.</span></p>
+      </div>
+      <div class="step">
+        <div class="no">3</div>
+        <h3><span lang="ja">まとめて発表する</span><span lang="en">Sum up and present</span></h3>
+        <p><span lang="ja">結果をまとめ、学会（FOSE や日本高専学会など）での発表や、論文誌への掲載を目標にできます。</span><span lang="en">You sum up the results and can aim for a talk at a conference such as FOSE or the JACT, or for journal publication.</span></p>
+      </div>
+    </div>
+    <div class="callout reveal">
+      <span lang="ja"><b>参考：</b>実際に、学生の発表が学会（FOSE・日本高専学会）で行われ、査読付き論文誌への掲載にも至っています。上の「学生との研究成果」がその記録です。</span>
+      <span lang="en"><b>For reference:</b> students' work really has been presented at conferences (FOSE and the JACT) and has reached a refereed journal. The results above are that record.</span>
+    </div>
+  </div>
+</section>
+
+<!-- 5. WHO IT SUITS -->
+<section class="soft-sec">
+  <div class="wrap">
+    <p class="eyebrow reveal"><span lang="ja">こんな人に向いています</span><span lang="en">Who it may suit</span></p>
+    <h2 class="big reveal"><span lang="ja">当てはまるものが一つでもあれば、大丈夫</span><span lang="en">If even one of these fits, that is plenty</span></h2>
+    <div class="tiles reveal">
+      <div class="tile">
+        <div class="no">01</div>
+        <h3><span lang="ja">プログラミングやデータ分析が好き</span><span lang="en">You enjoy programming or data analysis</span></h3>
+        <p><span lang="ja">コードを書くことや、データから何かを読み解くことに楽しさを感じる人。</span><span lang="en">You find enjoyment in writing code, or in reading something out of data.</span></p>
+      </div>
+      <div class="tile">
+        <div class="no">02</div>
+        <h3><span lang="ja">GitHub や OSS に興味がある</span><span lang="en">You are curious about GitHub or OSS</span></h3>
+        <p><span lang="ja">世界中の開発が進む場に、少し関心を持っている人。まだ詳しくなくても大丈夫です。</span><span lang="en">You have some interest in where development happens worldwide. No need to know it well yet.</span></p>
+      </div>
+      <div class="tile">
+        <div class="no">03</div>
+        <h3><span lang="ja">AIツールを使い倒したい</span><span lang="en">You want to make the most of AI tools</span></h3>
+        <p><span lang="ja">ChatGPT のような生成AIを、ただ使うだけでなく深く調べてみたい人。</span><span lang="en">You want not just to use generative AI like ChatGPT, but to look into it deeply.</span></p>
+      </div>
+      <div class="tile">
+        <div class="no">04</div>
+        <h3><span lang="ja">ものづくりで身近な課題を解きたい</span><span lang="en">You want to solve everyday problems by building</span></h3>
+        <p><span lang="ja">アプリなどを作って、社会や学校の困りごとを解決してみたい人。</span><span lang="en">You want to build an app and tackle a trouble in society or at school.</span></p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 6. COURSE GUIDE -->
+<section id="courses">
+  <div class="wrap">
+    <p class="eyebrow reveal"><span lang="ja">担当科目ガイド</span><span lang="en">Course guide</span></p>
+    <h2 class="big reveal"><span lang="ja">担当している科目の、簡単な案内</span><span lang="en">A short guide to the courses taught</span></h2>
+    <p class="lead reveal" style="max-width:var(--readw); margin-top:20px">
+      <span lang="ja">木村が担当する主な科目を、それぞれ一行で紹介します。内容は分野の標準的な範囲を示すものです。</span>
+      <span lang="en">The main courses taught, each in a single line. The descriptions indicate the standard scope of the field.</span>
+    </p>
+    <ul class="courses reveal">
+      <li class="course">
+        <div class="cname"><span lang="ja">ソフトウェア工学</span><span lang="en">Software Engineering</span><span class="en-name">Software Engineering</span></div>
+        <div class="cdesc">
+          <span lang="ja">ソフトウェアを計画的に作り、育てていくための考え方や手法。2026年4月開講予定です。</span><span lang="en">Ways of thinking and methods for building and maintaining software with a plan. Scheduled to open in April 2026.</span>
+          <span class="plinks">
+            <a class="pill-link" href="software-engineering.html"><span lang="ja">分野紹介で予習</span><span lang="en">Prep: the field</span><span class="ar" aria-hidden="true">&rsaquo;</span></a>
+            <a class="pill-link" href="technical-debt.html"><span lang="ja">技術的負債とは</span><span lang="en">Tech debt</span><span class="ar" aria-hidden="true">&rsaquo;</span></a>
+          </span>
+        </div>
+      </li>
+      <li class="course">
+        <div class="cname"><span lang="ja">論理回路1</span><span lang="en">Logic Circuits 1</span><span class="en-name">Logic Circuits 1</span></div>
+        <div class="cdesc"><span lang="ja">論理ゲート、組合せ回路、順序回路といったディジタル回路の基礎を学びます。</span><span lang="en">The basics of digital circuits: logic gates, combinational circuits, and sequential circuits.</span></div>
+      </li>
+      <li class="course">
+        <div class="cname"><span lang="ja">応用専門PBL1</span><span lang="en">Applied Interdisciplinary PBL 1</span><span class="en-name">Applied Interdisciplinary PBL 1</span></div>
+        <div class="cdesc">
+          <span lang="ja">チームで取り組む課題解決型の学習（PBL）。初年度の取組は日本高専学会2025で発表しています。</span><span lang="en">Project-based learning where teams tackle problems together. The first-year efforts were presented at the JACT 2025.</span>
+          <span class="plinks">
+            <a class="pill-link" href="publications.html"><span lang="ja">初年度の発表</span><span lang="en">First-year talk</span><span class="ar" aria-hidden="true">&rsaquo;</span></a>
+          </span>
+        </div>
+      </li>
+      <li class="course">
+        <div class="cname"><span lang="ja">知能情報実験実習1</span><span lang="en">Intelligent Informatics Lab 1</span><span class="en-name">Intelligent Informatics Lab 1</span></div>
+        <div class="cdesc"><span lang="ja">知能情報分野の実験・実習を通して、手を動かしながら学びます。</span><span lang="en">Learning by doing, through experiments and practical work in intelligent informatics.</span></div>
+      </li>
+      <li class="course">
+        <div class="cname"><span lang="ja">卒業研究</span><span lang="en">Graduation Research</span><span class="en-name">Graduation Research</span></div>
+        <div class="cdesc">
+          <span lang="ja">一年をかけて、テーマ決めから分析・開発、発表までの研究サイクルを一巡します。</span><span lang="en">Over a year, you go once around the research cycle, from choosing a theme through analysis or building to presenting.</span>
+          <span class="plinks">
+            <a class="pill-link" href="#themes"><span lang="ja">テーマの方向性へ</span><span lang="en">Research directions</span><span class="ar" aria-hidden="true">&rsaquo;</span></a>
+          </span>
+        </div>
+      </li>
+      <li class="course">
+        <div class="cname"><span lang="ja">応用専門概論</span><span lang="en">Introduction to Applied Fields</span><span class="en-name">Introduction to Applied Fields</span></div>
+        <div class="cdesc"><span lang="ja">応用専門分野への入門。分野の全体像に触れ、これからの学びの見通しを持ちます。</span><span lang="en">An introduction to the applied fields, meeting the big picture and gaining a view of the learning ahead.</span></div>
+      </li>
+      <li class="course">
+        <div class="cname"><span lang="ja">情報2</span><span lang="en">Informatics 2</span><span class="en-name">Informatics 2</span></div>
+        <div class="cdesc"><span lang="ja">情報とプログラミングの基礎を学びます。</span><span lang="en">The basics of information and programming.</span></div>
+      </li>
+    </ul>
+    <p class="syllabus-note reveal">
+      <span lang="ja">科目の内容や年度により変わる情報については、詳細は最新のシラバスを確認してください。</span>
+      <span lang="en">For course content and details that change by year, please check the latest syllabus.</span>
+    </p>
+  </div>
+</section>
+
+<!-- 7. CONTACT -->
+<section id="contact" class="soft-sec">
+  <div class="wrap">
+    <p class="eyebrow reveal"><span lang="ja">相談・連絡</span><span lang="en">Get in touch</span></p>
+    <h2 class="big reveal"><span lang="ja">見学も相談も、気軽にどうぞ</span><span lang="en">Visits and questions are always welcome</span></h2>
+    <div class="contact-box reveal">
+      <p>
+        <span lang="ja">研究に少しでも興味があれば、まずは気軽に声をかけてください。研究室の見学や、テーマについての相談を歓迎します。「何を研究したいか、まだはっきりしない」という段階でも大丈夫です。</span>
+        <span lang="en">If you have even a little interest in research, please reach out first. Visits to the lab and questions about themes are welcome. It is perfectly fine if you are not yet sure what you want to study.</span>
+      </p>
+      <p>
+        <span lang="ja">研究で使う用語が分からなくても心配いりません。このサイトに出てくる言葉は、用語集でやさしく説明しています。</span>
+        <span lang="en">Do not worry if the terms used in research are unfamiliar. The words that appear on this site are explained gently in the glossary.</span>
+      </p>
+      <div class="contact-cta">
+        <a class="btn ink" href="mailto:y.kimura@omu.ac.jp">
+          <span lang="ja">メールで相談する</span><span lang="en">Email me</span>
+          <span class="ic" aria-hidden="true">&rsaquo;</span>
+        </a>
+        <a class="tlink" href="glossary.html">
+          <span lang="ja">用語集を見る</span><span lang="en">Open the glossary</span>
+          <span class="ar" aria-hidden="true">&rsaquo;</span>
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<!-- FOOTER -->
+<footer>
+  <div class="wrap">
+    <div class="cite">
+      <span lang="ja">卒業研究や共同研究に興味のある学生の皆さんへ向けた案内ページです。木村祐太の研究サイトの一部としてご覧いただけます。</span>
+      <span lang="en">A guide for students interested in graduation research or joint work. Part of Yuta Kimura's research site.</span>
+    </div>
+    <div class="foot-grid">
+      <div>
+        <h3><span lang="ja">連絡先</span><span lang="en">Contact</span></h3>
+        <p class="muted-s">
+          <b>木村 祐太 / Yuta Kimura</b><br>
+          <span lang="ja">大阪公立大学工業高等専門学校</span><span lang="en">Osaka Metropolitan University College of Technology</span><br>
+          <a href="mailto:y.kimura@omu.ac.jp">y.kimura [at] omu.ac.jp</a>
+        </p>
+      </div>
+      <div>
+        <h3><span lang="ja">サイト</span><span lang="en">Site</span></h3>
+        <p class="muted-s">
+          <a href="index.html"><span lang="ja">ホーム</span><span lang="en">Home</span></a><br>
+          <a href="publications.html"><span lang="ja">業績一覧</span><span lang="en">All publications</span></a><br>
+          <a href="activities.html"><span lang="ja">研究・教育活動</span><span lang="en">Projects & teaching</span></a><br>
+          <a href="software-engineering.html"><span lang="ja">ソフトウェア工学とは</span><span lang="en">What is software engineering?</span></a><br>
+          <a href="technical-debt.html"><span lang="ja">技術的負債とは</span><span lang="en">What is technical debt?</span></a><br>
+          <a href="students.html"><span lang="ja">学生の皆さんへ</span><span lang="en">For students</span></a><br>
+          <a href="glossary.html"><span lang="ja">用語集</span><span lang="en">Glossary</span></a>
+        </p>
+      </div>
+      <div>
+        <h3><span lang="ja">研究</span><span lang="en">Research</span></h3>
+        <p class="muted-s">
+          <a href="research/technical-debt-metrics.html"><span lang="ja">メトリクスによる分類・特徴づけ</span><span lang="en">Classifying debt with metrics</span></a><br>
+          <a href="research/apr-coding-standards.html"><span lang="ja">自動生成パッチと品質</span><span lang="en">Auto-generated patches and quality</span></a><br>
+          <a href="research/td-repayment-refactoring.html"><span lang="ja">返済とリファクタリング</span><span lang="en">Repayment and refactoring</span></a><br>
+          <a href="research/satd-issue-classification.html"><span lang="ja">TD-Issue の自動分類</span><span lang="en">Automatic TD-Issue classification</span></a><br>
+          <a href="https://researchmap.jp/kimura_yuta" target="_blank" rel="noopener">researchmap</a>
+        </p>
+      </div>
+    </div>
+    <div class="foot-rule"></div>
+    <p class="foot-note">
+      <span lang="ja">© 2026 Yuta Kimura. 学生の成果・氏名・年月は業績の記録に基づきます。</span>
+      <span lang="en">© 2026 Yuta Kimura. Student results, names, and dates follow the publication record.</span>
+    </p>
+  </div>
+</footer>
+
+<script>
+  function setLang(l){document.body.classList.remove('lang-ja','lang-en');document.body.classList.add('lang-'+l);document.documentElement.lang=l;
+   try{localStorage.setItem('site-lang',l)}catch(e){}
+   try{var q=new URLSearchParams(location.search);q.set('lang',l);history.replaceState(null,'',location.pathname+'?'+q+location.hash)}catch(e){}}
+  function toggleLang(){setLang(document.body.classList.contains('lang-ja')?'en':'ja')}
+  (function(){var u=null;try{u=new URLSearchParams(location.search).get('lang')}catch(e){}
+   var s=null;try{s=localStorage.getItem('site-lang')}catch(e){}
+   var l=(u==='en'||u==='ja')?u:((s==='en'||s==='ja')?s:'ja');if(l!=='ja')setLang(l);})();
+  if('IntersectionObserver' in window){
+    var io=new IntersectionObserver(function(es){ es.forEach(function(e){ if(e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target); } }); },{threshold:0.12, rootMargin:"0px 0px -6% 0px"});
+    document.querySelectorAll('.reveal').forEach(function(el){ io.observe(el); });
+  } else { document.querySelectorAll('.reveal').forEach(function(el){ el.classList.add('in'); }); }
+</script>
+</body>
+</html>

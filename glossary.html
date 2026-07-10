@@ -1,0 +1,562 @@
+<!DOCTYPE html>
+<html lang="ja" class="no-js">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>用語集 - 木村祐太 / Yuta Kimura</title>
+<meta name="description" content="A short bilingual glossary of terms used across this research site: technical debt, mining software repositories, static analysis, automated program repair, and more. Part of Yuta Kimura's research site.">
+<link rel="canonical" href="https://ykimu.github.io/glossary.html">
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<meta property="og:site_name" content="Yuta Kimura / 木村祐太">
+<meta property="og:type" content="article">
+<meta property="og:title" content="用語集 - 木村祐太 / Yuta Kimura">
+<meta property="og:description" content="A short bilingual glossary of terms used across this research site: technical debt, mining software repositories, static analysis, automated program repair, and more. Part of Yuta Kimura's research site.">
+<meta property="og:url" content="https://ykimu.github.io/glossary.html">
+<meta property="og:image" content="https://ykimu.github.io/assets/og.png">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="color-scheme" content="light">
+<script>document.documentElement.className="js";</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&family=Noto+Sans+JP:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#FBFCFB; --bg-2:#F3F6F4; --bg-3:#EBEFED; --card:#FFFFFF;
+    --ink:#101312; --ink-2:#3C4340; --muted:#6B746F; --faint:#B7C0BB;
+    --line:#E7ECE9; --hair:rgba(16,19,18,.08); --shell:rgba(16,19,18,.035);
+    --accent:#0E6F5C; --accent-2:#0A5748; --accent-soft:rgba(14,111,92,.08);
+    --soft:0 1px 2px rgba(16,19,18,.04), 0 24px 60px -28px rgba(16,19,18,.16);
+    --inhi:inset 0 1px 0 rgba(255,255,255,.85);
+    --ease:cubic-bezier(.32,.72,0,1);
+    --sans:"Plus Jakarta Sans","Noto Sans JP",-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+    --disp:"Space Grotesk","Plus Jakarta Sans","Noto Sans JP",sans-serif;
+    --maxw:1440px; --readw:clamp(680px, 62vw, 1060px);
+  }
+  html{color-scheme:light}
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth; -webkit-text-size-adjust:100%}
+  body{margin:0; background:var(--bg); color:var(--ink); font-family:var(--sans);
+    font-size:17px; line-height:1.75; font-weight:400; -webkit-font-smoothing:antialiased; text-rendering:optimizeLegibility}
+  body.lang-ja [lang=en]{display:none}
+  body.lang-en [lang=ja]{display:none}
+  ::selection{background:rgba(14,111,92,.16)}
+  .num{font-variant-numeric:tabular-nums; font-feature-settings:"tnum" 1; font-family:var(--disp)}
+  h1,h2,h3{margin:0; color:var(--ink); font-weight:500; line-height:1.16; letter-spacing:-.02em; font-family:var(--disp); text-wrap:balance}
+  body.lang-ja h1,body.lang-ja h2,body.lang-ja h3{letter-spacing:0; font-family:var(--sans)}
+  p,.lead,.hook,.byline,figcaption,.cite,.muted-s{text-wrap:pretty}
+  [lang="en"]{line-break:auto}
+  [lang="ja"]{line-break:strict; word-break:normal}
+  h1 [lang="ja"],h2 [lang="ja"],h3 [lang="ja"]{word-break:auto-phrase}
+  p{margin:0 0 1em}
+  a{color:var(--accent-2); text-decoration:none; transition:color .3s var(--ease)}
+  a:hover{color:var(--accent)}
+  a:focus-visible,button:focus-visible,.btn:focus-visible,[tabindex]:focus-visible{outline:2px solid var(--accent); outline-offset:3px; border-radius:8px}
+  .wrap{max-width:var(--maxw); margin:0 auto; padding:0 40px}
+  [id]{scroll-margin-top:96px}
+  section{padding:130px 0}
+
+  .skip{position:fixed; top:10px; left:10px; padding:10px 16px; background:var(--ink); color:#fff; border-radius:999px; transform:translateY(-200%); transition:none; z-index:100}
+  .skip:focus{transform:none}
+
+  /* film grain overlay */
+  body::after{content:""; position:fixed; inset:0; z-index:1; pointer-events:none; opacity:.02;
+    background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='g'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23g)'/%3E%3C/svg%3E")}
+
+  h2.big{font-size:clamp(1.9rem,3.2vw,2.7rem); font-weight:500; letter-spacing:-.025em; max-width:26ch}
+  body.lang-ja h2.big{letter-spacing:-.01em}
+  .eyebrow,.kick{display:inline-flex; align-items:center; gap:8px; width:max-content; max-width:100%;
+    padding:5px 13px 5px 11px; border-radius:999px; border:1px solid var(--hair); background:#fff;
+    font:600 .66rem/1 var(--disp); letter-spacing:.14em; text-transform:uppercase; color:var(--ink-2); margin:0 0 18px}
+  .eyebrow::before,.kick::before{content:""; flex:0 0 auto; width:6px; height:6px; border-radius:50%; background:var(--accent)}
+  .lead{font-size:1.12rem; color:var(--ink-2); line-height:1.78; font-weight:400}
+
+  /* motion */
+  .js .reveal{opacity:0; transform:translateY(18px); filter:blur(6px); transition:opacity .9s var(--ease), transform .9s var(--ease), filter .9s var(--ease)}
+  .js .reveal.in{opacity:1; transform:none; filter:none}
+  @media (prefers-reduced-motion:reduce){
+    .js .reveal{opacity:1!important; transform:none!important; filter:none!important}
+    .btn:active,.btn.ink:hover .ic,.toc-pill:hover,.term:hover{transform:none!important}
+  }
+
+  /* floating island nav */
+  header.bar{position:sticky; top:18px; z-index:60; background:transparent; border-bottom:none}
+  .bar .wrap{display:flex; align-items:center; justify-content:space-between;
+    width:max-content; max-width:calc(100% - 32px); margin:0 auto; height:auto;
+    padding:9px 12px 9px 20px; gap:20px; border-radius:999px;
+    background:rgba(255,255,255,.72); -webkit-backdrop-filter:saturate(1.4) blur(18px); backdrop-filter:saturate(1.4) blur(18px);
+    border:1px solid var(--hair); box-shadow:var(--soft)}
+  .brand{font-weight:600; font-size:.92rem; letter-spacing:-.01em; color:var(--ink); display:inline-flex; align-items:center; gap:8px}
+  .brand span.sep{color:var(--muted); font-weight:400; margin:0 2px}
+  .navlinks{display:flex; gap:22px; align-items:center}
+  .navlinks a{font-size:.86rem; font-weight:500; color:var(--ink-2); transition:color .3s var(--ease)}
+  .navlinks a:hover{color:var(--ink)}
+  @media(max-width:860px){.navlinks{display:none}}
+  .bar-right{display:flex; align-items:center; gap:8px}
+
+  /* buttons */
+  .btn{display:inline-flex; align-items:center; gap:10px; font:500 .85rem/1 var(--sans); padding:10px 18px;
+    border-radius:999px; border:1px solid var(--hair); background:#fff; color:var(--ink); cursor:pointer;
+    transition:transform .4s var(--ease), box-shadow .4s var(--ease), border-color .3s var(--ease), background .3s var(--ease), color .3s var(--ease)}
+  .btn:hover{border-color:var(--ink); transform:translateY(-1px); color:var(--ink)}
+  .btn:active{transform:scale(.98)}
+  .btn.ink{background:var(--ink); border-color:var(--ink); color:#fff; padding:10px 10px 10px 22px;
+    box-shadow:0 12px 26px -14px rgba(16,19,18,.5)}
+  .btn.ink:not(:has(.ic)){padding:10px 22px}
+  .btn.ink:hover{box-shadow:0 16px 32px -14px rgba(16,19,18,.55); color:#fff}
+  .btn .ic{width:32px; height:32px; border-radius:999px; background:rgba(255,255,255,.18); display:grid; place-items:center;
+    transition:transform .45s var(--ease); flex:0 0 auto}
+  .btn.ink:hover .ic{transform:translate(3px,-1px)}
+  .tlink{display:inline-flex; align-items:center; gap:8px; font-weight:500; font-size:.95rem; color:var(--ink)}
+  .tlink .ar{transition:transform .4s var(--ease)}
+  .tlink:hover .ar{transform:translateX(4px)}
+
+  /* hero */
+  .hero{position:relative; overflow:hidden}
+  .hero > .wrap{position:relative; z-index:1}
+  .hero::before{content:""; position:absolute; z-index:0; width:640px; height:640px; right:-150px; top:-240px;
+    border-radius:50%; pointer-events:none; opacity:.55;
+    background:radial-gradient(circle, var(--accent-soft), transparent 62%); filter:blur(20px)}
+  .hero .wrap{padding-top:72px; padding-bottom:64px}
+  .hero h1{font-size:clamp(2.6rem,5vw,4.2rem); font-weight:500; letter-spacing:-.03em; line-height:1.08; color:var(--ink); max-width:20ch}
+  body.lang-ja .hero h1{font-size:clamp(2rem,4.2vw,3.1rem); font-weight:500; letter-spacing:0; line-height:1.24}
+  .hero h1 em{font-style:normal; color:var(--accent)}
+  .hero .lead{max-width:var(--readw); margin-top:24px}
+
+  /* table of contents pills */
+  .toc{display:flex; flex-wrap:wrap; gap:10px; margin-top:32px}
+  .toc-pill{display:inline-flex; align-items:center; gap:9px; padding:10px 18px; border-radius:999px;
+    border:1px solid var(--hair); background:#fff; font:500 .86rem/1 var(--sans); color:var(--ink-2);
+    transition:border-color .3s var(--ease), color .3s var(--ease), transform .4s var(--ease)}
+  .toc-pill b{font-family:var(--disp); font-weight:600; color:var(--accent-2)}
+  .toc-pill:hover{border-color:var(--ink); color:var(--ink); transform:translateY(-1px)}
+
+  .soft-sec{background:var(--bg-2); border-top:1px solid var(--line); border-bottom:1px solid var(--line)}
+  .group-lead{max-width:var(--readw); margin-top:18px}
+
+  /* glossary list: single double-bezel shell per group, hairline-separated rows */
+  .glossary-list{border-radius:21px; margin-top:40px; background:var(--card); overflow:hidden;
+    box-shadow:0 0 0 7px var(--shell), 0 0 0 7.5px var(--hair), var(--soft)}
+  .term{padding:30px 38px; border-top:1px solid var(--line)}
+  .term:first-child{border-top:none}
+  .term-head{display:flex; align-items:baseline; flex-wrap:wrap; gap:10px 12px; margin-bottom:12px}
+  .term-head h3{font-size:1.14rem; font-weight:600; font-family:var(--sans); letter-spacing:0; margin:0}
+  .term-head .en-tag{font-size:.78rem; font-weight:500; color:var(--muted); letter-spacing:.02em; font-family:var(--disp)}
+  body.lang-en .term-head .en-tag{display:none}
+  .term p.def{margin:0 0 .9em; color:var(--ink-2); font-size:.98rem; max-width:72ch}
+  .term .tlink{font-size:.9rem}
+  @media(max-width:760px){.term{padding:24px 24px}}
+
+  footer{border-top:1px solid var(--line); padding:64px 0 46px; background:var(--bg)}
+  footer h3{font-size:.72rem; font-weight:600; letter-spacing:.12em; text-transform:uppercase; color:var(--muted); margin:0 0 1em; font-family:var(--disp)}
+  .foot-grid{display:grid; grid-template-columns:1.4fr 1fr 1fr; gap:44px}
+  .cite{font-size:.98rem; color:var(--ink-2); line-height:1.7; max-width:56ch; margin-bottom:36px}
+  .muted-s{color:var(--muted); font-size:.9rem; line-height:1.75}
+  .muted-s b{color:var(--ink); font-weight:600}
+  .foot-rule{height:1px; background:var(--line); margin:44px 0 20px}
+  .foot-note{color:var(--muted); font-size:.82rem}
+  @media(max-width:760px){.foot-grid{grid-template-columns:1fr 1fr}}
+  @media(max-width:560px){.foot-grid{grid-template-columns:1fr}}
+
+  @media(max-width:860px){
+    section{padding:72px 0}
+    .hero .wrap{padding-top:52px; padding-bottom:48px}
+    .wrap{padding:0 24px}
+  }
+  @media(max-width:640px){
+    .bar-right .btn:not(.ink){display:none}
+    .brand{font-size:.82rem}
+  }
+</style>
+</head>
+<body class="lang-ja">
+
+<a class="skip" href="#main"><span lang="ja">本文へスキップ</span><span lang="en">Skip to content</span></a>
+
+<header class="bar">
+  <div class="wrap">
+    <a class="brand" href="index.html">
+      <span aria-hidden="true">&lsaquo;</span>
+      <span lang="ja">木村祐太</span><span lang="en">Yuta Kimura</span>
+      <span class="sep">·</span><span lang="ja">用語集</span><span lang="en">Glossary</span>
+    </a>
+    <nav class="navlinks" aria-label="メイン">
+      <a href="publications.html"><span lang="ja">業績</span><span lang="en">Publications</span></a>
+      <a href="activities.html"><span lang="ja">活動</span><span lang="en">Activities</span></a>
+      <a href="software-engineering.html"><span lang="ja">分野紹介</span><span lang="en">Guides</span></a>
+      <a href="technical-debt.html"><span lang="ja">技術的負債</span><span lang="en">Tech Debt</span></a>
+    </nav>
+    <div class="bar-right">
+      <a class="btn" href="https://researchmap.jp/kimura_yuta" target="_blank" rel="noopener">researchmap</a>
+      <button class="btn ink" onclick="toggleLang()" aria-label="Switch language">
+        <span lang="ja">EN</span><span lang="en">日本語</span>
+      </button>
+    </div>
+  </div>
+</header>
+
+<main id="main">
+
+<!-- HERO -->
+<div class="hero">
+  <div class="wrap">
+    <p class="kick">Glossary</p>
+    <h1>
+      <span lang="ja">研究用語ミニ辞典</span>
+      <span lang="en">A small dictionary of the field</span>
+    </h1>
+    <p class="lead">
+      <span lang="ja">このサイトのあちこちに出てくる用語を、テーマ別に16個まとめました。技術的負債まわり・開発データまわり・手法まわりの3グループに分け、それぞれ日本語と英語で短く説明しています。読んでいて聞き慣れない言葉に出会ったら、ここに戻ってきてください。</span>
+      <span lang="en">A short, themed collection of 16 terms that appear across this site. They are grouped into technical-debt basics, development data, and methods, each explained briefly in both Japanese and English. Come back here whenever an unfamiliar word gets in the way.</span>
+    </p>
+    <nav class="toc reveal" aria-label="Glossary sections">
+      <a class="toc-pill" href="#group-a"><b>A</b><span lang="ja">技術的負債まわり</span><span lang="en">Technical debt</span></a>
+      <a class="toc-pill" href="#group-b"><b>B</b><span lang="ja">開発データまわり</span><span lang="en">Development data</span></a>
+      <a class="toc-pill" href="#group-c"><b>C</b><span lang="ja">手法まわり</span><span lang="en">Methods</span></a>
+    </nav>
+  </div>
+</div>
+
+<!-- GROUP A -->
+<section id="group-a" style="padding-top:0">
+  <div class="wrap">
+    <p class="eyebrow reveal"><span lang="ja">A. 技術的負債まわり</span><span lang="en">A. Technical debt basics</span></p>
+    <h2 class="big reveal"><span lang="ja">「借金」の比喩と、そこから育った言葉たち</span><span lang="en">The borrowing metaphor, and the words it grew</span></h2>
+    <p class="lead group-lead reveal">
+      <span lang="ja">技術的負債そのものと、負債を認識・分類・解消するために使われる用語です。<a href="technical-debt.html">技術的負債とは</a>の内容と対応しています。</span>
+      <span lang="en">Technical debt itself, and the terms used to recognize, classify, and resolve it. These match the content of <a href="technical-debt.html">What is technical debt?</a></span>
+    </p>
+
+    <div class="glossary-list reveal">
+      <div class="term" id="t-technical-debt">
+        <div class="term-head">
+          <h3><span lang="ja">技術的負債</span><span lang="en">Technical Debt</span></h3>
+          <span class="en-tag">Technical Debt</span>
+        </div>
+        <p class="def">
+          <span lang="ja">時間的な制約などのもとで選ばれた「その場しのぎの設計・実装」が、後の変更コストを増大させていく現象。Ward Cunninghamが1992年の経験報告で示した「借金」のたとえに由来します。うまく使えば開発を前に進める力になりますが、放置すると保守の負担が積み上がります。</span>
+          <span lang="en">What happens when expedient design and implementation choices, made under constraints such as time pressure, drive up the cost of future changes. The term traces to a borrowing metaphor Ward Cunningham introduced in a 1992 experience report. Used well it moves development forward, but left unpaid it accrues a growing maintenance burden.</span>
+        </p>
+        <a class="tlink" href="technical-debt.html">
+          <span lang="ja">技術的負債とは</span><span lang="en">What is technical debt?</span>
+          <span class="ar" aria-hidden="true">&rsaquo;</span>
+        </a>
+      </div>
+
+      <div class="term" id="t-principal-interest">
+        <div class="term-head">
+          <h3><span lang="ja">元本と利息</span><span lang="en">Principal and Interest</span></h3>
+          <span class="en-tag">Principal &amp; Interest</span>
+        </div>
+        <p class="def">
+          <span lang="ja">借金の比喩で技術的負債を語るときの二つの側面。その場しのぎの実装そのものを「元本」、放置している間に膨らむ追加の保守コストを「利息」と見立てます。負債を早く返す（リファクタリングなどで解消する）ほど、支払う総コストは小さくなります。</span>
+          <span lang="en">The two sides of the borrowing metaphor. The expedient implementation itself is the principal, and the extra maintenance cost that swells while it sits untouched is the interest. The sooner the debt is repaid, through refactoring and the like, the smaller the total cost.</span>
+        </p>
+        <a class="tlink" href="technical-debt.html#define">
+          <span lang="ja">「借金」というたとえ</span><span lang="en">The borrowing metaphor</span>
+          <span class="ar" aria-hidden="true">&rsaquo;</span>
+        </a>
+      </div>
+
+      <div class="term" id="t-satd">
+        <div class="term-head">
+          <h3><span lang="ja">SATD</span><span lang="en">SATD</span></h3>
+          <span class="en-tag">Self-Admitted Technical Debt</span>
+        </div>
+        <p class="def">
+          <span lang="ja">技術的負債のうち、開発者自身が明示的に認識し、コメントや課題票などの形で書き残したもの。研究者が定義・検出する負債とは異なり、開発者の言葉で負債の存在が示されている点が特徴です。コード中のコメントに残す<b>SATD-Comment</b>と、課題管理システムで管理する<b>TD-Issue</b>に大別されます。</span>
+          <span lang="en">The part of technical debt that developers themselves explicitly recognize and record, in comments or issue tickets. Unlike debt that researchers define and detect, it is debt made visible in the developer's own words, split broadly into <b>SATD-Comment</b>, left in source-code comments, and <b>TD-Issue</b>, managed in an issue tracker.</span>
+        </p>
+        <a class="tlink" href="research/satd-issue-classification.html">
+          <span lang="ja">TD-Issue の自動分類</span><span lang="en">Automatic TD-Issue classification</span>
+          <span class="ar" aria-hidden="true">&rsaquo;</span>
+        </a>
+      </div>
+
+      <div class="term" id="t-satd-comment">
+        <div class="term-head">
+          <h3><span lang="ja">SATD-Comment</span><span lang="en">SATD-Comment</span></h3>
+        </div>
+        <p class="def">
+          <span lang="ja">SATDのうち、個々の開発者がソースコード中のコメントとして残す負債の痕跡（TODOやFIXMEなど）。ソースコードレベルで負債の存在を示す、もっとも身近な形です。</span>
+          <span lang="en">The form of SATD an individual developer leaves as a source-code comment, such as a TODO or FIXME. It is the most familiar way debt is marked at the source-code level.</span>
+        </p>
+        <a class="tlink" href="research/satd-issue-classification.html">
+          <span lang="ja">TD-Issue の自動分類</span><span lang="en">Automatic TD-Issue classification</span>
+          <span class="ar" aria-hidden="true">&rsaquo;</span>
+        </a>
+      </div>
+
+      <div class="term" id="t-td-issue">
+        <div class="term-head">
+          <h3><span lang="ja">TD-Issue</span><span lang="en">TD-Issue</span></h3>
+        </div>
+        <p class="def">
+          <span lang="ja">課題管理システム上で、プロジェクトとして管理される負債の課題票。<code>debt</code>などのラベルを付けて明示的に管理されることが多く、SATD-Issueとも呼ばれます。個人が残すSATD-Commentに対し、プロジェクトレベルで負債を扱う点が特徴です。</span>
+          <span lang="en">A debt issue managed at the project level in an issue tracker, often marked explicitly with a label such as <code>debt</code>; also referred to as a SATD-Issue. Where SATD-Comment is left by an individual, this handles debt at the level of the project.</span>
+        </p>
+        <a class="tlink" href="research/td-repayment-refactoring.html">
+          <span lang="ja">負債の返済とリファクタリング</span><span lang="en">Repayment &amp; refactoring</span>
+          <span class="ar" aria-hidden="true">&rsaquo;</span>
+        </a>
+      </div>
+
+      <div class="term" id="t-refactoring">
+        <div class="term-head">
+          <h3><span lang="ja">リファクタリング</span><span lang="en">Refactoring</span></h3>
+          <span class="en-tag">Refactoring</span>
+        </div>
+        <p class="def">
+          <span lang="ja">外部から見た振る舞いを変えないまま、内部の構造を整理・改善するコード変更。技術的負債の元本を解消する、代表的な返済手段です。データ型の変更やリネームなど、細粒度の変更が組み合わされることも多いとわかっています。</span>
+          <span lang="en">Restructuring and improving a program's internal structure without changing its external behavior. It is the primary way of repaying the principal of technical debt, often applied as a combination of fine-grained changes such as data-type changes and renaming.</span>
+        </p>
+        <a class="tlink" href="research/td-repayment-refactoring.html">
+          <span lang="ja">負債の返済とリファクタリング</span><span lang="en">Repayment &amp; refactoring</span>
+          <span class="ar" aria-hidden="true">&rsaquo;</span>
+        </a>
+      </div>
+
+      <div class="term" id="t-code-smell">
+        <div class="term-head">
+          <h3><span lang="ja">コードスメル</span><span lang="en">Code Smell</span></h3>
+          <span class="en-tag">Code Smell</span>
+        </div>
+        <p class="def">
+          <span lang="ja">重複したロジックや過度に長いメソッドなど、設計上の問題を示唆するコードの兆候。研究者が定義した指標にもとづき、コードから機械的に検出できる負債の代表例で、開発者が明示するSATDとは異なる「検出する系譜」に属します。</span>
+          <span lang="en">A surface indicator of a design problem, such as duplicated logic or an overly long method. A representative form of debt detectable mechanically from code using researcher-defined criteria, belonging to the "detection" lineage rather than the SATD lineage of developer-stated debt.</span>
+        </p>
+        <a class="tlink" href="research/technical-debt-metrics.html">
+          <span lang="ja">メトリクスによる分類・特徴づけ</span><span lang="en">Classifying debt with metrics</span>
+          <span class="ar" aria-hidden="true">&rsaquo;</span>
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- GROUP B -->
+<section id="group-b" class="soft-sec">
+  <div class="wrap">
+    <p class="eyebrow reveal"><span lang="ja">B. 開発データまわり</span><span lang="en">B. Development data</span></p>
+    <h2 class="big reveal"><span lang="ja">研究が扱う、開発の記録そのもの</span><span lang="en">The records of development itself</span></h2>
+    <p class="lead group-lead reveal">
+      <span lang="ja">リポジトリや課題管理システムに残る記録など、実証研究の材料になるデータに関する用語です。</span>
+      <span lang="en">Terms about the data that empirical research draws on: the records left in repositories and issue trackers.</span>
+    </p>
+
+    <div class="glossary-list reveal">
+      <div class="term" id="t-msr">
+        <div class="term-head">
+          <h3><span lang="ja">リポジトリマイニング</span><span lang="en">Mining Software Repositories</span></h3>
+          <span class="en-tag">Mining Software Repositories (MSR)</span>
+        </div>
+        <p class="def">
+          <span lang="ja">GitHubなどのソフトウェアリポジトリに蓄積されたコミット履歴や課題票などのデータを分析し、開発の実態を実証的に明らかにする研究アプローチ。技術的負債の検出やメトリクスによる特徴づけも、この枠組みの中で行われます。</span>
+          <span lang="en">A research approach that analyzes data accumulated in software repositories, such as GitHub, commit histories, and issue trackers, to explain development practice empirically. Detecting technical debt and characterizing it with metrics both fall within this framework.</span>
+        </p>
+        <a class="tlink" href="research/technical-debt-metrics.html">
+          <span lang="ja">メトリクスによる分類・特徴づけ</span><span lang="en">Classifying debt with metrics</span>
+          <span class="ar" aria-hidden="true">&rsaquo;</span>
+        </a>
+      </div>
+
+      <div class="term" id="t-issue-tracking">
+        <div class="term-head">
+          <h3><span lang="ja">課題管理システム</span><span lang="en">Issue Tracking System</span></h3>
+          <span class="en-tag">Issue Tracking System</span>
+        </div>
+        <p class="def">
+          <span lang="ja">バグ報告や機能要望、TD-Issueなどの課題（チケット）を記録・追跡するためのシステム。GitHub Issuesなどが代表例で、そこに残された記録は、負債がどう認識・管理されているかを調べる材料になります。</span>
+          <span lang="en">A system for recording and tracking issues, such as bug reports, feature requests, and TD-Issues. GitHub Issues is a common example, and the records it leaves behind are material for studying how debt is recognized and managed.</span>
+        </p>
+        <a class="tlink" href="research/technical-debt-metrics.html">
+          <span lang="ja">メトリクスによる分類・特徴づけ</span><span lang="en">Classifying debt with metrics</span>
+          <span class="ar" aria-hidden="true">&rsaquo;</span>
+        </a>
+      </div>
+
+      <div class="term" id="t-commit">
+        <div class="term-head">
+          <h3><span lang="ja">コミット</span><span lang="en">Commit</span></h3>
+          <span class="en-tag">Commit</span>
+        </div>
+        <p class="def">
+          <span lang="ja">バージョン管理システムに記録される、一まとまりのコード変更。メッセージや差分から、開発者が何を目的に変更したかを読み取れます。返済コミットのようにIssueのIDを含むメッセージは、負債とコード変更を結びつける手がかりになります。</span>
+          <span lang="en">A recorded, discrete change to code in a version control system. Its message and diff reveal what the developer intended, and a message referencing an issue ID, as in a repayment commit, is a clue that links debt to a code change.</span>
+        </p>
+        <a class="tlink" href="research/td-repayment-refactoring.html">
+          <span lang="ja">負債の返済とリファクタリング</span><span lang="en">Repayment &amp; refactoring</span>
+          <span class="ar" aria-hidden="true">&rsaquo;</span>
+        </a>
+      </div>
+
+      <div class="term" id="t-oss">
+        <div class="term-head">
+          <h3><span lang="ja">オープンソースソフトウェア</span><span lang="en">Open Source Software</span></h3>
+          <span class="en-tag">OSS</span>
+        </div>
+        <p class="def">
+          <span lang="ja">ソースコードが公開され、誰でも閲覧・利用・改変できるソフトウェア。開発の記録が広く公開されているため、ソフトウェア工学の実証研究の対象になりやすく、本サイトの研究の多くもOSSプロジェクトを対象としています。</span>
+          <span lang="en">Software whose source code is public and open to viewing, use, and modification. Because its development records are widely public, it is a common subject for empirical software engineering research, including much of the work introduced on this site.</span>
+        </p>
+        <a class="tlink" href="research/satd-issue-classification.html">
+          <span lang="ja">TD-Issue の自動分類</span><span lang="en">Automatic TD-Issue classification</span>
+          <span class="ar" aria-hidden="true">&rsaquo;</span>
+        </a>
+      </div>
+
+      <div class="term" id="t-coding-standard">
+        <div class="term-head">
+          <h3><span lang="ja">コーディング規約</span><span lang="en">Coding Standard</span></h3>
+          <span class="en-tag">Coding Standard</span>
+        </div>
+        <p class="def">
+          <span lang="ja">命名や書式など、コードの書き方について定めた取り決め。守られることでコードの可読性・保守性が保たれます。自動生成されたパッチが規約にどう影響するかも、コード品質を考えるうえでの論点です。</span>
+          <span lang="en">A set of conventions for how code should be written, covering naming and formatting among other things. Following it keeps code readable and maintainable, and how automatically generated patches affect it is one lens for thinking about code quality.</span>
+        </p>
+        <a class="tlink" href="research/apr-coding-standards.html">
+          <span lang="ja">自動生成パッチとコーディング規約</span><span lang="en">APR &amp; coding standards</span>
+          <span class="ar" aria-hidden="true">&rsaquo;</span>
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- GROUP C -->
+<section id="group-c">
+  <div class="wrap">
+    <p class="eyebrow reveal"><span lang="ja">C. 手法まわり</span><span lang="en">C. Methods</span></p>
+    <h2 class="big reveal"><span lang="ja">データから何かを見つけ、直すための道具</span><span lang="en">Tools for finding and fixing, from data</span></h2>
+    <p class="lead group-lead reveal">
+      <span lang="ja">開発データを分析したり、コードそのものを調べたり直したりするための、代表的な手法に関する用語です。</span>
+      <span lang="en">Terms about the representative methods used to analyze development data, and to examine and fix code itself.</span>
+    </p>
+
+    <div class="glossary-list reveal">
+      <div class="term" id="t-metrics">
+        <div class="term-head">
+          <h3><span lang="ja">ソフトウェアメトリクス</span><span lang="en">Software Metrics</span></h3>
+          <span class="en-tag">Software Metrics</span>
+        </div>
+        <p class="def">
+          <span lang="ja">規模・複雑さ・変更履歴など、ソフトウェアやその開発過程を定量的に表す指標。技術的負債の検出や特徴づけに用いられ、ソースコード由来の指標だけでなく、変更間隔や作成者数のような開発履歴由来の指標も含まれます。</span>
+          <span lang="en">Quantitative indicators of software and its development process, such as size, complexity, and change history. Used to detect and characterize technical debt, spanning both source-code metrics and development-history metrics such as change interval and author count.</span>
+        </p>
+        <a class="tlink" href="research/technical-debt-metrics.html">
+          <span lang="ja">メトリクスによる分類・特徴づけ</span><span lang="en">Classifying debt with metrics</span>
+          <span class="ar" aria-hidden="true">&rsaquo;</span>
+        </a>
+      </div>
+
+      <div class="term" id="t-static-analysis">
+        <div class="term-head">
+          <h3><span lang="ja">静的解析</span><span lang="en">Static Analysis</span></h3>
+          <span class="en-tag">Static Analysis</span>
+        </div>
+        <p class="def">
+          <span lang="ja">プログラムを実行せずにソースコードを解析し、コードスメルや潜在的な不具合などを見つける手法。専用のセットアップが要る一方、バージョン管理の履歴だけから計算できる指標は、これに頼らずに負債の候補を絞り込む選択肢にもなります。</span>
+          <span lang="en">A technique that analyzes source code without executing it, to find code smells and potential defects. It requires dedicated tooling, so metrics computable from version-control history alone offer a way to screen debt candidates without it.</span>
+        </p>
+        <a class="tlink" href="research/technical-debt-metrics.html">
+          <span lang="ja">メトリクスによる分類・特徴づけ</span><span lang="en">Classifying debt with metrics</span>
+          <span class="ar" aria-hidden="true">&rsaquo;</span>
+        </a>
+      </div>
+
+      <div class="term" id="t-apr">
+        <div class="term-head">
+          <h3><span lang="ja">自動プログラム修正</span><span lang="en">Automated Program Repair</span></h3>
+          <span class="en-tag">Automated Program Repair (APR)</span>
+        </div>
+        <p class="def">
+          <span lang="ja">バグを含むプログラムに対し、テストを通過する修正パッチを自動的に生成する技術。正しさは満たしても、コーディング規約違反を増やすなど、可読性・保守性の面で別の課題を抱えることが分かっています。</span>
+          <span lang="en">A technique that automatically generates a fix, a patch that passes tests, for a buggy program. It can satisfy correctness while raising other concerns for readability and maintainability, such as an increase in coding-standard violations.</span>
+        </p>
+        <a class="tlink" href="research/apr-coding-standards.html">
+          <span lang="ja">自動生成パッチとコーディング規約</span><span lang="en">APR &amp; coding standards</span>
+          <span class="ar" aria-hidden="true">&rsaquo;</span>
+        </a>
+      </div>
+
+      <div class="term" id="t-classifier">
+        <div class="term-head">
+          <h3><span lang="ja">分類モデル・決定木</span><span lang="en">Classifier / Decision Tree</span></h3>
+          <span class="en-tag">Classifier / Decision Tree</span>
+        </div>
+        <p class="def">
+          <span lang="ja">データをあらかじめ定めたクラスに割り当てる分類モデルの総称。決定木はその一種で、木構造の分岐によって分類し、どの指標がどう効いているかという判断の根拠を読みやすいのが特徴です。</span>
+          <span lang="en">A general term for models that assign data to predefined classes. A decision tree is one such classifier: it classifies through a sequence of branching decisions arranged as a tree, which makes the basis for its judgments, which metrics matter and how, easy to read.</span>
+        </p>
+        <a class="tlink" href="research/technical-debt-metrics.html">
+          <span lang="ja">メトリクスによる分類・特徴づけ</span><span lang="en">Classifying debt with metrics</span>
+          <span class="ar" aria-hidden="true">&rsaquo;</span>
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<!-- FOOTER -->
+<footer>
+  <div class="wrap">
+    <div class="cite">
+      <span lang="ja">このサイトに登場する研究用語を、テーマ別にやさしくまとめた用語集です。木村祐太の研究サイトの一部としてご覧いただけます。</span>
+      <span lang="en">A themed glossary of the research terms used across this site. Part of Yuta Kimura's research site.</span>
+    </div>
+    <div class="foot-grid">
+      <div>
+        <h3><span lang="ja">連絡先</span><span lang="en">Contact</span></h3>
+        <p class="muted-s">
+          <b>木村 祐太 / Yuta Kimura</b><br>
+          <span lang="ja">大阪公立大学工業高等専門学校</span><span lang="en">Osaka Metropolitan University College of Technology</span><br>
+          <a href="mailto:y.kimura@omu.ac.jp">y.kimura [at] omu.ac.jp</a>
+        </p>
+      </div>
+      <div>
+        <h3><span lang="ja">サイト</span><span lang="en">Site</span></h3>
+        <p class="muted-s">
+          <a href="index.html"><span lang="ja">ホーム</span><span lang="en">Home</span></a><br>
+          <a href="publications.html"><span lang="ja">業績一覧</span><span lang="en">All publications</span></a><br>
+          <a href="activities.html"><span lang="ja">研究・教育活動</span><span lang="en">Projects &amp; teaching</span></a><br>
+          <a href="software-engineering.html"><span lang="ja">ソフトウェア工学とは</span><span lang="en">What is software engineering?</span></a><br>
+          <a href="technical-debt.html"><span lang="ja">技術的負債とは</span><span lang="en">What is technical debt?</span></a><br>
+          <a href="students.html"><span lang="ja">学生の皆さんへ</span><span lang="en">For students</span></a><br>
+          <a href="glossary.html"><span lang="ja">用語集</span><span lang="en">Glossary</span></a>
+        </p>
+      </div>
+      <div>
+        <h3><span lang="ja">研究</span><span lang="en">Research</span></h3>
+        <p class="muted-s">
+          <a href="research/technical-debt-metrics.html"><span lang="ja">メトリクスによる分類・特徴づけ</span><span lang="en">Classifying debt with metrics</span></a><br>
+          <a href="research/apr-coding-standards.html"><span lang="ja">自動生成パッチと品質</span><span lang="en">Auto-generated patches and quality</span></a><br>
+          <a href="research/td-repayment-refactoring.html"><span lang="ja">返済とリファクタリング</span><span lang="en">Repayment and refactoring</span></a><br>
+          <a href="research/satd-issue-classification.html"><span lang="ja">TD-Issue の自動分類</span><span lang="en">Automatic TD-Issue classification</span></a><br>
+          <a href="https://researchmap.jp/kimura_yuta" target="_blank" rel="noopener">researchmap</a>
+        </p>
+      </div>
+    </div>
+    <div class="foot-rule"></div>
+    <p class="foot-note">
+      <span lang="ja">© 2026 Yuta Kimura. 各用語の説明は、本サイトの各紹介・研究ページの記述に基づく概説です。</span>
+      <span lang="en">© 2026 Yuta Kimura. Each entry follows the descriptions used on this site's own introduction and research pages.</span>
+    </p>
+  </div>
+</footer>
+
+<script>
+  function setLang(l){document.body.classList.remove('lang-ja','lang-en');document.body.classList.add('lang-'+l);document.documentElement.lang=l;
+   try{localStorage.setItem('site-lang',l)}catch(e){}
+   try{var q=new URLSearchParams(location.search);q.set('lang',l);history.replaceState(null,'',location.pathname+'?'+q+location.hash)}catch(e){}}
+  function toggleLang(){setLang(document.body.classList.contains('lang-ja')?'en':'ja')}
+  (function(){var u=null;try{u=new URLSearchParams(location.search).get('lang')}catch(e){}
+   var s=null;try{s=localStorage.getItem('site-lang')}catch(e){}
+   var l=(u==='en'||u==='ja')?u:((s==='en'||s==='ja')?s:'ja');if(l!=='ja')setLang(l);})();
+  if('IntersectionObserver' in window){
+    var io=new IntersectionObserver(function(es){ es.forEach(function(e){ if(e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target); } }); },{threshold:0.12, rootMargin:"0px 0px -6% 0px"});
+    document.querySelectorAll('.reveal').forEach(function(el){ io.observe(el); });
+  } else { document.querySelectorAll('.reveal').forEach(function(el){ el.classList.add('in'); }); }
+</script>
+</body>
+</html>
