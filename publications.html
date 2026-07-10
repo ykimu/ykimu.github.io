@@ -3,14 +3,14 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>業績一覧 / Publications & Talks - Yuta Kimura</title>
-<meta name="description" content="Publications and talks by Yuta Kimura: peer-reviewed papers, research presentations, and awards in software engineering.">
+<title>業績・研究活動 - 木村祐太 / Publications &amp; Research Activities</title>
+<meta name="description" content="Publications and research activities of Yuta Kimura: peer-reviewed papers, research talks, awards, grant-funded research projects, and academic society memberships in software engineering and informatics education.">
 <link rel="canonical" href="https://ykimu.github.io/publications.html">
 <link rel="icon" href="favicon.svg" type="image/svg+xml">
 <meta property="og:site_name" content="Yuta Kimura / 木村祐太">
 <meta property="og:type" content="article">
-<meta property="og:title" content="業績一覧 / Publications & Talks - Yuta Kimura">
-<meta property="og:description" content="Publications and talks by Yuta Kimura: peer-reviewed papers, research presentations, and awards in software engineering.">
+<meta property="og:title" content="業績・研究活動 - 木村祐太 / Publications &amp; Research Activities">
+<meta property="og:description" content="Publications and research activities of Yuta Kimura: peer-reviewed papers, research talks, awards, grant-funded research projects, and academic society memberships in software engineering and informatics education.">
 <meta property="og:url" content="https://ykimu.github.io/publications.html">
 <meta property="og:image" content="https://ykimu.github.io/assets/og.png">
 <meta name="twitter:card" content="summary_large_image">
@@ -69,8 +69,8 @@
   .js .reveal.in{opacity:1; transform:none; filter:none}
   @media (prefers-reduced-motion:reduce){
     .js .reveal{opacity:1!important; transform:none!important; filter:none!important; transition:none!important}
-    .btn,.btn.ink .ic,.pill-link,.tlink .ar,.award{transition:none!important}
-    .btn:active,.btn.ink:hover .ic,.btn.ink:hover,.btn:hover,.pill-link:hover,.award:hover{transform:none!important}
+    .btn,.btn.ink .ic,.pill-link,.tlink .ar,.award,.proj-card{transition:none!important}
+    .btn:active,.btn.ink:hover .ic,.btn.ink:hover,.btn:hover,.pill-link:hover,.award:hover,.proj-card:hover{transform:none!important}
   }
 
   /* floating island nav */
@@ -198,6 +198,31 @@
   .award-work .work{color:var(--ink-2); font-size:.95rem; line-height:1.55}
   .award-work .recip{margin:.7em 0 0; color:var(--muted); font-size:.88rem}
 
+  /* pills (project grants) */
+  .pill{display:inline-flex; align-items:center; font-size:.74rem; font-weight:600; letter-spacing:.01em;
+    padding:5px 12px; border-radius:999px; border:1px solid var(--hair); background:#fff; color:var(--ink-2)}
+  .pill.kaken{background:var(--accent-soft); border-color:transparent; color:var(--accent-2); font-family:var(--disp)}
+
+  /* research projects: double-bezel cards */
+  .proj-grid{display:grid; grid-template-columns:repeat(3,1fr); gap:24px; margin-top:8px}
+  .proj-card{background:var(--card); border-radius:21px; padding:28px 26px 26px;
+    box-shadow:0 0 0 7px var(--shell), 0 0 0 7.5px var(--hair), var(--soft), var(--inhi);
+    transition:transform .4s var(--ease), box-shadow .4s var(--ease); display:flex; flex-direction:column; gap:14px}
+  .proj-card:hover{transform:translateY(-3px)}
+  .proj-pills{display:flex; flex-wrap:wrap; gap:8px}
+  .proj-title{font-size:1.06rem; font-weight:600; letter-spacing:-.01em; line-height:1.45}
+  body.lang-ja .proj-title{font-weight:600}
+  .proj-period{font-size:.86rem; color:var(--ink-2); font-weight:600}
+  .proj-researchers{margin:0; font-size:.86rem; color:var(--muted); line-height:1.6; padding-top:12px; border-top:1px solid var(--line)}
+  .proj-researchers .k{display:block; font-size:.66rem; font-weight:600; letter-spacing:.1em; text-transform:uppercase; color:var(--muted); margin-bottom:5px; font-family:var(--disp)}
+
+  /* societies: hairline rows */
+  .society-list{margin-top:8px; border-top:1px solid var(--line)}
+  .society-row{display:flex; align-items:baseline; justify-content:space-between; gap:24px; padding:22px 4px; border-bottom:1px solid var(--line)}
+  .society-name{font-size:1.02rem; font-weight:600; color:var(--ink); letter-spacing:-.005em}
+  body.lang-ja .society-name{letter-spacing:0}
+  .society-period{font-size:.86rem; color:var(--muted); white-space:nowrap}
+
   /* closing link row */
   .endcta{background:var(--bg-2); border-top:1px solid var(--line)}
   .endcta .wrap{display:flex; gap:28px; align-items:center; justify-content:space-between; flex-wrap:wrap;
@@ -224,6 +249,8 @@
     .year-group{grid-template-columns:1fr; gap:20px; padding:32px 0}
     .year-marker{position:static}
     .awards{grid-template-columns:1fr}
+    .proj-grid{grid-template-columns:1fr; gap:20px}
+    .society-row{flex-direction:column; align-items:flex-start; gap:6px}
     .foot-grid{grid-template-columns:1fr 1fr}
     .bar-right .btn:not(.ink){display:none}
   }
@@ -241,10 +268,9 @@
     <a class="brand" href="index.html">
       <span aria-hidden="true">&lsaquo;</span>
       <span lang="ja">木村祐太</span><span lang="en">Yuta Kimura</span>
-      <span class="sep">·</span><span lang="ja">業績一覧</span><span lang="en">Publications</span>
+      <span class="sep">·</span><span lang="ja">業績・研究活動</span><span lang="en">Publications</span>
     </a>
     <nav class="navlinks" aria-label="メイン">
-      <a href="activities.html"><span lang="ja">研究活動</span><span lang="en">Research</span></a>
       <a href="teaching.html"><span lang="ja">教育</span><span lang="en">Teaching</span></a>
       <a href="software-engineering.html"><span lang="ja">分野紹介</span><span lang="en">Guides</span></a>
       <a href="technical-debt.html"><span lang="ja">技術的負債</span><span lang="en">Tech Debt</span></a>
@@ -262,14 +288,14 @@
 
 <div class="hero">
   <div class="wrap">
-    <span class="eyebrow"><span lang="ja">業績一覧</span><span lang="en">Publications & Talks</span></span>
+    <span class="eyebrow"><span lang="ja">業績・研究活動</span><span lang="en">Publications & Research</span></span>
     <h1>
-      <span lang="ja">業績一覧</span>
-      <span lang="en">Publications &amp; Talks</span>
+      <span lang="ja">業績・研究活動</span>
+      <span lang="en">Publications &amp; Research Activities</span>
     </h1>
     <p class="lead">
-      <span lang="ja">査読付き論文・研究発表・受賞の記録。ソフトウェア工学と情報教育に関する研究の歩みをまとめています。</span>
-      <span lang="en">A record of peer-reviewed papers, research talks, and awards, tracing work in software engineering and informatics education.</span>
+      <span lang="ja">査読付き論文・研究発表・受賞から、科研費・財団助成による研究プロジェクト、所属学会まで。ソフトウェア工学と情報教育に関する研究活動の記録です。</span>
+      <span lang="en">From peer-reviewed papers, research talks, and awards to grant-funded research projects and academic societies: a record of research activity in software engineering and informatics education.</span>
     </p>
   </div>
 </div>
@@ -473,16 +499,100 @@
   </div>
 </section>
 
+<section id="projects" class="soft-sec">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <h2 class="big"><span lang="ja">研究プロジェクト</span><span lang="en">Research projects</span></h2>
+      <p class="sub"><span lang="ja">科研費・財団助成による共同研究。</span><span lang="en">Grant-funded, collaborative research.</span></p>
+    </div>
+    <div class="proj-grid reveal">
+
+      <article class="proj-card">
+        <div class="proj-pills">
+          <span class="pill"><span lang="ja">日本学術振興会 科学研究費助成事業</span><span lang="en">JSPS KAKENHI Grant-in-Aid for Scientific Research</span></span>
+          <span class="pill kaken"><span lang="ja">基盤研究(B)</span><span lang="en">(B)</span></span>
+        </div>
+        <h3 class="proj-title">
+          <span lang="ja">システム開発における生成AIのモデル崩壊のメカニズム解明と防止・抑止技術の構築</span>
+          <span lang="en">Elucidating the mechanism of generative-AI model collapse in system development and building prevention techniques</span>
+        </h3>
+        <div class="proj-period num"><span lang="ja">2026年4月 - 2030年3月</span><span lang="en">Apr 2026 - Mar 2030</span></div>
+        <p class="proj-researchers">
+          <span class="k"><span lang="ja">研究者</span><span lang="en">Researchers</span></span>
+          <span lang="ja">大平雅雄, 伊原彰紀, 柏祐太郎, 木村祐太</span>
+          <span lang="en">M. Ohira, A. Ihara, Y. Kashiwa, Y. Kimura</span>
+        </p>
+      </article>
+
+      <article class="proj-card">
+        <div class="proj-pills">
+          <span class="pill"><span lang="ja">日本学術振興会 科学研究費助成事業</span><span lang="en">JSPS KAKENHI Grant-in-Aid for Scientific Research</span></span>
+          <span class="pill kaken"><span lang="ja">基盤研究(C)</span><span lang="en">(C)</span></span>
+        </div>
+        <h3 class="proj-title">
+          <span lang="ja">量子と古典の二刀流を目指す次世代ICT技術者育成プログラムの開発</span>
+          <span lang="en">Developing a training program for next-generation ICT engineers proficient in both quantum and classical computing</span>
+        </h3>
+        <div class="proj-period num"><span lang="ja">2024年4月 - 2029年3月</span><span lang="en">Apr 2024 - Mar 2029</span></div>
+        <p class="proj-researchers">
+          <span class="k"><span lang="ja">研究者</span><span lang="en">Researchers</span></span>
+          <span lang="ja">早川潔, 木村祐太, 榎倉浩志, 金井友希美, 松永博昭</span>
+          <span lang="en">K. Hayakawa, Y. Kimura, H. Enokura, Y. Kanai, H. Matsunaga</span>
+        </p>
+      </article>
+
+      <article class="proj-card">
+        <div class="proj-pills">
+          <span class="pill"><span lang="ja">公益財団法人高橋産業経済研究財団 助成</span><span lang="en">Takahashi Industrial and Economic Research Foundation grant</span></span>
+        </div>
+        <h3 class="proj-title">
+          <span lang="ja">人工知能の情報教育への応用</span>
+          <span lang="en">Applying artificial intelligence to informatics education</span>
+        </h3>
+        <div class="proj-period num"><span lang="ja">2025年4月 - 2026年3月</span><span lang="en">Apr 2025 - Mar 2026</span></div>
+        <p class="proj-researchers">
+          <span class="k"><span lang="ja">研究者</span><span lang="en">Researchers</span></span>
+          <span lang="ja">新妻弘崇, 中才恵太朗, 木村祐太</span>
+          <span lang="en">H. Niizuma, K. Nakasai, Y. Kimura</span>
+        </p>
+      </article>
+
+    </div>
+  </div>
+</section>
+
+<section id="societies">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <h2 class="big"><span lang="ja">所属学会</span><span lang="en">Academic societies</span></h2>
+    </div>
+    <div class="society-list reveal">
+      <div class="society-row">
+        <span class="society-name"><span lang="ja">日本ソフトウェア科学会</span><span lang="en">Japan Society for Software Science and Technology (JSSST)</span></span>
+        <span class="society-period num"><span lang="ja">2025年5月 - 現在</span><span lang="en">May 2025 - present</span></span>
+      </div>
+      <div class="society-row">
+        <span class="society-name"><span lang="ja">情報処理学会</span><span lang="en">Information Processing Society of Japan (IPSJ)</span></span>
+        <span class="society-period num"><span lang="ja">2022年4月 - 現在</span><span lang="en">Apr 2022 - present</span></span>
+      </div>
+    </div>
+  </div>
+</section>
+
 <section class="endcta">
   <div class="wrap reveal">
     <div style="flex:1 1 360px">
-      <h2><span lang="ja">研究活動もご覧ください</span><span lang="en">Explore research activities</span></h2>
-      <p style="color:var(--ink-2); margin:12px 0 0; max-width:52ch"><span lang="ja">研究プロジェクトや所属学会は活動ページにまとめています。</span><span lang="en">Research projects and memberships are gathered on the activities page.</span></p>
+      <h2><span lang="ja">分野紹介もあわせて</span><span lang="en">See the field guide</span></h2>
+      <p style="color:var(--ink-2); margin:12px 0 0; max-width:52ch"><span lang="ja">ソフトウェア工学という分野そのものの紹介はこちらから。</span><span lang="en">An introduction to software engineering as a field.</span></p>
     </div>
     <div class="end-actions">
-      <a class="btn ink" href="activities.html">
-        <span lang="ja">研究活動へ</span><span lang="en">Research activities</span>
+      <a class="btn ink" href="software-engineering.html">
+        <span lang="ja">分野紹介を見る</span><span lang="en">See the field guide</span>
         <span class="ic" aria-hidden="true">&rsaquo;</span>
+      </a>
+      <a class="tlink" href="teaching.html">
+        <span lang="ja">教育・担当授業へ</span><span lang="en">Teaching &amp; courses</span>
+        <span class="ar" aria-hidden="true">&rsaquo;</span>
       </a>
       <a class="tlink" href="index.html">
         <span lang="ja">プロフィールに戻る</span><span lang="en">Back to profile</span>
@@ -513,8 +623,7 @@
         <h3><span lang="ja">サイト</span><span lang="en">Site</span></h3>
         <p class="muted-s">
           <a href="index.html"><span lang="ja">ホーム</span><span lang="en">Home</span></a><br>
-          <a href="publications.html"><span lang="ja">業績一覧</span><span lang="en">All publications</span></a><br>
-          <a href="activities.html"><span lang="ja">研究活動</span><span lang="en">Research activities</span></a><br>
+          <a href="publications.html"><span lang="ja">業績・研究活動</span><span lang="en">Publications &amp; research activities</span></a><br>
           <a href="teaching.html"><span lang="ja">教育</span><span lang="en">Teaching</span></a><br>
           <a href="software-engineering.html"><span lang="ja">ソフトウェア工学とは</span><span lang="en">What is software engineering?</span></a><br>
           <a href="technical-debt.html"><span lang="ja">技術的負債とは</span><span lang="en">What is technical debt?</span></a>

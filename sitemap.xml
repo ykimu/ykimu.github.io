@@ -2,7 +2,6 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url><loc>https://ykimu.github.io/</loc></url>
   <url><loc>https://ykimu.github.io/publications.html</loc></url>
-  <url><loc>https://ykimu.github.io/activities.html</loc></url>
   <url><loc>https://ykimu.github.io/teaching.html</loc></url>
   <url><loc>https://ykimu.github.io/software-engineering.html</loc></url>
   <url><loc>https://ykimu.github.io/technical-debt.html</loc></url>
@@ -13,6 +12,7 @@
   <url><loc>https://ykimu.github.io/course/software-architecture.html</loc></url>
   <url><loc>https://ykimu.github.io/course/uml-guide.html</loc></url>
   <url><loc>https://ykimu.github.io/course/logic-circuits.html</loc></url>
+  <url><loc>https://ykimu.github.io/course/intelligent-informatics-1.html</loc></url>
   <url><loc>https://ykimu.github.io/research/technical-debt-metrics.html</loc></url>
   <url><loc>https://ykimu.github.io/research/apr-coding-standards.html</loc></url>
   <url><loc>https://ykimu.github.io/research/td-repayment-refactoring.html</loc></url>

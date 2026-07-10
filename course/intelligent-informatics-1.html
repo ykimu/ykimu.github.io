@@ -3,15 +3,15 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>ソフトウェア工学 - 木村祐太 / Yuta Kimura</title>
-<meta name="description" content="Course guide for Software Engineering, taught by Yuta Kimura. An introduction to all nine sessions, following chapters 1 to 9 of Ian Sommerville's Software Engineering (10th ed.), plus linked learning materials. Part of Yuta Kimura's research site.">
-<link rel="canonical" href="https://ykimu.github.io/course/index.html">
+<title>知能情報実験実習1 - 木村祐太 / Yuta Kimura</title>
+<meta name="description" content="Course guide for Intelligent Informatics Laboratory 1, taught by Yuta Kimura. Build, publish, and operate your own game server using the open-source multiplayer game Luanti (formerly Minetest) while learning the basics of building and operating a Linux server. Part of Yuta Kimura's research site.">
+<link rel="canonical" href="https://ykimu.github.io/course/intelligent-informatics-1.html">
 <link rel="icon" href="../favicon.svg" type="image/svg+xml">
 <meta property="og:site_name" content="Yuta Kimura / 木村祐太">
 <meta property="og:type" content="article">
-<meta property="og:title" content="ソフトウェア工学 - 木村祐太 / Yuta Kimura">
-<meta property="og:description" content="Course guide for Software Engineering: an introduction to all nine sessions, following chapters 1 to 9 of Ian Sommerville's Software Engineering (10th ed.), plus linked learning materials.">
-<meta property="og:url" content="https://ykimu.github.io/course/index.html">
+<meta property="og:title" content="知能情報実験実習1 - 木村祐太 / Yuta Kimura">
+<meta property="og:description" content="Course guide for Intelligent Informatics Laboratory 1: build, publish, and operate your own Luanti (formerly Minetest) game server while learning the basics of building and running a Linux server.">
+<meta property="og:url" content="https://ykimu.github.io/course/intelligent-informatics-1.html">
 <meta property="og:image" content="https://ykimu.github.io/assets/og.png">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="color-scheme" content="light">
@@ -76,7 +76,7 @@
   .js .reveal.in{opacity:1; transform:none; filter:none}
   @media (prefers-reduced-motion:reduce){
     .js .reveal{opacity:1!important; transform:none!important; filter:none!important}
-    .btn:active,.btn:hover,.btn.ink:hover .ic,.lesson:hover,.mcard:hover,.pill-link:hover{transform:none!important}
+    .btn:active,.btn:hover,.btn.ink:hover .ic,.lesson:hover,.lcard:hover,.pill-link:hover,.chap:hover{transform:none!important}
   }
 
   /* floating island nav */
@@ -93,6 +93,9 @@
   .navlinks a:hover{color:var(--ink)}
   @media(max-width:860px){.navlinks{display:none}}
   .bar-right{display:flex; align-items:center; gap:8px}
+  .bar-right .rmap{font-size:.86rem; font-weight:500; color:var(--ink-2)}
+  .bar-right .rmap:hover{color:var(--ink)}
+  @media(max-width:520px){.bar-right .rmap{display:none}}
 
   /* buttons */
   .btn{display:inline-flex; align-items:center; gap:10px; font:500 .85rem/1 var(--sans); padding:10px 18px;
@@ -147,7 +150,7 @@
   .flow .farr{color:var(--faint); font-family:var(--disp); font-size:1.1rem; flex:0 0 auto}
   @media(max-width:640px){.flow .fstep{font-size:.82rem; padding:8px 14px}}
 
-  /* syllabus: nine lessons (single double-bezel tray, hairline rows) */
+  /* themes: five topics (single double-bezel tray, hairline rows) */
   .syllabus{border-radius:21px; overflow:hidden; margin-top:48px; background:var(--card);
     box-shadow:0 0 0 7px var(--shell), 0 0 0 7.5px var(--hair), var(--soft)}
   .lesson{display:grid; grid-template-columns:auto 1fr; gap:8px 30px; align-items:start;
@@ -157,18 +160,27 @@
   .lesson .lno{grid-row:1 / span 3; align-self:start; font-family:var(--disp); font-weight:500;
     font-size:clamp(2.3rem,4.2vw,3.2rem); line-height:.9; letter-spacing:-.03em; color:var(--accent-2);
     font-variant-numeric:tabular-nums; min-width:1.7em; text-align:right; padding-top:2px}
-  .lesson .lkai{font:600 .64rem/1 var(--disp); letter-spacing:.14em; text-transform:uppercase; color:var(--muted); margin-bottom:9px}
   .lesson h3{font-size:1.14rem; font-weight:600; font-family:var(--sans); letter-spacing:0; line-height:1.45}
   .lesson .ltopics{margin:.55em 0 0; color:var(--ink-2); font-size:.96rem}
-  .lesson .lkai,.lesson h3,.lesson .ltopics,.lesson .llink{grid-column:2}
-  .lesson .llink{display:flex; flex-wrap:wrap; gap:8px; margin-top:15px}
+  .lesson h3,.lesson .ltopics{grid-column:2}
   @media(max-width:560px){
     .lesson{grid-template-columns:1fr; gap:6px; padding:26px 24px}
     .lesson .lno{grid-row:auto; text-align:left; min-width:0; margin-bottom:6px}
-    .lesson .lkai,.lesson h3,.lesson .ltopics,.lesson .llink{grid-column:auto}
+    .lesson h3,.lesson .ltopics{grid-column:auto}
   }
 
-  /* assignment callout */
+  /* companion reading: chapter grid */
+  .chapters{display:grid; grid-template-columns:repeat(2,1fr); gap:14px; margin-top:48px}
+  .chap{display:flex; align-items:baseline; gap:18px; border-radius:16px; padding:18px 22px; background:var(--card);
+    box-shadow:0 0 0 6px var(--shell), 0 0 0 6.5px var(--hair), var(--soft); transition:transform .4s var(--ease)}
+  .chap:hover{transform:translateY(-2px)}
+  .chap .cno{flex:0 0 auto; min-width:4.6em; font:600 .66rem/1.3 var(--disp); letter-spacing:.08em;
+    text-transform:uppercase; color:var(--accent-2)}
+  .chap h3{font-size:1rem; font-weight:600; font-family:var(--sans); letter-spacing:0; line-height:1.4}
+  .chap-note{margin-top:20px; color:var(--muted); font-size:.9rem; max-width:var(--readw)}
+  @media(max-width:640px){.chapters{grid-template-columns:1fr}}
+
+  /* hands-on callout */
   .callout{border-radius:21px; box-shadow:0 0 0 7px var(--shell), 0 0 0 7.5px var(--hair), var(--soft);
     padding:30px 34px; margin-top:44px; background:var(--accent-soft)}
   .callout .lbl{display:inline-flex; align-items:center; gap:8px; font:600 .66rem/1 var(--disp); letter-spacing:.14em;
@@ -176,27 +188,9 @@
   .callout .lbl::before{content:""; width:6px; height:6px; border-radius:50%; background:var(--accent)}
   .callout h3{font-size:1.2rem; font-weight:600; font-family:var(--sans); letter-spacing:0; line-height:1.4}
   .callout p{margin:.7em 0 0; color:var(--ink-2); font-size:.97rem; max-width:64ch}
-  .callout .llink{display:flex; flex-wrap:wrap; gap:10px; margin-top:20px}
-
-  /* learning materials: three large double-bezel cards */
-  .mcards{display:grid; grid-template-columns:repeat(3,1fr); gap:16px; margin-top:48px}
-  .mcard{display:flex; flex-direction:column; border-radius:21px; padding:32px 30px 30px; background:var(--card); height:100%;
-    box-shadow:0 0 0 7px var(--shell), 0 0 0 7.5px var(--hair), var(--soft);
-    transition:transform .4s var(--ease), box-shadow .4s var(--ease)}
-  .mcard:hover{transform:translateY(-3px); box-shadow:0 0 0 7px var(--shell), 0 0 0 7.5px var(--hair), 0 1px 2px rgba(16,19,18,.05), 0 34px 70px -30px rgba(16,19,18,.24)}
-  .mcard .mtag{display:inline-flex; align-items:center; gap:8px; font:600 .64rem/1 var(--disp); letter-spacing:.14em;
-    text-transform:uppercase; color:var(--accent-2); margin-bottom:16px}
-  .mcard .mtag::before{content:""; width:6px; height:6px; border-radius:50%; background:var(--accent)}
-  .mcard h3{font-size:1.18rem; font-weight:600; font-family:var(--sans); letter-spacing:0; line-height:1.4}
-  .mcard .mmeta{margin:12px 0 0; display:flex; flex-wrap:wrap; gap:7px}
-  .mcard .chip{font:600 .72rem/1 var(--disp); color:var(--ink-2); background:var(--bg-2); border:1px solid var(--hair);
-    border-radius:999px; padding:6px 11px; letter-spacing:.02em}
-  .mcard p{margin:16px 0 0; color:var(--ink-2); font-size:.94rem}
-  .mcard .mgo{margin-top:auto; padding-top:22px}
-  @media(max-width:960px){.mcards{grid-template-columns:1fr}}
 
   /* related preparation cards */
-  .lcards{display:grid; grid-template-columns:1fr 1fr; gap:16px; margin-top:44px}
+  .lcards{display:grid; grid-template-columns:1fr; gap:16px; margin-top:44px; max-width:var(--readw)}
   .lcard{display:flex; align-items:flex-start; gap:16px; border-radius:21px; padding:24px 26px; background:var(--card);
     box-shadow:0 0 0 7px var(--shell), 0 0 0 7.5px var(--hair), var(--soft);
     transition:transform .4s var(--ease), box-shadow .4s var(--ease)}
@@ -207,7 +201,6 @@
   .lcard p{margin:0; color:var(--ink-2); font-size:.92rem}
   .lcard .ar{flex:0 0 auto; color:var(--accent-2); font-size:1.2rem; padding-top:2px; transition:transform .4s var(--ease)}
   .lcard:hover .ar{transform:translateX(4px)}
-  @media(max-width:760px){.lcards{grid-template-columns:1fr}}
 
   .syllabus-note{margin-top:34px; color:var(--muted); font-size:.9rem; max-width:var(--readw)}
 
@@ -253,6 +246,7 @@
       <a href="../students.html"><span lang="ja">学生の皆さんへ</span><span lang="en">For students</span></a>
     </nav>
     <div class="bar-right">
+      <a class="rmap" href="https://researchmap.jp/kimura_yuta" target="_blank" rel="noopener">researchmap</a>
       <button class="btn ink" onclick="toggleLang()" aria-label="Switch language">
         <span lang="ja">EN</span><span lang="en">日本語</span>
       </button>
@@ -266,236 +260,156 @@
 <div class="hero">
   <div class="wrap">
     <p class="kick">Course Guide</p>
-    <h1 lang="ja">ソフトウェア工学</h1>
-    <p class="subhead">作って終わりではないソフトウェアを、工学する9回。</p>
+    <h1 lang="ja">知能情報実験実習1</h1>
+    <p class="subhead">ゲームサーバを、自分の手で建てて動かし続ける。</p>
     <p class="lead">
-      Ian Sommerville「Software Engineering」(10th ed.) の第1章から第9章に対応する全9回の授業で、ソフトウェアを計画的に作り、育てていくための考え方と手法を順に学びます。このページは、その全体像と各回の内容、あわせて使える学習コンテンツを紹介する案内です。
+      オープンソースのマルチプレイゲーム Luanti（旧称 Minetest）のサーバを題材に、自分専用のゲームサーバを構築し、公開し、運用しながら、Linuxサーバの構築と運用管理の基本を学ぶ実習です。このページは、この科目で木村が担当する「サーバ構築・運用実習」で扱う内容と、その学びの流れを紹介する案内です。
     </p>
     <p class="ja-only">
       <span lang="ja">この教材は日本語のみで提供しています</span>
       <span lang="en">This learning material is available in Japanese only.</span>
     </p>
     <div class="hero-cta">
-      <a class="btn ink" href="#syllabus" style="padding:12px 22px">
-        <span lang="ja">授業一覧を見る</span><span lang="en">See the sessions</span>
+      <a class="btn ink" href="#themes" style="padding:12px 22px">
+        <span lang="ja">テーマ一覧を見る</span><span lang="en">See the themes</span>
       </a>
-      <a class="tlink" href="../software-engineering.html">
-        <span lang="ja">分野紹介で予習</span><span lang="en">Prep: the field</span>
+      <a class="tlink" href="../students.html">
+        <span lang="ja">科目ガイドへ戻る</span><span lang="en">Back to course guide</span>
         <span class="ar" aria-hidden="true">&rsaquo;</span>
       </a>
     </div>
   </div>
 </div>
 
-<!-- OVERVIEW -->
-<section id="overview" style="padding-top:0">
+<!-- THE IDEA -->
+<section id="idea" style="padding-top:0">
   <div class="wrap reveal">
-    <p class="eyebrow"><span lang="ja">授業の全体像</span><span lang="en">The big picture</span></p>
-    <h2 class="big" lang="ja">導入から始まり、ソフトウェアの一生をたどる</h2>
+    <p class="eyebrow"><span lang="ja">実習の考え方</span><span lang="en">The idea</span></p>
+    <h2 class="big" lang="ja">ゲームサーバも、多くの人が接続する本物のサーバ</h2>
     <p class="lead" style="max-width:var(--readw); margin-top:20px">
-      9回の授業は、ソフトウェアが生まれてから育っていくまでの流れに沿って組み立てられています。はじめにソフトウェア工学とは何かを押さえ、開発を進めるプロセスとアジャイルの考え方へ。続いて、何を作るかを定める要求、その姿をかたちにするモデリングと設計、正しく動くことを確かめるテスト、そして完成後も変わり続ける進化へと進みます。回を追うごとに、ものづくりの一連の営みが見えてくる構成です。
+      Luantiのゲームサーバは、Webサービスと同じように、多数の利用者が接続する本物のサーバです。サーバを構築し、サービスとして常時稼働させ、接続してくるプレイヤーを管理し、負荷を監視し、ログを調べ、バックアップと復旧を行い、コンテナでモダンに運用する。この実習で扱う内容は、実際のインフラエンジニアが日常的に行っている業務そのものです。
     </p>
-    <div class="flow reveal" role="img" aria-label="Course flow: introduction to process and agile to requirements to modeling and design to testing to evolution">
-      <span class="fstep">導入</span>
+    <p class="lead" style="max-width:var(--readw); margin-top:0">
+      自分専用のゲームサーバを、遊びながら手を動かして育てていくうちに、ひとりで簡単なサーバの構築や運用管理ができるようになることを目指します。わからないことは、まずエラーメッセージを読み、自分で調べて解決する。この「調べて解決する力」そのものが、本実習でいちばん身につけてほしい力です。
+    </p>
+    <div class="flow reveal" role="img" aria-label="Flow of the practicum: setup and basics, build and service, operate and monitor, automate and recover, containerize">
+      <span class="fstep">導入・基本操作</span>
       <span class="farr" aria-hidden="true">&rsaquo;</span>
-      <span class="fstep">プロセス・アジャイル</span>
+      <span class="fstep">構築・サービス化</span>
       <span class="farr" aria-hidden="true">&rsaquo;</span>
-      <span class="fstep">要求</span>
+      <span class="fstep">運用・監視</span>
       <span class="farr" aria-hidden="true">&rsaquo;</span>
-      <span class="fstep">モデリング・設計</span>
+      <span class="fstep">自動化・復旧</span>
       <span class="farr" aria-hidden="true">&rsaquo;</span>
-      <span class="fstep">テスト</span>
-      <span class="farr" aria-hidden="true">&rsaquo;</span>
-      <span class="fstep">進化</span>
+      <span class="fstep">コンテナ化</span>
     </div>
   </div>
 </section>
 
-<!-- SYLLABUS: NINE SESSIONS -->
-<section id="syllabus" class="soft-sec">
+<!-- THEMES: FIVE TOPICS -->
+<section id="themes" class="soft-sec">
   <div class="wrap">
-    <p class="eyebrow reveal"><span lang="ja">授業一覧</span><span lang="en">The nine sessions</span></p>
-    <h2 class="big reveal" lang="ja">全9回で、何を学ぶのか</h2>
+    <p class="eyebrow reveal"><span lang="ja">テーマ一覧</span><span lang="en">The five themes</span></p>
+    <h2 class="big reveal" lang="ja">サーバを建て、運用し、作り直すまでの5テーマ</h2>
     <p class="lead reveal" style="max-width:var(--readw); margin-top:20px">
-      各回のテーマと、その回で扱う主なトピックを紹介します。教科書の第1章から第9章に一つずつ対応しています。
+      各テーマの主題と、そこで扱う主なトピックを通し番号で紹介します。前のテーマで身につけた技術が次のテーマの土台になるように並んでおり、素のLinuxからはじめて、最後は同じサーバをコンテナで作り直せるところまで進みます。
     </p>
     <div class="syllabus reveal">
       <div class="lesson">
         <div class="lno">01</div>
-        <div class="lkai">第01回</div>
-        <h3>ガイダンス、ソフトウェア工学の導入</h3>
-        <p class="ltopics">プロフェッショナルなソフトウェア開発、ソフトウェア工学の倫理、ケーススタディ。</p>
+        <h3>OSの導入とLinuxの基本操作</h3>
+        <p class="ltopics">OSの導入、SSHによる遠隔接続、ディレクトリ構造とパス、基本コマンド、viエディタ。手元のPCから操作できるLinuxサーバを立ち上げるところから始めます。</p>
       </div>
       <div class="lesson">
         <div class="lno">02</div>
-        <div class="lkai">第02回</div>
-        <h3>ソフトウェアプロセス</h3>
-        <p class="ltopics">プロセスモデル、プロセス活動、変化への対応、プロセス改善。</p>
+        <h3>サーバの構築とサービス化</h3>
+        <p class="ltopics">パッケージ管理（apt）、Luantiサーバの導入と設定、systemdによるサービス化、ファイアウォール。OS起動時に自動で立ち上がる常時稼働のサーバに仕立てます。</p>
       </div>
       <div class="lesson">
         <div class="lno">03</div>
-        <div class="lkai">第03回</div>
-        <h3>アジャイルソフトウェア開発</h3>
-        <p class="ltopics">アジャイル手法、アジャイル開発技法、アジャイルプロジェクト管理、スケーリング。</p>
+        <h3>ユーザ管理と監視</h3>
+        <p class="ltopics">パーミッション、ユーザ管理とsudo、サービスの非root化、サーバの監視、ログ解析、公開鍵認証。安全に運用しながら、サーバの状態を読み取れるようになります。</p>
       </div>
       <div class="lesson">
         <div class="lno">04</div>
-        <div class="lkai">第04回</div>
-        <h3>要求工学</h3>
-        <p class="ltopics">機能要求と非機能要求、要求工学プロセス、要求の抽出、要求の仕様化、要求の妥当性確認、要求の変更。</p>
+        <h3>バックアップと自動化</h3>
+        <p class="ltopics">バックアップの考え方、tarによるアーカイブ、シェルスクリプト、cronによる自動化、リストア訓練、障害対応演習。壊れても立て直せるサーバにします。</p>
       </div>
       <div class="lesson">
         <div class="lno">05</div>
-        <div class="lkai">第05回</div>
-        <h3>システムモデリング</h3>
-        <p class="ltopics">コンテキストモデル、相互作用モデル、構造モデル、振る舞いモデル、モデル駆動アーキテクチャ。</p>
-        <div class="llink">
-          <a class="pill-link" href="uml-guide.html">関連教材: クラス図・シーケンス図 作成ガイド<span class="ar" aria-hidden="true">&rsaquo;</span></a>
-        </div>
-      </div>
-      <div class="lesson">
-        <div class="lno">06</div>
-        <div class="lkai">第06回</div>
-        <h3>アーキテクチャ設計</h3>
-        <p class="ltopics">アーキテクチャ設計の意思決定、アーキテクチャビュー、アーキテクチャパターン、アプリケーションアーキテクチャ。</p>
-        <div class="llink">
-          <a class="pill-link" href="software-architecture.html">関連教材: アーキテクチャパターン大全<span class="ar" aria-hidden="true">&rsaquo;</span></a>
-        </div>
-      </div>
-      <div class="lesson">
-        <div class="lno">07</div>
-        <div class="lkai">第07回</div>
-        <h3>設計と実装</h3>
-        <p class="ltopics">UMLを用いたオブジェクト指向設計、デザインパターン、実装の課題、オープンソース開発。</p>
-        <div class="llink">
-          <a class="pill-link" href="design-patterns.html">関連教材: デザインパターン学習ガイド<span class="ar" aria-hidden="true">&rsaquo;</span></a>
-        </div>
-      </div>
-      <div class="lesson">
-        <div class="lno">08</div>
-        <div class="lkai">第08回</div>
-        <h3>ソフトウェアテスト</h3>
-        <p class="ltopics">開発時テスト、テスト駆動開発、リリーステスト、ユーザテスト。</p>
-      </div>
-      <div class="lesson">
-        <div class="lno">09</div>
-        <div class="lkai">第09回</div>
-        <h3>ソフトウェア進化</h3>
-        <p class="ltopics">進化のプロセス、レガシーシステム、ソフトウェア保守。</p>
-        <div class="llink">
-          <a class="pill-link" href="../technical-debt.html">関連: 技術的負債とは<span class="ar" aria-hidden="true">&rsaquo;</span></a>
-        </div>
+        <h3>Dockerによる再構築とWeb監視</h3>
+        <p class="ltopics">コンテナの考え方、Dockerの基本操作、サーバのコンテナ化、Web監視ページの公開。同じサーバをコンテナで作り直し、状態をWebから見られるようにします。</p>
       </div>
     </div>
   </div>
 </section>
 
-<!-- ASSIGNMENT -->
-<section id="assignment">
+<!-- COMPANION READING -->
+<section id="companion">
   <div class="wrap">
-    <p class="eyebrow reveal"><span lang="ja">課題</span><span lang="en">Assignment</span></p>
-    <h2 class="big reveal" lang="ja">図で設計を表す、作図の課題</h2>
+    <p class="eyebrow reveal"><span lang="ja">補足資料</span><span lang="en">Companion reading</span></p>
+    <h2 class="big reveal" lang="ja">手順書と、背景を語る読み物の2本立て</h2>
     <p class="lead reveal" style="max-width:var(--readw); margin-top:20px">
-      授業では、設計をUMLの図で表現する課題に取り組みます。対象を静的な構造として捉えるクラス図と、処理の流れを時間に沿って追うシーケンス図の作成を通じて、設計を「読める・描ける」形にしていきます。
+      実習は、実際に手を動かすための手順書（指導書）と、その技術の背景や「なぜそうするのか」を説明する読み物「Linuxサーバ構築・運用の基礎知識」の2本立てで進みます。読み物は全11章と付録からなり、実習で触れた事柄を落ち着いて掘り下げたいときの出発点になります。章の構成は次のとおりです。
+    </p>
+    <div class="chapters reveal">
+      <div class="chap"><span class="cno">第1章</span><h3>OSとLinux</h3></div>
+      <div class="chap"><span class="cno">第2章</span><h3>ファイルシステムとディレクトリ構造</h3></div>
+      <div class="chap"><span class="cno">第3章</span><h3>シェルとコマンドライン</h3></div>
+      <div class="chap"><span class="cno">第4章</span><h3>テキストエディタ（vi/Vim）</h3></div>
+      <div class="chap"><span class="cno">第5章</span><h3>ユーザ・グループとパーミッション</h3></div>
+      <div class="chap"><span class="cno">第6章</span><h3>プロセスとサービス管理</h3></div>
+      <div class="chap"><span class="cno">第7章</span><h3>ネットワークの基礎</h3></div>
+      <div class="chap"><span class="cno">第8章</span><h3>サーバ運用の基礎</h3></div>
+      <div class="chap"><span class="cno">第9章</span><h3>シェルスクリプト入門</h3></div>
+      <div class="chap"><span class="cno">第10章</span><h3>仮想化とコンテナ</h3></div>
+      <div class="chap"><span class="cno">第11章</span><h3>Luantiサーバの技術</h3></div>
+      <div class="chap"><span class="cno">付録</span><h3>さらに学ぶために</h3></div>
+    </div>
+    <p class="chap-note reveal">
+      <span lang="ja">補足資料は授業の中で配布します。指導書で手を動かした後の復習や、疑問点を調べる読み物として活用してください。</span>
+      <span lang="en">The companion reading is handed out in class. Use it to review after working through the handbook, or as a starting point for looking things up.</span>
+    </p>
+  </div>
+</section>
+
+<!-- HANDS-ON -->
+<section id="hands-on" class="soft-sec">
+  <div class="wrap">
+    <p class="eyebrow reveal"><span lang="ja">手を動かして学ぶ</span><span lang="en">Learn by doing</span></p>
+    <h2 class="big reveal" lang="ja">自分のサーバに、自分のPCから実際に接続する</h2>
+    <p class="lead reveal" style="max-width:var(--readw); margin-top:20px">
+      この実習の中心にあるのは、教科書を読むことではなく、自分のサーバを実際に建てて動かすことです。構築したサーバには、全員が自分のPCから本当に接続して確かめられます。
     </p>
     <div class="callout reveal">
-      <span class="lbl"><span lang="ja">作図ガイドあり</span><span lang="en">Guide available</span></span>
-      <h3>クラス図・シーケンス図の作成に、専用ガイドを用意しています</h3>
-      <p>記法のポイントや作成の手順、Mermaidでの作図例までをまとめた学習コンテンツです。課題に取りかかる前の予習に使えます。詳しい提出要領は授業内での案内にしたがってください。</p>
-      <div class="llink">
-        <a class="pill-link" href="uml-guide.html">クラス図・シーケンス図 作成ガイドへ<span class="ar" aria-hidden="true">&rsaquo;</span></a>
-      </div>
+      <span class="lbl"><span lang="ja">遊びながら学ぶ</span><span lang="en">Play as you learn</span></span>
+      <h3>クライアントもサーバも無料のLuantiで、遊びながら運用する</h3>
+      <p>題材のLuanti（旧称Minetest）は、Minecraftによく似たボクセル型のサンドボックスゲームで、クライアントもサーバもオープンソースとして無料で利用できます。だからこそ、全員が自分のPCから自分のサーバに実際に接続し、友だちのサーバを訪ね合いながら、遊びの延長でサーバ運用を身につけていけます。設定を変え、サービスを再起動し、接続して動作を確かめる。この繰り返しが、そのままサーバ運用の基本サイクルになります。</p>
     </div>
   </div>
 </section>
 
-<!-- LEARNING MATERIALS -->
-<section id="materials" class="soft-sec">
+<!-- RELATED -->
+<section id="related">
   <div class="wrap">
-    <p class="eyebrow reveal"><span lang="ja">学習コンテンツ</span><span lang="en">Learning materials</span></p>
-    <h2 class="big reveal" lang="ja">授業とあわせて使える、三つの教材</h2>
+    <p class="eyebrow reveal"><span lang="ja">関連ページ</span><span lang="en">Related</span></p>
+    <h2 class="big reveal" lang="ja">担当科目の一覧から、ほかの科目も</h2>
     <p class="lead reveal" style="max-width:var(--readw); margin-top:20px">
-      設計と実装の回に関わる内容を、じっくり手を動かして学べる教材を用意しています。授業の予習・復習に、それぞれの入り口からどうぞ。
-    </p>
-    <div class="mcards reveal">
-      <div class="mcard">
-        <span class="mtag"><span lang="ja">設計と実装</span><span lang="en">Design and implementation</span></span>
-        <h3>デザインパターン学習ガイド</h3>
-        <div class="mmeta">
-          <span class="chip">GoF 23パターン</span>
-          <span class="chip">理解度クイズ 12問</span>
-        </div>
-        <p>生成・構造・振る舞いの三分類にわたるGoFの23パターンを、説明とコード例つきで学べます。最後には理解度を確かめる12問のクイズがあります。</p>
-        <div class="mgo">
-          <a class="tlink" href="design-patterns.html">
-            <span lang="ja">ガイドを開く</span><span lang="en">Open the guide</span>
-            <span class="ar" aria-hidden="true">&rsaquo;</span>
-          </a>
-        </div>
-      </div>
-      <div class="mcard">
-        <span class="mtag"><span lang="ja">アーキテクチャ設計</span><span lang="en">Architecture design</span></span>
-        <h3>アーキテクチャパターン大全</h3>
-        <div class="mmeta">
-          <span class="chip">44パターン</span>
-          <span class="chip">比較機能つき</span>
-        </div>
-        <p>44のアーキテクチャパターンを、カテゴリごとに整理して収録。気になるパターンを選んで、特性をレーダーチャートで比較しながら理解を深められます。</p>
-        <div class="mgo">
-          <a class="tlink" href="software-architecture.html">
-            <span lang="ja">大全を開く</span><span lang="en">Open the catalog</span>
-            <span class="ar" aria-hidden="true">&rsaquo;</span>
-          </a>
-        </div>
-      </div>
-      <div class="mcard">
-        <span class="mtag"><span lang="ja">モデリングと課題</span><span lang="en">Modeling and assignment</span></span>
-        <h3>クラス図・シーケンス図 作成ガイド</h3>
-        <div class="mmeta">
-          <span class="chip">記法と手順</span>
-          <span class="chip">Mermaid例</span>
-        </div>
-        <p>クラス図とシーケンス図の記法、作成の手順、よくある間違い、そしてMermaidでの作図例までをまとめました。作図の課題に直結する内容です。</p>
-        <div class="mgo">
-          <a class="tlink" href="uml-guide.html">
-            <span lang="ja">ガイドを開く</span><span lang="en">Open the guide</span>
-            <span class="ar" aria-hidden="true">&rsaquo;</span>
-          </a>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- RELATED PREP -->
-<section id="prep">
-  <div class="wrap">
-    <p class="eyebrow reveal"><span lang="ja">予習・関連</span><span lang="en">Prep and related</span></p>
-    <h2 class="big reveal" lang="ja">授業の前後に、読んでおきたいページ</h2>
-    <p class="lead reveal" style="max-width:var(--readw); margin-top:20px">
-      分野の全体像をつかむ紹介ページや、授業の後半でふれる概念の解説ページです。予習にも、授業のあとの深掘りにも使えます。
+      木村が担当するほかの科目や、学生の皆さんへ向けた案内は、科目ガイドのページにまとめています。
     </p>
     <div class="lcards reveal">
-      <a class="lcard" href="../software-engineering.html">
+      <a class="lcard" href="../students.html">
         <div class="no">01</div>
         <div class="body">
-          <h3>ソフトウェア工学とは</h3>
-          <p>この科目が扱う分野そのものの紹介です。授業に入る前の全体像づかみにどうぞ。</p>
-        </div>
-        <span class="ar" aria-hidden="true">&rsaquo;</span>
-      </a>
-      <a class="lcard" href="../technical-debt.html">
-        <div class="no">02</div>
-        <div class="body">
-          <h3>技術的負債とは</h3>
-          <p>第9回「ソフトウェア進化」に深く関わる考え方です。保守と進化の背景として読んでおくと理解が進みます。</p>
+          <h3>学生の皆さんへ / 科目ガイド</h3>
+          <p>担当科目の一覧や、研究室の方針、学びの進め方についての案内です。ほかの科目とあわせてご覧ください。</p>
         </div>
         <span class="ar" aria-hidden="true">&rsaquo;</span>
       </a>
     </div>
     <p class="syllabus-note reveal">
-      <span lang="ja">授業の詳細（単位数・時間割・評価方法・日程など）は年度により変わります。詳細は最新のシラバスを確認してください。</span>
-      <span lang="en">Details such as credits, timetable, assessment, and schedule vary by year. Please check the latest syllabus.</span>
+      <span lang="ja">このページで紹介しているのは学ぶ内容の全体像です。詳細は最新のシラバスを確認してください。</span>
+      <span lang="en">This page introduces the overall scope of what is covered. Please check the latest syllabus for details.</span>
     </p>
   </div>
 </section>
@@ -506,8 +420,8 @@
 <footer>
   <div class="wrap">
     <div class="cite">
-      <span lang="ja">ソフトウェア工学の科目案内ページです。授業の全体像と各回の内容、学習コンテンツを紹介しています。木村祐太の研究サイトの一部としてご覧いただけます。</span>
-      <span lang="en">A course guide for Software Engineering, introducing the big picture, each session, and the learning materials. Part of Yuta Kimura's research site.</span>
+      <span lang="ja">知能情報実験実習1のうち、木村が担当する「サーバ構築・運用実習」の科目案内ページです。オープンソースのゲーム Luanti のサーバを題材に、Linuxサーバの構築と運用管理の基本を、全5テーマにわたって紹介しています。木村祐太の研究サイトの一部としてご覧いただけます。</span>
+      <span lang="en">A course guide for the server building and operation practicum in Intelligent Informatics Laboratory 1, taught by Yuta Kimura. Using an open-source Luanti game server, it introduces the basics of building and operating a Linux server across five themes. Part of Yuta Kimura's research site.</span>
     </div>
     <div class="foot-grid">
       <div>
@@ -543,8 +457,8 @@
     </div>
     <div class="foot-rule"></div>
     <p class="foot-note">
-      <span lang="ja">© 2026 Yuta Kimura. 授業の詳細（評価方法・日程等）は最新のシラバスを確認してください。各回の構成は Ian Sommerville「Software Engineering」(10th ed.) の章立てに対応しています。</span>
-      <span lang="en">© 2026 Yuta Kimura. For course details such as assessment and schedule, please check the latest syllabus. The sessions follow the chapter structure of Ian Sommerville's Software Engineering (10th ed.).</span>
+      <span lang="ja">© Yuta Kimura. このページで紹介しているのは学ぶ内容の全体像です。授業の詳細は最新のシラバスを確認してください。</span>
+      <span lang="en">© Yuta Kimura. This page introduces the overall scope of what is covered. Please check the latest syllabus for course details.</span>
     </p>
   </div>
 </footer>
