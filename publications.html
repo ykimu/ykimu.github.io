@@ -104,22 +104,23 @@
   .tlink:hover .ar{transform:translateX(4px)}
 
   /* eyebrow pill */
-  .eyebrow{display:inline-flex; align-items:center; gap:8px; padding:5px 13px 5px 11px; border-radius:999px;
-    border:1px solid var(--hair); background:#fff; font:600 .66rem/1 var(--disp); letter-spacing:.14em;
-    text-transform:uppercase; color:var(--ink-2)}
-  .eyebrow::before{content:""; width:6px; height:6px; border-radius:999px; background:var(--accent)}
+  .eyebrow,.kick{display:inline-flex; align-items:center; gap:8px; width:max-content; max-width:100%;
+    padding:5px 13px 5px 11px; border-radius:999px; border:1px solid var(--hair); background:#fff;
+    font:600 .66rem/1 var(--disp); letter-spacing:.14em; text-transform:uppercase; color:var(--ink-2); margin:0 0 18px}
+  .eyebrow::before,.kick::before{content:""; flex:0 0 auto; width:6px; height:6px; border-radius:50%; background:var(--accent)}
 
   /* hero (compact) */
   .hero{position:relative; overflow:hidden}
-  .hero::before{content:""; position:absolute; z-index:0; width:640px; height:640px; right:-150px; top:-220px;
+  .hero::before{content:""; position:absolute; z-index:0; width:640px; height:640px; right:-150px; top:-240px;
     border-radius:50%; pointer-events:none; opacity:.55; filter:blur(20px);
     background:radial-gradient(circle, var(--accent-soft), transparent 62%)}
   .hero > .wrap{position:relative; z-index:1}
-  .hero .wrap{padding-top:128px; padding-bottom:64px; max-width:1040px}
-  .hero .eyebrow{margin-bottom:26px}
+  .hero .wrap{padding-top:72px; padding-bottom:80px}
   .hero h1{font-family:var(--disp); font-size:clamp(2.6rem,5vw,4.2rem); font-weight:500; letter-spacing:-.03em; line-height:1.07; color:var(--ink); max-width:16ch}
-  body.lang-ja .hero h1{font-family:var(--sans); font-weight:600; letter-spacing:0; line-height:1.24; font-size:clamp(2rem,4.2vw,3.1rem); max-width:none}
-  .hero .lead{margin-top:22px; max-width:60ch}
+  body.lang-ja .hero h1{font-family:var(--sans); font-weight:500; letter-spacing:0; line-height:1.24; font-size:clamp(2rem,4.2vw,3.1rem)}
+  .hero h1 em{font-style:normal; color:var(--accent)}
+  .hero .lead{max-width:var(--readw); margin-top:24px}
+  .hero-cta{display:flex; gap:20px; align-items:center; flex-wrap:wrap; margin-top:30px}
 
   /* stats band */
   .stats{border-top:1px solid var(--line); border-bottom:1px solid var(--line); background:var(--bg-2)}
@@ -243,7 +244,7 @@
   @media(max-width:860px){
     section{padding:72px 0}
     .wrap{padding:0 24px}
-    .hero .wrap{padding-top:104px; padding-bottom:52px}
+    .hero .wrap{padding-top:52px; padding-bottom:56px}
     .stats .wrap{grid-template-columns:repeat(2,1fr); gap:28px 20px}
     .paper{grid-template-columns:1fr; gap:20px; align-items:start}
     .year-group{grid-template-columns:1fr; gap:20px; padding:32px 0}
@@ -288,7 +289,7 @@
 
 <div class="hero">
   <div class="wrap">
-    <span class="eyebrow"><span lang="ja">業績・研究活動</span><span lang="en">Publications & Research</span></span>
+    <p class="kick">Publications &amp; Research</p>
     <h1>
       <span lang="ja">業績・研究活動</span>
       <span lang="en">Publications &amp; Research Activities</span>
@@ -297,6 +298,15 @@
       <span lang="ja">査読付き論文・研究発表・受賞から、科研費・財団助成による研究プロジェクト、所属学会まで。ソフトウェア工学と情報教育に関する研究活動の記録です。</span>
       <span lang="en">From peer-reviewed papers, research talks, and awards to grant-funded research projects and academic societies: a record of research activity in software engineering and informatics education.</span>
     </p>
+    <div class="hero-cta">
+      <a class="btn ink" href="#papers" style="padding:12px 22px">
+        <span lang="ja">査読付き論文を見る</span><span lang="en">See refereed papers</span>
+      </a>
+      <a class="tlink" href="#projects">
+        <span lang="ja">研究プロジェクトへ</span><span lang="en">Research projects</span>
+        <span class="ar" aria-hidden="true">&rsaquo;</span>
+      </a>
+    </div>
   </div>
 </div>
 

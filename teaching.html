@@ -115,10 +115,12 @@
     border-radius:50%; pointer-events:none; opacity:.55; filter:blur(20px);
     background:radial-gradient(circle, var(--accent-soft), transparent 62%)}
   .hero > .wrap{position:relative; z-index:1}
-  .hero .wrap{padding-top:118px; padding-bottom:56px; max-width:840px}
-  .hero h1{font-family:var(--disp); font-size:clamp(2.3rem,4.4vw,3.5rem); font-weight:500; letter-spacing:-.03em; line-height:1.1; color:var(--ink); max-width:18ch; margin:0 0 18px}
-  body.lang-ja .hero h1{font-family:var(--sans); font-weight:600; letter-spacing:0; line-height:1.28; font-size:clamp(1.8rem,3.6vw,2.6rem); max-width:none}
-  .hero .lead{max-width:56ch}
+  .hero .wrap{padding-top:72px; padding-bottom:80px}
+  .hero h1{font-family:var(--disp); font-size:clamp(2.6rem,5vw,4.2rem); font-weight:500; letter-spacing:-.03em; line-height:1.1; color:var(--ink); max-width:18ch}
+  body.lang-ja .hero h1{font-family:var(--sans); font-weight:500; letter-spacing:0; line-height:1.28; font-size:clamp(2rem,4.2vw,3.1rem); max-width:none}
+  .hero h1 em{font-style:normal; color:var(--accent)}
+  .hero .lead{max-width:var(--readw); margin-top:24px}
+  .hero-cta{display:flex; gap:20px; align-items:center; flex-wrap:wrap; margin-top:30px}
 
   /* course tiles */
   .course-grid{display:grid; grid-template-columns:repeat(4,1fr); gap:14px; margin-top:40px}
@@ -157,7 +159,7 @@
   @media(max-width:860px){
     section{padding:72px 0}
     .wrap{padding:0 24px}
-    .hero .wrap{padding-top:100px; padding-bottom:44px}
+    .hero .wrap{padding-top:52px; padding-bottom:56px}
     .course-grid{grid-template-columns:repeat(2,1fr)}
     .foot-grid{grid-template-columns:1fr 1fr}
     .bar-right .btn:not(.ink){display:none}
@@ -199,15 +201,24 @@
 
 <div class="hero">
   <div class="wrap">
-    <p class="eyebrow reveal"><span lang="ja">教育</span><span lang="en">Teaching</span></p>
-    <h1 class="reveal">
+    <p class="kick">Teaching</p>
+    <h1>
       <span lang="ja">教育・担当授業</span>
       <span lang="en">Teaching</span>
     </h1>
-    <p class="lead reveal">
+    <p class="lead">
       <span lang="ja">大阪公立大学工業高等専門学校で担当している7科目と、授業向けに公開している教材をまとめています。</span>
       <span lang="en">The seven courses I teach at Osaka Metropolitan University College of Technology, together with the materials shared for classes.</span>
     </p>
+    <div class="hero-cta">
+      <a class="btn ink" href="#courses" style="padding:12px 22px">
+        <span lang="ja">担当科目を見る</span><span lang="en">See the courses</span>
+      </a>
+      <a class="tlink" href="students.html">
+        <span lang="ja">学生の皆さんへ</span><span lang="en">For students</span>
+        <span class="ar" aria-hidden="true">&rsaquo;</span>
+      </a>
+    </div>
   </div>
 </div>
 
