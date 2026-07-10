@@ -1,0 +1,561 @@
+<!DOCTYPE html>
+<html lang="ja" data-lang="ja" class="no-js">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>研究の詳細 - Technical Debt × Software Metrics</title>
+<meta name="description" content="A detailed account of the study: background and positioning, method, RQ1 classifiability, RQ2 characterization, discussion, and threats to validity.">
+<link rel="canonical" href="https://ykimu.github.io/research/detail.html">
+<link rel="icon" href="../favicon.svg" type="image/svg+xml">
+<meta property="og:site_name" content="Yuta Kimura / 木村祐太">
+<meta property="og:type" content="article">
+<meta property="og:title" content="研究の詳細 - Technical Debt × Software Metrics">
+<meta property="og:description" content="A detailed account of the study: background and positioning, method, RQ1 classifiability, RQ2 characterization, discussion, and threats to validity.">
+<meta property="og:url" content="https://ykimu.github.io/research/detail.html">
+<meta property="og:image" content="https://ykimu.github.io/assets/og.png">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="color-scheme" content="light">
+<script>document.documentElement.className="js";(function(){var u=new URLSearchParams(location.search).get('lang');var l=(u==='en'||u==='ja')?u:(function(){try{return localStorage.getItem('site-lang')}catch(e){return null}})()||'ja';document.documentElement.setAttribute('data-lang',l);})();</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&family=Noto+Sans+JP:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#FBFCFB; --bg-2:#F3F6F4; --bg-3:#EBEFED; --card:#FFFFFF;
+    --ink:#101312; --ink-2:#3C4340; --muted:#6B746F; --faint:#B7C0BB;
+    --line:#E7ECE9; --hair:rgba(16,19,18,.08); --shell:rgba(16,19,18,.035);
+    --accent:#0E6F5C; --accent-2:#0A5748; --accent-soft:rgba(14,111,92,.08);
+    --soft:0 1px 2px rgba(16,19,18,.04), 0 24px 60px -28px rgba(16,19,18,.16);
+    --inhi:inset 0 1px 0 rgba(255,255,255,.85);
+    --ease:cubic-bezier(.32,.72,0,1);
+    --sans:"Plus Jakarta Sans","Noto Sans JP",-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+    --disp:"Space Grotesk","Plus Jakarta Sans","Noto Sans JP",sans-serif;
+    --maxw:1440px; --readw:clamp(680px, 62vw, 1060px);
+    /* chart tokens */
+    --c-grid:#EDF1EF; --c-axis:#ADB6B1; --c-ink:#101312; --c-code:#D6DDD9;
+    --c-val:#3C4340; --c-base:#C9D2CD; --c-note:#B7C0BB;
+  }
+  html{color-scheme:light}
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth; -webkit-text-size-adjust:100%}
+  body{margin:0; background:var(--bg); color:var(--ink); font-family:var(--sans);
+    font-size:17px; line-height:1.75; font-weight:400; -webkit-font-smoothing:antialiased; text-rendering:optimizeLegibility}
+  html[data-lang="ja"] [lang="en"]{display:none}
+  html[data-lang="en"] [lang="ja"]{display:none}
+  ::selection{background:rgba(14,111,92,.16)}
+  .num{font-variant-numeric:tabular-nums; font-feature-settings:"tnum" 1; font-family:var(--disp)}
+  h1,h2,h3{margin:0; color:var(--ink); font-weight:500; line-height:1.16; letter-spacing:-.02em; font-family:var(--disp); text-wrap:balance}
+  html[data-lang="ja"] h1,html[data-lang="ja"] h2,html[data-lang="ja"] h3{letter-spacing:0; font-family:var(--sans)}
+  p,.lead,.hook,.byline,figcaption,.cite,.muted-s{text-wrap:pretty}
+  [lang="en"]{line-break:auto}
+  [lang="ja"]{line-break:strict; word-break:normal}
+  h1 [lang="ja"],h2 [lang="ja"],h3 [lang="ja"]{word-break:auto-phrase}
+  p{margin:0 0 1em}
+  a{color:var(--accent-2); text-decoration:none; transition:color .3s var(--ease)}
+  a:hover{color:var(--accent)}
+  a:focus-visible,button:focus-visible,.btn:focus-visible,[tabindex]:focus-visible{outline:2px solid var(--accent); outline-offset:3px; border-radius:8px}
+  .wrap{max-width:var(--maxw); margin:0 auto; padding:0 40px}
+  [id]{scroll-margin-top:96px}
+
+  /* film grain overlay */
+  body::after{content:""; position:fixed; inset:0; z-index:1; pointer-events:none; opacity:.02;
+    background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='g'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23g)'/%3E%3C/svg%3E")}
+
+  /* motion */
+  .js .reveal{opacity:0; transform:translateY(18px); filter:blur(6px); transition:opacity .9s var(--ease), transform .9s var(--ease), filter .9s var(--ease)}
+  .js .reveal.in{opacity:1; transform:none; filter:none}
+  @media (prefers-reduced-motion:reduce){
+    .js .reveal{opacity:1!important; transform:none!important; filter:none!important}
+    .btn:active,.btn.ink:hover .ic{transform:none!important}
+  }
+
+  /* floating island nav */
+  header.bar{position:sticky; top:18px; z-index:60; background:transparent; border-bottom:none}
+  .bar .wrap{display:flex; align-items:center; justify-content:space-between;
+    width:max-content; max-width:calc(100% - 32px); margin:0 auto; height:auto;
+    padding:9px 12px 9px 20px; gap:20px; border-radius:999px;
+    background:rgba(255,255,255,.72); -webkit-backdrop-filter:saturate(1.4) blur(18px); backdrop-filter:saturate(1.4) blur(18px);
+    border:1px solid var(--hair); box-shadow:var(--soft)}
+  .brand{font-weight:600; font-size:.92rem; letter-spacing:-.01em; color:var(--ink)}
+  .brand span{color:var(--muted); font-weight:400; margin:0 4px}
+  .bar-right{display:flex; align-items:center; gap:8px}
+  .navlink{font-weight:500; font-size:.85rem; color:var(--muted); padding:9px 8px; transition:color .3s var(--ease)}
+  .navlink:hover{color:var(--ink)}
+  .navlinks{display:flex; align-items:center; gap:2px}
+  .navlinks a{font-weight:500; font-size:.85rem; color:var(--muted); padding:9px 10px; border-radius:999px; transition:color .3s var(--ease)}
+  .navlinks a:hover{color:var(--ink)}
+  @media(max-width:860px){.navlinks{display:none}}
+
+  /* buttons */
+  .btn{display:inline-flex; align-items:center; gap:10px; font:500 .85rem/1 var(--sans); padding:10px 18px;
+    border-radius:999px; border:1px solid var(--hair); background:#fff; color:var(--ink); cursor:pointer;
+    transition:transform .4s var(--ease), box-shadow .4s var(--ease), border-color .3s var(--ease), background .3s var(--ease), color .3s var(--ease)}
+  .btn:hover{border-color:var(--ink); transform:translateY(-1px)}
+  .btn:active{transform:scale(.98)}
+  .btn svg{width:15px; height:15px}
+  .btn.ink{background:var(--ink); border-color:var(--ink); color:#fff; padding:10px 10px 10px 22px;
+    box-shadow:0 12px 26px -14px rgba(16,19,18,.5)}
+  .btn.ink:not(:has(.ic)){padding:10px 22px}
+  .btn.ink:hover{box-shadow:0 16px 32px -14px rgba(16,19,18,.55); color:#fff}
+  .btn .ic{width:32px; height:32px; border-radius:999px; background:rgba(255,255,255,.18); display:grid; place-items:center;
+    transition:transform .45s var(--ease); flex:0 0 auto}
+  .btn.ink:hover .ic{transform:translate(3px,-1px)}
+
+  /* page head */
+  .page-head{padding:76px 0 4px}
+  .backlink{display:inline-flex; align-items:center; gap:8px; width:max-content; max-width:100%;
+    padding:6px 14px 6px 12px; border-radius:999px; border:1px solid var(--hair); background:#fff;
+    font-size:.82rem; font-weight:500; color:var(--muted); margin-bottom:26px}
+  .backlink:hover{color:var(--ink); border-color:var(--ink)}
+  .backlink .ar{transition:transform .4s var(--ease)}
+  .backlink:hover .ar{transform:translateX(-3px)}
+  .page-head h1{font-size:clamp(2.6rem,5vw,4.2rem); font-weight:500; letter-spacing:-.03em; max-width:20ch; line-height:1.08}
+  html[data-lang="ja"] .page-head h1{font-size:clamp(2rem,4.2vw,3.1rem); font-weight:500; letter-spacing:0; line-height:1.24}
+  .page-head .sub{font-size:1.14rem; color:var(--ink-2); max-width:var(--readw); margin-top:20px}
+  .toc{display:flex; flex-wrap:wrap; gap:8px; margin-top:34px}
+  .toc a{font-size:.82rem; color:var(--ink-2); border:1px solid var(--hair); border-radius:999px; padding:6px 14px; background:#fff;
+    transition:border-color .3s var(--ease), color .3s var(--ease)}
+  .toc a:hover{border-color:var(--ink); color:var(--ink)}
+
+  /* sections */
+  .sec{padding:80px 0; border-top:1px solid var(--line)}
+  .sec > .wrap > h2{font-size:clamp(1.9rem,3.2vw,2.7rem); font-weight:600; letter-spacing:-.02em; max-width:26ch}
+  html[data-lang="ja"] .sec > .wrap > h2{letter-spacing:0}
+  .prose{max-width:var(--readw); margin-top:18px}
+  .prose p{color:var(--ink-2)}
+  .prose h3{font-size:1.14rem; font-weight:600; margin:30px 0 8px; letter-spacing:-.01em}
+  .prose b{color:var(--ink); font-weight:600}
+  ul.clean{list-style:none; padding:0; margin:14px 0 0; max-width:var(--readw)}
+  ul.clean li{position:relative; padding-left:22px; margin:13px 0; color:var(--ink-2)}
+  ul.clean li::before{content:""; position:absolute; left:0; top:13px; width:11px; height:1.5px; background:var(--accent)}
+  ul.clean li b{color:var(--ink); font-weight:600}
+
+  /* definition rows */
+  .defs{max-width:var(--readw); margin-top:18px; border-top:1px solid var(--line)}
+  .defs .row{display:grid; grid-template-columns:170px 1fr; gap:18px; padding:14px 0; border-bottom:1px solid var(--line)}
+  .defs .k{color:var(--muted); font-size:.9rem}
+  .defs .v{color:var(--ink-2)}
+  .defs .v b{color:var(--ink); font-weight:600}
+
+  /* positioning matrix (double-bezel), "this" cell tinted */
+  .matrix{display:grid; grid-template-columns:120px 1fr 1fr; gap:1px; background:var(--line); border:none;
+    border-radius:21px; overflow:hidden; margin:26px 0 8px; font-size:.9rem; max-width:760px;
+    box-shadow:0 0 0 7px var(--shell), 0 0 0 7.5px var(--hair), var(--soft)}
+  .matrix > div{background:var(--card); padding:15px 16px}
+  .matrix .mh{color:var(--muted); font-size:.74rem; font-weight:600; display:flex; align-items:center; font-family:var(--disp)}
+  .matrix .cell{color:var(--muted)}
+  .matrix .cell b{display:block; color:var(--ink); font-weight:600; margin-bottom:3px; font-size:.95rem}
+  .matrix .cell.this{background:var(--accent-soft)}
+  .matrix .cell.this b{color:var(--accent-2)}
+  .matrix .tag{display:inline-block; font-size:.68rem; font-weight:600; color:var(--accent-2); border:1px solid var(--accent);
+    border-radius:5px; padding:1px 6px; margin-top:6px; font-family:var(--disp)}
+
+  /* figures (double-bezel) */
+  figure{margin:26px 0 0}
+  .figbox{background:var(--card); border:none; border-radius:21px; padding:24px 22px 10px;
+    box-shadow:0 0 0 7px var(--shell), 0 0 0 7.5px var(--hair), var(--soft)}
+  .figbox svg{width:100%; height:auto; display:block}
+  .figbox svg text{font-family:var(--sans)}
+  .c-grid{stroke:var(--c-grid)} .c-axis{fill:var(--c-axis)} .c-ink{fill:var(--c-ink)}
+  .c-file{fill:var(--accent)} .c-code{fill:var(--c-code)} .c-val{fill:var(--c-val)}
+  .c-lab{fill:var(--ink)} .c-sub{fill:var(--muted)} .c-base{stroke:var(--c-base)}
+  .c-baset{fill:var(--muted)} .c-smell{stroke:var(--accent)} .c-smellt{fill:var(--accent)}
+  .c-note{fill:var(--c-note)} .c-mlab{fill:var(--ink-2)} .c-div{stroke:var(--c-grid)}
+  figcaption{font-size:.88rem; color:var(--muted); padding:14px 2px 2px; line-height:1.6}
+  figcaption b{color:var(--ink); font-weight:600}
+  .legend{display:flex; gap:22px; flex-wrap:wrap; font-size:.8rem; color:var(--muted); padding:0 2px 14px}
+  .legend i{display:inline-block; width:10px; height:10px; border-radius:2px; margin-right:7px}
+
+  /* data table (double-bezel wrap, sticky-feel header) */
+  .tblwrap{overflow-x:auto; border:none; border-radius:21px; margin:26px 0 8px;
+    box-shadow:0 0 0 7px var(--shell), 0 0 0 7.5px var(--hair), var(--soft)}
+  table.data{width:100%; border-collapse:collapse; font-size:.94rem}
+  table.data thead{background:var(--bg-2)}
+  table.data th{text-align:left; font-weight:600; color:var(--muted); font-size:.76rem; letter-spacing:.03em;
+    text-transform:uppercase; padding:14px 16px; font-family:var(--disp)}
+  table.data td{padding:11px 16px; color:var(--ink-2)}
+  table.data td:first-child{color:var(--ink)}
+  table.data .n{text-align:right; font-variant-numeric:tabular-nums; font-family:var(--disp)}
+  table.data tr.grp td{border-top:1px solid var(--line); color:var(--muted); font-size:.72rem; font-weight:600;
+    letter-spacing:.06em; text-transform:uppercase; padding:14px 16px 6px; background:var(--bg-2)}
+  table.data td .hl{color:var(--ink); font-weight:600}
+  .tcap{font-size:.86rem; color:var(--muted); margin-top:10px; max-width:var(--readw)}
+
+  .callout{border-radius:21px; box-shadow:0 0 0 7px var(--shell), 0 0 0 7.5px var(--hair), var(--soft);
+    padding:20px 24px; margin-top:26px; background:var(--accent-soft); max-width:var(--readw)}
+  .callout b{color:var(--accent-2)}
+  code.inl{font-family:"SF Mono",Menlo,Consolas,monospace; background:var(--bg-3); border:1px solid var(--hair);
+    border-radius:6px; padding:1px 6px; font-size:.83em; color:var(--ink)}
+
+  footer{border-top:1px solid var(--line); padding:60px 0 46px; background:var(--bg); margin-top:20px}
+  footer h3{font-size:.72rem; font-weight:600; letter-spacing:.12em; text-transform:uppercase; color:var(--muted); margin:0 0 1em; font-family:var(--disp)}
+  .foot-grid{display:grid; grid-template-columns:1.5fr 1fr; gap:44px}
+  .foot-grid3{display:grid; grid-template-columns:1.3fr 1fr 1fr; gap:44px; margin-top:40px}
+  .foot-grid3 a{color:var(--ink-2)}
+  .foot-grid3 a:hover{color:var(--accent)}
+  .cite{font-size:.98rem; color:var(--ink-2); line-height:1.7; max-width:52ch}
+  .muted-s{color:var(--muted); font-size:.9rem; line-height:1.75}
+  .muted-s b{color:var(--ink); font-weight:600}
+  .muted-s a{line-height:1.9}
+  .foot-rule{height:1px; background:var(--line); margin:40px 0 20px}
+  .foot-note{color:var(--muted); font-size:.82rem}
+  .skip{position:fixed; top:10px; left:10px; padding:10px 16px; background:var(--ink); color:#fff; border-radius:999px;
+    transform:translateY(-200%); transition:none; z-index:100; font:500 .85rem/1 var(--sans); text-decoration:none}
+  .skip:focus{transform:none}
+
+  @media(max-width:860px){
+    .wrap{padding:0 24px}
+    .sec{padding:60px 0}
+    .matrix{grid-template-columns:92px 1fr 1fr; font-size:.82rem}
+    .defs .row{grid-template-columns:1fr; gap:4px}
+    .foot-grid{grid-template-columns:1fr}
+    .foot-grid3{grid-template-columns:1fr; gap:30px}
+  }
+  @media(max-width:640px){
+    .bar-right .navlink, .bar-right .btn:not(.ink){display:none}
+    .brand{font-size:.82rem}
+  }
+</style>
+</head>
+<body>
+<a class="skip" href="#main"><span lang="ja">本文へスキップ</span><span lang="en">Skip to content</span></a>
+
+<header class="bar">
+  <nav class="wrap" aria-label="メイン">
+    <a class="brand" href="../index.html">Technical&nbsp;Debt<span>×</span>Software&nbsp;Metrics</a>
+    <div class="navlinks">
+      <a href="../publications.html"><span lang="ja">業績</span><span lang="en">Publications</span></a>
+      <a href="../activities.html"><span lang="ja">活動</span><span lang="en">Activities</span></a>
+      <a href="../software-engineering.html"><span lang="ja">分野紹介</span><span lang="en">Guides</span></a>
+      <a href="../technical-debt.html"><span lang="ja">技術的負債</span><span lang="en">Tech Debt</span></a>
+    </div>
+    <div class="bar-right">
+      <a class="navlink" data-nav="technical-debt-metrics.html" href="technical-debt-metrics.html"><span lang="ja">概要</span><span lang="en">Overview</span></a>
+      <button class="btn ink" onclick="toggleLang()" aria-label="Switch language">
+        <span lang="ja">EN</span><span lang="en">日本語</span>
+      </button>
+    </div>
+  </nav>
+</header>
+
+<main id="main">
+<!-- PAGE HEAD -->
+<div class="page-head">
+  <div class="wrap">
+    <a class="backlink" data-nav="technical-debt-metrics.html" href="technical-debt-metrics.html"><span class="ar" aria-hidden="true">&lsaquo;</span><span lang="ja">概要にもどる</span><span lang="en">Back to overview</span></a>
+    <h1><span lang="ja">研究の詳細</span><span lang="en">The study in depth</span></h1>
+    <p class="sub">
+      <span lang="ja">背景と位置づけから、手法、RQ1・RQ2の全結果、限界までを順に解説します。要点だけを見たい場合は<a data-nav="technical-debt-metrics.html" href="technical-debt-metrics.html">概要ページ</a>へ。</span>
+      <span lang="en">Background and positioning, method, the complete RQ1 and RQ2 results, and limitations, in order. For the short version, see the <a data-nav="technical-debt-metrics.html" href="technical-debt-metrics.html">overview</a>.</span>
+    </p>
+    <nav class="toc">
+      <a href="#background"><span lang="ja">背景と位置づけ</span><span lang="en">Background &amp; positioning</span></a>
+      <a href="#method"><span lang="ja">手法</span><span lang="en">Method</span></a>
+      <a href="#rq1"><span lang="ja">RQ1 分類可能性</span><span lang="en">RQ1 Classifiability</span></a>
+      <a href="#rq2"><span lang="ja">RQ2 特徴づけ</span><span lang="en">RQ2 Characterization</span></a>
+      <a href="#discussion"><span lang="ja">考察</span><span lang="en">Discussion</span></a>
+      <a href="#threats"><span lang="ja">妥当性の脅威</span><span lang="en">Threats to validity</span></a>
+      <a href="#repro"><span lang="ja">再現性</span><span lang="en">Reproducibility</span></a>
+    </nav>
+  </div>
+</div>
+
+<!-- BACKGROUND -->
+<section class="sec" id="background">
+  <div class="wrap">
+    <h2 class="reveal"><span lang="ja">背景と位置づけ</span><span lang="en">Background and positioning</span></h2>
+    <div class="prose reveal">
+      <p>
+        <span lang="ja">技術的負債は、時間的制約などの下で選ばれた低品質な設計・実装を「元本」、放置により積み上がる保守コストを「利息」になぞらえた概念です。近年は課題管理システムで <b>debt</b> ラベルを付けて負債を報告・管理する運用（TD&nbsp;Issue）が広まりました。しかし、報告される前に手を打つには、課題報告を前提とせず、コードそのものから負債を捉えたいという動機が生じます。</span>
+        <span lang="en">Technical debt likens low-quality design or implementation chosen under constraints such as time pressure to the "principal", and the extra maintenance cost that accrues while it is left unaddressed to the "interest". Teams increasingly report and manage it by attaching a <b>debt</b> label to issue reports (TD&nbsp;Issues). To act before debt is reported, however, we want to capture it from the source code itself, without presupposing an issue report.</span>
+      </p>
+      <p>
+        <span lang="ja">先行研究は大きく二つの流れに分けられます。研究者が定義する負債（コードスメルなど）を静的解析やメトリクスで<b>コードから検出</b>する系と、開発者が明示した負債（SATDやTD Issue）を<b>テキストから同定</b>する系です。本研究は、開発者が課題として報告した負債を、それを構成する<b>コードから捉える</b>という、これまで手薄だった領域に位置づけられます。</span>
+        <span lang="en">Prior work splits into two lines: detecting researcher-defined debt (such as code smells) <b>from code</b> via static analysis and metrics, and identifying developer-explicit debt (SATD, TD Issues) <b>from text</b>. This study occupies the underexamined space of capturing the debt developers reported as issues <b>from the code that constitutes it</b>.</span>
+      </p>
+    </div>
+
+    <div class="matrix reveal" role="img" aria-label="Positioning of this study">
+      <div class="mh"></div>
+      <div class="mh"><span lang="ja">研究者が定義</span><span lang="en">Researchers define</span></div>
+      <div class="mh"><span lang="ja">開発者が明示</span><span lang="en">Developers make explicit</span></div>
+      <div class="mh"><span lang="ja">コードから</span><span lang="en">From code</span></div>
+      <div class="cell"><b><span lang="ja">コードスメル検出</span><span lang="en">Code-smell detection</span></b><span lang="ja">静的解析・メトリクス</span><span lang="en">static analysis, metrics</span></div>
+      <div class="cell this"><b><span lang="ja">本研究</span><span lang="en">This study</span></b><span lang="ja">開発者報告の負債をコードから</span><span lang="en">issue-reported debt, from code</span><span class="tag"><span lang="ja">この間隙</span><span lang="en">the gap</span></span></div>
+      <div class="mh"><span lang="ja">テキストから</span><span lang="en">From text</span></div>
+      <div class="cell"><span lang="ja">（事例は少ない）</span><span lang="en">(uncommon)</span></div>
+      <div class="cell"><b><span lang="ja">SATD / TD Issue 同定</span><span lang="en">SATD / TD Issue identification</span></b><span lang="ja">自然言語処理</span><span lang="en">natural language processing</span></div>
+    </div>
+    <p class="tcap"><span lang="ja">「誰が負債を定義するか」×「何から同定するか」の2軸による位置づけ。</span><span lang="en">Positioning along two axes: who defines the debt, and what it is identified from.</span></p>
+  </div>
+</section>
+
+<!-- METHOD -->
+<section class="sec" id="method">
+  <div class="wrap">
+    <h2 class="reveal"><span lang="ja">手法</span><span lang="en">Method</span></h2>
+    <div class="prose reveal">
+      <h3><span lang="ja">データセット</span><span lang="en">Dataset</span></h3>
+      <p>
+        <span lang="ja">Skryseth らが公開した55,600件のTD Issueを出発点に、(1)公開リポジトリ、(2)Java、(3)負債を解消するコード変更が存在する、の3条件で絞り込み、140プロジェクト・5,229件のTD Issueを得ました。欠損メトリクスのあるファイルを除外した最終的な実験データは72,952ファイルです。</span>
+        <span lang="en">Starting from the 55,600 TD Issues released by Skryseth et al., we kept (1) public repositories, (2) Java, and (3) issues resolved by a code change, yielding 140 projects and 5,229 TD Issues. After excluding files with incomplete metrics, the experimental dataset contains 72,952 files.</span>
+      </p>
+      <h3><span lang="ja">ラベルの定義</span><span lang="en">Labeling</span></h3>
+      <p>
+        <span lang="ja">TD Issueの解消時に変更されたファイルの<b>変更直前版</b>をTDファイル、TD解消に一度も関与しなかったファイルの<b>最新変更の直前版</b>をNon-TDファイルとします。ファイル単位で分類します。</span>
+        <span lang="en">A <b>TD file</b> is the version just before a file was changed to resolve a TD Issue; a <b>Non-TD file</b> is the version before the latest change of a file never involved in resolving a TD Issue. Classification is at the file level.</span>
+      </p>
+      <h3><span lang="ja">特徴量とモデル</span><span lang="en">Features and model</span></h3>
+      <p>
+        <span lang="ja">72のソースコードメトリクス（規模・複雑さ・依存・構造）と5のファイルメトリクス（変更間隔・変更回数・作成者数・経過年数・階層の深さ）を使います。ファイルメトリクスは<b>各ファイルのラベル版までの履歴</b>のみから計測し、解消の変更やそれ以降を含めないため、時間的リークはありません。モデルは解釈性を重視した決定木（CART）で、Gini重要度により効く指標を可視化します。評価は層化10分割交差検証を10回、正解率に加え適合率・再現率・F1を報告し、多数クラス基準（0.644、TD比率約36%）と対比します。</span>
+        <span lang="en">We use 72 source-code metrics (size, complexity, dependency, structure) and 5 file metrics (change interval, number of changes, number of authors, age, directory depth). File metrics are measured only from <b>history up to each file's labeled version</b>, excluding the resolving change and later history, so there is no temporal leakage. The model is an interpretable decision tree (CART); Gini importance reveals which metrics matter. We evaluate with 10 repeats of stratified 10-fold cross-validation, report precision, recall, and F1 alongside accuracy, and compare against a majority-class baseline (0.644; TD ratio about 36%).</span>
+      </p>
+    </div>
+    <div class="defs reveal">
+      <div class="row"><div class="k"><span lang="ja">プロジェクト</span><span lang="en">Projects</span></div><div class="v">140</div></div>
+      <div class="row"><div class="k"><span lang="ja">TD Issue</span><span lang="en">TD Issues</span></div><div class="v">5,229</div></div>
+      <div class="row"><div class="k"><span lang="ja">ファイル</span><span lang="en">Files</span></div><div class="v">72,952&nbsp; <span class="num">(TD 25,948 / Non-TD 47,004)</span></div></div>
+      <div class="row"><div class="k"><span lang="ja">特徴量</span><span lang="en">Features</span></div><div class="v"><span lang="ja">72 ソースコード ＋ 5 ファイル ＝ 77</span><span lang="en">72 source-code + 5 file = 77</span></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- RQ1 -->
+<section class="sec" id="rq1">
+  <div class="wrap">
+    <h2 class="reveal"><span lang="ja">RQ1: どこまで分類できるか</span><span lang="en">RQ1: How far can we classify?</span></h2>
+    <div class="prose reveal">
+      <p>
+        <span lang="ja">解釈可能なCARTでの正解率は0.827（基準0.644）。ソースコードメトリクスのみでは0.765と弱く、ファイルメトリクスのみ（0.822）に及びません。より強力なランダムフォレストにすると全体が底上げされ、特にソースコードのみが0.765から0.853へ跳ね上がります。ただし最良でも0.883で、コードスメル研究の0.97超には届きません。したがって「課題報告の負債はコードスメルとは性質が異なる」という対比は、分類器を変えても頑健です。</span>
+        <span lang="en">With an interpretable CART, accuracy is 0.827 (baseline 0.644). Source-code metrics alone are weak (0.765), below file metrics alone (0.822). A stronger random forest lifts every model, and source-code-only jumps from 0.765 to 0.853; even so the best model (0.883) stays short of the 0.97+ reported for code smells. The contrast with code smells is therefore robust to classifier choice.</span>
+      </p>
+    </div>
+
+    <figure class="reveal">
+      <div class="figbox">
+        <div class="legend">
+          <span><i style="background:var(--c-ink)"></i><span lang="ja">全指標</span><span lang="en">All metrics</span></span>
+          <span><i style="background:var(--accent)"></i><span lang="ja">ファイル指標のみ (5)</span><span lang="en">File only (5)</span></span>
+          <span><i style="background:var(--c-code)"></i><span lang="ja">ソースコード指標のみ (72)</span><span lang="en">Source only (72)</span></span>
+        </div>
+        <svg viewBox="0 0 680 380" role="img" aria-label="Accuracy by feature set and classifier">
+          <g class="c-grid" stroke-width="1"><line x1="70" y1="310" x2="650" y2="310"/><line x1="70" y1="240" x2="650" y2="240"/><line x1="70" y1="170" x2="650" y2="170"/><line x1="70" y1="100" x2="650" y2="100"/><line x1="70" y1="30" x2="650" y2="30"/></g>
+          <g class="c-axis" font-size="12" text-anchor="end"><text x="60" y="314">0.60</text><text x="60" y="244">0.70</text><text x="60" y="174">0.80</text><text x="60" y="104">0.90</text><text x="60" y="34">1.00</text></g>
+          <line class="c-smell" x1="70" y1="51" x2="650" y2="51" stroke-width="1.4" stroke-dasharray="2 5" stroke-linecap="round"/>
+          <text class="c-smellt" x="646" y="46" font-size="12" text-anchor="end" font-weight="600"><tspan lang="ja">コードスメル研究 ≈ 0.97</tspan><tspan lang="en">Code smells (prior work) ≈ 0.97</tspan></text>
+          <line class="c-base" x1="70" y1="279.2" x2="650" y2="279.2" stroke-width="1.2" stroke-dasharray="4 4"/>
+          <text class="c-baset" x="350" y="274" font-size="11.5" text-anchor="middle"><tspan lang="ja">基準 0.644</tspan><tspan lang="en">baseline 0.644</tspan></text>
+          <g><rect class="c-ink" x="143" y="151.1" width="46" height="158.9" rx="3"/><rect class="c-file" x="197" y="154.6" width="46" height="155.4" rx="3"/><rect class="c-code" x="251" y="194.5" width="46" height="115.5" rx="3"/>
+            <g class="c-val" font-size="12.5" text-anchor="middle" font-weight="600"><text x="166" y="145">0.827</text><text x="220" y="148">0.822</text><text x="274" y="188">0.765</text></g></g>
+          <g><rect class="c-ink" x="403" y="111.9" width="46" height="198.1" rx="3"/><rect class="c-file" x="457" y="132.9" width="46" height="177.1" rx="3"/><rect class="c-code" x="511" y="132.9" width="46" height="177.1" rx="3"/>
+            <g class="c-val" font-size="12.5" text-anchor="middle" font-weight="600"><text x="426" y="106">0.883</text><text x="480" y="127">0.853</text><text x="534" y="127">0.853</text></g></g>
+          <g class="c-lab" font-size="13.5" text-anchor="middle" font-weight="600"><text x="220" y="335">CART</text><text x="480" y="335">Random forest</text></g>
+          <g class="c-sub" font-size="11.5" text-anchor="middle"><text x="220" y="352"><tspan lang="ja">解釈可能・本手法</tspan><tspan lang="en">interpretable (main)</tspan></text><text x="480" y="352"><tspan lang="ja">参照値</tspan><tspan lang="en">reference</tspan></text></g>
+        </svg>
+      </div>
+      <figcaption><span lang="ja"><b>特徴量セットと分類器ごとの正解率。</b></span><span lang="en"><b>Accuracy by feature set and classifier.</b></span></figcaption>
+    </figure>
+
+    <div class="prose reveal">
+      <p style="margin-top:26px">
+        <span lang="ja">さらに、<b>プロジェクトをまたぐ評価</b>（プロジェクト単位の交差検証）では、全モデルが基準値付近（0.564〜0.703）まで低下します。プロジェクト内評価の数値は、未知プロジェクトへの適用に対して楽観的だと分かります。ファイルメトリクスは相対的に最も頑健で、開発履歴の情報がプロジェクト間でやや転移しやすいことを示唆します。</span>
+        <span lang="en">Under a <b>cross-project evaluation</b> (project-grouped cross-validation) all models fall near the baseline (0.564 to 0.703): the within-project figures are optimistic for unseen projects. File metrics are the most robust, suggesting development-history information transfers across projects somewhat better.</span>
+      </p>
+    </div>
+
+    <div class="tblwrap reveal">
+      <table class="data">
+        <thead><tr><th><span lang="ja">評価設定</span><span lang="en">Setting</span></th><th><span lang="ja">特徴量</span><span lang="en">Features</span></th><th class="n">Accuracy</th><th class="n">F1</th></tr></thead>
+        <tbody>
+          <tr><td><span lang="ja">多数クラス基準</span><span lang="en">Majority baseline</span></td><td>-</td><td class="n">0.644</td><td class="n">-</td></tr>
+          <tr class="grp"><td colspan="4"><span lang="ja">CART・プロジェクト内（本手法）</span><span lang="en">CART, within-project (main)</span></td></tr>
+          <tr><td>CART</td><td>Source+file</td><td class="n"><span class="hl">0.827</span></td><td class="n">0.761</td></tr>
+          <tr><td>CART</td><td>File only</td><td class="n">0.822</td><td class="n">0.748</td></tr>
+          <tr><td>CART</td><td>Source only</td><td class="n">0.765</td><td class="n">0.684</td></tr>
+          <tr class="grp"><td colspan="4"><span lang="ja">ランダムフォレスト・プロジェクト内（参照）</span><span lang="en">Random forest, within-project (reference)</span></td></tr>
+          <tr><td>RF</td><td>Source+file</td><td class="n"><span class="hl">0.883</span></td><td class="n">0.821</td></tr>
+          <tr><td>RF</td><td>File only</td><td class="n">0.853</td><td class="n">0.787</td></tr>
+          <tr><td>RF</td><td>Source only</td><td class="n">0.853</td><td class="n">0.764</td></tr>
+          <tr class="grp"><td colspan="4"><span lang="ja">プロジェクト単位CV（未知プロジェクト設定）</span><span lang="en">Cross-project CV (unseen projects)</span></td></tr>
+          <tr><td>CART</td><td>Source+file</td><td class="n">0.636</td><td class="n">0.401</td></tr>
+          <tr><td>CART</td><td>File only</td><td class="n">0.671</td><td class="n">0.431</td></tr>
+          <tr><td>CART</td><td>Source only</td><td class="n">0.564</td><td class="n">0.308</td></tr>
+          <tr><td>RF</td><td>Source+file</td><td class="n">0.703</td><td class="n">0.408</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="tcap"><span lang="ja">参照比較。プロジェクト内は層化10分割、プロジェクト単位はプロジェクトで層化した分割。</span><span lang="en">Reference comparisons. Within-project uses stratified folds; cross-project groups folds by project.</span></p>
+  </div>
+</section>
+
+<!-- RQ2 -->
+<section class="sec" id="rq2">
+  <div class="wrap">
+    <h2 class="reveal"><span lang="ja">RQ2: 負債ファイルを特徴づける指標</span><span lang="en">RQ2: What characterizes a debt file</span></h2>
+    <div class="prose reveal">
+      <p>
+        <span lang="ja">全77指標のモデルでは、重要度の上位5つをファイルメトリクスが独占します。効果量（Cliff's δ）で見ても、変更間隔（δ=−0.478、大）と変更回数（+0.381、中）が最大で、ソースコードメトリクスはいずれも小。負債ファイルは、規模と依存が大きく、変更間隔が短く変更回数が多い、という姿が浮かびます。</span>
+        <span lang="en">In the all-77-metric model, file metrics occupy the top five importances. By effect size (Cliff's δ) the change interval (δ = −0.478, large) and number of changes (+0.381, medium) are the largest, while source-code metrics are all small. A debt file tends to be larger and more dependency-heavy, with shorter change intervals and more changes.</span>
+      </p>
+    </div>
+
+    <figure class="reveal">
+      <div class="figbox">
+        <div class="legend">
+          <span><i style="background:var(--accent)"></i><span lang="ja">開発履歴（ファイル）指標</span><span lang="en">Development-history (file) metric</span></span>
+          <span><i style="background:var(--c-code)"></i><span lang="ja">ソースコード指標</span><span lang="en">Source-code metric</span></span>
+        </div>
+        <svg viewBox="0 0 680 340" role="img" aria-label="Gini importance of the top metrics">
+          <g class="c-mlab" font-size="12.5" text-anchor="end"><text x="200" y="45">Change interval</text><text x="200" y="81">Age</text><text x="200" y="117">Number of changes</text><text x="200" y="153">Depth</text><text x="200" y="189">Number of authors</text><text x="200" y="225">Comment lines</text><text x="200" y="261">Comment/code ratio</text><text x="200" y="297">Imports</text></g>
+          <g><rect class="c-file" x="210" y="28" width="395.6" height="22" rx="3"/><rect class="c-file" x="210" y="64" width="190.9" height="22" rx="3"/><rect class="c-file" x="210" y="100" width="115.2" height="22" rx="3"/><rect class="c-file" x="210" y="136" width="108.4" height="22" rx="3"/><rect class="c-file" x="210" y="172" width="91.2" height="22" rx="3"/><rect class="c-code" x="210" y="208" width="63.6" height="22" rx="3"/><rect class="c-code" x="210" y="244" width="34.4" height="22" rx="3"/><rect class="c-code" x="210" y="280" width="29.2" height="22" rx="3"/></g>
+          <g class="c-sub" font-size="12"><text x="611.6" y="45">0.230</text><text x="406.9" y="81">0.111</text><text x="331.2" y="117">0.067</text><text x="324.4" y="153">0.063</text><text x="307.2" y="189">0.053</text><text x="279.6" y="225">0.037</text><text x="250.4" y="261">0.020</text><text x="245.2" y="297">0.017</text></g>
+          <line class="c-div" x1="70" y1="201" x2="650" y2="201" stroke-dasharray="3 4"/>
+          <text class="c-note" x="646" y="197" text-anchor="end" font-size="11"><tspan lang="ja">↑ 上位5つはすべてファイル指標</tspan><tspan lang="en">↑ top 5 are all file metrics</tspan></text>
+        </svg>
+      </div>
+      <figcaption><span lang="ja"><b>Gini重要度（上位15のうち上位8）。</b></span><span lang="en"><b>Gini importance (top 8 of 15).</b></span></figcaption>
+    </figure>
+
+    <div class="prose reveal">
+      <h3><span lang="ja">効果量</span><span lang="en">Effect sizes</span></h3>
+    </div>
+    <div class="tblwrap reveal" style="max-width:760px">
+      <table class="data">
+        <thead><tr><th><span lang="ja">指標</span><span lang="en">Metric</span></th><th><span lang="ja">種別</span><span lang="en">Type</span></th><th class="n">Cliff's δ</th><th class="n"><span lang="ja">中央値 TD/Non-TD</span><span lang="en">Median TD/Non-TD</span></th></tr></thead>
+        <tbody>
+          <tr><td>Change interval</td><td>File</td><td class="n">−0.478</td><td class="n">16.1 / 71.6 d</td></tr>
+          <tr><td>Number of changes</td><td>File</td><td class="n">+0.381</td><td class="n">27 / 9</td></tr>
+          <tr><td>Depth</td><td>File</td><td class="n">−0.302</td><td class="n">10 / 11</td></tr>
+          <tr><td>Number of authors</td><td>File</td><td class="n">+0.187</td><td class="n">7 / 4</td></tr>
+          <tr><td>CountCalledAccessor</td><td>Code</td><td class="n">+0.234</td><td class="n">13 / 7</td></tr>
+          <tr><td>CountDeclImport</td><td>Code</td><td class="n">+0.226</td><td class="n">12 / 8</td></tr>
+          <tr><td>CountLine</td><td>Code</td><td class="n">+0.206</td><td class="n">120 / 82</td></tr>
+          <tr><td>CountLineComment</td><td>Code</td><td class="n">+0.022</td><td class="n">20 / 19</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="tcap"><span lang="ja">正がTDファイルで大きいことを示す。負の変更間隔は、TDファイルほど間隔が短いことを意味する。</span><span lang="en">Positive means larger in TD files. A negative change interval means TD files change at shorter intervals.</span></p>
+
+    <div class="prose reveal">
+      <h3><span lang="ja">木構造とコンポーネント</span><span lang="en">Tree structure and components</span></h3>
+      <p>
+        <span lang="ja">ファイルメトリクスのみの木は、根で変更間隔29.7日を境に分岐します。頻繁（間隔が短い）かつ多く（6.5回超）変わるファイルは負債を含みやすく、稀にしか変わらず階層の深いファイルは負債を含みにくい、と読めます。配置の観点では、負債は util・model・service・config・impl といった、多くのコードから参照される共通部品に生じやすい傾向がありました（表記揺れはレマタイゼーションで吸収）。ただしこれらは最頻出のディレクトリでもあるため、順位は出現率も部分的に反映します。</span>
+        <span lang="en">The file-only tree splits at a change interval of 29.7 days. Files changed frequently (short interval) and often (more than 6.5 times) tend to contain debt, while rarely changed, deeply nested files tend not to. By placement, debt clusters in widely-referenced components such as util, model, service, config, and impl (notation variants absorbed by lemmatization). These are also the most common directories, so the ranking partly reflects component prevalence.</span>
+      </p>
+    </div>
+  </div>
+</section>
+
+<!-- DISCUSSION -->
+<section class="sec" id="discussion">
+  <div class="wrap">
+    <h2 class="reveal"><span lang="ja">考察</span><span lang="en">Discussion</span></h2>
+    <div class="prose reveal">
+      <h3><span lang="ja">プログラム内容への着目</span><span lang="en">Attending to program content</span></h3>
+      <p><span lang="ja">課題報告の負債は、メトリクスが要約する構造だけでは捉えきれず、RFでも0.883にとどまります。メトリクスは内容を捨象した要約であるため、コード内容そのものを入力とする表現学習が次の有望な方向です。</span><span lang="en">Issue-reported debt is not fully captured by the structure metrics summarize; even a random forest reaches only 0.883. Because metrics abstract away content, representation learning that takes the code content itself as input is a promising next direction.</span></p>
+      <h3><span lang="ja">開発文脈の役割</span><span lang="en">The role of development context</span></h3>
+      <p><span lang="ja">CARTではファイルメトリクスが構造メトリクスを上回りましたが、RFでは正解率が並びます。したがって「開発文脈が支配的」と強くは言えず、より頑健な言い方は「開発履歴は有効で安価、かつプロジェクト間で比較的転移しやすい信号」です。</span><span lang="en">Under CART, file metrics outperform structural metrics, but under a random forest they tie on accuracy. So we avoid claiming context "dominates"; the robust statement is that development-history information is an effective, inexpensive, and relatively transferable signal.</span></p>
+      <h3><span lang="ja">実務家と研究者への含意</span><span lang="en">Implications</span></h3>
+      <ul class="clean">
+        <li><span lang="ja"><b>実務家：</b>静的解析環境がなくても、バージョン履歴だけで点検対象を安価に絞り込める。閾値は各プロジェクトのデータに合わせて調整するのがよい。</span><span lang="en"><b>Practitioners:</b> screen inspection targets cheaply from version history alone, even without a static-analysis setup; tune thresholds to each project's data.</span></li>
+        <li><span lang="ja"><b>研究者：</b>同じ「メトリクス＋機械学習」でも、正解ラベルの出所で難易度が変わる。多数クラス基準との比較と、プロジェクト間評価の報告を標準にすべき。</span><span lang="en"><b>Researchers:</b> under the same "metrics + machine learning" setup, difficulty depends on the ground-truth origin. Comparing against a majority baseline and reporting cross-project performance should be standard.</span></li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- THREATS -->
+<section class="sec" id="threats">
+  <div class="wrap">
+    <h2 class="reveal"><span lang="ja">妥当性の脅威</span><span lang="en">Threats to validity</span></h2>
+    <div class="prose reveal">
+      <p><span lang="ja"><b>内的妥当性：</b>TDファイルのラベルは解消時の変更対象に由来し、付随的な変更が混じり得るためノイズを含みます。一方、ファイルメトリクスは各ファイルのラベル版までで計測しており、時間的リークはありません。単一のデフォルト設定CARTを用いたため、「限界」に関する結論は分類器に依存します（RFではより高い）。</span><span lang="en"><b>Internal:</b> TD-file labels come from the change targets at resolution and may carry noise from incidental changes. File metrics, however, are measured only up to each file's labeled version, so there is no temporal leakage. Because we used a single default-setting CART, conclusions about "limits" are classifier-specific (a random forest is higher).</span></p>
+      <p><span lang="ja"><b>構成概念・結論・外的妥当性：</b>Non-TDファイルにも未報告の負債が混入し得ます。欠損メトリクスによる除外は1,086件（TD 229 / Non-TD 857）で軽微。コードスメルとの対比はデータ・タスクの異なる参照比較で、RFでも成り立ちます。対象はGitHub上のOSS Javaであり、他言語や商用開発への一般化には注意が必要です。</span><span lang="en"><b>Construct, conclusion, external:</b> Non-TD files may still contain unreported debt. Exclusions for missing metrics total 1,086 (229 TD / 857 Non-TD), which is mild. The comparison with code smells is a reference contrast across differing data and tasks, and it holds under a random forest. The targets are OSS Java on GitHub, so generalization to other languages or commercial development warrants care.</span></p>
+    </div>
+  </div>
+</section>
+
+<!-- REPRO -->
+<section class="sec" id="repro">
+  <div class="wrap">
+    <h2 class="reveal"><span lang="ja">再現性</span><span lang="en">Reproducibility</span></h2>
+    <div class="prose reveal">
+      <p><span lang="ja">データ整形・実験（<code class="inl">reproduce_experiments.py</code>）・コンポーネント分析・作図までの一連のスクリプトと、日英READMEを整備しています。<code class="inl">python reproduce_experiments.py</code> で本文の各表を再現できます。</span><span lang="en">We maintain scripts for data preparation, experiments (<code class="inl">reproduce_experiments.py</code>), component analysis, and figures, with a bilingual README. Run <code class="inl">python reproduce_experiments.py</code> to reproduce the paper's tables.</span></p>
+      <p style="margin-top:20px">
+        <a class="navlink" data-nav="technical-debt-metrics.html" href="technical-debt-metrics.html" style="padding:9px 0"><span lang="ja">概要にもどる &rsaquo;</span><span lang="en">Back to overview &rsaquo;</span></a>
+      </p>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<footer>
+  <div class="wrap">
+    <div class="foot-grid">
+      <div>
+        <h3><span lang="ja">論文</span><span lang="en">Paper</span></h3>
+        <div class="cite">Y. Kimura and M. Ohira, "Classifying and Characterizing Technical Debt Reported in Issue Tracking Systems Using Software Metrics," IEICE Transactions on Information and Systems.</div>
+      </div>
+      <div>
+        <h3><span lang="ja">著者</span><span lang="en">Authors</span></h3>
+        <p class="muted-s"><b>Yuta Kimura</b><br><span lang="ja">大阪公立大学工業高等専門学校</span><span lang="en">Osaka Metropolitan University College of Technology</span><br><a href="mailto:y.kimura@omu.ac.jp">y.kimura@omu.ac.jp</a></p>
+        <p class="muted-s" style="margin-top:14px"><b>Masao Ohira</b><br><span lang="ja">和歌山大学 システム工学部</span><span lang="en">Faculty of Systems Engineering, Wakayama University</span></p>
+      </div>
+    </div>
+    <div class="foot-grid3">
+      <div>
+        <h3><span lang="ja">連絡先</span><span lang="en">Contact</span></h3>
+        <p class="muted-s">
+          <b>Yuta Kimura</b><br>
+          <span lang="ja">大阪公立大学工業高等専門学校</span><span lang="en">Osaka Metropolitan University College of Technology</span><br>
+          <a href="mailto:y.kimura@omu.ac.jp">y.kimura@omu.ac.jp</a>
+        </p>
+      </div>
+      <div>
+        <h3><span lang="ja">サイト</span><span lang="en">Site</span></h3>
+        <p class="muted-s">
+          <a href="../index.html">Home</a><br>
+          <a href="../publications.html"><span lang="ja">業績一覧</span><span lang="en">Publications</span></a><br>
+          <a href="../activities.html"><span lang="ja">研究・教育活動</span><span lang="en">Activities</span></a><br>
+          <a href="../software-engineering.html"><span lang="ja">ソフトウェア工学とは</span><span lang="en">What is software engineering?</span></a><br>
+          <a href="../technical-debt.html"><span lang="ja">技術的負債とは</span><span lang="en">What is technical debt?</span></a>
+        </p>
+      </div>
+      <div>
+        <h3><span lang="ja">研究</span><span lang="en">Research</span></h3>
+        <p class="muted-s">
+          <a href="technical-debt-metrics.html"><span lang="ja">技術的負債 × メトリクス</span><span lang="en">Technical Debt × Metrics</span></a><br>
+          <a href="apr-coding-standards.html"><span lang="ja">自動生成パッチとコーディング規約</span><span lang="en">APR &amp; Coding Standards</span></a><br>
+          <a href="satd-issue-classification.html"><span lang="ja">技術的負債の課題票分類手法</span><span lang="en">SATD Issue Classification</span></a><br>
+          <a href="td-repayment-refactoring.html"><span lang="ja">負債の返済とリファクタリング</span><span lang="en">Repayment &amp; Refactoring</span></a><br>
+          <a href="https://researchmap.jp/kimura_yuta" target="_blank" rel="noopener">researchmap</a>
+        </p>
+      </div>
+    </div>
+    <div class="foot-rule"></div>
+  </div>
+</footer>
+
+<script>
+(function(){
+  function fixLinks(l){ document.querySelectorAll('a[data-nav]').forEach(function(a){ a.setAttribute('href', a.getAttribute('data-nav')+'?lang='+l); }); }
+  window.applyLang=function(l){
+    document.documentElement.setAttribute('data-lang',l);
+    document.documentElement.lang=l;
+    try{ localStorage.setItem('site-lang',l); }catch(e){}
+    try{ var q=new URLSearchParams(location.search); q.set('lang',l); history.replaceState(null,'',location.pathname+'?'+q.toString()+location.hash); }catch(e){}
+    fixLinks(l);
+  };
+  window.toggleLang=function(){ applyLang(document.documentElement.getAttribute('data-lang')==='ja'?'en':'ja'); };
+  document.addEventListener('DOMContentLoaded',function(){
+    applyLang(document.documentElement.getAttribute('data-lang')||'ja');
+    if('IntersectionObserver' in window){
+      var io=new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target);}});},{threshold:0.1,rootMargin:"0px 0px -6% 0px"});
+      document.querySelectorAll('.reveal').forEach(function(el){io.observe(el);});
+    } else { document.querySelectorAll('.reveal').forEach(function(el){el.classList.add('in');}); }
+  });
+})();
+</script>
+</body>
+</html>

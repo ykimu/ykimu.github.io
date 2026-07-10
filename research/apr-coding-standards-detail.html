@@ -1,0 +1,466 @@
+<!DOCTYPE html>
+<html lang="ja" class="no-js">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>研究の詳細 - 自動生成パッチとコーディング規約</title>
+<meta name="description" content="Detailed account: background, method, RQ1 (violation increase), RQ2 (severity), RQ3 (tool similarity), discussion, and threats to validity.">
+<link rel="canonical" href="https://ykimu.github.io/research/apr-coding-standards-detail.html">
+<link rel="icon" href="../favicon.svg" type="image/svg+xml">
+<meta property="og:site_name" content="Yuta Kimura / 木村祐太">
+<meta property="og:type" content="article">
+<meta property="og:title" content="研究の詳細 - 自動生成パッチとコーディング規約">
+<meta property="og:description" content="Detailed account: background, method, RQ1 (violation increase), RQ2 (severity), RQ3 (tool similarity), discussion, and threats to validity.">
+<meta property="og:url" content="https://ykimu.github.io/research/apr-coding-standards-detail.html">
+<meta property="og:image" content="https://ykimu.github.io/assets/og.png">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="color-scheme" content="light">
+<script>document.documentElement.className="js";</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&family=Noto+Sans+JP:wght@400;500;700&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#FBFCFB; --bg-2:#F3F6F4; --bg-3:#EBEFED; --card:#FFFFFF;
+    --ink:#101312; --ink-2:#3C4340; --muted:#6B746F; --faint:#B7C0BB;
+    --line:#E7ECE9; --hair:rgba(16,19,18,.08); --shell:rgba(16,19,18,.035);
+    --accent:#0E6F5C; --accent-2:#0A5748; --accent-soft:rgba(14,111,92,.08);
+    --soft:0 1px 2px rgba(16,19,18,.04), 0 24px 60px -28px rgba(16,19,18,.16);
+    --inhi:inset 0 1px 0 rgba(255,255,255,.85);
+    --ease:cubic-bezier(.32,.72,0,1);
+    --sans:"Plus Jakarta Sans","Noto Sans JP",-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+    --disp:"Space Grotesk","Plus Jakarta Sans","Noto Sans JP",sans-serif;
+    --maxw:1440px; --readw:clamp(680px, 62vw, 1060px);
+  }
+  html{color-scheme:light}
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth; -webkit-text-size-adjust:100%}
+  body{margin:0; background:var(--bg); color:var(--ink); font-family:var(--sans);
+    font-size:17px; line-height:1.75; font-weight:400; -webkit-font-smoothing:antialiased; text-rendering:optimizeLegibility; position:relative}
+  body.lang-ja [lang=en]{display:none}
+  body.lang-en [lang=ja]{display:none}
+  ::selection{background:rgba(14,111,92,.16)}
+  .num{font-variant-numeric:tabular-nums; font-feature-settings:"tnum" 1; font-family:var(--disp)}
+  h1,h2,h3{margin:0; color:var(--ink); font-weight:500; line-height:1.16; letter-spacing:-.02em; text-wrap:balance}
+  body.lang-ja h1,body.lang-ja h2,body.lang-ja h3{letter-spacing:0}
+  h1 [lang="en"],h2 [lang="en"],h3 [lang="en"]{font-family:var(--disp)}
+  p{margin:0 0 1em}
+  p,.lead,.hook,.byline,figcaption,.cite,.muted-s{text-wrap:pretty}
+  a{color:var(--accent-2); text-decoration:none; transition:color .3s var(--ease)}
+  a:hover{color:var(--accent)}
+  a:focus-visible,button:focus-visible,.btn:focus-visible,[tabindex]:focus-visible{outline:2px solid var(--accent); outline-offset:3px; border-radius:8px}
+  [id]{scroll-margin-top:96px}
+  [lang="en"]{line-break:auto}
+  [lang="ja"]{line-break:strict; word-break:normal}
+  h1 [lang="ja"],h2 [lang="ja"],h3 [lang="ja"]{word-break:auto-phrase}
+
+  .wrap{max-width:var(--maxw); margin:0 auto; padding:0 40px}
+
+  .js .reveal{opacity:0; transform:translateY(18px); filter:blur(6px); transition:opacity .9s var(--ease), transform .9s var(--ease), filter .9s var(--ease)}
+  .js .reveal.in{opacity:1; transform:none; filter:none}
+  @media (prefers-reduced-motion:reduce){
+    .js .reveal{opacity:1!important; transform:none!important; filter:none!important; transition:none!important}
+    .btn,.btn .ic,.btn:active,.backlink .ar,.toc a{transition:none!important; transform:none!important}
+  }
+
+  body::after{content:""; position:fixed; inset:0; z-index:1; pointer-events:none; opacity:.02;
+    background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='g'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23g)'/%3E%3C/svg%3E")}
+
+  /* floating island nav */
+  header.bar{position:sticky; top:0; z-index:60; background:transparent; border-bottom:none}
+  header.bar .wrap{display:flex; align-items:center; justify-content:space-between; gap:20px; flex-wrap:wrap;
+    width:max-content; max-width:calc(100% - 32px); margin:16px auto 0; height:auto;
+    padding:9px 12px 9px 20px; border-radius:999px;
+    background:rgba(255,255,255,.72); backdrop-filter:saturate(1.4) blur(18px); -webkit-backdrop-filter:saturate(1.4) blur(18px);
+    border:1px solid var(--hair); box-shadow:var(--soft)}
+  .brand{font-weight:600; font-size:.92rem; letter-spacing:-.01em; color:var(--ink); display:inline-flex; align-items:center; gap:8px; white-space:nowrap}
+  .brand span.sep{color:var(--muted); font-weight:400; margin:0 2px}
+  .bar-right{display:flex; align-items:center; gap:8px; flex-wrap:wrap; justify-content:flex-end}
+  .navlink{font-weight:500; font-size:.85rem; color:var(--muted); padding:9px 8px; transition:color .3s var(--ease)}
+  .navlink:hover{color:var(--ink)}
+  .navlinks{display:flex; align-items:center; gap:2px}
+  .navlinks a{font-weight:500; font-size:.85rem; color:var(--muted); padding:9px 10px; border-radius:999px; transition:color .3s var(--ease)}
+  .navlinks a:hover{color:var(--ink)}
+  @media(max-width:860px){.navlinks{display:none}}
+
+  .btn{display:inline-flex; align-items:center; gap:8px; font-weight:500; font-size:.85rem; padding:9px 15px;
+    border-radius:999px; border:1px solid var(--hair); background:#fff; color:var(--ink); cursor:pointer;
+    transition:border-color .3s var(--ease), transform .3s var(--ease), background .3s var(--ease), box-shadow .3s var(--ease)}
+  .btn:hover{border-color:var(--ink); transform:translateY(-1px); color:var(--ink)}
+  .btn:active{transform:scale(.98)}
+  .btn.ink{background:var(--ink); border-color:var(--ink); color:#fff;
+    padding:10px 10px 10px 22px; box-shadow:0 12px 26px -14px rgba(16,19,18,.5)}
+  .btn.ink:hover{color:#fff; box-shadow:0 16px 32px -14px rgba(16,19,18,.55)}
+  .btn .ic{width:32px; height:32px; border-radius:999px; background:rgba(255,255,255,.18); display:grid; place-items:center; transition:transform .45s var(--ease)}
+  .btn:hover .ic{transform:translate(3px,-1px)}
+
+  /* eyebrow / kick pill */
+  .page-head .kick{display:inline-flex; align-items:center; gap:8px; width:max-content; max-width:100%;
+    padding:5px 13px 5px 11px; border-radius:999px; border:1px solid var(--hair); background:#fff;
+    font:600 .66rem/1 var(--disp); letter-spacing:.14em; text-transform:uppercase; color:var(--ink-2); margin-bottom:18px}
+  .page-head .kick::before{content:""; flex:0 0 auto; width:6px; height:6px; border-radius:50%; background:var(--accent)}
+
+  .page-head{padding:130px 0 4px; position:relative}
+  .backlink{display:inline-flex; align-items:center; gap:7px; font-size:.9rem; color:var(--muted); margin-bottom:26px}
+  .backlink:hover{color:var(--ink)}
+  .backlink .ar{display:inline-block; transition:transform .3s var(--ease)}
+  .backlink:hover .ar{transform:translateX(-3px)}
+  .page-head h1{font-family:var(--disp); font-size:clamp(2.2rem,4.4vw,3.3rem); font-weight:500; letter-spacing:-.03em; max-width:22ch; line-height:1.12}
+  body.lang-ja .page-head h1{font-family:var(--sans); font-weight:500; letter-spacing:0; line-height:1.3}
+  .page-head .sub{font-size:1.14rem; color:var(--ink-2); max-width:var(--readw); margin-top:20px}
+  .toc{display:flex; flex-wrap:wrap; gap:8px; margin-top:34px}
+  .toc a{font-size:.82rem; color:var(--ink-2); border:1px solid var(--hair); background:#fff; border-radius:999px; padding:6px 14px; transition:border-color .3s var(--ease), color .3s var(--ease)}
+  .toc a:hover{border-color:var(--ink); color:var(--ink)}
+
+  .sec{padding:80px 0; border-top:1px solid var(--line)}
+  .sec > .wrap > h2{font-family:var(--disp); font-size:clamp(1.6rem,2.8vw,2.2rem); font-weight:500; letter-spacing:-.02em; max-width:26ch}
+  body.lang-ja .sec > .wrap > h2{font-family:var(--sans); letter-spacing:0}
+  .prose{max-width:var(--readw); margin-top:18px}
+  .prose p{color:var(--ink-2)}
+  .prose h3{font-size:1.14rem; font-weight:600; margin:30px 0 8px; letter-spacing:-.01em}
+  .prose b{color:var(--ink); font-weight:600}
+  ul.clean{list-style:none; padding:0; margin:14px 0 0; max-width:var(--readw)}
+  ul.clean li{position:relative; padding-left:22px; margin:13px 0; color:var(--ink-2)}
+  ul.clean li::before{content:""; position:absolute; left:0; top:13px; width:11px; height:1.5px; background:var(--accent)}
+  ul.clean li b{color:var(--ink); font-weight:600}
+
+  .defs{max-width:var(--readw); margin-top:18px; border-top:1px solid var(--line)}
+  .defs .row{display:grid; grid-template-columns:170px 1fr; gap:18px; padding:14px 0; border-bottom:1px solid var(--line)}
+  .defs .k{color:var(--muted); font-size:.9rem}
+  .defs .v{color:var(--ink-2)}
+  .defs .v b{color:var(--ink); font-weight:600}
+
+  /* double-bezel shell (tray + white core) */
+  .shell{background:var(--shell); border:1px solid var(--hair); border-radius:28px; padding:7px; box-shadow:var(--soft); margin:26px 0 8px}
+
+  .matrix{display:grid; grid-template-columns:120px 1fr 1fr; gap:1px; background:var(--line);
+    border-radius:21px; overflow:hidden; font-size:.9rem; box-shadow:var(--inhi)}
+  .matrix > div{background:var(--card); padding:15px 16px}
+  .matrix .mh{color:var(--muted); font-size:.74rem; font-weight:600; font-family:var(--disp); display:flex; align-items:center}
+  .matrix .cell{color:var(--muted)}
+  .matrix .cell b{display:block; color:var(--ink); font-weight:600; margin-bottom:3px; font-size:.95rem}
+  .matrix .cell.this{background:var(--accent-soft)}
+  .matrix .cell.this b{color:var(--accent-2)}
+  .matrix .tag{display:inline-block; font-size:.68rem; font-weight:600; color:var(--accent-2); border:1px solid var(--accent);
+    border-radius:5px; padding:1px 6px; margin-top:6px; font-family:var(--disp)}
+
+  .tblwrap{overflow-x:auto; -webkit-overflow-scrolling:touch; border-radius:21px; background:var(--card); box-shadow:var(--inhi)}
+  table.data{width:100%; border-collapse:collapse; font-size:.94rem}
+  table.data th{text-align:left; font-weight:600; color:var(--muted); font-size:.76rem; letter-spacing:.03em;
+    text-transform:uppercase; padding:14px 16px; background:var(--bg-2); font-family:var(--disp); white-space:nowrap}
+  table.data td{padding:11px 16px; color:var(--ink-2); border-top:1px solid var(--line); white-space:nowrap}
+  table.data td:first-child{color:var(--ink)}
+  table.data .n{text-align:right; font-variant-numeric:tabular-nums; font-family:var(--disp)}
+  table.data tr.grp td{border-top:1px solid var(--line); color:var(--muted); font-size:.72rem; font-weight:600;
+    letter-spacing:.06em; text-transform:uppercase; padding:14px 16px 6px}
+  table.data td .hl{color:var(--accent-2); font-weight:600}
+  .tcap{font-size:.86rem; color:var(--muted); margin-top:10px; max-width:var(--readw)}
+
+  .callout{border-radius:21px; padding:22px 26px; background:var(--accent-soft); box-shadow:var(--inhi); max-width:var(--readw)}
+  .callout b{color:var(--accent-2)}
+  code.inl{font-family:"SF Mono",Menlo,Consolas,monospace; background:var(--bg-3); border:1px solid var(--hair);
+    border-radius:6px; padding:1px 6px; font-size:.83em; color:var(--ink)}
+
+  footer{border-top:1px solid var(--line); padding:60px 0 46px; background:var(--bg); margin-top:20px}
+  footer h3{font-size:.72rem; font-weight:600; letter-spacing:.12em; text-transform:uppercase; color:var(--muted); margin:0 0 1em; font-family:var(--disp)}
+  .foot-grid{display:grid; grid-template-columns:1.5fr 1fr; gap:44px}
+  .foot-grid3{display:grid; grid-template-columns:1.3fr 1fr 1fr; gap:44px; margin-top:40px}
+  .foot-grid3 a{color:var(--ink-2)}
+  .foot-grid3 a:hover{color:var(--accent)}
+  .cite{font-size:.98rem; color:var(--ink-2); line-height:1.7; max-width:52ch}
+  .muted-s{color:var(--muted); font-size:.9rem; line-height:1.75}
+  .muted-s b{color:var(--ink); font-weight:600}
+  .muted-s a{line-height:1.9}
+  .foot-rule{height:1px; background:var(--line); margin:40px 0 20px}
+  .foot-note{color:var(--muted); font-size:.82rem}
+  .skip{position:fixed; top:10px; left:10px; padding:10px 16px; background:var(--ink); color:#fff; border-radius:999px;
+    transform:translateY(-200%); transition:none; z-index:100; font:500 .85rem/1 var(--sans); text-decoration:none}
+  .skip:focus{transform:none}
+
+  @media(max-width:860px){
+    .wrap{padding:0 24px}
+    .sec{padding:56px 0}
+    .page-head{padding:100px 0 4px}
+    header.bar .wrap{padding:8px 10px 8px 16px; gap:12px}
+    .defs .row{grid-template-columns:1fr; gap:4px}
+    .foot-grid{grid-template-columns:1fr}
+    .foot-grid3{grid-template-columns:1fr; gap:30px}
+  }
+  @media(max-width:600px){
+    .matrix{grid-template-columns:1fr; font-size:.88rem}
+    .matrix .mh{padding-bottom:2px}
+  }
+  @media(max-width:480px){
+    header.bar .wrap{flex-direction:column; align-items:stretch; border-radius:26px; padding:14px 18px; text-align:center}
+    .brand{justify-content:center}
+    .bar-right{justify-content:center; margin-top:10px}
+  }
+</style>
+</head>
+<body class="lang-ja">
+<a class="skip" href="#main"><span lang="ja">本文へスキップ</span><span lang="en">Skip to content</span></a>
+
+<header class="bar">
+  <nav class="wrap" aria-label="メイン">
+    <a class="brand" href="../index.html">
+      <span aria-hidden="true">&lsaquo;</span>
+      <span lang="ja">自動生成パッチ × 規約</span><span lang="en">APR × Standards</span>
+    </a>
+    <div class="navlinks">
+      <a href="../publications.html"><span lang="ja">業績</span><span lang="en">Publications</span></a>
+      <a href="../activities.html"><span lang="ja">活動</span><span lang="en">Activities</span></a>
+      <a href="../software-engineering.html"><span lang="ja">分野紹介</span><span lang="en">Guides</span></a>
+      <a href="../technical-debt.html"><span lang="ja">技術的負債</span><span lang="en">Tech Debt</span></a>
+    </div>
+    <div class="bar-right">
+      <a class="navlink" href="apr-coding-standards.html"><span lang="ja">概要</span><span lang="en">Overview</span></a>
+      <a class="btn" href="../index.html"><span lang="ja">論文一覧</span><span lang="en">All papers</span></a>
+      <button class="btn ink" onclick="toggleLang()" aria-label="Switch language">
+        <span lang="ja">EN</span><span lang="en">日本語</span>
+      </button>
+    </div>
+  </nav>
+</header>
+
+<main id="main">
+<div class="page-head">
+  <div class="wrap">
+    <a class="backlink" href="apr-coding-standards.html"><span class="ar" aria-hidden="true">&lsaquo;</span><span lang="ja">概要にもどる</span><span lang="en">Back to overview</span></a>
+    <div class="kick">Technical Debt · APR</div>
+    <h1><span lang="ja">研究の詳細</span><span lang="en">The study in depth</span></h1>
+    <p class="sub">
+      <span lang="ja">背景と位置づけから、データセット、RQ1〜RQ3の結果、考察、妥当性の脅威までを順に解説します。要点だけを見たい場合は<a href="apr-coding-standards.html">概要ページ</a>へ。</span>
+      <span lang="en">Background and positioning, dataset, the RQ1-RQ3 results, discussion, and threats to validity, in order. For the short version, see the <a href="apr-coding-standards.html">overview</a>.</span>
+    </p>
+    <nav class="toc">
+      <a href="#background"><span lang="ja">背景と位置づけ</span><span lang="en">Background &amp; positioning</span></a>
+      <a href="#method"><span lang="ja">手法</span><span lang="en">Method</span></a>
+      <a href="#rq1"><span lang="ja">RQ1 違反の増減</span><span lang="en">RQ1 Increase</span></a>
+      <a href="#rq2"><span lang="ja">RQ2 深刻度</span><span lang="en">RQ2 Severity</span></a>
+      <a href="#rq3"><span lang="ja">RQ3 類似性</span><span lang="en">RQ3 Similarity</span></a>
+      <a href="#discussion"><span lang="ja">考察</span><span lang="en">Discussion</span></a>
+      <a href="#threats"><span lang="ja">妥当性の脅威</span><span lang="en">Threats</span></a>
+    </nav>
+  </div>
+</div>
+
+<section class="sec" id="background">
+  <div class="wrap">
+    <h2 class="reveal"><span lang="ja">背景と位置づけ</span><span lang="en">Background and positioning</span></h2>
+    <div class="prose reveal">
+      <p>
+        <span lang="ja">自動プログラム修正（<b>APR</b>）は、不具合修正の負担を減らす技術として活発に研究されています。しかしその品質評価は、テストに通るか（<b>正しさ／correctness</b>）に大きく偏ってきました。生成されたパッチが、その後の保守を担う人にとって<b>読みやすいか</b>、プロジェクトの<b>コーディング規約に沿っているか</b>は、ほとんど検討されていません。</span>
+        <span lang="en">Automated Program Repair (<b>APR</b>) is actively studied as a way to reduce the burden of fixing defects. Yet its quality has been judged mainly by whether tests pass (<b>correctness</b>). Whether the generated patch is <b>readable</b> for whoever maintains it next, or whether it follows the project's <b>coding standards</b>, has been largely overlooked.</span>
+      </p>
+      <p>
+        <span lang="ja">本研究は、コーディング規約への適合を<b>可読性・一貫性の代理指標</b>とみなし、静的解析ツール <code class="inl">Checkstyle</code> を用いて、APRパッチが規約違反をどれだけ増やすかを定量化します。正しさ一辺倒だったAPR評価に、「整い方」という軸を加える位置づけです。</span>
+        <span lang="en">Treating conformance to coding standards as a <b>proxy for readability and consistency</b>, this study uses the static analyzer <code class="inl">Checkstyle</code> to quantify how much APR patches increase standard violations. It adds a "tidiness" axis to an APR evaluation culture centered on correctness alone.</span>
+      </p>
+    </div>
+  </div>
+</section>
+
+<section class="sec" id="method">
+  <div class="wrap">
+    <h2 class="reveal"><span lang="ja">手法</span><span lang="en">Method</span></h2>
+    <div class="prose reveal">
+      <h3><span lang="ja">データセット</span><span lang="en">Dataset</span></h3>
+      <p>
+        <span lang="ja">Defects4J の3プロジェクト（<b>Lang・Math・Time</b>）を対象に、<b>32のAPRツール</b>が生成したパッチを用います。各不具合について修正前のファイルを復元し、APRパッチを適用したうえで <code class="inl">Checkstyle</code> を実行。<b>プロジェクト独自規約・Google Java Style・Sun Code Conventions</b> の3種の規約に対する違反数を、適用前後で比較します。</span>
+        <span lang="en">We target three Defects4J projects (<b>Lang, Math, Time</b>) and patches from <b>32 APR tools</b>. For each bug we recover the pre-fix file, apply the APR patch, and run <code class="inl">Checkstyle</code>, comparing violation counts before and after against three standards: the <b>project's own rules, Google Java Style, and Sun Code Conventions</b>.</span>
+      </p>
+      <h3><span lang="ja">再現の確からしさ</span><span lang="en">Reproduction reliability</span></h3>
+      <p>
+        <span lang="ja">対象不具合のうち再現できたのは Lang が13件中11件（84.6%）、Math が51件中30件（58.8%）。Time は再現数が限られます。APRツールが生成したパッチ数は Lang・Math で数百〜千件規模にのぼります。</span>
+        <span lang="en">Of the target bugs, 11 of 13 reproduced for Lang (84.6%) and 30 of 51 for Math (58.8%); Time is limited. The APR tools produced hundreds to over a thousand patches for Lang and Math.</span>
+      </p>
+    </div>
+    <div class="defs reveal">
+      <div class="row"><div class="k"><span lang="ja">対象</span><span lang="en">Targets</span></div><div class="v"><span lang="ja">Defects4J: Lang・Math・Time</span><span lang="en">Defects4J: Lang, Math, Time</span></div></div>
+      <div class="row"><div class="k"><span lang="ja">APRツール</span><span lang="en">APR tools</span></div><div class="v">32</div></div>
+      <div class="row"><div class="k"><span lang="ja">規約</span><span lang="en">Standards</span></div><div class="v"><span lang="ja">プロジェクト独自 ／ Google ／ Sun</span><span lang="en">Project-specific / Google / Sun</span></div></div>
+      <div class="row"><div class="k"><span lang="ja">計測</span><span lang="en">Tool</span></div><div class="v"><code class="inl">Checkstyle</code></div></div>
+    </div>
+  </div>
+</section>
+
+<section class="sec" id="rq1">
+  <div class="wrap">
+    <h2 class="reveal"><span lang="ja">RQ1: APRは規約違反を増やすか</span><span lang="en">RQ1: Do patches add violations?</span></h2>
+    <div class="prose reveal">
+      <p>
+        <span lang="ja">APRパッチのうち、コーディング規約違反を<b>増加させた</b>ものの割合を規約別・プロジェクト別に示します。多くの条件で<b>約40%以上</b>のパッチが違反を増やしており、規約の種類によらずこの傾向が見られました。Time は再現数が少なく、割合の解釈には注意が要ります。</span>
+        <span lang="en">The share of APR patches that <b>increased</b> coding-standard violations, by standard and project. In most conditions <b>about 40% or more</b> of patches added violations, regardless of the standard. Time has few reproductions, so its ratios should be read with care.</span>
+      </p>
+    </div>
+    <div class="shell reveal" style="max-width:760px">
+      <div class="tblwrap">
+        <table class="data">
+          <thead><tr><th><span lang="ja">プロジェクト</span><span lang="en">Project</span></th><th><span lang="ja">独自規約</span><span lang="en">Project</span></th><th class="n">Google</th><th class="n">Sun</th></tr></thead>
+          <tbody>
+            <tr><td>Lang</td><td class="n">49.2%</td><td class="n"><span class="hl">60.7%</span></td><td class="n">56.6%</td></tr>
+            <tr><td>Math</td><td class="n">47.3%</td><td class="n">43.2%</td><td class="n">43.6%</td></tr>
+            <tr><td>Time</td><td class="n">20.0%</td><td class="n">40.0%</td><td class="n">40.0%</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+    <p class="tcap"><span lang="ja">各セルは「違反を増やしたAPRパッチ」の割合。規約の種類を問わず高い水準にある。</span><span lang="en">Each cell is the share of APR patches that increased violations, high across all standards.</span></p>
+  </div>
+</section>
+
+<section class="sec" id="rq2">
+  <div class="wrap">
+    <h2 class="reveal"><span lang="ja">RQ2: 増えた違反はどれだけ深刻か</span><span lang="en">RQ2: How serious are the added violations?</span></h2>
+    <div class="prose reveal">
+      <p>
+        <span lang="ja">増加した違反の種類を上位から見ると、その多くは<b>空白やタブ、インデント</b>に関する軽微なもの（<code class="inl">WhitespaceAround</code>・<code class="inl">WhitespaceAfter</code>・<code class="inl">FileTabCharacter</code>・<code class="inl">Indentation</code>）でした。一方で、波括弧の位置（<code class="inl">LeftCurly</code>）や中括弧の省略（<code class="inl">NeedBraces</code>）のように<b>可読性に直接影響する</b>違反も約9〜10%を占めます。整形で直せるものが大半とはいえ、見過ごせない割合が残ります。</span>
+        <span lang="en">The most frequent added violations are minor ones about <b>whitespace, tabs, and indentation</b> (<code class="inl">WhitespaceAround</code>, <code class="inl">WhitespaceAfter</code>, <code class="inl">FileTabCharacter</code>, <code class="inl">Indentation</code>). But violations that <b>directly affect readability</b>, such as brace placement (<code class="inl">LeftCurly</code>) and omitted braces (<code class="inl">NeedBraces</code>), make up about 9-10%. Most are auto-formattable, yet a non-negligible share is not.</span>
+      </p>
+    </div>
+    <div class="shell reveal" style="max-width:760px">
+      <div class="tblwrap">
+        <table class="data">
+          <thead><tr><th><span lang="ja">違反の種類（上位）</span><span lang="en">Top violation types</span></th><th class="n">Google</th><th class="n">Sun</th></tr></thead>
+          <tbody>
+            <tr><td>WhitespaceAround</td><td class="n">50.0%</td><td class="n"><span class="hl">50.9%</span></td></tr>
+            <tr><td>WhitespaceAfter</td><td class="n">47.1%</td><td class="n">48.0%</td></tr>
+            <tr><td>FileTabCharacter</td><td class="n">40.2%</td><td class="n">41.5%</td></tr>
+            <tr><td>Indentation</td><td class="n">55.2%</td><td class="n">-</td></tr>
+            <tr><td>LineLength</td><td class="n">10.9%</td><td class="n">22.2%</td></tr>
+            <tr class="grp"><td colspan="3"><span lang="ja">可読性に影響する違反</span><span lang="en">Readability-affecting</span></td></tr>
+            <tr><td>LeftCurly</td><td class="n">9.8%</td><td class="n">10.5%</td></tr>
+            <tr><td>NeedBraces</td><td class="n">9.2%</td><td class="n">9.4%</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+    <p class="tcap"><span lang="ja">増加した違反に占める各種別の割合（Google／Sun）。上位は空白・タブ系だが、下段の可読性に関わる違反も一定割合ある。</span><span lang="en">Share of each type among added violations (Google/Sun). Whitespace/tab types dominate, but readability-related types persist.</span></p>
+  </div>
+</section>
+
+<section class="sec" id="rq3">
+  <div class="wrap">
+    <h2 class="reveal"><span lang="ja">RQ3: ツールの類似性と違反の類似性</span><span lang="en">RQ3: Similar tools, similar violations</span></h2>
+    <div class="prose reveal">
+      <p>
+        <span lang="ja">各APRツールが生む違反の種類をベクトル化し、<b>コサイン距離</b>で類似度を測って階層クラスタリングしました。すると、<b>似た方式でパッチを生成するツールどうしが同じクラスタに集まる</b>傾向が、Google・Sun の両規約で確認できました（例：テンプレート／パターンに基づく修正を行うツール群）。違反の「癖」は、ツールの生成メカニズムに根ざしていると考えられます。</span>
+        <span lang="en">We vectorized the violation types each APR tool produces and clustered them hierarchically by <b>cosine distance</b>. Tools that <b>generate patches in similar ways cluster together</b>, under both Google and Sun standards (e.g., template- or pattern-based repair tools). The tendencies in violations appear rooted in how each tool synthesizes code.</span>
+      </p>
+    </div>
+    <div class="shell reveal">
+      <div class="callout">
+        <span lang="ja"><b>含意：</b>ツールの生成方式が分かれば、生じやすい違反もある程度予測できます。逆に、規約違反の少ないツールの設計上の工夫を、他ツールへ横展開できる可能性があります。</span>
+        <span lang="en"><b>Implication:</b> knowing a tool's generation strategy lets us anticipate the violations it tends to produce. Conversely, design ideas from low-violation tools may transfer to others.</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="sec" id="discussion">
+  <div class="wrap">
+    <h2 class="reveal"><span lang="ja">考察</span><span lang="en">Discussion</span></h2>
+    <div class="prose reveal">
+      <ul class="clean">
+        <li><span lang="ja"><b>正しさの先へ：</b>APRを実務に導入するには、テスト通過だけでなく、生成コードの保守性・可読性の評価が欠かせない。</span><span lang="en"><b>Beyond correctness:</b> adopting APR in practice requires evaluating the maintainability and readability of generated code, not just test-passing.</span></li>
+        <li><span lang="ja"><b>設計指針：</b>違反傾向は生成方式に結びつくため、ツール選定・設計の判断材料になる。</span><span lang="en"><b>Design guidance:</b> because violation tendencies tie to generation strategy, they can inform tool selection and design.</span></li>
+        <li><span lang="ja"><b>後処理の余地：</b>増加分の多くは整形で解消可能。APR出力に自動整形を組み合わせる価値がある。</span><span lang="en"><b>Room for post-processing:</b> much of the increase is fixable by formatting, so pairing APR output with auto-formatting is worthwhile.</span></li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<section class="sec" id="threats">
+  <div class="wrap">
+    <h2 class="reveal"><span lang="ja">妥当性の脅威</span><span lang="en">Threats to validity</span></h2>
+    <div class="prose reveal">
+      <p><span lang="ja"><b>構成概念：</b>コーディング規約違反は可読性の代理指標であり、可読性そのものではありません。規約の設定（Checkstyle構成）を変えれば結果も変わり得ます。</span><span lang="en"><b>Construct:</b> standard violations are a proxy for readability, not readability itself; results may shift with a different Checkstyle configuration.</span></p>
+      <p><span lang="ja"><b>外的妥当性：</b>対象は Defects4J の Lang・Math・Time、言語はJava、APRツールは特定のデータセット由来の32種です。他プロジェクト・他言語・他ツールへの一般化には注意が必要です。</span><span lang="en"><b>External:</b> targets are Lang, Math, and Time from Defects4J, in Java, with 32 tools from a specific dataset, so generalization to other projects, languages, or tools warrants care.</span></p>
+    </div>
+  </div>
+</section>
+
+<section class="sec" id="related">
+  <div class="wrap">
+    <h2 class="reveal"><span lang="ja">関連する研究</span><span lang="en">Related research</span></h2>
+    <nav class="toc reveal" aria-label="Related research" style="margin-top:22px">
+      <a href="technical-debt-metrics.html"><span lang="ja">技術的負債 × ソフトウェアメトリクス</span><span lang="en">Technical Debt × Software Metrics</span></a>
+      <a href="td-repayment-refactoring.html"><span lang="ja">技術的負債の返済とリファクタリング</span><span lang="en">TD Repayment &amp; Refactoring</span></a>
+    </nav>
+  </div>
+</section>
+
+</main>
+
+<footer>
+  <div class="wrap">
+    <div class="foot-grid">
+      <div>
+        <h3><span lang="ja">論文</span><span lang="en">Paper</span></h3>
+        <div class="cite">
+          <span lang="ja">野口優輝, 木村祐太, 伊原彰紀, 大平雅雄「自動生成されたパッチがコーディング規約に与える影響の分析」コンピュータソフトウェア, Vol.42, No.1 (2025), pp.54-68.</span>
+          <span lang="en">Y. Noguchi, Y. Kimura, A. Ihara, and M. Ohira, "An Analysis of the Impact of Automatically-Generated Patches on Coding Standard Violation," Computer Software, Vol.42, No.1 (2025), pp.54-68.</span>
+        </div>
+      </div>
+      <div>
+        <h3><span lang="ja">リンク</span><span lang="en">Links</span></h3>
+        <p class="muted-s">
+          <a href="apr-coding-standards.html"><span lang="ja">&lsaquo; 概要ページ</span><span lang="en">&lsaquo; Overview</span></a><br>
+          <a href="../index.html"><span lang="ja">研究者プロフィール</span><span lang="en">Researcher profile</span></a><br>
+          <a href="https://researchmap.jp/kimura_yuta" target="_blank" rel="noopener">researchmap</a>
+        </p>
+      </div>
+    </div>
+    <div class="foot-grid3">
+      <div>
+        <h3><span lang="ja">連絡先</span><span lang="en">Contact</span></h3>
+        <p class="muted-s">
+          <b>Yuta Kimura</b><br>
+          <span lang="ja">大阪公立大学工業高等専門学校</span><span lang="en">Osaka Metropolitan University College of Technology</span><br>
+          <a href="mailto:y.kimura@omu.ac.jp">y.kimura@omu.ac.jp</a>
+        </p>
+      </div>
+      <div>
+        <h3><span lang="ja">サイト</span><span lang="en">Site</span></h3>
+        <p class="muted-s">
+          <a href="../index.html">Home</a><br>
+          <a href="../publications.html"><span lang="ja">業績一覧</span><span lang="en">Publications</span></a><br>
+          <a href="../activities.html"><span lang="ja">研究・教育活動</span><span lang="en">Activities</span></a><br>
+          <a href="../software-engineering.html"><span lang="ja">ソフトウェア工学とは</span><span lang="en">What is software engineering?</span></a><br>
+          <a href="../technical-debt.html"><span lang="ja">技術的負債とは</span><span lang="en">What is technical debt?</span></a>
+        </p>
+      </div>
+      <div>
+        <h3><span lang="ja">研究</span><span lang="en">Research</span></h3>
+        <p class="muted-s">
+          <a href="technical-debt-metrics.html"><span lang="ja">技術的負債 × メトリクス</span><span lang="en">Technical Debt × Metrics</span></a><br>
+          <a href="apr-coding-standards.html"><span lang="ja">自動生成パッチとコーディング規約</span><span lang="en">APR &amp; Coding Standards</span></a><br>
+          <a href="satd-issue-classification.html"><span lang="ja">技術的負債の課題票分類手法</span><span lang="en">SATD Issue Classification</span></a><br>
+          <a href="td-repayment-refactoring.html"><span lang="ja">負債の返済とリファクタリング</span><span lang="en">Repayment &amp; Refactoring</span></a><br>
+          <a href="https://researchmap.jp/kimura_yuta" target="_blank" rel="noopener">researchmap</a>
+        </p>
+      </div>
+    </div>
+    <div class="foot-rule"></div>
+    <p class="foot-note">
+      <span lang="ja">本ページは論文の報告値に基づく詳細解説です。数値は本文・表から要約しています。</span>
+      <span lang="en">A detailed account based on the paper's reported values, summarized from its text and tables.</span>
+    </p>
+  </div>
+</footer>
+
+<script>
+  function setLang(l){document.body.classList.remove('lang-ja','lang-en');document.body.classList.add('lang-'+l);document.documentElement.lang=l;
+    try{localStorage.setItem('site-lang',l)}catch(e){}
+    try{var q=new URLSearchParams(location.search);q.set('lang',l);history.replaceState(null,'',location.pathname+'?'+q+location.hash)}catch(e){}}
+  function toggleLang(){setLang(document.body.classList.contains('lang-ja')?'en':'ja')}
+  (function(){var u=null;try{u=new URLSearchParams(location.search).get('lang')}catch(e){}
+    var s=null;try{s=localStorage.getItem('site-lang')}catch(e){}
+    var l=(u==='en'||u==='ja')?u:((s==='en'||s==='ja')?s:'ja');if(l!=='ja')setLang(l);})();
+  if('IntersectionObserver' in window){
+    var io=new IntersectionObserver(function(es){ es.forEach(function(e){ if(e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target); } }); },{threshold:0.1, rootMargin:"0px 0px -6% 0px"});
+    document.querySelectorAll('.reveal').forEach(function(el){ io.observe(el); });
+  } else { document.querySelectorAll('.reveal').forEach(function(el){ el.classList.add('in'); }); }
+</script>
+</body>
+</html>

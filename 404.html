@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="ja" class="no-js">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>404 - Not Found / Yuta Kimura 木村祐太</title>
+<meta name="description" content="The page you are looking for could not be found on Yuta Kimura's research site.">
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<meta property="og:site_name" content="Yuta Kimura / 木村祐太">
+<meta property="og:type" content="website">
+<meta property="og:title" content="404 - Not Found / Yuta Kimura 木村祐太">
+<meta property="og:description" content="The page you are looking for could not be found on Yuta Kimura's research site.">
+<meta property="og:image" content="https://ykimu.github.io/assets/og.png">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="color-scheme" content="light">
+<script>document.documentElement.className="js";</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&family=Noto+Sans+JP:wght@400;500;700&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#FBFCFB; --bg-2:#F3F6F4; --bg-3:#EBEFED; --card:#FFFFFF;
+    --ink:#101312; --ink-2:#3C4340; --muted:#6B746F; --faint:#B7C0BB;
+    --line:#E7ECE9; --hair:rgba(16,19,18,.08); --shell:rgba(16,19,18,.035);
+    --accent:#0E6F5C; --accent-2:#0A5748; --accent-soft:rgba(14,111,92,.08);
+    --soft:0 1px 2px rgba(16,19,18,.04), 0 24px 60px -28px rgba(16,19,18,.16);
+    --inhi:inset 0 1px 0 rgba(255,255,255,.85);
+    --cta:0 12px 26px -14px rgba(16,19,18,.5);
+    --ease:cubic-bezier(.32,.72,0,1);
+    --sans:"Plus Jakarta Sans","Noto Sans JP",-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+    --disp:"Space Grotesk","Plus Jakarta Sans","Noto Sans JP",sans-serif;
+    --maxw:1440px;
+  }
+  html{color-scheme:light; overflow-x:hidden}
+  *{box-sizing:border-box}
+  body{margin:0; min-height:100vh; background:var(--bg); color:var(--ink); font-family:var(--sans);
+    font-size:17px; line-height:1.75; -webkit-font-smoothing:antialiased;
+    display:flex; align-items:center; justify-content:center; overflow-x:hidden; position:relative}
+  body.lang-ja [lang=en]{display:none}
+  body.lang-en [lang=ja]{display:none}
+  .amb{position:absolute; z-index:0; width:640px; height:640px; right:-160px; top:-200px; border-radius:50%;
+    pointer-events:none; opacity:.55; filter:blur(20px); background:radial-gradient(circle, var(--accent-soft), transparent 62%)}
+  .box{position:relative; z-index:1; text-align:center; padding:40px 24px; max-width:640px}
+  .eyebrow{display:inline-flex; align-items:center; gap:8px; padding:5px 13px 5px 11px; border-radius:999px;
+    border:1px solid var(--hair); background:#fff; font:600 .66rem/1 var(--disp); letter-spacing:.14em;
+    text-transform:uppercase; color:var(--ink-2); margin:0 0 22px}
+  .eyebrow::before{content:""; width:6px; height:6px; border-radius:50%; background:var(--accent)}
+  .code{font-family:var(--disp); font-weight:500; font-size:clamp(5rem,18vw,9rem); line-height:1;
+    letter-spacing:-.04em; color:var(--ink); margin:0}
+  h1{font-family:var(--sans); font-weight:500; font-size:clamp(1.5rem,3.4vw,2.1rem); letter-spacing:-.02em; margin:18px 0 10px}
+  body.lang-ja h1{letter-spacing:0}
+  .lead{color:var(--ink-2); font-size:1.05rem; margin:0 auto 30px; max-width:44ch}
+  .cta{display:flex; gap:16px; align-items:center; justify-content:center; flex-wrap:wrap}
+  .btn{display:inline-flex; align-items:center; gap:10px; font-family:var(--sans); font-weight:500; font-size:.9rem;
+    padding:11px 18px; border-radius:999px; border:1px solid var(--hair); background:#fff; color:var(--ink);
+    text-decoration:none; cursor:pointer; transition:transform .4s var(--ease), box-shadow .4s var(--ease), border-color .3s var(--ease)}
+  .btn:hover{border-color:var(--ink); transform:translateY(-1px)}
+  .btn:active{transform:scale(.98)}
+  .btn.ink{background:var(--ink); border-color:var(--ink); color:#fff; gap:12px; padding:12px 12px 12px 22px; box-shadow:var(--cta)}
+  .btn.ink .ic{width:32px; height:32px; border-radius:999px; background:rgba(255,255,255,.18);
+    display:grid; place-items:center; font-size:1rem; line-height:1; transition:transform .45s var(--ease)}
+  .btn.ink:hover .ic{transform:translate(3px,-1px)}
+  a:focus-visible,button:focus-visible{outline:2px solid var(--accent); outline-offset:3px; border-radius:8px}
+  h1{text-wrap:balance}
+  .lead{text-wrap:pretty}
+  [lang="ja"]{line-break:strict; word-break:normal}
+  @media (prefers-reduced-motion:reduce){
+    .btn,.btn:hover,.btn:active,.btn.ink:hover .ic{transform:none!important}
+    *{transition-duration:.001ms!important}
+  }
+</style>
+</head>
+<body class="lang-ja">
+<div class="amb"></div>
+<main class="box">
+  <p class="eyebrow"><span lang="ja">ページが見つかりません</span><span lang="en">Page not found</span></p>
+  <p class="code">404</p>
+  <h1><span lang="ja">お探しのページは見つかりませんでした</span><span lang="en">We couldn't find that page</span></h1>
+  <p class="lead">
+    <span lang="ja">URLが変更されたか、削除された可能性があります。以下からトップページまたは業績一覧へお進みください。</span>
+    <span lang="en">The URL may have changed or the page may have been removed. Please head to the home page or the publication list below.</span>
+  </p>
+  <div class="cta">
+    <a class="btn ink" href="index.html">
+      <span lang="ja">トップページへ</span><span lang="en">Go to home</span><span class="ic" aria-hidden="true">&rsaquo;</span>
+    </a>
+    <a class="btn" href="publications.html">
+      <span lang="ja">業績一覧</span><span lang="en">Publications</span>
+    </a>
+  </div>
+</main>
+<script>
+  function setLang(l){document.body.classList.remove('lang-ja','lang-en');document.body.classList.add('lang-'+l);document.documentElement.lang=l;
+   try{localStorage.setItem('site-lang',l)}catch(e){}
+   try{var q=new URLSearchParams(location.search);q.set('lang',l);history.replaceState(null,'',location.pathname+'?'+q+location.hash)}catch(e){}}
+  function toggleLang(){setLang(document.body.classList.contains('lang-ja')?'en':'ja')}
+  (function(){var u=null;try{u=new URLSearchParams(location.search).get('lang')}catch(e){}
+   var s=null;try{s=localStorage.getItem('site-lang')}catch(e){}
+   var l=(u==='en'||u==='ja')?u:((s==='en'||s==='ja')?s:'ja');if(l!=='ja')setLang(l);})();
+</script>
+</body>
+</html>

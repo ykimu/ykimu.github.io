@@ -1,0 +1,583 @@
+<!DOCTYPE html>
+<html lang="ja" class="no-js">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>業績一覧 / Publications & Talks - Yuta Kimura</title>
+<meta name="description" content="Publications and talks by Yuta Kimura: peer-reviewed papers, research presentations, and awards in software engineering.">
+<link rel="canonical" href="https://ykimu.github.io/publications.html">
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<meta property="og:site_name" content="Yuta Kimura / 木村祐太">
+<meta property="og:type" content="article">
+<meta property="og:title" content="業績一覧 / Publications & Talks - Yuta Kimura">
+<meta property="og:description" content="Publications and talks by Yuta Kimura: peer-reviewed papers, research presentations, and awards in software engineering.">
+<meta property="og:url" content="https://ykimu.github.io/publications.html">
+<meta property="og:image" content="https://ykimu.github.io/assets/og.png">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="color-scheme" content="light">
+<script>document.documentElement.className="js";</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700&family=Plus+Jakarta+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#FBFCFB; --bg-2:#F3F6F4; --bg-3:#EBEFED; --card:#FFFFFF;
+    --ink:#101312; --ink-2:#3C4340; --muted:#6B746F; --faint:#B7C0BB;
+    --line:#E7ECE9; --hair:rgba(16,19,18,.08); --shell:rgba(16,19,18,.035);
+    --accent:#0E6F5C; --accent-2:#0A5748; --accent-soft:rgba(14,111,92,.08);
+    --soft:0 1px 2px rgba(16,19,18,.04), 0 24px 60px -28px rgba(16,19,18,.16);
+    --inhi:inset 0 1px 0 rgba(255,255,255,.85);
+    --ease:cubic-bezier(.32,.72,0,1);
+    --sans:"Plus Jakarta Sans","Noto Sans JP",-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+    --disp:"Space Grotesk","Plus Jakarta Sans","Noto Sans JP",sans-serif;
+    --maxw:1440px; --readw:clamp(680px, 62vw, 1060px);
+  }
+  html{color-scheme:light; scroll-behavior:smooth; -webkit-text-size-adjust:100%}
+  *{box-sizing:border-box}
+  body{margin:0; background:var(--bg); color:var(--ink); font-family:var(--sans);
+    font-size:17px; line-height:1.75; font-weight:400; -webkit-font-smoothing:antialiased; text-rendering:optimizeLegibility}
+  body.lang-ja [lang=en]{display:none}
+  body.lang-en [lang=ja]{display:none}
+  ::selection{background:rgba(14,111,92,.16)}
+  .num{font-family:var(--disp); font-variant-numeric:tabular-nums; font-feature-settings:"tnum" 1}
+  body::after{content:""; position:fixed; inset:0; z-index:1; pointer-events:none; opacity:.02;
+    background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='g'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23g)'/%3E%3C/svg%3E")}
+
+  h1,h2,h3{margin:0; color:var(--ink); font-weight:500; line-height:1.16; letter-spacing:-.02em; text-wrap:balance}
+  body.lang-ja h1,body.lang-ja h2,body.lang-ja h3{letter-spacing:0}
+  h1 [lang="en"],h2 [lang="en"],h3 [lang="en"]{font-family:var(--disp); letter-spacing:-.02em}
+  p{margin:0 0 1em}
+  p,.lead,.hook,.byline,figcaption,.cite,.muted-s{text-wrap:pretty}
+  [lang="en"]{line-break:auto}
+  [lang="ja"]{line-break:strict; word-break:normal}
+  h1 [lang="ja"],h2 [lang="ja"],h3 [lang="ja"]{word-break:auto-phrase}
+  a{color:var(--accent-2); text-decoration:none; transition:color .3s var(--ease)}
+  a:hover{color:var(--accent)}
+  a:focus-visible,button:focus-visible,[tabindex]:focus-visible{outline:2px solid var(--accent); outline-offset:3px; border-radius:8px}
+  [id]{scroll-margin-top:96px}
+
+  .skip{position:fixed; top:10px; left:10px; padding:10px 16px; background:var(--ink); color:#fff; border-radius:999px; transform:translateY(-200%); transition:none; z-index:100}
+  .skip:focus{transform:none}
+
+  .wrap{max-width:var(--maxw); margin:0 auto; padding:0 40px}
+  section{padding:120px 0}
+  h2.big{font-size:clamp(1.9rem,3.2vw,2.7rem); font-weight:500; letter-spacing:-.025em; max-width:24ch}
+  body.lang-ja h2.big{letter-spacing:0}
+  .lead{font-size:1.18rem; color:var(--ink-2); line-height:1.75; font-weight:400}
+
+  .js .reveal{opacity:0; transform:translateY(18px); filter:blur(6px); transition:opacity .9s var(--ease), transform .9s var(--ease), filter .9s var(--ease)}
+  .js .reveal.in{opacity:1; transform:none; filter:none}
+  @media (prefers-reduced-motion:reduce){
+    .js .reveal{opacity:1!important; transform:none!important; filter:none!important; transition:none!important}
+    .btn,.btn.ink .ic,.pill-link,.tlink .ar,.award{transition:none!important}
+    .btn:active,.btn.ink:hover .ic,.btn.ink:hover,.btn:hover,.pill-link:hover,.award:hover{transform:none!important}
+  }
+
+  /* floating island nav */
+  header.bar{position:sticky; top:18px; z-index:60}
+  header.bar .wrap{width:max-content; max-width:calc(100% - 32px); margin:0 auto; height:auto;
+    display:flex; align-items:center; justify-content:space-between; gap:20px;
+    padding:9px 12px 9px 20px; border-radius:999px;
+    background:rgba(255,255,255,.72); backdrop-filter:saturate(1.4) blur(18px); -webkit-backdrop-filter:saturate(1.4) blur(18px);
+    border:1px solid var(--hair); box-shadow:var(--soft)}
+  .brand{font-weight:600; font-size:.92rem; letter-spacing:-.01em; color:var(--ink); display:inline-flex; align-items:center; gap:8px}
+  .brand span.sep{color:var(--muted); font-weight:400; margin:0 2px}
+  .navlinks{display:flex; gap:22px; align-items:center}
+  .navlinks a{font-size:.86rem; font-weight:500; color:var(--ink-2); transition:color .3s var(--ease)}
+  .navlinks a:hover{color:var(--ink)}
+  @media(max-width:860px){.navlinks{display:none}}
+  .bar-right{display:flex; align-items:center; gap:8px}
+
+  .btn{display:inline-flex; align-items:center; gap:8px; font-weight:500; font-size:.85rem; padding:9px 16px;
+    border-radius:999px; border:1px solid var(--hair); background:#fff; color:var(--ink); cursor:pointer;
+    transition:border-color .3s var(--ease), transform .3s var(--ease), background .3s var(--ease), box-shadow .3s var(--ease)}
+  .btn:hover{border-color:var(--ink); transform:translateY(-1px)}
+  .btn:active{transform:scale(.98)}
+  .btn.ink{padding:10px 18px; background:var(--ink); border-color:var(--ink); color:#fff;
+    box-shadow:0 12px 26px -14px rgba(16,19,18,.5)}
+  .btn.ink:has(.ic){padding:10px 10px 10px 22px}
+  .btn.ink:hover{transform:translateY(-1px)}
+  .btn.ink .ic{width:32px; height:32px; border-radius:999px; background:rgba(255,255,255,.18); display:grid; place-items:center; transition:transform .45s var(--ease)}
+  .btn.ink:hover .ic{transform:translate(3px,-1px)}
+  .tlink{display:inline-flex; align-items:center; gap:8px; font-weight:500; font-size:.95rem; color:var(--ink)}
+  .tlink .ar{transition:transform .3s var(--ease)}
+  .tlink:hover .ar{transform:translateX(4px)}
+
+  /* eyebrow pill */
+  .eyebrow{display:inline-flex; align-items:center; gap:8px; padding:5px 13px 5px 11px; border-radius:999px;
+    border:1px solid var(--hair); background:#fff; font:600 .66rem/1 var(--disp); letter-spacing:.14em;
+    text-transform:uppercase; color:var(--ink-2)}
+  .eyebrow::before{content:""; width:6px; height:6px; border-radius:999px; background:var(--accent)}
+
+  /* hero (compact) */
+  .hero{position:relative; overflow:hidden}
+  .hero::before{content:""; position:absolute; z-index:0; width:640px; height:640px; right:-150px; top:-220px;
+    border-radius:50%; pointer-events:none; opacity:.55; filter:blur(20px);
+    background:radial-gradient(circle, var(--accent-soft), transparent 62%)}
+  .hero > .wrap{position:relative; z-index:1}
+  .hero .wrap{padding-top:128px; padding-bottom:64px; max-width:1040px}
+  .hero .eyebrow{margin-bottom:26px}
+  .hero h1{font-family:var(--disp); font-size:clamp(2.6rem,5vw,4.2rem); font-weight:500; letter-spacing:-.03em; line-height:1.07; color:var(--ink); max-width:16ch}
+  body.lang-ja .hero h1{font-family:var(--sans); font-weight:600; letter-spacing:0; line-height:1.24; font-size:clamp(2rem,4.2vw,3.1rem); max-width:none}
+  .hero .lead{margin-top:22px; max-width:60ch}
+
+  /* stats band */
+  .stats{border-top:1px solid var(--line); border-bottom:1px solid var(--line); background:var(--bg-2)}
+  .stats .wrap{display:grid; grid-template-columns:repeat(4,1fr); padding-top:44px; padding-bottom:44px; gap:20px}
+  .stat{padding:0 6px}
+  .stat .n{font-family:var(--disp); font-size:2.1rem; font-weight:500; color:var(--ink); line-height:1; letter-spacing:-.02em}
+  .stat .n b{color:var(--accent); font-weight:500}
+  .stat .l{font-size:.78rem; color:var(--muted); margin-top:11px; line-height:1.45}
+
+  /* section head */
+  .sec-head{display:flex; flex-direction:column; gap:16px; margin-bottom:44px}
+  .sec-head .sub{color:var(--muted); font-size:.98rem; max-width:56ch}
+
+  /* peer-reviewed papers: list with hairlines */
+  .paper-list{list-style:none; margin:0; padding:0; border-top:1px solid var(--line); counter-reset:pp}
+  .paper{display:grid; grid-template-columns:1fr auto; gap:28px 40px; align-items:center;
+    padding:34px 0; border-bottom:1px solid var(--line)}
+  .paper-meta{display:flex; align-items:center; gap:10px; margin-bottom:12px; font-size:.74rem;
+    letter-spacing:.06em; text-transform:uppercase; color:var(--muted); font-family:var(--disp)}
+  .paper-meta .yr{color:var(--ink-2); font-weight:600}
+  .paper-meta .dot{width:3px; height:3px; border-radius:999px; background:var(--faint)}
+  .paper-title{font-size:1.22rem; font-weight:600; letter-spacing:-.01em; line-height:1.4}
+  body.lang-ja .paper-title{letter-spacing:0}
+  .paper-authors{margin:.7em 0 .35em; color:var(--ink-2); font-size:.97rem; line-height:1.55}
+  .paper-venue{margin:0; color:var(--muted); font-size:.9rem; line-height:1.5}
+  .me{color:var(--ink); font-weight:600}
+  .pill-link{display:inline-flex; align-items:center; gap:8px; white-space:nowrap; font-weight:500;
+    font-size:.82rem; padding:9px 15px; border-radius:999px; border:1px solid var(--hair); background:#fff;
+    color:var(--ink); transition:border-color .3s var(--ease), transform .3s var(--ease), box-shadow .3s var(--ease)}
+  .pill-link:hover{border-color:var(--ink); transform:translateY(-1px); color:var(--ink); box-shadow:var(--soft)}
+  .pill-link .ar{color:var(--accent); transition:transform .3s var(--ease)}
+  .pill-link:hover .ar{transform:translateX(3px)}
+  .paper-actions{display:flex; flex-direction:column; align-items:flex-end; gap:10px}
+  .bibtex-btn{font-family:inherit; cursor:pointer; transition:border-color .3s var(--ease), transform .3s var(--ease), box-shadow .3s var(--ease), background .3s var(--ease), color .3s var(--ease)}
+  .bibtex-btn.copied{border-color:var(--accent); background:var(--accent-soft); color:var(--accent-2)}
+  @media(max-width:860px){.paper-actions{flex-direction:row; align-items:flex-start; flex-wrap:wrap}}
+
+  /* presentations: timeline */
+  .soft-sec{background:var(--bg-2); border-top:1px solid var(--line); border-bottom:1px solid var(--line)}
+  .timeline{margin-top:8px}
+  .year-group{display:grid; grid-template-columns:140px 1fr; gap:36px; padding:38px 0; border-top:1px solid var(--line)}
+  .year-group:first-child{border-top:none}
+  .year-marker{position:sticky; top:96px; align-self:start; display:flex; align-items:center; gap:12px}
+  .year-marker .ring{width:13px; height:13px; border-radius:999px; background:var(--card);
+    border:3px solid var(--accent); box-shadow:0 0 0 4px var(--accent-soft); flex:0 0 auto}
+  .year-marker .yv{font-family:var(--disp); font-size:1.55rem; font-weight:600; color:var(--ink); letter-spacing:-.02em; line-height:1}
+  .talks{list-style:none; margin:0; padding:0}
+  .talk{padding:22px 0; border-top:1px solid var(--hair)}
+  .talk:first-child{border-top:none; padding-top:2px}
+  .talk-title{font-size:1.04rem; font-weight:600; letter-spacing:-.005em; line-height:1.5}
+  body.lang-ja .talk-title{letter-spacing:0}
+  .talk-authors{margin:.55em 0 .3em; color:var(--ink-2); font-size:.92rem; line-height:1.55}
+  .talk-venue{margin:0; color:var(--muted); font-size:.86rem; line-height:1.5}
+  .talk-venue .date{color:var(--ink-2)}
+  .chip{display:inline-flex; align-items:center; gap:6px; margin-bottom:11px; font-family:var(--disp);
+    font-weight:600; font-size:.66rem; letter-spacing:.08em; padding:5px 11px; border-radius:999px;
+    background:var(--accent-soft); color:var(--accent-2); border:1px solid rgba(14,111,92,.18)}
+  body.lang-ja .chip{letter-spacing:.02em}
+  .chip::before{content:""; width:5px; height:5px; border-radius:999px; background:var(--accent)}
+
+  /* awards: cards */
+  .awards{display:grid; grid-template-columns:1fr 1fr; gap:26px; margin-top:8px}
+  .award{background:var(--card); border-radius:21px; padding:32px 30px;
+    box-shadow:0 0 0 7px var(--shell), 0 0 0 7.5px var(--hair), var(--soft), var(--inhi);
+    transition:transform .4s var(--ease), box-shadow .4s var(--ease)}
+  .award:hover{transform:translateY(-2px)}
+  .award-date{display:inline-flex; align-items:center; gap:8px; font-family:var(--disp); font-weight:600;
+    font-size:.72rem; letter-spacing:.1em; text-transform:uppercase; color:var(--accent-2);
+    padding:5px 12px; border-radius:999px; background:var(--accent-soft)}
+  .award h3{font-size:1.3rem; font-weight:600; letter-spacing:-.01em; margin:18px 0 0; line-height:1.3}
+  body.lang-ja .award h3{letter-spacing:0}
+  .award .org{margin:.5em 0 20px; color:var(--muted); font-size:.92rem}
+  .award-work{border-top:1px solid var(--line); padding-top:18px}
+  .award-work .k{font-size:.72rem; letter-spacing:.08em; text-transform:uppercase; color:var(--muted);
+    font-family:var(--disp); margin-bottom:8px}
+  .award-work .work{color:var(--ink-2); font-size:.95rem; line-height:1.55}
+  .award-work .recip{margin:.7em 0 0; color:var(--muted); font-size:.88rem}
+
+  /* closing link row */
+  .endcta{background:var(--bg-2); border-top:1px solid var(--line)}
+  .endcta .wrap{display:flex; gap:28px; align-items:center; justify-content:space-between; flex-wrap:wrap;
+    padding-top:60px; padding-bottom:60px}
+  .endcta h2{font-size:clamp(1.4rem,2.4vw,1.9rem); font-weight:500}
+  .end-actions{display:flex; gap:20px; align-items:center; flex-wrap:wrap}
+
+  footer{border-top:1px solid var(--line); padding:64px 0 46px; background:var(--bg)}
+  footer h3{font-size:.72rem; font-weight:600; letter-spacing:.12em; text-transform:uppercase; color:var(--muted); margin:0 0 1em; font-family:var(--disp)}
+  .foot-grid{display:grid; grid-template-columns:1.4fr 1fr 1fr; gap:44px}
+  .cite{font-size:.98rem; color:var(--ink-2); line-height:1.7; max-width:52ch; margin-bottom:36px}
+  .muted-s{color:var(--muted); font-size:.9rem; line-height:1.9}
+  .muted-s a{color:var(--ink-2)}
+  .muted-s a:hover{color:var(--accent)}
+  .foot-rule{height:1px; background:var(--line); margin:44px 0 20px}
+  .foot-note{color:var(--muted); font-size:.82rem}
+
+  @media(max-width:860px){
+    section{padding:72px 0}
+    .wrap{padding:0 24px}
+    .hero .wrap{padding-top:104px; padding-bottom:52px}
+    .stats .wrap{grid-template-columns:repeat(2,1fr); gap:28px 20px}
+    .paper{grid-template-columns:1fr; gap:20px; align-items:start}
+    .year-group{grid-template-columns:1fr; gap:20px; padding:32px 0}
+    .year-marker{position:static}
+    .awards{grid-template-columns:1fr}
+    .foot-grid{grid-template-columns:1fr 1fr}
+    .bar-right .btn:not(.ink){display:none}
+  }
+  @media(max-width:560px){
+    .foot-grid{grid-template-columns:1fr}
+  }
+</style>
+</head>
+<body class="lang-ja">
+
+<a class="skip" href="#main"><span lang="ja">本文へスキップ</span><span lang="en">Skip to content</span></a>
+
+<header class="bar">
+  <div class="wrap">
+    <a class="brand" href="index.html">
+      <span aria-hidden="true">&lsaquo;</span>
+      <span lang="ja">木村祐太</span><span lang="en">Yuta Kimura</span>
+      <span class="sep">·</span><span lang="ja">業績一覧</span><span lang="en">Publications</span>
+    </a>
+    <nav class="navlinks" aria-label="メイン">
+      <a href="activities.html"><span lang="ja">活動</span><span lang="en">Activities</span></a>
+      <a href="software-engineering.html"><span lang="ja">分野紹介</span><span lang="en">Guides</span></a>
+      <a href="technical-debt.html"><span lang="ja">技術的負債</span><span lang="en">Tech Debt</span></a>
+    </nav>
+    <div class="bar-right">
+      <a class="btn" href="https://researchmap.jp/kimura_yuta" target="_blank" rel="noopener">researchmap</a>
+      <button class="btn ink" onclick="toggleLang()" aria-label="Switch language">
+        <span lang="ja">EN</span><span lang="en">日本語</span>
+      </button>
+    </div>
+  </div>
+</header>
+
+<main id="main">
+
+<div class="hero">
+  <div class="wrap">
+    <span class="eyebrow"><span lang="ja">業績一覧</span><span lang="en">Publications & Talks</span></span>
+    <h1>
+      <span lang="ja">業績一覧</span>
+      <span lang="en">Publications &amp; Talks</span>
+    </h1>
+    <p class="lead">
+      <span lang="ja">査読付き論文・研究発表・受賞の記録。ソフトウェア工学と情報教育に関する研究の歩みをまとめています。</span>
+      <span lang="en">A record of peer-reviewed papers, research talks, and awards, tracing work in software engineering and informatics education.</span>
+    </p>
+  </div>
+</div>
+
+<div class="stats">
+  <div class="wrap">
+    <div class="stat"><div class="n num">3</div><div class="l"><span lang="ja">査読付き論文</span><span lang="en">Peer-reviewed papers</span></div></div>
+    <div class="stat"><div class="n num">14</div><div class="l"><span lang="ja">研究発表</span><span lang="en">Research talks</span></div></div>
+    <div class="stat"><div class="n num"><b>2</b></div><div class="l"><span lang="ja">受賞</span><span lang="en">Awards</span></div></div>
+    <div class="stat"><div class="n num">2019-</div><div class="l"><span lang="ja">研究歴</span><span lang="en">Active since</span></div></div>
+  </div>
+</div>
+
+<section id="papers">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <h2 class="big"><span lang="ja">査読付き論文</span><span lang="en">Peer-reviewed papers</span></h2>
+      <p class="sub"><span lang="ja">各論文には、内容をやさしく紹介した研究紹介ページがあります。</span><span lang="en">Each paper has a research-highlight page that explains its findings in plain language.</span></p>
+    </div>
+    <ol class="paper-list">
+      <li class="paper reveal">
+        <div class="paper-main">
+          <div class="paper-meta"><span class="yr">2026</span><span class="dot"></span><span lang="ja">コンピュータソフトウェア</span><span lang="en">Computer Software</span><span class="dot"></span><span lang="ja">査読付き</span><span lang="en">Refereed</span></div>
+          <h3 class="paper-title"><span lang="ja">課題管理システムにおける技術的負債の返済とリファクタリングの関係の調査</span><span lang="en">Investigating the Relationship between Technical Debt Repayment and Refactoring in Issue Management Systems</span></h3>
+          <p class="paper-authors"><span lang="ja">池原大貴, <span class="me">木村祐太</span></span><span lang="en">D. Ikehara, <span class="me">Y. Kimura</span></span></p>
+          <p class="paper-venue"><span lang="ja">コンピュータソフトウェア, Vol.43, No.1, pp.54-67 (2026年1月)</span><span lang="en">Computer Software, Vol.43, No.1, pp.54-67 (2026)</span></p>
+        </div>
+        <div class="paper-actions">
+          <a class="pill-link" href="research/td-repayment-refactoring.html"><span lang="ja">研究紹介</span><span lang="en">Research highlight</span><span class="ar" aria-hidden="true">&rsaquo;</span></a>
+          <button class="pill-link bibtex-btn" type="button" data-bibkey="ikehara2026repayment" onclick="copyBibtex(this)"><span class="bx-label">BibTeX</span></button>
+        </div>
+      </li>
+      <li class="paper reveal">
+        <div class="paper-main">
+          <div class="paper-meta"><span class="yr">2025</span><span class="dot"></span><span lang="ja">コンピュータソフトウェア</span><span lang="en">Computer Software</span><span class="dot"></span><span lang="ja">査読付き</span><span lang="en">Refereed</span></div>
+          <h3 class="paper-title"><span lang="ja">自動生成されたパッチがコーディング規約に与える影響の分析</span><span lang="en">An Analysis of the Impact of Automatically-Generated Patches on Coding Standard Violation</span></h3>
+          <p class="paper-authors"><span lang="ja">野口優輝, <span class="me">木村祐太</span>, 伊原彰紀, 大平雅雄</span><span lang="en">Y. Noguchi, <span class="me">Y. Kimura</span>, A. Ihara, M. Ohira</span></p>
+          <p class="paper-venue"><span lang="ja">コンピュータソフトウェア, Vol.42, No.1, pp.54-68 (2025年1月)</span><span lang="en">Computer Software, Vol.42, No.1, pp.54-68 (2025)</span></p>
+        </div>
+        <div class="paper-actions">
+          <a class="pill-link" href="research/apr-coding-standards.html"><span lang="ja">研究紹介</span><span lang="en">Research highlight</span><span class="ar" aria-hidden="true">&rsaquo;</span></a>
+          <button class="pill-link bibtex-btn" type="button" data-bibkey="noguchi2025apr" onclick="copyBibtex(this)"><span class="bx-label">BibTeX</span></button>
+        </div>
+      </li>
+      <li class="paper reveal">
+        <div class="paper-main">
+          <div class="paper-meta"><span class="yr">2023</span><span class="dot"></span><span lang="ja">情報処理学会論文誌</span><span lang="en">IPSJ Journal</span><span class="dot"></span><span lang="ja">査読付き</span><span lang="en">Refereed</span></div>
+          <h3 class="paper-title"><span lang="ja">技術的負債に関連する課題票分類手法の構築</span><span lang="en">Building an Issue Classification Model on Technical Debt</span></h3>
+          <p class="paper-authors"><span lang="ja"><span class="me">木村祐太</span>, 大平雅雄</span><span lang="en"><span class="me">Y. Kimura</span>, M. Ohira</span></p>
+          <p class="paper-venue"><span lang="ja">情報処理学会論文誌, Vol.64, No.1, pp.2-12 (2023年1月)</span><span lang="en">IPSJ Journal, Vol.64, No.1, pp.2-12 (2023)</span></p>
+        </div>
+        <div class="paper-actions">
+          <a class="pill-link" href="research/satd-issue-classification.html"><span lang="ja">研究紹介</span><span lang="en">Research highlight</span><span class="ar" aria-hidden="true">&rsaquo;</span></a>
+          <button class="pill-link bibtex-btn" type="button" data-bibkey="kimura2023satd" onclick="copyBibtex(this)"><span class="bx-label">BibTeX</span></button>
+        </div>
+      </li>
+    </ol>
+  </div>
+</section>
+
+<section id="talks" class="soft-sec">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <h2 class="big"><span lang="ja">研究発表</span><span lang="en">Research talks</span></h2>
+      <p class="sub"><span lang="ja">国内外のワークショップ・研究会での発表（新しい順）。</span><span lang="en">Talks at domestic and international workshops and study groups, newest first.</span></p>
+    </div>
+
+    <div class="timeline">
+      <div class="year-group reveal">
+        <div class="year-marker"><span class="ring" aria-hidden="true"></span><span class="yv num">2025</span></div>
+        <ol class="talks">
+          <li class="talk">
+            <h3 class="talk-title"><span lang="ja">AIエージェントを用いたプログラミング課題の自動フィードバックシステム開発の試み</span><span lang="en">Toward an Automated Feedback System for Programming Assignments Using AI Agents</span></h3>
+            <p class="talk-authors"><span lang="ja">中才恵太朗, <span class="me">木村祐太</span>, 新妻弘崇</span><span lang="en">K. Nakasai, <span class="me">Y. Kimura</span>, H. Niizuma</span></p>
+            <p class="talk-venue"><span lang="ja">第32回ソフトウェア工学の基礎ワークショップ (FOSE 2025) ・ <span class="date">2025年11月8日</span></span><span lang="en">FOSE 2025 (32nd Workshop on the Foundation of Software Engineering) &middot; <span class="date">Nov 8, 2025</span></span></p>
+          </li>
+          <li class="talk">
+            <h3 class="talk-title"><span lang="ja">GitHub Issues を通じた ChatGPT の開発者利用におけるプロンプトの特徴の調査</span><span lang="en">A Study of Prompt Characteristics in Developers' Use of ChatGPT via GitHub Issues</span></h3>
+            <p class="talk-authors"><span lang="ja">祐谷創, <span class="me">木村祐太</span></span><span lang="en">H. Yuya, <span class="me">Y. Kimura</span></span></p>
+            <p class="talk-venue"><span lang="ja">第32回ソフトウェア工学の基礎ワークショップ (FOSE 2025) ・ <span class="date">2025年11月7日</span></span><span lang="en">FOSE 2025 &middot; <span class="date">Nov 7, 2025</span></span></p>
+          </li>
+          <li class="talk">
+            <h3 class="talk-title"><span lang="ja">Stack Overflow と GitHub Discussions における技術的負債の投稿の傾向と内容の違いの調査</span><span lang="en">Comparing Trends and Content of Technical-Debt Posts on Stack Overflow and GitHub Discussions</span></h3>
+            <p class="talk-authors"><span lang="ja">桑原大昇, <span class="me">木村祐太</span></span><span lang="en">D. Kuwahara, <span class="me">Y. Kimura</span></span></p>
+            <p class="talk-venue"><span lang="ja">第32回ソフトウェア工学の基礎ワークショップ (FOSE 2025) ・ <span class="date">2025年11月7日</span></span><span lang="en">FOSE 2025 &middot; <span class="date">Nov 7, 2025</span></span></p>
+          </li>
+          <li class="talk">
+            <h3 class="talk-title"><span lang="ja">総合型防災アプリ -防災備蓄管理・天気情報・避難所情報の統合</span><span lang="en">An Integrated Disaster-Prevention App: Unifying Stockpile Management, Weather, and Shelter Information</span></h3>
+            <p class="talk-authors"><span lang="ja">石見心人, 大武功, 根津步弥, 山内優弥, <span class="me">木村祐太</span>, 北野健一</span><span lang="en">K. Ishimi, I. Otake, A. Nezu, Y. Yamauchi, <span class="me">Y. Kimura</span>, K. Kitano</span></p>
+            <p class="talk-venue"><span lang="ja">日本高専学会 年会講演会 ・ <span class="date">2025年9月4日</span></span><span lang="en">Annual Conference of the Japan Association for College of Technology &middot; <span class="date">Sep 4, 2025</span></span></p>
+          </li>
+          <li class="talk">
+            <h3 class="talk-title"><span lang="ja">学食モバイルオーダーアプリの開発</span><span lang="en">Development of a Mobile Ordering App for the School Cafeteria</span></h3>
+            <p class="talk-authors"><span lang="ja">菅野葵, 行方遥希, 原田航, 近藤蒼一郎, <span class="me">木村祐太</span>, 北野健一</span><span lang="en">A. Kanno, H. Namekata, W. Harada, S. Kondo, <span class="me">Y. Kimura</span>, K. Kitano</span></p>
+            <p class="talk-venue"><span lang="ja">日本高専学会 年会講演会 ・ <span class="date">2025年9月4日</span></span><span lang="en">Annual Conference of the Japan Association for College of Technology &middot; <span class="date">Sep 4, 2025</span></span></p>
+          </li>
+          <li class="talk">
+            <h3 class="talk-title"><span lang="ja">大阪公立大学高専における応用専門PBL1 初年度の取組</span><span lang="en">First-Year Efforts in Applied Interdisciplinary PBL 1 at Osaka Metropolitan University College of Technology</span></h3>
+            <p class="talk-authors"><span lang="ja">北野健一, 久野章仁, 岩本いづみ, 東田卓, <span class="me">木村祐太</span></span><span lang="en">K. Kitano, A. Kuno, I. Iwamoto, T. Higashida, <span class="me">Y. Kimura</span></span></p>
+            <p class="talk-venue"><span lang="ja">日本高専学会 年会講演会 ・ <span class="date">2025年9月3日</span></span><span lang="en">Annual Conference of the Japan Association for College of Technology &middot; <span class="date">Sep 3, 2025</span></span></p>
+          </li>
+          <li class="talk">
+            <span class="chip"><span lang="ja">受賞 ・ 学生研究賞</span><span lang="en">Student Research Award</span></span>
+            <h3 class="talk-title"><span lang="ja">高品質なコミットメッセージの自動生成に向けたデータ収集手法の構築</span><span lang="en">Building a Data-Collection Method Toward Automatic Generation of High-Quality Commit Messages</span></h3>
+            <p class="talk-authors"><span lang="ja">山村慎太郎, 大平雅雄, <span class="me">木村祐太</span></span><span lang="en">S. Yamamura, M. Ohira, <span class="me">Y. Kimura</span></span></p>
+            <p class="talk-venue"><span lang="ja">第219回ソフトウェア工学研究発表会 (IPSJ SIGSE) ・ <span class="date">2025年3月</span></span><span lang="en">IPSJ SIGSE, 219th &middot; <span class="date">Mar 2025</span></span></p>
+          </li>
+        </ol>
+      </div>
+
+      <div class="year-group reveal">
+        <div class="year-marker"><span class="ring" aria-hidden="true"></span><span class="yv num">2024</span></div>
+        <ol class="talks">
+          <li class="talk">
+            <h3 class="talk-title"><span lang="ja">課題管理システムにおける技術的負債の返済とリファクタリングの関係の調査</span><span lang="en">Investigating the Relationship between Technical Debt Repayment and Refactoring in Issue Management Systems</span></h3>
+            <p class="talk-authors"><span lang="ja">池原大貴, <span class="me">木村祐太</span></span><span lang="en">D. Ikehara, <span class="me">Y. Kimura</span></span></p>
+            <p class="talk-venue"><span lang="ja">第31回ソフトウェア工学の基礎ワークショップ (FOSE 2024) ・ <span class="date">2024年11月</span></span><span lang="en">FOSE 2024 &middot; <span class="date">Nov 2024</span></span></p>
+          </li>
+          <li class="talk">
+            <h3 class="talk-title"><span lang="ja">深層学習を用いた実装機能の時系列の予測</span><span lang="en">Time-Series Prediction of Implemented Features Using Deep Learning</span></h3>
+            <p class="talk-authors"><span lang="ja">森壮平, <span class="me">木村祐太</span></span><span lang="en">S. Mori, <span class="me">Y. Kimura</span></span></p>
+            <p class="talk-venue"><span lang="ja">第31回ソフトウェア工学の基礎ワークショップ (FOSE 2024) ・ <span class="date">2024年11月</span></span><span lang="en">FOSE 2024 &middot; <span class="date">Nov 2024</span></span></p>
+          </li>
+        </ol>
+      </div>
+
+      <div class="year-group reveal">
+        <div class="year-marker"><span class="ring" aria-hidden="true"></span><span class="yv num">2023</span></div>
+        <ol class="talks">
+          <li class="talk">
+            <h3 class="talk-title"><span lang="ja">自動生成されたパッチがコーディング規約違反に与える影響の分析</span><span lang="en">An Analysis of the Impact of Automatically-Generated Patches on Coding-Standard Violations</span></h3>
+            <p class="talk-authors"><span lang="ja">野口優輝, <span class="me">木村祐太</span>, 伊原彰紀, 大平雅雄</span><span lang="en">Y. Noguchi, <span class="me">Y. Kimura</span>, A. Ihara, M. Ohira</span></p>
+            <p class="talk-venue"><span lang="ja">第30回ソフトウェア工学の基礎ワークショップ (FOSE 2023) ・ <span class="date">2023年11月9日</span></span><span lang="en">FOSE 2023 &middot; <span class="date">Nov 9, 2023</span></span></p>
+          </li>
+          <li class="talk">
+            <span class="chip"><span lang="ja">受賞 ・ 論文奨励賞</span><span lang="en">Paper Encouragement Award</span></span>
+            <h3 class="talk-title"><span lang="ja">技術的負債に関する課題票の単語分散表現を用いたテキスト分類</span><span lang="en">Text Classification of Technical-Debt Issue Tickets Using Word Embeddings</span></h3>
+            <p class="talk-authors"><span lang="ja">田口舞奈, <span class="me">木村祐太</span>, 大平雅雄</span><span lang="en">M. Taguchi, <span class="me">Y. Kimura</span>, M. Ohira</span></p>
+            <p class="talk-venue"><span lang="ja">ソフトウェアシンポジウム2023 ・ <span class="date">2023年6月12日</span></span><span lang="en">Software Symposium 2023 &middot; <span class="date">Jun 12, 2023</span></span></p>
+          </li>
+        </ol>
+      </div>
+
+      <div class="year-group reveal">
+        <div class="year-marker"><span class="ring" aria-hidden="true"></span><span class="yv num">2022</span></div>
+        <ol class="talks">
+          <li class="talk">
+            <h3 class="talk-title"><span lang="ja">技術的負債に関する課題票の分類モデルに単語分散表現が与える影響の分析</span><span lang="en">Analyzing the Impact of Word Embeddings on a Classification Model for Technical-Debt Issue Tickets</span></h3>
+            <p class="talk-authors"><span lang="ja">田口舞奈, <span class="me">木村祐太</span>, 大平雅雄</span><span lang="en">M. Taguchi, <span class="me">Y. Kimura</span>, M. Ohira</span></p>
+            <p class="talk-venue"><span lang="ja">第29回ソフトウェア工学の基礎ワークショップ (FOSE 2022) ・ <span class="date">2022年11月10日</span></span><span lang="en">FOSE 2022 &middot; <span class="date">Nov 10, 2022</span></span></p>
+          </li>
+        </ol>
+      </div>
+
+      <div class="year-group reveal">
+        <div class="year-marker"><span class="ring" aria-hidden="true"></span><span class="yv num">2019</span></div>
+        <ol class="talks">
+          <li class="talk">
+            <h3 class="talk-title">Investigating Mislabeling in Making a Dataset for Automated NFR Classification</h3>
+            <p class="talk-authors">Y. Kimura, M. Ohira</p>
+            <p class="talk-venue">The 10th International Workshop on Empirical Software Engineering in Practice (IWESEP 2019) &middot; <span class="date"><span lang="ja">2019年12月</span><span lang="en">Dec 2019</span></span></p>
+          </li>
+          <li class="talk">
+            <h3 class="talk-title"><span lang="ja">自動分類におけるデータセット作成時のミスラベルの調査：非機能要件分類を例として</span><span lang="en">Investigating Mislabeling in Dataset Creation for Automated Classification: A Case Study of Non-Functional Requirements</span></h3>
+            <p class="talk-authors"><span lang="ja"><span class="me">木村祐太</span>, 大平雅雄</span><span lang="en"><span class="me">Y. Kimura</span>, M. Ohira</span></p>
+            <p class="talk-venue"><span lang="ja">第26回ソフトウェア工学の基礎ワークショップ (FOSE 2019) ・ <span class="date">2019年11月</span></span><span lang="en">FOSE 2019 &middot; <span class="date">Nov 2019</span></span></p>
+          </li>
+        </ol>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="awards">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <h2 class="big"><span lang="ja">受賞</span><span lang="en">Awards</span></h2>
+    </div>
+    <div class="awards reveal">
+      <div class="award">
+        <span class="award-date"><span lang="ja">2025年3月</span><span lang="en">Mar 2025</span></span>
+        <h3><span lang="ja">学生研究賞</span><span lang="en">Student Research Award</span></h3>
+        <p class="org"><span lang="ja">情報処理学会ソフトウェア工学研究会</span><span lang="en">IPSJ SIG on Software Engineering</span></p>
+        <div class="award-work">
+          <div class="k"><span lang="ja">対象</span><span lang="en">For</span></div>
+          <p class="work"><span lang="ja">「高品質なコミットメッセージの自動生成に向けたデータ収集手法の構築」</span><span lang="en">"Building a Data-Collection Method Toward Automatic Generation of High-Quality Commit Messages" (IPSJ SIGSE 2025)</span></p>
+          <p class="recip"><span lang="ja">山村慎太郎, 大平雅雄, <span class="me">木村祐太</span></span><span lang="en">S. Yamamura, M. Ohira, <span class="me">Y. Kimura</span></span></p>
+        </div>
+      </div>
+      <div class="award">
+        <span class="award-date"><span lang="ja">2023年6月</span><span lang="en">Jun 2023</span></span>
+        <h3><span lang="ja">論文奨励賞</span><span lang="en">Paper Encouragement Award</span></h3>
+        <p class="org"><span lang="ja">ソフトウェア技術者協会</span><span lang="en">Software Engineers Association (Software Symposium 2023)</span></p>
+        <div class="award-work">
+          <div class="k"><span lang="ja">対象</span><span lang="en">For</span></div>
+          <p class="work"><span lang="ja">「技術的負債に関する課題票の単語分散表現を用いたテキスト分類」</span><span lang="en">"Text Classification of Technical-Debt Issue Tickets Using Word Embeddings"</span></p>
+          <p class="recip"><span lang="ja">田口舞奈, <span class="me">木村祐太</span>, 大平雅雄</span><span lang="en">M. Taguchi, <span class="me">Y. Kimura</span>, M. Ohira</span></p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="endcta">
+  <div class="wrap reveal">
+    <div style="flex:1 1 360px">
+      <h2><span lang="ja">研究・教育活動もご覧ください</span><span lang="en">Explore projects and teaching</span></h2>
+      <p style="color:var(--ink-2); margin:12px 0 0; max-width:52ch"><span lang="ja">研究プロジェクト、担当授業、所属学会は活動ページにまとめています。</span><span lang="en">Research projects, courses, and memberships are gathered on the activities page.</span></p>
+    </div>
+    <div class="end-actions">
+      <a class="btn ink" href="activities.html">
+        <span lang="ja">研究・教育活動へ</span><span lang="en">Projects & teaching</span>
+        <span class="ic" aria-hidden="true">&rsaquo;</span>
+      </a>
+      <a class="tlink" href="index.html">
+        <span lang="ja">プロフィールに戻る</span><span lang="en">Back to profile</span>
+        <span class="ar" aria-hidden="true">&rsaquo;</span>
+      </a>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<footer>
+  <div class="wrap">
+    <div class="cite">
+      <span lang="ja">査読付き論文3件・研究発表14件・受賞2件を掲載しています。完全なリストは researchmap をご覧ください。</span>
+      <span lang="en">This page lists 3 peer-reviewed papers, 14 research talks, and 2 awards. For the complete record, see researchmap.</span>
+    </div>
+    <div class="foot-grid">
+      <div>
+        <h3><span lang="ja">連絡先</span><span lang="en">Contact</span></h3>
+        <p class="muted-s">
+          <b>木村 祐太 / Yuta Kimura</b><br>
+          <span lang="ja">大阪公立大学工業高等専門学校</span><span lang="en">Osaka Metropolitan University College of Technology</span><br>
+          <a href="mailto:y.kimura@omu.ac.jp">y.kimura [at] omu.ac.jp</a>
+        </p>
+      </div>
+      <div>
+        <h3><span lang="ja">サイト</span><span lang="en">Site</span></h3>
+        <p class="muted-s">
+          <a href="index.html"><span lang="ja">ホーム</span><span lang="en">Home</span></a><br>
+          <a href="publications.html"><span lang="ja">業績一覧</span><span lang="en">All publications</span></a><br>
+          <a href="activities.html"><span lang="ja">研究・教育活動</span><span lang="en">Projects & teaching</span></a><br>
+          <a href="software-engineering.html"><span lang="ja">ソフトウェア工学とは</span><span lang="en">What is software engineering?</span></a><br>
+          <a href="technical-debt.html"><span lang="ja">技術的負債とは</span><span lang="en">What is technical debt?</span></a>
+        </p>
+      </div>
+      <div>
+        <h3><span lang="ja">研究</span><span lang="en">Research</span></h3>
+        <p class="muted-s">
+          <a href="research/technical-debt-metrics.html"><span lang="ja">メトリクスによる分類・特徴づけ</span><span lang="en">Classifying debt with metrics</span></a><br>
+          <a href="research/apr-coding-standards.html"><span lang="ja">自動生成パッチと品質</span><span lang="en">Auto-generated patches and quality</span></a><br>
+          <a href="research/td-repayment-refactoring.html"><span lang="ja">返済とリファクタリング</span><span lang="en">Repayment and refactoring</span></a><br>
+          <a href="research/satd-issue-classification.html"><span lang="ja">TD-Issue の自動分類</span><span lang="en">Automatic TD-Issue classification</span></a><br>
+          <a href="https://researchmap.jp/kimura_yuta" target="_blank" rel="noopener">researchmap</a>
+        </p>
+      </div>
+    </div>
+    <div class="foot-rule"></div>
+    <p class="foot-note">
+      <span lang="ja">データ出典: researchmap.jp/kimura_yuta。氏名・所属・年月は原典に基づきます。</span>
+      <span lang="en">Data source: researchmap.jp/kimura_yuta. Names, affiliations, and dates follow the original record.</span>
+    </p>
+  </div>
+</footer>
+
+<script>
+  function setLang(l){document.body.classList.remove('lang-ja','lang-en');document.body.classList.add('lang-'+l);document.documentElement.lang=l;
+   try{localStorage.setItem('site-lang',l)}catch(e){}
+   try{var q=new URLSearchParams(location.search);q.set('lang',l);history.replaceState(null,'',location.pathname+'?'+q+location.hash)}catch(e){}}
+  function toggleLang(){setLang(document.body.classList.contains('lang-ja')?'en':'ja')}
+  (function(){var u=null;try{u=new URLSearchParams(location.search).get('lang')}catch(e){}
+   var s=null;try{s=localStorage.getItem('site-lang')}catch(e){}
+   var l=(u==='en'||u==='ja')?u:((s==='en'||s==='ja')?s:'ja');if(l!=='ja')setLang(l);})();
+
+  var BIBTEX = {
+    ikehara2026repayment: "@article{ikehara2026repayment,\n  author  = {D. Ikehara and Y. Kimura},\n  title   = {Investigating the Relationship between Technical Debt Repayment and Refactoring in Issue Management Systems},\n  journal = {Computer Software},\n  volume  = {43},\n  number  = {1},\n  pages   = {54--67},\n  year    = {2026}\n}",
+    noguchi2025apr: "@article{noguchi2025apr,\n  author  = {Y. Noguchi and Y. Kimura and A. Ihara and M. Ohira},\n  title   = {An Analysis of the Impact of Automatically-Generated Patches on Coding Standard Violation},\n  journal = {Computer Software},\n  volume  = {42},\n  number  = {1},\n  pages   = {54--68},\n  year    = {2025}\n}",
+    kimura2023satd: "@article{kimura2023satd,\n  author  = {Y. Kimura and M. Ohira},\n  title   = {Building an Issue Classification Model on Technical Debt},\n  journal = {IPSJ Journal},\n  volume  = {64},\n  number  = {1},\n  pages   = {2--12},\n  year    = {2023}\n}"
+  };
+  function fallbackCopy(text){
+    var ta=document.createElement('textarea');
+    ta.value=text; ta.style.position='fixed'; ta.style.top='-1000px'; ta.style.opacity='0';
+    document.body.appendChild(ta); ta.focus(); ta.select();
+    try{ document.execCommand('copy'); }catch(e){}
+    document.body.removeChild(ta);
+  }
+  function copyBibtex(btn){
+    var key=btn.getAttribute('data-bibkey'); var text=BIBTEX[key]; if(!text) return;
+    var isJa=document.body.classList.contains('lang-ja');
+    var label=btn.querySelector('.bx-label');
+    var mark=function(){
+      label.textContent=isJa?'コピーしました':'Copied';
+      btn.classList.add('copied');
+      setTimeout(function(){ label.textContent='BibTeX'; btn.classList.remove('copied'); },1600);
+    };
+    if(navigator.clipboard && navigator.clipboard.writeText){
+      navigator.clipboard.writeText(text).then(mark, function(){ fallbackCopy(text); mark(); });
+    } else {
+      fallbackCopy(text); mark();
+    }
+  }
+
+  if('IntersectionObserver' in window){
+    var io=new IntersectionObserver(function(es){ es.forEach(function(e){ if(e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target); } }); },{threshold:0.12, rootMargin:"0px 0px -6% 0px"});
+    document.querySelectorAll('.reveal').forEach(function(el){ io.observe(el); });
+  } else { document.querySelectorAll('.reveal').forEach(function(el){ el.classList.add('in'); }); }
+</script>
+</body>
+</html>

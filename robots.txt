@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://ykimu.github.io/sitemap.xml
