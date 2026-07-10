@@ -268,6 +268,24 @@
   .foot-rule{height:1px; background:var(--line); margin:48px 0 22px}
   .foot-note{color:var(--muted); font-size:.82rem}
 
+  /* ---------- site map ---------- */
+  .sitemap-shell{margin-top:36px; background:var(--shell); border:1px solid var(--hair);
+    border-radius:28px; padding:7px; box-shadow:var(--soft)}
+  .sitemap-core{background:var(--card); border-radius:21px; box-shadow:var(--inhi); padding:14px}
+  .sm-grid{display:grid; grid-template-columns:repeat(auto-fit,minmax(212px,1fr)); gap:6px}
+  .sm-group{padding:22px 22px 12px}
+  .sm-head{display:block; font:600 .7rem/1 var(--disp); letter-spacing:.14em; text-transform:uppercase;
+    color:var(--accent-2); margin:0 0 4px}
+  .sm-list{list-style:none; padding:0; margin:0}
+  .sm-item{display:flex; flex-wrap:wrap; align-items:baseline; gap:6px 10px;
+    border-top:1px solid var(--line); padding:10px 2px}
+  .sm-link{font-size:.92rem; font-weight:500; color:var(--ink-2); line-height:1.4; transition:color .3s var(--ease)}
+  .sm-link:hover{color:var(--accent)}
+  .sm-sub{display:inline-flex; align-items:center; gap:3px; font-size:.7rem; font-weight:600; color:var(--muted);
+    border:1px solid var(--hair); border-radius:999px; padding:2px 9px;
+    transition:border-color .3s var(--ease), color .3s var(--ease)}
+  .sm-sub:hover{border-color:var(--accent); color:var(--accent)}
+
   @media(max-width:860px){
     section{padding:72px 0}
     .wrap{padding:0 24px}
@@ -319,11 +337,13 @@
   <div class="wrap">
     <div class="brand">Yuta&nbsp;Kimura<span>·</span>木村祐太</div>
     <nav class="navlinks" aria-label="メイン">
-      <a href="#about"><span lang="ja">研究について</span><span lang="en">Research</span></a>
-      <a href="#featured"><span lang="ja">代表研究</span><span lang="en">Featured</span></a>
-      <a href="#publications"><span lang="ja">業績</span><span lang="en">Publications</span></a>
-      <a href="activities.html"><span lang="ja">活動</span><span lang="en">Activities</span></a>
-      <a href="#contact"><span lang="ja">連絡先</span><span lang="en">Contact</span></a>
+      <a href="publications.html"><span lang="ja">業績</span><span lang="en">Publications</span></a>
+      <a href="activities.html"><span lang="ja">研究活動</span><span lang="en">Research</span></a>
+      <a href="teaching.html"><span lang="ja">教育</span><span lang="en">Teaching</span></a>
+      <a href="software-engineering.html"><span lang="ja">分野紹介</span><span lang="en">Guides</span></a>
+      <a href="technical-debt.html"><span lang="ja">技術的負債</span><span lang="en">Tech Debt</span></a>
+      <a href="students.html"><span lang="ja">学生の皆さんへ</span><span lang="en">For Students</span></a>
+      <a href="glossary.html"><span lang="ja">用語集</span><span lang="en">Glossary</span></a>
     </nav>
     <div class="bar-right">
       <a class="btn" href="https://researchmap.jp/kimura_yuta" target="_blank" rel="noopener">
@@ -720,7 +740,7 @@
         <span lang="ja">業績をすべて見る</span><span lang="en">See all publications</span><span class="ic" aria-hidden="true">&rsaquo;</span>
       </a>
       <a class="tlink" href="activities.html">
-        <span lang="ja">研究プロジェクト・担当授業</span><span lang="en">Projects &amp; teaching</span>
+        <span lang="ja">研究活動</span><span lang="en">Research activities</span>
         <span class="ar" aria-hidden="true">&rsaquo;</span>
       </a>
     </div>
@@ -773,6 +793,97 @@
   </div>
 </section>
 
+<!-- SITE MAP -->
+<section id="sitemap">
+  <div class="wrap reveal">
+    <p class="eyebrow"><span lang="ja">サイトマップ</span><span lang="en">Site Map</span></p>
+    <h2 class="big"><span lang="ja">サイトの全コンテンツ</span><span lang="en">Everything on this site</span></h2>
+    <div class="sitemap-shell">
+      <div class="sitemap-core">
+        <div class="sm-grid">
+
+          <div class="sm-group">
+            <span class="sm-head"><span lang="ja">研究</span><span lang="en">Research</span></span>
+            <ul class="sm-list">
+              <li class="sm-item">
+                <a class="sm-link" href="research/technical-debt-metrics.html"><span lang="ja">技術的負債とメトリクス</span><span lang="en">Tech debt &amp; metrics</span></a>
+                <a class="sm-sub" href="research/detail.html"><span lang="ja">詳細</span><span lang="en">Detail</span><span aria-hidden="true">&rsaquo;</span></a>
+              </li>
+              <li class="sm-item">
+                <a class="sm-link" href="research/apr-coding-standards.html"><span lang="ja">自動生成パッチと規約</span><span lang="en">APR &amp; coding standards</span></a>
+                <a class="sm-sub" href="research/apr-coding-standards-detail.html"><span lang="ja">詳細</span><span lang="en">Detail</span><span aria-hidden="true">&rsaquo;</span></a>
+              </li>
+              <li class="sm-item">
+                <a class="sm-link" href="research/td-repayment-refactoring.html"><span lang="ja">負債返済とリファクタリング</span><span lang="en">TD repayment &amp; refactoring</span></a>
+                <a class="sm-sub" href="research/td-repayment-refactoring-detail.html"><span lang="ja">詳細</span><span lang="en">Detail</span><span aria-hidden="true">&rsaquo;</span></a>
+              </li>
+              <li class="sm-item">
+                <a class="sm-link" href="research/satd-issue-classification.html"><span lang="ja">課題票の負債分類</span><span lang="en">SATD issue classification</span></a>
+                <a class="sm-sub" href="research/satd-issue-classification-detail.html"><span lang="ja">詳細</span><span lang="en">Detail</span><span aria-hidden="true">&rsaquo;</span></a>
+              </li>
+            </ul>
+          </div>
+
+          <div class="sm-group">
+            <span class="sm-head"><span lang="ja">教育・科目</span><span lang="en">Teaching</span></span>
+            <ul class="sm-list">
+              <li class="sm-item">
+                <a class="sm-link" href="students.html"><span lang="ja">学生の皆さんへ</span><span lang="en">For students</span></a>
+              </li>
+              <li class="sm-item">
+                <a class="sm-link" href="course/index.html"><span lang="ja">ソフトウェア工学 科目ページ</span><span lang="en">Software engineering (course)</span></a>
+              </li>
+              <li class="sm-item">
+                <a class="sm-link" href="course/logic-circuits.html"><span lang="ja">論理回路1 科目ページ</span><span lang="en">Logic circuits 1 (course)</span></a>
+              </li>
+            </ul>
+          </div>
+
+          <div class="sm-group">
+            <span class="sm-head"><span lang="ja">教材</span><span lang="en">Learning materials</span></span>
+            <ul class="sm-list">
+              <li class="sm-item">
+                <a class="sm-link" href="course/design-patterns.html"><span lang="ja">デザインパターン学習ガイド</span><span lang="en">Design patterns guide</span></a>
+              </li>
+              <li class="sm-item">
+                <a class="sm-link" href="course/software-architecture.html"><span lang="ja">アーキテクチャパターン大全</span><span lang="en">Architecture patterns</span></a>
+              </li>
+              <li class="sm-item">
+                <a class="sm-link" href="course/uml-guide.html"><span lang="ja">クラス図・シーケンス図 作成ガイド</span><span lang="en">UML diagrams guide</span></a>
+              </li>
+              <li class="sm-item">
+                <a class="sm-link" href="glossary.html"><span lang="ja">研究用語ミニ辞典</span><span lang="en">Glossary</span></a>
+              </li>
+            </ul>
+          </div>
+
+          <div class="sm-group">
+            <span class="sm-head"><span lang="ja">分野・プロフィール</span><span lang="en">About</span></span>
+            <ul class="sm-list">
+              <li class="sm-item">
+                <a class="sm-link" href="software-engineering.html"><span lang="ja">ソフトウェア工学とは</span><span lang="en">What is software engineering</span></a>
+              </li>
+              <li class="sm-item">
+                <a class="sm-link" href="technical-debt.html"><span lang="ja">技術的負債とは</span><span lang="en">What is technical debt</span></a>
+              </li>
+              <li class="sm-item">
+                <a class="sm-link" href="publications.html"><span lang="ja">業績一覧</span><span lang="en">Publications</span></a>
+              </li>
+              <li class="sm-item">
+                <a class="sm-link" href="activities.html"><span lang="ja">研究活動</span><span lang="en">Research activities</span></a>
+              </li>
+              <li class="sm-item">
+                <a class="sm-link" href="teaching.html"><span lang="ja">教育</span><span lang="en">Teaching</span></a>
+              </li>
+            </ul>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
 </main>
 
 <!-- FOOTER / CONTACT -->
@@ -792,7 +903,8 @@
         <p class="muted-s">
           <a href="index.html"><span lang="ja">ホーム</span><span lang="en">Home</span></a><br>
           <a href="publications.html"><span lang="ja">業績一覧</span><span lang="en">Publications</span></a><br>
-          <a href="activities.html"><span lang="ja">研究・教育活動</span><span lang="en">Projects &amp; teaching</span></a><br>
+          <a href="activities.html"><span lang="ja">研究活動</span><span lang="en">Research activities</span></a><br>
+          <a href="teaching.html"><span lang="ja">教育</span><span lang="en">Teaching</span></a><br>
           <a href="software-engineering.html"><span lang="ja">ソフトウェア工学とは</span><span lang="en">What is software engineering?</span></a><br>
           <a href="technical-debt.html"><span lang="ja">技術的負債とは</span><span lang="en">What is technical debt?</span></a><br>
           <a href="students.html"><span lang="ja">学生の皆さんへ</span><span lang="en">For students</span></a><br>

@@ -3,15 +3,15 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>研究活動 - 木村祐太 / Research Activities</title>
-<meta name="description" content="Yuta Kimura's grant-funded research projects and academic society memberships at Osaka Metropolitan University College of Technology.">
-<link rel="canonical" href="https://ykimu.github.io/activities.html">
+<title>教育・担当授業 - 木村祐太 / Teaching</title>
+<meta name="description" content="Courses taught by Yuta Kimura at Osaka Metropolitan University College of Technology, with materials shared for classes.">
+<link rel="canonical" href="https://ykimu.github.io/teaching.html">
 <link rel="icon" href="favicon.svg" type="image/svg+xml">
 <meta property="og:site_name" content="Yuta Kimura / 木村祐太">
 <meta property="og:type" content="article">
-<meta property="og:title" content="研究活動 - 木村祐太 / Research Activities">
-<meta property="og:description" content="Yuta Kimura's grant-funded research projects and academic society memberships at Osaka Metropolitan University College of Technology.">
-<meta property="og:url" content="https://ykimu.github.io/activities.html">
+<meta property="og:title" content="教育・担当授業 - 木村祐太 / Teaching">
+<meta property="og:description" content="Courses taught by Yuta Kimura at Osaka Metropolitan University College of Technology, with materials shared for classes.">
+<meta property="og:url" content="https://ykimu.github.io/teaching.html">
 <meta property="og:image" content="https://ykimu.github.io/assets/og.png">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="color-scheme" content="light">
@@ -75,8 +75,8 @@
   .js .reveal.in{opacity:1; transform:none; filter:none}
   @media (prefers-reduced-motion:reduce){
     .js .reveal{opacity:1!important; transform:none!important; filter:none!important; transition:none!important}
-    .btn,.btn.ink .ic,.proj-card{transition:none!important}
-    .btn:active,.proj-card:hover,.btn.ink:hover .ic,.btn.ink:hover,.btn:hover{transform:none!important}
+    .btn,.btn.ink .ic,.course-tile,.mat-row,.tlink .ar,.course-tile .ar{transition:none!important}
+    .btn:active,.course-tile:hover,.btn.ink:hover .ic,.btn.ink:hover,.btn:hover,.course-tile.link:hover .ar,.mat-row:hover .ar,.tlink:hover .ar{transform:none!important}
   }
 
   /* floating island nav */
@@ -120,36 +120,28 @@
   body.lang-ja .hero h1{font-family:var(--sans); font-weight:600; letter-spacing:0; line-height:1.28; font-size:clamp(1.8rem,3.6vw,2.6rem); max-width:none}
   .hero .lead{max-width:56ch}
 
-  /* stats band */
-  .stats{border-top:1px solid var(--line); border-bottom:1px solid var(--line); background:var(--bg-2)}
-  .stats .wrap{display:grid; grid-template-columns:repeat(3,1fr); padding-top:40px; padding-bottom:40px; gap:20px; max-width:840px}
-  .stat{padding:0 6px}
-  .stat .n{font-family:var(--disp); font-size:2.1rem; font-weight:500; color:var(--ink); line-height:1; letter-spacing:-.02em}
-  .stat .l{font-size:.78rem; color:var(--muted); margin-top:11px; line-height:1.45}
+  /* course tiles */
+  .course-grid{display:grid; grid-template-columns:repeat(4,1fr); gap:14px; margin-top:40px}
+  .course-tile{position:relative; display:block; background:var(--card); border:1px solid var(--line); border-radius:14px; padding:22px 22px 20px; color:var(--ink);
+    transition:background .3s var(--ease), transform .3s var(--ease), box-shadow .3s var(--ease), border-color .3s var(--ease)}
+  .course-tile:hover{background:var(--bg-2); border-color:var(--hair); transform:translateY(-2px); box-shadow:var(--soft)}
+  a.course-tile,a.course-tile:hover{color:var(--ink)}
+  .course-tile h3{font-size:.98rem; font-weight:600; letter-spacing:-.005em; line-height:1.4; margin-bottom:10px; color:var(--ink)}
+  .course-tile .course-period{margin:0; font-size:.78rem; color:var(--muted)}
+  .course-tile.link{padding-right:38px}
+  .course-tile .ar{position:absolute; top:19px; right:17px; color:var(--accent-2); font-size:1.15rem; line-height:1; transition:transform .3s var(--ease)}
+  .course-tile.link:hover .ar{transform:translate(3px,-1px)}
+  .course-cta{display:inline-flex; align-items:center; gap:6px; margin-top:14px;
+    font:600 .6rem/1 var(--disp); letter-spacing:.12em; text-transform:uppercase; color:var(--accent-2)}
+  a.course-tile:focus-visible{outline:2px solid var(--accent); outline-offset:3px; border-radius:14px}
 
-  /* pills */
-  .pill{display:inline-flex; align-items:center; font-size:.74rem; font-weight:600; letter-spacing:.01em;
-    padding:5px 12px; border-radius:999px; border:1px solid var(--hair); background:#fff; color:var(--ink-2)}
-  .pill.kaken{background:var(--accent-soft); border-color:transparent; color:var(--accent-2); font-family:var(--disp)}
-
-  /* research projects: double-bezel cards */
-  .proj-grid{display:grid; grid-template-columns:repeat(3,1fr); gap:24px; margin-top:44px}
-  .proj-card{background:var(--card); border-radius:21px; padding:28px 26px 26px;
-    box-shadow:0 0 0 7px var(--shell), 0 0 0 7.5px var(--hair), var(--soft), var(--inhi);
-    transition:transform .4s var(--ease), box-shadow .4s var(--ease); display:flex; flex-direction:column; gap:14px}
-  .proj-card:hover{transform:translateY(-3px)}
-  .proj-pills{display:flex; flex-wrap:wrap; gap:8px}
-  .proj-title{font-size:1.06rem; font-weight:600; letter-spacing:-.01em; line-height:1.45}
-  body.lang-ja .proj-title{font-weight:600}
-  .proj-period{font-size:.86rem; color:var(--ink-2); font-weight:600}
-  .proj-researchers{margin:0; font-size:.86rem; color:var(--muted); line-height:1.6; padding-top:12px; border-top:1px solid var(--line)}
-  .proj-researchers .k{display:block; font-size:.66rem; font-weight:600; letter-spacing:.1em; text-transform:uppercase; color:var(--muted); margin-bottom:5px; font-family:var(--disp)}
-
-  /* societies: hairline rows */
-  .society-list{margin-top:36px; border-top:1px solid var(--line)}
-  .society-row{display:flex; align-items:baseline; justify-content:space-between; gap:24px; padding:22px 4px; border-bottom:1px solid var(--line)}
-  .society-name{font-size:1.02rem; font-weight:600; color:var(--ink); letter-spacing:-.005em}
-  .society-period{font-size:.86rem; color:var(--muted); white-space:nowrap}
+  /* materials: hairline list */
+  .mat-list{margin-top:36px; border-top:1px solid var(--line); max-width:var(--readw)}
+  .mat-row{display:flex; align-items:center; justify-content:space-between; gap:24px; padding:20px 4px; border-bottom:1px solid var(--line); color:var(--ink)}
+  .mat-row:hover{color:var(--ink); background:var(--bg-2)}
+  .mat-name{font-size:1.02rem; font-weight:600; color:var(--ink); letter-spacing:-.005em}
+  .mat-row .ar{color:var(--accent-2); font-size:1.1rem; line-height:1; flex:0 0 auto; transition:transform .3s var(--ease)}
+  .mat-row:hover .ar{transform:translateX(4px)}
 
   .soft-sec{background:var(--bg-2); border-top:1px solid var(--line); border-bottom:1px solid var(--line)}
 
@@ -166,9 +158,7 @@
     section{padding:72px 0}
     .wrap{padding:0 24px}
     .hero .wrap{padding-top:100px; padding-bottom:44px}
-    .stats .wrap{grid-template-columns:repeat(3,1fr); gap:16px 12px}
-    .proj-grid{grid-template-columns:1fr; gap:20px}
-    .society-row{flex-direction:column; align-items:flex-start; gap:6px}
+    .course-grid{grid-template-columns:repeat(2,1fr)}
     .foot-grid{grid-template-columns:1fr 1fr}
     .bar-right .btn:not(.ink){display:none}
   }
@@ -176,8 +166,7 @@
     .foot-grid{grid-template-columns:1fr}
   }
   @media(max-width:480px){
-    .stats .wrap{grid-template-columns:1fr; gap:20px}
-    .stat .n{font-size:1.8rem}
+    .course-grid{grid-template-columns:1fr}
   }
 </style>
 </head>
@@ -190,13 +179,13 @@
     <a class="brand" href="index.html">
       <span aria-hidden="true">&lsaquo;</span>
       <span lang="ja">木村祐太</span><span lang="en">Yuta Kimura</span>
-      <span class="sep">·</span><span lang="ja">研究活動</span><span lang="en">Research Activities</span>
+      <span class="sep">·</span><span lang="ja">教育</span><span lang="en">Teaching</span>
     </a>
     <nav class="navlinks" aria-label="メイン">
       <a href="publications.html"><span lang="ja">業績</span><span lang="en">Publications</span></a>
-      <a href="teaching.html"><span lang="ja">教育</span><span lang="en">Teaching</span></a>
+      <a href="activities.html"><span lang="ja">研究活動</span><span lang="en">Research</span></a>
       <a href="software-engineering.html"><span lang="ja">分野紹介</span><span lang="en">Guides</span></a>
-      <a href="technical-debt.html"><span lang="ja">技術的負債</span><span lang="en">Tech Debt</span></a>
+      <a href="students.html"><span lang="ja">学生の皆さんへ</span><span lang="en">For students</span></a>
     </nav>
     <div class="bar-right">
       <a class="btn" href="https://researchmap.jp/kimura_yuta" target="_blank" rel="noopener">researchmap</a>
@@ -211,129 +200,122 @@
 
 <div class="hero">
   <div class="wrap">
-    <p class="eyebrow reveal"><span lang="ja">研究活動</span><span lang="en">Research Activities</span></p>
+    <p class="eyebrow reveal"><span lang="ja">教育</span><span lang="en">Teaching</span></p>
     <h1 class="reveal">
-      <span lang="ja">科研費・共同研究による研究プロジェクト</span>
-      <span lang="en">Grant-funded, collaborative research projects</span>
+      <span lang="ja">教育・担当授業</span>
+      <span lang="en">Teaching</span>
     </h1>
     <p class="lead reveal">
-      <span lang="ja">科研費・財団助成による研究プロジェクトと、所属する学会をまとめています。教育・担当授業は専用ページにまとめました。</span>
-      <span lang="en">Grant-funded research projects and the academic societies I belong to. Teaching and courses are on a dedicated page.</span>
+      <span lang="ja">大阪公立大学工業高等専門学校で担当している7科目と、授業向けに公開している教材をまとめています。</span>
+      <span lang="en">The seven courses I teach at Osaka Metropolitan University College of Technology, together with the materials shared for classes.</span>
     </p>
-    <p class="reveal" style="margin-top:12px">
-      <a class="tlink" href="teaching.html">
-        <span lang="ja">教育・担当授業は専用ページへ</span><span lang="en">Teaching and courses page</span>
+  </div>
+</div>
+
+<!-- COURSES -->
+<section id="courses">
+  <div class="wrap">
+    <p class="eyebrow reveal"><span lang="ja">担当科目</span><span lang="en">Courses</span></p>
+    <h2 class="big reveal"><span lang="ja">大阪公立大学工業高等専門学校での担当科目</span><span lang="en">Courses at Osaka Metropolitan University College of Technology</span></h2>
+    <p class="lead reveal" style="max-width:var(--readw); margin-top:20px">
+      <span lang="ja"><b style="color:var(--ink); font-weight:600">大阪公立大学工業高等専門学校</b>にて、以下の7科目を担当しています。科目ページのある授業はカードから開けます。</span>
+      <span lang="en">I teach the following seven courses at <b style="color:var(--ink); font-weight:600">Osaka Metropolitan University College of Technology</b>. Courses with a dedicated page can be opened from the card.</span>
+    </p>
+    <p style="margin-top:12px">
+      <a class="tlink" href="students.html">
+        <span lang="ja">科目ガイドと卒研の案内はこちら</span><span lang="en">Course guide &amp; thesis info</span>
         <span class="ar" aria-hidden="true">&rsaquo;</span>
       </a>
     </p>
-  </div>
-</div>
+    <div class="course-grid reveal">
 
-<div class="stats">
-  <div class="wrap">
-    <div class="stat reveal"><div class="n num">3</div><div class="l"><span lang="ja">研究プロジェクト</span><span lang="en">Research projects</span></div></div>
-    <div class="stat reveal"><div class="n num">3</div><div class="l"><span lang="ja">査読付き論文</span><span lang="en">Refereed papers</span></div></div>
-    <div class="stat reveal"><div class="n num">2</div><div class="l"><span lang="ja">所属学会</span><span lang="en">Society memberships</span></div></div>
-  </div>
-</div>
+      <a class="course-tile link" href="course/index.html">
+        <span class="ar" aria-hidden="true">&rsaquo;</span>
+        <h3><span lang="ja">ソフトウェア工学</span><span lang="en">Software Engineering</span></h3>
+        <p class="course-period num"><span lang="ja">2026年4月 - 現在</span><span lang="en">Apr 2026 - present</span></p>
+        <span class="course-cta"><span lang="ja">科目ページ</span><span lang="en">Course page</span></span>
+      </a>
 
-<!-- RESEARCH PROJECTS -->
-<section id="projects">
-  <div class="wrap">
-    <p class="eyebrow reveal"><span lang="ja">研究プロジェクト</span><span lang="en">Research projects</span></p>
-    <h2 class="big reveal"><span lang="ja">科研費・財団助成による共同研究</span><span lang="en">Grant-funded, collaborative research</span></h2>
-    <div class="proj-grid reveal">
+      <a class="course-tile link" href="course/logic-circuits.html">
+        <span class="ar" aria-hidden="true">&rsaquo;</span>
+        <h3><span lang="ja">論理回路1</span><span lang="en">Logic Circuits 1</span></h3>
+        <p class="course-period num"><span lang="ja">2024年10月 - 現在</span><span lang="en">Oct 2024 - present</span></p>
+        <span class="course-cta"><span lang="ja">科目ページ</span><span lang="en">Course page</span></span>
+      </a>
 
-      <article class="proj-card">
-        <div class="proj-pills">
-          <span class="pill"><span lang="ja">日本学術振興会 科学研究費助成事業</span><span lang="en">JSPS KAKENHI Grant-in-Aid for Scientific Research</span></span>
-          <span class="pill kaken"><span lang="ja">基盤研究(B)</span><span lang="en">(B)</span></span>
-        </div>
-        <h3 class="proj-title">
-          <span lang="ja">システム開発における生成AIのモデル崩壊のメカニズム解明と防止・抑止技術の構築</span>
-          <span lang="en">Elucidating the mechanism of generative-AI model collapse in system development and building prevention techniques</span>
-        </h3>
-        <div class="proj-period num"><span lang="ja">2026年4月 - 2030年3月</span><span lang="en">Apr 2026 - Mar 2030</span></div>
-        <p class="proj-researchers">
-          <span class="k"><span lang="ja">研究者</span><span lang="en">Researchers</span></span>
-          <span lang="ja">大平雅雄, 伊原彰紀, 柏祐太郎, 木村祐太</span>
-          <span lang="en">M. Ohira, A. Ihara, Y. Kashiwa, Y. Kimura</span>
-        </p>
-      </article>
+      <div class="course-tile">
+        <h3><span lang="ja">応用専門PBL1</span><span lang="en">Applied Interdisciplinary PBL 1</span></h3>
+        <p class="course-period num"><span lang="ja">2024年10月 - 現在</span><span lang="en">Oct 2024 - present</span></p>
+      </div>
 
-      <article class="proj-card">
-        <div class="proj-pills">
-          <span class="pill"><span lang="ja">日本学術振興会 科学研究費助成事業</span><span lang="en">JSPS KAKENHI Grant-in-Aid for Scientific Research</span></span>
-          <span class="pill kaken"><span lang="ja">基盤研究(C)</span><span lang="en">(C)</span></span>
-        </div>
-        <h3 class="proj-title">
-          <span lang="ja">量子と古典の二刀流を目指す次世代ICT技術者育成プログラムの開発</span>
-          <span lang="en">Developing a training program for next-generation ICT engineers proficient in both quantum and classical computing</span>
-        </h3>
-        <div class="proj-period num"><span lang="ja">2024年4月 - 2029年3月</span><span lang="en">Apr 2024 - Mar 2029</span></div>
-        <p class="proj-researchers">
-          <span class="k"><span lang="ja">研究者</span><span lang="en">Researchers</span></span>
-          <span lang="ja">早川潔, 木村祐太, 榎倉浩志, 金井友希美, 松永博昭</span>
-          <span lang="en">K. Hayakawa, Y. Kimura, H. Enokura, Y. Kanai, H. Matsunaga</span>
-        </p>
-      </article>
+      <div class="course-tile">
+        <h3><span lang="ja">知能情報実験実習1</span><span lang="en">Intelligent Informatics: Experiments and Practice 1</span></h3>
+        <p class="course-period num"><span lang="ja">2024年10月 - 現在</span><span lang="en">Oct 2024 - present</span></p>
+      </div>
 
-      <article class="proj-card">
-        <div class="proj-pills">
-          <span class="pill"><span lang="ja">公益財団法人高橋産業経済研究財団 助成</span><span lang="en">Takahashi Industrial and Economic Research Foundation grant</span></span>
-        </div>
-        <h3 class="proj-title">
-          <span lang="ja">人工知能の情報教育への応用</span>
-          <span lang="en">Applying artificial intelligence to informatics education</span>
-        </h3>
-        <div class="proj-period num"><span lang="ja">2025年4月 - 2026年3月</span><span lang="en">Apr 2025 - Mar 2026</span></div>
-        <p class="proj-researchers">
-          <span class="k"><span lang="ja">研究者</span><span lang="en">Researchers</span></span>
-          <span lang="ja">新妻弘崇, 中才恵太朗, 木村祐太</span>
-          <span lang="en">H. Niizuma, K. Nakasai, Y. Kimura</span>
-        </p>
-      </article>
+      <div class="course-tile">
+        <h3><span lang="ja">卒業研究</span><span lang="en">Graduation Research</span></h3>
+        <p class="course-period num"><span lang="ja">2024年4月 - 現在</span><span lang="en">Apr 2024 - present</span></p>
+      </div>
+
+      <div class="course-tile">
+        <h3><span lang="ja">応用専門概論</span><span lang="en">Introduction to Applied Specialties</span></h3>
+        <p class="course-period num"><span lang="ja">2024年4月 - 現在</span><span lang="en">Apr 2024 - present</span></p>
+      </div>
+
+      <div class="course-tile">
+        <h3><span lang="ja">情報2</span><span lang="en">Information 2</span></h3>
+        <p class="course-period num"><span lang="ja">2024年4月 - 現在</span><span lang="en">Apr 2024 - present</span></p>
+      </div>
 
     </div>
   </div>
 </section>
 
-<!-- SOCIETIES -->
-<section id="societies">
+<!-- MATERIALS -->
+<section id="materials" class="soft-sec">
   <div class="wrap">
-    <p class="eyebrow reveal"><span lang="ja">所属学会</span><span lang="en">Society memberships</span></p>
-    <h2 class="big reveal"><span lang="ja">所属学会</span><span lang="en">Academic societies</span></h2>
-    <div class="society-list reveal">
-      <div class="society-row">
-        <span class="society-name"><span lang="ja">日本ソフトウェア科学会</span><span lang="en">Japan Society for Software Science and Technology (JSSST)</span></span>
-        <span class="society-period num"><span lang="ja">2025年5月 - 現在</span><span lang="en">May 2025 - present</span></span>
-      </div>
-      <div class="society-row">
-        <span class="society-name"><span lang="ja">情報処理学会</span><span lang="en">Information Processing Society of Japan (IPSJ)</span></span>
-        <span class="society-period num"><span lang="ja">2022年4月 - 現在</span><span lang="en">Apr 2022 - present</span></span>
-      </div>
+    <p class="eyebrow reveal"><span lang="ja">公開教材</span><span lang="en">Course materials</span></p>
+    <h2 class="big reveal"><span lang="ja">授業向けに公開している教材</span><span lang="en">Materials shared for classes</span></h2>
+    <p class="lead reveal" style="max-width:var(--readw); margin-top:20px">
+      <span lang="ja">授業の補助教材として、以下を公開しています。</span>
+      <span lang="en">The following are shared as supplementary materials for classes.</span>
+    </p>
+    <div class="mat-list reveal">
+      <a class="mat-row" href="course/design-patterns.html">
+        <span class="mat-name"><span lang="ja">デザインパターン学習ガイド</span><span lang="en">Design patterns study guide</span></span>
+        <span class="ar" aria-hidden="true">&rsaquo;</span>
+      </a>
+      <a class="mat-row" href="course/software-architecture.html">
+        <span class="mat-name"><span lang="ja">アーキテクチャパターン大全</span><span lang="en">Architecture patterns compendium</span></span>
+        <span class="ar" aria-hidden="true">&rsaquo;</span>
+      </a>
+      <a class="mat-row" href="course/uml-guide.html">
+        <span class="mat-name"><span lang="ja">クラス図・シーケンス図 作成ガイド</span><span lang="en">Class and sequence diagram guide</span></span>
+        <span class="ar" aria-hidden="true">&rsaquo;</span>
+      </a>
+      <a class="mat-row" href="glossary.html">
+        <span class="mat-name"><span lang="ja">研究用語ミニ辞典</span><span lang="en">Research terms mini-glossary</span></span>
+        <span class="ar" aria-hidden="true">&rsaquo;</span>
+      </a>
     </div>
   </div>
 </section>
 
 <!-- CROSS-LINKS -->
-<section class="soft-sec" style="padding:60px 0">
+<section style="padding:60px 0">
   <div class="wrap reveal" style="display:flex; gap:28px; align-items:center; justify-content:space-between; flex-wrap:wrap">
     <div style="flex:1 1 360px">
-      <h2 class="big" style="font-size:clamp(1.4rem,2.4vw,1.9rem)"><span lang="ja">分野紹介と業績もあわせて</span><span lang="en">See the field guide and publications</span></h2>
-      <p style="color:var(--ink-2); margin:12px 0 0; max-width:52ch"><span lang="ja">ソフトウェア工学という分野そのものの紹介、および査読付き論文・研究発表・受賞の一覧はこちらから。</span><span lang="en">An introduction to software engineering as a field, and the full list of papers, talks, and awards.</span></p>
+      <h2 class="big" style="font-size:clamp(1.4rem,2.4vw,1.9rem)"><span lang="ja">研究活動と、学生の皆さんへ</span><span lang="en">Research activities and info for students</span></h2>
+      <p style="color:var(--ink-2); margin:12px 0 0; max-width:52ch"><span lang="ja">科研費・共同研究による研究プロジェクトと所属学会はこちら。研究室配属や卒業研究の案内もあわせてご覧ください。</span><span lang="en">Grant-funded research projects and society memberships are here. See also the guidance on lab placement and graduation research.</span></p>
     </div>
     <div style="display:flex; gap:20px; align-items:center; flex-wrap:wrap">
-      <a class="btn ink" href="software-engineering.html">
-        <span lang="ja">分野紹介を見る</span><span lang="en">See the field guide</span>
+      <a class="btn ink" href="activities.html">
+        <span lang="ja">研究活動を見る</span><span lang="en">See research activities</span>
         <span class="ic" aria-hidden="true">&rsaquo;</span>
       </a>
-      <a class="tlink" href="teaching.html">
-        <span lang="ja">教育・担当授業へ</span><span lang="en">Teaching &amp; courses</span>
-        <span class="ar" aria-hidden="true">&rsaquo;</span>
-      </a>
-      <a class="tlink" href="publications.html">
-        <span lang="ja">業績一覧へ</span><span lang="en">All publications</span>
+      <a class="tlink" href="students.html">
+        <span lang="ja">学生の皆さんへ</span><span lang="en">For students</span>
         <span class="ar" aria-hidden="true">&rsaquo;</span>
       </a>
     </div>
@@ -345,8 +327,8 @@
 <footer>
   <div class="wrap">
     <div class="cite">
-      <span lang="ja">研究プロジェクト、担当授業、所属学会の情報をまとめたページです。木村祐太の研究サイトの一部としてご覧いただけます。</span>
-      <span lang="en">A summary of research projects, courses taught, and academic society memberships. Part of Yuta Kimura's research site.</span>
+      <span lang="ja">大阪公立大学工業高等専門学校での担当授業と、授業向けに公開している教材をまとめたページです。木村祐太の研究サイトの一部としてご覧いただけます。</span>
+      <span lang="en">A summary of courses taught at Osaka Metropolitan University College of Technology and the materials shared for classes. Part of Yuta Kimura's research site.</span>
     </div>
     <div class="foot-grid">
       <div>
@@ -371,20 +353,19 @@
         </p>
       </div>
       <div>
-        <h3><span lang="ja">研究</span><span lang="en">Research</span></h3>
+        <h3><span lang="ja">担当科目</span><span lang="en">Courses</span></h3>
         <p class="muted-s">
-          <a href="research/technical-debt-metrics.html"><span lang="ja">メトリクスによる分類・特徴づけ</span><span lang="en">Classifying debt with metrics</span></a><br>
-          <a href="research/apr-coding-standards.html"><span lang="ja">自動生成パッチと品質</span><span lang="en">Auto-generated patches and quality</span></a><br>
-          <a href="research/td-repayment-refactoring.html"><span lang="ja">返済とリファクタリング</span><span lang="en">Repayment and refactoring</span></a><br>
-          <a href="research/satd-issue-classification.html"><span lang="ja">TD-Issue の自動分類</span><span lang="en">Automatic TD-Issue classification</span></a><br>
-          <a href="https://researchmap.jp/kimura_yuta" target="_blank" rel="noopener">researchmap</a>
+          <a href="course/index.html"><span lang="ja">ソフトウェア工学</span><span lang="en">Software Engineering</span></a><br>
+          <a href="course/logic-circuits.html"><span lang="ja">論理回路1</span><span lang="en">Logic Circuits 1</span></a><br>
+          <a href="course/design-patterns.html"><span lang="ja">デザインパターン学習ガイド</span><span lang="en">Design patterns guide</span></a><br>
+          <a href="course/uml-guide.html"><span lang="ja">UML 作成ガイド</span><span lang="en">UML guide</span></a>
         </p>
       </div>
     </div>
     <div class="foot-rule"></div>
     <p class="foot-note">
-      <span lang="ja">© 2026 Yuta Kimura. 研究プロジェクトおよび担当授業の情報は researchmap の記載に基づきます。</span>
-      <span lang="en">© 2026 Yuta Kimura. Project and teaching details follow the listings on researchmap.</span>
+      <span lang="ja">© 2026 Yuta Kimura. 担当授業の情報は researchmap の記載に基づきます。</span>
+      <span lang="en">© 2026 Yuta Kimura. Teaching details follow the listings on researchmap.</span>
     </p>
   </div>
 </footer>
