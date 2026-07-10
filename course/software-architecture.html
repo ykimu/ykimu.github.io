@@ -1,0 +1,1567 @@
+<!DOCTYPE html>
+<html lang="ja" class="no-js">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>アーキテクチャパターン大全 - ソフトウェア工学 / Architecture Patterns</title>
+<meta name="description" content="44 software architecture patterns across six families, with diagrams, trade-offs, characteristic scores, and a radar-chart comparison. A learning companion for Yuta Kimura's software engineering course.">
+<link rel="canonical" href="https://ykimu.github.io/course/software-architecture.html">
+<link rel="icon" href="../favicon.svg" type="image/svg+xml">
+<meta property="og:site_name" content="Yuta Kimura / 木村祐太">
+<meta property="og:type" content="article">
+<meta property="og:title" content="アーキテクチャパターン大全 - ソフトウェア工学 / Architecture Patterns">
+<meta property="og:description" content="44 software architecture patterns across six families, with diagrams, trade-offs, characteristic scores, and a radar-chart comparison. Part of Yuta Kimura's course.">
+<meta property="og:url" content="https://ykimu.github.io/course/software-architecture.html">
+<meta property="og:image" content="https://ykimu.github.io/assets/og.png">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="color-scheme" content="light">
+<script>document.documentElement.className="js";</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&family=Noto+Sans+JP:wght@400;500;700&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<style>
+  :root{
+    --bg:#FBFCFB; --bg-2:#F3F6F4; --bg-3:#EBEFED; --card:#FFFFFF;
+    --ink:#101312; --ink-2:#3C4340; --muted:#6B746F; --faint:#B7C0BB;
+    --line:#E7ECE9; --hair:rgba(16,19,18,.08); --shell:rgba(16,19,18,.035);
+    --accent:#0E6F5C; --accent-2:#0A5748; --accent-soft:rgba(14,111,92,.08);
+    --amber:#B78A3C; --rose:#B4544A;
+    --soft:0 1px 2px rgba(16,19,18,.04), 0 24px 60px -28px rgba(16,19,18,.16);
+    --inhi:inset 0 1px 0 rgba(255,255,255,.85);
+    --ease:cubic-bezier(.32,.72,0,1);
+    --sans:"Plus Jakarta Sans","Noto Sans JP",-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+    --disp:"Space Grotesk","Plus Jakarta Sans","Noto Sans JP",sans-serif;
+    --mono:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
+    --maxw:1440px; --readw:clamp(680px, 62vw, 1060px);
+  }
+  html{color-scheme:light}
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth; -webkit-text-size-adjust:100%}
+  body{margin:0; background:var(--bg); color:var(--ink); font-family:var(--sans);
+    font-size:17px; line-height:1.75; font-weight:400; -webkit-font-smoothing:antialiased; text-rendering:optimizeLegibility}
+  body.lang-ja [lang=en]{display:none}
+  body.lang-en [lang=ja]{display:none}
+  ::selection{background:rgba(14,111,92,.16)}
+  .num{font-variant-numeric:tabular-nums; font-feature-settings:"tnum" 1; font-family:var(--disp)}
+  h1,h2,h3{margin:0; color:var(--ink); font-weight:500; line-height:1.16; letter-spacing:-.02em; font-family:var(--disp); text-wrap:balance}
+  body.lang-ja h1,body.lang-ja h2,body.lang-ja h3{letter-spacing:0; font-family:var(--sans)}
+  p,.lead,.hook,.byline,figcaption,.cite,.muted-s{text-wrap:pretty}
+  [lang="en"]{line-break:auto}
+  [lang="ja"]{line-break:strict; word-break:normal}
+  h1 [lang="ja"],h2 [lang="ja"],h3 [lang="ja"]{word-break:auto-phrase}
+  p{margin:0 0 1em}
+  a{color:var(--accent-2); text-decoration:none; transition:color .3s var(--ease)}
+  a:hover{color:var(--accent)}
+  a:focus-visible,button:focus-visible,.btn:focus-visible,[tabindex]:focus-visible{outline:2px solid var(--accent); outline-offset:3px; border-radius:8px}
+  .wrap{max-width:var(--maxw); margin:0 auto; padding:0 40px}
+  [id]{scroll-margin-top:96px}
+  section{padding:110px 0}
+
+  .skip{position:fixed; top:10px; left:10px; padding:10px 16px; background:var(--ink); color:#fff; border-radius:999px; transform:translateY(-200%); transition:none; z-index:200}
+  .skip:focus{transform:none}
+
+  body::after{content:""; position:fixed; inset:0; z-index:1; pointer-events:none; opacity:.02;
+    background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='g'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23g)'/%3E%3C/svg%3E")}
+
+  h2.big{font-size:clamp(1.9rem,3.2vw,2.7rem); font-weight:500; letter-spacing:-.025em; max-width:26ch}
+  body.lang-ja h2.big{letter-spacing:-.01em}
+  .eyebrow,.kick{display:inline-flex; align-items:center; gap:8px; width:max-content; max-width:100%;
+    padding:5px 13px 5px 11px; border-radius:999px; border:1px solid var(--hair); background:#fff;
+    font:600 .66rem/1 var(--disp); letter-spacing:.14em; text-transform:uppercase; color:var(--ink-2); margin:0 0 18px}
+  .eyebrow::before,.kick::before{content:""; flex:0 0 auto; width:6px; height:6px; border-radius:50%; background:var(--accent)}
+  .lead{font-size:1.12rem; color:var(--ink-2); line-height:1.78; font-weight:400}
+  .note{display:inline-flex; align-items:center; gap:8px; margin:22px 0 0; padding:7px 14px; border-radius:999px;
+    background:var(--accent-soft); color:var(--accent-2); font-size:.82rem; font-weight:500}
+  .note::before{content:""; width:6px; height:6px; border-radius:50%; background:var(--accent); flex:0 0 auto}
+
+  .js .reveal{opacity:0; transform:translateY(18px); filter:blur(6px); transition:opacity .9s var(--ease), transform .9s var(--ease), filter .9s var(--ease)}
+  .js .reveal.in{opacity:1; transform:none; filter:none}
+  @media (prefers-reduced-motion:reduce){
+    .js .reveal{opacity:1!important; transform:none!important; filter:none!important}
+    .btn:active,.btn.ink:hover .ic,.pcard:hover,.tlink:hover .ar{transform:none!important}
+  }
+
+  header.bar{position:sticky; top:18px; z-index:120; background:transparent; border-bottom:none}
+  .bar .wrap{display:flex; align-items:center; justify-content:space-between;
+    width:max-content; max-width:calc(100% - 32px); margin:0 auto; height:auto;
+    padding:9px 12px 9px 20px; gap:20px; border-radius:999px;
+    background:rgba(255,255,255,.72); -webkit-backdrop-filter:saturate(1.4) blur(18px); backdrop-filter:saturate(1.4) blur(18px);
+    border:1px solid var(--hair); box-shadow:var(--soft)}
+  .brand{font-weight:600; font-size:.92rem; letter-spacing:-.01em; color:var(--ink); display:inline-flex; align-items:center; gap:8px}
+  .brand span.sep{color:var(--muted); font-weight:400; margin:0 2px}
+  .navlinks{display:flex; gap:22px; align-items:center}
+  .navlinks a{font-size:.86rem; font-weight:500; color:var(--ink-2); transition:color .3s var(--ease)}
+  .navlinks a:hover{color:var(--ink)}
+  @media(max-width:980px){.navlinks{display:none}}
+  .bar-right{display:flex; align-items:center; gap:8px}
+
+  .btn{display:inline-flex; align-items:center; gap:10px; font:500 .85rem/1 var(--sans); padding:10px 18px;
+    border-radius:999px; border:1px solid var(--hair); background:#fff; color:var(--ink); cursor:pointer;
+    transition:transform .4s var(--ease), box-shadow .4s var(--ease), border-color .3s var(--ease), background .3s var(--ease), color .3s var(--ease)}
+  .btn:hover{border-color:var(--ink); transform:translateY(-1px); color:var(--ink)}
+  .btn:active{transform:scale(.98)}
+  .btn.ink{background:var(--ink); border-color:var(--ink); color:#fff; padding:10px 10px 10px 22px;
+    box-shadow:0 12px 26px -14px rgba(16,19,18,.5)}
+  .btn.ink:not(:has(.ic)){padding:10px 22px}
+  .btn.ink:hover{box-shadow:0 16px 32px -14px rgba(16,19,18,.55); color:#fff}
+  .btn .ic{width:32px; height:32px; border-radius:999px; background:rgba(255,255,255,.18); display:grid; place-items:center;
+    transition:transform .45s var(--ease); flex:0 0 auto}
+  .btn.ink:hover .ic{transform:translate(3px,-1px)}
+  .btn.sm{padding:8px 14px; font-size:.8rem}
+  .tlink{display:inline-flex; align-items:center; gap:8px; font-weight:500; font-size:.95rem; color:var(--ink); cursor:pointer; background:none; border:none; font-family:var(--sans)}
+  .tlink .ar{transition:transform .4s var(--ease)}
+  .tlink:hover .ar{transform:translateX(4px)}
+
+  .hero{position:relative; overflow:hidden}
+  .hero > .wrap{position:relative; z-index:1}
+  .hero::before{content:""; position:absolute; z-index:0; width:640px; height:640px; right:-150px; top:-240px;
+    border-radius:50%; pointer-events:none; opacity:.55;
+    background:radial-gradient(circle, var(--accent-soft), transparent 62%); filter:blur(20px)}
+  .hero .wrap{padding-top:72px; padding-bottom:70px}
+  .hero h1{font-size:clamp(2rem,4.2vw,3.1rem); font-weight:500; letter-spacing:0; line-height:1.24; color:var(--ink); max-width:20ch}
+  .hero .lead{max-width:var(--readw); margin-top:24px}
+  .hero-cta{display:flex; gap:20px; align-items:center; flex-wrap:wrap; margin-top:30px}
+  .stats{display:flex; flex-wrap:wrap; gap:14px; margin-top:34px}
+  .stat{border-radius:16px; padding:16px 20px; background:var(--card); box-shadow:0 0 0 6px var(--shell), 0 0 0 6.5px var(--hair), var(--soft)}
+  .stat .n{font:600 1.6rem/1 var(--disp); color:var(--accent-2); font-variant-numeric:tabular-nums}
+  .stat .l{font-size:.8rem; color:var(--muted); margin-top:5px}
+
+  /* filter + toolbar */
+  .toolbar{display:flex; flex-wrap:wrap; gap:14px; align-items:center; justify-content:space-between; margin-top:8px}
+  .pills{display:flex; flex-wrap:wrap; gap:9px}
+  .pill{display:inline-flex; align-items:center; gap:7px; padding:8px 15px; border-radius:999px; cursor:pointer;
+    border:1px solid var(--hair); background:#fff; color:var(--ink-2); font:500 .84rem/1 var(--sans);
+    transition:transform .35s var(--ease), border-color .3s var(--ease), background .3s var(--ease), color .3s var(--ease)}
+  .pill:hover{border-color:var(--ink); transform:translateY(-1px)}
+  .pill .dot{width:8px; height:8px; border-radius:50%; background:var(--accent); flex:0 0 auto}
+  .pill[aria-pressed="true"]{background:var(--ink); border-color:var(--ink); color:#fff}
+  .searchwrap{position:relative; flex:0 0 auto}
+  .search{width:min(280px,72vw); padding:10px 16px 10px 38px; border-radius:999px; border:1px solid var(--hair);
+    background:#fff; font:400 .9rem/1 var(--sans); color:var(--ink)}
+  .search::placeholder{color:var(--muted)}
+  .searchwrap svg{position:absolute; left:14px; top:50%; transform:translateY(-50%); width:15px; height:15px; color:var(--muted); pointer-events:none}
+  .count{color:var(--muted); font-size:.86rem; margin:22px 0 0; font-variant-numeric:tabular-nums}
+
+  /* pattern grid */
+  .pgrid{display:grid; grid-template-columns:repeat(3,1fr); gap:16px; margin-top:18px}
+  @media(max-width:960px){.pgrid{grid-template-columns:repeat(2,1fr)}}
+  @media(max-width:600px){.pgrid{grid-template-columns:1fr}}
+  .pcard{position:relative; border-radius:20px; background:var(--card);
+    box-shadow:0 0 0 6px var(--shell), 0 0 0 6.5px var(--hair), var(--soft);
+    transition:transform .4s var(--ease), box-shadow .4s var(--ease)}
+  .pcard:hover{transform:translateY(-3px); box-shadow:0 0 0 6px var(--shell), 0 0 0 6.5px var(--hair), 0 1px 2px rgba(16,19,18,.05), 0 34px 70px -30px rgba(16,19,18,.24)}
+  .pcard-main{display:block; width:100%; text-align:left; background:none; border:none; cursor:pointer;
+    padding:20px 52px 20px 22px; font-family:var(--sans); color:inherit}
+  .cat-tag{display:inline-flex; align-items:center; gap:7px; font:600 .62rem/1 var(--disp); letter-spacing:.1em;
+    text-transform:uppercase; color:var(--ink-2)}
+  .cat-tag .cdot{width:7px; height:7px; border-radius:50%; flex:0 0 auto}
+  .pcard h3{font-size:1.02rem; font-weight:600; margin:12px 0 .35em; font-family:var(--sans); letter-spacing:0; line-height:1.35}
+  .pcard .ps{margin:0; color:var(--ink-2); font-size:.9rem; line-height:1.6}
+  .pcard-star{position:absolute; top:14px; right:14px; width:34px; height:34px; border-radius:999px; cursor:pointer;
+    border:1px solid var(--hair); background:#fff; color:var(--faint); font-size:1rem; line-height:1;
+    display:grid; place-items:center; transition:color .3s var(--ease), border-color .3s var(--ease), background .3s var(--ease)}
+  .pcard-star:hover{border-color:var(--accent); color:var(--accent)}
+  .pcard-star.on{background:var(--accent-soft); border-color:var(--accent); color:var(--accent-2)}
+  .noresult{color:var(--muted); padding:40px 0; text-align:center}
+
+  /* score bars */
+  .scores{display:flex; flex-direction:column; gap:9px}
+  .scorerow{display:flex; align-items:center; gap:12px}
+  .scorerow .sl{font-size:.8rem; color:var(--muted); width:112px; flex:0 0 auto}
+  .track{display:block; flex:1 1 auto; height:10px; border-radius:999px; background:var(--bg-3); box-shadow:inset 0 1px 2px rgba(16,19,18,.06); overflow:hidden}
+  .fill{display:block; height:100%; border-radius:999px; transition:width .6s var(--ease)}
+  .fill.hi{background:linear-gradient(90deg,var(--accent-2),var(--accent))}
+  .fill.mid{background:var(--amber)}
+  .fill.lo{background:var(--rose)}
+  .scorerow .sv{font:600 .8rem/1 var(--disp); color:var(--ink-2); width:14px; text-align:right; flex:0 0 auto; font-variant-numeric:tabular-nums}
+
+  /* tags */
+  .taglist{display:flex; flex-wrap:wrap; gap:7px; margin-top:8px}
+  .tag{font-size:.78rem; padding:5px 11px; border-radius:999px; background:var(--bg-2); color:var(--ink-2); border:1px solid var(--hair)}
+  .tag.ex{background:var(--accent-soft); color:var(--accent-2); border-color:transparent}
+  .tag.rel{background:#fff; cursor:pointer; transition:border-color .3s var(--ease), color .3s var(--ease)}
+  .tag.rel:hover{border-color:var(--ink); color:var(--ink)}
+  .fieldlabel{display:block; font:600 .64rem/1 var(--disp); letter-spacing:.13em; text-transform:uppercase; color:var(--muted); margin:0 0 9px}
+
+  /* modal */
+  .modal{position:fixed; inset:0; z-index:180; display:none; align-items:flex-start; justify-content:center;
+    padding:80px 20px 40px; background:rgba(16,19,18,.42); -webkit-backdrop-filter:blur(4px); backdrop-filter:blur(4px); overflow-y:auto}
+  .modal.open{display:flex}
+  .sheet{position:relative; width:100%; max-width:900px; background:var(--card); border-radius:26px;
+    box-shadow:0 0 0 7px var(--shell), 0 0 0 7.5px var(--hair), 0 40px 90px -30px rgba(16,19,18,.4);
+    padding:8px}
+  .sheet-inner{background:var(--card); border-radius:19px; box-shadow:var(--inhi); padding:30px 34px 36px}
+  .sheet-top{display:flex; align-items:flex-start; justify-content:space-between; gap:16px; margin-bottom:8px}
+  .sheet-nav{display:flex; align-items:center; gap:8px; flex:0 0 auto}
+  .iconbtn{width:38px; height:38px; border-radius:999px; border:1px solid var(--hair); background:#fff; color:var(--ink-2);
+    cursor:pointer; display:grid; place-items:center; font-size:1rem; transition:border-color .3s var(--ease), transform .3s var(--ease)}
+  .iconbtn:hover{border-color:var(--ink); transform:translateY(-1px)}
+  #d-name{font-size:clamp(1.4rem,2.6vw,1.9rem); font-weight:600; margin:6px 0 4px; letter-spacing:0}
+  #d-short{color:var(--accent-2); font-weight:500; font-size:.98rem; margin:0}
+  .d-desc{color:var(--ink-2); font-size:1rem; margin:18px 0 0; line-height:1.75}
+  .d-block{margin-top:24px}
+  .diagram-box{border-radius:16px; background:var(--bg-2); border:1px solid var(--line); padding:16px 18px}
+  .diagram-box svg{width:100%; height:auto; display:block; max-height:280px}
+  .diagram-cap{display:flex; align-items:center; justify-content:space-between; margin-bottom:8px}
+  .diagram-cap .cp{font:500 .7rem/1 var(--mono); color:var(--muted)}
+  .pc-grid{display:grid; grid-template-columns:1fr 1fr; gap:16px; margin-top:24px}
+  @media(max-width:640px){.pc-grid{grid-template-columns:1fr}.sheet-inner{padding:24px 20px 28px}}
+  .pcbox{border-radius:16px; padding:16px 18px; border:1px solid var(--line)}
+  .pcbox.pros{background:var(--accent-soft); border-color:transparent}
+  .pcbox.cons{background:var(--bg-2)}
+  .pcbox h4{font:600 .72rem/1 var(--disp); letter-spacing:.06em; margin:0 0 12px; font-family:var(--sans)}
+  .pcbox.pros h4{color:var(--accent-2)}
+  .pcbox.cons h4{color:var(--rose)}
+  .pcbox ul{list-style:none; margin:0; padding:0}
+  .pcbox li{position:relative; padding-left:18px; margin:8px 0; font-size:.9rem; color:var(--ink-2); line-height:1.55}
+  .pcbox li::before{content:""; position:absolute; left:0; top:10px; width:9px; height:1.5px}
+  .pcbox.pros li::before{background:var(--accent)}
+  .pcbox.cons li::before{background:var(--rose)}
+  .d-detailtext{color:var(--ink-2); font-size:.92rem; line-height:1.72; margin:10px 0 0}
+  .d-star-wrap{margin-top:26px; display:flex; gap:14px; align-items:center; flex-wrap:wrap}
+  .starbtn{display:inline-flex; align-items:center; gap:9px; padding:10px 18px; border-radius:999px; cursor:pointer;
+    border:1px solid var(--hair); background:#fff; color:var(--ink); font:500 .88rem/1 var(--sans);
+    transition:border-color .3s var(--ease), background .3s var(--ease), color .3s var(--ease), transform .3s var(--ease)}
+  .starbtn:hover{border-color:var(--accent); transform:translateY(-1px)}
+  .starbtn.on{background:var(--accent-soft); border-color:var(--accent); color:var(--accent-2)}
+  .starbtn .st{font-size:1.05rem}
+
+  /* compare section */
+  .soft-sec{background:var(--bg-2); border-top:1px solid var(--line); border-bottom:1px solid var(--line)}
+  .cmp-head{display:flex; flex-wrap:wrap; gap:16px; align-items:flex-end; justify-content:space-between}
+  .cmp-shell{border-radius:24px; margin-top:34px; padding:8px; background:var(--shell); border:1px solid var(--hair); box-shadow:var(--soft)}
+  .cmp-inner{background:var(--card); border-radius:18px; box-shadow:var(--inhi); padding:26px 28px}
+  .cmp-empty{text-align:center; color:var(--muted); padding:44px 10px}
+  .cmp-empty .big-star{font-size:2rem; color:var(--faint); display:block; margin-bottom:8px}
+  .cmp-active{display:grid; grid-template-columns:1.05fr 1fr; gap:28px; align-items:start}
+  @media(max-width:860px){.cmp-active{grid-template-columns:1fr}}
+  .radar-box{position:relative; height:340px}
+  .radar-note{color:var(--muted); font-size:.9rem; text-align:center; padding:80px 10px}
+  .cmp-cards{display:flex; flex-direction:column; gap:12px; max-height:340px; overflow-y:auto; padding-right:4px}
+  .ccard{border-radius:15px; border:1px solid var(--line); background:var(--bg); padding:14px 16px; position:relative}
+  .ccard .ctop{display:flex; align-items:flex-start; justify-content:space-between; gap:10px; margin-bottom:10px}
+  .ccard h4{font-size:.92rem; font-weight:600; letter-spacing:0; line-height:1.35; margin:4px 0 0}
+  .ccard .swatch{width:10px; height:10px; border-radius:50%; flex:0 0 auto; margin-top:5px}
+  .ccard .rm{border:none; background:none; cursor:pointer; color:var(--faint); font-size:1.2rem; line-height:1; padding:0 2px; transition:color .3s var(--ease)}
+  .ccard .rm:hover{color:var(--rose)}
+  .ccard .mini{display:flex; align-items:center; gap:8px; margin:5px 0}
+  .ccard .mini .ml{font-size:.72rem; color:var(--muted); width:92px; flex:0 0 auto}
+  .ccard .mini .mt{display:block; flex:1 1 auto; height:6px; border-radius:999px; background:var(--bg-3); overflow:hidden}
+  .ccard .mini .mf{display:block; height:100%; border-radius:999px}
+
+  /* floating compare bar */
+  .cbar{position:fixed; left:50%; bottom:20px; transform:translate(-50%,140%); z-index:130;
+    display:flex; align-items:center; gap:16px; padding:10px 12px 10px 20px; border-radius:999px;
+    background:rgba(255,255,255,.86); -webkit-backdrop-filter:saturate(1.4) blur(18px); backdrop-filter:saturate(1.4) blur(18px);
+    border:1px solid var(--hair); box-shadow:var(--soft); transition:transform .45s var(--ease); max-width:calc(100% - 32px)}
+  .cbar.show{transform:translate(-50%,0)}
+  .cbar .cb-txt{font-size:.86rem; color:var(--ink); font-weight:500; display:inline-flex; align-items:center; gap:8px}
+  .cbar .cb-txt .st{color:var(--accent)}
+  .cbar .cb-chips{display:flex; gap:6px}
+  @media(max-width:620px){.cbar .cb-chips{display:none}}
+  .cb-chip{font-size:.72rem; padding:4px 10px; border-radius:999px; background:var(--accent-soft); color:var(--accent-2)}
+  .cbar .cb-actions{display:flex; align-items:center; gap:8px}
+
+  footer{border-top:1px solid var(--line); padding:64px 0 46px; background:var(--bg)}
+  footer h3{font-size:.72rem; font-weight:600; letter-spacing:.12em; text-transform:uppercase; color:var(--muted); margin:0 0 1em; font-family:var(--disp)}
+  .foot-grid{display:grid; grid-template-columns:1.4fr 1fr 1fr; gap:44px}
+  .cite{font-size:.98rem; color:var(--ink-2); line-height:1.7; max-width:56ch; margin-bottom:36px}
+  .muted-s{color:var(--muted); font-size:.9rem; line-height:1.75}
+  .muted-s b{color:var(--ink); font-weight:600}
+  .foot-rule{height:1px; background:var(--line); margin:44px 0 20px}
+  .foot-note{color:var(--muted); font-size:.82rem}
+  @media(max-width:760px){.foot-grid{grid-template-columns:1fr 1fr}}
+  @media(max-width:560px){.foot-grid{grid-template-columns:1fr}}
+
+  @media(max-width:860px){
+    section{padding:72px 0}
+    .hero .wrap{padding-top:52px; padding-bottom:52px}
+    .wrap{padding:0 24px}
+  }
+  @media(max-width:640px){
+    .bar-right .btn:not(.ink){display:none}
+    .brand{font-size:.82rem}
+  }
+</style>
+</head>
+<body class="lang-ja">
+
+<a class="skip" href="#main"><span lang="ja">本文へスキップ</span><span lang="en">Skip to content</span></a>
+
+<header class="bar">
+  <div class="wrap">
+    <a class="brand" href="../index.html">
+      <span aria-hidden="true">&lsaquo;</span>
+      <span lang="ja">木村祐太</span><span lang="en">Yuta Kimura</span>
+      <span class="sep">&middot;</span><span lang="ja">アーキテクチャ</span><span lang="en">Architecture</span>
+    </a>
+    <nav class="navlinks" aria-label="メイン">
+      <a href="../publications.html"><span lang="ja">業績</span><span lang="en">Publications</span></a>
+      <a href="../activities.html"><span lang="ja">活動</span><span lang="en">Activities</span></a>
+      <a href="../software-engineering.html"><span lang="ja">分野紹介</span><span lang="en">Guides</span></a>
+      <a href="../students.html"><span lang="ja">学生の皆さんへ</span><span lang="en">For students</span></a>
+    </nav>
+    <div class="bar-right">
+      <a class="btn" href="index.html"><span lang="ja">科目Top</span><span lang="en">Course top</span></a>
+      <button class="btn ink" onclick="toggleLang()" aria-label="Switch language">
+        <span lang="ja">EN</span><span lang="en">日本語</span>
+      </button>
+    </div>
+  </div>
+</header>
+
+<main id="main">
+
+<!-- HERO -->
+<div class="hero">
+  <div class="wrap">
+    <p class="kick">Architecture Patterns</p>
+    <h1>アーキテクチャパターン大全</h1>
+    <p class="lead">ソフトウェアアーキテクチャの代表的な44パターンを、6つの系統（構造系・分散系・データ管理系・UI系・統合系・信頼性系）に整理した学習リファレンスです。各パターンの概要・構成図・長所と短所・特性スコア・代表的な実装例をカードから確認でき、気になるパターンを選んでレーダーチャートで比較できます。</p>
+    <p class="note"><span lang="ja">この教材は日本語のみで提供しています</span><span lang="en">This learning material is available in Japanese only.</span></p>
+    <div class="stats">
+      <div class="stat"><div class="n num">44</div><div class="l">パターン</div></div>
+      <div class="stat"><div class="n num">6</div><div class="l">系統カテゴリ</div></div>
+      <div class="stat"><div class="n num">5</div><div class="l">特性スコア軸</div></div>
+    </div>
+    <div class="hero-cta">
+      <a class="btn ink" href="#patterns" style="padding:12px 22px">パターン一覧へ</a>
+      <a class="tlink" href="index.html#learning">科目の学習コンテンツ<span class="ar" aria-hidden="true">&rsaquo;</span></a>
+    </div>
+  </div>
+</div>
+
+<!-- PATTERNS -->
+<section id="patterns" style="padding-top:0">
+  <div class="wrap">
+    <p class="eyebrow reveal"><span lang="ja">パターン一覧</span><span lang="en">Pattern catalogue</span></p>
+    <h2 class="big reveal">系統でしぼり込み、カードから詳細を開く</h2>
+    <p class="lead reveal" style="max-width:var(--readw); margin-top:18px">系統を選ぶか、キーワードで検索してパターンを絞り込めます。カードをクリックすると、構成図・特性スコア・長所と短所・実装例を含む詳細が開きます。★を押すと下部の比較トレイに追加され、複数パターンをレーダーチャートで比較できます。</p>
+    <div class="reveal" style="margin-top:32px">
+      <div class="toolbar">
+        <div class="pills" id="filterbar" role="group" aria-label="カテゴリで絞り込み"></div>
+        <div class="searchwrap">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.2-3.2"/></svg>
+          <input class="search" id="search" type="search" placeholder="パターン名・キーワード・用途で検索" aria-label="パターンを検索" oninput="onSearch()">
+        </div>
+      </div>
+      <p class="count" id="count"></p>
+      <div class="pgrid" id="pgrid"></div>
+    </div>
+  </div>
+</section>
+
+<!-- COMPARE -->
+<section id="compare" class="soft-sec">
+  <div class="wrap">
+    <div class="cmp-head">
+      <div class="reveal">
+        <p class="eyebrow"><span lang="ja">比較・傾向分析</span><span lang="en">Compare and analyse</span></p>
+        <h2 class="big">選んだパターンをレーダーチャートで比較</h2>
+      </div>
+      <button class="btn sm reveal" id="cmp-clear" onclick="clearCompare()" style="display:none">比較をクリア</button>
+    </div>
+    <div class="cmp-shell reveal">
+      <div class="cmp-inner">
+        <div class="cmp-empty" id="cmp-empty">
+          <span class="big-star" aria-hidden="true">&#9734;</span>
+          <p>パターンカードの★（後で比較）を押すと、ここに特性のレーダーチャートと比較カードが並びます。2つ以上選ぶとチャートで重ね合わせて比較できます。</p>
+        </div>
+        <div class="cmp-active" id="cmp-active" style="display:none">
+          <div class="radar-box">
+            <canvas id="cmpRadar"></canvas>
+            <p class="radar-note" id="radar-note" style="display:none">もう1つパターンを選ぶと、レーダーチャートで重ねて比較できます。</p>
+          </div>
+          <div class="cmp-cards" id="cmp-cards"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<!-- DETAIL MODAL -->
+<div class="modal" id="detail" role="dialog" aria-modal="true" aria-labelledby="d-name" aria-hidden="true">
+  <div class="sheet">
+    <div class="sheet-inner">
+      <div class="sheet-top">
+        <div>
+          <span class="cat-tag" id="d-cat"></span>
+          <h2 id="d-name"></h2>
+          <p id="d-short"></p>
+        </div>
+        <div class="sheet-nav">
+          <button class="iconbtn" id="d-prev" onclick="detailStep(-1)" aria-label="前のパターン">&lsaquo;</button>
+          <button class="iconbtn" id="d-next" onclick="detailStep(1)" aria-label="次のパターン">&rsaquo;</button>
+          <button class="iconbtn" onclick="closeDetail()" aria-label="閉じる">&times;</button>
+        </div>
+      </div>
+      <p class="d-desc" id="d-desc"></p>
+
+      <div class="d-block">
+        <div class="diagram-cap"><span class="fieldlabel">構成図のイメージ</span><span class="cp" id="d-diagram-cap"></span></div>
+        <div class="diagram-box" id="d-diagram"></div>
+      </div>
+
+      <div class="d-block">
+        <span class="fieldlabel">特性スコア（5段階）</span>
+        <div class="scores" id="d-scores"></div>
+      </div>
+
+      <div class="pc-grid">
+        <div class="pcbox pros"><h4>主な長所</h4><ul id="d-pros"></ul></div>
+        <div class="pcbox cons"><h4>主な短所</h4><ul id="d-cons"></ul></div>
+      </div>
+
+      <div class="d-block">
+        <span class="fieldlabel">主な用途・採用場面</span>
+        <div class="taglist" id="d-uses"></div>
+      </div>
+      <div class="d-block">
+        <span class="fieldlabel">代表的なツール・技術</span>
+        <div class="taglist" id="d-examples"></div>
+      </div>
+      <div class="d-block">
+        <span class="fieldlabel">関連パターン</span>
+        <div class="taglist" id="d-related"></div>
+      </div>
+      <div class="d-block">
+        <span class="fieldlabel">詳細解説・実装のポイント</span>
+        <p class="d-detailtext" id="d-detailtext"></p>
+      </div>
+
+      <div class="d-star-wrap">
+        <button class="starbtn" id="d-star" onclick="detailToggleStar()"><span class="st" aria-hidden="true">&#9734;</span><span id="d-star-label">後で比較に追加</span></button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- FLOATING COMPARE BAR -->
+<div class="cbar" id="cbar" role="region" aria-label="比較トレイ">
+  <span class="cb-txt"><span class="st" aria-hidden="true">&#9733;</span><span><span class="num" id="cbar-count">0</span>件のパターンを比較中</span></span>
+  <div class="cb-chips" id="cbar-chips"></div>
+  <div class="cb-actions">
+    <button class="btn sm" onclick="clearCompare()">クリア</button>
+    <button class="btn ink sm" onclick="gotoCompare()" style="padding:8px 18px">比較を見る</button>
+  </div>
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <div class="wrap">
+    <div class="cite">
+      <span lang="ja">ソフトウェアアーキテクチャの主要パターンを、系統・構成図・トレードオフの観点からまとめた学習用リファレンスです。木村祐太のソフトウェア工学の授業向け教材の一部です。</span>
+      <span lang="en">A learning reference to the main software architecture patterns, organized by family, diagram, and trade-offs. Part of Yuta Kimura's software engineering course material.</span>
+    </div>
+    <div class="foot-grid">
+      <div>
+        <h3><span lang="ja">連絡先</span><span lang="en">Contact</span></h3>
+        <p class="muted-s">
+          <b>木村 祐太 / Yuta Kimura</b><br>
+          <span lang="ja">大阪公立大学工業高等専門学校</span><span lang="en">Osaka Metropolitan University College of Technology</span><br>
+          <a href="mailto:y.kimura@omu.ac.jp">y.kimura [at] omu.ac.jp</a>
+        </p>
+      </div>
+      <div>
+        <h3><span lang="ja">サイト</span><span lang="en">Site</span></h3>
+        <p class="muted-s">
+          <a href="../index.html"><span lang="ja">ホーム</span><span lang="en">Home</span></a><br>
+          <a href="../publications.html"><span lang="ja">業績一覧</span><span lang="en">All publications</span></a><br>
+          <a href="../activities.html"><span lang="ja">研究・教育活動</span><span lang="en">Projects &amp; teaching</span></a><br>
+          <a href="../software-engineering.html"><span lang="ja">ソフトウェア工学とは</span><span lang="en">What is software engineering?</span></a><br>
+          <a href="../technical-debt.html"><span lang="ja">技術的負債とは</span><span lang="en">What is technical debt?</span></a><br>
+          <a href="../students.html"><span lang="ja">学生の皆さんへ</span><span lang="en">For students</span></a><br>
+          <a href="../glossary.html"><span lang="ja">用語集</span><span lang="en">Glossary</span></a>
+        </p>
+      </div>
+      <div>
+        <h3><span lang="ja">研究</span><span lang="en">Research</span></h3>
+        <p class="muted-s">
+          <a href="../research/technical-debt-metrics.html"><span lang="ja">メトリクスによる分類・特徴づけ</span><span lang="en">Classifying debt with metrics</span></a><br>
+          <a href="../research/apr-coding-standards.html"><span lang="ja">自動生成パッチと品質</span><span lang="en">Auto-generated patches and quality</span></a><br>
+          <a href="../research/td-repayment-refactoring.html"><span lang="ja">返済とリファクタリング</span><span lang="en">Repayment and refactoring</span></a><br>
+          <a href="../research/satd-issue-classification.html"><span lang="ja">TD-Issue の自動分類</span><span lang="en">Automatic TD-Issue classification</span></a><br>
+          <a href="https://researchmap.jp/kimura_yuta" target="_blank" rel="noopener">researchmap</a>
+        </p>
+      </div>
+    </div>
+    <div class="foot-rule"></div>
+    <p class="foot-note">
+      <span lang="ja">授業の詳細（評価方法・日程等）は最新のシラバスを確認してください。&copy; 2026 Yuta Kimura. 各パターンの説明は分野で広く知られた設計知識に基づく概説です。</span>
+      <span lang="en">For course details (grading, schedule, etc.), please refer to the latest syllabus. &copy; 2026 Yuta Kimura. Pattern descriptions are overviews based on widely known design knowledge.</span>
+    </p>
+  </div>
+</footer>
+
+<script>
+/* ===== PATTERN DATA + DIAGRAM ENGINE (from course material, recolored to site tokens) ===== */
+const PATTERNS = [
+  // ── 構造系 ──
+  { cat:"structural", name:"レイヤードアーキテクチャ (Layered)", short:"責務を階層に分離する古典的構造",
+    desc:"プレゼンテーション・ビジネスロジック・データアクセス等を垂直方向に積み重ね、各層が隣接層のみに依存する。エンタープライズアプリの標準的基盤。",
+    detail:"N層アーキテクチャとも称され、1990年代から最も広く採用されてきた基盤構造。依存は常に上から下への一方向が原則で、隣接しない層への直接アクセスを許容する「Relaxed Layered」変種も存在する。AOP（アスペクト指向）やデコレーターパターンと組み合わせることで、横断的関心事（ログ・セキュリティ）の散在問題を緩和できる。",
+    pros:["理解・導入が容易","テスタビリティが高い","関心の分離が明確"],
+    cons:["層を跨ぐとオーバーヘッド増","変更が上下に波及しやすい","大規模では硬直しがち"],
+    uses:["Webアプリ","エンタープライズ","REST API","社内業務システム"],
+    related:["クリーンアーキテクチャ (Clean)","ヘキサゴナルアーキテクチャ / ポーツ＆アダプター","リポジトリパターン"],
+    examples:["Spring MVC","Django","ASP.NET MVC"],
+    scores:[2,5,5,4,2] },
+
+  { cat:"structural", name:"クリーンアーキテクチャ (Clean)", short:"依存性を内側へ向けたオニオン構造",
+    desc:"エンティティ・ユースケース・インターフェース・フレームワークを同心円状に配置し、依存方向を常に中心へ向ける。ドメインロジックをフレームワーク非依存に保つ。",
+    detail:"Robert C. Martin (Uncle Bob) が2012年に提唱した同心円モデル。Entity→Use Case→Interface Adapter→Frameworkの4層を持ち、依存性逆転の原則(DIP)により常に内側へ依存を向ける。フレームワーク・DBは最外層として扱い、ドメインルールがインフラ知識を一切持たない純粋な設計を実現。テスト時はAdapterをインメモリ実装に差し替えるだけでフルテストが可能。",
+    pros:["ドメインが純粋に保たれる","フレームワーク交換が容易","テスタビリティ最大"],
+    cons:["初期学習コスト高","ボイラープレートが増える","小規模では過剰"],
+    uses:["大規模ビジネスロジック","長寿命システム","DDD実装","複雑な業務SaaS"],
+    related:["ヘキサゴナルアーキテクチャ / ポーツ＆アダプター","リポジトリパターン","データマッパー (Data Mapper)"],
+    examples:["Go Clean Arch","NestJS","DDD実装全般"],
+    scores:[3,5,2,3,3] },
+
+  { cat:"structural", name:"ヘキサゴナルアーキテクチャ / ポーツ＆アダプター", short:"ポートとアダプターでコアを隔離",
+    desc:"アプリケーションコアを「ポート」で定義し、外部（DB・API・UI）を「アダプター」で接続。コアは外部実装を一切知らない。クリーンアーキテクチャの源流。",
+    detail:"Alistair Cockburn が2005年に発表。Primary Port（UIやAPIがアプリを駆動）とSecondary Port（DBや外部APIをアプリが利用）の2種が核心。テスト時はDBアダプターをインメモリ実装に差し替えるだけでコアロジックをフル検証できる。ヘキサゴン（六角形）は多様なアダプターが接続できることを視覚的に表すシンボル。",
+    pros:["外部依存ゼロのコア","アダプター差し替えが容易","テストにモック不要"],
+    cons:["抽象化コスト高","ポート設計に熟練要","小規模に不向き"],
+    uses:["DDD","マルチチャネルシステム","レガシー移行","決済・金融バックエンド"],
+    related:["クリーンアーキテクチャ (Clean)","リポジトリパターン","アンチコラプションレイヤー (ACL)"],
+    examples:["Kotlin Hexagonal","Spring Boot + Ports","Onion Arch libraries"],
+    scores:[3,5,2,3,3] },
+
+  { cat:"structural", name:"マイクロサービス (Microservices)", short:"小さな独立サービスの集合体",
+    desc:"機能ごとに独立したサービスに分割し、それぞれが独自のDBとデプロイサイクルを持つ。高スケーラビリティと組織的独立性を実現する現代の主流アーキテクチャ。",
+    detail:"Amazonの「2ピザルール」を体現した組織-アーキテクチャ対応が特徴。NetflixがHystrix/Eureka/RibbonなどOSS群を公開しエコシステムを確立。サービス間通信にはREST・gRPC・メッセージングを使い分け、分散トレーシング（OpenTelemetry）と組み合わせた可観測性設計が必須。Conway's Lawによりチーム構造がアーキテクチャに直接影響する。",
+    pros:["独立デプロイ・スケール","技術スタック選択自由","障害が局所化される"],
+    cons:["分散システムの複雑性","サービス間通信コスト","運用・観測が困難"],
+    uses:["大規模SaaS","Eコマース","Netflix/Amazon型","動画配信サービス"],
+    related:["イベント駆動アーキテクチャ (EDA)","サービスメッシュ (Service Mesh)","APIゲートウェイ"],
+    examples:["Kubernetes","Istio","gRPC + Envoy"],
+    scores:[5,3,1,3,5] },
+
+  { cat:"structural", name:"モジュラーモノリス (Modular Monolith)", short:"モジュール境界を持つ単一デプロイ",
+    desc:"単一プロセスでデプロイしながらも、内部をマイクロサービス的な境界コンテキストで厳格に分割する。マイクロサービスへの足がかりとしても有効。",
+    detail:"Simon Brown が提唱・普及させた設計で、DHH（Rails作者）の「Majestic Monolith」論など『大半のアプリにはモノリスで十分』という再評価の流れと共に注目された。各モジュールは公開APIを通じてのみ通信し、直接的なクラス/テーブル呼び出しを禁ずる。共有DBの誘惑に勝ち、各モジュールが独自スキーマを所有することが成功の鍵。段階的なマイクロサービス切り出しの健全なステージングとして機能する。",
+    pros:["モノリスの運用シンプルさ","境界を持つ内部設計","マイクロサービス移行の前段"],
+    cons:["共有DBの誘惑に負けやすい","スケーリングは全体一括","境界侵食が起こりやすい"],
+    uses:["中規模スタートアップ","段階的移行","チーム成長期","成長期のSaaS製品"],
+    related:["マイクロサービス (Microservices)","ストラングラーフィグパターン","レイヤードアーキテクチャ (Layered)"],
+    examples:["Rails Engine","Maven modules","Java packages"],
+    scores:[3,4,3,4,3] },
+
+  { cat:"structural", name:"サービス指向アーキテクチャ (SOA)", short:"ESBを介したサービス連携の企業標準",
+    desc:"企業内システムをサービスとして公開しESB（Enterprise Service Bus）で統合する。WS-*標準、XML/SOAPベース。マイクロサービスの前身。",
+    detail:"WS-*（WSDL・SOAP・WS-Security）標準と、BPELによるビジネスプロセス定義がセット。ESBがルーティング・変換・オーケストレーションを一手に担う中央集権型。Oracle SOA Suite・IBM WebSphere・MuleESBが主力製品。現在はRESTベースのマイクロサービスに置き換えられつつあるが、金融/保険の基幹連携では依然現役の場面も多い。",
+    pros:["再利用性が高い","標準プロトコルで相互運用","企業統合に実績"],
+    cons:["ESBが単一障害点","重量級プロトコル","マイクロサービスに置換されつつある"],
+    uses:["大企業システム統合","レガシー連携","金融・保険基幹","公共・行政システム"],
+    related:["マイクロサービス (Microservices)","アンチコラプションレイヤー (ACL)","ストラングラーフィグパターン"],
+    examples:["MuleSoft","IBM WebSphere","Oracle SOA Suite"],
+    scores:[3,3,2,3,3] },
+
+  { cat:"structural", name:"サーバーレス / FaaS", short:"関数単位でインフラを抽象化",
+    desc:"ビジネスロジックを関数（Lambda等）として記述し、インフラ管理をクラウドに委譲。使った分だけ課金。イベント駆動と親和性が高い。",
+    detail:"AWS Lambda（2014年）が切り開いたFaaS領域。関数の実行時間課金（0.001秒単位）のため非常に低頻度リクエストでは圧倒的コスト優位。コールドスタート対策にはProvisioned Concurrencyを使う。Step Functions・EventBridge・DynamoDBを組み合わせた「サーバーレスファースト」設計が現代クラウドネイティブのデファクト。",
+    pros:["インフラ管理不要","自動スケール","コスト効率（使った分だけ）"],
+    cons:["コールドスタート問題","長時間処理に不向き","ベンダーロックインリスク"],
+    uses:["イベント処理","APIバックエンド","バッチジョブ","Webhook/IoTデータ収集"],
+    related:["イベント駆動アーキテクチャ (EDA)","APIゲートウェイ","パイプ＆フィルター (Pipe & Filter)"],
+    examples:["AWS Lambda","Cloudflare Workers","Azure Functions"],
+    scores:[5,3,4,3,4] },
+
+  { cat:"structural", name:"マイクロカーネル (Plugin)", short:"コアに対してプラグインを差し込む構造",
+    desc:"最小限のコア（マイクロカーネル）と、独立して追加できるプラグインで構成。Eclipse IDEやVSCodeが典型例。機能拡張性が高い。",
+    detail:"OSGiフレームワークがプラグインのライフサイクル（install/start/stop/uninstall）を動的管理する典型実装。Eclipseはその代表で、全IDE機能がプラグインとして提供される。プラグイン間の依存解決・バージョン競合が最大の運用課題で、カーネルAPIの後方互換性維持がシステム寿命を左右する。",
+    pros:["拡張が容易","コアの安定性","機能の分離・配布が可能"],
+    cons:["プラグイン間通信の複雑さ","コアAPI設計が難しい","プラグインの品質管理"],
+    uses:["IDE・ツール","CMS","ブラウザ拡張","業務アプリのプラグイン基盤"],
+    related:["パイプ＆フィルター (Pipe & Filter)","サービス指向アーキテクチャ (SOA)"],
+    examples:["Eclipse / OSGi","VSCode Extensions","WordPress Plugin API"],
+    scores:[3,4,3,4,3] },
+
+  { cat:"structural", name:"パイプ＆フィルター (Pipe & Filter)", short:"変換ステップをパイプで直列接続",
+    desc:"データを連続したフィルター（変換処理）に通し、パイプで接続する。Unixコマンドのパイプや画像処理パイプラインが典型。ステートレスで並列化が容易。",
+    detail:"Unixのパイプ（|）が原点。各フィルターはステートレスな純粋変換関数として設計し、並列化・置換が容易。Apache Kafka StreamsやApache Beam・RxJavaは現代のリアクティブ版。MLパイプライン（前処理→特徴抽出→推論→後処理）もこの思想で設計する。フィルター間のインターフェース標準化がチーム分業の鍵となる。",
+    pros:["ステップの独立・再利用","並列処理が容易","フィルターの差し替えが容易"],
+    cons:["共有状態の管理が難しい","エラー処理の複雑化","データ変換のオーバーヘッド"],
+    uses:["ETL","コンパイラ","メディア処理","MLパイプライン"],
+    related:["イベント駆動アーキテクチャ (EDA)","サーバーレス / FaaS","CQRS (コマンド・クエリ責務分離)"],
+    examples:["Unix Pipes","Apache Beam","Kafka Streams"],
+    scores:[4,4,3,4,3] },
+
+  { cat:"structural", name:"スペースベースアーキテクチャ (Space-Based)", short:"タプルスペースで極限スケールを実現",
+    desc:"共有メモリ空間（タプルスペース）とプロセッシングユニットで構成。DBとアプリのボトルネックを排除し、超高スケールを実現。金融・ゲームで採用。",
+    detail:"David Gelernter の Linda（1986年）に始まる Tuple Space（タプルスペース）概念が基盤で、Sun の JavaSpaces（Jini、1999年）がJavaでの代表的実装。プロセッシングユニットはアプリロジック＋インメモリデータグリッドを内包し、DBへの書き込みは非同期で行うためRDBMSのボトルネックが根本除去される。Hazelcast・Apache Ignite・GemFireが代表実装。金融市場データ処理では数十万TPSの事例もある高性能アーキテクチャ。",
+    pros:["極限の水平スケール","DBボトルネック排除","高スループット"],
+    cons:["設計が複雑","データ整合性の管理","高コスト"],
+    uses:["トレーディングシステム","オンラインゲーム","リアルタイム入札","大規模予約システム"],
+    related:["イベント駆動アーキテクチャ (EDA)","CQRS (コマンド・クエリ責務分離)","ポリグロット永続化 (Polyglot Persistence)"],
+    examples:["Hazelcast","Apache Ignite","GemFire"],
+    scores:[5,2,1,5,4] },
+
+  // ── 分散・通信系 ──
+  { cat:"distributed", name:"イベント駆動アーキテクチャ (EDA)", short:"イベントで疎結合なシステムを構成",
+    desc:"コンポーネントがイベントを発行・購読することで通信する。プロデューサーとコンシューマーは互いを知らない。Kafka/RabbitMQが代表的なブローカー。",
+    detail:"Kafka（2011年）によるイベントストリーミングの普及がEDAを加速。イベントは「何が起きたか」を記述するimmutableな事実として設計する（OrderPlaced, PaymentProcessed等）。コンシューマーは後から追加しても過去イベントを遡及処理できる強力な柔軟性を持つ。スキーマレジストリ（Confluent Schema Registry等）でイベントスキーマのバージョン管理を行う。",
+    pros:["疎結合","スケーラブル","非同期処理"],
+    cons:["デバッグ困難","最終的整合性","イベントスキーマ管理"],
+    uses:["決済処理","IoT","マイクロサービス連携","リアルタイム通知"],
+    related:["CQRS (コマンド・クエリ責務分離)","イベントソーシング (Event Sourcing)","Choreography（コレオグラフィ）"],
+    examples:["Apache Kafka","RabbitMQ","AWS EventBridge"],
+    scores:[5,2,2,4,4] },
+
+  { cat:"distributed", name:"CQRS (コマンド・クエリ責務分離)", short:"読み取りと書き込みのモデルを分離",
+    desc:"書き込み（コマンド）と読み取り（クエリ）のデータモデルを完全に分離する。読み取り用に最適化したビューを持てる。Event Sourcingと組み合わせることが多い。",
+    detail:"Greg Young と Udi Dahan が2010年前後に体系化。書き込みモデルはドメインロジックの正確性を優先し、読み取りモデルはクライアントの要求形状に最適化する（非正規化・マテリアライズドビュー等）。Event Sourcingと組み合わせた「CQRS+ES」スタックはイベント履歴から複数の読み取りモデルを再構築できる強力な組み合わせ。",
+    pros:["読み取り性能の最適化","スケール戦略を別々に","ドメインモデルがクリーン"],
+    cons:["整合性遅延（結果整合）","複雑性増大","学習コスト高"],
+    uses:["高トラフィックシステム","DDD","Eコマース注文","分析ダッシュボード"],
+    related:["イベントソーシング (Event Sourcing)","イベント駆動アーキテクチャ (EDA)","リポジトリパターン"],
+    examples:["Axon Framework","EventStoreDB","MediatR (.NET)"],
+    scores:[4,3,2,5,3] },
+
+  { cat:"distributed", name:"イベントソーシング (Event Sourcing)", short:"状態ではなくイベント列を永続化",
+    desc:"システム状態を「イベントの積み上げ」として保存し、現在状態はその再生で得る。完全な変更履歴、時間的クエリ、バグの再現が可能。CQRSと併用される。",
+    detail:"Greg Young が提唱したパターンで、状態変更をすべてドメインイベントとして永続化する。イベントリプレイにより任意時点の状態を復元でき（タイムトラベルクエリ）、バグ発生時の事後デバッグにも有用。Snapshotは定期的に現在状態を保存してリプレイの起点を最新化するパフォーマンス最適化技法。スキーマ進化（過去イベントの形式変更）が最大の長期運用課題。",
+    pros:["完全な監査証跡","時点クエリ可能","バグ再現・デバッグ容易"],
+    cons:["スキーマ進化が困難","クエリが複雑","スナップショット管理必要"],
+    uses:["金融取引","在庫管理","監査要件システム","会計・台帳システム"],
+    related:["CQRS (コマンド・クエリ責務分離)","イベント駆動アーキテクチャ (EDA)","Sagaパターン"],
+    examples:["EventStoreDB","Axon Framework","Marten (.NET)"],
+    scores:[3,3,1,3,4] },
+
+  { cat:"distributed", name:"サービスメッシュ (Service Mesh)", short:"サイドカーでインフラ横断関心を管理",
+    desc:"各サービスにサイドカープロキシ（Envoy等）を付与し、通信・観測・セキュリティをアプリコードから分離して管理するインフラ層。IstioがデファクトOSS。",
+    detail:"Lyft社が2016年にEnvoyプロキシを公開したことで普及が始まり、Istioが標準のコントロールプレーンとして定着。サイドカーパターンでアプリコードを変更せずmTLS・トレーシング・サーキットブレーカーを全サービスに適用できる。eBPFベースのCiliumはサイドカー不要のメッシュを実現しオーバーヘッドを大幅削減する新世代手法。",
+    pros:["サービス横断の可視性","通信セキュリティ自動化","アプリコード不要"],
+    cons:["レイテンシオーバーヘッド","複雑な設定管理","学習コスト高"],
+    uses:["Kubernetes環境","マイクロサービス基盤","ゼロトラスト実装","クラウドネイティブ基盤"],
+    related:["マイクロサービス (Microservices)","ゼロトラストアーキテクチャ","APIゲートウェイ"],
+    examples:["Istio","Linkerd","Cilium"],
+    scores:[4,4,2,3,5] },
+
+  { cat:"distributed", name:"Choreography（コレオグラフィ）", short:"中央制御なしにサービスが自律協調",
+    desc:"オーケストレーターを持たず、各サービスがイベントを受けて自律的に動作・イベントを発行する。疎結合だが全体フローが把握しづらい。",
+    detail:"各サービスはイベントという「暗黙の知識」のみで協調し、フロー全体を知るコンポーネントが存在しない。スケールアウトと障害の局所化に優れる一方、ビジネスフロー全体を可視化するには分散トレーシングやイベントログの集約が必須。問題発生時のデバッグが困難なため、OpenTelemetryによる可観測性への投資がセットで求められる。",
+    pros:["完全な疎結合","単一障害点なし","自律的スケール"],
+    cons:["全体フロー可視化困難","デバッグが難しい","循環イベントのリスク"],
+    uses:["注文処理","在庫連携","イベント駆動マイクロサービス","物流・配送連携"],
+    related:["Orchestration（オーケストレーション）","イベント駆動アーキテクチャ (EDA)","Sagaパターン"],
+    examples:["Apache Kafka","AWS SNS/SQS","NServiceBus"],
+    scores:[5,2,2,4,4] },
+
+  { cat:"distributed", name:"Orchestration（オーケストレーション）", short:"中央制御サービスが処理フローを指揮",
+    desc:"単一のオーケストレーターが各サービスを順番に呼び出してビジネスフローを制御する。フローが明確だが結合度は上がる。Sagaパターンとも組み合わせる。",
+    detail:"Apache Camelやワークフローエンジンで実装されることが多い。オーケストレーターはState Machineとして実装され、各ステップの成功/失敗/タイムアウトに応じて次アクションを決定する。Sagaパターンの失敗補償ロジックもオーケストレーターに集中させると全体フローが一箇所で管理でき保守性が高い。",
+    pros:["フローが一か所で把握可能","エラー処理が明確","実装・デバッグが容易"],
+    cons:["オーケストレーターが複雑化","スケールボトルネック","結合度が上がる"],
+    uses:["ワークフローエンジン","Sagaトランザクション","BPM","申請・承認ワークフロー"],
+    related:["Choreography（コレオグラフィ）","Sagaパターン","イベント駆動アーキテクチャ (EDA)"],
+    examples:["Apache Camel","AWS Step Functions","Temporal"],
+    scores:[3,4,3,3,3] },
+
+  { cat:"distributed", name:"Sagaパターン", short:"分散トランザクションを補償で担保",
+    desc:"マイクロサービス間の長時間トランザクションを連続したローカルトランザクションで実現し、失敗時に補償トランザクションで巻き戻す。コレオ型とオーケスト型がある。",
+    detail:"Hector Garcia-Molina が1987年に論文発表した長時間トランザクションの分解パターン。各ステップは独立したローカルトランザクションで、失敗時は定義済みの補償トランザクションを逆順に実行してロールバックを疑似的に実現。「べき等性（同じ操作を複数回実行しても結果が同じ）」の確保がSaga実装で最も重要な設計原則。",
+    pros:["分散環境のデータ整合性","ロックなし長時間トランザクション","障害からの自動回復"],
+    cons:["補償ロジックが複雑","デバッグ困難","べき等性の確保が必要"],
+    uses:["Eコマース注文","旅行予約","金融送金","サブスク課金"],
+    related:["Choreography（コレオグラフィ）","Orchestration（オーケストレーション）","イベントソーシング (Event Sourcing)"],
+    examples:["Axon Framework","Eventuate","MassTransit"],
+    scores:[3,2,1,3,4] },
+
+  { cat:"distributed", name:"バックエンド・フォー・フロントエンド (BFF)", short:"クライアント種別ごとにバックエンドを特化",
+    desc:"モバイル・Web・デスクトップなどクライアントの種類ごとに専用のバックエンド層を設ける。各クライアントに最適なAPIと集約ロジックを提供。",
+    detail:"Sam Newman が命名したパターン。モバイルアプリ向けはデータ軽量化・バッテリー配慮、Web向けはリッチデータ・SSR支援、音声向けは音声フォーマットといった具合に、クライアントの特性に特化した集約APIを設計する。GraphQLをBFF層として採用し、フロントエンドがクエリ定義でデータ形状を自由にコントロールするパターンが現代的実装。",
+    pros:["クライアント最適なAPI","フロントとバックの独立開発","集約ロジックの分散"],
+    cons:["バックエンドの重複","メンテナンスコスト増","共通ロジックの分散"],
+    uses:["マルチデバイスサービス","マイクロサービスフロント","GraphQL BFF","モバイル+Web両対応アプリ"],
+    related:["APIゲートウェイ","マイクロフロントエンド (MFE)","ゲートウェイアグリゲーション"],
+    examples:["GraphQL","Apollo Server","Next.js API Routes"],
+    scores:[3,4,3,4,3] },
+
+  { cat:"distributed", name:"APIゲートウェイ", short:"サービス群への単一エントリーポイント",
+    desc:"クライアントからの全リクエストを受け取り、適切なサービスにルーティング。認証・レート制限・SSL終端・ロギングを横断的に担う。",
+    detail:"Kong・AWS API Gateway・Nginxが代表製品。クロスカッティング関心（認証・レート制限・SSL終端・ロギング・キャッシュ・CORS）を集約することで各マイクロサービスが本来のビジネスロジックに集中できる。ゲートウェイ自体のSLAが全サービスの可用性上限になる点に注意。クラウドネイティブ環境ではIngress Controller（nginx-ingress, Traefik）と組み合わせることが多い。",
+    pros:["クロスカッティング関心の集約","クライアントとの結合低減","可視性・制御の一元化"],
+    cons:["単一障害点のリスク","ボトルネック","ゲートウェイの複雑化"],
+    uses:["マイクロサービス群","外部API公開","モバイルバックエンド","SaaSの公開API"],
+    related:["サービスメッシュ (Service Mesh)","バックエンド・フォー・フロントエンド (BFF)","サーキットブレーカー (Circuit Breaker)"],
+    examples:["Kong","AWS API Gateway","Traefik"],
+    scores:[4,4,3,3,3] },
+
+  // ── データ管理系 ──
+  { cat:"data", name:"リポジトリパターン", short:"データアクセスを抽象化して隠蔽",
+    desc:"データストアへのアクセスをインターフェース（リポジトリ）の後ろに隠す。ドメインロジックはORMやSQLを一切知らなくなる。DDD・クリーンアーキテクチャの必須パターン。",
+    detail:"Martin Fowler の「PoEAA」で体系化。Repository Interface をドメイン側に、実装をインフラ側に置くことでDIPを実践する。Spring Data の JpaRepository は自動実装によりボイラープレートを激減させるが、クエリ複雑化時はSpecification パターンや QueryDSL と組み合わせる。集約（Aggregate）ルートごとにリポジトリを1つ設けるのが DDD の基本原則。",
+    pros:["データソース交換が容易","ドメインの純粋性保持","テストがシンプル"],
+    cons:["薄いラッパーになりがち","抽象化漏れのリスク","複雑クエリの表現が難しい"],
+    uses:["DDD","クリーンアーキテクチャ","テスト容易化","業務アプリ全般"],
+    related:["クリーンアーキテクチャ (Clean)","データマッパー (Data Mapper)","ユニットオブワーク (Unit of Work)"],
+    examples:["Spring Data JPA","Eloquent (Laravel)","SQLAlchemy"],
+    scores:[3,5,3,3,3] },
+
+  { cat:"data", name:"アクティブレコード (Active Record)", short:"オブジェクトがDBアクセスを担う",
+    desc:"データとビジネスロジックとDBアクセスを一つのクラスに集約するパターン。RailsのActiveRecordが代表例。シンプルなCRUDアプリに適する。",
+    detail:"パターン自体は Martin Fowler が「PoEAA」で命名し、David Heinemeier Hansson が Rails で普及させた「Convention over Configuration」の象徴的実装。find/save/destroy などのDBアクセスメソッドをモデルオブジェクト自体が持つシンプルさが売りで、プロトタイプや小中規模CRUDに最速。ビジネスロジックとDBスキーマが密結合するため、ドメインが複雑化すると「Fat Model」問題が発生しやすい。",
+    pros:["シンプルで直感的","素早い開発","フレームワークサポート充実"],
+    cons:["ドメインロジックとDB結合","テストにDB必要","大規模ドメインに不向き"],
+    uses:["シンプルCRUDアプリ","Railsアプリ","プロトタイプ","管理画面・社内ツール"],
+    related:["リポジトリパターン","データマッパー (Data Mapper)","レイヤードアーキテクチャ (Layered)"],
+    examples:["Rails ActiveRecord","Laravel Eloquent","Sequelize"],
+    scores:[2,2,5,4,2] },
+
+  { cat:"data", name:"データマッパー (Data Mapper)", short:"ドメインとDBを完全に分離するマッパー",
+    desc:"ドメインオブジェクトとDBスキーマを独立させ、マッパー層が変換を担う。ドメインは永続化を一切知らない。DoctrineやHibernateが採用するパターン。",
+    detail:"Hibernate（Java）・Doctrine（PHP）・SQLAlchemy（Python）などORMの設計基盤。マッパーがドメインオブジェクトとDB行の変換を完全に担うため、ドメインオブジェクトはDBの存在を一切知らない。legacyDBスキーマとドメインモデルの命名規則が乖離している場合でも柔軟にマッピング定義を記述できる点が強み。",
+    pros:["ドメインとDB完全分離","複雑なスキーマに対応","テスタビリティ高"],
+    cons:["ボイラープレート増大","設定が複雑","学習コスト高"],
+    uses:["複雑なドメインモデル","レガシーDB対応","DDD","エンタープライズ業務システム"],
+    related:["リポジトリパターン","ユニットオブワーク (Unit of Work)","クリーンアーキテクチャ (Clean)"],
+    examples:["Hibernate","Doctrine","TypeORM"],
+    scores:[3,5,2,3,3] },
+
+  { cat:"data", name:"ユニットオブワーク (Unit of Work)", short:"変更追跡でDB操作をバッチ化",
+    desc:"一連の操作でドメインオブジェクトへの変更を追跡し、コミット時に最小限のDB操作としてまとめて実行する。整合性確保とパフォーマンス最適化を両立。",
+    detail:"Hibernate/JPA の Session・.NET の DbContext が典型的実装。作業単位内のすべての変更を追跡（dirty tracking）し、commit時に最小限のINSERT/UPDATE/DELETEを自動生成する。「変更追跡の範囲を明確にする」ことがバグを防ぐ最重要原則で、RequestスコープでUoWのライフサイクルを管理するのがWebアプリの定石。",
+    pros:["DB操作の最小化","整合性の自動管理","トランザクション管理が容易"],
+    cons:["実装が複雑","メモリに全変更を保持","遅延フラッシュによるバグ"],
+    uses:["ORMの内部実装","バルク更新","複雑なトランザクション","受発注・在庫更新"],
+    related:["リポジトリパターン","データマッパー (Data Mapper)","アクティブレコード (Active Record)"],
+    examples:["JPA / Hibernate Session","EF Core DbContext","SQLAlchemy Session"],
+    scores:[3,4,2,4,3] },
+
+  { cat:"data", name:"データレイク / データウェアハウス分離", short:"生データとBI用データを分けて管理",
+    desc:"生データをそのまま保持するデータレイクと、分析用に変換・集約したデータウェアハウスを分離するアーキテクチャ。ETL/ELTパイプラインで接続する。",
+    detail:"ETLとELTの大きな違いは変換タイミング。ETLは投入前に変換（スキーマ固定）、ELTはレイク投入後に変換（スキーマオンリード）。Amazon S3+Redshift・Azure Data Lake+Synapse・Databricks Delta Lakeが代表スタック。Delta Lake/Apache Icebergによりレイクにトランザクションを加えた「データレイクハウス」が最新形態。",
+    pros:["柔軟な分析基盤","原データ保持で再処理可能","スケーラブル"],
+    cons:["ETLパイプラインの管理","データ品質の維持","コスト高"],
+    uses:["ビッグデータ分析","機械学習基盤","BI/DWH","経営ダッシュボード"],
+    related:["ポリグロット永続化 (Polyglot Persistence)","パイプ＆フィルター (Pipe & Filter)","イベントソーシング (Event Sourcing)"],
+    examples:["Databricks Delta Lake","AWS S3 + Redshift","Apache Iceberg"],
+    scores:[5,3,2,4,4] },
+
+  { cat:"data", name:"ポリグロット永続化 (Polyglot Persistence)", short:"ユースケースごとに最適なDBを選択",
+    desc:"RDBMS・DocumentDB・GraphDB・キャッシュ・検索エンジン等を用途別に使い分けるアーキテクチャ。マイクロサービスとの親和性が高い。",
+    detail:"Amazon.com は商品カタログにDynamoDB、カート・セッションにElastiCache、レコメンドにNeptune、全文検索にOpenSearchを使い分ける典型例。各DBの最適ユースケースを把握した上で選定し、サービス境界内でのDB選択自由を保つマイクロサービスとの相性が特に高い。運用チームのスキルセット分散と整合性管理の複雑化が最大のコスト。",
+    pros:["ユースケース最適なDB選択","各DBの強みを活用","スケール戦略を個別に"],
+    cons:["運用ツールの多様化","整合性管理が複雑","スキルセットの分散"],
+    uses:["大規模マイクロサービス","SNSシステム","ECシステム","レコメンド・検索機能"],
+    related:["マイクロサービス (Microservices)","データレイク / データウェアハウス分離","イベント駆動アーキテクチャ (EDA)"],
+    examples:["PostgreSQL + Redis + Elasticsearch","MongoDB Atlas","DynamoDB + Neptune"],
+    scores:[5,3,2,4,4] },
+
+  // ── UI・フロントエンド系 ──
+  { cat:"ui", name:"MVC (Model-View-Controller)", short:"UIの三役割分担の元祖パターン",
+    desc:"Model（データ・ビジネスロジック）・View（表示）・Controller（入力処理）に分離する。Webフレームワーク（Rails, Django, Spring MVC）の標準構造。",
+    detail:"Trygve Reenskaug が1978年に提案したGUIパターンの源流。サーバーサイドレンダリング時代にRails/Django/Spring MVCで標準的に採用。Controllerが肥大化する「Fat Controller」問題への対策としてService Objectパターンを導入することが多い。Angular 1.xやBackbone.jsはこれをSPA向けに移植した。",
+    pros:["関心の分離","広く知られた標準","フレームワークサポート充実"],
+    cons:["Controllerの肥大化","Viewが複雑になりやすい","テスタビリティ課題"],
+    uses:["Webアプリ全般","Rails/Django","サーバーサイドレンダリング","コーポレート・業務Webサイト"],
+    related:["MVP (Model-View-Presenter)","MVVM (Model-View-ViewModel)","レイヤードアーキテクチャ (Layered)"],
+    examples:["Ruby on Rails","Django","Spring MVC"],
+    scores:[2,3,5,4,2] },
+
+  { cat:"ui", name:"MVP (Model-View-Presenter)", short:"ViewをPassiveにしPresenterをテスト",
+    desc:"ControllerをPresenterに変え、ViewをPassive（UIイベントをPresenterに委譲）にする。PresenterはViewを知らないためテストが容易。AndroidやWindowsFormsで使われた。",
+    detail:"1990年代初頭にTaligent社（Mike Potel）が考案し、Martin Fowler が後に「Supervising Controller」と「Passive View」の2変種へ整理した。PresenterはビューのInterface（View Interface）のみを知り、具体的なUIフレームワーク実装を知らないためUnit Testが純粋Javaで書ける。Android（旧アーキテクチャ）やWindowsフォームで広く採用され、現在もGWT（Google Web Toolkit）など一部で現役。Google公式がMVVMを推奨してからはAndroidでの利用は減少。なおFowlerの「Presentation Model」はMVPではなく後述MVVMの源流にあたる点に注意。",
+    pros:["PresenterのUnit Testが容易","Viewのロジックをゼロに近づける","MVCより明確な責務分離"],
+    cons:["Presenter-View間の1対1結合","ViewとPresenterのインターフェース管理","MVCより記述量増"],
+    uses:["Android（旧）","WinForms","デスクトップUI","テスト重視のネイティブアプリ"],
+    related:["MVC (Model-View-Controller)","MVVM (Model-View-ViewModel)"],
+    examples:["GWT","Android MVP（旧）","WinForms"],
+    scores:[2,5,3,4,2] },
+
+  { cat:"ui", name:"MVVM (Model-View-ViewModel)", short:"データバインディングでViewを自動更新",
+    desc:"ViewModelがModelの状態を保持し、データバインディングでViewを自動更新する。Viewはバインディング宣言のみで、コードビハインドが不要になる。Vue/Angular/WPFで採用。",
+    detail:"Microsoft の John Gossman が2005年にWPF向けに提案。双方向データバインディングがViewとViewModelを切り離す核心メカニズム。Vue.jsはv-modelによる双方向バインディングでMVVMを忠実に実装。ViewModelがコマンドパターンを実装することでUIアクションをビジネスロジックから分離する。ReactはMVVMとは厳密に異なる単方向フローを採用する。",
+    pros:["ViewとViewModelが疎結合","データバインディングで開発効率","ViewModelはUIフレームワーク非依存"],
+    cons:["バインディングのデバッグが難しい","シンプルなUIでも複雑化","パフォーマンス調整が必要な場合あり"],
+    uses:["Vue.js","Angular","WPF/XAML","リッチデスクトップ/SPA"],
+    related:["MVC (Model-View-Controller)","MVP (Model-View-Presenter)","Flux / Redux"],
+    examples:["Vue.js","Angular","WPF / XAML"],
+    scores:[3,4,3,3,2] },
+
+  { cat:"ui", name:"Flux / Redux", short:"単方向データフローでUI状態を管理",
+    desc:"アクション→ディスパッチャー→ストア→View という一方向のデータフローで状態を管理。Reactと組み合わせて普及。状態変更の追跡が容易で予測可能。",
+    detail:"Facebook が2014年に公開した単方向データフロー設計。Redux はFluxを簡略化し、単一ステートツリー・Reducer純粋関数・Time Travel Debuggerを特徴とする。「Redux Toolkit」の登場でボイラープレート問題が大幅緩和。React18以降はuseReducer/Context APIや軽量なZustand/Jotaiへの移行も増え、全ページにReduxを使う必要性は減っている。",
+    pros:["予測可能な状態管理","デバッグ・タイムトラベルが容易","大規模UIで真価発揮"],
+    cons:["ボイラープレートが多い","小規模では過剰","学習コスト"],
+    uses:["React大規模アプリ","単一ページアプリ","複雑な状態管理","管理ダッシュボード・エディタ系"],
+    related:["MVVM (Model-View-ViewModel)","MVC (Model-View-Controller)","CQRS (コマンド・クエリ責務分離)"],
+    examples:["Redux Toolkit","Zustand","Jotai"],
+    scores:[3,5,2,3,2] },
+
+  { cat:"ui", name:"Island Architecture", short:"静的HTMLに動的アイランドを埋め込む",
+    desc:"ページ全体を静的HTMLで配信し、インタラクティブな部分のみを独立した「アイランド」として動的レンダリング。Astroが普及させたパターン。",
+    detail:"Ethan Marcotte の「Responsive Web Design」以来最大のフロントエンドパラダイムシフトと評される。Astroが2022年に普及させ、React/Vue/Svelteコンポーネントを任意の場所に「islands」として埋め込める。部分的ハイドレーション（Partial Hydration）はNext.js/Nuxtでも採用が進み、TTI（インタラクティブまでの時間）の大幅改善に寄与する。",
+    pros:["初期読み込みが高速","部分的ハイドレーション","SEO優秀"],
+    cons:["アイランド間の状態共有が難しい","設計の考え方が独特","アイランド乱立のリスク"],
+    uses:["コンテンツサイト","ブログ・ドキュメント","部分インタラクティブページ","ECの商品ページ/メディアサイト"],
+    related:["マイクロフロントエンド (MFE)","MVVM (Model-View-ViewModel)","サーバーレス / FaaS"],
+    examples:["Astro","Fresh (Deno)","Qwik"],
+    scores:[3,3,4,5,3] },
+
+  { cat:"ui", name:"マイクロフロントエンド (MFE)", short:"フロントエンドをチーム別に分割",
+    desc:"バックエンドのマイクロサービス発想をフロントエンドに適用。チームごとに独立したフロントエンド機能をランタイムまたはビルド時に統合する。Module Federationが主流手法。",
+    detail:"Thoughtworks がテクノロジーレーダーで2019年にAdoptを推奨。Webpack 5のModule Federationにより実行時動的ロードが実用化された。Shell（コンテナ）アプリが各MFEを統合し、MFE間はカスタムイベントやURL Stateで疎通する。UXの一貫性（デザインシステム共有）と共通バンドルの重複排除が実務上最大の課題。",
+    pros:["チーム独立デプロイ","技術スタック選択自由","段階的移行が可能"],
+    cons:["バンドルサイズ増大","UX一貫性確保が難しい","オーバーエンジニアリングのリスク"],
+    uses:["大規模組織のフロントエンド","レガシー移行","複数チーム開発","大規模管理ポータル"],
+    related:["マイクロサービス (Microservices)","バックエンド・フォー・フロントエンド (BFF)","Island Architecture"],
+    examples:["Webpack Module Federation","Single-SPA","NX (Monorepo)"],
+    scores:[5,3,1,3,3] },
+
+  // ── 統合・連携系 ──
+  { cat:"integration", name:"ストラングラーフィグパターン", short:"レガシーを徐々に新システムで置き換え",
+    desc:"新機能から少しずつ新システムで実装し、プロキシで振り分けながらレガシーを徐々に「絞め殺す」移行戦略。モノリスからマイクロサービスへの移行に最適。",
+    detail:"Martin Fowler が2004年に命名（イチジクの一種 Strangler Fig に由来）。プロキシ（Nginx/API GatewayのCanaryルーティング等）で旧システムと新システムへのトラフィックを振り分け、機能単位で段階的に移行する。「完全移行しない」誘惑に負けると旧新が永遠に混在するため、移行完了の定義と期限設定が組織的コミットメントとして重要。",
+    pros:["段階的移行でリスク低減","新旧を同時稼働可能","ロールバックが容易"],
+    cons:["移行期間が長くなりがち","プロキシ管理の複雑さ","完全移行への意志決定が必要"],
+    uses:["レガシーシステム移行","モノリス→マイクロサービス","クラウド移行","基幹システム刷新"],
+    related:["アンチコラプションレイヤー (ACL)","モジュラーモノリス (Modular Monolith)","APIゲートウェイ"],
+    examples:["Nginx Canary routing","AWS API Gateway","Feature Flags"],
+    scores:[3,3,3,3,4] },
+
+  { cat:"integration", name:"アンチコラプションレイヤー (ACL)", short:"外部モデルの汚染を防ぐ変換層",
+    desc:"外部システムやレガシーの概念モデルが自システムのドメインを汚染しないよう、変換・翻訳層を設ける。DDDの境界コンテキスト統合パターンの一つ。",
+    detail:"DDD の Eric Evans が「Domain-Driven Design」（2003年）で定義した境界コンテキスト統合の必須パターン。外部システムのデータ構造変更が直接ドメインに波及しないよう、ACLが変換・翻訳を担う。ストラングラーフィグパターンと組み合わせることで、移行中も内部ドメインをクリーンに保てる。",
+    pros:["ドメインモデルの純粋性保持","外部変更の影響を局所化","レガシー統合でも内部クリーン"],
+    cons:["変換層の実装コスト","メンテナンスの継続必要","性能オーバーヘッドの可能性"],
+    uses:["レガシー統合","外部API連携","DDD境界コンテキスト","他社システム連携"],
+    related:["ストラングラーフィグパターン","ヘキサゴナルアーキテクチャ / ポーツ＆アダプター","リポジトリパターン"],
+    examples:["Adapter Pattern実装","Anti-Corruption Layer in DDD","OpenAPI変換ミドルウェア"],
+    scores:[3,4,3,3,3] },
+
+  { cat:"integration", name:"サーキットブレーカー (Circuit Breaker)", short:"障害連鎖を防ぐ自動遮断機構",
+    desc:"依存サービスへの呼び出し失敗が閾値を超えると「開放」状態になり、しばらく呼び出しを遮断。システム全体の連鎖障害（カスケード障害）を防ぐ。",
+    detail:"Michael Nygard が「Release It!」（2007年）で提唱し、Netflixの Hystrix ライブラリで広く普及。Closed（通常）→Open（遮断中）→Half-Open（試験的呼び出し）の3状態マシンで動作し、Half-Openで成功ならClosedへ復帰。Resilience4j（Java）・Polly（.NET）が現代的実装。タイムアウト・バルクヘッドとの組み合わせが定石。",
+    pros:["カスケード障害防止","障害サービスの回復時間を確保","フォールバック処理が可能"],
+    cons:["誤検知（フォルスポジティブ）","状態管理の実装コスト","分散環境での状態共有"],
+    uses:["マイクロサービス間呼び出し","外部API依存","分散システム全般","決済・外部API連携部"],
+    related:["バルクヘッドパターン (Bulkhead)","リトライ＆タイムアウト (Retry & Timeout)","サービスメッシュ (Service Mesh)"],
+    examples:["Resilience4j","Polly (.NET)","Istio Circuit Breaker"],
+    scores:[3,3,3,3,5] },
+
+  { cat:"integration", name:"バルクヘッドパターン (Bulkhead)", short:"リソースをプール分離して障害を隔壁",
+    desc:"スレッドプールや接続プールをサービス・機能ごとに隔離し、一部の過負荷が全体に波及しないようにする。船の防水区画（バルクヘッド）に由来する名称。",
+    detail:"Michael Nygard が「Release It!」で提唱した障害隔離パターン。スレッドプールを分離することで重いレガシーAPIへの呼び出しが増加しても重要なAPIのスレッドが枯渇しない。マルチテナントSaaSで重要顧客の処理品質を保護する使い方も有効。Circuit BreakerとBulkheadは障害対策の二本柱としてセットで検討する。",
+    pros:["障害の局所化","重要機能のリソース保護","システム全体の安定性向上"],
+    cons:["リソース分割によるオーバーヘッド","プール設計の難しさ","設定調整が必要"],
+    uses:["重要度の異なるAPI群","マルチテナント","クリティカルパス保護","SaaSのテナント分離"],
+    related:["サーキットブレーカー (Circuit Breaker)","リトライ＆タイムアウト (Retry & Timeout)","冗長化・フォールオーバー (HA)"],
+    examples:["Resilience4j Bulkhead","Polly Bulkhead","Thread Pool Isolation"],
+    scores:[3,3,3,3,5] },
+
+  { cat:"integration", name:"リトライ＆タイムアウト (Retry & Timeout)", short:"一時障害を自動リトライで乗り越える",
+    desc:"ネットワーク一時エラー等に対し指数バックオフ付きリトライを適用する。タイムアウト設定と組み合わせてリソースを守る。サーキットブレーカーと組み合わせが定石。",
+    detail:"Exponential Backoff（指数バックオフ）＋ Jitter（ランダムな揺らぎ）がリトライストーム防止のベストプラクティス。AWS SDK・gRPCクライアントは自動リトライをデフォルトで内蔵。べき等でない操作（送金・注文作成）では重複実行を防ぐ冪等キー（Idempotency Key）設計が必須。Circuit Breakerと組み合わせ、サービス復帰後にリトライが殺到しないよう制御する。",
+    pros:["一時障害への自動回復","実装がシンプル","可用性向上"],
+    cons:["冪等でない操作では危険","リトライストームのリスク","レイテンシ増加"],
+    uses:["外部API呼び出し","DB接続","メッセージ送信","決済・通知連携"],
+    related:["サーキットブレーカー (Circuit Breaker)","バルクヘッドパターン (Bulkhead)","アウトボックスパターン (Outbox)"],
+    examples:["Resilience4j Retry","Polly Retry","AWS SDK Auto-Retry"],
+    scores:[3,3,4,3,4] },
+
+  { cat:"integration", name:"ゲートウェイアグリゲーション", short:"複数バックエンドへの呼び出しをまとめる",
+    desc:"クライアントが複数サービスに別々にリクエストする代わりに、ゲートウェイが一括リクエストを受けて各サービスに展開・集約して返す。ラウンドトリップ削減に効果的。",
+    detail:"GraphQL の Resolver ベース実装が最もエレガントな例で、クライアントが必要なフィールドを宣言するだけでゲートウェイが並列に各サービスを呼びマージして返す。RESTベースでは BFF パターンとして実装されることが多い。N+1問題（1クエリがN件のサブクエリを誘発）の回避にDataLoader（バッチ化）を使うことが重要。",
+    pros:["クライアントの呼び出し回数削減","バックエンド変更をクライアントに隠蔽","ネットワーク効率化"],
+    cons:["ゲートウェイの複雑化","全体遅延がボトルネックに","結合度増加のリスク"],
+    uses:["モバイルアプリ","BFFパターンと組み合わせ","低帯域環境","モバイルのホーム画面API"],
+    related:["APIゲートウェイ","バックエンド・フォー・フロントエンド (BFF)","サービスメッシュ (Service Mesh)"],
+    examples:["GraphQL + DataLoader","Apollo Federation","AWS AppSync"],
+    scores:[4,3,3,3,3] },
+
+  { cat:"integration", name:"アウトボックスパターン (Outbox)", short:"DBとメッセージブローカーのアトミック保証",
+    desc:"イベント発行をDBの同一トランザクションで「アウトボックステーブル」に書き、別プロセスがメッセージブローカーへ配信する。At-least-once配信を保証。",
+    detail:"「2フェーズコミット（2PC）なし」でDBとメッセージングの一貫性を保つ実用解。アウトボックステーブルのポーリングまたはDebeziumによるCDC（Change Data Capture）でメッセージブローカーへ配信する。既存コードへの侵入が少なく、既にRDBMSを使うシステムでのイベント駆動への移行ステップとして最も採用しやすいパターン。",
+    pros:["DBとメッセージングのアトミック一貫性","メッセージロスト防止","実装がシンプル"],
+    cons:["アウトボックステーブルの管理","配信順序の保証が必要な場合複雑","追加インフラ（ポーリング/CDC）"],
+    uses:["マイクロサービス間イベント保証","Saga実装","CDC連携","注文→配送のイベント連携"],
+    related:["イベント駆動アーキテクチャ (EDA)","Sagaパターン","アンチコラプションレイヤー (ACL)"],
+    examples:["Debezium (CDC)","Eventuate Tram","MassTransit Outbox"],
+    scores:[3,3,3,3,4] },
+
+  // ── セキュリティ・信頼性系 ──
+  { cat:"security", name:"ゼロトラストアーキテクチャ", short:"「信頼しない、検証し続ける」の原則",
+    desc:"ネットワーク境界を信頼せず、全リクエストをアイデンティティ・コンテキストで継続検証する。VPNに依存しないクラウド時代のセキュリティ基盤。",
+    detail:"John Kindervag（Forrester）が2010年に提唱。NIST SP 800-207 がゼロトラストアーキテクチャの公式ガイドライン。Googleの「BeyondCorp」がゼロトラストを世界初で大規模実装した事例として有名で、VPNなしでリモートワークを実現した。IAM・デバイス管理・マイクロセグメンテーション・継続的モニタリングが4本柱。",
+    pros:["内部脅威への対応","境界依存からの脱却","クラウドネイティブ環境に適合"],
+    cons:["導入・運用コスト高","レイテンシ増加の可能性","全端末管理が必要"],
+    uses:["リモートワーク環境","クラウド基盤","金融・医療","社内システムへの安全アクセス"],
+    related:["最小権限の原則 (PoLP)","多層防御 (Defense in Depth)","サービスメッシュ (Service Mesh)"],
+    examples:["Google BeyondCorp","Okta / Azure AD","Cloudflare Zero Trust"],
+    scores:[4,4,2,3,5] },
+
+  { cat:"security", name:"最小権限の原則 (PoLP)", short:"必要最小限の権限のみを付与する設計",
+    desc:"コンポーネント・ユーザー・プロセスに必要最小限のアクセス権のみを付与する。IAM設計・マイクロサービス間認証・DBアクセス制御の根本原則。",
+    detail:"「最小権限の原則」はIAMポリシー設計の根幹。AWS IAMではCondition句で時間・IPアドレス・MFAの有無まで制約を細分化できる。マイクロサービスでは各サービスに個別のサービスアカウントを付与し、KubernetesのRBACで権限をコンテナ単位まで絞る。定期的な権限レビューと未使用権限の自動失効が運用ベストプラクティス。",
+    pros:["侵害時の被害最小化","意図しない操作の防止","コンプライアンス対応"],
+    cons:["権限設計の複雑さ","過不足なく設計するのが難しい","定期的な権限レビューが必要"],
+    uses:["IAM設計","マイクロサービス認証","DB権限管理","クラウド権限管理"],
+    related:["ゼロトラストアーキテクチャ","信頼境界パターン (Trust Boundary)","多層防御 (Defense in Depth)"],
+    examples:["AWS IAM","Kubernetes RBAC","HashiCorp Vault"],
+    scores:[3,4,3,3,4] },
+
+  { cat:"security", name:"多層防御 (Defense in Depth)", short:"複数セキュリティ層で縦深防御を構築",
+    desc:"ファイアウォール・WAF・認証・暗号化・モニタリング等を多層に配置し、一層が突破されても次の層で防ぐ。単一障害点を排除するセキュリティ設計の基本。",
+    detail:"「深層防御」とも称し、ペリメータ防御（WAF）→認証・認可→暗号化→データマスキング→監査ログ→異常検知の多層で構成する。単一対策の失敗をカバーするだけでなく、攻撃者のコスト・時間を引き上げる抑止効果も重要な意義。OSIモデル各層に対応するセキュリティ対策を整理するフレームワークとして活用できる。",
+    pros:["単一対策の失敗をカバー","攻撃者のコストを高める","コンプライアンス対応"],
+    cons:["コスト・運用負荷増大","層の管理が複雑","過剰設計のリスク"],
+    uses:["エンタープライズセキュリティ","クラウドインフラ","金融・医療","公共・重要インフラ"],
+    related:["ゼロトラストアーキテクチャ","最小権限の原則 (PoLP)","信頼境界パターン (Trust Boundary)"],
+    examples:["WAF + IDS/IPS","AWS Security Hub","Azure Defender"],
+    scores:[3,4,2,3,5] },
+
+  { cat:"security", name:"信頼境界パターン (Trust Boundary)", short:"信頼レベルで境界を明示的に設計",
+    desc:"システムをいくつかの「信頼ゾーン」に分け、ゾーン間で明示的な検証・認証・暗号化を行う。DFD（データフロー図）での脅威分析の基本概念。",
+    detail:"STRIDE脅威モデリング（Spoofing/Tampering/Repudiation/Info Disclosure/DoS/Elevation of Privilege）でデータフロー図（DFD）上の信頼境界を発見し、各境界で必要な対策を列挙する。Microsoftが社内全製品のセキュリティ設計プロセスとして採用・推進しているSD3（Secure by Design, Default, Deployment）の中核概念。",
+    pros:["脅威モデリングが体系的に","セキュリティ設計の可視化","境界を意識した設計"],
+    cons:["信頼ゾーンの定義が難しい","境界が曖昧になりやすい","常に最新化が必要"],
+    uses:["セキュリティ設計","STRIDE脅威分析","規制対応システム","個人情報・決済を扱うシステム"],
+    related:["ゼロトラストアーキテクチャ","多層防御 (Defense in Depth)","最小権限の原則 (PoLP)"],
+    examples:["Microsoft Threat Modeling Tool","OWASP Threat Dragon","STRIDE分析"],
+    scores:[3,4,3,3,4] },
+
+  { cat:"security", name:"冗長化・フォールオーバー (HA)", short:"冗長構成で高可用性を担保する設計",
+    desc:"アクティブ-スタンバイ、アクティブ-アクティブ等の冗長構成でSPOF（単一障害点）を排除。ロードバランサー・DBレプリケーション・マルチAZ配置が典型実装。",
+    detail:"RTO（Recovery Time Objective：復旧時間目標）とRPO（Recovery Point Objective：データ損失許容時間）を定め、SLAを逆算して冗長構成を設計する。Active-Activeは常時フル性能かつ即時フェイルオーバー、Active-Standbyは低コストだが切り替えにタイムラグ。マルチAZ配置・グローバルトラフィックルーティング（Route53/CloudFront）が現代のHAスタック。",
+    pros:["高可用性・SLA達成","計画停止の影響最小化","地理的冗長も可能"],
+    cons:["コスト倍増","フォールオーバー時の整合性","構成管理の複雑さ"],
+    uses:["ミッションクリティカルシステム","金融・医療","クラウド基盤","決済・予約システム"],
+    related:["混沌工学 (Chaos Engineering)","バルクヘッドパターン (Bulkhead)","スペースベースアーキテクチャ (Space-Based)"],
+    examples:["AWS Multi-AZ RDS","Route53 Failover","Patroni (PostgreSQL HA)"],
+    scores:[4,3,2,4,5] },
+
+  { cat:"security", name:"混沌工学 (Chaos Engineering)", short:"意図的に障害を起こして耐性を高める",
+    desc:"本番環境に意図的に障害・遅延・リソース不足を注入し、システムの耐性を事前に確認するアプローチ。NetflixのChaos Monkeyが起源。",
+    detail:"Netflix のChaos Monkey（2011年公開。2010年のAWS全面移行が背景）が発端。GameDay（計画的な障害演習）→自動化ツール（Chaos Monkey/LitmusChaos/Toxiproxy）→本番への継続注入の段階で成熟度を高める。「定常状態の仮説を立て→実験→観測→分析」のサイクルが科学的アプローチの核心。SREチームが主導しエンジニア全員が障害に慣れる組織文化醸成がツール以上に重要。",
+    pros:["隠れた弱点の発見","運用チームの障害対応訓練","耐性設計の継続的改善"],
+    cons:["本番への影響リスク","組織的合意形成が必要","監視・ガードレール整備が前提"],
+    uses:["大規模分散システム","SRE実践","マイクロサービス環境","大規模クラウドサービス"],
+    related:["冗長化・フォールオーバー (HA)","サーキットブレーカー (Circuit Breaker)","バルクヘッドパターン (Bulkhead)"],
+    examples:["Chaos Monkey (Netflix)","LitmusChaos","Gremlin"],
+    scores:[4,4,3,4,5] }
+];
+
+const VB_W = 480, VB_H = 240;
+const DIAG_ACCENT = { structural:"#0E6F5C", distributed:"#0E6F5C", data:"#0E6F5C", ui:"#0E6F5C", integration:"#0E6F5C", security:"#0E6F5C" };
+const DIAG_TYPE_LABEL = {
+  stack:"層構造", concentric:"同心円", hexagon:"ポート&アダプタ", hub:"ハブ&スポーク",
+  pipeline:"パイプライン", bus:"バス型", columns:"列分割", triad:"三者構成", flow:"データフロー",
+  plugins:"コア+プラグイン", grid:"グリッド/隔離", tiers:"階層", peers:"ピア協調",
+  islands:"アイランド", states:"状態遷移"
+};
+
+/* ── primitives ── */
+function _esc(s){ return String(s).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;"); }
+function _tint(hex,a){ const n=parseInt(hex.slice(1),16); return `rgba(${(n>>16)&255},${(n>>8)&255},${n&255},${a})`; }
+function _svg(inner,ac){
+  const defs=`<defs>`+
+    `<marker id="dAh" markerWidth="9" markerHeight="9" refX="7" refY="3.2" orient="auto"><path d="M0,0 L7,3.2 L0,6.4 Z" fill="#87918C"/></marker>`+
+    `<marker id="dAhA" markerWidth="9" markerHeight="9" refX="7" refY="3.2" orient="auto"><path d="M0,0 L7,3.2 L0,6.4 Z" fill="${ac}"/></marker>`+
+    `<marker id="dAhAs" markerWidth="9" markerHeight="9" refX="2" refY="3.2" orient="auto-start-reverse"><path d="M0,0 L7,3.2 L0,6.4 Z" fill="${ac}"/></marker>`+
+  `</defs>`;
+  return `<svg viewBox="0 0 ${VB_W} ${VB_H}" xmlns="http://www.w3.org/2000/svg" style="max-height:280px;font-family:inherit">${defs}${inner}</svg>`;
+}
+function _label(cx,cy,text,o={}){
+  const{fs=12,color="#101312",weight="600",anchor="middle",sub="",subc="#6B746F",subfs=9.5}=o;
+  const lines=String(text).split("\n"); const lh=fs+2.5;
+  const block=lines.length*lh+(sub?subfs+3:0); const startY=cy-block/2+lh/2-1;
+  let out=lines.map((ln,i)=>`<text x="${cx}" y="${startY+i*lh}" text-anchor="${anchor}" dominant-baseline="middle" font-size="${fs}" fill="${color}" font-weight="${weight}">${_esc(ln)}</text>`).join("");
+  if(sub) out+=`<text x="${cx}" y="${startY+lines.length*lh}" text-anchor="${anchor}" dominant-baseline="middle" font-size="${subfs}" fill="${subc}">${_esc(sub)}</text>`;
+  return out;
+}
+function _box(x,y,w,h,label,o={}){
+  const{fill="rgba(16,19,18,0.035)",stroke="#B7C0BB",sw=1.5,rx=9,fs=12,tc="#101312",weight="600",dash="",sub=""}=o;
+  let s=`<rect x="${x}" y="${y}" width="${w}" height="${h}" rx="${rx}" fill="${fill}" stroke="${stroke}" stroke-width="${sw}"${dash?` stroke-dasharray="${dash}"`:""}/>`;
+  if(label!=="") s+=_label(x+w/2,y+h/2,label,{fs,color:tc,weight,sub});
+  return s;
+}
+function _t(x,y,text,o={}){
+  const{fs=10,color="#6B746F",anchor="middle",weight="400"}=o;
+  return `<text x="${x}" y="${y}" text-anchor="${anchor}" dominant-baseline="middle" font-size="${fs}" fill="${color}" font-weight="${weight}">${_esc(text)}</text>`;
+}
+function _arrow(x1,y1,x2,y2,o={}){
+  const{color="#87918C",accent=false,dash="",sw=1.6}=o;
+  return `<line x1="${x1}" y1="${y1}" x2="${x2}" y2="${y2}" stroke="${accent?color==="#87918C"?"#6B746F":color:color}" stroke-width="${sw}"${dash?` stroke-dasharray="${dash}"`:""} marker-end="url(#${accent?'dAhA':'dAh'})"/>`;
+}
+function _line(x1,y1,x2,y2,o={}){ const{color="#B7C0BB",dash="",sw=1.4}=o; return `<line x1="${x1}" y1="${y1}" x2="${x2}" y2="${y2}" stroke="${color}" stroke-width="${sw}"${dash?` stroke-dasharray="${dash}"`:""}/>`; }
+function _cyl(cx,cy,w,h,label,o={}){
+  const{stroke="#87918C",fill="rgba(16,19,18,0.05)",tc="#3C4340",fs=10}=o;
+  const x=cx-w/2,y=cy-h/2,ry=Math.min(7,h*0.2);
+  let s=`<path d="M${x},${y+ry} a${w/2},${ry} 0 0 1 ${w},0 v${h-2*ry} a${w/2},${ry} 0 0 1 ${-w},0 Z" fill="${fill}" stroke="${stroke}" stroke-width="1.4"/>`;
+  s+=`<path d="M${x},${y+ry} a${w/2},${ry} 0 0 0 ${w},0" fill="none" stroke="${stroke}" stroke-width="1.4"/>`;
+  s+=_label(cx,cy+ry/2,label,{fs,color:tc,weight:"500"});
+  return s;
+}
+function _hexPath(cx,cy,r){ let p=[]; for(let i=0;i<6;i++){const a=Math.PI/180*(60*i-30); p.push((cx+r*Math.cos(a)).toFixed(1)+","+(cy+r*Math.sin(a)).toFixed(1));} return "M"+p.join(" L")+" Z"; }
+function _short(x1,y1,x2,y2,r1,r2){ const dx=x2-x1,dy=y2-y1,L=Math.hypot(dx,dy)||1,ux=dx/L,uy=dy/L; return [x1+ux*r1,y1+uy*r1,x2-ux*r2,y2-uy*r2]; }
+function _edge(cx,cy,hw,hh,tx,ty){ const dx=tx-cx,dy=ty-cy; if(!dx&&!dy) return [cx,cy]; const sx=dx?hw/Math.abs(dx):Infinity,sy=dy?hh/Math.abs(dy):Infinity,t=Math.min(sx,sy); return [cx+dx*t,cy+dy*t]; }
+
+/* ── archetype builders ── */
+function dStack(s,ac){
+  const L=s.layers,n=L.length,x=110,w=260,top=22,bot=VB_H-22,gap=14,h=((bot-top)-(n-1)*gap)/n;
+  let out="";
+  L.forEach((it,i)=>{
+    const y=top+i*(h+gap), lab=typeof it==="string"?it:it.l, hi=typeof it==="object"&&it.hi, sub=typeof it==="object"?it.sub||"":"";
+    out+=_box(x,y,w,h,lab,{fill:hi?_tint(ac,0.16):"rgba(16,19,18,0.035)",stroke:hi?ac:"#B7C0BB",tc:"#101312",fs:12,sub});
+    if(i<n-1&&s.arrows!=="none"){
+      out+=_arrow(x+w-28,y+h+2,x+w-28,y+h+gap-2,{accent:true});
+      if(s.arrows==="both") out+=_arrow(x+28,y+h+gap-2,x+28,y+h+2,{});
+    }
+  });
+  if(s.note) out+=_t(VB_W-12,top+6,s.note,{anchor:"end",fs:10,color:ac});
+  return out;
+}
+function dConcentric(s,ac){
+  const R=s.rings,n=R.length,cx=VB_W/2,cy=VB_H/2,W0=320,H0=204;
+  const dw=(W0-92)/(2*Math.max(n-1,1)),dh=(H0-58)/(2*Math.max(n-1,1));
+  let out="";
+  for(let i=0;i<n;i++){
+    const w=W0-2*i*dw,h=H0-2*i*dh,x=cx-w/2,y=cy-h/2;
+    out+=`<rect x="${x}" y="${y}" width="${w}" height="${h}" rx="12" fill="${_tint(ac,0.05+0.11*i)}" stroke="${ac}" stroke-width="1.4" opacity="0.95"/>`;
+    const last=i===n-1;
+    out+=_label(cx,last?cy:y+15,R[i],{fs:last?11.5:10.5,color:"#101312",weight:last?"700":"600"});
+  }
+  const wInner=W0-2*(n-1)*dw;
+  out+=_arrow(cx+W0/2-12,cy,cx+wInner/2+12,cy,{accent:true});
+  if(s.note) out+=_t(VB_W-12,16,s.note,{anchor:"end",fs:10,color:ac});
+  return out;
+}
+function dHex(s,ac){
+  const cx=240,cy=120,r=60; let out=`<path d="${_hexPath(cx,cy,r)}" fill="${_tint(ac,0.14)}" stroke="${ac}" stroke-width="2"/>`;
+  out+=_label(cx,cy,s.core||"アプリ\nコア",{fs:12.5,color:"#101312",weight:"700"});
+  const lay=(arr,side)=>{ const m=arr.length; arr.forEach((Lb,i)=>{
+    const by=m===1?cy:cy-46+i*(92/(m-1)); const bx=side<0?16:VB_W-16-112;
+    out+=_box(bx,by-18,112,36,Lb,{fs:10,tc:"#3C4340"});
+    const ex=side<0?cx-r*0.55:cx+r*0.55, ey=cy+(by-cy)*0.45, conX=side<0?bx+112:bx;
+    out+=`<circle cx="${ex.toFixed(1)}" cy="${ey.toFixed(1)}" r="4" fill="${ac}"/>`;
+    out+=_line(conX,by,ex,ey,{color:"#87918C"});
+  }); };
+  lay(s.left||[],-1); lay(s.right||[],1);
+  out+=_t(16,16,"駆動側",{anchor:"start",fs:9,color:"#6B746F"});
+  out+=_t(VB_W-16,16,"被駆動側",{anchor:"end",fs:9,color:"#6B746F"});
+  out+=_t(cx,cy+r+14,"ポート & アダプター",{fs:9.5,color:ac});
+  return out;
+}
+function dHub(s,ac){
+  const cx=240; let out=""; const cy=s.client?96:80;
+  if(s.client){ out+=_box(cx-72,14,144,32,s.client,{fs:10.5,tc:"#3C4340"}); out+=_arrow(cx,46,cx,cy-24,{accent:true}); }
+  out+=_box(cx-74,cy-24,148,48,s.center,{fill:_tint(ac,0.16),stroke:ac,fs:12.5,tc:"#101312",weight:"700"});
+  const nd=s.nodes||[],n=nd.length,rowY=s.dbPerNode?164:186,m=62,span=VB_W-2*m,bw=90,bh=38;
+  nd.forEach((v,i)=>{
+    const nx=n===1?cx:m+span*(i/(n-1)),bx=nx-bw/2,by=rowY-bh/2;
+    out+=_arrow(cx,cy+24,nx,by-5,{accent:!!s.aggregate,dash:s.controlPlane?"4 3":""});
+    out+=_box(bx,by,bw,bh,v,{fs:9.5,tc:"#3C4340",fill:s.dbStyle?_tint(ac,0.10):"rgba(16,19,18,0.035)"});
+    if(s.numbered){ out+=`<circle cx="${bx-1}" cy="${by-1}" r="9" fill="${ac}"/>`+_t(bx-1,by-1,String(i+1),{fs:10,color:"#FFFFFF",weight:"700"}); }
+    if(s.dbPerNode){ out+=_cyl(nx,by+bh+20,46,26,"DB"); out+=_line(nx,by+bh,nx,by+bh+7); }
+  });
+  if(s.note) out+=_t(VB_W-12,16,s.note,{anchor:"end",fs:10,color:ac});
+  return out;
+}
+function dPipe(s,ac){
+  let seq=[]; if(s.trigger)seq.push({l:s.trigger,e:1}); (s.stages||[]).forEach(x=>seq.push({l:x})); if(s.tail)seq.push({l:s.tail,e:1});
+  const n=seq.length,m=16,gap=14,bw=(VB_W-2*m-(n-1)*gap)/n,bh=64,cy=VB_H/2; let out="";
+  seq.forEach((it,i)=>{ const x=m+i*(bw+gap),y=cy-bh/2;
+    out+=_box(x,y,bw,bh,it.l,{fs:bw<86?9.5:11,tc:"#101312",fill:it.e?_tint(ac,0.15):"rgba(16,19,18,0.035)",stroke:it.e?ac:"#B7C0BB"});
+    if(i<n-1) out+=_arrow(x+bw,cy,x+bw+gap,cy,{accent:true});
+  });
+  if(s.compensate){ const y=cy+bh/2+22; for(let i=n-1;i>0;i--){ const x2=m+i*(bw+gap)+bw/2,x1=m+(i-1)*(bw+gap)+bw/2; out+=_arrow(x2,y,x1,y,{color:"#B4544A",dash:"5 3"}); } out+=_t(VB_W-12,y,"補償Tx",{anchor:"end",fs:9.5,color:"#B4544A"}); }
+  if(s.retryLoop){ const x1=m+(bw+gap)*(n-1)+bw/2,x0=m+bw/2,y=cy+bh/2+18;
+    out+=`<path d="M${x1},${cy+bh/2} C ${x1+34},${y+20} ${x0-34},${y+20} ${x0},${cy+bh/2}" fill="none" stroke="${ac}" stroke-width="1.6" stroke-dasharray="5 3" marker-end="url(#dAhA)"/>`;
+    out+=_t(VB_W/2,y+22,s.retryLabel||"リトライ",{fs:9.5,color:ac}); }
+  if(s.note) out+=_t(VB_W/2,cy-bh/2-13,s.note,{fs:10,color:ac});
+  return out;
+}
+function dBus(s,ac){
+  const barY=120,barH=30,barX=30,barW=VB_W-60; let out=_box(barX,barY-barH/2,barW,barH,s.busLabel,{fill:_tint(ac,0.16),stroke:ac,fs:11.5,tc:"#101312",weight:"700",rx:14});
+  const place=(arr,top)=>{ const n=arr.length,m=52,span=VB_W-2*m; arr.forEach((Lb,i)=>{
+    const x=n===1?VB_W/2:m+span*(i/(n-1)),by=top?22:VB_H-22-36;
+    out+=_box(x-54,by,108,36,Lb,{fs:10,tc:"#3C4340"});
+    if(top) out+=_arrow(x,by+36,x,barY-barH/2,{accent:true}); else out+=_arrow(x,barY+barH/2,x,by,{accent:true});
+  }); };
+  place(s.top||[],true); place(s.bottom||[],false);
+  if(s.topLabel) out+=_t(14,40,s.topLabel,{anchor:"start",fs:9,color:"#6B746F"});
+  if(s.botLabel) out+=_t(14,VB_H-12,s.botLabel,{anchor:"start",fs:9,color:"#6B746F"});
+  return out;
+}
+function dCols(s,ac){
+  const cols=s.cols,n=cols.length,m=18,gap=18,cw=(VB_W-2*m-(n-1)*gap)/n,top=28,bottomH=s.bottom?42:0,colH=VB_H-top-14-(bottomH?bottomH+14:0);
+  let out="";
+  cols.forEach((c,i)=>{ const x=m+i*(cw+gap);
+    out+=_t(x+cw/2,top-9,c.title,{fs:10.5,color:ac,weight:"700"});
+    out+=`<rect x="${x}" y="${top}" width="${cw}" height="${colH}" rx="10" fill="rgba(16,19,18,0.03)" stroke="#B7C0BB" stroke-width="1.3"/>`;
+    const it=c.items||[],ih=Math.min(48,(colH-16-(it.length-1)*10)/it.length);
+    it.forEach((v,j)=>{ const iy=top+10+j*(ih+10); out+=_box(x+10,iy,cw-20,ih,v,{fs:10.5,tc:"#101312",fill:_tint(ac,0.10),stroke:"#B7C0BB"}); });
+    if(s.arrowsBetween&&i<n-1){ const ax=x+cw,ay=top+colH/2; if(s.reverse) out+=_arrow(ax+gap,ay,ax,ay,{accent:true}); else out+=_arrow(ax,ay,ax+gap,ay,{accent:true}); }
+  });
+  if(s.boundary){ const bx=m+cw+gap/2; out+=_line(bx,top-2,bx,top+colH+2,{color:ac,dash:"6 4",sw:1.6}); out+=_t(bx,top+colH+12,s.boundaryLabel||"信頼境界 (検証/認証)",{fs:9.5,color:ac}); }
+  if(s.bottom){ const by=top+colH+14; out+=_box(m,by,VB_W-2*m,bottomH,s.bottom,{fs:11,tc:"#101312",fill:_tint(ac,0.13),stroke:ac}); cols.forEach((c,i)=>{ const x=m+i*(cw+gap)+cw/2; out+=_line(x,top+colH,x,by,{}); }); }
+  return out;
+}
+function dTriad(s,ac){
+  const P={top:[240,52],bl:[120,182],br:[360,182]}; let out="";
+  (s.edges||[]).forEach(e=>{ const a=P[e.from],b=P[e.to],[x1,y1,x2,y2]=_short(a[0],a[1],b[0],b[1],60,60);
+    const both=e.dir==="<->";
+    out+=`<line x1="${x1}" y1="${y1}" x2="${x2}" y2="${y2}" stroke="${ac}" stroke-width="1.6" marker-end="url(#dAhA)"${both?` marker-start="url(#dAhAs)"`:""}/>`;
+    if(e.label){ const mx=(x1+x2)/2,my=(y1+y2)/2; out+=`<rect x="${mx-26}" y="${my-9}" width="52" height="18" rx="4" fill="#FFFFFF" opacity="0.88"/>`+_t(mx,my,e.label,{fs:9,color:"#3C4340"}); }
+  });
+  Object.entries(s.nodes).forEach(([k,v])=>{ const p=P[k]; out+=_box(p[0]-60,p[1]-24,120,48,v.l||v,{fs:12,tc:"#101312",fill:_tint(ac,0.14),stroke:ac,weight:"700"}); });
+  return out;
+}
+function dFlow(s,ac){
+  const nodes=s.nodes,n=nodes.length,m=20,bw=Math.min(112,(VB_W-2*m-(n-1)*26)/n),bh=50,totalW=n*bw+(n-1)*26,sx=(VB_W-totalW)/2,cy=s.loop?98:VB_H/2;
+  let out=""; const cxs=[];
+  nodes.forEach((nd,i)=>{ const x=sx+i*(bw+26); cxs.push(x+bw/2);
+    out+=_box(x,cy-bh/2,bw,bh,nd,{fs:11,tc:"#101312",fill:_tint(ac,0.13),stroke:ac,weight:"700"});
+    if(i<n-1){ out+=_arrow(x+bw,cy,x+bw+26,cy,{accent:true}); if(s.edgeLabels&&s.edgeLabels[i]) out+=_t(x+bw+13,cy-11,s.edgeLabels[i],{fs:8.5,color:"#6B746F"}); }
+  });
+  if(s.loop){ const y=cy+bh/2+30; out+=`<path d="M${cxs[n-1]},${cy+bh/2} C ${cxs[n-1]+44},${y+22} ${cxs[0]-44},${y+22} ${cxs[0]},${cy+bh/2}" fill="none" stroke="${ac}" stroke-width="1.6" marker-end="url(#dAhA)"/>`; out+=_t(VB_W/2,y+24,s.loopLabel||"単方向データフロー",{fs:9.5,color:ac}); }
+  if(s.note) out+=_t(VB_W/2,cy-bh/2-14,s.note,{fs:10,color:ac});
+  return out;
+}
+function dPlugins(s,ac){
+  const cx=240,cy=VB_H/2,coreW=164,coreH=60;
+  let out=_box(cx-coreW/2,cy-coreH/2,coreW,coreH,s.core,{fs:12.5,tc:"#101312",fill:_tint(ac,0.16),stroke:ac,weight:"700"});
+  const pl=s.plugins||[],tc=Math.ceil(pl.length/2),plW=116,plH=34;
+  const row=(arr,top)=>{ const cnt=arr.length,m=46,span=VB_W-2*m; arr.forEach((Lb,i)=>{
+    const px=cnt===1?cx:m+span*(i/(cnt-1)),py=top?18+plH/2:VB_H-18-plH/2;
+    const[a1x,a1y]=_edge(px,py,plW/2,plH/2,cx,cy);
+    const[a2x,a2y]=_edge(cx,cy,coreW/2,coreH/2,px,py);
+    out+=_line(a1x,a1y,a2x,a2y,{color:"#87918C"});
+    out+=_box(px-plW/2,py-plH/2,plW,plH,Lb,{fs:10,tc:"#3C4340"});
+  }); };
+  row(pl.slice(0,tc),true); row(pl.slice(tc),false);
+  return out;
+}
+function dGrid(s,ac){
+  let out="",top=20;
+  if(s.shared){ out+=_box(24,16,VB_W-48,34,s.shared,{fs:11,tc:"#101312",fill:_tint(ac,0.14),stroke:ac}); top=64; }
+  const cells=s.cells,cols=s.cols||(cells?cells.length:3),rows=s.rows||1,m=24,gx=14,gy=14,areaW=VB_W-2*m,areaH=VB_H-top-(s.note?22:12);
+  const cw=(areaW-(cols-1)*gx)/cols,ch=(areaH-(rows-1)*gy)/rows; let k=0;
+  for(let r=0;r<rows;r++)for(let c=0;c<cols;c++){
+    const x=m+c*(cw+gx),y=top+r*(ch+gy),lab=cells?(cells[k]||s.cell||"ユニット"):(s.cell||"ユニット"),fault=s.fault&&s.fault.includes(k);
+    out+=_box(x,y,cw,ch,fault?"× "+lab:lab,{fs:10.5,tc:"#101312",fill:fault?_tint("#B4544A",0.16):_tint(ac,0.10),stroke:fault?"#B4544A":(s.isolated?ac:"#B7C0BB")});
+    k++;
+  }
+  if(s.monitor) out+=_t(VB_W-12,VB_H-8,s.monitor,{anchor:"end",fs:9.5,color:ac});
+  if(s.note) out+=_t(VB_W/2,s.shared?57:VB_H-8,s.note,{fs:9.5,color:ac});
+  return out;
+}
+function dTiers(s,ac){
+  const rows=s.rows,R=rows.length,top=26,bot=VB_H-22,bh=40; const rowY=[];
+  for(let i=0;i<R;i++) rowY.push(top+(R===1?0:(bot-top)*(i/(R-1))));
+  let out=""; const centers=[];
+  rows.forEach((row,ri)=>{ const n=row.length,m=44,span=VB_W-2*m,xs=[];
+    row.forEach((cell,ci)=>{ const x=n===1?VB_W/2:m+span*(ci/(n-1)); xs.push(x);
+      const lab=typeof cell==="string"?cell:cell.l,dim=typeof cell==="object"&&cell.dim,bw=n===1?170:124;
+      out+=_box(x-bw/2,rowY[ri]-bh/2,bw,bh,lab,{fs:10.5,tc:dim?"#6B746F":"#101312",fill:dim?"rgba(16,19,18,0.03)":_tint(ac,0.13),stroke:dim?"#B7C0BB":ac,dash:dim?"5 4":"",weight:"600"});
+    });
+    centers.push(xs);
+    if(s.siblingLink===ri&&xs.length>=2){ const y=rowY[ri]; out+=_line(xs[0]+64,y,xs[1]-64,y,{color:ac,dash:"5 4",sw:1.5}); out+=_t((xs[0]+xs[1])/2,y-10,s.siblingLabel||"同期",{fs:9,color:ac}); }
+  });
+  for(let ri=0;ri<R-1;ri++){ const a=centers[ri],b=centers[ri+1];
+    a.forEach((ax,ai)=>{ b.forEach((bx,bi)=>{ if(a.length===b.length&&a.length>1&&ai!==bi) return; out+=_line(ax,rowY[ri]+bh/2,bx,rowY[ri+1]-bh/2,{}); }); });
+  }
+  if(s.note) out+=_t(VB_W-12,16,s.note,{anchor:"end",fs:10,color:ac});
+  return out;
+}
+function dPeers(s,ac){
+  const nodes=s.nodes,n=nodes.length,cx=240,cy=122,R=80; let out="";
+  const pts=nodes.map((_,i)=>{ const a=Math.PI/180*(-90+360*i/n); return [cx+R*Math.cos(a),cy+R*Math.sin(a)]; });
+  for(let i=0;i<n;i++){ const a=pts[i],b=pts[(i+1)%n]; out+=_arrow(a[0]+(b[0]-a[0])*0.2,a[1]+(b[1]-a[1])*0.2,a[0]+(b[0]-a[0])*0.8,a[1]+(b[1]-a[1])*0.8,{accent:true,dash:"4 3"}); }
+  nodes.forEach((nd,i)=>{ const p=pts[i]; out+=_box(p[0]-52,p[1]-20,104,40,nd,{fs:10,tc:"#3C4340",fill:_tint(ac,0.12),stroke:ac}); });
+  out+=_t(cx,cy-7,"中央制御なし",{fs:10,color:"#6B746F"}); out+=_t(cx,cy+8,"(イベントで自律協調)",{fs:8.5,color:"#87918C"});
+  return out;
+}
+function dIslands(s,ac){
+  let out=_box(24,18,VB_W-48,VB_H-36,"",{fill:"rgba(16,19,18,0.03)",stroke:"#B7C0BB",rx:12});
+  out+=_t(40,36,"静的HTML (SSR / SSG・即時表示)",{anchor:"start",fs:10.5,color:"#6B746F"});
+  const isl=s.islands||["検索","カート","チャット"],pos=[[112,118],[258,158],[372,102]];
+  isl.forEach((Lb,i)=>{ const p=pos[i%pos.length]; out+=_box(p[0]-58,p[1]-22,116,44,Lb,{fs:10.5,tc:"#101312",fill:_tint(ac,0.16),stroke:ac,weight:"700"}); });
+  out+=_t(VB_W-40,VB_H-30,"動的アイランドのみハイドレート",{anchor:"end",fs:9.5,color:ac});
+  return out;
+}
+function dStates(s,ac){
+  const st=s.states,P=[[112,122],[240,68],[368,122]],col=["#0E6F5C","#B4544A","#B78A3C"],tr=s.transitions||[],pairs=[[0,1],[1,2],[2,0]];
+  let out="";
+  pairs.forEach((pr,i)=>{ const a=P[pr[0]],b=P[pr[1]],[x1,y1,x2,y2]=_short(a[0],a[1],b[0],b[1],36,36);
+    out+=`<path d="M${x1},${y1} L${x2},${y2}" stroke="#87918C" stroke-width="1.6" marker-end="url(#dAh)"/>`;
+    if(tr[i]){ const mx=(x1+x2)/2,my=(y1+y2)/2; out+=`<rect x="${mx-36}" y="${my-9}" width="72" height="18" rx="4" fill="#FFFFFF" opacity="0.88"/>`+_t(mx,my,tr[i],{fs:8.5,color:"#3C4340"}); }
+  });
+  st.forEach((v,i)=>{ const p=P[i]; out+=`<circle cx="${p[0]}" cy="${p[1]}" r="34" fill="${_tint(col[i],0.16)}" stroke="${col[i]}" stroke-width="2"/>`+_label(p[0],p[1],v,{fs:10.5,color:"#101312",weight:"700"}); });
+  return out;
+}
+
+const DIAGRAM_BUILDERS={stack:dStack,concentric:dConcentric,hexagon:dHex,hub:dHub,pipeline:dPipe,bus:dBus,columns:dCols,triad:dTriad,flow:dFlow,plugins:dPlugins,grid:dGrid,tiers:dTiers,peers:dPeers,islands:dIslands,states:dStates};
+
+const DIAGRAMS = {
+  // ── 構造系 ──
+  "レイヤードアーキテクチャ (Layered)": { type:"stack", arrows:"down",
+    layers:[{l:"プレゼンテーション層"},{l:"ビジネスロジック層"},{l:"データアクセス層"},{l:"データベース",hi:true}] },
+  "クリーンアーキテクチャ (Clean)": { type:"concentric", note:"依存は内側へ",
+    rings:["フレームワーク / DB / UI","インターフェースアダプタ","ユースケース","エンティティ"] },
+  "ヘキサゴナルアーキテクチャ / ポーツ＆アダプター": { type:"hexagon",
+    core:"アプリ\nコア", left:["UI / API","テスト"], right:["DBアダプタ","外部API"] },
+  "マイクロサービス (Microservices)": { type:"hub", center:"API Gateway", dbPerNode:true,
+    nodes:["注文\nサービス","在庫\nサービス","決済\nサービス"] },
+  "モジュラーモノリス (Modular Monolith)": { type:"grid", isolated:true, rows:1, cols:3,
+    shared:"単一デプロイ (1プロセス・1ビルド)", cells:["注文\nモジュール","在庫\nモジュール","決済\nモジュール"], note:"公開API経由のみで連携" },
+  "サービス指向アーキテクチャ (SOA)": { type:"bus", busLabel:"エンタープライズサービスバス (ESB)",
+    top:["業務システムA","業務システムB"], bottom:["サービスX","サービスY","サービスZ"] },
+  "サーバーレス / FaaS": { type:"pipeline", trigger:"イベント\n(HTTP/Queue)", tail:"マネージド\nDB / 通知",
+    stages:["関数A\n(FaaS)","関数B\n(FaaS)"], note:"使った分だけ課金" },
+  "マイクロカーネル (Plugin)": { type:"plugins", core:"マイクロカーネル\n(コア)",
+    plugins:["プラグインA","プラグインB","プラグインC","プラグインD"] },
+  "パイプ＆フィルター (Pipe & Filter)": { type:"pipeline",
+    stages:["入力","フィルタ1","フィルタ2","出力"], note:"パイプで直列接続・並列化容易" },
+  "スペースベースアーキテクチャ (Space-Based)": { type:"grid", rows:2, cols:3,
+    shared:"仮想ミドルウェア (タプルスペース / データグリッド)", cell:"処理ユニット\n(アプリ+インメモリ)", note:"DB書込は非同期" },
+
+  // ── 分散・通信系 ──
+  "イベント駆動アーキテクチャ (EDA)": { type:"bus", busLabel:"イベントブローカー (Kafka / RabbitMQ)",
+    top:["プロデューサー1","プロデューサー2"], bottom:["コンシューマA","コンシューマB","コンシューマC"], topLabel:"発行", botLabel:"購読" },
+  "CQRS (コマンド・クエリ責務分離)": { type:"columns", bottom:"イベント / 同期",
+    cols:[{title:"コマンド側 (書込)",items:["Command Handler","書き込みモデル"]},{title:"クエリ側 (読取)",items:["Query Handler","読み取りモデル"]}] },
+  "イベントソーシング (Event Sourcing)": { type:"pipeline",
+    stages:["コマンド","イベントストア\n(追記ログ)","プロジェクション\n(現在状態)"], note:"リプレイで任意時点を復元" },
+  "サービスメッシュ (Service Mesh)": { type:"hub", center:"コントロール\nプレーン (Istio)", controlPlane:true,
+    nodes:["Svc +\nSidecar","Svc +\nSidecar","Svc +\nSidecar"], note:"mTLS / 観測 / 制御" },
+  "Choreography（コレオグラフィ）": { type:"peers",
+    nodes:["注文\nサービス","在庫\nサービス","決済\nサービス","通知\nサービス"] },
+  "Orchestration（オーケストレーション）": { type:"hub", center:"オーケストレーター", numbered:true,
+    nodes:["サービスA","サービスB","サービスC"], note:"中央が順に指揮" },
+  "Sagaパターン": { type:"pipeline", compensate:true,
+    stages:["T1 注文","T2 在庫","T3 決済"], note:"失敗時は補償Txで巻き戻し" },
+  "バックエンド・フォー・フロントエンド (BFF)": { type:"tiers",
+    rows:[["モバイル","Web"],["モバイルBFF","Web BFF"],["サービス群 (Microservices)"]] },
+  "APIゲートウェイ": { type:"hub", client:"クライアント", center:"API Gateway",
+    nodes:["サービスA","サービスB","サービスC"], note:"認証/レート制限/SSL" },
+
+  // ── データ管理系 ──
+  "リポジトリパターン": { type:"stack", arrows:"down",
+    layers:[{l:"ドメイン / ユースケース"},{l:"リポジトリ\n(インターフェース)",hi:true},{l:"リポジトリ実装 (ORM/SQL)"},{l:"データベース"}] },
+  "アクティブレコード (Active Record)": { type:"stack", arrows:"both",
+    layers:[{l:"Active Record オブジェクト",sub:"データ + ロジック + DB操作を集約",hi:true},{l:"データベース"}] },
+  "データマッパー (Data Mapper)": { type:"columns", arrowsBetween:true,
+    cols:[{title:"ドメイン",items:["ドメイン\nオブジェクト"]},{title:"マッパー",items:["Data\nMapper"]},{title:"DB",items:["データベース"]}] },
+  "ユニットオブワーク (Unit of Work)": { type:"pipeline", tail:"データベース",
+    stages:["変更を追跡\n(new/dirty/removed)","コミット","最小化したSQL"], note:"変更をまとめて反映" },
+  "データレイク / データウェアハウス分離": { type:"pipeline", tail:"BI / ML",
+    stages:["データソース","データレイク\n(生データ)","ETL / ELT","DWH"] },
+  "ポリグロット永続化 (Polyglot Persistence)": { type:"hub", center:"アプリ /\nサービス群", dbStyle:true,
+    nodes:["RDBMS","Redis\n(キャッシュ)","検索\n(ES)","GraphDB"], note:"用途別に最適なDB" },
+
+  // ── UI・フロントエンド系 ──
+  "MVC (Model-View-Controller)": { type:"triad",
+    nodes:{top:{l:"Controller"},bl:{l:"Model"},br:{l:"View"}},
+    edges:[{from:"top",to:"bl",label:"更新"},{from:"bl",to:"br",label:"通知"},{from:"br",to:"top",label:"入力"}] },
+  "MVP (Model-View-Presenter)": { type:"triad",
+    nodes:{top:{l:"Presenter"},bl:{l:"Model"},br:{l:"View"}},
+    edges:[{from:"top",to:"bl",label:"操作",dir:"<->"},{from:"top",to:"br",label:"更新",dir:"<->"}] },
+  "MVVM (Model-View-ViewModel)": { type:"triad",
+    nodes:{top:{l:"ViewModel"},bl:{l:"Model"},br:{l:"View"}},
+    edges:[{from:"top",to:"bl",label:"同期",dir:"<->"},{from:"top",to:"br",label:"バインド",dir:"<->"}] },
+  "Flux / Redux": { type:"flow", loop:true, loopLabel:"dispatch (単方向)",
+    nodes:["Action","Dispatcher","Store","View"] },
+  "Island Architecture": { type:"islands", islands:["検索","カート","チャット"] },
+  "マイクロフロントエンド (MFE)": { type:"tiers", note:"チーム別に独立",
+    rows:[["Shell / コンテナアプリ"],["MFE: 検索","MFE: 注文","MFE: 決済"]] },
+
+  // ── 統合・連携系 ──
+  "ストラングラーフィグパターン": { type:"tiers", note:"段階的に置換",
+    rows:[["プロキシ / ルーター"],[{l:"レガシー (縮小)",dim:true},"新システム (拡大)"]] },
+  "アンチコラプションレイヤー (ACL)": { type:"columns", arrowsBetween:true, reverse:true,
+    cols:[{title:"自ドメイン",items:["クリーンな\nドメインモデル"]},{title:"ACL",items:["変換 /\n腐敗防止層"]},{title:"外部",items:["レガシー /\n外部システム"]}] },
+  "サーキットブレーカー (Circuit Breaker)": { type:"states",
+    states:["Closed\n(通常)","Open\n(遮断中)","Half-Open\n(試験)"], transitions:["失敗が閾値超","一定時間後","成功で復帰"] },
+  "バルクヘッドパターン (Bulkhead)": { type:"grid", isolated:true, rows:1, cols:3,
+    cells:["プールA\n(重要API)","プールB\n(一般API)","プールC\n(バッチ)"], note:"リソースを隔壁分離" },
+  "リトライ＆タイムアウト (Retry & Timeout)": { type:"flow", loop:true, retryLoop:false,
+    nodes:["クライアント","対象サービス"], loopLabel:"リトライ (指数バックオフ + Jitter)", note:"タイムアウトで打ち切り" },
+  "ゲートウェイアグリゲーション": { type:"hub", client:"クライアント", center:"ゲートウェイ\n(集約)", aggregate:true,
+    nodes:["サービスA","サービスB","サービスC"], note:"1呼び出しで集約" },
+  "アウトボックスパターン (Outbox)": { type:"pipeline", tail:"メッセージ\nブローカー",
+    stages:["サービス","DB\n業務+Outbox\n(同一Tx)","リレー / CDC"], note:"At-least-once配信" },
+
+  // ── セキュリティ・信頼性系 ──
+  "ゼロトラストアーキテクチャ": { type:"flow", edgeLabels:["検証","許可"],
+    nodes:["ユーザ /\nデバイス","ポリシー実施点\n(継続検証)","リソース"], note:"暗黙の信頼ゼロ・常に検証" },
+  "最小権限の原則 (PoLP)": { type:"tiers", note:"デフォルト拒否",
+    rows:[["サブジェクト\n(ユーザ/サービス)"],["許可された操作\n(最小限のみ)"],["リソース"]] },
+  "多層防御 (Defense in Depth)": { type:"concentric", note:"多層で防御",
+    rings:["境界防御 (WAF/FW)","認証・認可","暗号化","監査 / 監視","データ"] },
+  "信頼境界パターン (Trust Boundary)": { type:"columns", boundary:true,
+    cols:[{title:"低信頼ゾーン",items:["外部 / DMZ"]},{title:"高信頼ゾーン",items:["内部システム","データベース"]}] },
+  "冗長化・フォールオーバー (HA)": { type:"tiers", siblingLink:1, siblingLabel:"レプリケーション", note:"SPOF排除",
+    rows:[["ロードバランサー"],["ノード Active","ノード Standby"]] },
+  "混沌工学 (Chaos Engineering)": { type:"grid", rows:2, cols:3, fault:[2],
+    cell:"サービス", monitor:"観測 → 弱点発見", note:"意図的に障害注入" }
+};
+
+function buildDiagram(name,cat){
+  const spec=DIAGRAMS[name], ac=DIAG_ACCENT[cat]||"#0E6F5C";
+  if(!spec||!DIAGRAM_BUILDERS[spec.type]) return { svg:_svg(_t(VB_W/2,VB_H/2,"(構成図は準備中)",{fs:12,color:"#87918C"}),ac), caption:"" };
+  return { svg:_svg(DIAGRAM_BUILDERS[spec.type](spec,ac),ac), caption:DIAG_TYPE_LABEL[spec.type]||"" };
+}
+
+/* ===== UI CONFIG ===== */
+const CATEGORIES = {
+  all:{label:"すべて"}, structural:{label:"構造系"}, distributed:{label:"分散・通信系"},
+  data:{label:"データ管理系"}, ui:{label:"UI・フロント系"}, integration:{label:"統合・連携系"}, security:{label:"信頼性・保安系"}
+};
+const SCORE_LABELS = ["スケーラビリティ","テスト容易性","初期単純さ","パフォーマンス","障害耐久性"];
+const CAT_COLORS = { structural:"#0E6F5C", distributed:"#3F8F7A", data:"#6B5B95", ui:"#A85A6B", integration:"#B78A3C", security:"#B4544A" };
+const CHART_COLORS = [
+  { border:"#0E6F5C", bg:"rgba(14,111,92,0.14)" },
+  { border:"#3C6E9C", bg:"rgba(60,110,156,0.14)" },
+  { border:"#B4544A", bg:"rgba(180,84,74,0.14)" },
+  { border:"#B78A3C", bg:"rgba(183,138,60,0.14)" },
+  { border:"#6B5B95", bg:"rgba(107,91,149,0.14)" },
+  { border:"#3F8F7A", bg:"rgba(63,143,122,0.14)" }
+];
+
+/* ===== STATE ===== */
+let currentCategory = "all";
+let query = "";
+let selected = [];            // in-memory only (names)
+let detailList = [];          // snapshot of filtered list for prev/next
+let detailPos = 0;
+let cmpChart = null;
+let lastFocus = null;
+
+/* ===== HELPERS ===== */
+function filtered(){
+  const q = query.trim().toLowerCase();
+  return PATTERNS.filter(p=>{
+    if(currentCategory!=="all" && p.cat!==currentCategory) return false;
+    if(!q) return true;
+    return p.name.toLowerCase().includes(q) || p.short.toLowerCase().includes(q) ||
+           p.desc.toLowerCase().includes(q) || p.uses.some(u=>u.toLowerCase().includes(q)) ||
+           (p.examples||[]).some(e=>e.toLowerCase().includes(q));
+  });
+}
+function scoreClass(s){ return s>=4 ? "hi" : (s>=3 ? "mid" : "lo"); }
+function findPattern(name){ return PATTERNS.find(p=>p.name===name); }
+function esc(s){ return String(s).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;"); }
+
+/* ===== FILTER PILLS ===== */
+function renderFilters(){
+  const fb = document.getElementById("filterbar");
+  fb.innerHTML = Object.entries(CATEGORIES).map(([k,v])=>{
+    const on = k===currentCategory;
+    const dot = k==="all" ? "" : `<span class="dot" style="background:${CAT_COLORS[k]}"></span>`;
+    return `<button class="pill" role="button" aria-pressed="${on}" onclick="setCategory('${k}')">${dot}${v.label}</button>`;
+  }).join("");
+}
+function setCategory(k){ currentCategory=k; renderFilters(); renderGrid(); }
+function onSearch(){ query = document.getElementById("search").value; renderGrid(); }
+
+/* ===== GRID ===== */
+function renderGrid(){
+  const list = filtered();
+  const grid = document.getElementById("pgrid");
+  document.getElementById("count").textContent =
+    `${list.length} / ${PATTERNS.length} パターンを表示` + (currentCategory!=="all"?`（${CATEGORIES[currentCategory].label}）`:"");
+  if(list.length===0){ grid.innerHTML = `<p class="noresult">該当するパターンはありません。検索条件を変えてみてください。</p>`; return; }
+  grid.innerHTML = list.map(p=>{
+    const on = selected.includes(p.name);
+    return `<article class="pcard">
+      <button class="pcard-main" onclick="openDetail('${esc(p.name)}')">
+        <span class="cat-tag"><span class="cdot" style="background:${CAT_COLORS[p.cat]}"></span>${CATEGORIES[p.cat].label}</span>
+        <h3>${esc(p.name)}</h3>
+        <p class="ps">${esc(p.short)}</p>
+      </button>
+      <button class="pcard-star ${on?'on':''}" aria-pressed="${on}" title="比較に追加" aria-label="比較に追加: ${esc(p.name)}" onclick="toggleCompare('${esc(p.name)}')">${on?'★':'☆'}</button>
+    </article>`;
+  }).join("");
+}
+
+/* ===== SCORE / TAG RENDER ===== */
+function scoreBars(scores){
+  return (scores||[]).map((s,i)=>`
+    <div class="scorerow">
+      <span class="sl">${SCORE_LABELS[i]}</span>
+      <span class="track"><span class="fill ${scoreClass(s)}" style="width:${s*20}%"></span></span>
+      <span class="sv">${s}</span>
+    </div>`).join("");
+}
+
+/* ===== DETAIL MODAL ===== */
+function openDetail(name){
+  detailList = filtered();
+  detailPos = detailList.findIndex(p=>p.name===name);
+  if(detailPos<0){ detailList = PATTERNS; detailPos = PATTERNS.findIndex(p=>p.name===name); }
+  lastFocus = document.activeElement;
+  renderDetail();
+  const m = document.getElementById("detail");
+  m.classList.add("open"); m.setAttribute("aria-hidden","false");
+  document.body.style.overflow = "hidden";
+  document.querySelector('#detail .iconbtn[aria-label="閉じる"]').focus();
+}
+function renderDetail(){
+  const p = detailList[detailPos]; if(!p) return;
+  document.getElementById("d-cat").innerHTML = `<span class="cdot" style="background:${CAT_COLORS[p.cat]}"></span>${CATEGORIES[p.cat].label}`;
+  document.getElementById("d-name").textContent = p.name;
+  document.getElementById("d-short").textContent = p.short;
+  document.getElementById("d-desc").textContent = p.desc;
+  const dg = buildDiagram(p.name, p.cat);
+  document.getElementById("d-diagram").innerHTML = dg.svg;
+  document.getElementById("d-diagram-cap").textContent = dg.caption;
+  document.getElementById("d-scores").innerHTML = scoreBars(p.scores);
+  document.getElementById("d-pros").innerHTML = p.pros.map(x=>`<li>${esc(x)}</li>`).join("");
+  document.getElementById("d-cons").innerHTML = p.cons.map(x=>`<li>${esc(x)}</li>`).join("");
+  document.getElementById("d-uses").innerHTML = p.uses.map(x=>`<span class="tag">${esc(x)}</span>`).join("");
+  document.getElementById("d-examples").innerHTML = (p.examples||[]).map(x=>`<span class="tag ex">${esc(x)}</span>`).join("");
+  document.getElementById("d-related").innerHTML = (p.related||[]).map(x=>{
+    const exists = !!findPattern(x);
+    return exists ? `<span class="tag rel" role="button" tabindex="0" onclick="openDetail('${esc(x)}')" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();openDetail('${esc(x)}')}">${esc(x)}</span>`
+                  : `<span class="tag">${esc(x)}</span>`;
+  }).join("");
+  document.getElementById("d-detailtext").textContent = p.detail || "";
+  const on = selected.includes(p.name);
+  const btn = document.getElementById("d-star");
+  btn.classList.toggle("on", on);
+  btn.setAttribute("aria-pressed", on);
+  btn.querySelector(".st").innerHTML = on ? "★" : "☆";
+  document.getElementById("d-star-label").textContent = on ? "比較に追加済み" : "後で比較に追加";
+  document.getElementById("d-prev").disabled = detailList.length<2;
+  document.getElementById("d-next").disabled = detailList.length<2;
+}
+function detailStep(dir){
+  if(detailList.length<2) return;
+  detailPos = (detailPos + dir + detailList.length) % detailList.length;
+  renderDetail();
+}
+function detailToggleStar(){ const p = detailList[detailPos]; if(p) toggleCompare(p.name); }
+function closeDetail(){
+  const m = document.getElementById("detail");
+  m.classList.remove("open"); m.setAttribute("aria-hidden","true");
+  document.body.style.overflow = "";
+  if(lastFocus && lastFocus.focus) lastFocus.focus();
+}
+
+/* ===== COMPARE ===== */
+function toggleCompare(name){
+  if(selected.includes(name)) selected = selected.filter(n=>n!==name);
+  else selected.push(name);
+  renderGrid();
+  if(document.getElementById("detail").classList.contains("open")) renderDetail();
+  updateCompareBar();
+  renderCompare();
+}
+function clearCompare(){ selected = []; renderGrid(); if(document.getElementById("detail").classList.contains("open")) renderDetail(); updateCompareBar(); renderCompare(); }
+function gotoCompare(){ document.getElementById("compare").scrollIntoView({behavior:"smooth"}); }
+
+function updateCompareBar(){
+  const bar = document.getElementById("cbar");
+  document.getElementById("cbar-count").textContent = selected.length;
+  document.getElementById("cmp-clear").style.display = selected.length ? "inline-flex" : "none";
+  if(selected.length>0){
+    bar.classList.add("show");
+    document.getElementById("cbar-chips").innerHTML = selected.slice(0,3).map(n=>{
+      const short = n.split(" ")[0].replace(/[（(].*$/,"");
+      return `<span class="cb-chip">${esc(short)}</span>`;
+    }).join("") + (selected.length>3 ? `<span class="cb-chip">+${selected.length-3}</span>` : "");
+  } else {
+    bar.classList.remove("show");
+  }
+}
+
+function renderCompare(){
+  const empty = document.getElementById("cmp-empty");
+  const active = document.getElementById("cmp-active");
+  const pats = selected.map(findPattern).filter(Boolean);
+  if(pats.length===0){
+    empty.style.display=""; active.style.display="none";
+    if(cmpChart){ cmpChart.destroy(); cmpChart=null; }
+    return;
+  }
+  empty.style.display="none"; active.style.display="grid";
+
+  // cards
+  document.getElementById("cmp-cards").innerHTML = pats.map((p,i)=>{
+    const c = CHART_COLORS[i%CHART_COLORS.length];
+    return `<div class="ccard">
+      <div class="ctop">
+        <div style="display:flex;gap:9px">
+          <span class="swatch" style="background:${c.border}"></span>
+          <div><span class="cat-tag"><span class="cdot" style="background:${CAT_COLORS[p.cat]}"></span>${CATEGORIES[p.cat].label}</span><h4>${esc(p.name)}</h4></div>
+        </div>
+        <button class="rm" title="比較から削除" aria-label="比較から削除" onclick="toggleCompare('${esc(p.name)}')">&times;</button>
+      </div>
+      ${p.scores.map((s,si)=>`<div class="mini"><span class="ml">${SCORE_LABELS[si]}</span><span class="mt"><span class="mf ${'fill '+scoreClass(s)}" style="width:${s*20}%"></span></span></div>`).join("")}
+    </div>`;
+  }).join("");
+
+  // radar
+  const note = document.getElementById("radar-note");
+  const canvas = document.getElementById("cmpRadar");
+  if(pats.length<2){
+    note.style.display="block"; canvas.style.display="none";
+    if(cmpChart){ cmpChart.destroy(); cmpChart=null; }
+    return;
+  }
+  note.style.display="none"; canvas.style.display="block";
+  if(typeof Chart==="undefined"){ note.style.display="block"; note.textContent="（レーダーチャートの描画ライブラリを読み込めませんでした）"; canvas.style.display="none"; return; }
+  const ctx = canvas.getContext("2d");
+  if(cmpChart) cmpChart.destroy();
+  cmpChart = new Chart(ctx, {
+    type:"radar",
+    data:{ labels:SCORE_LABELS, datasets:pats.map((p,i)=>({
+      label:p.name.split(" ")[0].replace(/[（(].*$/,""),
+      data:p.scores, fill:true,
+      backgroundColor:CHART_COLORS[i%CHART_COLORS.length].bg,
+      borderColor:CHART_COLORS[i%CHART_COLORS.length].border,
+      pointBackgroundColor:CHART_COLORS[i%CHART_COLORS.length].border,
+      pointBorderColor:"#fff", pointRadius:3, borderWidth:2
+    }))},
+    options:{ responsive:true, maintainAspectRatio:false,
+      plugins:{ legend:{ labels:{ color:"#3C4340", font:{size:11, family:"Plus Jakarta Sans"}, boxWidth:12 } } },
+      scales:{ r:{ min:0, max:5,
+        angleLines:{color:"#E7ECE9"}, grid:{color:"#E7ECE9"},
+        pointLabels:{color:"#3C4340", font:{size:11, family:"Plus Jakarta Sans"}},
+        ticks:{display:false, stepSize:1, backdropColor:"transparent"} } }
+    }
+  });
+}
+
+/* ===== KEYBOARD ===== */
+document.addEventListener("keydown",(e)=>{
+  const open = document.getElementById("detail").classList.contains("open");
+  if(open){
+    if(e.key==="Escape") closeDetail();
+    else if(e.key==="ArrowRight") detailStep(1);
+    else if(e.key==="ArrowLeft") detailStep(-1);
+  }
+});
+document.getElementById("detail").addEventListener("click", function(e){ if(e.target===this) closeDetail(); });
+
+/* ===== LANGUAGE PERSIST ===== */
+function setLang(l){document.body.classList.remove('lang-ja','lang-en');document.body.classList.add('lang-'+l);document.documentElement.lang=l;
+ try{localStorage.setItem('site-lang',l)}catch(e){}
+ try{var q=new URLSearchParams(location.search);q.set('lang',l);history.replaceState(null,'',location.pathname+'?'+q+location.hash)}catch(e){}}
+function toggleLang(){setLang(document.body.classList.contains('lang-ja')?'en':'ja')}
+(function(){var u=null;try{u=new URLSearchParams(location.search).get('lang')}catch(e){}
+ var s=null;try{s=localStorage.getItem('site-lang')}catch(e){}
+ var l=(u==='en'||u==='ja')?u:((s==='en'||s==='ja')?s:'ja');if(l!=='ja')setLang(l);})();
+
+/* ===== REVEAL ===== */
+if('IntersectionObserver' in window){
+  var io=new IntersectionObserver(function(es){ es.forEach(function(e){ if(e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target); } }); },{threshold:0.12, rootMargin:"0px 0px -6% 0px"});
+  document.querySelectorAll('.reveal').forEach(function(el){ io.observe(el); });
+} else { document.querySelectorAll('.reveal').forEach(function(el){ el.classList.add('in'); }); }
+
+/* ===== INIT ===== */
+window.addEventListener("load", function(){
+  renderFilters();
+  renderGrid();
+  updateCompareBar();
+  renderCompare();
+});
+</script>
+</body>
+</html>

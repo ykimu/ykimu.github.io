@@ -1,0 +1,2691 @@
+<!DOCTYPE html>
+<html lang="ja" class="no-js">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>デザインパターン学習ガイド - GoF 23パターン / Design Patterns</title>
+<meta name="description" content="A study guide to the 23 Gang of Four design patterns, with intent, pros and cons, use cases, Java/Python code, class diagrams, and a comprehension quiz. Part of Yuta Kimura's software engineering course materials.">
+<link rel="canonical" href="https://ykimu.github.io/course/design-patterns.html">
+<link rel="icon" href="../favicon.svg" type="image/svg+xml">
+<meta property="og:site_name" content="Yuta Kimura / 木村祐太">
+<meta property="og:type" content="article">
+<meta property="og:title" content="デザインパターン学習ガイド - GoF 23パターン / Design Patterns">
+<meta property="og:description" content="A study guide to the 23 Gang of Four design patterns, with intent, pros and cons, use cases, Java/Python code, class diagrams, and a comprehension quiz. Part of Yuta Kimura's software engineering course materials.">
+<meta property="og:url" content="https://ykimu.github.io/course/design-patterns.html">
+<meta property="og:image" content="https://ykimu.github.io/assets/og.png">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="color-scheme" content="light">
+<script>document.documentElement.className="js";</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&family=Noto+Sans+JP:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#FBFCFB; --bg-2:#F3F6F4; --bg-3:#EBEFED; --card:#FFFFFF;
+    --ink:#101312; --ink-2:#3C4340; --muted:#6B746F; --faint:#B7C0BB;
+    --line:#E7ECE9; --hair:rgba(16,19,18,.08); --shell:rgba(16,19,18,.035);
+    --accent:#0E6F5C; --accent-2:#0A5748; --accent-soft:rgba(14,111,92,.08);
+    --soft:0 1px 2px rgba(16,19,18,.04), 0 24px 60px -28px rgba(16,19,18,.16);
+    --inhi:inset 0 1px 0 rgba(255,255,255,.85);
+    --ease:cubic-bezier(.32,.72,0,1);
+    --sans:"Plus Jakarta Sans","Noto Sans JP",-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+    --disp:"Space Grotesk","Plus Jakarta Sans","Noto Sans JP",sans-serif;
+    --mono:ui-monospace,SFMono-Regular,Menlo,Consolas,"Liberation Mono",monospace;
+    --maxw:1440px; --readw:clamp(680px, 62vw, 1060px);
+    /* category accents (kept within the brand green + neutral family) */
+    --creational:#0E6F5C; --structural:#0A5748; --behavioral:#5B655F;
+    /* compatibility aliases used by reused content/diagram/quiz markup */
+    --panel:var(--card); --panel2:var(--bg-2); --chip:var(--bg-3);
+    --code-bg:var(--shell); --code-ink:#2F3A33;
+    --good:#0E6F5C; --bad:#B04A3E; --warn:#8A6D3B; --accent2:var(--accent-2);
+    --kw:#0A5748; --ty:#3C4340; --st:#7A5C34; --cm:#87918C;
+  }
+  html{color-scheme:light}
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth; -webkit-text-size-adjust:100%}
+  body{margin:0; background:var(--bg); color:var(--ink); font-family:var(--sans);
+    font-size:17px; line-height:1.75; font-weight:400; -webkit-font-smoothing:antialiased; text-rendering:optimizeLegibility}
+  body.lang-ja [lang=en]{display:none}
+  body.lang-en [lang=ja]{display:none}
+  ::selection{background:rgba(14,111,92,.16)}
+  h1,h2,h3{margin:0; color:var(--ink); font-weight:500; line-height:1.16; letter-spacing:-.02em; font-family:var(--disp); text-wrap:balance}
+  body.lang-ja h1,body.lang-ja h2,body.lang-ja h3{letter-spacing:0; font-family:var(--sans)}
+  p,.lead,.cite,.muted-s{text-wrap:pretty}
+  [lang="en"]{line-break:auto}
+  [lang="ja"]{line-break:strict; word-break:normal}
+  h1 [lang="ja"],h2 [lang="ja"],h3 [lang="ja"]{word-break:auto-phrase}
+  p{margin:0 0 1em}
+  a{color:var(--accent-2); text-decoration:none; transition:color .3s var(--ease)}
+  a:hover{color:var(--accent)}
+  a:focus-visible,button:focus-visible,.btn:focus-visible,[tabindex]:focus-visible{outline:2px solid var(--accent); outline-offset:3px; border-radius:8px}
+  .wrap{max-width:var(--maxw); margin:0 auto; padding:0 40px}
+  [id]{scroll-margin-top:96px}
+  section{padding:100px 0}
+
+  .skip{position:fixed; top:10px; left:10px; padding:10px 16px; background:var(--ink); color:#fff; border-radius:999px; transform:translateY(-200%); transition:none; z-index:100}
+  .skip:focus{transform:none}
+
+  /* film grain overlay */
+  body::after{content:""; position:fixed; inset:0; z-index:1; pointer-events:none; opacity:.02;
+    background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='g'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23g)'/%3E%3C/svg%3E")}
+
+  h2.big{font-size:clamp(1.9rem,3.2vw,2.7rem); font-weight:500; letter-spacing:-.025em; max-width:26ch}
+  body.lang-ja h2.big{letter-spacing:-.01em}
+  .eyebrow,.kick{display:inline-flex; align-items:center; gap:8px; width:max-content; max-width:100%;
+    padding:5px 13px 5px 11px; border-radius:999px; border:1px solid var(--hair); background:#fff;
+    font:600 .66rem/1 var(--disp); letter-spacing:.14em; text-transform:uppercase; color:var(--ink-2); margin:0 0 18px}
+  .eyebrow::before,.kick::before{content:""; flex:0 0 auto; width:6px; height:6px; border-radius:50%; background:var(--accent)}
+  .lead{font-size:1.12rem; color:var(--ink-2); line-height:1.78; font-weight:400}
+
+  /* motion */
+  .js .reveal{opacity:0; transform:translateY(18px); filter:blur(6px); transition:opacity .9s var(--ease), transform .9s var(--ease), filter .9s var(--ease)}
+  .js .reveal.in{opacity:1; transform:none; filter:none}
+  @media (prefers-reduced-motion:reduce){
+    .js .reveal{opacity:1!important; transform:none!important; filter:none!important}
+    .btn:active,.btn.ink:hover .ic,.pcard:hover,.pill:hover{transform:none!important}
+    html{scroll-behavior:auto}
+  }
+
+  /* floating island nav */
+  header.bar{position:sticky; top:18px; z-index:60; background:transparent; border-bottom:none}
+  .bar .wrap{display:flex; align-items:center; justify-content:space-between;
+    width:max-content; max-width:calc(100% - 32px); margin:0 auto; height:auto;
+    padding:9px 12px 9px 20px; gap:20px; border-radius:999px;
+    background:rgba(255,255,255,.72); -webkit-backdrop-filter:saturate(1.4) blur(18px); backdrop-filter:saturate(1.4) blur(18px);
+    border:1px solid var(--hair); box-shadow:var(--soft)}
+  .brand{font-weight:600; font-size:.92rem; letter-spacing:-.01em; color:var(--ink); display:inline-flex; align-items:center; gap:8px}
+  .brand span.sep{color:var(--muted); font-weight:400; margin:0 2px}
+  .navlinks{display:flex; gap:22px; align-items:center}
+  .navlinks a{font-size:.86rem; font-weight:500; color:var(--ink-2); transition:color .3s var(--ease)}
+  .navlinks a:hover{color:var(--ink)}
+  @media(max-width:860px){.navlinks{display:none}}
+  .bar-right{display:flex; align-items:center; gap:8px}
+
+  /* buttons */
+  .btn{display:inline-flex; align-items:center; gap:10px; font:500 .85rem/1 var(--sans); padding:10px 18px;
+    border-radius:999px; border:1px solid var(--hair); background:#fff; color:var(--ink); cursor:pointer;
+    transition:transform .4s var(--ease), box-shadow .4s var(--ease), border-color .3s var(--ease), background .3s var(--ease), color .3s var(--ease)}
+  .btn:hover{border-color:var(--ink); transform:translateY(-1px); color:var(--ink)}
+  .btn:active{transform:scale(.98)}
+  .btn.ink{background:var(--ink); border-color:var(--ink); color:#fff; padding:10px 10px 10px 22px;
+    box-shadow:0 12px 26px -14px rgba(16,19,18,.5)}
+  .btn.ink:not(:has(.ic)){padding:10px 22px}
+  .btn.ink:hover{box-shadow:0 16px 32px -14px rgba(16,19,18,.55); color:#fff}
+  .btn .ic{width:32px; height:32px; border-radius:999px; background:rgba(255,255,255,.18); display:grid; place-items:center;
+    transition:transform .45s var(--ease); flex:0 0 auto}
+  .btn.ink:hover .ic{transform:translate(3px,-1px)}
+  .tlink{display:inline-flex; align-items:center; gap:8px; font-weight:500; font-size:.95rem; color:var(--ink)}
+  .tlink .ar{transition:transform .4s var(--ease)}
+  .tlink:hover .ar{transform:translateX(4px)}
+
+  /* hero */
+  .hero{position:relative; overflow:hidden}
+  .hero > .wrap{position:relative; z-index:1}
+  .hero::before{content:""; position:absolute; z-index:0; width:640px; height:640px; right:-150px; top:-240px;
+    border-radius:50%; pointer-events:none; opacity:.55;
+    background:radial-gradient(circle, var(--accent-soft), transparent 62%); filter:blur(20px)}
+  .hero .wrap{padding-top:72px; padding-bottom:70px}
+  .hero h1{font-size:clamp(2.6rem,5vw,4.2rem); font-weight:500; letter-spacing:-.03em; line-height:1.08; color:var(--ink); max-width:20ch}
+  body.lang-ja .hero h1{font-size:clamp(2rem,4.2vw,3.1rem); font-weight:500; letter-spacing:0; line-height:1.24}
+  .hero h1 em{font-style:normal; color:var(--accent)}
+  .hero .lead{max-width:var(--readw); margin-top:24px}
+  .ja-note{display:inline-flex; align-items:center; gap:8px; margin-top:22px; padding:7px 15px; border-radius:999px;
+    border:1px solid var(--hair); background:#fff; font-size:.8rem; color:var(--muted)}
+  .ja-note::before{content:""; width:6px; height:6px; border-radius:50%; background:var(--accent); flex:0 0 auto}
+  .hero-cta{display:flex; gap:20px; align-items:center; flex-wrap:wrap; margin-top:28px}
+
+  .soft-sec{background:var(--bg-2); border-top:1px solid var(--line); border-bottom:1px solid var(--line)}
+
+  /* prose (intro / closing reused HTML) */
+  .prose{max-width:var(--readw)}
+  .prose p{margin:0 0 1em; color:var(--ink-2)}
+  .prose h4{font-family:var(--sans); font-size:1.12rem; font-weight:600; letter-spacing:0; color:var(--ink); margin:1.6em 0 .6em}
+  .prose ul{margin:0 0 1.2em; padding-left:0; list-style:none}
+  .prose ul li{position:relative; padding-left:22px; margin:12px 0; color:var(--ink-2)}
+  .prose ul li::before{content:""; position:absolute; left:0; top:13px; width:11px; height:1.5px; background:var(--accent)}
+  .prose ul li b{color:var(--ink); font-weight:600}
+  .prose b{color:var(--ink); font-weight:600}
+  .prose i{color:var(--ink-2)}
+  .prose code{font-family:var(--mono); font-size:.86em; background:var(--shell); border:1px solid var(--hair); border-radius:6px; padding:.08em .4em; color:var(--accent-2)}
+
+  .callout{border-radius:16px; padding:18px 22px; margin:18px 0; max-width:var(--readw);
+    background:var(--card); box-shadow:0 0 0 6px var(--shell),0 0 0 6.5px var(--hair),var(--soft)}
+  .callout h4{margin:0 0 6px; font-size:1rem; font-family:var(--sans); font-weight:600; letter-spacing:0; color:var(--ink)}
+  .callout.tip{background:var(--accent-soft)}
+  .callout.warn{background:rgba(138,109,59,.08)}
+  .callout a{font-weight:600}
+
+  .principles{display:grid; grid-template-columns:repeat(auto-fit,minmax(230px,1fr)); gap:14px; margin:18px 0; max-width:var(--readw)}
+  .principles .p{background:var(--card); border-radius:16px; padding:16px 18px;
+    box-shadow:0 0 0 6px var(--shell),0 0 0 6.5px var(--hair),var(--soft)}
+  .principles .p b{color:var(--accent-2)}
+  .principles .p span{font-size:.9rem; color:var(--muted)}
+
+  .cmp-table{border-collapse:separate; border-spacing:0; margin:16px 0; max-width:var(--readw); width:100%; font-size:.92rem;
+    border-radius:14px; overflow:hidden; box-shadow:0 0 0 6px var(--shell),0 0 0 6.5px var(--hair),var(--soft)}
+  .cmp-table th,.cmp-table td{border-bottom:1px solid var(--line); border-right:1px solid var(--line); padding:11px 14px; text-align:left; vertical-align:top; background:var(--card)}
+  .cmp-table tr:last-child th,.cmp-table tr:last-child td{border-bottom:none}
+  .cmp-table th{background:var(--bg-2); font-weight:600; color:var(--ink)}
+  .cmp-table td:last-child,.cmp-table th:last-child{border-right:none}
+  .cmp-table td b{color:var(--accent-2)}
+
+  /* controls: category pills + search */
+  .controls{display:flex; align-items:center; justify-content:space-between; gap:20px; flex-wrap:wrap; margin:0 0 12px}
+  .pills{display:flex; gap:8px; flex-wrap:wrap}
+  .pill{display:inline-flex; align-items:center; gap:8px; font:500 .9rem/1 var(--sans); padding:9px 16px;
+    border-radius:999px; border:1px solid var(--hair); background:#fff; color:var(--ink-2); cursor:pointer;
+    transition:transform .4s var(--ease), border-color .3s var(--ease), background .3s var(--ease), color .3s var(--ease)}
+  .pill:hover{border-color:var(--ink); transform:translateY(-1px)}
+  .pill span{font:600 .72rem/1 var(--disp); color:var(--muted)}
+  .pill.active{background:var(--ink); border-color:var(--ink); color:#fff}
+  .pill.active span{color:rgba(255,255,255,.7)}
+  .ctrl-right{display:flex; align-items:center; gap:14px}
+  .search{width:min(280px,60vw); padding:10px 16px; border-radius:999px; border:1px solid var(--hair);
+    background:#fff; color:var(--ink); font:400 .9rem/1 var(--sans); outline:none; transition:border-color .3s var(--ease)}
+  .search:focus{border-color:var(--accent)}
+  .learn-note{font:600 .78rem/1 var(--disp); color:var(--muted); white-space:nowrap}
+
+  /* category groups */
+  .cat-group{margin-top:34px}
+  .cat-group.hidden{display:none}
+  .cat-head{display:flex; align-items:center; gap:12px; margin:0 0 4px}
+  .cat-head .cat-dot{width:10px; height:10px; border-radius:50%; background:var(--cc); flex:0 0 auto}
+  .cat-head h3{font-family:var(--sans); font-size:1.4rem; font-weight:600; letter-spacing:0; color:var(--ink)}
+  .cat-badge{font:600 .66rem/1 var(--disp); letter-spacing:.08em; text-transform:uppercase; color:var(--muted);
+    border:1px solid var(--hair); background:#fff; padding:5px 11px; border-radius:999px}
+  .cat-desc{max-width:var(--readw); color:var(--muted); font-size:.96rem; margin:0 0 12px}
+
+  /* pattern card (double-bezel) */
+  .pcard{border-radius:21px; background:var(--card); margin:16px 0; scroll-margin-top:96px;
+    box-shadow:0 0 0 7px var(--shell),0 0 0 7.5px var(--hair),var(--soft);
+    transition:box-shadow .4s var(--ease)}
+  .pcard.hidden{display:none}
+  .pcard-head{display:flex; align-items:center; gap:14px; width:100%; text-align:left;
+    background:transparent; border:none; cursor:pointer; padding:22px 26px 8px; font-family:var(--sans)}
+  .pnum{font:600 .95rem/1 var(--disp); font-variant-numeric:tabular-nums; flex:0 0 auto; min-width:24px}
+  .ptitle{font-family:var(--disp); font-weight:500; font-size:1.18rem; color:var(--ink); letter-spacing:-.01em; flex:0 0 auto}
+  .ptitle small{display:block; font-family:var(--sans); font-size:.8rem; color:var(--muted); font-weight:400; margin-top:2px}
+  .pbadges{display:flex; gap:8px; align-items:center}
+  .ptags{display:flex; gap:6px; flex-wrap:wrap; margin-left:auto; justify-content:flex-end}
+  .pchev{flex:0 0 auto; font-size:1.5rem; color:var(--muted); transition:transform .4s var(--ease); margin-left:6px; line-height:1}
+  .pcard.open .pchev{transform:rotate(90deg); color:var(--accent-2)}
+  .summary{margin:0; padding:0 26px 22px; color:var(--ink-2); font-size:1rem}
+  .summary strong{color:var(--ink); font-weight:600}
+  .pdetail{display:none; padding:0 26px 26px}
+  .pcard.open .pdetail{display:block}
+  .pcard.done-card{box-shadow:0 0 0 7px var(--accent-soft),0 0 0 7.5px rgba(14,111,92,.24),var(--soft)}
+
+  .badge-imp{font:700 .68rem/1 var(--disp); letter-spacing:.06em; padding:4px 10px; border-radius:999px; white-space:nowrap}
+  .imp3{background:var(--accent); color:#fff}
+  .imp2{background:var(--accent-soft); color:var(--accent-2)}
+  .imp1{background:var(--bg-3); color:var(--muted)}
+  .badge-diff{font-size:.8rem; color:var(--warn); letter-spacing:2px; white-space:nowrap}
+  .tag{font:500 .72rem/1 var(--sans); padding:5px 10px; border-radius:999px; background:var(--bg-2); color:var(--muted); border:1px solid var(--hair)}
+
+  .analogy{display:flex; gap:10px; align-items:flex-start; background:var(--accent-soft);
+    border-radius:14px; padding:14px 18px; margin:16px 0; font-size:.94rem; color:var(--ink-2)}
+  .analogy b{color:var(--accent-2); font-weight:600}
+
+  .grid2{display:grid; grid-template-columns:1fr 1fr; gap:16px; margin:18px 0}
+  .box{border-radius:16px; padding:16px 18px; background:var(--card);
+    box-shadow:0 0 0 6px var(--shell),0 0 0 6.5px var(--hair),var(--soft)}
+  .box h5{margin:0 0 10px; font-size:.92rem; font-family:var(--sans); font-weight:600; letter-spacing:0; display:flex; align-items:center; gap:7px}
+  .box.pros h5{color:var(--accent-2)}
+  .box.cons h5{color:var(--bad)}
+  .box ul{margin:0; padding-left:18px}
+  .box li{margin:6px 0; font-size:.9rem; color:var(--ink-2)}
+
+  .meta-row{display:grid; grid-template-columns:1fr 1fr; gap:16px; margin:16px 0}
+  .meta h5{margin:0 0 8px; font-size:.92rem; font-family:var(--sans); font-weight:600; letter-spacing:0; color:var(--accent-2)}
+  .meta p,.meta li{font-size:.92rem; color:var(--ink-2)}
+  .meta ul{margin:0; padding-left:18px}
+  .meta p{margin:0}
+  .meta code,.box code,.analogy code,.meta a code{font-family:var(--mono); font-size:.86em; background:var(--shell); border:1px solid var(--hair); border-radius:5px; padding:.05em .35em; color:var(--accent-2)}
+
+  /* class diagram */
+  .diagram-wrap{margin:18px 0}
+  .diagram-wrap h5{margin:0 0 8px; font-size:.92rem; font-family:var(--sans); font-weight:600; letter-spacing:0; color:var(--accent-2)}
+  .diagram-wrap svg{display:block; width:100%; height:auto; background:var(--shell);
+    border:1px solid var(--hair); border-radius:12px; padding:8px}
+  .dg-box{fill:var(--card); stroke:var(--line); stroke-width:1.2}
+  .dg-if{stroke:var(--accent)}
+  .dg-lbl{fill:var(--ink); font-size:12px; font-weight:600; text-anchor:middle; font-family:var(--disp)}
+  .dg-st{fill:var(--accent-2); font-size:10px; font-style:italic; text-anchor:middle}
+  .dg-line{stroke:var(--muted); stroke-width:1.4; fill:none}
+  .dg-dash{stroke-dasharray:5 4}
+  .dg-el{fill:var(--ink-2); font-size:10.5px; text-anchor:middle}
+  .dg-lbg{fill:var(--card); opacity:.92}
+  .dg-note{fill:var(--muted); font-size:11px; font-style:italic; text-anchor:middle}
+  .dg-legend{font-size:.78rem; color:var(--muted); margin-top:8px}
+
+  /* code blocks */
+  .code-wrap{margin-top:16px; border:1px solid var(--hair); border-radius:14px; overflow:hidden; background:var(--shell)}
+  .code-tabs{display:flex; align-items:center; gap:0; background:var(--bg-2); border-bottom:1px solid var(--hair)}
+  .code-tabs .lbl{margin-right:auto; padding:10px 16px; font:500 .78rem/1 var(--sans); color:var(--muted)}
+  .code-tabs .tab{background:transparent; border:none; color:var(--muted); padding:10px 18px; font:600 .82rem/1 var(--sans);
+    cursor:pointer; border-bottom:2px solid transparent; transition:color .3s var(--ease), border-color .3s var(--ease)}
+  .code-tabs .tab:hover{color:var(--ink)}
+  .code-tabs .tab.active{color:var(--ink); border-bottom-color:var(--accent)}
+  pre{margin:0; background:var(--shell); padding:16px 18px; overflow-x:auto; font-size:.82rem; line-height:1.65}
+  pre code{font-family:var(--mono); color:var(--code-ink); white-space:pre}
+  pre.hidden{display:none}
+  .kw{color:var(--kw); font-weight:600} .ty{color:var(--ty)} .st{color:var(--st)} .cm{color:var(--cm); font-style:italic}
+  .code-wrap.refactor{margin-top:14px}
+  .code-wrap.refactor .code-tabs .lbl{color:var(--accent-2); font-weight:700}
+  .ref-pane{padding:0}
+  .ref-label{font-size:.78rem; font-weight:700; padding:10px 16px 4px}
+  .ref-label.bad{color:var(--bad)} .ref-label.good{color:var(--accent-2)}
+  .ref-arrow{font-size:.78rem; color:var(--muted); text-align:center; padding:8px 0; letter-spacing:.05em}
+  .code-wrap.refactor pre{border-top:1px solid var(--hair)}
+
+  .learn{display:inline-flex; align-items:center; gap:10px; margin-top:20px; font-size:.9rem;
+    color:var(--muted); cursor:pointer; user-select:none}
+  .learn input{accent-color:var(--accent); width:16px; height:16px; cursor:pointer}
+
+  /* quiz */
+  .quiz-q{border-radius:16px; padding:18px 20px; margin:16px 0; max-width:var(--readw); background:var(--card);
+    box-shadow:0 0 0 6px var(--shell),0 0 0 6.5px var(--hair),var(--soft)}
+  .qtext{margin:0 0 12px; font-weight:600; color:var(--ink)}
+  .qopts{display:flex; flex-wrap:wrap; gap:8px}
+  .qopts button{background:#fff; border:1px solid var(--hair); color:var(--ink); border-radius:999px;
+    padding:9px 16px; font:500 .88rem/1 var(--sans); cursor:pointer; transition:border-color .3s var(--ease), transform .3s var(--ease)}
+  .qopts button:hover:not(:disabled){border-color:var(--ink); transform:translateY(-1px)}
+  .qopts button:disabled{cursor:default}
+  .qopts button.right{background:var(--accent-soft); color:var(--accent-2); border-color:var(--accent); font-weight:600}
+  .qopts button.wrong{background:rgba(176,74,62,.1); color:var(--bad); border-color:var(--bad)}
+  .qwhy{font-size:.9rem; color:var(--ink-2); margin:12px 0 0; padding-top:12px; border-top:1px solid var(--line)}
+  .qwhy b{color:var(--ink); font-weight:600}
+  .quiz-reset{margin-top:16px}
+  #quizScore{color:var(--muted); font-size:.92rem; font-weight:500}
+
+  /* footer */
+  footer{border-top:1px solid var(--line); padding:64px 0 46px; background:var(--bg)}
+  footer h3{font-size:.72rem; font-weight:600; letter-spacing:.12em; text-transform:uppercase; color:var(--muted); margin:0 0 1em; font-family:var(--disp)}
+  .foot-grid{display:grid; grid-template-columns:1.4fr 1fr 1fr; gap:44px}
+  .cite{font-size:.98rem; color:var(--ink-2); line-height:1.7; max-width:56ch; margin-bottom:36px}
+  .muted-s{color:var(--muted); font-size:.9rem; line-height:1.75}
+  .muted-s b{color:var(--ink); font-weight:600}
+  .foot-rule{height:1px; background:var(--line); margin:44px 0 20px}
+  .foot-note{color:var(--muted); font-size:.82rem}
+  @media(max-width:760px){.foot-grid{grid-template-columns:1fr 1fr}}
+  @media(max-width:560px){.foot-grid{grid-template-columns:1fr}}
+
+  @media(max-width:860px){
+    section{padding:72px 0}
+    .hero .wrap{padding-top:52px; padding-bottom:56px}
+    .wrap{padding:0 24px}
+    .grid2,.meta-row{grid-template-columns:1fr}
+    .ptags{flex-basis:100%; margin-left:0; justify-content:flex-start}
+    .pcard-head{flex-wrap:wrap}
+  }
+  @media(max-width:640px){
+    .bar-right .btn:not(.ink):not(.jp-toggle){display:none}
+    .brand{font-size:.82rem}
+    .controls{align-items:flex-start; flex-direction:column}
+    .qopts button{flex:1 1 44%}
+  }
+</style>
+</head>
+<body class="lang-ja">
+
+<a class="skip" href="#main"><span lang="ja">本文へスキップ</span><span lang="en">Skip to content</span></a>
+
+<header class="bar">
+  <div class="wrap">
+    <a class="brand" href="../index.html">
+      <span aria-hidden="true">&lsaquo;</span>
+      <span lang="ja">Yuta Kimura</span><span lang="en">Yuta Kimura</span>
+      <span class="sep">·</span><span lang="ja">木村祐太</span><span lang="en">Kimura</span>
+    </a>
+    <nav class="navlinks" aria-label="メイン">
+      <a href="../publications.html"><span lang="ja">業績</span><span lang="en">Publications</span></a>
+      <a href="../activities.html"><span lang="ja">活動</span><span lang="en">Activities</span></a>
+      <a href="../software-engineering.html"><span lang="ja">分野紹介</span><span lang="en">Guides</span></a>
+      <a href="../students.html"><span lang="ja">学生の皆さんへ</span><span lang="en">For students</span></a>
+    </nav>
+    <div class="bar-right">
+      <a class="btn" href="index.html"><span lang="ja">科目Top</span><span lang="en">Course top</span></a>
+      <button class="btn ink jp-toggle" onclick="toggleLang()" aria-label="Switch language">
+        <span lang="ja">EN</span><span lang="en">日本語</span>
+      </button>
+    </div>
+  </div>
+</header>
+
+<main id="main">
+
+<!-- HERO -->
+<div class="hero">
+  <div class="wrap">
+    <p class="kick">Design Patterns</p>
+    <h1>デザインパターンで学ぶ、良い設計の<em>「型」</em></h1>
+    <p class="lead">オブジェクト指向設計で繰り返し現れる問題と、その洗練された解決策のカタログ。GoF（Gang of Four）の23パターンを、概要・利点・欠点・使いどころ・実例・Java/Pythonのコードとともにまとめました。クラス図・身近なたとえ話・リファクタリング例・理解度クイズ付きです。</p>
+    <p class="ja-note"><span lang="ja">この教材は日本語のみで提供しています</span><span lang="en">This learning material is available in Japanese only.</span></p>
+    <div class="hero-cta">
+      <a class="btn ink" href="#patterns" style="padding:12px 22px">
+        <span lang="ja">23パターンへ</span><span lang="en">Jump to the 23 patterns</span>
+      </a>
+      <a class="tlink" href="#quiz">
+        <span lang="ja">理解度クイズへ</span><span lang="en">Comprehension quiz</span>
+        <span class="ar" aria-hidden="true">&rsaquo;</span>
+      </a>
+    </div>
+  </div>
+</div>
+
+<!-- INTRO -->
+<section id="intro" style="padding-top:20px">
+  <div class="wrap reveal">
+    <p class="eyebrow"><span lang="ja">はじめに</span><span lang="en">Introduction</span></p>
+    <h2 class="big"><span lang="ja">デザインパターンとは何か</span><span lang="en">What are design patterns?</span></h2>
+    <div class="prose" id="introProse" style="margin-top:22px"></div>
+  </div>
+</section>
+
+<!-- PATTERNS -->
+<section class="soft-sec" id="patterns" style="padding-top:80px">
+  <div class="wrap">
+    <p class="eyebrow reveal"><span lang="ja">パターンカタログ</span><span lang="en">Pattern catalog</span></p>
+    <h2 class="big reveal"><span lang="ja">GoF 23パターン</span><span lang="en">The 23 GoF patterns</span></h2>
+    <p class="lead reveal" style="max-width:var(--readw); margin-top:18px">カテゴリで絞り込み、各パターンのカードをクリックすると、詳しい説明・クラス図・利点欠点・コード例が開きます。</p>
+    <div class="controls reveal" style="margin-top:26px">
+      <div class="pills" role="tablist" aria-label="カテゴリ切替">
+        <button class="pill active" onclick="filterCat('all',this)">すべて<span>23</span></button>
+        <button class="pill" onclick="filterCat('creational',this)">生成<span>5</span></button>
+        <button class="pill" onclick="filterCat('structural',this)">構造<span>7</span></button>
+        <button class="pill" onclick="filterCat('behavioral',this)">振る舞い<span>11</span></button>
+      </div>
+      <div class="ctrl-right">
+        <input id="search" class="search" type="text" placeholder="名前・キーワードで絞り込み" aria-label="パターンを絞り込み">
+        <span class="learn-note" id="learnNote"></span>
+      </div>
+    </div>
+    <div id="patterns-list"></div>
+  </div>
+</section>
+
+<!-- QUIZ -->
+<section id="quiz">
+  <div class="wrap">
+    <p class="eyebrow reveal"><span lang="ja">理解度チェック</span><span lang="en">Check your understanding</span></p>
+    <h2 class="big reveal"><span lang="ja">理解度チェッククイズ</span><span lang="en">Comprehension quiz</span></h2>
+    <p class="lead reveal" style="max-width:var(--readw); margin-top:18px">それぞれの状況に<strong>もっとも適したパターン</strong>を選んでください。<span id="quizScore"></span></p>
+    <div id="quizBody" class="reveal"></div>
+    <button class="btn ink quiz-reset" onclick="buildQuiz()" style="padding:11px 22px">
+      <span lang="ja">もう一度挑戦する</span><span lang="en">Try again</span>
+    </button>
+  </div>
+</section>
+
+<!-- CLOSING -->
+<section class="soft-sec" id="closing">
+  <div class="wrap reveal">
+    <p class="eyebrow"><span lang="ja">おわりに</span><span lang="en">In closing</span></p>
+    <h2 class="big"><span lang="ja">使うときの心構えと、さらに学ぶために</span><span lang="en">How to use patterns well, and where to learn more</span></h2>
+    <div class="prose" id="closingProse" style="margin-top:22px"></div>
+  </div>
+</section>
+
+</main>
+
+<!-- FOOTER -->
+<footer>
+  <div class="wrap">
+    <div class="cite">
+      <span lang="ja">GoFのデザインパターン23種を、これから学ぶ方向けにまとめた学習ガイドです。木村祐太のソフトウェア工学の授業教材の一部としてご覧いただけます。授業の詳細（評価方法・日程等）は最新のシラバスを確認してください。</span>
+      <span lang="en">A study guide to the 23 Gang of Four design patterns, for those new to them. Part of Yuta Kimura's software engineering course materials. For course details such as assessment and schedule, please refer to the latest syllabus.</span>
+    </div>
+    <div class="foot-grid">
+      <div>
+        <h3><span lang="ja">連絡先</span><span lang="en">Contact</span></h3>
+        <p class="muted-s">
+          <b>木村 祐太 / Yuta Kimura</b><br>
+          <span lang="ja">大阪公立大学工業高等専門学校</span><span lang="en">Osaka Metropolitan University College of Technology</span><br>
+          <a href="mailto:y.kimura@omu.ac.jp">y.kimura [at] omu.ac.jp</a>
+        </p>
+      </div>
+      <div>
+        <h3><span lang="ja">サイト</span><span lang="en">Site</span></h3>
+        <p class="muted-s">
+          <a href="../index.html"><span lang="ja">ホーム</span><span lang="en">Home</span></a><br>
+          <a href="../publications.html"><span lang="ja">業績一覧</span><span lang="en">All publications</span></a><br>
+          <a href="../activities.html"><span lang="ja">研究・教育活動</span><span lang="en">Projects & teaching</span></a><br>
+          <a href="../software-engineering.html"><span lang="ja">ソフトウェア工学とは</span><span lang="en">What is software engineering?</span></a><br>
+          <a href="../technical-debt.html"><span lang="ja">技術的負債とは</span><span lang="en">What is technical debt?</span></a><br>
+          <a href="../students.html"><span lang="ja">学生の皆さんへ</span><span lang="en">For students</span></a><br>
+          <a href="../glossary.html"><span lang="ja">用語集</span><span lang="en">Glossary</span></a>
+        </p>
+      </div>
+      <div>
+        <h3><span lang="ja">研究</span><span lang="en">Research</span></h3>
+        <p class="muted-s">
+          <a href="../research/technical-debt-metrics.html"><span lang="ja">メトリクスによる分類・特徴づけ</span><span lang="en">Classifying debt with metrics</span></a><br>
+          <a href="../research/apr-coding-standards.html"><span lang="ja">自動生成パッチと品質</span><span lang="en">Auto-generated patches and quality</span></a><br>
+          <a href="../research/td-repayment-refactoring.html"><span lang="ja">返済とリファクタリング</span><span lang="en">Repayment and refactoring</span></a><br>
+          <a href="../research/satd-issue-classification.html"><span lang="ja">TD-Issue の自動分類</span><span lang="en">Automatic TD-Issue classification</span></a><br>
+          <a href="https://researchmap.jp/kimura_yuta" target="_blank" rel="noopener">researchmap</a>
+        </p>
+      </div>
+    </div>
+    <div class="foot-rule"></div>
+    <p class="foot-note">
+      <span lang="ja">© 2026 Yuta Kimura. デザインパターンの解説は Gamma, Helm, Johnson, Vlissides (GoF, 1994) の分類に基づく概説です。</span>
+      <span lang="en">© 2026 Yuta Kimura. This overview of design patterns follows the classification by Gamma, Helm, Johnson, and Vlissides (GoF, 1994).</span>
+    </p>
+  </div>
+</footer>
+
+<script>
+/* ============== コンテンツデータ ============== */
+const INTRO_HTML = `
+<p><b>デザインパターン</b>とは、ソフトウェア設計の現場で<strong>繰り返し現れる問題</strong>に対して、
+先人たちが見出した<strong>再利用可能な解決の「型（テンプレート）」</strong>のことです。
+具体的なコードそのものではなく、「どのクラスにどんな責務を持たせ、どう関係させれば
+うまくいくか」という<strong>設計の考え方</strong>を指します。</p>
+
+<p>この概念を広めたのが、1994年にErich Gamma、Richard Helm、Ralph Johnson、John Vlissidesの4人
+（通称 <b>Gang of Four / GoF</b>）が著した書籍
+『<i>Design Patterns: Elements of Reusable Object-Oriented Software</i>』です。
+彼らは現場でよく使われる<strong>23個のパターン</strong>を体系化し、
+それぞれに名前・目的・構造・適用場面を与えました。</p>
+
+<div class="callout">
+  <h4>建築家クリストファー・アレグザンダーの影響</h4>
+  「パターン」という発想の源流は建築にあります。建築家アレグザンダーは
+  「良い設計には繰り返し現れる型がある」と説き、その考え方をソフトウェアに持ち込んだのがGoFです。
+</div>
+
+<h4 style="margin-top:22px">なぜデザインパターンを学ぶのか</h4>
+<div class="principles">
+  <div class="p"><b>共通言語になる</b><br><span>「ここはObserverで」と一言で設計意図が伝わり、チームの会話が速くなる。</span></div>
+  <div class="p"><b>車輪の再発明を防ぐ</b><br><span>検証済みの解法を使うことで、設計の質と速度が上がる。</span></div>
+  <div class="p"><b>変更に強くなる</b><br><span>多くのパターンは「変わる部分」を分離し、拡張しやすい構造を作る。</span></div>
+  <div class="p"><b>設計力が上がる</b><br><span>良い設計の発想パターンが身につき、応用が利くようになる。</span></div>
+</div>
+
+<h4 style="margin-top:22px">3つのカテゴリ</h4>
+<p>GoFの23パターンは、その<strong>目的</strong>によって3つに分類されます。</p>
+<div class="principles">
+  <div class="p"><b style="color:var(--creational)">生成 (Creational)：5種</b><br>
+    <span>オブジェクトを<strong>どう作るか</strong>に関するパターン。生成処理を柔軟・疎結合にする。</span></div>
+  <div class="p"><b style="color:var(--structural)">構造 (Structural)：7種</b><br>
+    <span>クラスやオブジェクトを<strong>どう組み合わせるか</strong>。大きな構造を柔軟に作る。</span></div>
+  <div class="p"><b style="color:var(--behavioral)">振る舞い (Behavioral)：11種</b><br>
+    <span>オブジェクト間の<strong>責務の分担と通信</strong>。アルゴリズムや相互作用を整理する。</span></div>
+</div>
+
+<h4 style="margin-top:22px">土台となる設計原則</h4>
+<p>多くのパターンは、次のような原則を実現する手段でもあります。これらを意識すると、
+パターンが「なぜそういう形をしているのか」が腑に落ちます。</p>
+<ul>
+  <li><b>変化する部分をカプセル化せよ</b>：変わりやすいものを切り出し、独立して差し替え可能にする。</li>
+  <li><b>継承より委譲（コンポジション）を好め</b>：「is-a」より「has-a」を使い、柔軟に振る舞いを組み替える。</li>
+  <li><b>実装ではなくインターフェースに対してプログラミングせよ</b>：具体クラスへの依存を減らす。</li>
+  <li><b>開放閉鎖の原則（OCP）</b>：拡張に対して開き、修正に対して閉じる。</li>
+</ul>
+
+<h4 style="margin-top:22px">学習ロードマップ：どの順で学ぶか</h4>
+<p>23パターンには実務での使用頻度に大きな差があり、<strong>全部を一度に覚える必要はありません</strong>。
+次の3ステップで進めるのがおすすめです。各パターンの見出しに付けた
+<b>必修 / 頻出 / 発展</b> のバッジと <b>★の難易度</b> も目安にしてください。</p>
+<div class="callout tip">
+  <h4>STEP 1｜まずこの6つ（最頻出・考え方の核になる）</h4>
+  <a href="#strategy">Strategy</a> → <a href="#observer">Observer</a> →
+  <a href="#factory-method">Factory Method</a> → <a href="#singleton">Singleton</a> →
+  <a href="#adapter">Adapter</a> → <a href="#facade">Facade</a>
+</div>
+<div class="callout">
+  <h4>STEP 2｜次の8つ（実務でよく出会う）</h4>
+  <a href="#decorator">Decorator</a>、<a href="#template-method">Template Method</a>、
+  <a href="#state">State</a>、<a href="#command">Command</a>、<a href="#builder">Builder</a>、
+  <a href="#composite">Composite</a>、<a href="#iterator">Iterator</a>、<a href="#proxy">Proxy</a>
+</div>
+<div class="callout warn">
+  <h4>STEP 3｜残りの9つ（必要になったときに引く）</h4>
+  <a href="#abstract-factory">Abstract Factory</a>、<a href="#prototype">Prototype</a>、
+  <a href="#bridge">Bridge</a>、<a href="#chain">Chain of Responsibility</a>、
+  <a href="#mediator">Mediator</a>、<a href="#memento">Memento</a>、
+  <a href="#flyweight">Flyweight</a>、<a href="#interpreter">Interpreter</a>、<a href="#visitor">Visitor</a>
+</div>
+<p style="font-size:13px;color:var(--muted)">各パターン末尾の「習得チェック」を付けると、絞り込みバー右側に習得の進捗が表示されます（保存はされず、ページを開いている間だけ保持されます）。
+一通り読んだら<a href="#quiz">理解度チェッククイズ</a>で定着を確認しましょう。</p>
+`;
+
+const CLOSING_HTML = `
+<p>デザインパターンは強力ですが、<strong>使うこと自体が目的になっては本末転倒</strong>です。
+最後に実務での向き合い方をまとめます。</p>
+<div class="callout warn">
+  <h4>パターンの過剰適用（オーバーエンジニアリング）に注意</h4>
+  単純な問題に複雑なパターンを当てはめると、かえって読みにくく保守しにくいコードになります。
+  「このパターンで何の変更に強くなるのか？」を常に自問しましょう。本当にその変更が起きるのか、
+  まだ起きていない要求のために複雑さを抱え込んでいないかを見極めることが大切です。
+</div>
+<div class="callout tip">
+  <h4>まずは問題から出発する</h4>
+  「Strategyを使いたい」ではなく「アルゴリズムを実行時に差し替えたい」という<strong>問題</strong>から考え、
+  その解としてパターンにたどり着くのが健全な順序です。パターンは答えの引き出しであって、出発点ではありません。
+</div>
+<p>また、言語によってはパターンが言語機能で自然に実現できる場合もあります。たとえばPythonでは
+第一級関数があるためStrategyを関数オブジェクトで簡潔に書け、Iteratorはジェネレータで置き換えられます。
+パターンの<strong>意図</strong>を理解し、自分の道具立てに合わせて柔軟に応用してください。</p>
+
+<h4 style="margin-top:26px">混同しやすいパターンの見分け方</h4>
+<p>構造がよく似たパターンは、<strong>目的（意図）</strong>で見分けます。試験でも実務でも問われるポイントです。</p>
+<table class="cmp-table">
+  <tr><th>似ているパターン</th><th>見分けるポイント</th></tr>
+  <tr><td><b>Strategy</b> と <b>State</b></td>
+    <td>構造はほぼ同じ。<b>切り替えるのは誰か</b>が違う。Strategyは利用側が明示的に差し替える。Stateは状態オブジェクト自身が遷移を駆動し、利用側は切替を意識しない。</td></tr>
+  <tr><td><b>Adapter</b> / <b>Decorator</b> / <b>Proxy</b></td>
+    <td>いずれも「包む」パターン。Adapterは<b>インターフェースを変える</b>、Decoratorは<b>機能を足す</b>、Proxyは<b>アクセスを制御する</b>。</td></tr>
+  <tr><td><b>Factory Method</b> と <b>Abstract Factory</b></td>
+    <td>前者は<b>1種類の製品</b>の生成を継承で差し替える。後者は<b>関連する製品一式（ファミリー）</b>を委譲でまとめて生成する。</td></tr>
+  <tr><td><b>Facade</b> と <b>Mediator</b></td>
+    <td>Facadeは外部に向けた<b>一方向の窓口</b>（サブシステムはFacadeを知らない）。Mediatorは内部の部品同士の<b>双方向の調停役</b>。</td></tr>
+  <tr><td><b>Command</b> と <b>Strategy</b></td>
+    <td>Commandは「<b>何をするか</b>（要求そのもの）」を、Strategyは「<b>どうやるか</b>（方式）」をオブジェクト化する。</td></tr>
+  <tr><td><b>Template Method</b> と <b>Strategy</b></td>
+    <td>同じ「差し替え」でも、前者は<b>継承</b>で手順の一部を、後者は<b>委譲</b>でアルゴリズム全体を差し替える。現代は委譲が好まれる傾向。</td></tr>
+  <tr><td><b>Composite</b> と <b>Decorator</b></td>
+    <td>どちらも再帰的な合成。Compositeは<b>木構造</b>を作って集約し、Decoratorは<b>一本の鎖</b>で機能を積み増す。</td></tr>
+</table>
+
+<h4 style="margin-top:26px">研究者の視点：パターンへの批判も知っておく</h4>
+<div class="callout">
+  <h4>「パターンは言語の限界の裏返し」という指摘</h4>
+  Peter Norvigは1996年の講演 “Design Patterns in Dynamic Programming” で、LispやDylanのような動的言語では
+  <strong>GoF 23パターンのうち16個が不要になるか大幅に簡素化される</strong>と指摘しました。
+  実際、本ページのPython例でもStrategyは関数で、Iteratorはジェネレータで置き換えています。
+  「パターンだらけのコードは、言語や設計の表現力不足のサインかもしれない」という批判的視点も、
+  バランスの取れた理解には欠かせません。パターンは<strong>設計を語るための語彙</strong>であって、
+  コードに敷き詰めるための装飾ではありません。
+</div>
+
+<h4 style="margin-top:26px">さらに学ぶための文献・資料</h4>
+<ul>
+  <li>E. Gamma, R. Helm, R. Johnson, J. Vlissides『オブジェクト指向における再利用のためのデザインパターン（改訂版）』SBクリエイティブ：原典（GoF本、原著1994年）</li>
+  <li>結城浩『Java言語で学ぶデザインパターン入門 第3版』SBクリエイティブ、2021年：日本語で定評のある入門書</li>
+  <li>E. Freeman ほか『Head First デザインパターン 第2版』オライリー・ジャパン、2022年：図解中心で初学者向き</li>
+  <li><a href="https://refactoring.guru/ja/design-patterns" target="_blank" rel="noopener">Refactoring.Guru（日本語）</a>：図解と多言語サンプルが充実した定番サイト</li>
+  <li>P. Norvig “Design Patterns in Dynamic Programming”（1996年）：動的言語の観点からの批判的検討</li>
+</ul>
+`;
+</script>
+<script>
+/* ============== パターンデータ（カテゴリ別） ============== */
+const PATTERNS = [];
+</script>
+<script>
+PATTERNS.push(
+{
+  id:"singleton", name:"Singleton", jp:"シングルトン", category:"creational",
+  tags:["唯一のインスタンス","グローバルアクセス"],
+  summary:"あるクラスのインスタンスが<strong>システム全体でただ1つだけ</strong>存在することを保証し、そこへの唯一のアクセス点を提供するパターンです。コンストラクタを外部から呼べなくし、内部で保持した唯一の実体を返します。",
+  pros:[
+    "インスタンスが1つだけであることを保証できる。",
+    "グローバルに共有したい状態（設定・接続）を一元管理できる。",
+    "初回利用時に生成する遅延初期化が可能。"
+  ],
+  cons:[
+    "実質グローバル変数となり、依存関係が見えにくくなる。",
+    "状態を持つと密結合になり、単体テストが難しくなる（差し替えが困難）。",
+    "マルチスレッド環境では生成の排他制御に注意が必要。"
+  ],
+  usage:"設定情報、ロガー、データベース接続プール、キャッシュなど、アプリ全体で1つだけ存在すべき資源を扱うとき。",
+  examples:[
+    "Java標準の <code>java.lang.Runtime</code>（<code>Runtime.getRuntime()</code>）",
+    "ロギングライブラリのロガー管理（Log4j など）",
+    "Springフレームワークのデフォルトのビーンスコープ（singleton）"
+  ],
+  java:`public class Config {
+    // 唯一のインスタンスを保持
+    private static Config instance;
+    private final Map<String,String> values = new HashMap<>();
+
+    private Config() { /* 外部から new させない */ }
+
+    // 遅延初期化（スレッド安全にするなら synchronized 等）
+    public static synchronized Config getInstance() {
+        if (instance == null) {
+            instance = new Config();
+        }
+        return instance;
+    }
+    public String get(String key) { return values.get(key); }
+}
+
+// 利用側
+Config.getInstance().get("db.url");`,
+  python:`class Config:
+    _instance = None
+
+    def __new__(cls):
+        # 既に生成済みなら同じインスタンスを返す
+        if cls._instance is None:
+            cls._instance = super().__new__(cls)
+            cls._instance.values = {}
+        return cls._instance
+
+a = Config()
+b = Config()
+print(a is b)  # True : 同一インスタンス`
+},
+{
+  id:"factory-method", name:"Factory Method", jp:"ファクトリーメソッド", category:"creational",
+  tags:["生成の委譲","サブクラスで決定"],
+  summary:"オブジェクトを生成するための<strong>インターフェース（生成メソッド）を定義</strong>し、どの具体クラスを生成するかは<strong>サブクラスに決めさせる</strong>パターンです。利用側は具体クラスを知らずに済みます。",
+  pros:[
+    "生成処理を1か所にまとめ、利用側を具体クラスから切り離せる。",
+    "新しい製品クラスの追加が既存コードの修正なしに行える（OCP）。",
+    "生成ロジックとビジネスロジックを分離できる。"
+  ],
+  cons:[
+    "製品の種類ごとにサブクラスが増え、クラス数が膨らみやすい。",
+    "単純なケースでは構造が過剰になりがち。"
+  ],
+  usage:"利用側が生成すべき具体クラスを事前に決められない、あるいは将来の拡張で増える可能性があるとき。",
+  examples:[
+    "Java の <code>Collection.iterator()</code>（各コレクションが自分用のIteratorを生成）",
+    "<code>java.util.Calendar.getInstance()</code>",
+    "GUIフレームワークでOSごとに異なるボタン部品を生成する処理"
+  ],
+  java:`abstract class Dialog {
+    // テンプレート：生成はサブクラスに任せる
+    abstract Button createButton();
+
+    void render() {
+        Button b = createButton();
+        b.onClick();
+        b.paint();
+    }
+}
+class WindowsDialog extends Dialog {
+    Button createButton() { return new WindowsButton(); }
+}
+class WebDialog extends Dialog {
+    Button createButton() { return new HtmlButton(); }
+}`,
+  python:`from abc import ABC, abstractmethod
+
+class Dialog(ABC):
+    @abstractmethod
+    def create_button(self): ...
+
+    def render(self):
+        button = self.create_button()   # 具体型はサブクラス次第
+        button.on_click()
+
+class WindowsDialog(Dialog):
+    def create_button(self):
+        return WindowsButton()
+
+class WebDialog(Dialog):
+    def create_button(self):
+        return HtmlButton()`
+},
+{
+  id:"abstract-factory", name:"Abstract Factory", jp:"抽象ファクトリー", category:"creational",
+  tags:["製品ファミリー","一貫した生成"],
+  summary:"<strong>関連し合うオブジェクト群（製品ファミリー）</strong>を、具体クラスを指定せずにまとめて生成するためのインターフェースを提供します。「整合性のとれた一式」を切り替えられるのが特徴です。",
+  pros:[
+    "同じファミリーの製品同士の整合性が保証される。",
+    "製品ファミリー全体をワンタッチで差し替えられる。",
+    "具体クラスへの依存が利用側から消える。"
+  ],
+  cons:[
+    "ファクトリのインターフェースに新しい製品を増やすと全実装の修正が必要。",
+    "クラス・インターフェースが多くなり構造が複雑になる。"
+  ],
+  usage:"UIテーマ（ダーク/ライト）やOSごとの部品一式など、互いに関連する複数種類のオブジェクトを一貫して生成したいとき。",
+  examples:[
+    "Java の <code>DocumentBuilderFactory</code> / <code>TransformerFactory</code>",
+    "GUIツールキットのLook&Feel切り替え（同系統のボタン・チェックボックス等を一括生成）",
+    "異なるDBベンダー向けのコネクション・コマンド一式の生成"
+  ],
+  java:`interface GUIFactory {
+    Button createButton();
+    Checkbox createCheckbox();
+}
+class DarkFactory implements GUIFactory {
+    public Button createButton() { return new DarkButton(); }
+    public Checkbox createCheckbox() { return new DarkCheckbox(); }
+}
+class LightFactory implements GUIFactory {
+    public Button createButton() { return new LightButton(); }
+    public Checkbox createCheckbox() { return new LightCheckbox(); }
+}
+// 利用側はファクトリだけ受け取れば一式そろう
+void buildUI(GUIFactory f) {
+    f.createButton(); f.createCheckbox();
+}`,
+  python:`from abc import ABC, abstractmethod
+
+class GUIFactory(ABC):
+    @abstractmethod
+    def create_button(self): ...
+    @abstractmethod
+    def create_checkbox(self): ...
+
+class DarkFactory(GUIFactory):
+    def create_button(self):   return DarkButton()
+    def create_checkbox(self): return DarkCheckbox()
+
+class LightFactory(GUIFactory):
+    def create_button(self):   return LightButton()
+    def create_checkbox(self): return LightCheckbox()
+
+def build_ui(factory: GUIFactory):
+    factory.create_button()
+    factory.create_checkbox()`
+},
+{
+  id:"builder", name:"Builder", jp:"ビルダー", category:"creational",
+  tags:["段階的生成","複雑なオブジェクト"],
+  summary:"複雑なオブジェクトの<strong>生成手順を、その表現（最終形）から分離</strong>するパターンです。同じ構築プロセスで異なる表現を作れ、多数のパラメータを段階的に組み立てられます。",
+  pros:[
+    "多くの任意パラメータを持つオブジェクトを読みやすく構築できる。",
+    "生成途中の不完全なオブジェクトを外に晒さない。",
+    "同じ手順で異なる表現（製品）を作り分けられる。"
+  ],
+  cons:[
+    "Builderクラスが増え、コード量が増える。",
+    "単純なオブジェクトには大げさになる。"
+  ],
+  usage:"コンストラクタの引数が多すぎる、任意項目が多い、構築に手順があるオブジェクト（設定オブジェクト、ドキュメント、クエリなど）を作るとき。",
+  examples:[
+    "Java の <code>StringBuilder</code>、<code>Stream.Builder</code>",
+    "<code>java.time</code> の各種ビルダーや <code>Calendar.Builder</code>",
+    "OkHttp / Retrofit などライブラリのリクエスト・設定構築（メソッドチェーン）"
+  ],
+  java:`class Burger {
+    private final String bun; private final boolean cheese; private final int patties;
+    private Burger(Builder b){ bun=b.bun; cheese=b.cheese; patties=b.patties; }
+
+    static class Builder {
+        private String bun = "plain";
+        private boolean cheese = false;
+        private int patties = 1;
+        Builder bun(String b){ this.bun=b; return this; }
+        Builder cheese(boolean c){ this.cheese=c; return this; }
+        Builder patties(int n){ this.patties=n; return this; }
+        Burger build(){ return new Burger(this); }
+    }
+}
+// 読みやすいメソッドチェーン
+Burger b = new Burger.Builder().bun("sesame").cheese(true).patties(2).build();`,
+  python:`from dataclasses import dataclass
+
+class BurgerBuilder:
+    def __init__(self):
+        self._bun = "plain"; self._cheese = False; self._patties = 1
+    def bun(self, b):     self._bun = b; return self
+    def cheese(self, c):  self._cheese = c; return self
+    def patties(self, n): self._patties = n; return self
+    def build(self):
+        return Burger(self._bun, self._cheese, self._patties)
+
+@dataclass
+class Burger:
+    bun: str; cheese: bool; patties: int
+
+b = BurgerBuilder().bun("sesame").cheese(True).patties(2).build()`
+},
+{
+  id:"prototype", name:"Prototype", jp:"プロトタイプ", category:"creational",
+  tags:["複製で生成","clone"],
+  summary:"新しいオブジェクトを一から作るのではなく、<strong>既存のインスタンスを複製（clone）</strong>して生成するパターンです。生成コストが高い場合や、実行時の状態をそのまま引き継ぎたい場合に有効です。",
+  pros:[
+    "具体クラスを意識せずにオブジェクトを複製できる。",
+    "生成コストの高いオブジェクトを効率よく量産できる。",
+    "実行時に組み立てた状態ごと複製できる。"
+  ],
+  cons:[
+    "参照を含む複雑なオブジェクトのディープコピー実装が難しい（循環参照など）。",
+    "各クラスにclone処理を持たせる必要がある。"
+  ],
+  usage:"オブジェクトの生成が重い、または初期状態の組み合わせが多く、ひな形から複製した方が楽なとき（図形エディタの図形コピー等）。",
+  examples:[
+    "Java の <code>Object.clone()</code> / <code>Cloneable</code> インターフェース",
+    "JavaScript のプロトタイプベースのオブジェクト生成",
+    "ドローイングツールで図形オブジェクトをコピー&ペーストする処理"
+  ],
+  java:`abstract class Shape implements Cloneable {
+    int x, y; String color;
+    public Shape clone() {
+        try { return (Shape) super.clone(); }
+        catch (CloneNotSupportedException e) { throw new AssertionError(); }
+    }
+}
+class Circle extends Shape { int radius; }
+
+Circle original = new Circle();
+original.radius = 10; original.color = "red";
+Circle copy = (Circle) original.clone();  // 状態ごと複製`,
+  python:`import copy
+
+class Shape:
+    def __init__(self, x, y, color):
+        self.x, self.y, self.color = x, y, color
+    def clone(self):
+        return copy.deepcopy(self)   # ディープコピーで複製
+
+original = Shape(0, 0, "red")
+duplicate = original.clone()
+duplicate.color = "blue"   # 元には影響しない`
+}
+);
+</script>
+<script>
+PATTERNS.push(
+{
+  id:"adapter", name:"Adapter", jp:"アダプター", category:"structural",
+  tags:["互換性","ラッパー"],
+  summary:"互換性のない既存クラスのインターフェースを、利用側が期待する<strong>別のインターフェースに変換</strong>するパターンです。電源プラグの変換アダプタのように、両者の間を仲介します。",
+  pros:[
+    "既存コードや外部ライブラリを修正せずに再利用できる。",
+    "インターフェースの変換ロジックを1か所に隔離できる（単一責任）。",
+    "利用側は統一インターフェースだけを意識すればよい。"
+  ],
+  cons:[
+    "クラス・オブジェクトが増え、間接化により全体がやや複雑になる。",
+    "変換が多段になると追いにくくなる。"
+  ],
+  usage:"既存・サードパーティのクラスを、自分のコードが期待する形に合わせて使いたいとき。レガシー資産の再利用。",
+  examples:[
+    "Java の <code>java.util.Arrays.asList()</code>（配列をListに見せる）",
+    "<code>InputStreamReader</code>（バイトストリームを文字ストリームに適合）",
+    "新旧API・外部決済サービスSDKを共通インターフェースで束ねる処理"
+  ],
+  java:`// 利用側が期待するインターフェース
+interface MediaPlayer { void play(String file); }
+
+// 既存の互換性のないクラス
+class LegacyAudio { void playMp3(String path){ /* ... */ } }
+
+// アダプタが両者を仲介
+class AudioAdapter implements MediaPlayer {
+    private final LegacyAudio legacy = new LegacyAudio();
+    public void play(String file) {
+        legacy.playMp3(file);   // 呼び出しを変換
+    }
+}`,
+  python:`class LegacyAudio:                 # 既存の互換性のないクラス
+    def play_mp3(self, path): ...
+
+class MediaPlayer:                 # 期待されるインターフェース
+    def play(self, file): ...
+
+class AudioAdapter(MediaPlayer):  # 仲介役
+    def __init__(self):
+        self._legacy = LegacyAudio()
+    def play(self, file):
+        self._legacy.play_mp3(file)   # 呼び出しを変換`
+},
+{
+  id:"bridge", name:"Bridge", jp:"ブリッジ", category:"structural",
+  tags:["抽象と実装の分離","2軸の拡張"],
+  summary:"<strong>抽象（機能の階層）と実装（実現方法の階層）を切り離し</strong>、それぞれを独立に拡張できるようにするパターンです。2つの軸の組み合わせ爆発をクラス数の足し算に抑えます。",
+  pros:[
+    "抽象と実装を独立して拡張・変更できる。",
+    "「形 × 色」のような直交する軸を、掛け算でなく足し算のクラス数で扱える。",
+    "実装を実行時に差し替えられる。"
+  ],
+  cons:[
+    "設計の見通しが立たないと過剰に複雑化しやすい。",
+    "間接参照が増え、初学者には理解しにくい。"
+  ],
+  usage:"機能の種類と実装方法という2つの軸が独立して増えていくとき（GUI部品×OS、図形×描画API など）。",
+  examples:[
+    "JDBC（共通API＝抽象、各DBドライバ＝実装）",
+    "Java AWT のコンポーネントとピア（OS依存実装）",
+    "通知の種類（緊急/通常）×送信手段（メール/SMS/Push）の組み合わせ"
+  ],
+  java:`// 実装側の階層
+interface Renderer { void renderCircle(float r); }
+class VectorRenderer implements Renderer {
+    public void renderCircle(float r){ /* ベクタ描画 */ }
+}
+class RasterRenderer implements Renderer {
+    public void renderCircle(float r){ /* ラスタ描画 */ }
+}
+// 抽象側の階層（実装への"橋"を保持）
+abstract class Shape {
+    protected Renderer renderer;
+    Shape(Renderer r){ this.renderer = r; }
+    abstract void draw();
+}
+class Circle extends Shape {
+    float radius;
+    Circle(Renderer r, float radius){ super(r); this.radius = radius; }
+    void draw(){ renderer.renderCircle(radius); }
+}`,
+  python:`class Renderer:                      # 実装の階層
+    def render_circle(self, r): ...
+class VectorRenderer(Renderer):
+    def render_circle(self, r): print(f"vector circle {r}")
+class RasterRenderer(Renderer):
+    def render_circle(self, r): print(f"raster circle {r}")
+
+class Shape:                         # 抽象の階層
+    def __init__(self, renderer): self.renderer = renderer
+class Circle(Shape):
+    def __init__(self, renderer, radius):
+        super().__init__(renderer); self.radius = radius
+    def draw(self):
+        self.renderer.render_circle(self.radius)  # 橋渡し
+
+Circle(VectorRenderer(), 5).draw()`
+},
+{
+  id:"composite", name:"Composite", jp:"コンポジット", category:"structural",
+  tags:["木構造","部分-全体"],
+  summary:"オブジェクトを<strong>木構造（部分-全体の階層）</strong>に組み立て、個々の要素（葉）と複合要素（枝）を<strong>同じインターフェースで一様に扱える</strong>ようにするパターンです。",
+  pros:[
+    "単一要素も集合も同じコードで再帰的に扱える。",
+    "新しい種類の要素を追加しやすい。",
+    "複雑な階層構造を自然に表現できる。"
+  ],
+  cons:[
+    "共通インターフェースを汎用化しすぎると型安全性が下がる。",
+    "葉と枝の区別が必要な制約を表現しにくいことがある。"
+  ],
+  usage:"ファイルとフォルダ、UI部品のネスト、組織図など、再帰的な木構造を一様に処理したいとき。",
+  examples:[
+    "Java Swing の <code>Component</code> / <code>Container</code> 階層",
+    "DOM（ノードと要素の木構造）",
+    "ファイルシステムのファイルとディレクトリのサイズ集計"
+  ],
+  java:`interface FileSystemNode { int size(); }
+
+class File implements FileSystemNode {     // 葉
+    private final int bytes;
+    File(int b){ this.bytes = b; }
+    public int size(){ return bytes; }
+}
+class Folder implements FileSystemNode {   // 枝
+    private final List<FileSystemNode> children = new ArrayList<>();
+    void add(FileSystemNode n){ children.add(n); }
+    public int size(){
+        return children.stream().mapToInt(FileSystemNode::size).sum();
+    }
+}`,
+  python:`class FileNode:                 # 葉
+    def __init__(self, size): self._size = size
+    def size(self): return self._size
+
+class Folder:                   # 枝
+    def __init__(self): self.children = []
+    def add(self, node): self.children.append(node)
+    def size(self):
+        return sum(c.size() for c in self.children)  # 再帰的に集計
+
+root = Folder()
+root.add(FileNode(100))
+sub = Folder(); sub.add(FileNode(50)); root.add(sub)
+print(root.size())  # 150`
+},
+{
+  id:"decorator", name:"Decorator", jp:"デコレーター", category:"structural",
+  tags:["機能の動的追加","ラップ"],
+  summary:"オブジェクトを<strong>同じインターフェースのラッパーで包む</strong>ことで、継承を使わずに<strong>機能を動的に追加</strong>するパターンです。何重にも重ねて機能を組み合わせられます。",
+  pros:[
+    "継承を使わずに実行時に機能を追加・組み合わせできる。",
+    "サブクラスの組み合わせ爆発を避けられる。",
+    "個々の機能を小さなクラスに分けられる（単一責任）。"
+  ],
+  cons:[
+    "小さなラッパークラスが多数生まれ、構成が追いにくくなる。",
+    "ラッパーの重ね順に依存する挙動はデバッグしにくい。"
+  ],
+  usage:"基本機能に、ログ・暗号化・圧縮・キャッシュなどを柔軟に重ねたいとき。組み合わせが多様なとき。",
+  examples:[
+    "Java の I/Oストリーム（<code>new BufferedReader(new InputStreamReader(...))</code>）",
+    "<code>java.util.Collections.synchronizedList()</code> 等のラッパー",
+    "Web フレームワークのミドルウェア（認証・ログを層状に追加）"
+  ],
+  java:`interface Coffee { int cost(); }
+
+class Espresso implements Coffee {           // 基本
+    public int cost(){ return 300; }
+}
+abstract class CoffeeDecorator implements Coffee { // ラッパー基底
+    protected final Coffee inner;
+    CoffeeDecorator(Coffee c){ this.inner = c; }
+}
+class Milk extends CoffeeDecorator {
+    Milk(Coffee c){ super(c); }
+    public int cost(){ return inner.cost() + 50; }
+}
+// 重ねて機能追加
+Coffee c = new Milk(new Milk(new Espresso())); // 400`,
+  python:`class Espresso:                 # 基本
+    def cost(self): return 300
+
+class Milk:                     # デコレーター（同じI/F）
+    def __init__(self, coffee): self._coffee = coffee
+    def cost(self): return self._coffee.cost() + 50
+
+class Sugar:
+    def __init__(self, coffee): self._coffee = coffee
+    def cost(self): return self._coffee.cost() + 20
+
+drink = Sugar(Milk(Espresso()))   # 重ねがけ
+print(drink.cost())               # 370`
+},
+{
+  id:"facade", name:"Facade", jp:"ファサード", category:"structural",
+  tags:["窓口の単純化","サブシステム"],
+  summary:"複雑なサブシステム群に対して、<strong>シンプルで統一された窓口（高レベルインターフェース）</strong>を提供するパターンです。利用側は内部の複雑さを知らずに済みます。",
+  pros:[
+    "複雑なサブシステムの利用を簡単にする。",
+    "利用側とサブシステムの結合度を下げる。",
+    "内部実装の変更が利用側に波及しにくくなる。"
+  ],
+  cons:[
+    "ファサードが何でも屋（神オブジェクト）になりやすい。",
+    "細かい制御をしたい場合はかえって邪魔になることがある。"
+  ],
+  usage:"多数のクラス連携が必要な処理（注文確定、動画変換など）を、外部には一つの簡単な操作として見せたいとき。",
+  examples:[
+    "Java の <code>javax.faces</code> や各種フレームワークの高レベルAPI",
+    "SLF4J（多様なロギング実装への統一窓口）",
+    "「注文する」一発で在庫・決済・配送の各サービスを束ねる処理"
+  ],
+  java:`// 内部の複雑なサブシステム
+class Inventory { boolean reserve(String id){ return true; } }
+class Payment   { boolean charge(int yen){ return true; } }
+class Shipping  { void dispatch(String id){ } }
+
+// ファサード：窓口を1つに
+class OrderFacade {
+    private final Inventory inv = new Inventory();
+    private final Payment pay = new Payment();
+    private final Shipping ship = new Shipping();
+
+    public boolean placeOrder(String item, int yen) {
+        if (!inv.reserve(item)) return false;
+        if (!pay.charge(yen))   return false;
+        ship.dispatch(item);
+        return true;
+    }
+}`,
+  python:`class Inventory:
+    def reserve(self, item): return True
+class Payment:
+    def charge(self, yen): return True
+class Shipping:
+    def dispatch(self, item): pass
+
+class OrderFacade:            # 複雑な連携を1メソッドに集約
+    def __init__(self):
+        self.inv, self.pay, self.ship = Inventory(), Payment(), Shipping()
+    def place_order(self, item, yen):
+        if not self.inv.reserve(item): return False
+        if not self.pay.charge(yen):   return False
+        self.ship.dispatch(item)
+        return True
+
+OrderFacade().place_order("book", 1500)`
+},
+{
+  id:"flyweight", name:"Flyweight", jp:"フライウェイト", category:"structural",
+  tags:["メモリ節約","共有"],
+  summary:"多数の似たオブジェクトについて、<strong>共有可能な状態（内部状態）を共有</strong>することでメモリ使用量を劇的に削減するパターンです。変化する状態（外部状態）は利用側が渡します。",
+  pros:[
+    "大量のオブジェクトを扱う際のメモリを大幅に節約できる。",
+    "共有によりオブジェクト生成コストも下げられる。"
+  ],
+  cons:[
+    "内部状態と外部状態の分離設計が必要で複雑になる。",
+    "CPU時間とメモリのトレードオフになる場合がある。"
+  ],
+  usage:"文字・パーティクル・地図のタイルなど、同種の小さなオブジェクトを膨大に生成するとき。",
+  examples:[
+    "Java の <code>Integer.valueOf()</code>（-128〜127をキャッシュ共有）",
+    "文字列の内部化 <code>String.intern()</code>",
+    "テキストエディタで文字グリフのフォント情報を共有する処理"
+  ],
+  java:`// 共有される内部状態（不変）
+class Glyph {
+    private final char symbol; private final String font;
+    Glyph(char s, String f){ symbol = s; font = f; }
+}
+// ファクトリで使い回す
+class GlyphFactory {
+    private final Map<String,Glyph> pool = new HashMap<>();
+    Glyph get(char s, String font) {
+        String key = s + font;
+        return pool.computeIfAbsent(key, k -> new Glyph(s, font));
+    }
+}
+// 位置などの外部状態は呼び出し側が持つ`,
+  python:`class Glyph:                       # 共有される内部状態
+    def __init__(self, symbol, font):
+        self.symbol, self.font = symbol, font
+
+class GlyphFactory:
+    _pool = {}
+    @classmethod
+    def get(cls, symbol, font):
+        key = (symbol, font)
+        if key not in cls._pool:        # 無ければ作って共有
+            cls._pool[key] = Glyph(symbol, font)
+        return cls._pool[key]
+
+a = GlyphFactory.get("A", "serif")
+b = GlyphFactory.get("A", "serif")
+print(a is b)   # True : 共有されている`
+},
+{
+  id:"proxy", name:"Proxy", jp:"プロキシ", category:"structural",
+  tags:["代理","アクセス制御"],
+  summary:"あるオブジェクトへの<strong>アクセスを制御・仲介する代理オブジェクト</strong>を立てるパターンです。本物と同じインターフェースを持ち、遅延生成・アクセス制御・キャッシュ・ログなどを挟めます。",
+  pros:[
+    "本体の生成を遅延させたり、アクセスを制御できる。",
+    "本体のコードを変えずに付加機能（キャッシュ・ログ・認可）を足せる。",
+    "リモートオブジェクトをローカルのように扱える。"
+  ],
+  cons:[
+    "クラスが増え、応答に間接層が挟まる。",
+    "プロキシの実装次第で挙動が分かりにくくなる。"
+  ],
+  usage:"重いオブジェクトの遅延ロード、アクセス権チェック、リモート呼び出しの隠蔽、結果のキャッシュなど。",
+  examples:[
+    "Java の動的プロキシ <code>java.lang.reflect.Proxy</code>",
+    "Spring AOP / Hibernate の遅延ロード用プロキシ",
+    "画像ビューアでサムネイル表示中は本体画像を読み込まない遅延ロード"
+  ],
+  java:`interface Image { void display(); }
+
+class RealImage implements Image {           // 重い本体
+    private final String file;
+    RealImage(String f){ this.file = f; load(); }
+    private void load(){ /* ディスクから読込（重い） */ }
+    public void display(){ /* 表示 */ }
+}
+class ImageProxy implements Image {          // 代理
+    private final String file; private RealImage real;
+    ImageProxy(String f){ this.file = f; }
+    public void display() {
+        if (real == null) real = new RealImage(file); // 必要時に生成
+        real.display();
+    }
+}`,
+  python:`class RealImage:                  # 重い本体
+    def __init__(self, file):
+        self.file = file
+        self._load()
+    def _load(self): pass        # ディスク読込（重い）
+    def display(self): pass
+
+class ImageProxy:                # 代理：遅延ロード
+    def __init__(self, file):
+        self.file = file
+        self._real = None
+    def display(self):
+        if self._real is None:
+            self._real = RealImage(self.file)  # 初回だけ生成
+        self._real.display()`
+}
+);
+</script>
+<script>
+PATTERNS.push(
+{
+  id:"chain", name:"Chain of Responsibility", jp:"責任の連鎖", category:"behavioral",
+  tags:["処理の連鎖","ハンドラ"],
+  summary:"リクエストを処理できるオブジェクトを<strong>鎖状につなぎ</strong>、各ハンドラが「自分で処理するか、次へ渡すか」を判断するパターンです。送り手と受け手を疎結合にします。",
+  pros:[
+    "送り手は誰が処理するかを知らなくてよい（疎結合）。",
+    "ハンドラの追加・順序変更が柔軟にできる。",
+    "各ハンドラの責務を小さく保てる。"
+  ],
+  cons:[
+    "どこにも処理されず素通りするリクエストが出る恐れがある。",
+    "鎖が長いとデバッグや性能追跡が難しい。"
+  ],
+  usage:"承認フロー、例外処理、入力検証、ログレベル処理など、複数の処理候補を順に試したいとき。",
+  examples:[
+    "Java のサーブレットフィルタ（<code>FilterChain</code>）",
+    "ロギングのレベル別ハンドラ",
+    "経費承認（金額に応じて主任→課長→部長へエスカレーション）"
+  ],
+  java:`abstract class Approver {
+    protected Approver next;
+    Approver linkWith(Approver n){ this.next = n; return n; }
+    void handle(int amount) {
+        if (canApprove(amount)) approve(amount);
+        else if (next != null) next.handle(amount);  // 次へ委譲
+    }
+    abstract boolean canApprove(int amount);
+    abstract void approve(int amount);
+}
+class Manager extends Approver {
+    boolean canApprove(int a){ return a <= 100000; }
+    void approve(int a){ /* 課長が承認 */ }
+}`,
+  python:`class Approver:
+    def __init__(self): self._next = None
+    def link_with(self, nxt):
+        self._next = nxt; return nxt
+    def handle(self, amount):
+        if self.can_approve(amount):
+            self.approve(amount)
+        elif self._next:
+            self._next.handle(amount)   # 次へ委譲
+
+class Manager(Approver):
+    def can_approve(self, a): return a <= 100_000
+    def approve(self, a): print("課長が承認")
+
+class Director(Approver):
+    def can_approve(self, a): return a <= 1_000_000
+    def approve(self, a): print("部長が承認")
+
+chain = Manager(); chain.link_with(Director())
+chain.handle(500_000)`
+},
+{
+  id:"command", name:"Command", jp:"コマンド", category:"behavioral",
+  tags:["操作のオブジェクト化","Undo"],
+  summary:"操作（要求）を<strong>1つのオブジェクトとしてカプセル化</strong>するパターンです。操作をデータとして扱えるため、キュー化・ログ記録・取り消し（Undo）・再実行が可能になります。",
+  pros:[
+    "操作をデータとして渡す・保存・予約・取り消しできる。",
+    "実行する側と要求する側を分離できる。",
+    "Undo/Redoやマクロ（操作の合成）が実装しやすい。"
+  ],
+  cons:[
+    "操作ごとにクラスが増える。",
+    "単純な処理には大げさになる。"
+  ],
+  usage:"GUIボタンやメニューの操作、Undo/Redo、ジョブキュー、トランザクション的な操作列を扱うとき。",
+  examples:[
+    "Java の <code>Runnable</code>（実行をオブジェクト化）",
+    "Swing の <code>Action</code> インターフェース",
+    "テキストエディタの取り消し履歴、ジョブスケジューラのタスク"
+  ],
+  java:`interface Command { void execute(); void undo(); }
+
+class Light { void on(){} void off(){} }
+
+class LightOnCommand implements Command {
+    private final Light light;
+    LightOnCommand(Light l){ this.light = l; }
+    public void execute(){ light.on(); }
+    public void undo(){ light.off(); }
+}
+// 起動側はCommandだけ知ればよい
+class Button {
+    private Command command;
+    void set(Command c){ command = c; }
+    void click(){ command.execute(); }
+}`,
+  python:`class Light:
+    def on(self):  print("点灯")
+    def off(self): print("消灯")
+
+class LightOnCommand:                  # 操作をオブジェクト化
+    def __init__(self, light): self.light = light
+    def execute(self): self.light.on()
+    def undo(self):    self.light.off()
+
+class Button:
+    def __init__(self, command): self.command = command
+    def click(self): self.command.execute()
+
+btn = Button(LightOnCommand(Light()))
+btn.click()`
+},
+{
+  id:"interpreter", name:"Interpreter", jp:"インタープリター", category:"behavioral",
+  tags:["文法の表現","式の評価"],
+  summary:"単純な言語や文法について、その<strong>文法規則をクラスとして表現</strong>し、文（式）を解釈・評価するパターンです。各文法要素がそれ自身の解釈方法を持ちます。",
+  pros:[
+    "文法をクラス構造で素直に表現できる。",
+    "新しい文法規則（式の種類）を追加しやすい。"
+  ],
+  cons:[
+    "文法が複雑になるとクラスが爆発的に増え、保守が困難。",
+    "性能面で不利なことが多く、複雑な言語にはパーサジェネレータが向く。"
+  ],
+  usage:"電卓の式評価、検索クエリ、正規表現、ルールエンジンなど、小さなドメイン固有言語を扱うとき。",
+  examples:[
+    "Java の <code>java.util.regex.Pattern</code>（正規表現）",
+    "SQLや式言語（SpEL等）の評価エンジン",
+    "簡易電卓・数式評価器、ビジネスルールの条件式"
+  ],
+  java:`interface Expr { int interpret(); }
+
+class Num implements Expr {
+    private final int v; Num(int v){ this.v = v; }
+    public int interpret(){ return v; }
+}
+class Add implements Expr {
+    private final Expr l, r; Add(Expr l, Expr r){ this.l=l; this.r=r; }
+    public int interpret(){ return l.interpret() + r.interpret(); }
+}
+// (1 + 2) を表現
+Expr e = new Add(new Num(1), new Num(2));
+int result = e.interpret();  // 3`,
+  python:`class Num:
+    def __init__(self, v): self.v = v
+    def interpret(self): return self.v
+
+class Add:
+    def __init__(self, left, right):
+        self.left, self.right = left, right
+    def interpret(self):
+        return self.left.interpret() + self.right.interpret()
+
+# (1 + 2) を構文木として表現し評価
+expr = Add(Num(1), Num(2))
+print(expr.interpret())   # 3`
+},
+{
+  id:"iterator", name:"Iterator", jp:"イテレーター", category:"behavioral",
+  tags:["順次アクセス","内部構造の隠蔽"],
+  summary:"集合（コレクション）の<strong>内部構造を露出せずに、要素へ順番にアクセスする手段</strong>を提供するパターンです。走査のロジックをコレクション本体から切り離します。",
+  pros:[
+    "コレクションの内部表現を隠したまま走査できる。",
+    "複数の走査を同時に・独立して行える。",
+    "走査アルゴリズムを差し替えられる。"
+  ],
+  cons:[
+    "単純なコレクションには冗長になりうる。",
+    "言語組み込みの反復機構があれば自作は不要なことが多い。"
+  ],
+  usage:"独自のデータ構造（木・グラフ等）を、利用側に内部を見せずに for-each で巡回させたいとき。",
+  examples:[
+    "Java の <code>java.util.Iterator</code> / 拡張for文",
+    "Python の <code>__iter__</code> / <code>__next__</code> とジェネレータ",
+    "ページネーション付きAPIの結果を順に取り出す処理"
+  ],
+  java:`class NumberCollection implements Iterable<Integer> {
+    private final int[] data;
+    NumberCollection(int[] d){ this.data = d; }
+    public Iterator<Integer> iterator() {
+        return new Iterator<>() {
+            int i = 0;
+            public boolean hasNext(){ return i < data.length; }
+            public Integer next(){ return data[i++]; }
+        };
+    }
+}
+for (int n : new NumberCollection(new int[]{1,2,3})) { /* 利用 */ }`,
+  python:`class NumberCollection:
+    def __init__(self, data): self.data = data
+    def __iter__(self):
+        # ジェネレータで簡潔にイテレータを提供
+        for x in self.data:
+            yield x
+
+for n in NumberCollection([1, 2, 3]):
+    print(n)   # 1, 2, 3`
+},
+{
+  id:"mediator", name:"Mediator", jp:"メディエーター", category:"behavioral",
+  tags:["相互作用の集約","結合度低減"],
+  summary:"多数のオブジェクトが直接やり取りする代わりに、<strong>仲介役（メディエーター）を介して通信</strong>させるパターンです。オブジェクト同士の網の目の依存を、ハブ&スポーク型に整理します。",
+  pros:[
+    "オブジェクト間の直接の結合をなくし、関係を一元管理できる。",
+    "個々のオブジェクトを再利用しやすくなる。",
+    "相互作用のロジックが1か所に集まる。"
+  ],
+  cons:[
+    "メディエーターが肥大化し、複雑な「神オブジェクト」になりやすい。"
+  ],
+  usage:"多くの部品が複雑に連動するとき（フォームの入力部品同士、チャットの参加者間など）。",
+  examples:[
+    "Java の <code>java.util.Timer</code> 的な調停、Swingのイベント調停",
+    "航空管制（各機が管制塔を介して通信）",
+    "ダイアログ内で各UI部品の有効/無効を相互制御する処理"
+  ],
+  java:`interface ChatRoom { void send(String from, String msg); }
+
+class User {
+    private final String name; private final ChatRoom room;
+    User(String n, ChatRoom r){ name = n; room = r; }
+    void send(String msg){ room.send(name, msg); }  // 仲介経由
+    void receive(String from, String msg){ /* 表示 */ }
+}
+class ChatRoomImpl implements ChatRoom {
+    private final List<User> users = new ArrayList<>();
+    void register(User u){ users.add(u); }
+    public void send(String from, String msg){
+        for (User u : users) u.receive(from, msg);
+    }
+}`,
+  python:`class ChatRoom:                       # 仲介役
+    def __init__(self): self.users = []
+    def register(self, user): self.users.append(user)
+    def send(self, frm, msg):
+        for u in self.users:
+            u.receive(frm, msg)
+
+class User:
+    def __init__(self, name, room):
+        self.name, self.room = name, room
+    def send(self, msg):
+        self.room.send(self.name, msg)   # 直接相手を知らない
+    def receive(self, frm, msg):
+        print(f"[{self.name}] {frm}: {msg}")`
+},
+{
+  id:"memento", name:"Memento", jp:"メメント", category:"behavioral",
+  tags:["状態の保存","Undo"],
+  summary:"オブジェクトの<strong>内部状態をカプセル化を破らずに保存</strong>し、後でその状態へ復元できるようにするパターンです。スナップショットを取り、Undoや履歴管理に使えます。",
+  pros:[
+    "カプセル化を保ったまま状態を外部に保存・復元できる。",
+    "Undo/Redoやチェックポイントを実装しやすい。"
+  ],
+  cons:[
+    "状態が大きいと保存コスト（メモリ）が高くなる。",
+    "履歴の管理者（Caretaker）のライフサイクル管理が必要。"
+  ],
+  usage:"エディタの取り消し、ゲームのセーブ、トランザクションのロールバックなど、状態を巻き戻したいとき。",
+  examples:[
+    "テキストエディタ・描画ソフトのUndo履歴",
+    "ゲームのセーブ/ロード",
+    "フォーム入力の下書き保存とリストア"
+  ],
+  java:`class Editor {
+    private String text = "";
+    void type(String t){ text += t; }
+    Memento save(){ return new Memento(text); }      // スナップショット作成
+    void restore(Memento m){ text = m.state; }       // 復元
+
+    static class Memento {                            // 状態の入れ物
+        private final String state;
+        private Memento(String s){ state = s; }
+    }
+}
+Editor e = new Editor();
+e.type("Hello");
+Editor.Memento snap = e.save();
+e.type(" World");
+e.restore(snap);   // "Hello" に戻る`,
+  python:`class Memento:                     # 状態の入れ物
+    def __init__(self, state): self._state = state
+
+class Editor:
+    def __init__(self): self.text = ""
+    def type(self, t): self.text += t
+    def save(self):    return Memento(self.text)   # スナップショット
+    def restore(self, m): self.text = m._state     # 復元
+
+e = Editor()
+e.type("Hello")
+snap = e.save()
+e.type(" World")
+e.restore(snap)
+print(e.text)   # "Hello"`
+}
+);
+</script>
+<script>
+PATTERNS.push(
+{
+  id:"observer", name:"Observer", jp:"オブザーバー", category:"behavioral",
+  tags:["通知","発行-購読"],
+  summary:"あるオブジェクト（被験者）の<strong>状態変化を、登録された複数のオブザーバーに自動通知</strong>するパターンです。発行-購読（Pub/Sub）の基礎で、対象と観測者を疎結合に保ちます。",
+  pros:[
+    "通知元と通知先を疎結合に保てる。",
+    "オブザーバーを実行時に自由に追加・削除できる。",
+    "イベント駆動の仕組みを自然に表現できる。"
+  ],
+  cons:[
+    "通知順序が保証されず、予期せぬ連鎖更新が起きうる。",
+    "解除を忘れるとメモリリーク（リスナー漏れ）を招く。"
+  ],
+  usage:"あるデータの変化に複数の表示・処理を追従させたいとき（UIのデータバインディング、イベント通知）。",
+  examples:[
+    "Java の <code>java.util.Observer</code>（旧）、PropertyChangeListener",
+    "DOMのイベントリスナー、RxJava/Reactive Streams",
+    "株価の変動を複数のチャート・通知に反映する処理"
+  ],
+  java:`interface Observer { void update(int price); }
+
+class Stock {
+    private final List<Observer> observers = new ArrayList<>();
+    private int price;
+    void subscribe(Observer o){ observers.add(o); }
+    void setPrice(int p){
+        price = p;
+        for (Observer o : observers) o.update(p);  // 全員に通知
+    }
+}
+class Display implements Observer {
+    public void update(int price){ /* 画面更新 */ }
+}`,
+  python:`class Stock:
+    def __init__(self):
+        self._observers = []
+        self._price = 0
+    def subscribe(self, obs): self._observers.append(obs)
+    def set_price(self, p):
+        self._price = p
+        for obs in self._observers:
+            obs.update(p)          # 全員に通知
+
+class Display:
+    def update(self, price): print(f"表示更新: {price}")
+
+stock = Stock()
+stock.subscribe(Display())
+stock.set_price(1200)`
+},
+{
+  id:"state", name:"State", jp:"ステート", category:"behavioral",
+  tags:["状態遷移","条件分岐の排除"],
+  summary:"オブジェクトの<strong>内部状態ごとに振る舞いをクラスとして分け</strong>、状態が変わると振る舞いも切り替わるようにするパターンです。巨大な条件分岐を状態オブジェクトの委譲に置き換えます。",
+  pros:[
+    "状態ごとの処理が分離され、巨大なif/switchが消える。",
+    "状態の追加が既存状態に影響しにくい。",
+    "状態遷移が明示的になり見通しが良い。"
+  ],
+  cons:[
+    "状態の数だけクラスが増える。",
+    "状態数が少ない場合は過剰になる。"
+  ],
+  usage:"オブジェクトの挙動が状態に強く依存し、状態数が多い・遷移が複雑なとき（注文ステータス、自販機、ゲームのモードなど）。",
+  examples:[
+    "TCPコネクションの状態遷移（接続中/確立/切断）",
+    "自動販売機・信号機の制御",
+    "ECの注文状態（受付→発送→配達完了）に応じた操作の可否"
+  ],
+  java:`interface State { void next(Order o); String name(); }
+
+class Order {
+    private State state = new Pending();
+    void setState(State s){ this.state = s; }
+    void proceed(){ state.next(this); }   // 現在状態に委譲
+}
+class Pending implements State {
+    public void next(Order o){ o.setState(new Shipped()); }
+    public String name(){ return "受付中"; }
+}
+class Shipped implements State {
+    public void next(Order o){ o.setState(new Delivered()); }
+    public String name(){ return "発送済"; }
+}
+class Delivered implements State {
+    public void next(Order o){ /* 終端 */ }
+    public String name(){ return "配達完了"; }
+}`,
+  python:`class State:
+    def next(self, order): ...
+
+class Pending(State):
+    def next(self, order): order.state = Shipped()
+
+class Shipped(State):
+    def next(self, order): order.state = Delivered()
+
+class Delivered(State):
+    def next(self, order): pass    # 終端
+
+class Order:
+    def __init__(self): self.state = Pending()
+    def proceed(self):
+        self.state.next(self)      # 現在状態に委譲`
+},
+{
+  id:"strategy", name:"Strategy", jp:"ストラテジー", category:"behavioral",
+  tags:["アルゴリズムの差し替え","委譲"],
+  summary:"アルゴリズムの<strong>一群（family）をそれぞれクラスに切り出し、実行時に交換可能</strong>にするパターンです。利用側は具体的なアルゴリズムを意識せず、戦略を差し替えるだけで挙動を変えられます。",
+  pros:[
+    "アルゴリズムを実行時に切り替えられる。",
+    "条件分岐でアルゴリズムを選ぶ巨大コードを排除できる。",
+    "新しいアルゴリズムの追加が容易（OCP）。"
+  ],
+  cons:[
+    "戦略クラスが増える。",
+    "利用側が戦略の違いを理解している必要がある。"
+  ],
+  usage:"同じ目的に複数のやり方があり、状況で切り替えたいとき（ソート方式、料金計算、圧縮方式、経路探索など）。",
+  examples:[
+    "Java の <code>Comparator</code>（ソート基準の差し替え）",
+    "<code>java.util.Collections.sort(list, strategy)</code>",
+    "決済方法（クレカ/コンビニ/ポイント）ごとの計算ロジック切り替え"
+  ],
+  java:`interface PayStrategy { void pay(int yen); }
+
+class CreditCard implements PayStrategy {
+    public void pay(int yen){ /* カード決済 */ }
+}
+class PayPal implements PayStrategy {
+    public void pay(int yen){ /* PayPal決済 */ }
+}
+class Checkout {
+    private PayStrategy strategy;
+    void setStrategy(PayStrategy s){ this.strategy = s; }
+    void confirm(int yen){ strategy.pay(yen); }   // 戦略に委譲
+}`,
+  python:`# Pythonでは関数を戦略として直接渡せる（簡潔版）
+def credit_card(yen): print(f"カードで {yen}円")
+def paypal(yen):      print(f"PayPalで {yen}円")
+
+class Checkout:
+    def __init__(self, strategy): self.strategy = strategy
+    def confirm(self, yen): self.strategy(yen)   # 戦略を呼ぶ
+
+Checkout(credit_card).confirm(3000)
+Checkout(paypal).confirm(3000)`
+},
+{
+  id:"template-method", name:"Template Method", jp:"テンプレートメソッド", category:"behavioral",
+  tags:["処理の骨格","部分のオーバーライド"],
+  summary:"アルゴリズムの<strong>骨格（手順）を親クラスで定義</strong>し、その中の<strong>一部のステップをサブクラスに実装させる</strong>パターンです。全体の流れは固定したまま、可変部分だけを差し替えます。",
+  pros:[
+    "共通の処理手順を1か所にまとめ、重複を排除できる。",
+    "変わる部分だけをサブクラスで実装すればよい。",
+    "処理全体の流れを親が制御できる。"
+  ],
+  cons:[
+    "継承ベースのため柔軟性が低く、親子が密結合になる。",
+    "手順の一部だけ変えたい要求が増えるとフックが乱立しやすい。"
+  ],
+  usage:"処理の大枠は同じで一部だけ異なる一連の作業があるとき（データ読込→加工→出力の各段階の差し替え）。",
+  examples:[
+    "Java の <code>java.io.InputStream#read</code> 系のスケルトン実装",
+    "Spring の <code>JdbcTemplate</code>、各種AbstractクラスのhandleXxx",
+    "ゲームAIの「準備→行動→片付け」の共通フローでの行動差し替え"
+  ],
+  java:`abstract class DataProcessor {
+    // テンプレート：手順は固定（finalで上書き禁止）
+    public final void process() {
+        read();
+        transform();   // 可変ステップ
+        write();
+    }
+    protected void read(){ /* 共通 */ }
+    protected abstract void transform();  // サブクラスが実装
+    protected void write(){ /* 共通 */ }
+}
+class CsvProcessor extends DataProcessor {
+    protected void transform(){ /* CSV特有の加工 */ }
+}`,
+  python:`from abc import ABC, abstractmethod
+
+class DataProcessor(ABC):
+    def process(self):          # テンプレート（手順固定）
+        self.read()
+        self.transform()        # 可変ステップ
+        self.write()
+    def read(self):  pass       # 共通
+    @abstractmethod
+    def transform(self): ...    # サブクラスが実装
+    def write(self): pass       # 共通
+
+class CsvProcessor(DataProcessor):
+    def transform(self): print("CSVを加工")
+
+CsvProcessor().process()`
+},
+{
+  id:"visitor", name:"Visitor", jp:"ビジター", category:"behavioral",
+  tags:["操作の外部化","ダブルディスパッチ"],
+  summary:"データ構造（要素群）と、それに対して行う<strong>操作を分離</strong>するパターンです。新しい操作を「訪問者（Visitor）」として追加でき、要素クラス自体を変更せずに機能を増やせます。",
+  pros:[
+    "要素クラスを変えずに新しい操作を追加できる。",
+    "関連する操作を1つのVisitorに集約できる。",
+    "異なる型の要素に対する処理を型ごとに整理できる。"
+  ],
+  cons:[
+    "要素の種類を追加すると、全Visitorの修正が必要になる。",
+    "要素の内部公開が必要になり、カプセル化が弱まることがある。"
+  ],
+  usage:"安定した要素構造に対して操作の種類が増えていくとき（構文木へのコンパイル・整形・評価、図形への各種計算）。",
+  examples:[
+    "コンパイラのAST処理（型チェック・コード生成を別Visitorに）",
+    "ドキュメントツリーのHTML出力/PDF出力などの書き出し処理",
+    "ファイル階層に対するサイズ集計・ウイルススキャンなどの操作群"
+  ],
+  java:`interface Visitor { void visit(Circle c); void visit(Square s); }
+
+interface Shape { void accept(Visitor v); }
+class Circle implements Shape {
+    public void accept(Visitor v){ v.visit(this); }  // ダブルディスパッチ
+}
+class Square implements Shape {
+    public void accept(Visitor v){ v.visit(this); }
+}
+// 新しい操作はVisitorとして追加
+class AreaVisitor implements Visitor {
+    public void visit(Circle c){ /* 円の面積 */ }
+    public void visit(Square s){ /* 正方形の面積 */ }
+}`,
+  python:`class Circle:
+    def accept(self, visitor): visitor.visit_circle(self)
+class Square:
+    def accept(self, visitor): visitor.visit_square(self)
+
+class AreaVisitor:                 # 操作を外部クラスに
+    def visit_circle(self, c): print("円の面積を計算")
+    def visit_square(self, s): print("正方形の面積を計算")
+
+shapes = [Circle(), Square()]
+visitor = AreaVisitor()
+for s in shapes:
+    s.accept(visitor)`
+}
+);
+</script>
+<script>
+/* ============== リファクタリング例（適用前 → 適用後） ============== */
+const REFACTOR = {
+"singleton":{
+beforeJava:`// あちこちで new していて、設定が共有されない
+class OrderService { Config config = new Config(); } // 別インスタンス
+class MailService  { Config config = new Config(); } // また別インスタンス！
+// 一方で config.set した値が、他方には反映されない（不整合バグ）`,
+afterJava:`// 唯一のインスタンスを共有する
+class OrderService { Config config = Config.getInstance(); }
+class MailService  { Config config = Config.getInstance(); } // 同じ実体
+// どこから設定しても全体に反映される`,
+beforePython:`class OrderService:
+    def __init__(self): self.config = make_config()  # 毎回新規生成
+class MailService:
+    def __init__(self): self.config = make_config()  # 別物`,
+afterPython:`class OrderService:
+    def __init__(self): self.config = Config()  # __new__で同一を返す
+class MailService:
+    def __init__(self): self.config = Config()  # 同じ実体を共有`
+},
+"factory-method":{
+beforeJava:`// 生成のための if 分岐が利用側のあちこちに散らばる
+Button create(String os){
+    if (os.equals("win")) return new WindowsButton();
+    if (os.equals("web")) return new HtmlButton();
+    throw new IllegalArgumentException(os);
+}
+// 新OSを足すたび、この種の分岐を全箇所で直す必要がある`,
+afterJava:`// 生成をサブクラスに委譲。利用側は分岐を持たない
+abstract class Dialog {
+    abstract Button createButton();          // ここだけ差し替わる
+    void render(){ createButton().paint(); }
+}
+class WebDialog extends Dialog {
+    Button createButton(){ return new HtmlButton(); }
+}
+// 新OSは新サブクラスを足すだけ（既存コードは無修正）`,
+beforePython:`def make_button(os):
+    if os == "win": return WindowsButton()
+    elif os == "web": return HtmlButton()
+    raise ValueError(os)        # 分岐が各所で増殖`,
+afterPython:`class Dialog:
+    def create_button(self): ...           # サブクラスが決める
+    def render(self): self.create_button().paint()
+
+class WebDialog(Dialog):
+    def create_button(self): return HtmlButton()`
+},
+"abstract-factory":{
+beforeJava:`// テーマ部品を手で組むため、取り違えが起きる
+Button btn; Checkbox chk;
+if (dark) { btn = new DarkButton();  chk = new LightCheckbox(); } // 不整合!
+else      { btn = new LightButton(); chk = new LightCheckbox(); }`,
+afterJava:`// ファクトリが一式を整合的に生成する
+GUIFactory f = dark ? new DarkFactory() : new LightFactory();
+Button   btn = f.createButton();
+Checkbox chk = f.createCheckbox();   // 必ず同じテーマで揃う`,
+beforePython:`if dark:
+    btn, chk = DarkButton(), LightCheckbox()   # 取り違え
+else:
+    btn, chk = LightButton(), LightCheckbox()`,
+afterPython:`factory = DarkFactory() if dark else LightFactory()
+btn = factory.create_button()
+chk = factory.create_checkbox()   # 一式が必ず整合`
+},
+"builder":{
+beforeJava:`// 引数だらけのコンストラクタ（テレスコーピング）
+Burger b = new Burger("sesame", true, 2, false, true, false);
+// 各 true/false が何を意味するか読めない。任意項目が増えると破綻`,
+afterJava:`Burger b = new Burger.Builder()
+        .bun("sesame").cheese(true).patties(2).build();
+// 必要な項目だけ、意味の分かる形で段階的に設定`,
+beforePython:`b = Burger("sesame", True, 2, False, True, False)
+# 位置引数の意味が不明。項目が増えるほど読めなくなる`,
+afterPython:`b = (BurgerBuilder()
+     .bun("sesame").cheese(True).patties(2).build())`
+},
+"prototype":{
+beforeJava:`// 重い初期化を毎回やり直し、フィールドも手でコピー
+Enemy e2 = new Enemy();            // 重いロードを再実行
+e2.hp = e1.hp; e2.x = e1.x; e2.weapon = e1.weapon; // コピー漏れの危険`,
+afterJava:`Enemy e2 = e1.clone();             // 状態ごと複製、ロード不要`,
+beforePython:`e2 = Enemy()                       # 重い初期化を再実行
+e2.hp, e2.x, e2.weapon = e1.hp, e1.x, e1.weapon  # 手作業コピー`,
+afterPython:`import copy
+e2 = copy.deepcopy(e1)             # 状態ごと複製`
+},
+"adapter":{
+beforeJava:`// 利用側が外部ライブラリの独自メソッドに直接依存
+LegacyAudio audio = new LegacyAudio();
+audio.playMp3(path);   // 別ライブラリへ乗り換えると全箇所を修正`,
+afterJava:`// 共通インターフェース越しに使い、差はアダプタが吸収
+MediaPlayer player = new AudioAdapter();
+player.play(path);     // 実装を差し替えても利用側は不変`,
+beforePython:`audio = LegacyAudio()
+audio.play_mp3(path)   # 独自メソッドに密結合`,
+afterPython:`player = AudioAdapter()
+player.play(path)      # 共通I/Fで利用、実装差は吸収`
+},
+"bridge":{
+beforeJava:`// 「形 × 描画方式」の組み合わせでクラスが爆発
+class VectorCircle {} class RasterCircle {}
+class VectorSquare {} class RasterSquare {}
+// 形か方式が増えるたび、掛け算でクラスが増える`,
+afterJava:`// 形(抽象)と描画(実装)を分離 → 足し算で済む
+Shape s = new Circle(new RasterRenderer(), 5);
+s.draw();   // 形と描画方式を独立に追加できる`,
+beforePython:`class VectorCircle: ...
+class RasterCircle: ...
+class VectorSquare: ...    # 組み合わせ爆発
+class RasterSquare: ...`,
+afterPython:`Circle(RasterRenderer(), 5).draw()
+# 形と描画方式を別々の軸として組み合わせる`
+},
+"composite":{
+beforeJava:`// 葉と枝で処理を分岐。ネストするほど複雑化
+int size(Object node){
+    if (node instanceof File) return ((File)node).bytes;
+    int s = 0;
+    for (Object c : ((Folder)node).children) s += size(c);
+    return s;
+}`,
+afterJava:`// 葉も枝も同じインターフェース。再帰が自然に書ける
+int total = root.size();   // File / Folder を区別せず呼べる`,
+beforePython:`def size(node):
+    if isinstance(node, File):
+        return node.bytes
+    return sum(size(c) for c in node.children)  # 型で分岐`,
+afterPython:`total = root.size()   # 葉も枝も同じ size() を持つ`
+},
+"decorator":{
+beforeJava:`// 組み合わせごとにサブクラスが爆発する
+class CoffeeWithMilk {}
+class CoffeeWithMilkAndSugar {}
+class CoffeeWithSugarAndWhip {}   // 組合せ数だけクラスが要る`,
+afterJava:`// 必要な機能を実行時に重ねる
+Coffee c = new Whip(new Sugar(new Milk(new Espresso())));
+int price = c.cost();`,
+beforePython:`class CoffeeWithMilk: ...
+class CoffeeWithMilkAndSugar: ...   # 組合せ爆発`,
+afterPython:`c = Sugar(Milk(Espresso()))
+print(c.cost())   # 機能を重ねがけ`
+},
+"facade":{
+beforeJava:`// 利用側が手順とサブシステムを全部知っている
+inv.reserve(item);
+pay.charge(yen);
+ship.dispatch(item);
+// 手順が変わるたび、呼び出し箇所をすべて直す`,
+afterJava:`// 窓口ひとつ。内部の連携は隠蔽される
+new OrderFacade().placeOrder(item, yen);`,
+beforePython:`inv.reserve(item)
+pay.charge(yen)
+ship.dispatch(item)   # 連携手順が呼び出し側に漏れる`,
+afterPython:`OrderFacade().place_order(item, yen)`
+},
+"flyweight":{
+beforeJava:`// 1文字ごとにフォント情報を持ち、メモリを浪費
+for (char ch : text.toCharArray())
+    glyphs.add(new Glyph(ch, "serif", 12));
+// 100万文字 = 100万個分の重複データ`,
+afterJava:`// フォント情報は共有し、位置だけ個別に持つ
+for (char ch : text.toCharArray())
+    glyphs.add(factory.get(ch, "serif"));   // 同一グリフは使い回す`,
+beforePython:`glyphs = [Glyph(ch, "serif", 12) for ch in text]  # 重複だらけ`,
+afterPython:`glyphs = [GlyphFactory.get(ch, "serif") for ch in text]  # 共有`
+},
+"proxy":{
+beforeJava:`// 起動時に全画像を即ロード（重い・無駄）
+List<Image> imgs = new ArrayList<>();
+for (String f : files) imgs.add(new RealImage(f)); // 表示前から全読込`,
+afterJava:`// 表示されるまで読み込まない（遅延ロード）
+for (String f : files) imgs.add(new ImageProxy(f));
+imgs.get(0).display();   // このとき初めて本体をロード`,
+beforePython:`imgs = [RealImage(f) for f in files]   # 全部を即ロード`,
+afterPython:`imgs = [ImageProxy(f) for f in files]  # 遅延
+imgs[0].display()                      # 必要時のみロード`
+},
+"chain":{
+beforeJava:`// 承認階層が入れ子の if 地獄になる
+void approve(int amount){
+    if (amount <= 100000) manager.sign();
+    else if (amount <= 1000000) director.sign();
+    else ceo.sign();
+}`,
+afterJava:`// 各承認者を鎖でつなぎ、判断を委譲する
+manager.linkWith(director).linkWith(ceo);
+manager.handle(amount);   // 適任者まで自動で流れる`,
+beforePython:`def approve(amount):
+    if amount <= 100_000: manager.sign()
+    elif amount <= 1_000_000: director.sign()
+    else: ceo.sign()`,
+afterPython:`manager.link_with(director).link_with(ceo)
+manager.handle(amount)   # 連鎖で適任者へ`
+},
+"command":{
+beforeJava:`// ボタンが処理を直書き。取り消しもできない
+button.onClick(() -> light.on());
+// Undo履歴やマクロ（操作の合成）を足すのが困難`,
+afterJava:`// 操作をオブジェクト化 → 履歴 / Undo が可能に
+Command cmd = new LightOnCommand(light);
+button.set(cmd); button.click();
+history.push(cmd);   // 後で cmd.undo() できる`,
+beforePython:`button.on_click = lambda: light.on()   # 直書き、Undo不可`,
+afterPython:`cmd = LightOnCommand(light)
+Button(cmd).click()
+history.append(cmd)   # cmd.undo() で取り消せる`
+},
+"interpreter":{
+beforeJava:`// 文字列を場当たり的にパースして計算
+String[] t = "1 + 2".split(" ");
+int r = Integer.parseInt(t[0]) + Integer.parseInt(t[2]);
+// 括弧や演算子の優先順位を足すと一気に破綻する`,
+afterJava:`// 文法を構文木で表現し、再帰的に評価
+Expr e = new Add(new Num(1), new Num(2));
+int r = e.interpret();   // 入れ子の式も自然に扱える`,
+beforePython:`t = "1 + 2".split()
+r = int(t[0]) + int(t[2])   # 拡張に弱い`,
+afterPython:`expr = Add(Num(1), Num(2))
+r = expr.interpret()        # 構文木として評価`
+},
+"iterator":{
+beforeJava:`// 内部構造(配列)を露出し、添字で回す
+int[] data = collection.getInternalArray();  // カプセル化が壊れる
+for (int i = 0; i < data.length; i++) use(data[i]);`,
+afterJava:`// 内部を隠したまま走査する
+for (int n : collection) use(n);   // 構造が変わっても利用側は不変`,
+beforePython:`data = collection.get_internal_list()   # 内部を露出
+for i in range(len(data)): use(data[i])`,
+afterPython:`for n in collection:   # __iter__ 経由、内部は隠蔽
+    use(n)`
+},
+"mediator":{
+beforeJava:`// 各部品が互いを直接参照（網の目依存）
+checkbox.onChange = () -> { textField.enable(); button.disable(); };
+textField.onType  = () -> { button.enable(); };
+// 部品が増えるほど相互依存が増殖する`,
+afterJava:`// やり取りはメディエーターに集約する
+class Dialog implements Mediator {
+    public void changed(Component c){ /* ここで一括制御 */ }
+}
+// 各部品は mediator.changed(this) を呼ぶだけ`,
+beforePython:`checkbox.on_change = lambda: (text.enable(), button.disable())
+text.on_type = lambda: button.enable()   # 相互依存`,
+afterPython:`class Dialog:                  # 仲介役が一括制御
+    def changed(self, sender): ...
+# 各部品は self.mediator.changed(self) を呼ぶだけ`
+},
+"memento":{
+beforeJava:`// 内部状態を外から直接保存（カプセル化破壊）
+String saved = editor.text;   // text を private にできない
+editor.text = saved;          // 復元も手作業`,
+afterJava:`// カプセル化を保ったままスナップショット
+Memento m = editor.save();
+editor.type(" more");
+editor.restore(m);   // 状態を巻き戻せる`,
+beforePython:`saved = editor.text     # 内部を直接触る
+editor.text = saved`,
+afterPython:`m = editor.save()
+editor.type(" more")
+editor.restore(m)       # カプセル化を保ったまま復元`
+},
+"observer":{
+beforeJava:`// 更新側が通知先を直接呼ぶ（密結合）
+void setPrice(int p){
+    price = p;
+    chart.refresh(p); logger.log(p); alert.check(p); // 増えるたび修正
+}`,
+afterJava:`// 購読者へ自動通知。更新側は相手を知らない
+stock.subscribe(chart);
+stock.subscribe(alert);
+stock.setPrice(1200);   // 登録済み全員へ自動で届く`,
+beforePython:`def set_price(p):
+    chart.refresh(p); logger.log(p); alert.check(p)  # 直接呼ぶ`,
+afterPython:`stock.subscribe(chart); stock.subscribe(alert)
+stock.set_price(1200)   # 自動で通知される`
+},
+"state":{
+beforeJava:`// 状態文字列ごとに巨大な if / switch
+void proceed(){
+    if (status.equals("pending"))   status = "shipped";
+    else if (status.equals("shipped")) status = "delivered";
+    else if (status.equals("delivered")) { /* 何もしない */ }
+}`,
+afterJava:`// 状態をオブジェクト化し、振る舞いを委譲
+order.proceed();   // 現在の状態オブジェクトが次を決める
+// 状態の追加は新クラスを足すだけ`,
+beforePython:`def proceed(self):
+    if self.status == "pending":  self.status = "shipped"
+    elif self.status == "shipped": self.status = "delivered"
+    # 状態が増えるほど分岐が肥大化`,
+afterPython:`order.proceed()   # 現在の state.next() に委譲`
+},
+"strategy":{
+beforeJava:`// 支払い方法ごとに if 分岐
+void pay(String method, int yen){
+    if (method.equals("card"))   { /* カード処理 */ }
+    else if (method.equals("paypal")) { /* PayPal処理 */ }
+    else if (method.equals("point"))  { /* ポイント処理 */ }
+}`,
+afterJava:`// アルゴリズムを差し替え可能にする
+checkout.setStrategy(new PayPal());
+checkout.confirm(3000);   // 新方式は新クラスを足すだけ`,
+beforePython:`def pay(method, yen):
+    if method == "card":   ...
+    elif method == "paypal": ...
+    elif method == "point":  ...`,
+afterPython:`Checkout(paypal).confirm(3000)   # 戦略を渡すだけ`
+},
+"template-method":{
+beforeJava:`// 似た手順が各クラスで重複する
+class CsvJob { void run(){ read(); /*CSV加工*/ write(); } }
+class XmlJob { void run(){ read(); /*XML加工*/ write(); } }
+// read/write が重複し、手順変更が全クラスに波及`,
+afterJava:`// 手順は親に1つ、可変部だけ子で実装
+class CsvProcessor extends DataProcessor {
+    void transform(){ /* CSV加工だけ書く */ }
+}
+new CsvProcessor().process();`,
+beforePython:`class CsvJob:
+    def run(self): self.read(); ...; self.write()
+class XmlJob:
+    def run(self): self.read(); ...; self.write()  # 重複`,
+afterPython:`class CsvProcessor(DataProcessor):
+    def transform(self): ...   # 可変部のみ実装
+CsvProcessor().process()`
+},
+"visitor":{
+beforeJava:`// 操作を増やすたび instanceof 分岐が増殖
+double area(Shape s){
+    if (s instanceof Circle) { /* ... */ }
+    else if (s instanceof Square) { /* ... */ }
+    return 0;
+}
+double perimeter(Shape s){ /* また同じ分岐 */ return 0; }`,
+afterJava:`// 操作を Visitor に分離。要素は accept するだけ
+for (Shape s : shapes) s.accept(new AreaVisitor());
+// 新しい操作は新 Visitor を足すだけ（要素は無修正）`,
+beforePython:`def area(s):
+    if isinstance(s, Circle): ...
+    elif isinstance(s, Square): ...   # 操作ごとに同じ分岐`,
+afterPython:`for s in shapes:
+    s.accept(AreaVisitor())   # 新操作 = 新Visitor`
+}
+};
+</script>
+<script>
+/* ============== 学習メタ情報（難易度・重要度・たとえ話・関連・現代の実務） ============== */
+/* difficulty: 1(易)〜3(難) / importance: 3=必修, 2=頻出, 1=発展 */
+const EXTRA = {
+singleton:{difficulty:1, importance:3,
+  analogy:"国に1つしかない中央銀行。どの銀行から問い合わせても、最終的には同じ中央銀行につながる。",
+  related:"<a href='#flyweight'>Flyweight</a>は「同種のものを多数共有」、Singletonは「1つだけを共有」。<a href='#abstract-factory'>Abstract Factory</a>や<a href='#builder'>Builder</a>の実装にSingletonが使われることもある。",
+  modern:"現代の実務ではDIコンテナ（Springなど）が「インスタンスを1つに保つ」役割を担うのが主流。テストで差し替えにくいため、Singletonを自作するのは避けられる傾向にある。"},
+"factory-method":{difficulty:2, importance:3,
+  analogy:"採用面接の「手順」は全社共通だが、どんな人を採用するかは各部署が決める。",
+  related:"<a href='#abstract-factory'>Abstract Factory</a>は「製品ファミリー一式」、Factory Methodは「1種類の製品」を扱う。構造的には<a href='#template-method'>Template Method</a>の生成特化版と見ることができる。",
+  modern:"実務ではstaticなファクトリ関数やDIで十分なことも多い。JavaならSupplier&lt;T&gt;やラムダ、Pythonなら関数を渡すだけで軽量に代替できる。"},
+"abstract-factory":{difficulty:2, importance:2,
+  analogy:"家具の「シリーズ」。同じシリーズから机も椅子も選べば、デザインが必ず揃う。",
+  related:"<a href='#factory-method'>Factory Method</a>の集合として実装されることが多い。<a href='#builder'>Builder</a>は「作る手順」に、Abstract Factoryは「一式の整合性」に注目する。",
+  modern:"DIコンテナの設定切替（プロファイル、環境別バインディング）が同じ役割を果たすことが多い。テーマ切替のあるUIフレームワークでは今も現役。"},
+builder:{difficulty:1, importance:3,
+  analogy:"サンドイッチ店の注文。パン→具→ソースと段階的に選んでいき、最後に完成品を受け取る。",
+  related:"Factory系が「どれを作るか」なのに対し、Builderは「どう組み立てるか」。<a href='#composite'>Composite</a>のような複雑な構造の構築にもよく使われる。",
+  modern:"JavaではLombokの@Builderやrecord、Pythonではdataclassのキーワード引数、Kotlinでは名前付き引数が同じ問題を解決する。ライブラリAPIのメソッドチェーンとして健在。"},
+prototype:{difficulty:1, importance:1,
+  analogy:"書類のコピー機。原本を一から作り直すのではなく、複製して手を加える。",
+  related:"登録済みのひな形から複製する構成は<a href='#abstract-factory'>Abstract Factory</a>の代替になる。スナップショット作成で<a href='#memento'>Memento</a>と組み合わせることも。",
+  modern:"JavaScriptのstructuredClone、Pythonのcopy.deepcopyなど言語機能でほぼ完結する。ゲーム開発ではエンティティの複製として今も使われる。"},
+adapter:{difficulty:1, importance:3,
+  analogy:"通訳者。話す言葉が違う2人の間に立って、意味を変えずに言い換える。",
+  related:"<a href='#decorator'>Decorator</a>は同じI/Fのまま機能追加、Adapterは別I/Fへ変換、<a href='#proxy'>Proxy</a>は同じI/Fでアクセス制御、<a href='#facade'>Facade</a>は複数をまとめて新しい窓口を作る。",
+  modern:"外部サービスやライブラリの乗り換えに備える「腐敗防止層（Anti-Corruption Layer）」としてDDDでも重視される、実務頻度の高いパターン。"},
+bridge:{difficulty:3, importance:1,
+  analogy:"リモコン（操作の階層）とテレビ（実装の階層）。リモコンの種類とテレビの機種は独立に増やせる。",
+  related:"<a href='#adapter'>Adapter</a>は「作った後」の互換合わせ、Bridgeは「作る前」の設計分離。<a href='#strategy'>Strategy</a>と構造は似るが、目的が「アルゴリズム交換」でなく「階層全体の分離」。",
+  modern:"「実装をインターフェースの背後に隠して注入する」というDIの発想そのもの。JDBCのドライバアーキテクチャが代表例。"},
+composite:{difficulty:2, importance:2,
+  analogy:"会社の組織図。「部」に指示すれば配下の課や個人まで伝わるし、個人に直接指示もできる。",
+  related:"走査には<a href='#iterator'>Iterator</a>、木への操作追加には<a href='#visitor'>Visitor</a>と相性が良い。<a href='#decorator'>Decorator</a>は子が1つだけのCompositeと見ることもできる。",
+  modern:"DOMツリー、ReactのコンポーネントツリーなどUIの世界はCompositeだらけ。ファイルシステムAPIも典型例。"},
+decorator:{difficulty:2, importance:3,
+  analogy:"コーヒーのトッピング。ベースは同じまま、ミルクやシロップを後から何段でも重ねられる。",
+  related:"<a href='#adapter'>Adapter</a>（I/F変換）、<a href='#proxy'>Proxy</a>(アクセス制御)と「包む三兄弟」。<a href='#strategy'>Strategy</a>は中身の交換、Decoratorは外側への追加。",
+  modern:"Pythonの@デコレータ構文、Webフレームワークのミドルウェア、Java I/Oストリームなど至る所にある。関数合成でも同じ効果が得られる。"},
+facade:{difficulty:1, importance:3,
+  analogy:"ホテルのコンシェルジュ。レストラン予約もタクシー手配も、1人に頼めば全部済む。",
+  related:"<a href='#adapter'>Adapter</a>は形を「変える」、Facadeは「簡単にする」。<a href='#mediator'>Mediator</a>は部品間の双方向調停で、Facadeは外部への一方向の窓口。",
+  modern:"マイクロサービスのAPI Gateway、アプリ内のService層など、名前を意識せずに使われている最頻出パターンの一つ。"},
+flyweight:{difficulty:3, importance:1,
+  analogy:"図書館の本。全員が同じ本を買わずに、1冊を共有して借りる。",
+  related:"<a href='#singleton'>Singleton</a>が「全体で1つ」なのに対し、Flyweightは「種類ごとに1つ」を多数共有する。<a href='#composite'>Composite</a>の葉ノード共有にも使われる。",
+  modern:"文字列インターン、ゲームエンジンのGPUインスタンシングなどで現役。メモリが潤沢な現代では出番は限られるが、大規模描画では今も必須。"},
+proxy:{difficulty:2, importance:2,
+  analogy:"芸能人のマネージャー。本人に会う前に、窓口として日程や可否をさばいてくれる。",
+  related:"<a href='#decorator'>Decorator</a>は「機能追加」が目的、Proxyは「アクセス制御」が目的（構造はほぼ同じ）。<a href='#adapter'>Adapter</a>は別I/Fへの変換。",
+  modern:"ORMの遅延ロード、RPCのスタブ、JavaScriptのProxyオブジェクト、AOPによるログ・トランザクション制御など、フレームワークの内部で多用される。"},
+chain:{difficulty:2, importance:2,
+  analogy:"社内の稟議書。金額に応じて課長→部長→社長へと承認が順に上がっていく。",
+  related:"流すリクエストを<a href='#command'>Command</a>としてオブジェクト化する構成が多い。<a href='#decorator'>Decorator</a>と似た「連なり」だが、Chainは途中で処理を打ち切れる。",
+  modern:"Express/KoaやASGIのミドルウェアチェーン、サーブレットフィルタ、GUIのイベントバブリングとして日常的に使われている。"},
+command:{difficulty:2, importance:3,
+  analogy:"レストランの注文伝票。注文（操作）が紙（オブジェクト）になるから、並べ替えも取り消しもできる。",
+  related:"Undoの状態保存では<a href='#memento'>Memento</a>と協力する。<a href='#strategy'>Strategy</a>は「どうやるか」、Commandは「何をするか（要求そのもの）」をオブジェクト化する。",
+  modern:"Reduxのアクション、ジョブキュー（Celery等）、CQRSのコマンドなど発想は健在。単純な場合はクロージャ（関数＋束縛された値）で軽量に代替される。"},
+interpreter:{difficulty:3, importance:1,
+  analogy:"音楽の楽譜。記号の文法さえ決めておけば、誰でも何度でも「演奏＝解釈」できる。",
+  related:"構文木の構造は<a href='#composite'>Composite</a>そのもの。木の走査・処理には<a href='#visitor'>Visitor</a>が併用される。",
+  modern:"実務ではANTLRなどのパーサジェネレータやパーサコンビネータを使うのが普通。GoFの中でも使用頻度は最も低い部類だが、DSL設計の考え方として価値がある。"},
+iterator:{difficulty:1, importance:2,
+  analogy:"テレビリモコンの「次へ」ボタン。内部の仕組みを知らなくても、順番に切り替えられる。",
+  related:"<a href='#composite'>Composite</a>の木構造の走査に多用される。コレクションがイテレータを生成する部分は<a href='#factory-method'>Factory Method</a>。",
+  modern:"for-of、ジェネレータ、Java Streamsとしてほぼ全言語に組み込み済み。自作するのは独自データ構造（木・グラフ）を巡回させたいときだけ。"},
+mediator:{difficulty:2, importance:2,
+  analogy:"空港の管制塔。パイロット同士は直接交信せず、管制塔とだけやり取りする。",
+  related:"通知の仕組みに<a href='#observer'>Observer</a>を使って実装されることが多い。<a href='#facade'>Facade</a>は外→内の一方向、Mediatorは部品間の双方向調停。",
+  modern:"イベントバス、Reduxのストア、チャットサーバーが同じ発想。MVCのControllerやPresenterも「調停役」という意味で近い役割を担う。"},
+memento:{difficulty:2, importance:1,
+  analogy:"ゲームのセーブデータ。中身の形式を知らなくても、渡せば続きから再開できる。",
+  related:"<a href='#command'>Command</a>のUndo実装とセットで使われる。スナップショット作成に<a href='#prototype'>Prototype</a>の複製を使うこともある。",
+  modern:"イベントソーシング、Reduxのタイムトラベルデバッグ、エディタのUndoスタックなど、「状態の巻き戻し」が必要な場面の基礎になっている。"},
+observer:{difficulty:2, importance:3,
+  analogy:"動画チャンネルの登録。登録しておけば、新着が出るたび自動で通知が届く。",
+  related:"<a href='#mediator'>Mediator</a>の内部実装によく使われる。仲介者（ブローカー）を挟んで完全に疎結合化したものがPub/Subメッセージング。",
+  modern:"RxJS/RxJava、Reactの状態更新、イベントエミッタ、Kafkaなどのメッセージング：イベント駆動が主流の現代ソフトウェアの中核にある、最重要パターンの一つ。"},
+state:{difficulty:2, importance:2,
+  analogy:"スマホのマナーモード。同じ着信でも、現在のモード（状態）によって鳴る・震える・無音と挙動が変わる。",
+  related:"<a href='#strategy'>Strategy</a>と構造はほぼ同じだが、Stateは状態自身が遷移を駆動し、利用側は切替を意識しない点が違う。",
+  modern:"XStateなどのステートマシンライブラリ、Rustのenum+match、ワークフローエンジンなど。「状態遷移を明示的に設計する」考え方自体が重要。"},
+strategy:{difficulty:1, importance:3,
+  analogy:"地図アプリの経路検索。「徒歩・車・電車」を切り替えても、目的（経路を出す）は同じ。",
+  related:"<a href='#state'>State</a>との違いは「誰が切り替えるか」。<a href='#template-method'>Template Method</a>は継承で部分差替、Strategyは委譲で全体差替。<a href='#command'>Command</a>は要求、Strategyは方式。",
+  modern:"ラムダ・高階関数で最も簡潔に書けるパターン。JavaのComparator、ソートのkey関数など、名前を意識せず毎日使われている。"},
+"template-method":{difficulty:1, importance:2,
+  analogy:"履歴書のテンプレート。枠組みは共通で、中身だけ各自が書き込む。",
+  related:"<a href='#factory-method'>Factory Method</a>は生成に特化した特殊形。<a href='#strategy'>Strategy</a>は委譲版で、「継承より委譲」の観点から現代はそちらが好まれる場面も多い。",
+  modern:"テストのsetUp/tearDown、フレームワークのフックメソッドとして遍在。ただし柔軟性が必要ならコールバック注入（Strategy）が推奨されることが多い。"},
+visitor:{difficulty:3, importance:1,
+  analogy:"家々を巡回する検針員。ガス・水道・電気それぞれの検針員（操作）が、同じ家々（データ構造）を訪ねて回る。",
+  related:"<a href='#composite'>Composite</a>の木構造とセットで使われることが多い。<a href='#iterator'>Iterator</a>は「巡回」、Visitorは「型ごとの処理の振り分け」を担当する。",
+  modern:"コンパイラやリンタ（ESLintのASTビジター等）で現役。関数型言語のパターンマッチングは同じ問題をより簡潔に解く。"}
+};
+</script>
+<script>
+/* ============== 簡易クラス図データ ==============
+   n: ノード {id, l:表示名, s:ステレオタイプ, x:列, y:行}
+   e: 辺 {f:from, t:to, k:種別(ext=継承/impl=実装/assoc=参照/dep=生成・依存), l:ラベル} */
+const DIAGRAMS = {
+singleton:{n:[{id:"c",l:"Client",x:0,y:0},{id:"s",l:"Config",s:"singleton",x:1,y:0}],
+  e:[{f:"c",t:"s",k:"assoc",l:"getInstance()"}],
+  note:"コンストラクタはprivate。何度呼んでも同一の実体が返る"},
+"factory-method":{n:[{id:"d",l:"Dialog",s:"abstract",x:0,y:0},{id:"wd",l:"WebDialog",x:0,y:1},
+   {id:"b",l:"Button",s:"interface",x:2,y:0},{id:"hb",l:"HtmlButton",x:2,y:1}],
+  e:[{f:"wd",t:"d",k:"ext"},{f:"hb",t:"b",k:"impl"},{f:"d",t:"b",k:"dep",l:"createButton()"},{f:"wd",t:"hb",k:"dep",l:"生成"}]},
+"abstract-factory":{n:[{id:"f",l:"GUIFactory",s:"interface",x:0,y:0},{id:"df",l:"DarkFactory",x:0,y:1},
+   {id:"lf",l:"LightFactory",x:1,y:1},{id:"p",l:"Button / Checkbox",s:"製品ファミリー",x:2,y:0}],
+  e:[{f:"df",t:"f",k:"impl"},{f:"lf",t:"f",k:"impl"},{f:"f",t:"p",k:"dep",l:"一式を生成"}]},
+builder:{n:[{id:"c",l:"Client",x:0,y:0},{id:"b",l:"Burger.Builder",x:1,y:0},{id:"p",l:"Burger",x:2,y:0}],
+  e:[{f:"c",t:"b",k:"assoc",l:"チェーンで設定"},{f:"b",t:"p",k:"dep",l:"build()"}]},
+prototype:{n:[{id:"c",l:"Client",x:0,y:0},{id:"s",l:"Shape",s:"Cloneable",x:1,y:0},{id:"ci",l:"Circle",x:1,y:1}],
+  e:[{f:"c",t:"s",k:"assoc",l:"clone()"},{f:"ci",t:"s",k:"ext"}],
+  note:"clone() が自分自身の複製（状態ごと）を返す"},
+adapter:{n:[{id:"c",l:"Client",x:0,y:0},{id:"i",l:"MediaPlayer",s:"interface",x:1,y:0},
+   {id:"a",l:"AudioAdapter",x:1,y:1},{id:"g",l:"LegacyAudio",x:2,y:1}],
+  e:[{f:"c",t:"i",k:"assoc",l:"play()"},{f:"a",t:"i",k:"impl"},{f:"a",t:"g",k:"assoc",l:"playMp3()へ変換"}]},
+bridge:{n:[{id:"s",l:"Shape",s:"抽象側",x:0,y:0},{id:"r",l:"Renderer",s:"interface",x:2,y:0},
+   {id:"ci",l:"Circle",x:0,y:1},{id:"v",l:"VectorRenderer",x:1,y:1},{id:"ra",l:"RasterRenderer",x:2,y:1}],
+  e:[{f:"s",t:"r",k:"assoc",l:"橋（委譲）"},{f:"ci",t:"s",k:"ext"},{f:"v",t:"r",k:"impl"},{f:"ra",t:"r",k:"impl"}]},
+composite:{n:[{id:"i",l:"FileSystemNode",s:"interface",x:1,y:0},{id:"f",l:"File（葉）",x:0,y:1},{id:"d",l:"Folder（枝）",x:2,y:1}],
+  e:[{f:"f",t:"i",k:"impl"},{f:"d",t:"i",k:"impl"}],
+  note:"Folder は子として FileSystemNode を複数保持する（再帰構造）"},
+decorator:{n:[{id:"i",l:"Coffee",s:"interface",x:1,y:0},{id:"e",l:"Espresso（基本）",x:0,y:1},{id:"d",l:"Milk（装飾）",x:2,y:1}],
+  e:[{f:"e",t:"i",k:"impl"},{f:"d",t:"i",k:"impl"}],
+  note:"Milk は内部に Coffee を保持して包む：何重にも重ねられる"},
+facade:{n:[{id:"c",l:"Client",x:0,y:0},{id:"f",l:"OrderFacade",x:1,y:0},
+   {id:"a",l:"Inventory",x:0,y:1},{id:"b",l:"Payment",x:1,y:1},{id:"s",l:"Shipping",x:2,y:1}],
+  e:[{f:"c",t:"f",k:"assoc",l:"placeOrder()"},{f:"f",t:"a",k:"assoc"},{f:"f",t:"b",k:"assoc"},{f:"f",t:"s",k:"assoc"}]},
+flyweight:{n:[{id:"c",l:"Client",x:0,y:0},{id:"f",l:"GlyphFactory",x:1,y:0},{id:"g",l:"Glyph（共有）",x:2,y:0}],
+  e:[{f:"c",t:"f",k:"assoc",l:"get()"},{f:"f",t:"g",k:"assoc",l:"プールで共有"}],
+  note:"同じ内容の要求にはプール内の同一インスタンスを返す"},
+proxy:{n:[{id:"c",l:"Client",x:0,y:0},{id:"i",l:"Image",s:"interface",x:1,y:0},
+   {id:"p",l:"ImageProxy",x:0,y:1},{id:"r",l:"RealImage",x:2,y:1}],
+  e:[{f:"c",t:"i",k:"assoc"},{f:"p",t:"i",k:"impl"},{f:"r",t:"i",k:"impl"},{f:"p",t:"r",k:"dep",l:"必要時に生成"}]},
+chain:{n:[{id:"c",l:"Client",x:0,y:0},{id:"h",l:"Approver",s:"abstract",x:1,y:0},
+   {id:"m",l:"Manager",x:0,y:1},{id:"d",l:"Director",x:1,y:1}],
+  e:[{f:"c",t:"h",k:"assoc",l:"handle()"},{f:"h",t:"h",k:"assoc",l:"next"},{f:"m",t:"h",k:"ext"},{f:"d",t:"h",k:"ext"}]},
+command:{n:[{id:"b",l:"Button（起動側）",x:0,y:0},{id:"i",l:"Command",s:"interface",x:1,y:0},
+   {id:"lc",l:"LightOnCommand",x:1,y:1},{id:"r",l:"Light（受け手）",x:2,y:1}],
+  e:[{f:"b",t:"i",k:"assoc",l:"execute()"},{f:"lc",t:"i",k:"impl"},{f:"lc",t:"r",k:"assoc",l:"操作を委譲"}]},
+interpreter:{n:[{id:"i",l:"Expr",s:"interface",x:1,y:0},{id:"n",l:"Num（終端）",x:0,y:1},{id:"a",l:"Add（非終端）",x:2,y:1}],
+  e:[{f:"n",t:"i",k:"impl"},{f:"a",t:"i",k:"impl"}],
+  note:"Add は left / right として Expr を保持：構文木＝再帰構造"},
+iterator:{n:[{id:"c",l:"Client",x:0,y:0},{id:"col",l:"NumberCollection",s:"Iterable",x:1,y:0},
+   {id:"it",l:"Iterator",s:"interface",x:1,y:1}],
+  e:[{f:"c",t:"col",k:"assoc",l:"for文で走査"},{f:"col",t:"it",k:"dep",l:"iterator()で生成"},{f:"c",t:"it",k:"assoc",l:"next()"}]},
+mediator:{n:[{id:"a",l:"User A",x:0,y:0},{id:"b",l:"User B",x:2,y:0},{id:"m",l:"ChatRoom（仲介役）",x:1,y:1}],
+  e:[{f:"a",t:"m",k:"assoc",l:"send()"},{f:"m",t:"b",k:"assoc",l:"receive()"}],
+  note:"利用者同士は互いを直接知らない：仲介役だけを知る"},
+memento:{n:[{id:"o",l:"Editor（本人）",x:0,y:0},{id:"m",l:"Memento",x:1,y:0},{id:"ct",l:"Caretaker（履歴管理）",x:2,y:0}],
+  e:[{f:"o",t:"m",k:"dep",l:"save()で生成"},{f:"ct",t:"m",k:"assoc",l:"保持"}],
+  note:"restore(m) で保存時点の状態に巻き戻す"},
+observer:{n:[{id:"s",l:"Stock（通知元）",x:0,y:0},{id:"i",l:"Observer",s:"interface",x:2,y:0},{id:"d",l:"Display",x:2,y:1}],
+  e:[{f:"s",t:"i",k:"assoc",l:"observers * へ通知"},{f:"d",t:"i",k:"impl"}]},
+state:{n:[{id:"o",l:"Order",x:0,y:0},{id:"i",l:"State",s:"interface",x:1,y:0},
+   {id:"p",l:"Pending",x:0,y:1},{id:"sh",l:"Shipped",x:1,y:1},{id:"de",l:"Delivered",x:2,y:1}],
+  e:[{f:"o",t:"i",k:"assoc",l:"現在の状態に委譲"},{f:"p",t:"i",k:"impl"},{f:"sh",t:"i",k:"impl"},{f:"de",t:"i",k:"impl"}]},
+strategy:{n:[{id:"c",l:"Checkout",x:0,y:0},{id:"i",l:"PayStrategy",s:"interface",x:1,y:0},
+   {id:"cc",l:"CreditCard",x:0,y:1},{id:"pp",l:"PayPal",x:2,y:1}],
+  e:[{f:"c",t:"i",k:"assoc",l:"戦略に委譲"},{f:"cc",t:"i",k:"impl"},{f:"pp",t:"i",k:"impl"}]},
+"template-method":{n:[{id:"a",l:"DataProcessor",s:"abstract",x:0,y:0},{id:"c",l:"CsvProcessor",x:0,y:1}],
+  e:[{f:"c",t:"a",k:"ext",l:"transform()だけ実装"}],
+  note:"process() が手順全体を固定し、可変ステップだけ子に任せる"},
+visitor:{n:[{id:"s",l:"Shape",s:"interface",x:0,y:0},{id:"ci",l:"Circle / Square",x:0,y:1},
+   {id:"v",l:"Visitor",s:"interface",x:2,y:0},{id:"av",l:"AreaVisitor",x:2,y:1}],
+  e:[{f:"ci",t:"s",k:"impl"},{f:"av",t:"v",k:"impl"},{f:"s",t:"v",k:"dep",l:"accept(v) → v.visit(this)"}]}
+};
+
+/* ============== 理解度チェッククイズ ============== */
+const QUIZ = [
+{q:"ECサイトで、支払い方法（クレカ／コンビニ／ポイント）ごとに手数料の計算方法を切り替えたい。",
+ opts:["State","Strategy","Command","Template Method"], a:1,
+ why:"「同じ目的に複数のやり方」を実行時に差し替えるのは <a href='#strategy'>Strategy</a>。状態遷移が主役なら State を選ぶ。"},
+{q:"株価が更新されたら、チャート・アラート・ログの3か所へ自動で反映させたい。",
+ opts:["Mediator","Facade","Observer","Proxy"], a:2,
+ why:"1つの変化を登録済みの複数の購読者へ自動通知するのは <a href='#observer'>Observer</a>。"},
+{q:"外部ライブラリを乗り換えたいが、メソッド名や引数の形が自社コードの期待と合わない。",
+ opts:["Adapter","Decorator","Bridge","Facade"], a:0,
+ why:"インターフェースの変換・互換合わせが目的なら <a href='#adapter'>Adapter</a>。"},
+{q:"描画エディタにUndo（元に戻す）機能を付けたい。操作を記録して後から取り消したい。",
+ opts:["Iterator","Memento","Command","Prototype"], a:2,
+ why:"操作そのものをオブジェクト化して履歴に積むのが <a href='#command'>Command</a>。状態のスナップショット保存で協力するのが Memento。"},
+{q:"「注文確定」ボタン1つで、在庫確保・決済・配送手配という複数のサブシステムをまとめて呼びたい。",
+ opts:["Facade","Mediator","Chain of Responsibility","Composite"], a:0,
+ why:"複雑な内部連携に対するシンプルな窓口を作るのは <a href='#facade'>Facade</a>。"},
+{q:"アプリ全体で共有する設定オブジェクトを、確実に1つだけ存在させたい。",
+ opts:["Flyweight","Prototype","Builder","Singleton"], a:3,
+ why:"唯一のインスタンスを保証するのは <a href='#singleton'>Singleton</a>。ただし現代の実務ではDIコンテナで管理するのが主流。"},
+{q:"基本のコーヒーに、ミルク・シロップ・ホイップを任意の組み合わせで重ねて価格を計算したい。",
+ opts:["Decorator","Composite","Builder","Abstract Factory"], a:0,
+ why:"同じインターフェースのまま機能（トッピング）を動的に重ねるのは <a href='#decorator'>Decorator</a>。"},
+{q:"フォルダの中にファイルとフォルダが入れ子になっている。合計サイズを同じ操作で計算したい。",
+ opts:["Iterator","Composite","Visitor","Flyweight"], a:1,
+ why:"「葉」と「枝」を同じインターフェースで再帰的に扱う木構造は <a href='#composite'>Composite</a>。"},
+{q:"注文の状態（受付→発送→配達完了）によって同じ操作の挙動が変わる。if分岐が肥大化してきた。",
+ opts:["Strategy","Chain of Responsibility","State","Template Method"], a:2,
+ why:"状態ごとに振る舞いをクラス化し、遷移を状態自身に任せるのは <a href='#state'>State</a>。"},
+{q:"データ処理の「読込→加工→出力」という流れは共通で、加工の部分だけ形式ごとに変えたい。",
+ opts:["Template Method","Strategy","Factory Method","Bridge"], a:0,
+ why:"手順の骨格を親クラスで固定し、一部だけ子に任せるのは <a href='#template-method'>Template Method</a>。委譲でやるなら Strategy も候補。"},
+{q:"一覧画面ではサムネイルだけ見せ、クリックされるまで重い原寸画像を読み込みたくない。",
+ opts:["Flyweight","Proxy","Prototype","Facade"], a:1,
+ why:"本体と同じインターフェースで遅延ロードやアクセス制御を挟むのは <a href='#proxy'>Proxy</a>。"},
+{q:"経費申請の承認を、金額に応じて課長→部長→社長の順に自動でエスカレーションさせたい。",
+ opts:["Chain of Responsibility","Mediator","Command","Observer"], a:0,
+ why:"処理者を鎖でつなぎ、順に「自分で処理するか次へ回すか」を判断させるのは <a href='#chain'>Chain of Responsibility</a>。"}
+];
+</script>
+<script>
+/* ============== レンダリング ============== */
+const CAT_META = {
+  creational:{label:"生成に関するパターン", en:"Creational Patterns", color:"var(--creational)",
+    desc:"オブジェクトの生成方法を抽象化し、生成処理を柔軟かつ疎結合にするパターン群です。"},
+  structural:{label:"構造に関するパターン", en:"Structural Patterns", color:"var(--structural)",
+    desc:"クラスやオブジェクトを組み合わせて、より大きく柔軟な構造を作るためのパターン群です。"},
+  behavioral:{label:"振る舞いに関するパターン", en:"Behavioral Patterns", color:"var(--behavioral)",
+    desc:"オブジェクト間の責務分担や通信のしかたを整理し、アルゴリズムや相互作用を扱うパターン群です。"}
+};
+const CAT_ORDER = ["creational","structural","behavioral"];
+
+function esc(s){return s.replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;");}
+
+function highlight(code, lang){
+  // 生のコードを「コメント / 文字列 / それ以外」に分割してから処理する。
+  // 先に挿入したタグを後続の正規表現が再びマッチしてしまう問題を避けるため、
+  // 各セグメントを個別にエスケープし、コード部分にだけキーワード色付けを行う。
+  const kws = (lang==='python')
+    ? ['def','class','return','if','elif','else','for','while','import','from','self','None','True','False','pass','with','as','in','not','and','or','lambda','yield','raise','try','except','abstractmethod','staticmethod']
+    : ['public','private','protected','class','interface','abstract','extends','implements','return','new','void','static','final','if','else','for','while','this','null','true','false','enum','throws','throw','try','catch','import','package','super'];
+  const kwRe = new RegExp('\\b('+kws.join('|')+')\\b','g');
+  const kwHi = s => s.replace(kwRe, '<span class="kw">$1</span>');
+
+  const tokenRe = (lang==='python')
+    ? /(#[^\n]*)|("[^"\n]*"|'[^'\n]*')/g
+    : /(\/\/[^\n]*)|("[^"\n]*"|'[^'\n]*')/g;
+
+  let out = '', last = 0, m;
+  while((m = tokenRe.exec(code)) !== null){
+    out += kwHi(esc(code.slice(last, m.index)));      // 直前のコード部分
+    if(m[1]) out += '<span class="cm">' + esc(m[1]) + '</span>';   // コメント
+    else     out += '<span class="st">' + esc(m[2]) + '</span>';   // 文字列
+    last = m.index + m[0].length;
+  }
+  out += kwHi(esc(code.slice(last)));                 // 残りのコード部分
+  return out;
+}
+
+/* ============== クラス図レンダラ（簡易UML） ============== */
+// テキスト幅の推定（全角=fs、半角=fs*0.58）
+function estTextW(s, fs){
+  let w = 0;
+  for(const ch of String(s)) w += /[←-⇿　-鿿＀-￯]/.test(ch) ? fs : fs*0.58;
+  return w;
+}
+function renderDiagram(id){
+  const d = DIAGRAMS[id]; if(!d) return '';
+  // ボックス幅は図内の最長ラベルに合わせて自動調整（文字はみ出し防止）
+  let BW = 140;
+  d.n.forEach(nd=>{
+    BW = Math.max(BW, estTextW(nd.l,12)+28, nd.s ? estTextW(nd.s,10)+46 : 0);
+  });
+  const BH=48, CW=BW+62, RH=102, PX=14, PT=38, PB=16;
+  const cols = Math.max(...d.n.map(n=>n.x))+1, rows = Math.max(...d.n.map(n=>n.y))+1;
+  const P = {};
+  d.n.forEach(n=>{ P[n.id] = {cx:PX+n.x*CW+BW/2, cy:PT+n.y*RH+BH/2}; });
+  // 幅：右側にはみ出すラベル（垂直辺・自己参照）のぶんを事前に確保
+  let W = PX*2 + (cols-1)*CW + BW;
+  (d.e||[]).forEach(e=>{
+    if(!e.l) return;
+    const A=P[e.f], B=P[e.t];
+    if(e.f===e.t) W = Math.max(W, A.cx+BW/2+60+estTextW(e.l,10.5)+14);
+    else if(A.cx===B.cx) W = Math.max(W, A.cx+12+estTextW(e.l,10.5)+14);
+  });
+  const H = PT + PB + (rows-1)*RH + BH + (d.note ? 26 : 0);
+  const clip = (a,b)=>{
+    const dx=b.cx-a.cx, dy=b.cy-a.cy;
+    const t = Math.min(dx ? (BW/2+6)/Math.abs(dx) : 1e9, dy ? (BH/2+6)/Math.abs(dy) : 1e9);
+    return {x:a.cx+dx*t, y:a.cy+dy*t};
+  };
+  // ラベル：下敷き（背景）付きで描き、線や図形と重なっても読めるようにする
+  const lab = (x, y, text, anchor)=>{
+    const w = estTextW(text,10.5)+10;
+    const rx = anchor==='start' ? x-5 : x-w/2;
+    return `<rect x="${rx}" y="${y-11}" width="${w}" height="15" rx="3" class="dg-lbg"/>`
+      + `<text x="${x}" y="${y}" class="dg-el"${anchor==='start'?' text-anchor="start"':''}>${text}</text>`;
+  };
+  let edges='', labels='';
+  (d.e||[]).forEach(e=>{
+    const A=P[e.f], B=P[e.t];
+    if(e.f===e.t){ // 自己参照（next等）：右側にループ
+      const x=A.cx+BW/2, y=A.cy;
+      edges += `<path d="M ${x} ${y-10} C ${x+52} ${y-26}, ${x+52} ${y+26}, ${x} ${y+10}" class="dg-line" marker-end="url(#${id}-arr)"/>`;
+      if(e.l) labels += lab(x+58, y+4, e.l, 'start');
+      return;
+    }
+    const p1=clip(A,B), p2=clip(B,A);
+    const dash = (e.k==='impl'||e.k==='dep') ? ' dg-dash' : '';
+    const mk = (e.k==='impl'||e.k==='ext') ? 'tri' : 'arr';
+    edges += `<line x1="${p1.x}" y1="${p1.y}" x2="${p2.x}" y2="${p2.y}" class="dg-line${dash}" marker-end="url(#${id}-${mk})"/>`;
+    if(!e.l) return;
+    const dx=B.cx-A.cx, dy=B.cy-A.cy;
+    if(dy===0){            // 水平の辺：ボックス上端より上に配置（食い込み防止）
+      labels += lab((A.cx+B.cx)/2, A.cy-BH/2-9, e.l);
+    }else if(dx===0){      // 垂直の辺：線の右横に配置
+      labels += lab(A.cx+12, (p1.y+p2.y)/2+4, e.l, 'start');
+    }else{                 // 斜めの辺：中点から線と直角方向にずらす
+      const len=Math.hypot(dx,dy), ox=-dy/len*14, oy=dx/len*14;
+      labels += lab((p1.x+p2.x)/2+ox, (p1.y+p2.y)/2+oy+4, e.l);
+    }
+  });
+  const nodes = d.n.map(n=>{
+    const {cx,cy}=P[n.id];
+    const st = n.s ? `<text x="${cx}" y="${cy-5}" class="dg-st">«${n.s}»</text>` : '';
+    return `<rect x="${cx-BW/2}" y="${cy-BH/2}" width="${BW}" height="${BH}" rx="8" class="dg-box ${n.s?'dg-if':''}"/>`
+      + st + `<text x="${cx}" y="${n.s?cy+12:cy+4}" class="dg-lbl">${n.l}</text>`;
+  }).join('');
+  const note = d.note ? `<text x="${W/2}" y="${H-8}" class="dg-note">${d.note}</text>` : '';
+  return `<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="${id}の構造図" style="max-width:${W+40}px">
+    <defs>
+      <marker id="${id}-tri" markerWidth="13" markerHeight="11" refX="11" refY="5" orient="auto"><path d="M1,1 L11,5 L1,9 Z" fill="var(--panel)" stroke="var(--muted)"/></marker>
+      <marker id="${id}-arr" markerWidth="11" markerHeight="10" refX="9" refY="4.5" orient="auto"><path d="M1,1 L9,4.5 L1,8" fill="none" stroke="var(--muted)"/></marker>
+    </defs>${edges}${nodes}${labels}${note}</svg>`;
+}
+
+const IMP_LABEL = {3:["必修","imp3"], 2:["頻出","imp2"], 1:["発展","imp1"]};
+</script>
+<script>
+/* ============== レンダリング（サイト版・再設計レイアウト） ============== */
+/* in-memory only. no persistence except the site-wide 'site-lang'. */
+let learned = new Set();
+let currentCat = 'all';
+
+function togglePattern(id){
+  const card = document.getElementById(id);
+  if(!card) return;
+  const open = card.classList.toggle('open');
+  const head = card.querySelector('.pcard-head');
+  if(head) head.setAttribute('aria-expanded', open ? 'true' : 'false');
+}
+function toggleLearned(id, cb){
+  if(cb.checked) learned.add(id); else learned.delete(id);
+  const card = document.getElementById(id);
+  if(card) card.classList.toggle('done-card', cb.checked);
+  updateLearnUI();
+}
+function updateLearnUI(){
+  const el = document.getElementById('learnNote');
+  if(el) el.textContent = '習得 ' + learned.size + ' / ' + PATTERNS.length;
+}
+
+function switchCode(id, lang, btn){
+  document.getElementById(id+'-java').classList.toggle('hidden', lang!=='java');
+  document.getElementById(id+'-python').classList.toggle('hidden', lang!=='python');
+  btn.parentElement.querySelectorAll('button.tab').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+}
+function switchRef(id, lang, btn){
+  document.getElementById(id+'-ref-java').style.display = (lang==='java') ? 'block' : 'none';
+  document.getElementById(id+'-ref-python').style.display = (lang==='python') ? 'block' : 'none';
+  btn.parentElement.querySelectorAll('button.tab').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+}
+
+function renderRefactor(id){
+  const r = (typeof REFACTOR !== 'undefined') ? REFACTOR[id] : null;
+  if(!r) return '';
+  const blk = (before, after, lang) => `
+      <div class="ref-pane" id="${id}-ref-${lang}" style="display:${lang==='java'?'block':'none'}">
+        <div class="ref-label bad">適用前: パターン未使用</div>
+        <pre><code>${highlight(before, lang)}</code></pre>
+        <div class="ref-arrow" aria-hidden="true">&darr; リファクタリング</div>
+        <div class="ref-label good">適用後: パターン適用</div>
+        <pre><code>${highlight(after, lang)}</code></pre>
+      </div>`;
+  return `
+    <div class="code-wrap refactor">
+      <div class="code-tabs">
+        <span class="lbl">リファクタリング例（適用前 → 適用後）</span>
+        <button class="tab active" onclick="switchRef('${id}','java',this)">Java</button>
+        <button class="tab" onclick="switchRef('${id}','python',this)">Python</button>
+      </div>
+      ${blk(r.beforeJava, r.afterJava, 'java')}
+      ${blk(r.beforePython, r.afterPython, 'python')}
+    </div>`;
+}
+
+function renderPattern(p, idx){
+  const ex = EXTRA[p.id] || {};
+  const prosLi = p.pros.map(v=>`<li>${v}</li>`).join('');
+  const consLi = p.cons.map(v=>`<li>${v}</li>`).join('');
+  const exLi = p.examples.map(v=>`<li>${v}</li>`).join('');
+  const tagsH = (p.tags||[]).map(t=>`<span class="tag">${t}</span>`).join('');
+  const javaH = highlight(p.java,'java');
+  const pyH = highlight(p.python,'python');
+  const refactorH = renderRefactor(p.id);
+  const imp = IMP_LABEL[ex.importance] || null;
+  const diff = ex.difficulty ? '★'.repeat(ex.difficulty)+'☆'.repeat(3-ex.difficulty) : '';
+  const badges = (imp?`<span class="badge-imp ${imp[1]}">${imp[0]}</span>`:'')
+    + (diff?`<span class="badge-diff" title="難易度（★が多いほど難しい）">${diff}</span>`:'');
+  const analogyH = ex.analogy ? `<div class="analogy"><span><b>たとえるなら</b> ${ex.analogy}</span></div>` : '';
+  const dgSvg = renderDiagram(p.id);
+  const diagramH = dgSvg ? `
+    <div class="diagram-wrap"><h5>構造（クラス図）</h5>${dgSvg}
+      <div class="dg-legend">実線△＝継承　破線△＝実装　→＝参照・委譲　破線→＝生成・依存</div></div>` : '';
+  const relatedH = (ex.related||ex.modern) ? `
+    <div class="meta-row">
+      <div class="meta"><h5>関連パターンとの違い</h5><p>${ex.related||''}</p></div>
+      <div class="meta"><h5>現代の実務では</h5><p>${ex.modern||''}</p></div>
+    </div>` : '';
+  const searchText = (p.name+' '+p.jp+' '+p.summary+' '+(ex.analogy||'')+' '+(p.tags||[]).join(' ')).toLowerCase();
+  const catColor = CAT_META[p.category].color;
+  return `
+  <article class="pcard" id="${p.id}" data-cat="${p.category}" data-search="${searchText}">
+    <button class="pcard-head" aria-expanded="false" onclick="togglePattern('${p.id}')">
+      <span class="pnum" style="color:${catColor}">${idx}</span>
+      <span class="ptitle">${p.name}<small>${p.jp}</small></span>
+      <span class="pbadges">${badges}</span>
+      <span class="ptags">${tagsH}</span>
+      <span class="pchev" aria-hidden="true">&rsaquo;</span>
+    </button>
+    <p class="summary">${p.summary}</p>
+    <div class="pdetail">
+      ${analogyH}
+      ${diagramH}
+      <div class="grid2">
+        <div class="box pros"><h5>✓ 利点</h5><ul>${prosLi}</ul></div>
+        <div class="box cons"><h5>✕ 欠点</h5><ul>${consLi}</ul></div>
+      </div>
+      <div class="meta-row">
+        <div class="meta"><h5>利用される場面</h5><p>${p.usage}</p></div>
+        <div class="meta"><h5>実際の適用事例</h5><ul>${exLi}</ul></div>
+      </div>
+      ${relatedH}
+      <div class="code-wrap">
+        <div class="code-tabs">
+          <span class="lbl">サンプルコード</span>
+          <button class="tab active" onclick="switchCode('${p.id}','java',this)">Java</button>
+          <button class="tab" onclick="switchCode('${p.id}','python',this)">Python</button>
+        </div>
+        <pre id="${p.id}-java"><code>${javaH}</code></pre>
+        <pre id="${p.id}-python" class="hidden"><code>${pyH}</code></pre>
+      </div>
+      ${refactorH}
+      <label class="learn"><input type="checkbox" onchange="toggleLearned('${p.id}',this)">
+        このパターンを理解した（習得チェック）</label>
+    </div>
+  </article>`;
+}
+
+function build(){
+  document.getElementById('introProse').innerHTML = INTRO_HTML;
+  document.getElementById('closingProse').innerHTML = CLOSING_HTML;
+  const container = document.getElementById('patterns-list');
+  let html='', n=0;
+  CAT_ORDER.forEach(cat=>{
+    const list = PATTERNS.filter(p=>p.category===cat);
+    const meta = CAT_META[cat];
+    html += `<div class="cat-group" data-cat="${cat}">
+      <div class="cat-head" style="--cc:${meta.color}">
+        <span class="cat-dot"></span>
+        <h3>${meta.label}</h3>
+        <span class="cat-badge">${meta.en} · ${list.length}種</span>
+      </div>
+      <p class="cat-desc">${meta.desc}</p>`;
+    list.forEach(p=>{ n++; html += renderPattern(p, n); });
+    html += `</div>`;
+  });
+  container.innerHTML = html;
+  updateLearnUI();
+  buildQuiz();
+}
+
+function filterCat(cat, btn){
+  currentCat = cat;
+  document.querySelectorAll('.pill').forEach(b=>b.classList.remove('active'));
+  if(btn) btn.classList.add('active');
+  applyFilter();
+}
+function applyFilter(){
+  const si = document.getElementById('search');
+  const q = (si && si.value ? si.value : '').trim().toLowerCase();
+  document.querySelectorAll('.cat-group').forEach(g=>{
+    const catOk = (currentCat==='all' || currentCat===g.dataset.cat);
+    let shown = 0;
+    g.querySelectorAll('.pcard').forEach(c=>{
+      const hit = catOk && (!q || c.dataset.search.includes(q));
+      c.classList.toggle('hidden', !hit);
+      if(hit) shown++;
+    });
+    g.classList.toggle('hidden', shown===0);
+  });
+}
+
+/* ============== クイズ（in-memory） ============== */
+let quizState = {answered:0, correct:0};
+function buildQuiz(){
+  quizState = {answered:0, correct:0};
+  const body = document.getElementById('quizBody');
+  if(!body) return;
+  body.innerHTML = QUIZ.map((q,i)=>`
+    <div class="quiz-q" id="qq${i}">
+      <p class="qtext">Q${i+1}. ${q.q}</p>
+      <div class="qopts">${q.opts.map((o,j)=>`<button onclick="answerQuiz(${i},${j},this)">${o}</button>`).join('')}</div>
+      <p class="qwhy" hidden></p>
+    </div>`).join('');
+  updateQuizScore();
+}
+function answerQuiz(i, j, btn){
+  const q = QUIZ[i], box = document.getElementById('qq'+i);
+  if(box.classList.contains('answered')) return;
+  box.classList.add('answered');
+  box.querySelectorAll('.qopts button').forEach((b,k)=>{
+    b.disabled = true;
+    if(k===q.a) b.classList.add('right');
+  });
+  const ok = (j===q.a);
+  if(!ok) btn.classList.add('wrong');
+  quizState.answered++; if(ok) quizState.correct++;
+  const why = box.querySelector('.qwhy');
+  why.hidden = false;
+  why.innerHTML = (ok ? '<b>正解。</b> ' : `<b>不正解。</b>正解は <b>${q.opts[q.a]}</b>。 `) + q.why;
+  updateQuizScore();
+}
+function updateQuizScore(){
+  const el = document.getElementById('quizScore');
+  if(el) el.textContent = quizState.answered
+    ? `（${quizState.answered}問中 ${quizState.correct}問正解）` : `全${QUIZ.length}問。`;
+}
+
+/* ============== 言語切替（サイト共通・localStorage は site-lang のみ） ============== */
+function setLang(l){document.body.classList.remove('lang-ja','lang-en');document.body.classList.add('lang-'+l);document.documentElement.lang=l;
+ try{localStorage.setItem('site-lang',l)}catch(e){}
+ try{var q=new URLSearchParams(location.search);q.set('lang',l);history.replaceState(null,'',location.pathname+'?'+q+location.hash)}catch(e){}}
+function toggleLang(){setLang(document.body.classList.contains('lang-ja')?'en':'ja')}
+(function(){var u=null;try{u=new URLSearchParams(location.search).get('lang')}catch(e){}
+ var s=null;try{s=localStorage.getItem('site-lang')}catch(e){}
+ var l=(u==='en'||u==='ja')?u:((s==='en'||s==='ja')?s:'ja');if(l!=='ja')setLang(l);})();
+
+/* ページ内アンカー（学習ロードマップ・混同表・クイズ解説）でパターンへ飛ぶとき、
+   絞り込みを解除して対象カードを開いてから移動する */
+document.addEventListener('click', function(e){
+  var a = e.target.closest('a[href^="#"]');
+  if(!a) return;
+  var id = a.getAttribute('href').slice(1);
+  var card = document.getElementById(id);
+  if(card && card.classList.contains('pcard')){
+    if(currentCat!=='all'){ filterCat('all', document.querySelector('.pill')); }
+    var si = document.getElementById('search');
+    if(si && si.value){ si.value=''; }
+    applyFilter();
+    card.classList.add('open');
+    var head = card.querySelector('.pcard-head');
+    if(head) head.setAttribute('aria-expanded','true');
+  }
+});
+
+window.addEventListener('DOMContentLoaded', function(){
+  build();
+  var si = document.getElementById('search');
+  if(si) si.addEventListener('input', applyFilter);
+  if('IntersectionObserver' in window){
+    var io = new IntersectionObserver(function(es){ es.forEach(function(e){ if(e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target); } }); },{threshold:0.12, rootMargin:"0px 0px -6% 0px"});
+    document.querySelectorAll('.reveal').forEach(function(el){ io.observe(el); });
+  } else { document.querySelectorAll('.reveal').forEach(function(el){ el.classList.add('in'); }); }
+});
+</script>
+</body>
+</html>

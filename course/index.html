@@ -1,0 +1,566 @@
+<!DOCTYPE html>
+<html lang="ja" class="no-js">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ソフトウェア工学（2026年度）- 木村祐太 / Yuta Kimura</title>
+<meta name="description" content="Course guide for Software Engineering (2026), taught by Yuta Kimura. An introduction to all nine sessions, following chapters 1 to 9 of Ian Sommerville's Software Engineering (10th ed.), plus linked learning materials. Part of Yuta Kimura's research site.">
+<link rel="canonical" href="https://ykimu.github.io/course/index.html">
+<link rel="icon" href="../favicon.svg" type="image/svg+xml">
+<meta property="og:site_name" content="Yuta Kimura / 木村祐太">
+<meta property="og:type" content="article">
+<meta property="og:title" content="ソフトウェア工学（2026年度）- 木村祐太 / Yuta Kimura">
+<meta property="og:description" content="Course guide for Software Engineering (2026): an introduction to all nine sessions, following chapters 1 to 9 of Ian Sommerville's Software Engineering (10th ed.), plus linked learning materials.">
+<meta property="og:url" content="https://ykimu.github.io/course/index.html">
+<meta property="og:image" content="https://ykimu.github.io/assets/og.png">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="color-scheme" content="light">
+<script>document.documentElement.className="js";</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&family=Noto+Sans+JP:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#FBFCFB; --bg-2:#F3F6F4; --bg-3:#EBEFED; --card:#FFFFFF;
+    --ink:#101312; --ink-2:#3C4340; --muted:#6B746F; --faint:#B7C0BB;
+    --line:#E7ECE9; --hair:rgba(16,19,18,.08); --shell:rgba(16,19,18,.035);
+    --accent:#0E6F5C; --accent-2:#0A5748; --accent-soft:rgba(14,111,92,.08);
+    --soft:0 1px 2px rgba(16,19,18,.04), 0 24px 60px -28px rgba(16,19,18,.16);
+    --inhi:inset 0 1px 0 rgba(255,255,255,.85);
+    --ease:cubic-bezier(.32,.72,0,1);
+    --sans:"Plus Jakarta Sans","Noto Sans JP",-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+    --disp:"Space Grotesk","Plus Jakarta Sans","Noto Sans JP",sans-serif;
+    --maxw:1440px; --readw:clamp(680px, 62vw, 1060px);
+  }
+  html{color-scheme:light}
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth; -webkit-text-size-adjust:100%}
+  body{margin:0; background:var(--bg); color:var(--ink); font-family:var(--sans);
+    font-size:17px; line-height:1.75; font-weight:400; -webkit-font-smoothing:antialiased; text-rendering:optimizeLegibility}
+  body.lang-ja [lang=en]{display:none}
+  body.lang-en [lang=ja]{display:none}
+  ::selection{background:rgba(14,111,92,.16)}
+  .num{font-variant-numeric:tabular-nums; font-feature-settings:"tnum" 1; font-family:var(--disp)}
+  h1,h2,h3{margin:0; color:var(--ink); font-weight:500; line-height:1.16; letter-spacing:-.02em; font-family:var(--disp); text-wrap:balance}
+  body.lang-ja h1,body.lang-ja h2,body.lang-ja h3{letter-spacing:0; font-family:var(--sans)}
+  h1[lang=ja],h2[lang=ja],h3[lang=ja]{letter-spacing:0; font-family:var(--sans)}
+  p,.lead,.hook,.byline,figcaption,.cite,.muted-s{text-wrap:pretty}
+  [lang="en"]{line-break:auto}
+  [lang="ja"]{line-break:strict; word-break:normal}
+  h1 [lang="ja"],h2 [lang="ja"],h3 [lang="ja"]{word-break:auto-phrase}
+  p{margin:0 0 1em}
+  a{color:var(--accent-2); text-decoration:none; transition:color .3s var(--ease)}
+  a:hover{color:var(--accent)}
+  a:focus-visible,button:focus-visible,.btn:focus-visible,[tabindex]:focus-visible{outline:2px solid var(--accent); outline-offset:3px; border-radius:8px}
+  .wrap{max-width:var(--maxw); margin:0 auto; padding:0 40px}
+  [id]{scroll-margin-top:96px}
+  section{padding:130px 0}
+
+  .skip{position:fixed; top:10px; left:10px; padding:10px 16px; background:var(--ink); color:#fff; border-radius:999px; transform:translateY(-200%); transition:none; z-index:100; font:500 .85rem/1 var(--sans); text-decoration:none}
+  .skip:focus{transform:none}
+
+  /* film grain overlay */
+  body::after{content:""; position:fixed; inset:0; z-index:1; pointer-events:none; opacity:.02;
+    background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='g'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23g)'/%3E%3C/svg%3E")}
+
+  h2.big{font-size:clamp(1.9rem,3.2vw,2.7rem); font-weight:500; letter-spacing:-.025em; max-width:26ch}
+  body.lang-ja h2.big,h2.big[lang=ja]{letter-spacing:-.01em}
+  .eyebrow,.kick{display:inline-flex; align-items:center; gap:8px; width:max-content; max-width:100%;
+    padding:5px 13px 5px 11px; border-radius:999px; border:1px solid var(--hair); background:#fff;
+    font:600 .66rem/1 var(--disp); letter-spacing:.14em; text-transform:uppercase; color:var(--ink-2); margin:0 0 18px}
+  .eyebrow::before,.kick::before{content:""; flex:0 0 auto; width:6px; height:6px; border-radius:50%; background:var(--accent)}
+  .lead{font-size:1.12rem; color:var(--ink-2); line-height:1.78; font-weight:400}
+
+  /* motion */
+  .js .reveal{opacity:0; transform:translateY(18px); filter:blur(6px); transition:opacity .9s var(--ease), transform .9s var(--ease), filter .9s var(--ease)}
+  .js .reveal.in{opacity:1; transform:none; filter:none}
+  @media (prefers-reduced-motion:reduce){
+    .js .reveal{opacity:1!important; transform:none!important; filter:none!important}
+    .btn:active,.btn:hover,.btn.ink:hover .ic,.lesson:hover,.mcard:hover,.pill-link:hover{transform:none!important}
+  }
+
+  /* floating island nav */
+  header.bar{position:sticky; top:18px; z-index:60; background:transparent; border-bottom:none}
+  .bar .wrap{display:flex; align-items:center; justify-content:space-between;
+    width:max-content; max-width:calc(100% - 32px); margin:0 auto; height:auto;
+    padding:9px 12px 9px 20px; gap:20px; border-radius:999px;
+    background:rgba(255,255,255,.72); -webkit-backdrop-filter:saturate(1.4) blur(18px); backdrop-filter:saturate(1.4) blur(18px);
+    border:1px solid var(--hair); box-shadow:var(--soft)}
+  .brand{font-weight:600; font-size:.92rem; letter-spacing:-.01em; color:var(--ink); display:inline-flex; align-items:center; gap:8px}
+  .brand span.sep{color:var(--muted); font-weight:400; margin:0 2px}
+  .navlinks{display:flex; gap:22px; align-items:center}
+  .navlinks a{font-size:.86rem; font-weight:500; color:var(--ink-2); transition:color .3s var(--ease)}
+  .navlinks a:hover{color:var(--ink)}
+  @media(max-width:860px){.navlinks{display:none}}
+  .bar-right{display:flex; align-items:center; gap:8px}
+
+  /* buttons */
+  .btn{display:inline-flex; align-items:center; gap:10px; font:500 .85rem/1 var(--sans); padding:10px 18px;
+    border-radius:999px; border:1px solid var(--hair); background:#fff; color:var(--ink); cursor:pointer;
+    transition:transform .4s var(--ease), box-shadow .4s var(--ease), border-color .3s var(--ease), background .3s var(--ease), color .3s var(--ease)}
+  .btn:hover{border-color:var(--ink); transform:translateY(-1px); color:var(--ink)}
+  .btn:active{transform:scale(.98)}
+  .btn.ink{background:var(--ink); border-color:var(--ink); color:#fff; padding:10px 10px 10px 22px;
+    box-shadow:0 12px 26px -14px rgba(16,19,18,.5)}
+  .btn.ink:not(:has(.ic)){padding:10px 22px}
+  .btn.ink:hover{box-shadow:0 16px 32px -14px rgba(16,19,18,.55); color:#fff}
+  .btn .ic{width:32px; height:32px; border-radius:999px; background:rgba(255,255,255,.18); display:grid; place-items:center;
+    transition:transform .45s var(--ease); flex:0 0 auto}
+  .btn.ink:hover .ic{transform:translate(3px,-1px)}
+  .tlink{display:inline-flex; align-items:center; gap:8px; font-weight:500; font-size:.95rem; color:var(--ink)}
+  .tlink .ar{transition:transform .4s var(--ease)}
+  .tlink:hover{color:var(--ink)}
+  .tlink:hover .ar{transform:translateX(4px)}
+
+  .pill-link{display:inline-flex; align-items:center; gap:7px; white-space:nowrap; font-weight:500;
+    font-size:.8rem; padding:8px 14px; border-radius:999px; border:1px solid var(--hair); background:#fff;
+    color:var(--ink); transition:border-color .3s var(--ease), transform .3s var(--ease), box-shadow .3s var(--ease)}
+  .pill-link:hover{border-color:var(--ink); transform:translateY(-1px); color:var(--ink); box-shadow:var(--soft)}
+  .pill-link .ar{color:var(--accent); transition:transform .3s var(--ease)}
+  .pill-link:hover .ar{transform:translateX(3px)}
+
+  /* hero */
+  .hero{position:relative; overflow:hidden}
+  .hero > .wrap{position:relative; z-index:1}
+  .hero::before{content:""; position:absolute; z-index:0; width:640px; height:640px; right:-150px; top:-240px;
+    border-radius:50%; pointer-events:none; opacity:.55;
+    background:radial-gradient(circle, var(--accent-soft), transparent 62%); filter:blur(20px)}
+  .hero .wrap{padding-top:72px; padding-bottom:80px}
+  .hero h1{font-size:clamp(2.6rem,5vw,4.2rem); font-weight:500; letter-spacing:-.03em; line-height:1.08; color:var(--ink); max-width:20ch}
+  .hero h1[lang=ja]{font-size:clamp(2rem,4.2vw,3.1rem); font-weight:500; letter-spacing:0; line-height:1.24}
+  .hero h1 em{font-style:normal; color:var(--accent)}
+  .hero .subhead{font-size:clamp(1.05rem,1.7vw,1.28rem); color:var(--ink-2); font-weight:500; margin:20px 0 0; max-width:34ch; line-height:1.5}
+  .hero .lead{max-width:var(--readw); margin-top:18px}
+  .hero-cta{display:flex; gap:20px; align-items:center; flex-wrap:wrap; margin-top:30px}
+  /* japanese-only availability note */
+  .ja-only{display:inline-flex; align-items:center; gap:9px; margin-top:26px; padding:9px 16px;
+    border-radius:999px; background:var(--accent-soft); border:1px solid var(--hair); color:var(--accent-2);
+    font-size:.82rem; font-weight:500; line-height:1.4; max-width:100%}
+  .ja-only::before{content:""; flex:0 0 auto; width:6px; height:6px; border-radius:50%; background:var(--accent)}
+
+  .soft-sec{background:var(--bg-2); border-top:1px solid var(--line); border-bottom:1px solid var(--line)}
+
+  /* flow of the course */
+  .flow{display:flex; flex-wrap:wrap; align-items:center; gap:10px; margin-top:40px}
+  .flow .fstep{display:inline-flex; align-items:center; padding:10px 18px; border-radius:999px; background:var(--card);
+    font-size:.9rem; font-weight:600; color:var(--ink); box-shadow:0 0 0 6px var(--shell), 0 0 0 6.5px var(--hair), var(--soft)}
+  .flow .farr{color:var(--faint); font-family:var(--disp); font-size:1.1rem; flex:0 0 auto}
+  @media(max-width:640px){.flow .fstep{font-size:.82rem; padding:8px 14px}}
+
+  /* syllabus: nine lessons (single double-bezel tray, hairline rows) */
+  .syllabus{border-radius:21px; overflow:hidden; margin-top:48px; background:var(--card);
+    box-shadow:0 0 0 7px var(--shell), 0 0 0 7.5px var(--hair), var(--soft)}
+  .lesson{display:grid; grid-template-columns:auto 1fr; gap:8px 30px; align-items:start;
+    padding:30px 34px; border-top:1px solid var(--line); transition:background .4s var(--ease)}
+  .lesson:first-child{border-top:none}
+  .lesson:hover{background:var(--bg-2)}
+  .lesson .lno{grid-row:1 / span 3; align-self:start; font-family:var(--disp); font-weight:500;
+    font-size:clamp(2.3rem,4.2vw,3.2rem); line-height:.9; letter-spacing:-.03em; color:var(--accent-2);
+    font-variant-numeric:tabular-nums; min-width:1.7em; text-align:right; padding-top:2px}
+  .lesson .lkai{font:600 .64rem/1 var(--disp); letter-spacing:.14em; text-transform:uppercase; color:var(--muted); margin-bottom:9px}
+  .lesson h3{font-size:1.14rem; font-weight:600; font-family:var(--sans); letter-spacing:0; line-height:1.45}
+  .lesson .ltopics{margin:.55em 0 0; color:var(--ink-2); font-size:.96rem}
+  .lesson .lkai,.lesson h3,.lesson .ltopics,.lesson .llink{grid-column:2}
+  .lesson .llink{display:flex; flex-wrap:wrap; gap:8px; margin-top:15px}
+  @media(max-width:560px){
+    .lesson{grid-template-columns:1fr; gap:6px; padding:26px 24px}
+    .lesson .lno{grid-row:auto; text-align:left; min-width:0; margin-bottom:6px}
+    .lesson .lkai,.lesson h3,.lesson .ltopics,.lesson .llink{grid-column:auto}
+  }
+
+  /* assignment callout */
+  .callout{border-radius:21px; box-shadow:0 0 0 7px var(--shell), 0 0 0 7.5px var(--hair), var(--soft);
+    padding:30px 34px; margin-top:44px; background:var(--accent-soft)}
+  .callout .lbl{display:inline-flex; align-items:center; gap:8px; font:600 .66rem/1 var(--disp); letter-spacing:.14em;
+    text-transform:uppercase; color:var(--accent-2); margin-bottom:14px}
+  .callout .lbl::before{content:""; width:6px; height:6px; border-radius:50%; background:var(--accent)}
+  .callout h3{font-size:1.2rem; font-weight:600; font-family:var(--sans); letter-spacing:0; line-height:1.4}
+  .callout p{margin:.7em 0 0; color:var(--ink-2); font-size:.97rem; max-width:64ch}
+  .callout .llink{display:flex; flex-wrap:wrap; gap:10px; margin-top:20px}
+
+  /* learning materials: three large double-bezel cards */
+  .mcards{display:grid; grid-template-columns:repeat(3,1fr); gap:16px; margin-top:48px}
+  .mcard{display:flex; flex-direction:column; border-radius:21px; padding:32px 30px 30px; background:var(--card); height:100%;
+    box-shadow:0 0 0 7px var(--shell), 0 0 0 7.5px var(--hair), var(--soft);
+    transition:transform .4s var(--ease), box-shadow .4s var(--ease)}
+  .mcard:hover{transform:translateY(-3px); box-shadow:0 0 0 7px var(--shell), 0 0 0 7.5px var(--hair), 0 1px 2px rgba(16,19,18,.05), 0 34px 70px -30px rgba(16,19,18,.24)}
+  .mcard .mtag{display:inline-flex; align-items:center; gap:8px; font:600 .64rem/1 var(--disp); letter-spacing:.14em;
+    text-transform:uppercase; color:var(--accent-2); margin-bottom:16px}
+  .mcard .mtag::before{content:""; width:6px; height:6px; border-radius:50%; background:var(--accent)}
+  .mcard h3{font-size:1.18rem; font-weight:600; font-family:var(--sans); letter-spacing:0; line-height:1.4}
+  .mcard .mmeta{margin:12px 0 0; display:flex; flex-wrap:wrap; gap:7px}
+  .mcard .chip{font:600 .72rem/1 var(--disp); color:var(--ink-2); background:var(--bg-2); border:1px solid var(--hair);
+    border-radius:999px; padding:6px 11px; letter-spacing:.02em}
+  .mcard p{margin:16px 0 0; color:var(--ink-2); font-size:.94rem}
+  .mcard .mgo{margin-top:auto; padding-top:22px}
+  @media(max-width:960px){.mcards{grid-template-columns:1fr}}
+
+  /* related preparation cards */
+  .lcards{display:grid; grid-template-columns:1fr 1fr; gap:16px; margin-top:44px}
+  .lcard{display:flex; align-items:flex-start; gap:16px; border-radius:21px; padding:24px 26px; background:var(--card);
+    box-shadow:0 0 0 7px var(--shell), 0 0 0 7.5px var(--hair), var(--soft);
+    transition:transform .4s var(--ease), box-shadow .4s var(--ease)}
+  .lcard:hover{transform:translateY(-3px); box-shadow:0 0 0 7px var(--shell), 0 0 0 7.5px var(--hair), 0 1px 2px rgba(16,19,18,.05), 0 34px 70px -30px rgba(16,19,18,.24)}
+  .lcard .no{flex:0 0 auto; font:600 .8rem/1 var(--disp); color:var(--accent-2); padding-top:4px}
+  .lcard .body{flex:1 1 auto}
+  .lcard h3{font-size:1.04rem; font-weight:600; margin:0 0 .4em; font-family:var(--sans); letter-spacing:0}
+  .lcard p{margin:0; color:var(--ink-2); font-size:.92rem}
+  .lcard .ar{flex:0 0 auto; color:var(--accent-2); font-size:1.2rem; padding-top:2px; transition:transform .4s var(--ease)}
+  .lcard:hover .ar{transform:translateX(4px)}
+  @media(max-width:760px){.lcards{grid-template-columns:1fr}}
+
+  .syllabus-note{margin-top:34px; color:var(--muted); font-size:.9rem; max-width:var(--readw)}
+
+  footer{border-top:1px solid var(--line); padding:64px 0 46px; background:var(--bg)}
+  footer h3{font-size:.72rem; font-weight:600; letter-spacing:.12em; text-transform:uppercase; color:var(--muted); margin:0 0 1em; font-family:var(--disp)}
+  .foot-grid{display:grid; grid-template-columns:1.4fr 1fr 1fr; gap:44px}
+  .cite{font-size:.98rem; color:var(--ink-2); line-height:1.7; max-width:56ch; margin-bottom:36px}
+  .muted-s{color:var(--muted); font-size:.9rem; line-height:1.9}
+  .muted-s a{color:var(--ink-2)}
+  .muted-s a:hover{color:var(--accent)}
+  .muted-s b{color:var(--ink); font-weight:600}
+  .foot-rule{height:1px; background:var(--line); margin:44px 0 20px}
+  .foot-note{color:var(--muted); font-size:.82rem}
+  @media(max-width:760px){.foot-grid{grid-template-columns:1fr 1fr}}
+  @media(max-width:560px){.foot-grid{grid-template-columns:1fr}}
+
+  @media(max-width:860px){
+    section{padding:72px 0}
+    .hero .wrap{padding-top:52px; padding-bottom:56px}
+    .wrap{padding:0 24px}
+  }
+  @media(max-width:640px){
+    .bar-right .btn:not(.ink){display:none}
+    .brand{font-size:.82rem}
+  }
+</style>
+</head>
+<body class="lang-ja">
+
+<a class="skip" href="#main"><span lang="ja">本文へスキップ</span><span lang="en">Skip to content</span></a>
+
+<header class="bar">
+  <div class="wrap">
+    <a class="brand" href="../index.html">
+      <span aria-hidden="true">&lsaquo;</span>
+      <span lang="ja">木村祐太</span><span lang="en">Yuta Kimura</span>
+      <span class="sep">·</span><span lang="ja">科目ガイド</span><span lang="en">Course guide</span>
+    </a>
+    <nav class="navlinks" aria-label="メイン">
+      <a href="../publications.html"><span lang="ja">業績</span><span lang="en">Publications</span></a>
+      <a href="../activities.html"><span lang="ja">活動</span><span lang="en">Activities</span></a>
+      <a href="../software-engineering.html"><span lang="ja">分野紹介</span><span lang="en">Guides</span></a>
+      <a href="../students.html"><span lang="ja">学生の皆さんへ</span><span lang="en">For students</span></a>
+    </nav>
+    <div class="bar-right">
+      <button class="btn ink" onclick="toggleLang()" aria-label="Switch language">
+        <span lang="ja">EN</span><span lang="en">日本語</span>
+      </button>
+    </div>
+  </div>
+</header>
+
+<main id="main">
+
+<!-- HERO -->
+<div class="hero">
+  <div class="wrap">
+    <p class="kick">Course Guide</p>
+    <h1 lang="ja">ソフトウェア工学 <em>2026</em></h1>
+    <p class="subhead">作って終わりではないソフトウェアを、工学する9回。</p>
+    <p class="lead">
+      2026年度（令和8年度）開講の科目です。Ian Sommerville「Software Engineering」(10th ed.) の第1章から第9章に対応する全9回の授業で、ソフトウェアを計画的に作り、育てていくための考え方と手法を順に学びます。このページは、その全体像と各回の内容、あわせて使える学習コンテンツを紹介する案内です。
+    </p>
+    <p class="ja-only">
+      <span lang="ja">この教材は日本語のみで提供しています</span>
+      <span lang="en">This learning material is available in Japanese only.</span>
+    </p>
+    <div class="hero-cta">
+      <a class="btn ink" href="#syllabus" style="padding:12px 22px">
+        <span lang="ja">授業一覧を見る</span><span lang="en">See the sessions</span>
+      </a>
+      <a class="tlink" href="../software-engineering.html">
+        <span lang="ja">分野紹介で予習</span><span lang="en">Prep: the field</span>
+        <span class="ar" aria-hidden="true">&rsaquo;</span>
+      </a>
+    </div>
+  </div>
+</div>
+
+<!-- OVERVIEW -->
+<section id="overview" style="padding-top:0">
+  <div class="wrap reveal">
+    <p class="eyebrow"><span lang="ja">授業の全体像</span><span lang="en">The big picture</span></p>
+    <h2 class="big" lang="ja">導入から始まり、ソフトウェアの一生をたどる</h2>
+    <p class="lead" style="max-width:var(--readw); margin-top:20px">
+      9回の授業は、ソフトウェアが生まれてから育っていくまでの流れに沿って組み立てられています。はじめにソフトウェア工学とは何かを押さえ、開発を進めるプロセスとアジャイルの考え方へ。続いて、何を作るかを定める要求、その姿をかたちにするモデリングと設計、正しく動くことを確かめるテスト、そして完成後も変わり続ける進化へと進みます。回を追うごとに、ものづくりの一連の営みが見えてくる構成です。
+    </p>
+    <div class="flow reveal" role="img" aria-label="Course flow: introduction to process and agile to requirements to modeling and design to testing to evolution">
+      <span class="fstep">導入</span>
+      <span class="farr" aria-hidden="true">&rsaquo;</span>
+      <span class="fstep">プロセス・アジャイル</span>
+      <span class="farr" aria-hidden="true">&rsaquo;</span>
+      <span class="fstep">要求</span>
+      <span class="farr" aria-hidden="true">&rsaquo;</span>
+      <span class="fstep">モデリング・設計</span>
+      <span class="farr" aria-hidden="true">&rsaquo;</span>
+      <span class="fstep">テスト</span>
+      <span class="farr" aria-hidden="true">&rsaquo;</span>
+      <span class="fstep">進化</span>
+    </div>
+  </div>
+</section>
+
+<!-- SYLLABUS: NINE SESSIONS -->
+<section id="syllabus" class="soft-sec">
+  <div class="wrap">
+    <p class="eyebrow reveal"><span lang="ja">授業一覧</span><span lang="en">The nine sessions</span></p>
+    <h2 class="big reveal" lang="ja">全9回で、何を学ぶのか</h2>
+    <p class="lead reveal" style="max-width:var(--readw); margin-top:20px">
+      各回のテーマと、その回で扱う主なトピックを紹介します。教科書の第1章から第9章に一つずつ対応しています。
+    </p>
+    <div class="syllabus reveal">
+      <div class="lesson">
+        <div class="lno">01</div>
+        <div class="lkai">第01回</div>
+        <h3>ガイダンス、ソフトウェア工学の導入</h3>
+        <p class="ltopics">プロフェッショナルなソフトウェア開発、ソフトウェア工学の倫理、ケーススタディ。</p>
+      </div>
+      <div class="lesson">
+        <div class="lno">02</div>
+        <div class="lkai">第02回</div>
+        <h3>ソフトウェアプロセス</h3>
+        <p class="ltopics">プロセスモデル、プロセス活動、変化への対応、プロセス改善。</p>
+      </div>
+      <div class="lesson">
+        <div class="lno">03</div>
+        <div class="lkai">第03回</div>
+        <h3>アジャイルソフトウェア開発</h3>
+        <p class="ltopics">アジャイル手法、アジャイル開発技法、アジャイルプロジェクト管理、スケーリング。</p>
+      </div>
+      <div class="lesson">
+        <div class="lno">04</div>
+        <div class="lkai">第04回</div>
+        <h3>要求工学</h3>
+        <p class="ltopics">機能要求と非機能要求、要求工学プロセス、要求の抽出、要求の仕様化、要求の妥当性確認、要求の変更。</p>
+      </div>
+      <div class="lesson">
+        <div class="lno">05</div>
+        <div class="lkai">第05回</div>
+        <h3>システムモデリング</h3>
+        <p class="ltopics">コンテキストモデル、相互作用モデル、構造モデル、振る舞いモデル、モデル駆動アーキテクチャ。</p>
+        <div class="llink">
+          <a class="pill-link" href="uml-guide.html">関連教材: クラス図・シーケンス図 作成ガイド<span class="ar" aria-hidden="true">&rsaquo;</span></a>
+        </div>
+      </div>
+      <div class="lesson">
+        <div class="lno">06</div>
+        <div class="lkai">第06回</div>
+        <h3>アーキテクチャ設計</h3>
+        <p class="ltopics">アーキテクチャ設計の意思決定、アーキテクチャビュー、アーキテクチャパターン、アプリケーションアーキテクチャ。</p>
+        <div class="llink">
+          <a class="pill-link" href="software-architecture.html">関連教材: アーキテクチャパターン大全<span class="ar" aria-hidden="true">&rsaquo;</span></a>
+        </div>
+      </div>
+      <div class="lesson">
+        <div class="lno">07</div>
+        <div class="lkai">第07回</div>
+        <h3>設計と実装</h3>
+        <p class="ltopics">UMLを用いたオブジェクト指向設計、デザインパターン、実装の課題、オープンソース開発。</p>
+        <div class="llink">
+          <a class="pill-link" href="design-patterns.html">関連教材: デザインパターン学習ガイド<span class="ar" aria-hidden="true">&rsaquo;</span></a>
+        </div>
+      </div>
+      <div class="lesson">
+        <div class="lno">08</div>
+        <div class="lkai">第08回</div>
+        <h3>ソフトウェアテスト</h3>
+        <p class="ltopics">開発時テスト、テスト駆動開発、リリーステスト、ユーザテスト。</p>
+      </div>
+      <div class="lesson">
+        <div class="lno">09</div>
+        <div class="lkai">第09回</div>
+        <h3>ソフトウェア進化</h3>
+        <p class="ltopics">進化のプロセス、レガシーシステム、ソフトウェア保守。</p>
+        <div class="llink">
+          <a class="pill-link" href="../technical-debt.html">関連: 技術的負債とは<span class="ar" aria-hidden="true">&rsaquo;</span></a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ASSIGNMENT -->
+<section id="assignment">
+  <div class="wrap">
+    <p class="eyebrow reveal"><span lang="ja">課題</span><span lang="en">Assignment</span></p>
+    <h2 class="big reveal" lang="ja">図で設計を表す、作図の課題</h2>
+    <p class="lead reveal" style="max-width:var(--readw); margin-top:20px">
+      授業では、設計をUMLの図で表現する課題に取り組みます。対象を静的な構造として捉えるクラス図と、処理の流れを時間に沿って追うシーケンス図の作成を通じて、設計を「読める・描ける」形にしていきます。
+    </p>
+    <div class="callout reveal">
+      <span class="lbl"><span lang="ja">作図ガイドあり</span><span lang="en">Guide available</span></span>
+      <h3>クラス図・シーケンス図の作成に、専用ガイドを用意しています</h3>
+      <p>記法のポイントや作成の手順、Mermaidでの作図例までをまとめた学習コンテンツです。課題に取りかかる前の予習に使えます。詳しい提出要領は授業内での案内にしたがってください。</p>
+      <div class="llink">
+        <a class="pill-link" href="uml-guide.html">クラス図・シーケンス図 作成ガイドへ<span class="ar" aria-hidden="true">&rsaquo;</span></a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- LEARNING MATERIALS -->
+<section id="materials" class="soft-sec">
+  <div class="wrap">
+    <p class="eyebrow reveal"><span lang="ja">学習コンテンツ</span><span lang="en">Learning materials</span></p>
+    <h2 class="big reveal" lang="ja">授業とあわせて使える、三つの教材</h2>
+    <p class="lead reveal" style="max-width:var(--readw); margin-top:20px">
+      設計と実装の回に関わる内容を、じっくり手を動かして学べる教材を用意しています。授業の予習・復習に、それぞれの入り口からどうぞ。
+    </p>
+    <div class="mcards reveal">
+      <div class="mcard">
+        <span class="mtag"><span lang="ja">設計と実装</span><span lang="en">Design and implementation</span></span>
+        <h3>デザインパターン学習ガイド</h3>
+        <div class="mmeta">
+          <span class="chip">GoF 23パターン</span>
+          <span class="chip">理解度クイズ 12問</span>
+        </div>
+        <p>生成・構造・振る舞いの三分類にわたるGoFの23パターンを、説明とコード例つきで学べます。最後には理解度を確かめる12問のクイズがあります。</p>
+        <div class="mgo">
+          <a class="tlink" href="design-patterns.html">
+            <span lang="ja">ガイドを開く</span><span lang="en">Open the guide</span>
+            <span class="ar" aria-hidden="true">&rsaquo;</span>
+          </a>
+        </div>
+      </div>
+      <div class="mcard">
+        <span class="mtag"><span lang="ja">アーキテクチャ設計</span><span lang="en">Architecture design</span></span>
+        <h3>アーキテクチャパターン大全</h3>
+        <div class="mmeta">
+          <span class="chip">44パターン</span>
+          <span class="chip">比較機能つき</span>
+        </div>
+        <p>44のアーキテクチャパターンを、カテゴリごとに整理して収録。気になるパターンを選んで、特性をレーダーチャートで比較しながら理解を深められます。</p>
+        <div class="mgo">
+          <a class="tlink" href="software-architecture.html">
+            <span lang="ja">大全を開く</span><span lang="en">Open the catalog</span>
+            <span class="ar" aria-hidden="true">&rsaquo;</span>
+          </a>
+        </div>
+      </div>
+      <div class="mcard">
+        <span class="mtag"><span lang="ja">モデリングと課題</span><span lang="en">Modeling and assignment</span></span>
+        <h3>クラス図・シーケンス図 作成ガイド</h3>
+        <div class="mmeta">
+          <span class="chip">記法と手順</span>
+          <span class="chip">Mermaid例</span>
+        </div>
+        <p>クラス図とシーケンス図の記法、作成の手順、よくある間違い、そしてMermaidでの作図例までをまとめました。作図の課題に直結する内容です。</p>
+        <div class="mgo">
+          <a class="tlink" href="uml-guide.html">
+            <span lang="ja">ガイドを開く</span><span lang="en">Open the guide</span>
+            <span class="ar" aria-hidden="true">&rsaquo;</span>
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- RELATED PREP -->
+<section id="prep">
+  <div class="wrap">
+    <p class="eyebrow reveal"><span lang="ja">予習・関連</span><span lang="en">Prep and related</span></p>
+    <h2 class="big reveal" lang="ja">授業の前後に、読んでおきたいページ</h2>
+    <p class="lead reveal" style="max-width:var(--readw); margin-top:20px">
+      分野の全体像をつかむ紹介ページや、授業の後半でふれる概念の解説ページです。予習にも、授業のあとの深掘りにも使えます。
+    </p>
+    <div class="lcards reveal">
+      <a class="lcard" href="../software-engineering.html">
+        <div class="no">01</div>
+        <div class="body">
+          <h3>ソフトウェア工学とは</h3>
+          <p>この科目が扱う分野そのものの紹介です。授業に入る前の全体像づかみにどうぞ。</p>
+        </div>
+        <span class="ar" aria-hidden="true">&rsaquo;</span>
+      </a>
+      <a class="lcard" href="../technical-debt.html">
+        <div class="no">02</div>
+        <div class="body">
+          <h3>技術的負債とは</h3>
+          <p>第9回「ソフトウェア進化」に深く関わる考え方です。保守と進化の背景として読んでおくと理解が進みます。</p>
+        </div>
+        <span class="ar" aria-hidden="true">&rsaquo;</span>
+      </a>
+    </div>
+    <p class="syllabus-note reveal">
+      <span lang="ja">授業の詳細（単位数・時間割・評価方法・日程など）は年度により変わります。詳細は最新のシラバスを確認してください。</span>
+      <span lang="en">Details such as credits, timetable, assessment, and schedule vary by year. Please check the latest syllabus.</span>
+    </p>
+  </div>
+</section>
+
+</main>
+
+<!-- FOOTER -->
+<footer>
+  <div class="wrap">
+    <div class="cite">
+      <span lang="ja">ソフトウェア工学（2026年度）の科目案内ページです。授業の全体像と各回の内容、学習コンテンツを紹介しています。木村祐太の研究サイトの一部としてご覧いただけます。</span>
+      <span lang="en">A course guide for Software Engineering (2026), introducing the big picture, each session, and the learning materials. Part of Yuta Kimura's research site.</span>
+    </div>
+    <div class="foot-grid">
+      <div>
+        <h3><span lang="ja">連絡先</span><span lang="en">Contact</span></h3>
+        <p class="muted-s">
+          <b>木村 祐太 / Yuta Kimura</b><br>
+          <span lang="ja">大阪公立大学工業高等専門学校</span><span lang="en">Osaka Metropolitan University College of Technology</span><br>
+          <a href="mailto:y.kimura@omu.ac.jp">y.kimura [at] omu.ac.jp</a>
+        </p>
+      </div>
+      <div>
+        <h3><span lang="ja">サイト</span><span lang="en">Site</span></h3>
+        <p class="muted-s">
+          <a href="../index.html"><span lang="ja">ホーム</span><span lang="en">Home</span></a><br>
+          <a href="../publications.html"><span lang="ja">業績一覧</span><span lang="en">All publications</span></a><br>
+          <a href="../activities.html"><span lang="ja">研究・教育活動</span><span lang="en">Projects & teaching</span></a><br>
+          <a href="../software-engineering.html"><span lang="ja">ソフトウェア工学とは</span><span lang="en">What is software engineering?</span></a><br>
+          <a href="../technical-debt.html"><span lang="ja">技術的負債とは</span><span lang="en">What is technical debt?</span></a><br>
+          <a href="../students.html"><span lang="ja">学生の皆さんへ</span><span lang="en">For students</span></a><br>
+          <a href="../glossary.html"><span lang="ja">用語集</span><span lang="en">Glossary</span></a>
+        </p>
+      </div>
+      <div>
+        <h3><span lang="ja">研究</span><span lang="en">Research</span></h3>
+        <p class="muted-s">
+          <a href="../research/technical-debt-metrics.html"><span lang="ja">メトリクスによる分類・特徴づけ</span><span lang="en">Classifying debt with metrics</span></a><br>
+          <a href="../research/apr-coding-standards.html"><span lang="ja">自動生成パッチと品質</span><span lang="en">Auto-generated patches and quality</span></a><br>
+          <a href="../research/td-repayment-refactoring.html"><span lang="ja">返済とリファクタリング</span><span lang="en">Repayment and refactoring</span></a><br>
+          <a href="../research/satd-issue-classification.html"><span lang="ja">TD-Issue の自動分類</span><span lang="en">Automatic TD-Issue classification</span></a><br>
+          <a href="https://researchmap.jp/kimura_yuta" target="_blank" rel="noopener">researchmap</a>
+        </p>
+      </div>
+    </div>
+    <div class="foot-rule"></div>
+    <p class="foot-note">
+      <span lang="ja">© 2026 Yuta Kimura. 授業の詳細（評価方法・日程等）は最新のシラバスを確認してください。各回の構成は Ian Sommerville「Software Engineering」(10th ed.) の章立てに対応しています。</span>
+      <span lang="en">© 2026 Yuta Kimura. For course details such as assessment and schedule, please check the latest syllabus. The sessions follow the chapter structure of Ian Sommerville's Software Engineering (10th ed.).</span>
+    </p>
+  </div>
+</footer>
+
+<script>
+  function setLang(l){document.body.classList.remove('lang-ja','lang-en');document.body.classList.add('lang-'+l);document.documentElement.lang=l;
+   try{localStorage.setItem('site-lang',l)}catch(e){}
+   try{var q=new URLSearchParams(location.search);q.set('lang',l);history.replaceState(null,'',location.pathname+'?'+q+location.hash)}catch(e){}}
+  function toggleLang(){setLang(document.body.classList.contains('lang-ja')?'en':'ja')}
+  (function(){var u=null;try{u=new URLSearchParams(location.search).get('lang')}catch(e){}
+   var s=null;try{s=localStorage.getItem('site-lang')}catch(e){}
+   var l=(u==='en'||u==='ja')?u:((s==='en'||s==='ja')?s:'ja');if(l!=='ja')setLang(l);})();
+  if('IntersectionObserver' in window){
+    var io=new IntersectionObserver(function(es){ es.forEach(function(e){ if(e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target); } }); },{threshold:0.12, rootMargin:"0px 0px -6% 0px"});
+    document.querySelectorAll('.reveal').forEach(function(el){ io.observe(el); });
+  } else { document.querySelectorAll('.reveal').forEach(function(el){ el.classList.add('in'); }); }
+</script>
+</body>
+</html>

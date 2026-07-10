@@ -1,0 +1,1033 @@
+<!DOCTYPE html>
+<html lang="ja" class="no-js">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>クラス図・シーケンス図 作成ガイド - ソフトウェア工学 / Class & Sequence Diagram Guide</title>
+<meta name="description" content="A guide to the class-diagram and sequence-diagram assignment: notation basics, a six-step process for each diagram, common mistakes, and worked Mermaid examples. Part of the Software Engineering course.">
+<link rel="canonical" href="https://ykimu.github.io/course/uml-guide.html">
+<link rel="icon" href="../favicon.svg" type="image/svg+xml">
+<meta property="og:site_name" content="Yuta Kimura / 木村祐太">
+<meta property="og:type" content="article">
+<meta property="og:title" content="クラス図・シーケンス図 作成ガイド - ソフトウェア工学 / Class & Sequence Diagram Guide">
+<meta property="og:description" content="A guide to the class-diagram and sequence-diagram assignment: notation basics, a six-step process for each diagram, common mistakes, and worked Mermaid examples.">
+<meta property="og:url" content="https://ykimu.github.io/course/uml-guide.html">
+<meta property="og:image" content="https://ykimu.github.io/assets/og.png">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="color-scheme" content="light">
+<script>document.documentElement.className="js";</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&family=Noto+Sans+JP:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#FBFCFB; --bg-2:#F3F6F4; --bg-3:#EBEFED; --card:#FFFFFF;
+    --ink:#101312; --ink-2:#3C4340; --muted:#6B746F; --faint:#B7C0BB;
+    --line:#E7ECE9; --hair:rgba(16,19,18,.08); --shell:rgba(16,19,18,.035);
+    --accent:#0E6F5C; --accent-2:#0A5748; --accent-soft:rgba(14,111,92,.08);
+    --soft:0 1px 2px rgba(16,19,18,.04), 0 24px 60px -28px rgba(16,19,18,.16);
+    --inhi:inset 0 1px 0 rgba(255,255,255,.85);
+    --ease:cubic-bezier(.32,.72,0,1);
+    --sans:"Plus Jakarta Sans","Noto Sans JP",-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+    --disp:"Space Grotesk","Plus Jakarta Sans","Noto Sans JP",sans-serif;
+    --mono:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
+    --maxw:1440px; --readw:clamp(680px, 62vw, 1060px);
+  }
+  html{color-scheme:light}
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth; -webkit-text-size-adjust:100%}
+  body{margin:0; background:var(--bg); color:var(--ink); font-family:var(--sans);
+    font-size:17px; line-height:1.75; font-weight:400; -webkit-font-smoothing:antialiased; text-rendering:optimizeLegibility}
+  body.lang-ja [lang=en]{display:none}
+  body.lang-en [lang=ja]{display:none}
+  ::selection{background:rgba(14,111,92,.16)}
+  .num{font-variant-numeric:tabular-nums; font-feature-settings:"tnum" 1; font-family:var(--disp)}
+  h1,h2,h3{margin:0; color:var(--ink); font-weight:500; line-height:1.16; letter-spacing:0; font-family:var(--sans); text-wrap:balance; word-break:auto-phrase}
+  p,.lead,.hook,.byline,figcaption,.cite,.muted-s{text-wrap:pretty; line-break:strict}
+  [lang="en"]{line-break:auto}
+  [lang="ja"]{line-break:strict; word-break:normal}
+  h1 [lang="ja"],h2 [lang="ja"],h3 [lang="ja"]{word-break:auto-phrase}
+  p{margin:0 0 1em}
+  a{color:var(--accent-2); text-decoration:none; transition:color .3s var(--ease)}
+  a:hover{color:var(--accent)}
+  a:focus-visible,button:focus-visible,.btn:focus-visible,[tabindex]:focus-visible{outline:2px solid var(--accent); outline-offset:3px; border-radius:8px}
+  .wrap{max-width:var(--maxw); margin:0 auto; padding:0 40px}
+  [id]{scroll-margin-top:96px}
+  section{padding:130px 0}
+
+  .skip{position:fixed; top:10px; left:10px; padding:10px 16px; background:var(--ink); color:#fff; border-radius:999px; transform:translateY(-200%); transition:none; z-index:100}
+  .skip:focus{transform:none}
+
+  body::after{content:""; position:fixed; inset:0; z-index:1; pointer-events:none; opacity:.02;
+    background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='g'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23g)'/%3E%3C/svg%3E")}
+
+  h2.big{font-size:clamp(1.9rem,3.2vw,2.7rem); font-weight:500; letter-spacing:-.01em; max-width:26ch}
+  .eyebrow,.kick{display:inline-flex; align-items:center; gap:8px; width:max-content; max-width:100%;
+    padding:5px 13px 5px 11px; border-radius:999px; border:1px solid var(--hair); background:#fff;
+    font:600 .66rem/1 var(--disp); letter-spacing:.14em; text-transform:uppercase; color:var(--ink-2); margin:0 0 18px}
+  .eyebrow::before,.kick::before{content:""; flex:0 0 auto; width:6px; height:6px; border-radius:50%; background:var(--accent)}
+  .lead{font-size:1.12rem; color:var(--ink-2); line-height:1.78; font-weight:400}
+  .jaonly{margin-top:18px; font-size:.85rem; color:var(--muted); display:inline-flex; align-items:center; gap:8px; padding:6px 14px; border-radius:999px; background:var(--bg-2); border:1px solid var(--line)}
+
+  /* motion */
+  .js .reveal{opacity:0; transform:translateY(18px); filter:blur(6px); transition:opacity .9s var(--ease), transform .9s var(--ease), filter .9s var(--ease)}
+  .js .reveal.in{opacity:1; transform:none; filter:none}
+  @media (prefers-reduced-motion:reduce){
+    .js .reveal{opacity:1!important; transform:none!important; filter:none!important}
+    .btn:active,.btn.ink:hover .ic,.tile:hover,.pair:hover{transform:none!important}
+  }
+
+  /* floating island nav */
+  header.bar{position:sticky; top:18px; z-index:60; background:transparent; border-bottom:none}
+  .bar .wrap{display:flex; align-items:center; justify-content:space-between;
+    width:max-content; max-width:calc(100% - 32px); margin:0 auto; height:auto;
+    padding:9px 12px 9px 20px; gap:20px; border-radius:999px;
+    background:rgba(255,255,255,.72); -webkit-backdrop-filter:saturate(1.4) blur(18px); backdrop-filter:saturate(1.4) blur(18px);
+    border:1px solid var(--hair); box-shadow:var(--soft)}
+  .brand{font-weight:600; font-size:.92rem; letter-spacing:-.01em; color:var(--ink); display:inline-flex; align-items:center; gap:2px}
+  .brand span.sep{color:var(--muted); font-weight:400; margin:0 6px}
+  .navlinks{display:flex; gap:22px; align-items:center}
+  .navlinks a{font-size:.86rem; font-weight:500; color:var(--ink-2); transition:color .3s var(--ease)}
+  .navlinks a:hover{color:var(--ink)}
+  @media(max-width:860px){.navlinks{display:none}}
+  .bar-right{display:flex; align-items:center; gap:8px}
+
+  /* buttons */
+  .btn{display:inline-flex; align-items:center; gap:10px; font:500 .85rem/1 var(--sans); padding:10px 18px;
+    border-radius:999px; border:1px solid var(--hair); background:#fff; color:var(--ink); cursor:pointer;
+    transition:transform .4s var(--ease), box-shadow .4s var(--ease), border-color .3s var(--ease), background .3s var(--ease), color .3s var(--ease)}
+  .btn:hover{border-color:var(--ink); transform:translateY(-1px); color:var(--ink)}
+  .btn:active{transform:scale(.98)}
+  .btn.ink{background:var(--ink); border-color:var(--ink); color:#fff; padding:10px 10px 10px 22px;
+    box-shadow:0 12px 26px -14px rgba(16,19,18,.5)}
+  .btn.ink:not(:has(.ic)){padding:10px 22px}
+  .btn.ink:hover{box-shadow:0 16px 32px -14px rgba(16,19,18,.55); color:#fff}
+  .btn .ic{width:32px; height:32px; border-radius:999px; background:rgba(255,255,255,.18); display:grid; place-items:center;
+    transition:transform .45s var(--ease); flex:0 0 auto}
+  .btn.ink:hover .ic{transform:translate(3px,-1px)}
+  .tlink{display:inline-flex; align-items:center; gap:8px; font-weight:500; font-size:.95rem; color:var(--ink)}
+  .tlink .ar{transition:transform .4s var(--ease)}
+  .tlink:hover .ar{transform:translateX(4px)}
+
+  /* hero */
+  .hero{position:relative; overflow:hidden}
+  .hero > .wrap{position:relative; z-index:1}
+  .hero::before{content:""; position:absolute; z-index:0; width:640px; height:640px; right:-150px; top:-240px;
+    border-radius:50%; pointer-events:none; opacity:.55;
+    background:radial-gradient(circle, var(--accent-soft), transparent 62%); filter:blur(20px)}
+  .hero .wrap{padding-top:72px; padding-bottom:80px}
+  .hero h1{font-size:clamp(2rem,4.2vw,3.1rem); font-weight:500; letter-spacing:0; line-height:1.24; color:var(--ink); max-width:20ch}
+  .hero .lead{max-width:var(--readw); margin-top:24px}
+  .hero-cta{display:flex; gap:20px; align-items:center; flex-wrap:wrap; margin-top:30px}
+
+  .soft-sec{background:var(--bg-2); border-top:1px solid var(--line); border-bottom:1px solid var(--line)}
+
+  /* double-bezel 2-col card (position / checklist) */
+  .defbox{display:grid; grid-template-columns:1fr 1fr; gap:0; border:none; border-radius:21px; overflow:hidden; margin-top:40px;
+    box-shadow:0 0 0 7px var(--shell), 0 0 0 7.5px var(--hair), var(--soft)}
+  .defbox > div{padding:34px 36px}
+  .defbox .a{background:var(--card)}
+  .defbox .b{background:var(--bg-2); border-left:1px solid var(--line)}
+  .defbox .lbl{display:inline-flex; align-items:center; gap:8px; font:600 .66rem/1 var(--disp); letter-spacing:.14em;
+    text-transform:uppercase; color:var(--accent-2); margin-bottom:12px}
+  .defbox .lbl::before{content:""; width:6px; height:6px; border-radius:50%; background:var(--accent)}
+  .defbox h3{font-size:1.08rem; font-weight:600; margin-bottom:.5em; font-family:var(--sans); letter-spacing:0}
+  .defbox p{margin:0 0 .6em; color:var(--ink-2); font-size:1rem}
+  .defbox ul{list-style:none; padding:0; margin:16px 0 0}
+  .defbox ul li{position:relative; padding-left:20px; margin:10px 0; color:var(--ink-2); font-size:.94rem}
+  .defbox ul li::before{content:""; position:absolute; left:0; top:11px; width:9px; height:1.5px; background:var(--accent)}
+  @media(max-width:760px){.defbox{grid-template-columns:1fr}.defbox .b{border-left:none; border-top:1px solid var(--line)}}
+
+  /* checklist (decorative checkboxes) */
+  .defbox.checklist ul li{padding-left:30px}
+  .defbox.checklist ul li::before{content:""; top:1px; width:18px; height:18px; border-radius:5px; background:#fff; border:1.5px solid var(--faint)}
+  .defbox.checklist .b ul li::before{background:var(--card)}
+
+  /* steps */
+  .steps{display:grid; gap:24px; margin-top:44px}
+  .steps.s5{grid-template-columns:repeat(5,1fr)}
+  .steps.s6{grid-template-columns:repeat(3,1fr)}
+  .step{padding-top:20px; border-top:2px solid var(--ink); position:relative}
+  .step .no{font-size:.78rem; font-weight:600; color:var(--muted); font-variant-numeric:tabular-nums; font-family:var(--disp)}
+  .step h3{font-size:1.02rem; font-weight:600; margin:.7em 0 .4em; font-family:var(--sans); letter-spacing:0}
+  .step p{margin:0; color:var(--ink-2); font-size:.9rem}
+  @media(max-width:980px){.steps.s5{grid-template-columns:repeat(3,1fr)} .steps.s6{grid-template-columns:repeat(2,1fr)}}
+  @media(max-width:640px){.steps.s5{grid-template-columns:repeat(2,1fr)} .steps.s6{grid-template-columns:1fr}}
+  @media(max-width:420px){.steps.s5{grid-template-columns:1fr}}
+
+  .flowline{margin-top:14px; font:500 .92rem/1.6 var(--disp); color:var(--accent-2); display:flex; flex-wrap:wrap; gap:8px; align-items:center}
+  .flowline b{font-weight:500}
+
+  .callout{border-radius:21px; box-shadow:0 0 0 7px var(--shell), 0 0 0 7.5px var(--hair), var(--soft);
+    padding:22px 26px; margin-top:34px; background:var(--accent-soft); max-width:var(--readw); font-size:.95rem; color:var(--ink-2)}
+  .callout b{color:var(--accent-2)}
+
+  /* table wrap (double bezel) */
+  .tblwrap{border-radius:21px; overflow-x:auto; margin-top:32px; box-shadow:0 0 0 7px var(--shell), 0 0 0 7.5px var(--hair), var(--soft)}
+  .tblwrap table{width:100%; border-collapse:collapse; background:var(--card); min-width:480px}
+  .tblwrap th{background:var(--bg-2); text-align:left; font:600 .72rem/1 var(--disp); letter-spacing:.06em; text-transform:uppercase; color:var(--muted); padding:14px 20px; border-bottom:1px solid var(--line); white-space:nowrap}
+  .tblwrap td{padding:15px 20px; border-bottom:1px solid var(--line); font-size:.92rem; color:var(--ink-2); vertical-align:top}
+  .tblwrap tr:last-child td{border-bottom:none}
+  .tblwrap .sym{font-family:var(--mono); font-weight:600; color:var(--ink); white-space:nowrap}
+  .tblwrap td b{color:var(--ink); font-weight:600}
+
+  .capline{margin-top:14px; font-size:.86rem; color:var(--muted)}
+
+  /* figbox: svg example bezel card */
+  .figbox{background:var(--card); border-radius:21px; box-shadow:0 0 0 7px var(--shell), 0 0 0 7.5px var(--hair), var(--soft);
+    padding:30px 30px 24px; margin-top:28px}
+  .figbox svg{width:100%; height:auto; display:block; overflow:visible}
+  .figbox .cap{margin-top:16px; font-size:.86rem; color:var(--muted); text-align:center}
+  .figgrid{display:grid; grid-template-columns:1fr 1fr; gap:24px; margin-top:0}
+  @media(max-width:900px){.figgrid{grid-template-columns:1fr}}
+
+  /* code block */
+  .code{background:var(--shell); border:1px solid var(--hair); border-radius:16px; padding:22px 24px; overflow-x:auto; margin-top:22px}
+  .code .fname{font:600 .68rem/1 var(--disp); letter-spacing:.1em; text-transform:uppercase; color:var(--muted); margin-bottom:12px; display:block}
+  .code pre{margin:0; font-family:var(--mono); font-size:.84rem; line-height:1.7; color:var(--ink-2); white-space:pre}
+  .code pre .cm{color:var(--muted)}
+
+  .mmpair{display:grid; grid-template-columns:1fr 1fr; gap:28px; margin-top:0; align-items:start}
+  @media(max-width:900px){.mmpair{grid-template-columns:1fr}}
+  .mmblock{margin-top:44px}
+  .mmblock h3{font-size:1.1rem; font-weight:600; margin-bottom:6px}
+  .mmblock > p.small{margin:0 0 4px; color:var(--muted); font-size:.9rem}
+
+  /* bad -> good pairs */
+  .badgood{margin-top:32px; display:grid; gap:14px}
+  .pair{border-radius:18px; overflow:hidden; box-shadow:0 0 0 7px var(--shell), 0 0 0 7.5px var(--hair), var(--soft); background:var(--card);
+    transition:transform .4s var(--ease), box-shadow .4s var(--ease)}
+  .pair:hover{transform:translateY(-2px)}
+  .pair .row{display:flex; gap:14px; align-items:flex-start; padding:15px 22px; font-size:.92rem}
+  .pair .row.bad{color:var(--ink-2); border-bottom:1px solid var(--line)}
+  .pair .row.good{color:var(--ink-2); background:var(--accent-soft)}
+  .pair .mark{flex:0 0 auto; font:600 .82rem/1.6 var(--disp); width:20px; text-align:center}
+  .pair .row.bad .mark{color:var(--muted)}
+  .pair .row.good .mark{color:var(--accent-2)}
+
+  /* tools tiles */
+  .tiles{display:grid; grid-template-columns:repeat(3,1fr); gap:16px; margin-top:36px}
+  .tile{border-radius:21px; padding:26px 24px 28px; background:var(--card); position:relative;
+    box-shadow:0 0 0 7px var(--shell), 0 0 0 7.5px var(--hair), var(--soft);
+    transition:transform .4s var(--ease), box-shadow .4s var(--ease)}
+  .tile:hover{transform:translateY(-3px)}
+  .tile .no{font:600 .78rem/1 var(--disp); color:var(--accent-2); letter-spacing:.04em}
+  .tile h3{font-size:1.02rem; font-weight:600; margin:14px 0 .5em; font-family:var(--sans); letter-spacing:0}
+  .tile p{margin:0; color:var(--ink-2); font-size:.9rem}
+  @media(max-width:900px){.tiles{grid-template-columns:1fr}}
+
+  ul.clean{list-style:none; padding:0; margin:18px 0 0}
+  ul.clean li{position:relative; padding-left:22px; margin:14px 0; color:var(--ink-2)}
+  ul.clean li::before{content:""; position:absolute; left:0; top:13px; width:11px; height:1.5px; background:var(--accent)}
+  ul.clean li b{color:var(--ink); font-weight:600}
+
+  .grid2{display:grid; grid-template-columns:1fr 1fr; gap:52px; align-items:start}
+  @media(max-width:860px){.grid2{grid-template-columns:1fr; gap:34px}}
+
+  footer{border-top:1px solid var(--line); padding:64px 0 46px; background:var(--bg)}
+  footer h3{font-size:.72rem; font-weight:600; letter-spacing:.12em; text-transform:uppercase; color:var(--muted); margin:0 0 1em; font-family:var(--disp)}
+  .foot-grid{display:grid; grid-template-columns:1.4fr 1fr 1fr; gap:44px}
+  .cite{font-size:.98rem; color:var(--ink-2); line-height:1.7; max-width:56ch; margin-bottom:36px}
+  .muted-s{color:var(--muted); font-size:.9rem; line-height:1.75}
+  .muted-s b{color:var(--ink); font-weight:600}
+  .foot-rule{height:1px; background:var(--line); margin:44px 0 20px}
+  .foot-note{color:var(--muted); font-size:.82rem}
+  @media(max-width:760px){.foot-grid{grid-template-columns:1fr 1fr}}
+  @media(max-width:560px){.foot-grid{grid-template-columns:1fr}}
+
+  @media(max-width:860px){
+    section{padding:72px 0}
+    .hero .wrap{padding-top:52px; padding-bottom:56px}
+    .wrap{padding:0 24px}
+  }
+  @media(max-width:640px){
+    .bar-right .btn:not(.ink){display:none}
+    .brand{font-size:.82rem}
+  }
+</style>
+</head>
+<body class="lang-ja">
+
+<a class="skip" href="#main"><span lang="ja">本文へスキップ</span><span lang="en">Skip to content</span></a>
+
+<header class="bar">
+  <div class="wrap">
+    <a class="brand" href="../index.html">Yuta&nbsp;Kimura<span class="sep">·</span>木村祐太</a>
+    <nav class="navlinks" aria-label="メイン">
+      <a href="../publications.html"><span lang="ja">業績</span><span lang="en">Publications</span></a>
+      <a href="../activities.html"><span lang="ja">活動</span><span lang="en">Activities</span></a>
+      <a href="../software-engineering.html"><span lang="ja">分野紹介</span><span lang="en">Guides</span></a>
+      <a href="../students.html"><span lang="ja">学生の皆さんへ</span><span lang="en">For students</span></a>
+    </nav>
+    <div class="bar-right">
+      <a class="btn" href="index.html"><span lang="ja">科目Top</span><span lang="en">Course top</span></a>
+      <button class="btn ink" onclick="toggleLang()" aria-label="Switch language">
+        <span lang="ja">EN</span><span lang="en">日本語</span>
+      </button>
+    </div>
+  </div>
+</header>
+
+<main id="main">
+
+<!-- HERO -->
+<div class="hero">
+  <div class="wrap">
+    <p class="kick">UML Guide</p>
+    <h1>クラス図・シーケンス図 作成ガイド</h1>
+    <p class="lead">
+      クラス図・シーケンス図の作成課題に取り組むための資料です。課題の進め方、UML記法のポイント（可視性・多重度・関連の種類・メッセージの種類など）、そしてMermaidを使った具体的な作図例を、手順とあわせて紹介します。
+    </p>
+    <p class="jaonly">
+      <span lang="ja">この教材は日本語のみで提供しています。</span>
+      <span lang="en">This learning material is available in Japanese only.</span>
+    </p>
+    <div class="hero-cta">
+      <a class="btn ink" href="#flow" style="padding:12px 22px">
+        <span lang="ja">進め方を見る</span><span lang="en">See the process</span>
+      </a>
+      <a class="tlink" href="index.html">
+        <span lang="ja">科目Topへ戻る</span><span lang="en">Back to course top</span>
+        <span class="ar" aria-hidden="true">&rsaquo;</span>
+      </a>
+    </div>
+  </div>
+</div>
+
+<!-- 1. 進め方の全体像 -->
+<section id="flow" style="padding-top:0">
+  <div class="wrap reveal">
+    <p class="eyebrow"><span lang="ja">進め方の全体像</span><span lang="en">Overview</span></p>
+    <h2 class="big">5ステップで、要求からシーケンス図まで</h2>
+    <p class="lead" style="max-width:var(--readw); margin-top:20px">
+      対象システムの説明を読み、クラス図で静的な構造を、シーケンス図で動的な振る舞いを描く。最後に2つの図の整合性を確認し、見直してから提出する。基本はクラス図からシーケンス図の順だが、行き来しながら洗練させてよい。
+    </p>
+    <div class="flowline">要求を読む<span aria-hidden="true">→</span>クラス図<span aria-hidden="true">→</span>シーケンス図<span aria-hidden="true">→</span>整合性確認<span aria-hidden="true">→</span>見直し・提出</div>
+
+    <div class="steps s5 reveal">
+      <div class="step"><div class="no">01</div><h3>要求を読む</h3><p>対象システムの説明・ユースケースから、登場する「モノ」と「動き」を洗い出す。</p></div>
+      <div class="step"><div class="no">02</div><h3>クラス図</h3><p>「モノ」＝クラスとその属性・操作・関連を整理し、静的構造を描く。</p></div>
+      <div class="step"><div class="no">03</div><h3>シーケンス図</h3><p>「動き」＝ある操作が実行される際のオブジェクト間メッセージを時系列で描く。</p></div>
+      <div class="step"><div class="no">04</div><h3>整合性確認</h3><p>2つの図の登場オブジェクト・メソッド名が一致しているか相互チェックする。</p></div>
+      <div class="step"><div class="no">05</div><h3>見直し・提出</h3><p>記法・粒度・可読性をチェックリストで確認して提出する。</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- 2. UMLと2種類の図の位置づけ -->
+<section class="soft-sec">
+  <div class="wrap">
+    <p class="eyebrow reveal"><span lang="ja">位置づけ</span><span lang="en">Where they fit</span></p>
+    <h2 class="big reveal">UMLと2種類の図の位置づけ</h2>
+    <p class="lead reveal" style="max-width:var(--readw); margin-top:20px">
+      UML（統一モデリング言語）は、ソフトウェアの構造や振る舞いを図で表す共通の記法です。本課題で扱うのは、代表的な次の2つの図です。
+    </p>
+    <div class="defbox reveal">
+      <div class="a">
+        <span class="lbl">構造モデル・静的</span>
+        <h3>クラス図（Class Diagram）</h3>
+        <p>「システムは何でできているか」を表す。</p>
+        <ul>
+          <li>クラス（モノ・概念）とその属性・操作</li>
+          <li>クラス間の関連・継承・多重度</li>
+          <li>時間の概念は持たない（スナップショット）</li>
+          <li>例：会員・注文・商品の関係を表す</li>
+        </ul>
+      </div>
+      <div class="b">
+        <span class="lbl">振る舞いモデル・動的</span>
+        <h3>シーケンス図（Sequence Diagram）</h3>
+        <p>「処理がどう進むか」を時系列で表す。</p>
+        <ul>
+          <li>オブジェクト（ライフライン）間のやりとり</li>
+          <li>メッセージ（メソッド呼び出し）の順序</li>
+          <li>上から下へ時間が流れる</li>
+          <li>例：ログイン処理の手順を表す</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 3. PART 1: クラス図 -->
+<section id="class-diagram">
+  <div class="wrap">
+    <p class="eyebrow reveal">Part 1</p>
+    <h2 class="big reveal">クラス図：システムの静的な構造を表す図</h2>
+    <p class="lead reveal" style="max-width:var(--readw); margin-top:20px">
+      クラスの読み方（名前・属性・操作・可視性）、関連・多重度・集約・コンポジション・継承、作成手順とよくある間違い、Mermaidでの作図例までを順に見ていきます。
+    </p>
+
+    <h3 class="reveal" style="font-size:1.3rem; font-weight:600; margin-top:56px">基本の構成</h3>
+    <p class="reveal" style="max-width:var(--readw); margin-top:12px; color:var(--ink-2)">
+      クラス図は「クラス（箱）」と「クラス間の線（関連）」で構成されます。1つのクラスは、上からクラス名・属性・操作の3つの区画を持ちます。
+    </p>
+    <div class="figbox reveal">
+      <svg viewBox="0 0 640 210" role="img" aria-label="クラスの3区画構造の例（UserクラスとOrderクラス、関連 1 対 多）">
+        <defs>
+          <marker id="assoc-arrow" markerWidth="12" markerHeight="10" refX="9" refY="5" orient="auto">
+            <path d="M0,1 L9,5 L0,9" fill="none" stroke="var(--ink)" stroke-width="1.4"/>
+          </marker>
+        </defs>
+        <!-- User class -->
+        <g stroke="var(--ink)" stroke-width="1.3" fill="none">
+          <rect x="26" y="20" width="220" height="164" fill="var(--card)"/>
+          <line x1="26" y1="56" x2="246" y2="56"/>
+          <line x1="26" y1="118" x2="246" y2="118"/>
+        </g>
+        <text x="136" y="43" text-anchor="middle" font-family="var(--disp)" font-weight="600" font-size="16" fill="var(--ink)">User</text>
+        <g font-family="var(--mono)" font-size="12.5" fill="var(--ink-2)">
+          <text x="38" y="78">-id : int</text>
+          <text x="38" y="98">-name : String</text>
+          <text x="38" y="147">+login() : bool</text>
+        </g>
+
+        <!-- Order class -->
+        <g stroke="var(--ink)" stroke-width="1.3" fill="none">
+          <rect x="394" y="20" width="220" height="164" fill="var(--card)"/>
+          <line x1="394" y1="56" x2="614" y2="56"/>
+          <line x1="394" y1="118" x2="614" y2="118"/>
+        </g>
+        <text x="504" y="43" text-anchor="middle" font-family="var(--disp)" font-weight="600" font-size="16" fill="var(--ink)">Order</text>
+        <g font-family="var(--mono)" font-size="12.5" fill="var(--ink-2)">
+          <text x="406" y="78">-orderId : int</text>
+          <text x="406" y="98">-date : Date</text>
+          <text x="406" y="147">+total() : int</text>
+        </g>
+
+        <!-- association -->
+        <line x1="246" y1="102" x2="394" y2="102" stroke="var(--accent-2)" stroke-width="1.6" marker-end="url(#assoc-arrow)"/>
+        <text x="320" y="90" text-anchor="middle" font-family="var(--mono)" font-size="12" fill="var(--accent-2)">places</text>
+        <text x="258" y="118" font-family="var(--mono)" font-size="12" fill="var(--ink-2)">1</text>
+        <text x="372" y="118" font-family="var(--mono)" font-size="12" fill="var(--ink-2)">*</text>
+      </svg>
+      <p class="cap">1人のUserは0個以上のOrderを持つ（多重度 1 対 *）。区画は上から順にクラス名・属性・操作。</p>
+    </div>
+    <ul class="clean reveal" style="max-width:var(--readw)">
+      <li><b>クラス名</b>：そのクラスが表すモノ・概念（名詞）。先頭は大文字、単数形が基本（例：Order, BankAccount）</li>
+      <li><b>属性（attributes）</b>：クラスが持つデータ。書式は「可視性 名前 : 型」（例：-balance : int）</li>
+      <li><b>操作（operations）</b>：クラスができる振る舞い。書式は「可視性 名前(引数) : 戻り値」（例：+deposit(a:int) : void）</li>
+    </ul>
+
+    <h3 class="reveal" style="font-size:1.3rem; font-weight:600; margin-top:56px">記法ポイント：可視性（visibility）</h3>
+    <p class="reveal" style="max-width:var(--readw); margin-top:12px; color:var(--ink-2)">
+      属性・操作の先頭につける記号で、外部からのアクセス範囲を表します。情報隠蔽の観点から、属性は原則 private（-）にします。
+    </p>
+    <div class="tblwrap reveal">
+      <table>
+        <thead><tr><th>記号</th><th>名称</th><th>アクセスできる範囲</th><th>目安</th></tr></thead>
+        <tbody>
+          <tr><td class="sym">+</td><td>public</td><td>どのクラスからでも</td><td>公開する操作</td></tr>
+          <tr><td class="sym">-</td><td>private</td><td>同じクラス内のみ</td><td>ほぼ全ての属性</td></tr>
+          <tr><td class="sym">#</td><td>protected</td><td>同じクラス＋サブクラス</td><td>継承で使う要素</td></tr>
+          <tr><td class="sym">~</td><td>package</td><td>同じパッケージ内</td><td>限定的に使用</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="callout reveal">
+      <b>覚え方：</b>「+」はプラス＝開放（public）、「-」はマイナス＝閉じる（private）、「#」は階段＝継承（protected）。原則、属性は「-」、操作は必要なものだけ「+」にする。Mermaidでは + - # ~ をメンバー名の前に書くだけで反映される。
+    </div>
+
+    <h3 class="reveal" style="font-size:1.3rem; font-weight:600; margin-top:56px">記法ポイント：関連と多重度</h3>
+    <p class="reveal" style="max-width:var(--readw); margin-top:12px; color:var(--ink-2)">
+      クラス同士のつながりを「関連（線）」で、対応する個数を「多重度」で表します。
+    </p>
+    <div class="tblwrap reveal">
+      <table>
+        <thead><tr><th>多重度</th><th>意味</th></tr></thead>
+        <tbody>
+          <tr><td class="sym">1</td><td>ちょうど1</td></tr>
+          <tr><td class="sym">0..1</td><td>0または1（任意）</td></tr>
+          <tr><td class="sym">* ／ 0..*</td><td>0以上（何個でも）</td></tr>
+          <tr><td class="sym">1..*</td><td>1以上</td></tr>
+          <tr><td class="sym">2..5</td><td>2〜5個</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="reveal" style="max-width:var(--readw); margin-top:18px; color:var(--ink-2); font-size:.95rem">
+      読み方の例：User 側の多重度が 1、Order 側の多重度が * の関連は、「1人の会員は0個以上の注文を持ち、1つの注文は1人の会員に属する」ことを表す（会員・注文・商品の関連と多重度は、この後の作図例で使用）。
+    </p>
+
+    <h3 class="reveal" style="font-size:1.3rem; font-weight:600; margin-top:56px">記法ポイント：関連の種類（線の使い分け）</h3>
+    <p class="reveal" style="max-width:var(--readw); margin-top:12px; color:var(--ink-2)">
+      つながりの強さ・意味によって、線と矢印を使い分けます。迷ったら「関連」で十分です。
+    </p>
+    <div class="figbox reveal">
+      <svg viewBox="0 0 860 300" role="img" aria-label="関連の種類5パターンの線種見本（関連・依存・集約・コンポジション・継承）">
+        <defs>
+          <marker id="rel-arrow-open" markerWidth="14" markerHeight="12" refX="10" refY="6" orient="auto">
+            <path d="M0,1 L10,6 L0,11" fill="none" stroke="var(--ink)" stroke-width="1.3"/>
+          </marker>
+          <marker id="rel-dia-open" markerWidth="20" markerHeight="12" refX="1" refY="6" orient="auto">
+            <path d="M1,6 L10,1 L19,6 L10,11 Z" fill="var(--card)" stroke="var(--ink)" stroke-width="1.2"/>
+          </marker>
+          <marker id="rel-dia-filled" markerWidth="20" markerHeight="12" refX="1" refY="6" orient="auto">
+            <path d="M1,6 L10,1 L19,6 L10,11 Z" fill="var(--ink)" stroke="var(--ink)" stroke-width="1.2"/>
+          </marker>
+          <marker id="rel-tri-hollow" markerWidth="18" markerHeight="14" refX="1" refY="7" orient="auto">
+            <path d="M1,1 L17,7 L1,13 Z" fill="var(--card)" stroke="var(--ink)" stroke-width="1.3"/>
+          </marker>
+        </defs>
+        <!-- row template: node A x=20-90, line 90-230, node B x=230-300 -->
+        <g font-family="var(--disp)" font-weight="600" font-size="12" fill="var(--ink-2)">
+          <text x="55" y="38" text-anchor="middle">A</text>
+          <text x="265" y="38" text-anchor="middle">B</text>
+        </g>
+        <g stroke="var(--faint)" fill="none">
+          <rect x="20" y="18" width="70" height="26" rx="4"/>
+          <rect x="230" y="18" width="70" height="26" rx="4"/>
+        </g>
+
+        <!-- 1 association -->
+        <line x1="90" y1="31" x2="230" y2="31" stroke="var(--ink)" stroke-width="1.5"/>
+        <text x="330" y="27" font-family="var(--sans)" font-weight="600" font-size="13" fill="var(--ink)">関連（association）</text>
+        <text x="330" y="43" font-family="var(--mono)" font-size="11.5" fill="var(--muted)">Mermaid: A -- B ／ 最も基本のつながり</text>
+
+        <!-- 2 dependency -->
+        <g transform="translate(0,56)">
+          <g stroke="var(--faint)" fill="none"><rect x="20" y="18" width="70" height="26" rx="4"/><rect x="230" y="18" width="70" height="26" rx="4"/></g>
+          <text x="55" y="38" text-anchor="middle" font-family="var(--disp)" font-weight="600" font-size="12" fill="var(--ink-2)">A</text>
+          <text x="265" y="38" text-anchor="middle" font-family="var(--disp)" font-weight="600" font-size="12" fill="var(--ink-2)">B</text>
+          <line x1="90" y1="31" x2="222" y2="31" stroke="var(--ink)" stroke-width="1.4" stroke-dasharray="5 4" marker-end="url(#rel-arrow-open)"/>
+          <text x="330" y="27" font-family="var(--sans)" font-weight="600" font-size="13" fill="var(--ink)">依存（dependency）</text>
+          <text x="330" y="43" font-family="var(--mono)" font-size="11.5" fill="var(--muted)">Mermaid: A ..&gt; B ／ 一時的な利用（引数・戻り値）</text>
+        </g>
+
+        <!-- 3 aggregation -->
+        <g transform="translate(0,112)">
+          <g stroke="var(--faint)" fill="none"><rect x="20" y="18" width="70" height="26" rx="4"/><rect x="230" y="18" width="70" height="26" rx="4"/></g>
+          <text x="55" y="38" text-anchor="middle" font-family="var(--disp)" font-weight="600" font-size="12" fill="var(--ink-2)">A</text>
+          <text x="265" y="38" text-anchor="middle" font-family="var(--disp)" font-weight="600" font-size="12" fill="var(--ink-2)">B</text>
+          <line x1="108" y1="31" x2="230" y2="31" stroke="var(--ink)" stroke-width="1.5" marker-start="url(#rel-dia-open)"/>
+          <text x="330" y="27" font-family="var(--sans)" font-weight="600" font-size="13" fill="var(--ink)">集約（aggregation）</text>
+          <text x="330" y="43" font-family="var(--mono)" font-size="11.5" fill="var(--muted)">Mermaid: A o-- B ／ 全体と部分、部分は単独でも存在できる</text>
+        </g>
+
+        <!-- 4 composition -->
+        <g transform="translate(0,168)">
+          <g stroke="var(--faint)" fill="none"><rect x="20" y="18" width="70" height="26" rx="4"/><rect x="230" y="18" width="70" height="26" rx="4"/></g>
+          <text x="55" y="38" text-anchor="middle" font-family="var(--disp)" font-weight="600" font-size="12" fill="var(--ink-2)">A</text>
+          <text x="265" y="38" text-anchor="middle" font-family="var(--disp)" font-weight="600" font-size="12" fill="var(--ink-2)">B</text>
+          <line x1="108" y1="31" x2="230" y2="31" stroke="var(--ink)" stroke-width="1.5" marker-start="url(#rel-dia-filled)"/>
+          <text x="330" y="27" font-family="var(--sans)" font-weight="600" font-size="13" fill="var(--ink)">コンポジション（composition）</text>
+          <text x="330" y="43" font-family="var(--mono)" font-size="11.5" fill="var(--muted)">Mermaid: A *-- B ／ 強い全体と部分、全体が消えると部分も消える</text>
+        </g>
+
+        <!-- 5 inheritance -->
+        <g transform="translate(0,224)">
+          <g stroke="var(--faint)" fill="none"><rect x="20" y="18" width="70" height="26" rx="4"/><rect x="230" y="18" width="70" height="26" rx="4"/></g>
+          <text x="55" y="38" text-anchor="middle" font-family="var(--disp)" font-weight="600" font-size="12" fill="var(--ink-2)">A</text>
+          <text x="265" y="38" text-anchor="middle" font-family="var(--disp)" font-weight="600" font-size="12" fill="var(--ink-2)">B</text>
+          <line x1="90" y1="31" x2="212" y2="31" stroke="var(--ink)" stroke-width="1.5" marker-end="url(#rel-tri-hollow)"/>
+          <text x="330" y="27" font-family="var(--sans)" font-weight="600" font-size="13" fill="var(--ink)">継承／汎化（generalization）</text>
+          <text x="330" y="43" font-family="var(--mono)" font-size="11.5" fill="var(--muted)">Mermaid: A &lt;|-- B ／ is-a、子は親の一種（中空三角）</text>
+        </g>
+      </svg>
+      <p class="cap">左のA・Bはクラスを表す模式図。線の実線・破線と端の記号（ひし形・三角）で関連の種類が変わる。</p>
+    </div>
+    <div class="tblwrap reveal">
+      <table>
+        <thead><tr><th>種類</th><th>意味</th><th>Mermaid記法</th><th>例</th></tr></thead>
+        <tbody>
+          <tr><td><b>関連</b>（association）</td><td>2つのクラスに構造的なつながりがある。最も基本</td><td class="sym">--</td><td>会員と注文</td></tr>
+          <tr><td><b>依存</b>（dependency）</td><td>一時的に利用する（引数・戻り値など）</td><td class="sym">..&gt;</td><td>注文と日付</td></tr>
+          <tr><td><b>集約</b>（aggregation）</td><td>全体と部分。部分は単独でも存在できる</td><td class="sym">o--</td><td>チームと社員</td></tr>
+          <tr><td><b>コンポジション</b>（composition）</td><td>強い全体と部分。全体が消えると部分も消える</td><td class="sym">*--</td><td>注文と明細</td></tr>
+          <tr><td><b>継承／汎化</b>（generalization）</td><td>is-a。子は親の一種（中空三角）</td><td class="sym">&lt;|--</td><td>会員と利用者</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h3 class="reveal" style="font-size:1.3rem; font-weight:600; margin-top:56px">クラス図の作成手順（6ステップ）</h3>
+    <div class="steps s6 reveal">
+      <div class="step"><div class="no">STEP 1</div><h3>名詞を抜き出す</h3><p>要求文・ユースケースから登場する「モノ・概念」（名詞）を洗い出す。これがクラス候補になる。</p></div>
+      <div class="step"><div class="no">STEP 2</div><h3>クラスを選ぶ</h3><p>候補から重要なものをクラスにする。単なる属性で済むもの（氏名・金額など）は除外する。</p></div>
+      <div class="step"><div class="no">STEP 3</div><h3>属性・操作を入れる</h3><p>各クラスが「持つデータ」と「できること」を書く。可視性（- + #）も忘れずに付ける。</p></div>
+      <div class="step"><div class="no">STEP 4</div><h3>関連を引く</h3><p>関係するクラスを線でつなぐ。動詞（〜が〜を持つ／使う）が関連のヒントになる。</p></div>
+      <div class="step"><div class="no">STEP 5</div><h3>多重度を付ける</h3><p>関連の両端に個数（1, *, 0..1 など）を書く。線の種類（集約・継承）も判断する。</p></div>
+      <div class="step"><div class="no">STEP 6</div><h3>見直す</h3><p>孤立クラスがないか、命名は統一されているか、粒度は適切かを確認する。</p></div>
+    </div>
+
+    <h3 class="reveal" style="font-size:1.3rem; font-weight:600; margin-top:56px">よくある間違い（Bad → Good）</h3>
+    <div class="badgood reveal">
+      <div class="pair">
+        <div class="row bad"><span class="mark">&#10005;</span><span>属性に可視性を付けていない（名前だけ）</span></div>
+        <div class="row good"><span class="mark">&#9678;</span><span>-name : String のように可視性＋型を明記する</span></div>
+      </div>
+      <div class="pair">
+        <div class="row bad"><span class="mark">&#10005;</span><span>クラス名が動詞・複数形（例：「注文する」「Orders」）</span></div>
+        <div class="row good"><span class="mark">&#9678;</span><span>クラス名は名詞・単数形にする（Order, Customer）</span></div>
+      </div>
+      <div class="pair">
+        <div class="row bad"><span class="mark">&#10005;</span><span>氏名や金額など、ただの値を独立クラスにしている</span></div>
+        <div class="row good"><span class="mark">&#9678;</span><span>値は属性にする。独立して扱う概念だけクラス化する</span></div>
+      </div>
+      <div class="pair">
+        <div class="row bad"><span class="mark">&#10005;</span><span>多重度を書かず、関連の意味が読み取れない</span></div>
+        <div class="row good"><span class="mark">&#9678;</span><span>両端に 1 / * などの多重度を必ず付ける</span></div>
+      </div>
+      <div class="pair">
+        <div class="row bad"><span class="mark">&#10005;</span><span>なんでもコンポジション（◆）でつないでいる</span></div>
+        <div class="row good"><span class="mark">&#9678;</span><span>強い包含だけ◆にし、基本は関連（線のみ）か集約（◇）にする</span></div>
+      </div>
+    </div>
+
+    <div class="mmblock reveal">
+      <h3>Mermaidで描く①：基本（classDiagram）</h3>
+      <p class="small">Mermaidはテキストで図を書ける記法。先頭に classDiagram と書き、class でクラスを定義する。</p>
+      <div class="code">
+        <span class="fname">order.mmd</span>
+        <pre>classDiagram
+    class User {
+        -id : int
+        -name : String
+        +login() bool
+    }
+    class Order {
+        -orderId : int
+        -date : Date
+        +total() int
+    }
+    %% 関連 + 多重度 + ラベル
+    User "1" --&gt; "*" Order : places</pre>
+      </div>
+      <p class="capline">上のコードが描画されると、区画つきのUserクラス・Orderクラスと、多重度付きの関連（本節冒頭の図）になる。</p>
+    </div>
+
+    <div class="mmblock reveal">
+      <h3>Mermaidで描く②：関連・継承の記号</h3>
+      <p class="small">クラス間の記号を覚えれば、関連の種類を簡単に書き分けられる。</p>
+      <div class="code">
+        <span class="fname">relations.mmd</span>
+        <pre>classDiagram
+    User &lt;|-- Member
+    %% 継承（汎化）：中空三角
+    Order "1" *-- "*" OrderItem
+    %% コンポジション：黒ひし形
+    OrderItem "*" --&gt; "1" Product
+    %% 関連 + 多重度
+    Order ..&gt; Coupon
+    %% 依存：破線矢印</pre>
+      </div>
+      <div class="tblwrap" style="margin-top:22px">
+        <table>
+          <thead><tr><th>記号</th><th>関連の種類</th></tr></thead>
+          <tbody>
+            <tr><td class="sym">&lt;|--</td><td>継承（汎化）</td></tr>
+            <tr><td class="sym">*--</td><td>コンポジション</td></tr>
+            <tr><td class="sym">o--</td><td>集約</td></tr>
+            <tr><td class="sym">--&gt;</td><td>関連（矢印あり）</td></tr>
+            <tr><td class="sym">..&gt;</td><td>依存</td></tr>
+            <tr><td class="sym">&lt;|..</td><td>実現（インタフェース実装）</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 4. PART 2: シーケンス図 -->
+<section id="sequence-diagram" class="soft-sec">
+  <div class="wrap">
+    <p class="eyebrow reveal">Part 2</p>
+    <h2 class="big reveal">シーケンス図：オブジェクト間のやりとりを時系列で表す図</h2>
+    <p class="lead reveal" style="max-width:var(--readw); margin-top:20px">
+      ライフライン・アクティベーション・メッセージ、同期／非同期／返信メッセージの書き分け、alt・opt・loopによる条件分岐と繰り返し、作成手順とMermaidでの作図例までを見ていきます。
+    </p>
+
+    <h3 class="reveal" style="font-size:1.3rem; font-weight:600; margin-top:56px">基本の構成</h3>
+    <p class="reveal" style="max-width:var(--readw); margin-top:12px; color:var(--ink-2)">
+      上部に並ぶオブジェクト（ライフライン）の間で、メッセージが上から下へ時間順にやりとりされる様子を表します。
+    </p>
+    <div class="figbox reveal">
+      <svg viewBox="0 0 680 400" role="img" aria-label="検索処理のシーケンス図の基本構成（User・UI・Controller・Databaseの検索処理）">
+        <defs>
+          <marker id="seq-filled" markerWidth="12" markerHeight="10" refX="9" refY="5" orient="auto">
+            <path d="M0,0 L10,5 L0,10 Z" fill="var(--ink)"/>
+          </marker>
+          <marker id="seq-open" markerWidth="12" markerHeight="10" refX="9" refY="5" orient="auto">
+            <path d="M0,1 L9,5 L0,9" fill="none" stroke="var(--ink-2)" stroke-width="1.3"/>
+          </marker>
+        </defs>
+        <!-- lifelines -->
+        <g stroke="var(--faint)" fill="var(--bg-2)">
+          <rect x="24" y="8" width="72" height="26" rx="6"/>
+          <rect x="214" y="8" width="72" height="26" rx="6"/>
+          <rect x="384" y="8" width="112" height="26" rx="6"/>
+          <rect x="574" y="8" width="92" height="26" rx="6"/>
+        </g>
+        <g font-family="var(--sans)" font-weight="600" font-size="13" fill="var(--ink)">
+          <text x="60" y="26" text-anchor="middle">User</text>
+          <text x="250" y="26" text-anchor="middle">UI</text>
+          <text x="440" y="26" text-anchor="middle">Controller</text>
+          <text x="620" y="26" text-anchor="middle">Database</text>
+        </g>
+        <g stroke="var(--faint)" stroke-width="1.2" stroke-dasharray="3 4">
+          <line x1="60" y1="34" x2="60" y2="380"/>
+          <line x1="250" y1="34" x2="250" y2="380"/>
+          <line x1="440" y1="34" x2="440" y2="380"/>
+          <line x1="620" y1="34" x2="620" y2="380"/>
+        </g>
+        <!-- activation bars -->
+        <g stroke="var(--ink)" stroke-width="1" fill="var(--card)">
+          <rect x="245" y="70" width="10" height="270"/>
+          <rect x="435" y="110" width="10" height="190"/>
+          <rect x="615" y="150" width="10" height="40"/>
+        </g>
+        <!-- messages -->
+        <g font-family="var(--mono)" font-size="11.5" fill="var(--ink-2)">
+          <text x="66" y="66">1: click Search</text>
+          <text x="256" y="106">2: search(keyword)</text>
+          <text x="446" y="146">3: query(keyword)</text>
+          <text x="446" y="186">4: result rows</text>
+          <text x="256" y="296">5: view model</text>
+          <text x="66" y="336">6: show results</text>
+        </g>
+        <g stroke="var(--ink)" stroke-width="1.4">
+          <line x1="60" y1="70" x2="243" y2="70" marker-end="url(#seq-filled)"/>
+          <line x1="250" y1="110" x2="433" y2="110" marker-end="url(#seq-filled)"/>
+          <line x1="440" y1="150" x2="613" y2="150" marker-end="url(#seq-filled)"/>
+        </g>
+        <g stroke="var(--ink-2)" stroke-width="1.2" stroke-dasharray="5 4">
+          <line x1="620" y1="190" x2="447" y2="190" marker-end="url(#seq-open)"/>
+          <line x1="440" y1="300" x2="257" y2="300" marker-end="url(#seq-open)"/>
+          <line x1="250" y1="340" x2="67" y2="340" marker-end="url(#seq-open)"/>
+        </g>
+      </svg>
+      <p class="cap">ライフライン＝オブジェクト＋点線。細い矩形＝アクティベーション（処理中）。実線＋塗り矢じり＝呼び出し、破線＋線矢じり＝戻り（返信）。番号順に時間が上から下へ流れる。</p>
+    </div>
+
+    <h3 class="reveal" style="font-size:1.3rem; font-weight:600; margin-top:56px">記法ポイント：メッセージの種類</h3>
+    <div class="tblwrap reveal">
+      <table>
+        <thead><tr><th>種類</th><th>意味</th><th>Mermaid記法</th></tr></thead>
+        <tbody>
+          <tr><td><b>同期メッセージ</b></td><td>相手の処理完了を待つ呼び出し。通常のメソッド呼び出し（実線＋塗り矢じり）</td><td class="sym">-&gt;&gt;</td></tr>
+          <tr><td><b>返信メッセージ</b></td><td>呼び出し元へ結果を返す。省略されることもある（破線）</td><td class="sym">--&gt;&gt;</td></tr>
+          <tr><td><b>非同期メッセージ</b></td><td>完了を待たずに次へ進む。並行処理など（実線＋線矢じり）</td><td class="sym">-)</td></tr>
+          <tr><td><b>自己メッセージ</b></td><td>同じオブジェクト内のメソッド呼び出し</td><td class="sym">同じ相手を指定</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="reveal capline" style="max-width:var(--readw)">矢じりの形と線（実線／破線）で意味が変わる。まずは「同期（-&gt;&gt;）＋返信（--&gt;&gt;）」を押さえればよい。</p>
+
+    <h3 class="reveal" style="font-size:1.3rem; font-weight:600; margin-top:56px">記法ポイント：制御構造（alt / opt / loop）</h3>
+    <p class="reveal" style="max-width:var(--readw); margin-top:12px; color:var(--ink-2)">
+      複数のメッセージを枠（フラグメント）で囲み、条件分岐や繰り返しを表現します。
+    </p>
+    <div class="tblwrap reveal">
+      <table>
+        <thead><tr><th>制御構造</th><th>意味</th><th>例</th></tr></thead>
+        <tbody>
+          <tr><td class="sym">alt（分岐）</td><td>条件で処理が分かれる（if / else）。枠を区切り条件を併記する</td><td>[valid] / [invalid]</td></tr>
+          <tr><td class="sym">opt（任意）</td><td>条件を満たすときだけ実行する（elseなし）。省略可能な処理に使う</td><td>[在庫あり]</td></tr>
+          <tr><td class="sym">loop（繰り返し）</td><td>条件の間、処理を繰り返す。枠に繰り返し条件を書く</td><td>[全明細について]</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="figbox reveal">
+      <svg viewBox="0 0 620 340" role="img" aria-label="altによる分岐を使ったログイン処理の例（valid / invalid）">
+        <defs>
+          <marker id="alt-filled" markerWidth="12" markerHeight="10" refX="9" refY="5" orient="auto">
+            <path d="M0,0 L10,5 L0,10 Z" fill="var(--ink)"/>
+          </marker>
+          <marker id="alt-open" markerWidth="12" markerHeight="10" refX="9" refY="5" orient="auto">
+            <path d="M0,1 L9,5 L0,9" fill="none" stroke="var(--ink-2)" stroke-width="1.3"/>
+          </marker>
+        </defs>
+        <g stroke="var(--faint)" fill="var(--bg-2)">
+          <rect x="24" y="8" width="72" height="26" rx="6"/>
+          <rect x="254" y="8" width="92" height="26" rx="6"/>
+          <rect x="484" y="8" width="112" height="26" rx="6"/>
+        </g>
+        <g font-family="var(--sans)" font-weight="600" font-size="13" fill="var(--ink)">
+          <text x="60" y="26" text-anchor="middle">User</text>
+          <text x="300" y="26" text-anchor="middle">LoginUI</text>
+          <text x="540" y="26" text-anchor="middle">AuthService</text>
+        </g>
+        <g stroke="var(--faint)" stroke-width="1.2" stroke-dasharray="3 4">
+          <line x1="60" y1="34" x2="60" y2="326"/>
+          <line x1="300" y1="34" x2="300" y2="326"/>
+          <line x1="540" y1="34" x2="540" y2="326"/>
+        </g>
+        <!-- opening message -->
+        <line x1="60" y1="58" x2="293" y2="58" stroke="var(--ink)" stroke-width="1.4" marker-end="url(#alt-filled)"/>
+        <text x="66" y="52" font-family="var(--mono)" font-size="11" fill="var(--ink-2)">submit(id, pw)</text>
+
+        <!-- alt frame -->
+        <rect x="40" y="76" width="540" height="240" fill="none" stroke="var(--ink)" stroke-width="1.3"/>
+        <path d="M40,76 H130 V92 L118,104 H40 Z" fill="var(--bg-2)" stroke="var(--ink)" stroke-width="1.1"/>
+        <text x="50" y="94" font-family="var(--disp)" font-weight="700" font-size="11.5" fill="var(--ink)">alt</text>
+        <text x="80" y="94" font-family="var(--mono)" font-size="11" fill="var(--ink-2)">[valid]</text>
+
+        <!-- valid branch -->
+        <line x1="300" y1="118" x2="533" y2="118" stroke="var(--ink)" stroke-width="1.4" marker-end="url(#alt-filled)"/>
+        <text x="306" y="112" font-family="var(--mono)" font-size="10.5" fill="var(--ink-2)">verify(id, pw)</text>
+        <line x1="540" y1="146" x2="307" y2="146" stroke="var(--ink-2)" stroke-width="1.2" stroke-dasharray="5 4" marker-end="url(#alt-open)"/>
+        <text x="306" y="140" font-family="var(--mono)" font-size="10.5" fill="var(--ink-2)">ok</text>
+        <line x1="300" y1="174" x2="67" y2="174" stroke="var(--ink-2)" stroke-width="1.2" stroke-dasharray="5 4" marker-end="url(#alt-open)"/>
+        <text x="66" y="168" font-family="var(--mono)" font-size="10.5" fill="var(--ink-2)">go to home</text>
+
+        <!-- divider -->
+        <line x1="40" y1="196" x2="580" y2="196" stroke="var(--ink)" stroke-width="1.1" stroke-dasharray="6 4"/>
+        <text x="50" y="212" font-family="var(--mono)" font-size="11" fill="var(--ink-2)">else [invalid]</text>
+
+        <!-- invalid branch -->
+        <line x1="540" y1="238" x2="307" y2="238" stroke="var(--ink-2)" stroke-width="1.2" stroke-dasharray="5 4" marker-end="url(#alt-open)"/>
+        <text x="306" y="232" font-family="var(--mono)" font-size="10.5" fill="var(--ink-2)">error</text>
+        <line x1="300" y1="270" x2="67" y2="270" stroke="var(--ink-2)" stroke-width="1.2" stroke-dasharray="5 4" marker-end="url(#alt-open)"/>
+        <text x="66" y="264" font-family="var(--mono)" font-size="10.5" fill="var(--ink-2)">show message</text>
+      </svg>
+      <p class="cap">alt枠の左上タブに条件（valid）、区切り線の下にelseの条件（invalid）を書く。Mermaidでは alt ... else ... end で囲む。</p>
+    </div>
+    <p class="reveal capline" style="max-width:var(--readw)">Mermaidでは alt / opt / loop ... end で囲む。altの分岐はelseで区切る。枠は入れ子（ネスト）にもできるが、使いすぎると読みにくいので主要な流れに絞る。</p>
+
+    <h3 class="reveal" style="font-size:1.3rem; font-weight:600; margin-top:56px">シーケンス図の作成手順（6ステップ）</h3>
+    <div class="steps s6 reveal">
+      <div class="step"><div class="no">STEP 1</div><h3>ユースケースを1つ選ぶ</h3><p>「ログインする」「商品を検索する」など、1つの代表的な処理シナリオを決める。</p></div>
+      <div class="step"><div class="no">STEP 2</div><h3>登場オブジェクトを並べる</h3><p>関わるアクター・画面・制御・データなどを上部に左から並べる（クラス図のクラスと対応）。</p></div>
+      <div class="step"><div class="no">STEP 3</div><h3>開始メッセージを描く</h3><p>アクターの操作を起点に、最初の矢印を引く（例：User → UI）。</p></div>
+      <div class="step"><div class="no">STEP 4</div><h3>やりとりを順に追う</h3><p>処理の流れに沿って、呼び出し→戻りのメッセージを上から順に描く。</p></div>
+      <div class="step"><div class="no">STEP 5</div><h3>条件・繰り返しを囲む</h3><p>分岐や繰り返しがあれば alt / opt / loop の枠で囲む。</p></div>
+      <div class="step"><div class="no">STEP 6</div><h3>整合性を確認</h3><p>メッセージ名がクラス図の操作名と一致しているかを確認する。</p></div>
+    </div>
+
+    <h3 class="reveal" style="font-size:1.3rem; font-weight:600; margin-top:56px">よくある間違い（Bad → Good）</h3>
+    <div class="badgood reveal">
+      <div class="pair">
+        <div class="row bad"><span class="mark">&#10005;</span><span>1枚に全シナリオを詰め込み、矢印が大量で読めない</span></div>
+        <div class="row good"><span class="mark">&#9678;</span><span>1図＝1ユースケース。主要な流れに絞る</span></div>
+      </div>
+      <div class="pair">
+        <div class="row bad"><span class="mark">&#10005;</span><span>戻りの矢印（破線）が無く、結果が返るのか不明</span></div>
+        <div class="row good"><span class="mark">&#9678;</span><span>呼び出し（実線）と戻り（破線）をセットで描く</span></div>
+      </div>
+      <div class="pair">
+        <div class="row bad"><span class="mark">&#10005;</span><span>メッセージ名が日本語の文章（「データを調べる」）</span></div>
+        <div class="row good"><span class="mark">&#9678;</span><span>メソッド名で書く（search(keyword)）</span></div>
+      </div>
+      <div class="pair">
+        <div class="row bad"><span class="mark">&#10005;</span><span>クラス図に無いオブジェクトが突然登場する</span></div>
+        <div class="row good"><span class="mark">&#9678;</span><span>登場オブジェクトはクラス図のクラスと対応させる</span></div>
+      </div>
+      <div class="pair">
+        <div class="row bad"><span class="mark">&#10005;</span><span>時間の流れ（上→下）が守られていない</span></div>
+        <div class="row good"><span class="mark">&#9678;</span><span>上から下へ時系列。番号で順序を明示する</span></div>
+      </div>
+    </div>
+
+    <div class="mmblock reveal">
+      <h3>Mermaidで描く①：基本（sequenceDiagram）</h3>
+      <p class="small">先頭に sequenceDiagram。participant で登場人物、矢印でメッセージを書く。-&gt;&gt;は呼び出し、--&gt;&gt;は戻り。</p>
+      <div class="code">
+        <span class="fname">search.mmd</span>
+        <pre>sequenceDiagram
+    actor User
+    participant UI
+    participant Controller
+    participant Database
+    User-&gt;&gt;UI: click Search
+    UI-&gt;&gt;Controller: search(keyword)
+    Controller-&gt;&gt;Database: query(keyword)
+    Database--&gt;&gt;Controller: result rows
+    Controller--&gt;&gt;UI: view model
+    UI--&gt;&gt;User: show results</pre>
+      </div>
+      <p class="capline">上のコードを描画すると、本節冒頭の検索処理のシーケンス図になる。</p>
+    </div>
+
+    <div class="mmblock reveal">
+      <h3>Mermaidで描く②：alt / loop</h3>
+      <p class="small">alt ... else ... end で分岐、loop ... end で繰り返しを囲む。</p>
+      <div class="code">
+        <span class="fname">login.mmd</span>
+        <pre>sequenceDiagram
+    actor User
+    participant LoginUI
+    participant AuthService
+    User-&gt;&gt;LoginUI: submit(id, pw)
+    alt valid
+        LoginUI-&gt;&gt;AuthService: verify(id, pw)
+        AuthService--&gt;&gt;LoginUI: ok
+        LoginUI--&gt;&gt;User: go to home
+    else invalid
+        AuthService--&gt;&gt;LoginUI: error
+        LoginUI--&gt;&gt;User: show message
+    end</pre>
+      </div>
+      <p class="capline">上のコードを描画すると、本節のalt枠を使ったログイン処理の図になる。</p>
+    </div>
+  </div>
+</section>
+
+<!-- 5. 2つの図の関係 -->
+<section id="relationship">
+  <div class="wrap">
+    <div class="grid2">
+      <div class="reveal">
+        <p class="eyebrow">2図の関係</p>
+        <h2 class="big">クラス図とシーケンス図の関係</h2>
+      </div>
+      <div class="reveal">
+        <p class="lead" style="margin-top:6px">
+          2つの図は別物ではなく、同じシステムを別の側面から見たものです。互いに整合している必要があります。
+        </p>
+        <ul class="clean">
+          <li><b>クラス図 → シーケンス図：</b>クラス図の「クラス」＝シーケンス図の「オブジェクト」になる。クラス図の「操作（メソッド）」＝シーケンス図の「メッセージ」になる</li>
+          <li><b>シーケンス図 → クラス図：</b>シーケンス図で必要になったメッセージ＝クラスに必要な操作。やりとりに登場したのに対応クラスが無ければ追加を検討する</li>
+        </ul>
+        <div class="callout" style="margin-top:24px">
+          <b>相互チェックの例：</b>シーケンス図に「UI -&gt; Controller : search(keyword)」があるなら、クラス図のControllerクラスに「+search(keyword)」という操作があるはず。無ければ、どちらかの図が不完全なので、両方を見比べて補う。
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 6. 提出前チェックリスト -->
+<section class="soft-sec" id="checklist">
+  <div class="wrap">
+    <p class="eyebrow reveal">提出前</p>
+    <h2 class="big reveal">提出前チェックリスト</h2>
+    <p class="lead reveal" style="max-width:var(--readw); margin-top:20px">提出する前に、クラス図・シーケンス図それぞれで次の項目を確認する。</p>
+    <div class="defbox checklist reveal">
+      <div class="a">
+        <span class="lbl">クラス図</span>
+        <h3>5項目</h3>
+        <ul>
+          <li>クラス名は名詞・単数形になっているか</li>
+          <li>属性・操作に可視性（+ - #）を付けたか</li>
+          <li>関連の両端に多重度を書いたか</li>
+          <li>線の種類（関連／集約／継承）は適切か</li>
+          <li>孤立した（線のない）クラスは無いか</li>
+        </ul>
+      </div>
+      <div class="b">
+        <span class="lbl">シーケンス図</span>
+        <h3>5項目</h3>
+        <ul>
+          <li>1図＝1ユースケースに絞れているか</li>
+          <li>呼び出し（実線）と戻り（破線）が揃っているか</li>
+          <li>メッセージ名はメソッド名で書いたか</li>
+          <li>登場オブジェクトはクラス図と対応するか</li>
+          <li>alt/opt/loopの条件を書いたか</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 7. 参考ツールと作図のコツ・まとめ -->
+<section id="tips">
+  <div class="wrap">
+    <p class="eyebrow reveal">最後に</p>
+    <h2 class="big reveal">参考ツールと作図のコツ・まとめ</h2>
+
+    <p class="reveal" style="max-width:var(--readw); margin-top:20px; color:var(--ink-2)">作図ツール</p>
+    <div class="tiles reveal">
+      <div class="tile">
+        <div class="no">01</div>
+        <h3>Mermaid</h3>
+        <p>テキストで記述する。Markdown/GitHubで表示でき、修正・履歴管理が容易。Mermaid Live Editor（ブラウザ）で即プレビューできる。</p>
+      </div>
+      <div class="tile">
+        <div class="no">02</div>
+        <h3>draw.io / diagrams.net</h3>
+        <p>ドラッグ操作で直感的に作図できるツール。</p>
+      </div>
+      <div class="tile">
+        <div class="no">03</div>
+        <h3>PlantUML</h3>
+        <p>テキスト記述で作図する、より詳細なUMLに対応したツール。</p>
+      </div>
+    </div>
+
+    <p class="reveal" style="max-width:var(--readw); margin-top:56px; color:var(--ink-2)">作図のコツ</p>
+    <ul class="clean reveal" style="max-width:var(--readw)">
+      <li>いきなり清書せず、紙やホワイトボードで下書きする</li>
+      <li>最初から完璧を目指さず、描いては直すを繰り返す</li>
+      <li>要素を詰め込みすぎない（重要なものに絞る）</li>
+      <li>命名はクラス図・シーケンス図で統一する</li>
+    </ul>
+
+    <div class="callout reveal" style="margin-top:56px; max-width:none">
+      <b>まとめ：</b>クラス図＝静的な構造、シーケンス図＝動的な振る舞い。役割を意識して描き分ける。記法（可視性・多重度・関連・メッセージ）を正しく使い、2つの図の整合性を保つ。まずは手を動かす。Mermaidなら少ない記述で素早く試行錯誤できる。困ったらこの資料に戻ろう。
+    </div>
+
+    <div class="hero-cta reveal" style="margin-top:40px">
+      <a class="btn ink" href="index.html" style="padding:11px 20px">
+        <span lang="ja">科目Topへ戻る</span><span lang="en">Back to course top</span>
+        <span class="ic" aria-hidden="true">&rsaquo;</span>
+      </a>
+      <a class="tlink" href="../software-engineering.html">
+        <span lang="ja">ソフトウェア工学とは</span><span lang="en">What is software engineering?</span>
+        <span class="ar" aria-hidden="true">&rsaquo;</span>
+      </a>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<!-- FOOTER -->
+<footer>
+  <div class="wrap">
+    <div class="cite">
+      <span lang="ja">授業の詳細（評価方法・日程等）は最新のシラバスを確認してください。このページはクラス図・シーケンス図の課題向けの作成ガイドです。木村祐太の研究サイトの一部としてご覧いただけます。</span>
+      <span lang="en">Please check the latest syllabus for course details such as grading and schedule. This page is a guide to the class-diagram and sequence-diagram assignment, part of Yuta Kimura's research site.</span>
+    </div>
+    <div class="foot-grid">
+      <div>
+        <h3><span lang="ja">連絡先</span><span lang="en">Contact</span></h3>
+        <p class="muted-s">
+          <b>木村 祐太 / Yuta Kimura</b><br>
+          <span lang="ja">大阪公立大学工業高等専門学校</span><span lang="en">Osaka Metropolitan University College of Technology</span><br>
+          <a href="mailto:y.kimura@omu.ac.jp">y.kimura [at] omu.ac.jp</a>
+        </p>
+      </div>
+      <div>
+        <h3><span lang="ja">サイト</span><span lang="en">Site</span></h3>
+        <p class="muted-s">
+          <a href="../index.html"><span lang="ja">ホーム</span><span lang="en">Home</span></a><br>
+          <a href="../publications.html"><span lang="ja">業績一覧</span><span lang="en">All publications</span></a><br>
+          <a href="../activities.html"><span lang="ja">研究・教育活動</span><span lang="en">Projects &amp; teaching</span></a><br>
+          <a href="../software-engineering.html"><span lang="ja">ソフトウェア工学とは</span><span lang="en">What is software engineering?</span></a><br>
+          <a href="../technical-debt.html"><span lang="ja">技術的負債とは</span><span lang="en">What is technical debt?</span></a><br>
+          <a href="../students.html"><span lang="ja">学生の皆さんへ</span><span lang="en">For students</span></a><br>
+          <a href="../glossary.html"><span lang="ja">用語集</span><span lang="en">Glossary</span></a>
+        </p>
+      </div>
+      <div>
+        <h3><span lang="ja">研究</span><span lang="en">Research</span></h3>
+        <p class="muted-s">
+          <a href="../research/technical-debt-metrics.html"><span lang="ja">メトリクスによる分類・特徴づけ</span><span lang="en">Classifying debt with metrics</span></a><br>
+          <a href="../research/apr-coding-standards.html"><span lang="ja">自動生成パッチと品質</span><span lang="en">Auto-generated patches and quality</span></a><br>
+          <a href="../research/td-repayment-refactoring.html"><span lang="ja">返済とリファクタリング</span><span lang="en">Repayment and refactoring</span></a><br>
+          <a href="../research/satd-issue-classification.html"><span lang="ja">TD-Issue の自動分類</span><span lang="en">Automatic TD-Issue classification</span></a><br>
+          <a href="https://researchmap.jp/kimura_yuta" target="_blank" rel="noopener">researchmap</a>
+        </p>
+      </div>
+    </div>
+    <div class="foot-rule"></div>
+    <p class="foot-note">
+      <span lang="ja">© 2026 Yuta Kimura. 本ガイドは2026年度（令和8年度）ソフトウェア工学の授業教材（クラス図・シーケンス図 作成ガイド）に基づく。</span>
+      <span lang="en">© 2026 Yuta Kimura. This guide is based on the Software Engineering course material for the class-diagram and sequence-diagram assignment (2026 academic year).</span>
+    </p>
+  </div>
+</footer>
+
+<script>
+  function setLang(l){document.body.classList.remove('lang-ja','lang-en');document.body.classList.add('lang-'+l);document.documentElement.lang=l;
+   try{localStorage.setItem('site-lang',l)}catch(e){}
+   try{var q=new URLSearchParams(location.search);q.set('lang',l);history.replaceState(null,'',location.pathname+'?'+q+location.hash)}catch(e){}}
+  function toggleLang(){setLang(document.body.classList.contains('lang-ja')?'en':'ja')}
+  (function(){var u=null;try{u=new URLSearchParams(location.search).get('lang')}catch(e){}
+   var s=null;try{s=localStorage.getItem('site-lang')}catch(e){}
+   var l=(u==='en'||u==='ja')?u:((s==='en'||s==='ja')?s:'ja');if(l!=='ja')setLang(l);})();
+  if('IntersectionObserver' in window){
+    var io=new IntersectionObserver(function(es){ es.forEach(function(e){ if(e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target); } }); },{threshold:0.12, rootMargin:"0px 0px -6% 0px"});
+    document.querySelectorAll('.reveal').forEach(function(el){ io.observe(el); });
+  } else { document.querySelectorAll('.reveal').forEach(function(el){ el.classList.add('in'); }); }
+</script>
+</body>
+</html>
