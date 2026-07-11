@@ -62,7 +62,7 @@
   .wrap{max-width:var(--maxw); margin:0 auto; padding:0 40px}
   section{padding:130px 0}
   h2.big{font-size:clamp(1.9rem,3.2vw,2.7rem); font-weight:500; letter-spacing:-.025em; max-width:24ch}
-  body.lang-ja h2.big{letter-spacing:0}
+  body.lang-ja h2.big{letter-spacing:0; max-width:none}
   .lead{font-size:1.18rem; color:var(--ink-2); line-height:1.75; font-weight:400}
 
   /* eyebrow pill */
@@ -170,6 +170,9 @@
   @media(max-width:480px){
     .course-grid{grid-template-columns:1fr}
   }
+
+  /* JA: fill content width for body text & boxes (report fix, EN keeps reading measure) */
+  body.lang-ja .lead{max-width:none !important}
 </style>
 </head>
 <body class="lang-ja">

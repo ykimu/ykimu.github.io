@@ -120,6 +120,7 @@
   /* sections */
   .sec{padding:80px 0; border-top:1px solid var(--line)}
   .sec > .wrap > h2{font-size:clamp(1.9rem,3.2vw,2.7rem); font-weight:600; letter-spacing:-.02em; max-width:26ch}
+  html[data-lang="ja"] .sec > .wrap > h2{max-width:none}
   html[data-lang="ja"] .sec > .wrap > h2{letter-spacing:0}
   .prose{max-width:var(--readw); margin-top:18px}
   .prose p{color:var(--ink-2)}
@@ -215,6 +216,11 @@
     .bar-right .navlink, .bar-right .btn:not(.ink){display:none}
     .brand{font-size:.82rem}
   }
+
+  /* JA: fill content width for body text & boxes (report fix, EN keeps reading measure) */
+  html[data-lang="ja"] .sub,
+  html[data-lang="ja"] .prose,
+  html[data-lang="ja"] .callout{max-width:none !important}
 </style>
 </head>
 <body>

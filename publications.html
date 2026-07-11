@@ -258,6 +258,9 @@
   @media(max-width:560px){
     .foot-grid{grid-template-columns:1fr}
   }
+
+  /* JA: fill content width for body text & boxes (report fix, EN keeps reading measure) */
+  body.lang-ja .lead{max-width:none !important}
 </style>
 </head>
 <body class="lang-ja">

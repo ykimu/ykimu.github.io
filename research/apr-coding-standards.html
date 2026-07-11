@@ -200,6 +200,9 @@
     .foot-grid3{grid-template-columns:1fr; gap:30px}
     .bar-right .btn:not(.ink){display:none}
   }
+
+  /* JA: fill content width for body text & boxes (report fix, EN keeps reading measure) */
+  body.lang-ja .lead{max-width:none !important}
 </style>
 </head>
 <body class="lang-ja">
