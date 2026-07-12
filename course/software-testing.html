@@ -1,0 +1,2011 @@
+<!DOCTYPE html>
+<html lang="ja" class="no-js">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ソフトウェアテスト学習ガイド - 開発・リリース・ユーザテスト / Software Testing</title>
+<meta name="description" content="A study guide to software testing: development testing (unit, component, system), test-driven development, release testing, and user testing, with purposes, procedures, key points, and a comprehension quiz. Part of Yuta Kimura's software engineering course materials.">
+<link rel="canonical" href="https://ykimu.github.io/course/software-testing.html">
+<link rel="icon" href="../favicon.svg" type="image/svg+xml">
+<meta property="og:site_name" content="Yuta Kimura / 木村祐太">
+<meta property="og:type" content="article">
+<meta property="og:title" content="ソフトウェアテスト学習ガイド - 開発・リリース・ユーザテスト / Software Testing">
+<meta property="og:description" content="A study guide to software testing: development testing, TDD, release testing, and user testing, with purposes, procedures, key points, and a comprehension quiz.">
+<meta property="og:url" content="https://ykimu.github.io/course/software-testing.html">
+<meta property="og:image" content="https://ykimu.github.io/assets/og.png">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="color-scheme" content="light">
+<script>document.documentElement.className="js";</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&family=Noto+Sans+JP:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#FBFCFB; --bg-2:#F3F6F4; --bg-3:#EBEFED; --card:#FFFFFF;
+    --ink:#101312; --ink-2:#3C4340; --muted:#6B746F; --faint:#B7C0BB;
+    --line:#E7ECE9; --hair:rgba(16,19,18,.08); --shell:rgba(16,19,18,.035);
+    --accent:#0E6F5C; --accent-2:#0A5748; --accent-soft:rgba(14,111,92,.08);
+    --soft:0 1px 2px rgba(16,19,18,.04), 0 24px 60px -28px rgba(16,19,18,.16);
+    --inhi:inset 0 1px 0 rgba(255,255,255,.85);
+    --ease:cubic-bezier(.32,.72,0,1);
+    --sans:"Plus Jakarta Sans","Noto Sans JP",-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+    --disp:"Space Grotesk","Plus Jakarta Sans","Noto Sans JP",sans-serif;
+    --mono:ui-monospace,SFMono-Regular,Menlo,Consolas,"Liberation Mono",monospace;
+    --maxw:1440px; --readw:clamp(680px, 62vw, 1060px);
+    /* category accents (kept within the brand green + neutral family) */
+    --dev:#0E6F5C; --release:#0A5748; --user:#5B655F; --cross:#8A6D3B;
+    /* compatibility aliases used by reused content/diagram/quiz markup */
+    --panel:var(--card); --panel2:var(--bg-2); --chip:var(--bg-3);
+    --code-bg:var(--shell); --code-ink:#2F3A33;
+    --good:#0E6F5C; --bad:#B04A3E; --warn:#8A6D3B; --accent2:var(--accent-2);
+    --kw:#0A5748; --ty:#3C4340; --st:#7A5C34; --cm:#87918C;
+  }
+  html{color-scheme:light}
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth; -webkit-text-size-adjust:100%}
+  body{margin:0; background:var(--bg); color:var(--ink); font-family:var(--sans);
+    font-size:17px; line-height:1.75; font-weight:400; -webkit-font-smoothing:antialiased; text-rendering:optimizeLegibility}
+  body.lang-ja [lang=en]{display:none}
+  body.lang-en [lang=ja]{display:none}
+  ::selection{background:rgba(14,111,92,.16)}
+  h1,h2,h3{margin:0; color:var(--ink); font-weight:500; line-height:1.16; letter-spacing:-.02em; font-family:var(--disp); text-wrap:balance}
+  body.lang-ja h1,body.lang-ja h2,body.lang-ja h3{letter-spacing:0; font-family:var(--sans)}
+  p,.lead,.cite,.muted-s{text-wrap:pretty}
+  [lang="en"]{line-break:auto}
+  [lang="ja"]{line-break:strict; word-break:normal}
+  h1 [lang="ja"],h2 [lang="ja"],h3 [lang="ja"]{word-break:auto-phrase}
+  p{margin:0 0 1em}
+  a{color:var(--accent-2); text-decoration:none; transition:color .3s var(--ease)}
+  a:hover{color:var(--accent)}
+  a:focus-visible,button:focus-visible,.btn:focus-visible,[tabindex]:focus-visible{outline:2px solid var(--accent); outline-offset:3px; border-radius:8px}
+  .wrap{max-width:var(--maxw); margin:0 auto; padding:0 40px}
+  [id]{scroll-margin-top:96px}
+  section{padding:100px 0}
+
+  .skip{position:fixed; top:10px; left:10px; padding:10px 16px; background:var(--ink); color:#fff; border-radius:999px; transform:translateY(-200%); transition:none; z-index:100}
+  .skip:focus{transform:none}
+
+  /* film grain overlay */
+  body::after{content:""; position:fixed; inset:0; z-index:1; pointer-events:none; opacity:.02;
+    background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='g'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23g)'/%3E%3C/svg%3E")}
+
+  h2.big{font-size:clamp(1.9rem,3.2vw,2.7rem); font-weight:500; letter-spacing:-.025em; max-width:26ch}
+  body.lang-ja h2.big{letter-spacing:-.01em; max-width:none}
+  .eyebrow,.kick{display:inline-flex; align-items:center; gap:8px; width:max-content; max-width:100%;
+    padding:5px 13px 5px 11px; border-radius:999px; border:1px solid var(--hair); background:#fff;
+    font:600 .66rem/1 var(--disp); letter-spacing:.14em; text-transform:uppercase; color:var(--ink-2); margin:0 0 18px}
+  .eyebrow::before,.kick::before{content:""; flex:0 0 auto; width:6px; height:6px; border-radius:50%; background:var(--accent)}
+  .lead{font-size:1.12rem; color:var(--ink-2); line-height:1.78; font-weight:400}
+
+  /* motion */
+  .js .reveal{opacity:0; transform:translateY(18px); filter:blur(6px); transition:opacity .9s var(--ease), transform .9s var(--ease), filter .9s var(--ease)}
+  .js .reveal.in{opacity:1; transform:none; filter:none}
+  @media (prefers-reduced-motion:reduce){
+    .js .reveal{opacity:1!important; transform:none!important; filter:none!important}
+    .btn:active,.btn.ink:hover .ic,.pcard:hover,.pill:hover{transform:none!important}
+    html{scroll-behavior:auto}
+  }
+
+  /* floating island nav */
+  header.bar{position:sticky; top:18px; z-index:60; background:transparent; border-bottom:none}
+  .bar .wrap{display:flex; align-items:center; justify-content:space-between;
+    width:max-content; max-width:calc(100% - 32px); margin:0 auto; height:auto;
+    padding:9px 12px 9px 20px; gap:20px; border-radius:999px;
+    background:rgba(255,255,255,.72); -webkit-backdrop-filter:saturate(1.4) blur(18px); backdrop-filter:saturate(1.4) blur(18px);
+    border:1px solid var(--hair); box-shadow:var(--soft)}
+  .brand{font-weight:600; font-size:.92rem; letter-spacing:-.01em; color:var(--ink); display:inline-flex; align-items:center; gap:8px}
+  .brand span.sep{color:var(--muted); font-weight:400; margin:0 2px}
+  .navlinks{display:flex; gap:22px; align-items:center}
+  .navlinks a{font-size:.86rem; font-weight:500; color:var(--ink-2); transition:color .3s var(--ease)}
+  .navlinks a:hover{color:var(--ink)}
+  @media(max-width:860px){.navlinks{display:none}}
+  .bar-right{display:flex; align-items:center; gap:8px}
+
+  /* buttons */
+  .btn{display:inline-flex; align-items:center; gap:10px; font:500 .85rem/1 var(--sans); padding:10px 18px;
+    border-radius:999px; border:1px solid var(--hair); background:#fff; color:var(--ink); cursor:pointer;
+    transition:transform .4s var(--ease), box-shadow .4s var(--ease), border-color .3s var(--ease), background .3s var(--ease), color .3s var(--ease)}
+  .btn:hover{border-color:var(--ink); transform:translateY(-1px); color:var(--ink)}
+  .btn:active{transform:scale(.98)}
+  .btn.ink{background:var(--ink); border-color:var(--ink); color:#fff; padding:10px 10px 10px 22px;
+    box-shadow:0 12px 26px -14px rgba(16,19,18,.5)}
+  .btn.ink:not(:has(.ic)){padding:10px 22px}
+  .btn.ink:hover{box-shadow:0 16px 32px -14px rgba(16,19,18,.55); color:#fff}
+  .btn .ic{width:32px; height:32px; border-radius:999px; background:rgba(255,255,255,.18); display:grid; place-items:center;
+    transition:transform .45s var(--ease); flex:0 0 auto}
+  .btn.ink:hover .ic{transform:translate(3px,-1px)}
+  .tlink{display:inline-flex; align-items:center; gap:8px; font-weight:500; font-size:.95rem; color:var(--ink)}
+  .tlink .ar{transition:transform .4s var(--ease)}
+  .tlink:hover .ar{transform:translateX(4px)}
+
+  /* hero */
+  .hero{position:relative; overflow:hidden}
+  .hero > .wrap{position:relative; z-index:1}
+  .hero::before{content:""; position:absolute; z-index:0; width:640px; height:640px; right:-150px; top:-240px;
+    border-radius:50%; pointer-events:none; opacity:.55;
+    background:radial-gradient(circle, var(--accent-soft), transparent 62%); filter:blur(20px)}
+  .hero .wrap{padding-top:72px; padding-bottom:70px}
+  .hero h1{font-size:clamp(2.6rem,5vw,4.2rem); font-weight:500; letter-spacing:-.03em; line-height:1.08; color:var(--ink); max-width:none}
+  body.lang-ja .hero h1{font-size:clamp(2rem,4.2vw,3.1rem); font-weight:500; letter-spacing:0; line-height:1.24}
+  .hero h1 em{font-style:normal; color:var(--accent)}
+  .hero .lead{max-width:var(--readw); margin-top:24px}
+  .ja-note{display:inline-flex; align-items:center; gap:8px; margin-top:22px; padding:7px 15px; border-radius:999px;
+    border:1px solid var(--hair); background:#fff; font-size:.8rem; color:var(--muted)}
+  .ja-note::before{content:""; width:6px; height:6px; border-radius:50%; background:var(--accent); flex:0 0 auto}
+  .hero-cta{display:flex; gap:20px; align-items:center; flex-wrap:wrap; margin-top:28px}
+
+  .soft-sec{background:var(--bg-2); border-top:1px solid var(--line); border-bottom:1px solid var(--line)}
+
+  /* prose */
+  .prose{max-width:var(--readw)}
+  .prose p{margin:0 0 1em; color:var(--ink-2)}
+  .prose h4{font-family:var(--sans); font-size:1.12rem; font-weight:600; letter-spacing:0; color:var(--ink); margin:1.6em 0 .6em}
+  .prose ul{margin:0 0 1.2em; padding-left:0; list-style:none}
+  .prose ul li{position:relative; padding-left:22px; margin:12px 0; color:var(--ink-2)}
+  .prose ul li::before{content:""; position:absolute; left:0; top:13px; width:11px; height:1.5px; background:var(--accent)}
+  .prose ul li b{color:var(--ink); font-weight:600}
+  .prose b{color:var(--ink); font-weight:600}
+  .prose i{color:var(--ink-2)}
+  .prose code{font-family:var(--mono); font-size:.86em; background:var(--shell); border:1px solid var(--hair); border-radius:6px; padding:.08em .4em; color:var(--accent-2)}
+
+  .callout{border-radius:16px; padding:18px 22px; margin:18px 0; max-width:var(--readw);
+    background:var(--card); box-shadow:0 0 0 6px var(--shell),0 0 0 6.5px var(--hair),var(--soft)}
+  .callout h4{margin:0 0 6px; font-size:1rem; font-family:var(--sans); font-weight:600; letter-spacing:0; color:var(--ink)}
+  .callout.tip{background:var(--accent-soft)}
+  .callout.warn{background:rgba(138,109,59,.08)}
+  .callout a{font-weight:600}
+
+  .principles{display:grid; grid-template-columns:repeat(auto-fit,minmax(230px,1fr)); gap:14px; margin:18px 0; max-width:var(--readw)}
+  .principles .p{background:var(--card); border-radius:16px; padding:16px 18px;
+    box-shadow:0 0 0 6px var(--shell),0 0 0 6.5px var(--hair),var(--soft)}
+  .principles .p b{color:var(--accent-2)}
+  .principles .p span{font-size:.9rem; color:var(--muted)}
+
+  .cmp-table{border-collapse:separate; border-spacing:0; margin:16px 0; max-width:var(--readw); width:100%; font-size:.92rem;
+    border-radius:14px; overflow:hidden; box-shadow:0 0 0 6px var(--shell),0 0 0 6.5px var(--hair),var(--soft)}
+  .cmp-table th,.cmp-table td{border-bottom:1px solid var(--line); border-right:1px solid var(--line); padding:11px 14px; text-align:left; vertical-align:top; background:var(--card)}
+  .cmp-table tr:last-child th,.cmp-table tr:last-child td{border-bottom:none}
+  .cmp-table th{background:var(--bg-2); font-weight:600; color:var(--ink)}
+  .cmp-table td:last-child,.cmp-table th:last-child{border-right:none}
+  .cmp-table td b{color:var(--accent-2)}
+
+  /* controls: category pills + search */
+  .controls{display:flex; align-items:center; justify-content:space-between; gap:20px; flex-wrap:wrap; margin:0 0 12px}
+  .pills{display:flex; gap:8px; flex-wrap:wrap}
+  .pill{display:inline-flex; align-items:center; gap:8px; font:500 .9rem/1 var(--sans); padding:9px 16px;
+    border-radius:999px; border:1px solid var(--hair); background:#fff; color:var(--ink-2); cursor:pointer;
+    transition:transform .4s var(--ease), border-color .3s var(--ease), background .3s var(--ease), color .3s var(--ease)}
+  .pill:hover{border-color:var(--ink); transform:translateY(-1px)}
+  .pill span{font:600 .72rem/1 var(--disp); color:var(--muted)}
+  .pill.active{background:var(--ink); border-color:var(--ink); color:#fff}
+  .pill.active span{color:rgba(255,255,255,.7)}
+  .ctrl-right{display:flex; align-items:center; gap:14px}
+  .search{width:min(280px,60vw); padding:10px 16px; border-radius:999px; border:1px solid var(--hair);
+    background:#fff; color:var(--ink); font:400 .9rem/1 var(--sans); outline:none; transition:border-color .3s var(--ease)}
+  .search:focus{border-color:var(--accent)}
+  .learn-note{font:600 .78rem/1 var(--disp); color:var(--muted); white-space:nowrap}
+
+  /* category groups */
+  .cat-group{margin-top:34px}
+  .cat-group.hidden{display:none}
+  .cat-head{display:flex; align-items:center; gap:12px; margin:0 0 4px}
+  .cat-head .cat-dot{width:10px; height:10px; border-radius:50%; background:var(--cc); flex:0 0 auto}
+  .cat-head h3{font-family:var(--sans); font-size:1.4rem; font-weight:600; letter-spacing:0; color:var(--ink)}
+  .cat-badge{font:600 .66rem/1 var(--disp); letter-spacing:.08em; text-transform:uppercase; color:var(--muted);
+    border:1px solid var(--hair); background:#fff; padding:5px 11px; border-radius:999px}
+  .cat-desc{max-width:var(--readw); color:var(--muted); font-size:.96rem; margin:0 0 12px}
+
+  /* test card (double-bezel) */
+  .pcard{border-radius:21px; background:var(--card); margin:16px 0; scroll-margin-top:96px;
+    box-shadow:0 0 0 7px var(--shell),0 0 0 7.5px var(--hair),var(--soft);
+    transition:box-shadow .4s var(--ease)}
+  .pcard.hidden{display:none}
+  .pcard-head{display:flex; align-items:center; gap:14px; width:100%; text-align:left;
+    background:transparent; border:none; cursor:pointer; padding:22px 26px 8px; font-family:var(--sans)}
+  .pnum{font:600 .95rem/1 var(--disp); font-variant-numeric:tabular-nums; flex:0 0 auto; min-width:24px}
+  .ptitle{font-family:var(--disp); font-weight:500; font-size:1.18rem; color:var(--ink); letter-spacing:-.01em; flex:0 0 auto}
+  .ptitle small{display:block; font-family:var(--sans); font-size:.8rem; color:var(--muted); font-weight:400; margin-top:2px}
+  .pbadges{display:flex; gap:8px; align-items:center}
+  .ptags{display:flex; gap:6px; flex-wrap:wrap; margin-left:auto; justify-content:flex-end}
+  .pchev{flex:0 0 auto; font-size:1.5rem; color:var(--muted); transition:transform .4s var(--ease); margin-left:6px; line-height:1}
+  .pcard.open .pchev{transform:rotate(90deg); color:var(--accent-2)}
+  .summary{margin:0; padding:0 26px 22px; color:var(--ink-2); font-size:1rem}
+  .summary strong{color:var(--ink); font-weight:600}
+  .pdetail{display:none; padding:0 26px 26px}
+  .pcard.open .pdetail{display:block}
+  .pcard.done-card{box-shadow:0 0 0 7px var(--accent-soft),0 0 0 7.5px rgba(14,111,92,.24),var(--soft)}
+
+  .badge-imp{font:700 .68rem/1 var(--disp); letter-spacing:.06em; padding:4px 10px; border-radius:999px; white-space:nowrap}
+  .imp3{background:var(--accent); color:#fff}
+  .imp2{background:var(--accent-soft); color:var(--accent-2)}
+  .imp1{background:var(--bg-3); color:var(--muted)}
+  .tag{font:500 .72rem/1 var(--sans); padding:5px 10px; border-radius:999px; background:var(--bg-2); color:var(--muted); border:1px solid var(--hair)}
+
+  .analogy{display:flex; gap:10px; align-items:flex-start; background:var(--accent-soft);
+    border-radius:14px; padding:14px 18px; margin:16px 0; font-size:.94rem; color:var(--ink-2)}
+  .analogy b{color:var(--accent-2); font-weight:600}
+
+  .grid2{display:grid; grid-template-columns:1fr 1fr; gap:16px; margin:18px 0}
+  .box{border-radius:16px; padding:16px 18px; background:var(--card);
+    box-shadow:0 0 0 6px var(--shell),0 0 0 6.5px var(--hair),var(--soft)}
+  .box h5{margin:0 0 10px; font-size:.92rem; font-family:var(--sans); font-weight:600; letter-spacing:0; display:flex; align-items:center; gap:7px}
+  .box.pros h5{color:var(--accent-2)}
+  .box.cons h5{color:var(--bad)}
+  .box ul{margin:0; padding-left:18px}
+  .box li{margin:6px 0; font-size:.9rem; color:var(--ink-2)}
+
+  .meta-row{display:grid; grid-template-columns:1fr 1fr; gap:16px; margin:16px 0}
+  .meta h5{margin:0 0 8px; font-size:.92rem; font-family:var(--sans); font-weight:600; letter-spacing:0; color:var(--accent-2)}
+  .meta p,.meta li{font-size:.92rem; color:var(--ink-2)}
+  .meta ul{margin:0; padding-left:18px}
+  .meta p{margin:0}
+  .meta code,.box code,.analogy code,.steps code{font-family:var(--mono); font-size:.86em; background:var(--shell); border:1px solid var(--hair); border-radius:5px; padding:.05em .35em; color:var(--accent-2)}
+
+  /* numbered procedure steps */
+  .steps{border-radius:16px; padding:16px 18px; margin:16px 0; background:var(--card);
+    box-shadow:0 0 0 6px var(--shell),0 0 0 6.5px var(--hair),var(--soft)}
+  .steps h5{margin:0 0 10px; font-size:.92rem; font-family:var(--sans); font-weight:600; letter-spacing:0; color:var(--accent-2)}
+  .steps ol{margin:0; padding:0; list-style:none; counter-reset:st}
+  .steps ol li{counter-increment:st; position:relative; padding-left:36px; margin:9px 0; font-size:.92rem; color:var(--ink-2)}
+  .steps ol li::before{content:counter(st); position:absolute; left:0; top:3px; width:23px; height:23px; border-radius:50%;
+    background:var(--accent-soft); color:var(--accent-2); font:600 .74rem/23px var(--disp); text-align:center}
+  .steps ol li b{color:var(--ink); font-weight:600}
+
+  /* diagrams */
+  .diagram-wrap{margin:18px 0; max-width:var(--readw)}
+  .diagram-wrap h5{margin:0 0 8px; font-size:.92rem; font-family:var(--sans); font-weight:600; letter-spacing:0; color:var(--accent-2)}
+  .diagram-wrap svg{display:block; width:100%; height:auto; background:var(--shell);
+    border:1px solid var(--hair); border-radius:12px; padding:8px}
+  .dg-box{fill:var(--card); stroke:var(--line); stroke-width:1.2}
+  .dg-if{stroke:var(--accent)}
+  .dg-lbl{fill:var(--ink); font-size:12px; font-weight:600; text-anchor:middle; font-family:var(--sans)}
+  .dg-st{fill:var(--accent-2); font-size:10px; text-anchor:middle}
+  .dg-line{stroke:var(--muted); stroke-width:1.4; fill:none}
+  .dg-dash{stroke-dasharray:5 4}
+  .dg-el{fill:var(--ink-2); font-size:10.5px; text-anchor:middle}
+  .dg-note{fill:var(--muted); font-size:11px; font-style:italic; text-anchor:middle}
+  .dg-legend{font-size:.78rem; color:var(--muted); margin-top:8px}
+
+  /* code blocks */
+  .code-wrap{margin-top:16px; border:1px solid var(--hair); border-radius:14px; overflow:hidden; background:var(--shell)}
+  .code-tabs{display:flex; align-items:center; gap:0; background:var(--bg-2); border-bottom:1px solid var(--hair)}
+  .code-tabs .lbl{margin-right:auto; padding:10px 16px; font:500 .78rem/1 var(--sans); color:var(--muted)}
+  .code-tabs .tab{background:transparent; border:none; color:var(--muted); padding:10px 18px; font:600 .82rem/1 var(--sans);
+    cursor:pointer; border-bottom:2px solid transparent; transition:color .3s var(--ease), border-color .3s var(--ease)}
+  .code-tabs .tab:hover{color:var(--ink)}
+  .code-tabs .tab.active{color:var(--ink); border-bottom-color:var(--accent)}
+  pre{margin:0; background:var(--shell); padding:16px 18px; overflow-x:auto; font-size:.82rem; line-height:1.65}
+  pre code{font-family:var(--mono); color:var(--code-ink); white-space:pre}
+  pre.hidden{display:none}
+  .kw{color:var(--kw); font-weight:600} .ty{color:var(--ty)} .st{color:var(--st)} .cm{color:var(--cm); font-style:italic}
+
+  .learn{display:inline-flex; align-items:center; gap:10px; margin-top:20px; font-size:.9rem;
+    color:var(--muted); cursor:pointer; user-select:none}
+  .learn input{accent-color:var(--accent); width:16px; height:16px; cursor:pointer}
+
+  /* equivalence-partition demo */
+  .demo{border-radius:16px; padding:20px 22px; margin:22px 0; max-width:var(--readw); background:var(--card);
+    box-shadow:0 0 0 6px var(--shell),0 0 0 6.5px var(--hair),var(--soft)}
+  .demo h4{margin:0 0 6px; font-size:1rem; font-family:var(--sans); font-weight:600; color:var(--ink)}
+  .demo .spec{font-size:.9rem; color:var(--muted); margin:0 0 14px}
+  .demo-row{display:flex; gap:10px; flex-wrap:wrap; align-items:center}
+  .demo input[type=text]{width:min(220px,100%); padding:10px 16px; border-radius:999px; border:1px solid var(--hair);
+    background:#fff; color:var(--ink); font:500 .95rem/1 var(--mono); outline:none; transition:border-color .3s var(--ease)}
+  .demo input[type=text]:focus{border-color:var(--accent)}
+  .demo .try{display:flex; gap:6px; flex-wrap:wrap}
+  .demo .try button{background:#fff; border:1px solid var(--hair); color:var(--ink-2); border-radius:999px;
+    padding:7px 13px; font:500 .82rem/1 var(--mono); cursor:pointer; transition:border-color .3s var(--ease), transform .3s var(--ease)}
+  .demo .try button:hover{border-color:var(--ink); transform:translateY(-1px)}
+  .demo-out{margin-top:14px; border-radius:12px; padding:14px 16px; font-size:.92rem; background:var(--bg-2); color:var(--ink-2)}
+  .demo-out b{font-weight:600}
+  .demo-out.ok{background:var(--accent-soft); }
+  .demo-out.ng{background:rgba(176,74,62,.08)}
+  .demo-out .pl{display:inline-block; font:600 .72rem/1 var(--disp); letter-spacing:.05em; padding:4px 10px; border-radius:999px; margin-right:8px}
+  .demo-out.ok .pl{background:var(--accent); color:#fff}
+  .demo-out.ng .pl{background:var(--bad); color:#fff}
+  .demo-out .bd{display:inline-block; font:600 .72rem/1 var(--disp); letter-spacing:.05em; padding:4px 10px; border-radius:999px; margin-right:8px; background:rgba(138,109,59,.15); color:var(--warn)}
+
+  /* quiz */
+  .quiz-q{border-radius:16px; padding:18px 20px; margin:16px 0; max-width:var(--readw); background:var(--card);
+    box-shadow:0 0 0 6px var(--shell),0 0 0 6.5px var(--hair),var(--soft)}
+  .qtext{margin:0 0 12px; font-weight:600; color:var(--ink)}
+  .qopts{display:flex; flex-wrap:wrap; gap:8px}
+  .qopts button{background:#fff; border:1px solid var(--hair); color:var(--ink); border-radius:999px;
+    padding:9px 16px; font:500 .88rem/1 var(--sans); cursor:pointer; transition:border-color .3s var(--ease), transform .3s var(--ease)}
+  .qopts button:hover:not(:disabled){border-color:var(--ink); transform:translateY(-1px)}
+  .qopts button:disabled{cursor:default}
+  .qopts button.right{background:var(--accent-soft); color:var(--accent-2); border-color:var(--accent); font-weight:600}
+  .qopts button.wrong{background:rgba(176,74,62,.1); color:var(--bad); border-color:var(--bad)}
+  .qwhy{font-size:.9rem; color:var(--ink-2); margin:12px 0 0; padding-top:12px; border-top:1px solid var(--line)}
+  .qwhy b{color:var(--ink); font-weight:600}
+  .quiz-reset{margin-top:16px}
+  #quizScore{color:var(--muted); font-size:.92rem; font-weight:500}
+
+  /* footer */
+  footer{border-top:1px solid var(--line); padding:64px 0 46px; background:var(--bg)}
+  footer h3{font-size:.72rem; font-weight:600; letter-spacing:.12em; text-transform:uppercase; color:var(--muted); margin:0 0 1em; font-family:var(--disp)}
+  .foot-grid{display:grid; grid-template-columns:1.4fr 1fr 1fr; gap:44px}
+  .cite{font-size:.98rem; color:var(--ink-2); line-height:1.7; max-width:56ch; margin-bottom:36px}
+  .muted-s{color:var(--muted); font-size:.9rem; line-height:1.75}
+  .muted-s b{color:var(--ink); font-weight:600}
+  .foot-rule{height:1px; background:var(--line); margin:44px 0 20px}
+  .foot-note{color:var(--muted); font-size:.82rem}
+  @media(max-width:760px){.foot-grid{grid-template-columns:1fr 1fr}}
+  @media(max-width:560px){.foot-grid{grid-template-columns:1fr}}
+
+  @media(max-width:860px){
+    section{padding:72px 0}
+    .hero .wrap{padding-top:52px; padding-bottom:56px}
+    .wrap{padding:0 24px}
+    .grid2,.meta-row{grid-template-columns:1fr}
+    .ptags{flex-basis:100%; margin-left:0; justify-content:flex-start}
+    .pcard-head{flex-wrap:wrap}
+  }
+  @media(max-width:640px){
+    .bar-right .btn:not(.ink):not(.jp-toggle){display:none}
+    .brand{font-size:.82rem}
+    .controls{align-items:flex-start; flex-direction:column}
+    .qopts button{flex:1 1 44%}
+  }
+
+  /* JP-only teaching page: fill content width for body text & boxes */
+  .lead,
+  .prose,
+  .callout,
+  .principles,
+  .cmp-table,
+  .diagram-wrap,
+  .demo{max-width:none !important}
+</style>
+</head>
+<body class="lang-ja">
+
+<a class="skip" href="#main"><span lang="ja">本文へスキップ</span><span lang="en">Skip to content</span></a>
+
+<header class="bar">
+  <div class="wrap">
+    <a class="brand" href="../index.html">
+      <span aria-hidden="true">&lsaquo;</span>
+      <span lang="ja">Yuta Kimura</span><span lang="en">Yuta Kimura</span>
+      <span class="sep">·</span><span lang="ja">木村祐太</span><span lang="en">Kimura</span>
+    </a>
+    <nav class="navlinks" aria-label="メイン">
+      <a href="../publications.html"><span lang="ja">業績</span><span lang="en">Publications</span></a>
+      <a href="../teaching.html"><span lang="ja">教育</span><span lang="en">Teaching</span></a>
+      <a href="../software-engineering.html"><span lang="ja">分野紹介</span><span lang="en">Guides</span></a>
+      <a href="../students.html"><span lang="ja">学生の皆さんへ</span><span lang="en">For students</span></a>
+    </nav>
+    <div class="bar-right">
+      <a class="btn" href="index.html"><span lang="ja">科目Top</span><span lang="en">Course top</span></a>
+      <button class="btn ink jp-toggle" onclick="toggleLang()" aria-label="Switch language">
+        <span lang="ja">EN</span><span lang="en">日本語</span>
+      </button>
+    </div>
+  </div>
+</header>
+
+<main id="main">
+
+<!-- HERO -->
+<div class="hero">
+  <div class="wrap">
+    <p class="kick">Software Testing</p>
+    <h1>ソフトウェアテスト：品質を<em>「確かめる」</em>技術</h1>
+    <p class="lead">テストは「意図どおり動くことを示し、使われる前に欠陥を見つける」活動です。開発テスト（ユニット・コンポーネント・システム）からリリーステスト、ユーザテスト（アルファ・ベータ・受入れ）まで、代表的なテストを<strong>目的・実施の仕方・意識するポイント・注意点</strong>つきで整理しました。テストケース設計の技法（等価分割・境界値）、テスト駆動開発（TDD）に加えて、ブラックボックス／ホワイトボックスという設計の視点、UIテスト・フレーキーテストなど教科書の先にある現代的なテストまで収録。体験デモ、理解度クイズ付きです。</p>
+    <p class="ja-note"><span lang="ja">この教材は日本語のみで提供しています</span><span lang="en">This learning material is available in Japanese only.</span></p>
+    <div class="hero-cta">
+      <a class="btn ink" href="#tests" style="padding:12px 22px">
+        <span lang="ja">テストカタログへ</span><span lang="en">Jump to the test catalog</span>
+      </a>
+      <a class="tlink" href="#quiz">
+        <span lang="ja">理解度クイズへ</span><span lang="en">Comprehension quiz</span>
+        <span class="ar" aria-hidden="true">&rsaquo;</span>
+      </a>
+    </div>
+  </div>
+</div>
+
+<!-- INTRO -->
+<section id="intro" style="padding-top:20px">
+  <div class="wrap reveal">
+    <p class="eyebrow"><span lang="ja">はじめに</span><span lang="en">Introduction</span></p>
+    <h2 class="big"><span lang="ja">ソフトウェアテストとは何か</span><span lang="en">What is software testing?</span></h2>
+    <div class="prose" id="introProse" style="margin-top:22px"></div>
+  </div>
+</section>
+
+<!-- TEST CATALOG -->
+<section class="soft-sec" id="tests" style="padding-top:80px">
+  <div class="wrap">
+    <p class="eyebrow reveal"><span lang="ja">テストカタログ</span><span lang="en">Test catalog</span></p>
+    <h2 class="big reveal"><span lang="ja">22のテスト・技法カタログ</span><span lang="en">Twenty-two kinds of testing</span></h2>
+    <p class="lead reveal" style="max-width:var(--readw); margin-top:18px">テストプロセスの段階（開発／リリース／ユーザ／横断）に加えて、テスト設計の視点（ブラックボックス／ホワイトボックスなど）、そして教科書には載っていない発展的・現代的なテストも収録しました。カテゴリで絞り込み、各カードをクリックすると、目的・実施の仕方・意識するポイント・注意点・具体例が開きます。</p>
+    <div class="controls reveal" style="margin-top:26px">
+      <div class="pills" role="tablist" aria-label="カテゴリ切替">
+        <button class="pill active" onclick="filterCat('all',this)">すべて<span>22</span></button>
+        <button class="pill" onclick="filterCat('dev',this)">開発テスト<span>3</span></button>
+        <button class="pill" onclick="filterCat('release',this)">リリーステスト<span>3</span></button>
+        <button class="pill" onclick="filterCat('user',this)">ユーザテスト<span>3</span></button>
+        <button class="pill" onclick="filterCat('cross',this)">横断的アプローチ<span>3</span></button>
+        <button class="pill" onclick="filterCat('technique',this)">設計の視点<span>3</span></button>
+        <button class="pill" onclick="filterCat('modern',this)">発展・現代<span>7</span></button>
+      </div>
+      <div class="ctrl-right">
+        <input id="search" class="search" type="text" placeholder="名前・キーワードで絞り込み" aria-label="テストを絞り込み">
+        <span class="learn-note" id="learnNote"></span>
+      </div>
+    </div>
+    <div id="tests-list"></div>
+  </div>
+</section>
+
+<!-- TEST CASE DESIGN -->
+<section id="techniques">
+  <div class="wrap">
+    <p class="eyebrow reveal"><span lang="ja">テストケース設計</span><span lang="en">Choosing test cases</span></p>
+    <h2 class="big reveal"><span lang="ja">テストケースをどう選ぶか</span><span lang="en">How to choose test cases</span></h2>
+    <div class="prose reveal" id="techProse" style="margin-top:22px"></div>
+    <div class="demo reveal" id="epDemo">
+      <h4>体験デモ：等価分割と境界値を試してみよう</h4>
+      <p class="spec">仕様：「入力は <b>10000〜99999 の整数（5桁）</b>のみ有効」。値を入力すると、どの<b>等価クラス</b>に属するか、そして<b>境界値</b>かどうかを判定します。</p>
+      <div class="demo-row">
+        <input type="text" id="epInput" inputmode="numeric" placeholder="値を入力（例：9999）" aria-label="テスト入力値" oninput="epCheck()">
+        <div class="try" aria-label="代表値を試す">
+          <button onclick="epTry('9999')">9999</button>
+          <button onclick="epTry('10000')">10000</button>
+          <button onclick="epTry('55000')">55000</button>
+          <button onclick="epTry('99999')">99999</button>
+          <button onclick="epTry('100000')">100000</button>
+          <button onclick="epTry('abc')">abc</button>
+        </div>
+      </div>
+      <div class="demo-out" id="epOut">値を入力するか、上のボタンで代表値を試してください。境界の前後（9999 / 10000、99999 / 100000）を試すと、境界値分析の考え方が体感できます。</div>
+    </div>
+  </div>
+</section>
+
+<!-- QUIZ -->
+<section class="soft-sec" id="quiz" style="padding-top:80px">
+  <div class="wrap">
+    <p class="eyebrow reveal"><span lang="ja">理解度チェック</span><span lang="en">Check your understanding</span></p>
+    <h2 class="big reveal"><span lang="ja">理解度チェッククイズ</span><span lang="en">Comprehension quiz</span></h2>
+    <p class="lead reveal" style="max-width:var(--readw); margin-top:18px">それぞれの状況に<strong>もっとも適したテスト・用語</strong>を選んでください。<span id="quizScore"></span></p>
+    <div id="quizBody" class="reveal"></div>
+    <button class="btn ink quiz-reset" onclick="buildQuiz()" style="padding:11px 22px">
+      <span lang="ja">もう一度挑戦する</span><span lang="en">Try again</span>
+    </button>
+  </div>
+</section>
+
+<!-- CLOSING -->
+<section id="closing">
+  <div class="wrap reveal">
+    <p class="eyebrow"><span lang="ja">おわりに</span><span lang="en">In closing</span></p>
+    <h2 class="big"><span lang="ja">テストに向き合う心構えと、さらに学ぶために</span><span lang="en">How to think about testing, and where to learn more</span></h2>
+    <div class="prose" id="closingProse" style="margin-top:22px"></div>
+  </div>
+</section>
+
+</main>
+
+<!-- FOOTER -->
+<footer>
+  <div class="wrap">
+    <div class="cite">
+      <span lang="ja">ソフトウェアテストの全体像（開発テスト・TDD・リリーステスト・ユーザテスト）を、これから学ぶ方向けにまとめた学習ガイドです。木村祐太のソフトウェア工学の授業教材の一部としてご覧いただけます。授業の詳細（評価方法・日程等）は最新のシラバスを確認してください。</span>
+      <span lang="en">A study guide to software testing (development testing, TDD, release testing, and user testing), for those new to it. Part of Yuta Kimura's software engineering course materials. For course details such as assessment and schedule, please refer to the latest syllabus.</span>
+    </div>
+    <div class="foot-grid">
+      <div>
+        <h3><span lang="ja">連絡先</span><span lang="en">Contact</span></h3>
+        <p class="muted-s">
+          <b>木村 祐太 / Yuta Kimura</b><br>
+          <span lang="ja">大阪公立大学工業高等専門学校</span><span lang="en">Osaka Metropolitan University College of Technology</span><br>
+          <a href="mailto:y.kimura@omu.ac.jp">y.kimura [at] omu.ac.jp</a>
+        </p>
+      </div>
+      <div>
+        <h3><span lang="ja">サイト</span><span lang="en">Site</span></h3>
+        <p class="muted-s">
+          <a href="../index.html"><span lang="ja">ホーム</span><span lang="en">Home</span></a><br>
+          <a href="../publications.html"><span lang="ja">業績・研究活動</span><span lang="en">Publications &amp; research activities</span></a><br>
+          <a href="../teaching.html"><span lang="ja">教育</span><span lang="en">Teaching</span></a><br>
+          <a href="../software-engineering.html"><span lang="ja">ソフトウェア工学とは</span><span lang="en">What is software engineering?</span></a><br>
+          <a href="../technical-debt.html"><span lang="ja">技術的負債とは</span><span lang="en">What is technical debt?</span></a><br>
+          <a href="../students.html"><span lang="ja">学生の皆さんへ</span><span lang="en">For students</span></a><br>
+          <a href="../glossary.html"><span lang="ja">用語集</span><span lang="en">Glossary</span></a>
+        </p>
+      </div>
+      <div>
+        <h3><span lang="ja">研究</span><span lang="en">Research</span></h3>
+        <p class="muted-s">
+          <a href="../research/technical-debt-metrics.html"><span lang="ja">メトリクスによる分類・特徴づけ</span><span lang="en">Classifying debt with metrics</span></a><br>
+          <a href="../research/apr-coding-standards.html"><span lang="ja">自動生成パッチと品質</span><span lang="en">Auto-generated patches and quality</span></a><br>
+          <a href="../research/td-repayment-refactoring.html"><span lang="ja">返済とリファクタリング</span><span lang="en">Repayment and refactoring</span></a><br>
+          <a href="../research/satd-issue-classification.html"><span lang="ja">TD-Issue の自動分類</span><span lang="en">Automatic TD-Issue classification</span></a><br>
+          <a href="https://researchmap.jp/kimura_yuta" target="_blank" rel="noopener">researchmap</a>
+        </p>
+      </div>
+    </div>
+    <div class="foot-rule"></div>
+    <p class="foot-note">
+      <span lang="ja">© 2026 Yuta Kimura. ソフトウェアテストの解説は Ian Sommerville『Software Engineering (10th ed.)』第8章に基づく概説です。発展的・現代的なテスト（UIテスト・フレーキーテスト等）の解説は、各分野の公開資料と実務慣行に基づきます。</span>
+      <span lang="en">© 2026 Yuta Kimura. This overview of software testing follows Chapter 8 of Ian Sommerville, <i>Software Engineering</i> (10th ed.). Sections on modern topics (UI testing, flaky tests, etc.) draw on publicly available industry sources.</span>
+    </p>
+  </div>
+</footer>
+<script>
+/* ============== コンテンツデータ ============== */
+const INTRO_HTML = `
+<p><b>ソフトウェアテスト</b>とは、プログラムを<strong>人工的なデータで実際に実行</strong>し、
+その結果を調べて誤りや異常、非機能的な問題の手がかりを探す活動です。
+「作ったものが意図どおりに動くことを示す」ことと、「ユーザの手に渡る前に欠陥を見つける」こと。
+この2つを実現するために、開発の様々な段階で、性格の異なるテストを組み合わせて実施します。</p>
+
+<h4>テストの2つの目的</h4>
+<div class="principles">
+  <div class="p"><b>① 妥当性確認テスト（validation testing）</b><br>
+    <span>ソフトウェアが<strong>要求を満たしていることを示す</strong>ためのテスト。期待どおりの使われ方を反映したテストケースを使い、「正しく動く」ことを実証する。</span></div>
+  <div class="p"><b>② 欠陥テスト（defect testing）</b><br>
+    <span>ソフトウェアに<strong>不正な振る舞いを起こさせる入力を見つける</strong>ためのテスト。いわば「壊しにいく」テストで、バグの発見が目的。テストケースは意地悪であるほどよい。</span></div>
+</div>
+
+<div class="callout warn">
+  <h4>Dijkstra の警句：テストの根本的な限界</h4>
+  「テストはプログラムに<strong>誤りが存在すること</strong>は示せるが、<strong>誤りが存在しないこと</strong>は示せない」
+  （E. W. Dijkstra, 1972）。すべてのテストに合格しても、それは「テストした範囲では問題が見つからなかった」
+  という意味でしかありません。だからこそ、<strong>限られたテストで何を確かめるか（テストケースの選び方）</strong>が
+  テストの本質になります。
+</div>
+
+<h4>プログラムテストの入出力モデル</h4>
+<p>プログラムへの入力全体の集合の中には、異常な出力を引き起こす入力の部分集合 <b>I<sub>e</sub></b> が潜んでいます。
+<strong>欠陥テストの最優先事項はこの I<sub>e</sub> に属する入力を見つけること</strong>であり、
+逆に妥当性確認テストでは I<sub>e</sub> の外側にある正常な入力を使って、期待どおりの動作を確認します。</p>
+<div class="diagram-wrap">
+<svg viewBox="0 0 720 250" role="img" aria-label="プログラムテストの入出力モデル">
+  <ellipse cx="130" cy="125" rx="105" ry="88" class="dg-box"/>
+  <text x="130" y="52" class="dg-lbl">入力集合 I</text>
+  <ellipse cx="158" cy="152" rx="52" ry="40" fill="rgba(176,74,62,.10)" stroke="#B04A3E" stroke-width="1.3"/>
+  <text x="158" y="148" class="dg-lbl" fill="#B04A3E">I<tspan baseline-shift="sub" font-size="9">e</tspan></text>
+  <text x="158" y="166" class="dg-el" fill="#B04A3E">異常を起こす入力</text>
+  <rect x="300" y="85" width="150" height="80" rx="12" class="dg-box dg-if"/>
+  <text x="375" y="118" class="dg-lbl">プログラム</text>
+  <text x="375" y="138" class="dg-st">System</text>
+  <ellipse cx="595" cy="125" rx="100" ry="88" class="dg-box"/>
+  <text x="595" y="52" class="dg-lbl">出力集合 O</text>
+  <ellipse cx="570" cy="152" rx="50" ry="40" fill="rgba(176,74,62,.10)" stroke="#B04A3E" stroke-width="1.3"/>
+  <text x="570" y="148" class="dg-lbl" fill="#B04A3E">O<tspan baseline-shift="sub" font-size="9">e</tspan></text>
+  <text x="570" y="166" class="dg-el" fill="#B04A3E">誤りを示す出力</text>
+  <path d="M238 125 L296 125" class="dg-line" marker-end="url(#ah)"/>
+  <path d="M452 125 L492 125" class="dg-line" marker-end="url(#ah)"/>
+  <text x="267" y="112" class="dg-el">入力</text>
+  <text x="472" y="112" class="dg-el">出力</text>
+  <defs><marker id="ah" markerWidth="9" markerHeight="9" refX="8" refY="4.5" orient="auto">
+    <path d="M0,0 L9,4.5 L0,9 z" fill="#6B746F"/></marker></defs>
+</svg>
+<div class="dg-legend">欠陥テストのゴールは、赤い部分集合 I<sub>e</sub>（誤りを示す出力 O<sub>e</sub> につながる入力）をできるだけ効率よく見つけ出すこと。</div>
+</div>
+
+<h4>検証と妥当性確認（V &amp; V）</h4>
+<p>テストは、より広い <b>検証と妥当性確認（Verification and Validation）</b> というプロセスの一部です。
+この2つの問いの違いは、試験でも実務でも繰り返し問われます（Boehm, 1979）。</p>
+<div class="principles">
+  <div class="p"><b>検証（Verification）</b><br>
+    <span>「プロダクトを<strong>正しく</strong>作っているか？」ソフトウェアが仕様（機能要求・非機能要求）を満たしていることを確認する。</span></div>
+  <div class="p"><b>妥当性確認（Validation）</b><br>
+    <span>「<strong>正しいプロダクト</strong>を作っているか？」仕様への適合を超えて、顧客の期待・本当のニーズに応えていることを確認する。</span></div>
+</div>
+<p>V&amp;V のゴールは「システムが<strong>目的に適合している（fit for purpose）</strong>」という確信を確立することです。
+必要な確信のレベルは一律ではなく、<strong>ソフトウェアの目的</strong>（安全性が関わるか）、<strong>ユーザの期待</strong>、
+<strong>市場環境</strong>（早期リリースの価値）に応じて決まります。</p>
+
+<div class="callout">
+  <h4>実行しない検査：インスペクション（静的V&amp;V）</h4>
+  V&amp;V にはプログラムを実行するテスト（動的技法）だけでなく、要求・設計・コードを<strong>実行せずに</strong>検査する
+  <a href="#inspection">インスペクション（静的技法）</a>もあります。両者は競合ではなく<strong>相互補完</strong>の関係で、
+  商用システムの開発では両方を組み合わせるのが標準です。詳しくは下のカタログのカードで説明します。
+</div>
+
+<h4>テストプロセス：商用ソフトウェアが通る3つの段階</h4>
+<p>商用のソフトウェアシステムは、通常次の3段階のテストを経て世に出ます。
+段階が進むにつれて、テストの主目的が<strong>欠陥の発見</strong>から<strong>妥当性の確認</strong>へと移っていきます。</p>
+<div class="diagram-wrap">
+<svg viewBox="0 0 760 205" role="img" aria-label="ソフトウェアテストプロセスの3段階">
+  <rect x="20" y="45" width="215" height="90" rx="14" class="dg-box dg-if"/>
+  <text x="127" y="80" class="dg-lbl">開発テスト</text>
+  <text x="127" y="98" class="dg-st">Development testing</text>
+  <text x="127" y="118" class="dg-el">開発チームが実施・主に欠陥テスト</text>
+  <rect x="272" y="45" width="215" height="90" rx="14" class="dg-box dg-if"/>
+  <text x="379" y="80" class="dg-lbl">リリーステスト</text>
+  <text x="379" y="98" class="dg-st">Release testing</text>
+  <text x="379" y="118" class="dg-el">独立チームが実施・妥当性確認</text>
+  <rect x="524" y="45" width="215" height="90" rx="14" class="dg-box dg-if"/>
+  <text x="631" y="80" class="dg-lbl">ユーザテスト</text>
+  <text x="631" y="98" class="dg-st">User testing</text>
+  <text x="631" y="118" class="dg-el">ユーザ・顧客が実施・実環境で確認</text>
+  <path d="M235 90 L268 90" class="dg-line" marker-end="url(#ah2)"/>
+  <path d="M487 90 L520 90" class="dg-line" marker-end="url(#ah2)"/>
+  <text x="127" y="168" class="dg-note">ユニット → コンポーネント → システム</text>
+  <text x="379" y="168" class="dg-note">要求ベース／シナリオ／性能</text>
+  <text x="631" y="168" class="dg-note">アルファ／ベータ／受入れ</text>
+  <text x="380" y="28" class="dg-note">欠陥テスト中心 --------------→ 妥当性確認中心</text>
+  <defs><marker id="ah2" markerWidth="9" markerHeight="9" refX="8" refY="4.5" orient="auto">
+    <path d="M0,0 L9,4.5 L0,9 z" fill="#6B746F"/></marker></defs>
+</svg>
+<div class="dg-legend">3つの段階は厳密な一方通行ではなく、欠陥が見つかれば前の段階に戻る。手動テストと自動テスト（回帰テスト）を組み合わせて進める。</div>
+</div>
+
+<div class="callout tip">
+  <h4>用語メモ：教科書によって呼び名が違う</h4>
+  この教材は Sommerville の用語に従います。JSTQB/ISTQB などの資格試験や現場では、
+  <b>ユニットテスト＝単体テスト</b>、<b>コンポーネントテスト＝統合テスト（結合テスト）</b>と呼ばれることが多く、
+  V字モデルでは「単体→統合→システム→受入れ」という段階に対応づけられます。
+  名前は違っても「小さな部品から順に、だんだん大きな単位で確かめる」という考え方は共通です。
+</div>
+
+<p style="font-size:13px;color:var(--muted)">各カード末尾の「習得チェック」を付けると、絞り込みバー右側に習得の進捗が表示されます（保存はされず、ページを開いている間だけ保持されます）。
+一通り読んだら<a href="#quiz">理解度チェッククイズ</a>で定着を確認しましょう。</p>
+`;
+</script>
+<script>
+const TECH_HTML = `
+<p>どんなに簡単なプログラムでも、あり得る入力の組合せは天文学的な数になり、<strong>網羅的なテストは不可能</strong>です。
+つまりテストの成否は「<strong>限られた数のテストケースをいかに賢く選ぶか</strong>」で決まります。
+まず大前提として、テストケースは必ず<strong>2種類</strong>設計します。</p>
+<div class="principles">
+  <div class="p"><b>正常系のテストケース</b><br>
+    <span>期待どおりに使われたとき、正しく動くことを示すもの。妥当性確認のためのテスト。</span></div>
+  <div class="p"><b>異常系のテストケース</b><br>
+    <span>問題が起きやすい異常な入力をわざと与え、きちんと処理される（クラッシュ・データ破壊しない）ことを確かめるもの。欠陥テストのためのテスト。</span></div>
+</div>
+
+<h4>戦略①：等価分割（equivalence partitioning）と境界値分析</h4>
+<p>入力データや出力結果を、「プログラムから見て<strong>同じように扱われるグループ（等価クラス／分割）</strong>」に分けます。
+同じクラスに属する値はどれを試しても検出できる欠陥がほぼ同じなので、<strong>各クラスから代表値を選べば、
+少ないテストで広い範囲をカバー</strong>できます。代表値としては次の2つを選ぶのが定石です。</p>
+<ul>
+  <li><b>境界の値（境界値分析）</b>：クラスの端とそのすぐ外側。経験上、<strong>誤りは分割の境界で圧倒的に起こりやすい</strong>（<code>&lt;</code> と <code>&lt;=</code> の取り違え、off-by-one エラーなど）。</li>
+  <li><b>中央付近の値</b>：クラスの「典型的な」値。正常な処理の代表として選ぶ。</li>
+</ul>
+<div class="diagram-wrap">
+<svg viewBox="0 0 760 190" role="img" aria-label="等価分割と境界値の例">
+  <text x="380" y="26" class="dg-lbl">仕様：「10000〜99999 の整数のみ有効」の等価分割</text>
+  <rect x="40" y="55" width="200" height="56" rx="10" fill="rgba(176,74,62,.10)" stroke="#B04A3E" stroke-width="1.2"/>
+  <text x="140" y="78" class="dg-lbl" fill="#B04A3E">無効：10000 未満</text>
+  <text x="140" y="96" class="dg-el">…&nbsp; 9998, 9999</text>
+  <rect x="260" y="55" width="240" height="56" rx="10" fill="rgba(14,111,92,.10)" stroke="#0E6F5C" stroke-width="1.4"/>
+  <text x="380" y="78" class="dg-lbl" fill="#0A5748">有効：10000〜99999</text>
+  <text x="380" y="96" class="dg-el">10000 … 55000 … 99999</text>
+  <rect x="520" y="55" width="200" height="56" rx="10" fill="rgba(176,74,62,.10)" stroke="#B04A3E" stroke-width="1.2"/>
+  <text x="620" y="78" class="dg-lbl" fill="#B04A3E">無効：99999 超</text>
+  <text x="620" y="96" class="dg-el">100000, 100001 &nbsp;…</text>
+  <circle cx="260" cy="135" r="6" fill="#8A6D3B"/><circle cx="500" cy="135" r="6" fill="#8A6D3B"/>
+  <circle cx="380" cy="135" r="6" fill="#0E6F5C"/>
+  <text x="260" y="162" class="dg-el">境界：9999 / 10000</text>
+  <text x="500" y="162" class="dg-el">境界：99999 / 100000</text>
+  <text x="380" y="162" class="dg-el">中央：55000</text>
+  <text x="380" y="182" class="dg-note">境界の両側＋中央：これだけで3つの等価クラスを効率よくカバーできる</text>
+</svg>
+</div>
+<p>分割は<strong>複数の軸</strong>で考えます。たとえば「5桁の整数を<strong>4〜8個</strong>入力する」という仕様なら、
+<strong>値</strong>の軸（10000未満／10000〜99999／99999超）に加えて<strong>個数</strong>の軸（3個以下／4〜8個／9個以上）でも分割し、
+それぞれの境界（3, 4, 8, 9個）と中央（6個前後）を組み合わせてテストします。
+仕様だけから分割を導けば<a href="#black-box-testing">ブラックボックステスト</a>、コードの中の条件分岐や例外処理の知識で分割を補強すれば
+<a href="#white-box-testing">ホワイトボックステスト</a>の考え方になります。</p>
+
+<h4>戦略②：ガイドラインベースのテスト</h4>
+<p>「プログラマがよくやる誤り」についての経験則（ガイドライン）を使ってテストケースを選ぶ方法です。
+たとえば<strong>シーケンス・配列・リスト</strong>を扱うプログラムなら、次のようなガイドラインが知られています。</p>
+<ul>
+  <li>要素が<b>1つだけ</b>のシーケンスでテストする（複数要素を暗黙に仮定したコードは、ここで壊れる）。</li>
+  <li>テストごとに<b>異なるサイズ</b>のシーケンスを使う。<b>空</b>（0件）も忘れずに。</li>
+  <li><b>最初・中間・最後</b>の要素にアクセスするテストを設計する（端の処理は誤りやすい）。</li>
+</ul>
+<p>より一般的なガイドラインとしては、「<b>すべてのエラーメッセージを一度は表示させる入力</b>を選ぶ」
+「<b>入力バッファをあふれさせる</b>ほど大きな入力を与える」「<b>同じ入力を何度も繰り返す</b>」
+「<b>無効な出力を強制的に生成させる</b>」「<b>計算結果が極端に大きく／小さくなる</b>入力を与える」などがあります。
+どれも「開発者が想定していなさそうな使い方」を突く、<strong>欠陥テストの発想</strong>です。</p>
+
+<div class="callout tip">
+  <h4>テスト設計は「意地悪な想像力」の訓練</h4>
+  よいテスト設計者は、仕様を読むと同時に「どうすれば壊せるか」を考え始めます。
+  境界・空・重複・巨大・不正な型・予期しない順序。このページの<a href="#component-testing">コンポーネントテスト</a>や
+  <a href="#performance-testing">ストレステスト</a>も、同じ発想の延長線上にあります。
+</div>
+`;
+
+const CLOSING_HTML = `
+<p>最後に、個々のテストの知識を「使える判断力」に変えるための視点をまとめます。</p>
+<div class="callout warn">
+  <h4>テストは品質を「測る」ことはできても「作り込む」ことはできない</h4>
+  テストで欠陥を見つけて直しても、設計そのものが悪ければ品質は上がりません。
+  品質は要求・設計・実装の各工程で作り込むものであり、テストはそれを<strong>確かめる</strong>手段です。
+  「最後にテストで頑張ればよい」という発想は、手戻りコストの爆発を招きます。
+  欠陥は<strong>作り込まれた工程から離れるほど修正コストが増える</strong>。だからこそ、
+  できるだけ早い段階でテスト（とインスペクション）を行う「シフトレフト」の考え方が重要です。
+</div>
+<div class="callout tip">
+  <h4>「壊すつもりで」テストする</h4>
+  自分の書いたプログラムには愛着があり、「動いてほしい」という気持ちがテストを甘くします。
+  よいテストの心構えは、経験とガイドラインを使って<strong>ソフトウェアを「壊しにいく」</strong>こと。
+  だからこそ、リリーステストは開発チームとは<strong>別の独立したチーム</strong>が担うべきだとされています
+  （自分の答案を自分で採点しない、ということです）。
+</div>
+<div class="callout">
+  <h4>可能な限り自動化する</h4>
+  自動化されたテストは数秒〜数分で全件を再実行でき、変更のたびに回帰テストとして働きます。
+  「テストを書くコスト」は一度きりですが、「手動で再テストするコスト」は変更のたびに発生します。
+  現代の開発では、自動テスト＋継続的インテグレーション（CI）が品質の生命線です。
+</div>
+
+<h4 style="margin-top:26px">混同しやすい用語・テストの見分け方</h4>
+<p>似ているテスト・用語は、<strong>「誰が」「何のために」</strong>やるのかで見分けます。試験でも実務でも問われるポイントです。</p>
+<table class="cmp-table">
+  <tr><th>似ている用語</th><th>見分けるポイント</th></tr>
+  <tr><td><b>検証</b> と <b>妥当性確認</b></td>
+    <td>検証は「プロダクトを<b>正しく作っているか</b>」（仕様への適合）。妥当性確認は「<b>正しいプロダクト</b>を作っているか」（顧客の期待への適合）。</td></tr>
+  <tr><td><b>欠陥テスト</b> と <b>妥当性確認テスト</b></td>
+    <td>同じテストプロセスの中の2つの目的。前者は<b>壊すため</b>（異常を起こす入力 I<sub>e</sub> を探す）、後者は<b>示すため</b>（期待どおりの利用を反映）。</td></tr>
+  <tr><td><b>ユニット</b> / <b>コンポーネント</b> / <b>システム</b></td>
+    <td>対象の大きさが違う。個々のクラス・メソッド → 統合したユニット群の<b>インタフェース</b> → 全体を統合した<b>創発的な振る舞い</b>。</td></tr>
+  <tr><td><b>システムテスト</b> と <b>リリーステスト</b></td>
+    <td>技法は似るが、前者は<b>開発チーム</b>による欠陥発見、後者は<b>独立チーム</b>による「リリースしてよいか」の妥当性確認。</td></tr>
+  <tr><td><b>アルファ</b> / <b>ベータ</b> / <b>受入れ</b></td>
+    <td>いずれもユーザテスト。少数ユーザ×開発チームと密に → 多数ユーザ×実環境で自律的に → 顧客が<b>契約上の合否</b>を判断。</td></tr>
+  <tr><td><b>負荷テスト</b> と <b>ストレステスト</b></td>
+    <td>前者は想定内の負荷で性能要求を確認。後者は<b>設計限界を超える</b>負荷をかけ、壊れ方が安全か（フェイルソフト）を確かめる。</td></tr>
+  <tr><td><b>回帰テスト</b> と <b>再テスト</b></td>
+    <td>再テストは「直した欠陥が本当に直ったか」。回帰テストは「その修正で<b>他が壊れていないか</b>」。</td></tr>
+  <tr><td><b>テスト</b> と <b>インスペクション</b></td>
+    <td>実行するかしないか（動的 vs 静的）。インスペクションは誤りのマスキングがなく未完成でも検査できるが、性能・相互作用の欠陥はテストでしか見つからない。</td></tr>
+  <tr><td><b>ブラックボックス</b> と <b>ホワイトボックス</b></td>
+    <td>テストケースを<b>仕様</b>から導くか、<b>コードの内部構造</b>の知識から導くか。リリーステストは原則ブラックボックス。詳しくは<a href="#black-box-testing">ブラックボックス</a>／<a href="#white-box-testing">ホワイトボックス</a>のカードへ。</td></tr>
+  <tr><td><b>スモークテスト</b> と <b>回帰テスト</b></td>
+    <td>スモークは「そもそも動くか」を数分で確かめる<b>門番</b>。回帰は「既存機能が壊れていないか」を<b>網羅的に</b>確かめる本隊。スモーク合格後に回帰を回す。</td></tr>
+  <tr><td><b>探索的テスト</b> と <b>アドホックテスト</b></td>
+    <td>どちらも台本なしだが、探索的テストは<b>チャーターとタイムボックス</b>という規律を持ち、記録と報告を伴う。無計画にいじるだけのアドホック（モンキー）テストとは別物。</td></tr>
+  <tr><td><b>ミューテーションテスト</b> と <b>カバレッジ</b></td>
+    <td>カバレッジは「コードを<b>実行したか</b>」、ミューテーションは「バグを<b>検出できるか</b>」を測る。実行しただけで検証しないテストは、カバレッジは高くてもスコアは低い。</td></tr>
+  <tr><td><b>ファジング</b> と <b>プロパティベーステスト</b></td>
+    <td>どちらも入力の自動大量生成。ファジングは<b>クラッシュ・脆弱性</b>を探し、プロパティベースは定義した<b>性質の反例</b>を探す（そして最小の反例に自動縮小してくれる）。</td></tr>
+</table>
+
+<h4 style="margin-top:26px">研究者の視点：テストはいま、研究の最前線でもある</h4>
+<div class="callout">
+  <h4>自動テスト生成・自動プログラム修正</h4>
+  「テストケースを人間が考える」こと自体を自動化する研究が進んでいます。ランダムな入力を大量生成する
+  <strong>ファジング（fuzzing）</strong>はOSSの脆弱性発見で大きな成果を上げ、探索的アルゴリズムでテストを自動生成する
+  <strong>サーチベースドテスティング</strong>、さらに失敗するテストを手がかりにパッチを自動生成する
+  <strong>自動プログラム修正（APR）</strong>も実用段階に入りつつあります。
+  「テストは誤りの不在を示せない」という限界の中で、いかに賢く・安く・大量に確かめるか。
+  ソフトウェア工学のもっとも活発な研究分野の1つです。
+</div>
+
+<h4 style="margin-top:26px">さらに学ぶための文献・資料</h4>
+<ul>
+  <li>I. Sommerville『Software Engineering (10th ed.)』Pearson, 2016年, 第8章：本教材の底本</li>
+  <li>G. J. Myers ほか『ソフトウェア・テストの技法 第2版』近代科学社：テストケース設計の古典</li>
+  <li>Kent Beck『テスト駆動開発』オーム社, 2017年（和田卓人 訳）：TDDの原典</li>
+  <li>高橋寿一『知識ゼロから学ぶソフトウェアテスト 第3版』翔泳社, 2022年：日本語の定番入門書</li>
+  <li><a href="https://jstqb.jp/" target="_blank" rel="noopener">JSTQB（ソフトウェアテスト技術者資格認定）</a>：シラバス・用語集が無料公開されており、用語の整理に有用</li>
+</ul>
+`;
+</script>
+<script>
+/* ============== テストデータ（カテゴリ別） ============== */
+const CAT_ORDER = ['dev','release','user','cross','technique','modern'];
+const CAT_META = {
+  dev:{ label:'開発テスト', en:'Development testing', color:'var(--dev)',
+    desc:'ソフトウェアを開発したチーム自身が実施するテスト。主目的は欠陥の発見（欠陥テスト）で、デバッグと表裏一体で進む。ユニット → コンポーネント → システムの順に、確かめる単位を大きくしていく。'},
+  release:{ label:'リリーステスト', en:'Release testing', color:'var(--release)',
+    desc:'開発チームとは別の独立したチームが、システムの特定のリリース（版）を検査するプロセス。主目的は「要求を満たし、利用に耐える」ことの妥当性確認で、通常は仕様から導くブラックボックステストとして行う。'},
+  user:{ label:'ユーザテスト', en:'User testing', color:'var(--user)',
+    desc:'ユーザや顧客自身がテストに参加する段階。開発側では実際の作業環境（利用の仕方・他システムとの共存・運用実態）を再現できないため、どれだけ入念にテストしても、この段階は省略できない。'},
+  cross:{ label:'横断的な技法・アプローチ', en:'Cross-cutting approaches', color:'var(--cross)',
+    desc:'特定の段階に属さず、テスト活動全体を支える技法や開発アプローチ。現代の開発では、これらの活用度合いがチームの生産性と品質を大きく左右する。'},
+  technique:{ label:'テスト設計の視点（技法）', en:'Test design techniques', color:'#3E5C50',
+    desc:'「どの段階で行うか」とは別の軸。テストケースを「何を手がかりに設計するか」の分類。教科書では簡潔にしか触れられないが、実務でも JSTQB などの資格試験でも頻出の語彙。'},
+  modern:{ label:'発展的・現代的なテスト', en:'Beyond the textbook', color:'#7A5C34',
+    desc:'教科書（Sommerville 10th）には載っていないが、現場では日常語になっているテストとトピック。CI/CD・クラウド時代のテストの現在地を知る。'}
+};
+const BADGE_CLS = {'欠陥テスト中心':'imp3','妥当性確認中心':'imp2','両方の性格':'imp1','静的V&V':'imp1','開発アプローチ':'imp1','設計の視点':'imp1','テスト自体の品質':'imp1'};
+
+const TESTS = [
+/* ---------- 開発テスト ---------- */
+{
+  id:'unit-testing', name:'Unit Testing', jp:'ユニットテスト（単体テスト）', cat:'dev',
+  badge:'欠陥テスト中心', tags:['開発者が実施','自動化しやすい','JUnit / pytest'],
+  summary:'プログラムを構成する<strong>最小単位（メソッド・関数・クラス）</strong>を1つずつ取り出して検査する、すべてのテストの出発点。',
+  analogy:'車の組み立て前に、ネジ・ライト・ブレーキと部品を1つずつ検品するイメージ。組み上げてから「どこかがおかしい」と全体を疑うより、原因の切り分けがはるかに簡単で安上がり。',
+  purpose:'個々のユニットが仕様どおりに機能することを確認し、欠陥を「作り込まれた直後」＝修正コストが最小のうちに発見する。機能の正しさに集中する欠陥テスト。',
+  who:'開発者本人が、実装と並行して（デバッグと交互に）実施する。自動化して変更のたびに再実行するのが前提。',
+  steps:[
+    'テスト対象の機能を確認し、入力と<b>期待される出力</b>の組（テストケース）を設計する（等価分割・境界値を活用）',
+    '<b>セットアップ</b>：テストケースの入力でシステム（オブジェクト）を初期化する',
+    '<b>呼び出し</b>：テスト対象のメソッド・関数を呼び出す',
+    '<b>アサーション</b>：呼び出しの結果を期待される結果と比較し、一致すれば成功・不一致なら失敗とする',
+    'テスティングフレームワーク（JUnit・pytest など）に登録し、<b>全テストを自動実行</b>できる状態を保つ'
+  ],
+  points:[
+    '<b>正常系と異常系の両方</b>を必ず設計する（動くことを示すテスト＋壊しにいくテスト）',
+    'オブジェクトクラスは<b>全操作・全属性・代表的な状態遷移</b>のカバレッジを目指す（状態モデルから遷移シーケンスを導く）',
+    '依存する外部要素（DB・ネットワーク・時計）は<b>モックオブジェクト</b>で置き換えると、高速化でき、異常系（タイムアウト等）も擬似的に起こせる',
+    '全テストが<b>数秒で</b>走る状態を保つ。速いテストは頻繁に実行され、遅いテストは実行されなくなる'
+  ],
+  cautions:[
+    '<b>継承（汎化）がテストを複雑にする</b>：スーパークラスで定義された操作も、それを使う（オーバーライドされ得る）すべてのサブクラスの文脈で再テストが必要',
+    'ユニット単体で合格しても、<b>組み合わせたときの誤り（インタフェースエラー）は見つからない</b>。コンポーネントテストが別途必要',
+    '実装の内部詳細に密着しすぎたテストは、リファクタリングのたびに壊れて足かせになる（<b>振る舞いをテストする</b>のが原則)',
+    'テストコード自体も保守対象。汚いテストは嘘をつき始める'
+  ],
+  examples:[
+    '気象観測所 <code>WeatherStation</code> クラス：状態モデルから Shutdown → Running → Shutdown などの遷移シーケンスを特定してテスト',
+    '日付計算メソッドの境界値テスト（月末・うるう年・年またぎ）',
+    '入力チェック関数に境界値（9999 / 10000 / 99999 / 100000）を与えるテスト（下のコード例）'
+  ],
+  related:'<b>コンポーネントテスト</b>との違い：ユニットテストは部品「単体」の正しさ、コンポーネントテストは部品「間のつなぎ目」（インタフェース）を確かめる。',
+  modern:'JUnit 5（Java）、pytest（Python）、Jest（JavaScript）が定番。CI（継続的インテグレーション）でコミットごとに全実行し、カバレッジ計測（JaCoCo・coverage.py）を併用するのが現代の標準。',
+  hasCode:true
+},
+{
+  id:'component-testing', name:'Component Testing', jp:'コンポーネントテスト（統合テスト）', cat:'dev',
+  badge:'欠陥テスト中心', tags:['開発チームが実施','インタフェースが標的'],
+  summary:'複数のユニットを統合した複合コンポーネントを対象に、部品間の<strong>インタフェース（つなぎ目）</strong>に潜む誤りを狙って見つける。',
+  analogy:'部品単体の検品では問題なくても、組み付けると「ネジ穴の規格が合わない」「配線の向きが逆」といった不具合が出る。個々の部品ではなく“つなぎ目”を狙い撃ちする検査。',
+  purpose:'個々のユニットのテストでは検出できない、ユニット間の相互作用の欠陥（インタフェースエラー)を発見する。対象コンポーネントの機能は、そのインタフェースを通して確かめる。',
+  who:'開発チームが、関係するユニットのテスト完了後に実施する。',
+  steps:[
+    'コンポーネント間の<b>インタフェースの種類</b>を整理する（パラメータ／共有メモリ／手続き型／メッセージパッシング）',
+    'インタフェース仕様を読み、呼び出し側と呼ばれる側の<b>想定のズレ</b>がありそうな箇所を洗い出す',
+    'パラメータに<b>境界値・極端な値・null（空）ポインタ</b>を与えるテストを設計する',
+    'メッセージパッシング系には<b>ストレスをかける</b>（想定より高い負荷で叩く）',
+    '共有メモリ系は<b>起動・実行の順序を変えて</b>テストする（タイミング前提の誤りを暴く）'
+  ],
+  points:[
+    'インタフェースエラーの<b>3分類</b>を意識して設計する：<b>誤用</b>（型・順序・数を間違えて呼ぶ）／<b>誤解</b>（呼び出し側が仕様を誤解。例：二分探索に未整列配列を渡す）／<b>タイミングエラー</b>（生産者と消費者の速度差で古いデータを参照）',
+    '「呼び出したら失敗させる」つもりでテストケースを作る（欠陥テストの発想）',
+    'コンポーネントを常に完全に統合してからテストする必要はない。重要なインタフェースから順に'
+  ],
+  cautions:[
+    '<b>誤解によるエラーは、双方の単体テストでは絶対に出ない</b>（それぞれ自分の想定の中では正しいから）',
+    '<b>タイミングエラーは再現が難しく</b>、テストをすり抜けやすい。順序・負荷を変える設計が要る',
+    '静的な型検査で防げるのは「誤用」の一部だけ。誤解・タイミングは実行しないと分からない'
+  ],
+  examples:[
+    'パラメータの順序を間違えて呼んでいた（誤用）。コンパイルは通るが結果が異常',
+    '「昇順に整列済み」という前提を知らずに二分探索を呼ぶ（誤解）',
+    'センサーデータの生産者が遅く、消費者が同じ古い値を2回読む（タイミング）'
+  ],
+  related:'JSTQB などの用語では<b>統合テスト（結合テスト）</b>に相当。<b>システムテスト</b>との違いは、開発チーム内で作った部品同士の「つなぎ目」に焦点を絞る点。',
+  modern:'API のコントラクトテスト（Pact 等）、Docker で依存サービスを立てた統合テスト環境、インタフェース仕様の型による表明（OpenAPI・型ヒント）などが現代的な実践。',
+  hasCode:false
+},
+{
+  id:'system-testing', name:'System Testing', jp:'システムテスト', cat:'dev',
+  badge:'欠陥テスト中心', tags:['開発チームが実施','ユースケースベース','自動化しにくい'],
+  summary:'再利用部品や購入部品も含めて<strong>すべてを統合したシステム全体</strong>を動かし、コンポーネント間の相互作用と「創発的な振る舞い」を確かめる。',
+  analogy:'完成した車での試走。部品検査と組み付け検査をどれだけやっても、「走ってみて初めて分かる挙動」（直進安定性や騒音）は全体を動かさないと確かめられない。',
+  purpose:'統合後にのみ現れる欠陥の発見。計画された「創発的機能」（部品の組合せで生まれる機能）が正しく働くこと、意図しない振る舞いがないことの確認。',
+  who:'開発チーム（規模の大きいプロジェクトでは専任テスターを交えて）。コンポーネントテストの後、リリーステストの前に実施。',
+  steps:[
+    'システムの<b>ユースケース</b>を選ぶ（ユースケースは複数コンポーネントを同時に駆動するため効果的）',
+    'ユースケースに対応する<b>シーケンス図</b>から、システムへの入力と期待される出力・相互作用を読み取り、テストケースを導く',
+    '<b>テストポリシー</b>を定め、テストすべき範囲（カバレッジ）を決める',
+    'テストを実行し、結果と欠陥を記録する',
+    '欠陥修正後は<b>回帰テスト</b>で他機能への影響を確認する'
+  ],
+  points:[
+    'ポリシーの例：「メニューからアクセスされる<b>すべての機能</b>をテストする」「ユーザ入力のある機能は<b>正しい入力と誤った入力の両方</b>でテストする」「機能の組合せは代表的なものを選ぶ」',
+    'ユースケース（シーケンス図）ベースの設計は、開発の成果物をそのまま再利用できて効率的',
+    '意図しない創発的振る舞い（想定外の副作用）にもアンテナを張る'
+  ],
+  cautions:[
+    '<b>網羅的なテストは不可能</b>。ポリシーによる「賢いサブセット選び」がすべて',
+    '<b>自動化が難しい</b>：システム全体の出力は事前に正確に予測しにくく、期待値の用意が大変',
+    '再利用コンポーネント・COTS（購入部品）を含むシステムでは、ソースが見えない部分の振る舞いに注意'
+  ],
+  examples:[
+    '気象システム：「気象情報の要求」のシーケンスに沿って SatComms → WeatherStation → Commslink → WeatherData と正しくメッセージが流れるかを確認',
+    '業務システムで全メニュー項目を一巡し、各画面で正しい入力・誤った入力の両方を試す'
+  ],
+  related:'<b>リリーステスト</b>との違い：技法は似るが、システムテストは開発チームによる<b>欠陥発見</b>、リリーステストは独立チームによる<b>妥当性確認</b>。',
+  modern:'E2E テスト自動化（Selenium・Playwright・Cypress）で主要シナリオを自動化するのが主流。ただし E2E テストは壊れやすく保守コストが高いため、テストピラミッド（ユニット多・E2E 少）の考え方でバランスを取る。',
+  hasCode:false
+},
+/* ---------- リリーステスト ---------- */
+{
+  id:'requirements-based', name:'Requirements-based Testing', jp:'要求ベースのテスト', cat:'release',
+  badge:'妥当性確認中心', tags:['独立チームが実施','ブラックボックス','トレーサビリティ'],
+  summary:'「要求はテスト可能であるべき」という原則に基づき、<strong>要求を1つずつ取り上げて</strong>体系的にテストを導出する、リリーステストの中核。',
+  analogy:'契約書の条項を1つずつ指差し確認しながら「約束どおりになっているか」を点検していく作業。条項（要求）とチェック結果の対応表が残るのがミソ。',
+  purpose:'定義された各要求がシステムで正しく実装されていることを実証する（妥当性確認）。要求とテストの対応（トレーサビリティ）を記録し、検証漏れをなくす。',
+  who:'開発チームから独立したテストチームが、リリーステストの一環として実施する。',
+  steps:[
+    '要求を1つ選ぶ',
+    'その要求が<b>満たされるべき状況</b>と<b>働いてはいけない状況</b>を列挙する',
+    'それぞれをテストケースに落とす。<b>1つの要求に複数のテスト</b>が必要になるのが普通',
+    '要求とテストケースの対応関係（トレーサビリティ）を記録する',
+    '実行して、すべての関連テストが合格することを確認する'
+  ],
+  points:[
+    '「正しく警告が出る」だけでなく「<b>出るべきでないときに出ない</b>」ことも必ずテストする（正常系・異常系の対）',
+    'トレーサビリティ記録があると、要求変更時に「どのテストを直すべきか」がすぐ分かる',
+    '要求がテスト可能な形で書かれていること自体が、要求工学の品質の証'
+  ],
+  cautions:[
+    '要求が曖昧・未計量だとテストを導出できない。問題はテストではなく<b>要求の書き方</b>にある',
+    '要求を1つずつ確かめるだけでは、<b>要求の組合せ</b>で起きる問題は見つからない（シナリオテストで補完）',
+    '対応記録を怠ると、「テストしたつもり」の漏れが検出できない'
+  ],
+  examples:[
+    'Mentcare（メンタルヘルスケア支援システム）の「薬物アレルギー警告」要求に対し：①アレルギーのない患者では警告が出ない ②アレルギーのある患者への処方で警告が出る ③警告の無視には理由の入力が求められる ④理由を入力せずに無視はできない、と<b>4つのテスト</b>を導出'
+  ],
+  related:'<b>シナリオテスト</b>との違い：要求ベースは要求を「縦に」1つずつ、シナリオテストは複数要求を物語で「横断的に」確かめる。両方やる。',
+  modern:'要求管理ツール（Jira・Azure DevOps）でユーザストーリーとテストケースを紐付けて管理。アジャイルでは受入れ基準（acceptance criteria）として要求のテスト可能性を最初から作り込む。',
+  hasCode:false
+},
+{
+  id:'scenario-testing', name:'Scenario Testing', jp:'シナリオテスト', cat:'release',
+  badge:'妥当性確認中心', tags:['独立チームが実施','利用ストーリー','複数要求を横断'],
+  summary:'システムの<strong>典型的な利用シナリオ（ストーリー）</strong>を作り、それを「演じ」ながら一連の機能をまとめて確かめる。',
+  analogy:'新築住宅の内覧で「朝起きてから出かけるまで」を実際に演じてみるようなもの。生活の動線に沿って動くと、部屋ごとの個別チェックでは気づかない不便が見えてくる。',
+  purpose:'現実的な利用の流れの中で複数の要求の組合せを検証し、システムがユーザの業務に本当に使えるかを確かめる（妥当性確認）。',
+  who:'独立テストチームが、実際のユーザの業務の調査をもとに実施する。',
+  steps:[
+    '典型的なユーザと、その業務の流れを調べる',
+    'シナリオを書く。Kaner によれば、よいシナリオは「<b>信頼できる（実際に起こりそう）</b>」「<b>やや複雑</b>（複数機能を通る）」「<b>結果を評価しやすい</b>」物語であるべき',
+    'シナリオを最初から最後まで「演じる」ように操作し、各ステップの期待結果を確認する',
+    '途中に<b>意図的な誤操作・例外事象</b>（通信断・入力ミス）を織り込み、システムの対処を確かめる'
+  ],
+  points:[
+    '1つのシナリオで<b>複数の要求を同時に</b>テストできる。要求ベースのテストの効率的な補完',
+    '物語に説得力があるほど、発見される問題は「現実に起こる問題」に近い',
+    'エラー処理・回復の分岐（保存前に接続が切れたら？）を必ず入れる'
+  ],
+  cautions:[
+    '「ありそうもない」シナリオでいくら通っても、妥当性の証拠としては弱い',
+    'シナリオで全部通っても、<b>個別要求の漏れ</b>はあり得る（要求ベーステストと併用が前提)',
+    'シナリオの数は絞られるため、カバレッジの偏りを自覚しておく'
+  ],
+  examples:[
+    'Mentcare：在宅患者を訪問する看護師が、出発前に患者記録をノートPCへダウンロード → 訪問先（圏外）で診察記録を入力 → 処方を変更 → 帰院後にアップロード、という一連の物語で、レコードのロック・同期・整合性まで確かめる'
+  ],
+  related:'開発テストの<b>ユースケースベースのシステムテスト</b>と発想は同じ。シナリオテストはより「ユーザの物語」寄りで、妥当性確認が目的。',
+  modern:'ユーザージャーニーテスト、E2E 自動化のシナリオ設計、探索的テストのチャーター（探索の指針）として活用。ペルソナ設計と組み合わせることも多い。',
+  hasCode:false
+},
+{
+  id:'performance-testing', name:'Performance & Stress Testing', jp:'性能テスト・ストレステスト', cat:'release',
+  badge:'両方の性格', tags:['独立チームが実施','創発的特性','負荷を段階的に'],
+  summary:'統合後にのみ評価できる<strong>創発的特性（性能・信頼性）</strong>を、負荷を段階的に上げながら測る。設計限界を超える負荷をかけるのがストレステスト。',
+  analogy:'橋の耐荷重試験。設計上の想定荷重で問題ないことを確かめ（性能テスト）、さらに想定を超えて荷重をかけて「壊れるとしても安全に壊れるか」まで見届ける（ストレステスト）。',
+  purpose:'性能要求（応答時間・スループット）の充足を確認する妥当性確認と、高負荷時にのみ現れる欠陥を発見する欠陥テストの、<b>両方の性格</b>を持つ。',
+  who:'独立テストチームが、本番相当の環境と負荷生成ツールを使って実施する。',
+  steps:[
+    '<b>運用プロファイル</b>を作る。実運用でのトランザクションの種類と構成比（例：注文90%・返品5%・照会5%）を反映したテストの集合',
+    'プロファイルに沿った負荷を自動生成する',
+    '負荷を<b>段階的に増やし</b>ながら、応答時間・スループット・資源消費を計測する',
+    '性能が許容できなくなるポイントを特定する',
+    '<b>設計限界を超える負荷</b>をかけ（ストレステスト）、システムの壊れ方を観察する'
+  ],
+  points:[
+    'ストレステストで見るのは2つ：①<b>フェイルソフト</b>か、過負荷で徐々に性能が落ちる（graceful degradation）にとどまり、突然のクラッシュやデータ破壊を起こさないか ②<b>全負荷時にのみ現れる欠陥</b>の発見',
+    '運用プロファイルの正確さが評価の信頼性を決める。実態とかけ離れた負荷でいくら測っても意味がない',
+    'ストレステストは<b>分散システムで特に重要</b>：負荷が上がるとネットワークが劣化し、普段は隠れているタイミング系の欠陥が顕在化する'
+  ],
+  cautions:[
+    '本番相当環境の用意はコストが大きい。クラウドの一時環境などで工夫する',
+    '性能は「創発的」なので、ユニット単位の性能が良くても全体が速いとは限らない',
+    '測定は繰り返して統計的に見る（1回の測定値で判断しない）'
+  ],
+  examples:[
+    '通常 100 件/秒 の取引システムに、プロファイルどおりの負荷を 50 → 100 → 150 → 200 件/秒と増やし、応答時間の劣化カーブと、過負荷後の回復を観測する'
+  ],
+  related:'<b>負荷テスト</b>（想定内の負荷で性能を確認）と<b>ストレステスト</b>（想定を超えて壊れ方を見る）は目的が違う。信頼性テスト・可用性テストも同じ「創発的特性のテスト」の仲間。',
+  modern:'JMeter・k6・Locust・Gatling などの負荷生成ツール。クラウドで負荷環境を一時構築。本番でわざと障害を注入して回復力を確かめる<b>カオスエンジニアリング</b>（Netflix の Chaos Monkey）は思想的な発展形。',
+  hasCode:false
+},
+/* ---------- ユーザテスト ---------- */
+{
+  id:'alpha-testing', name:'Alpha Testing', jp:'アルファテスト', cat:'user',
+  badge:'妥当性確認中心', tags:['選ばれたユーザ','開発チームと密に連携'],
+  summary:'選ばれた少数のユーザが<strong>開発チームと密に連携しながら</strong>、早期バージョンのソフトウェアを試すユーザテスト。',
+  analogy:'新メニューの発売前に常連客を招いて開く試食会。作り手が隣で反応を見ながら意見を聞けるので、レシピの軌道修正が早い。',
+  purpose:'要求定義からは見えてこない「実際の使われ方」の問題を早期に特定し、開発中に軌道修正する。',
+  who:'選ばれた協力ユーザ＋開発チーム。開発サイトで、または密な連絡体制のもとで実施。',
+  steps:[
+    '協力してくれる典型的なユーザを選定する',
+    '早期リリース（アルファ版）を提供する',
+    '実際の業務・利用を想定してシステムを使ってもらう',
+    '開発チームが観察・ヒアリングし、問題や気づきを収集する',
+    '得られた知見を要求・設計・実装にフィードバックする'
+  ],
+  points:[
+    'ユーザの<b>生の使い方</b>から、文書化されていない暗黙の要求・想定外の使い方を発見できる',
+    'アジャイル開発と親和的。ユーザ（顧客）が開発プロセスに継続的に参加し、そのままアルファテスターの役割を果たせる',
+    '観察が命：ユーザが「言うこと」より「やること」を見る'
+  ],
+  cautions:[
+    '協力してくれるユーザが<b>典型的なユーザとは限らない</b>。熱心な人ほど偏っている',
+    '未完成品であることの期待値調整が必要（不具合で信頼を失わないように）',
+    'フィードバックの全部には応えられない。取捨選択の基準を持つ'
+  ],
+  examples:[
+    '業務システムを先行導入部署でトライアル運用してもらい、開発者が定期的に同席して観察する',
+    'ゲームのクローズドアルファ（限定ユーザ・NDA付き）'
+  ],
+  related:'<b>ベータテスト</b>との違い：少数ユーザ×開発チームと密に×管理された環境（アルファ）に対し、多数ユーザ×自律的に×実環境（ベータ）。',
+  modern:'社内ドッグフーディング（自社製品を社員が使う）、デザインパートナー顧客との共同開発、フィーチャーフラグによる限定公開などが現代版アルファテスト。',
+  hasCode:false
+},
+{
+  id:'beta-testing', name:'Beta Testing', jp:'ベータテスト', cat:'user',
+  badge:'両方の性格', tags:['多数の外部ユーザ','実環境','マーケティング効果も'],
+  summary:'早期リリースを<strong>多数の外部ユーザに公開</strong>し、実際の多様な環境で使ってもらって問題を報告してもらうユーザテスト。',
+  analogy:'全国発売前の限定地域でのテスト販売。多様な客層・使われ方・環境に晒して初めて分かる問題を、本番前に拾い上げる。',
+  purpose:'開発側では再現できない<b>多様な実行環境</b>（OS・ハードウェア・共存ソフトウェア）との相互作用で起こる問題を発見する。市場の反応を知る機会にもなる。',
+  who:'多数の自発的な外部ユーザが、それぞれの実環境で実施する。ソフトウェア製品・アプリで特に用いられる。',
+  steps:[
+    'ベータ版を配布する（公開ベータ／招待制ベータ）',
+    '問題を報告してもらう仕組み（フィードバックフォーム・自動クラッシュレポート）を用意する',
+    '利用データ・不具合報告を収集・分析する',
+    '重要な問題を修正し、必要なら次のベータを配布する',
+    '正式リリースの判断材料にする'
+  ],
+  points:[
+    '価値の源泉は<b>環境の多様性</b>。手元のテスト環境では決して再現できない組合せの問題が見つかる',
+    '報告のハードルを下げる（ワンクリック報告・自動収集）ほど、得られる情報が増える',
+    'ベータは<b>マーケティングの一形態</b>でもある。顧客が新製品を早く知る機会になる（それを自覚して設計する）'
+  ],
+  cautions:[
+    'フィードバックは<b>偏る</b>：報告してくれるのは熱心なユーザだけで、静かに去るユーザの声は届かない',
+    '品質が低すぎるベータは製品と会社の評判そのものを傷つける',
+    '収集するデータのプライバシーへの配慮が必須'
+  ],
+  examples:[
+    'Google Play のオープンベータトラック、iOS の TestFlight 配布',
+    'Windows Insider Program（何百万人規模のベータテスト）',
+    '大学の新教務システムを希望者に先行公開して問題を報告してもらう'
+  ],
+  related:'<b>アルファテスト</b>との違いは上のとおり。<b>受入れテスト</b>との違い：ベータは合否判断や契約と結びつかない、広く浅い妥当性確認＋実環境での欠陥発見。',
+  modern:'段階的ロールアウト（1% → 10% → 100% と徐々に公開）、テレメトリ（利用状況の自動計測）、A/B テストなど、ベータテストの思想は「リリース自体をテストにする」方向に進化している。',
+  hasCode:false
+},
+{
+  id:'acceptance-testing', name:'Acceptance Testing', jp:'受入れテスト', cat:'user',
+  badge:'妥当性確認中心', tags:['顧客が実施','実データ','契約・支払いに直結'],
+  summary:'顧客が<strong>自らのデータと環境で</strong>システムをテストし、受け入れる（＝検収して支払う）かどうかを判断する、カスタム開発の最終関門。',
+  analogy:'注文住宅の施主検査。図面（契約）どおりに建っているかを施主自身の目で確かめ、引き渡し書類にサインするかどうかを決める。',
+  purpose:'システムが契約・要求を満たし、実業務に導入できることを<b>顧客自身</b>が確認する。純粋な妥当性確認であり、受入れは通常、最終支払いを意味する。',
+  who:'顧客（発注者）。受注開発（カスタムシステム）に固有のプロセスで、市販製品のベータテストに相当する位置づけ。',
+  steps:[
+    '<b>受入れ基準を定義する</b>。理想は契約前に、要求の一部として合意しておく',
+    '受入れテストを計画する（資源・スケジュール・カバレッジ）',
+    '基準と計画からテストを導出する',
+    '<b>顧客の実データ・実環境で</b>テストを実行する',
+    '結果を交渉する。全テスト合格は稀で、欠陥の重大度と影響を協議する',
+    '受入れ／条件付き受入れ／拒否を決定する'
+  ],
+  points:[
+    '基準は<b>要求が確定する前（契約前）に</b>合意しておくのが理想。後から揉めない',
+    '<b>実データ</b>でテストしてこそ意味がある。開発側の作った「きれいなデータ」では出ない問題が出る',
+    '「欠陥ゼロでの受入れ」は現実的でない。<b>早期利用の利益と欠陥のコスト</b>を天秤にかけ、条件付き受入れ（欠陥リストと修正期限つき）に落ち着くことが多い'
+  ],
+  cautions:[
+    'アジャイル開発（XP）では顧客がチームに埋め込まれ、<b>別個の受入れテストがない</b>ことがある。ただしその「埋め込まれたユーザ」が組織の典型的ユーザである保証はない',
+    '受入れ基準が曖昧なまま開発が進むと、最後に紛争になる',
+    '多くの企業は実際には、アジャイルと従来型の受入れプロセスを<b>混合</b>して使っている'
+  ],
+  examples:[
+    'Mentcare 導入時、病院側が匿名化した実患者データで実際の業務フロー（受付 → 診察 → 処方 → 会計）を通し、受入れ可否を判断する'
+  ],
+  related:'<b>リリーステスト</b>との違い：主体が顧客か、開発側の独立チームか。<b>ベータテスト</b>との違い：契約上の合否判断（検収）を伴うかどうか。',
+  modern:'常設の UAT（User Acceptance Testing）環境、受入れ基準の BDD 化（Gherkin の Given-When-Then 形式で実行可能な仕様として書く）、継続的デリバリーの承認ゲートとしての自動受入れテスト。',
+  hasCode:false
+},
+/* ---------- 横断的な技法・アプローチ ---------- */
+{
+  id:'regression-testing', name:'Regression Testing', jp:'回帰テスト（リグレッションテスト）', cat:'cross',
+  badge:'欠陥テスト中心', tags:['変更のたびに','自動化が前提','CI'],
+  summary:'システムに変更を加えるたびに<strong>既存のテストをすべて再実行</strong>し、変更が以前の機能を壊していないことを確かめる。',
+  analogy:'部屋の模様替えのあとに、家中の電気・ガス・水道を一通り点検する習慣。「触っていない場所が壊れる」ことは、部品が複雑に絡み合うソフトウェアでは日常茶飯事。',
+  purpose:'機能追加・欠陥修正・リファクタリングなどの変更による<b>既存機能の退行（regression）</b>を検出する。変更を「安心してできる」ようにする安全網。',
+  who:'開発者＋CI（継続的インテグレーション）サーバ。変更のたび、常時実行する。',
+  steps:[
+    'ユニット・コンポーネント・システムの各テストを<b>自動化して蓄積</b>しておく',
+    'コードを変更（コミット）する',
+    '<b>全テストを自動で再実行</b>する（CI が自動でトリガー）',
+    '失敗したテストがあれば、直近の変更を疑って調査する',
+    '修正してすべてのテストが通るまで繰り返す'
+  ],
+  points:[
+    '手動での回帰テストは高価すぎて非現実的。<b>自動化されたテスト資産があって初めて成立</b>する',
+    'テストが速いほど頻繁に回せる（数秒〜数分が目標）',
+    '過去に欠陥を見つけたテストは特に価値が高い。同じ欠陥の再発（デグレード）を防ぐ資産として残す',
+    'TDD を採用すると、回帰テストスイートが開発の副産物として自然に育つ'
+  ],
+  cautions:[
+    'スイートの実行時間が伸びると「たまにしか回さない」形骸化が始まる。テストの分割・並列化で速度を守る',
+    '<b>不安定なテスト（flaky test）</b>（通ったり落ちたりするテスト）は「また例のやつか」と無視を生み、スイート全体の信頼を壊す',
+    'カバレッジの低い部分の退行は当然検出できない。回帰テストの網は自分で編んだ分しかない'
+  ],
+  examples:[
+    'プルリクエストごとに CI が全ユニットテスト＋主要な統合テストを実行し、すべて成功しないとマージできない運用',
+    'ナイトリービルドで時間のかかるフルスイート（E2E・性能）を毎晩実行'
+  ],
+  related:'<b>再テスト</b>（修正した欠陥そのものが直ったかの確認）との違い：回帰テストは「その修正で<b>他が</b>壊れていないか」を確かめる。',
+  modern:'GitHub Actions・Jenkins・GitLab CI などでの自動実行が標準。大規模プロジェクトでは変更の影響範囲に絞って先に実行する「テスト選択（test selection）」も研究・実用化されている。',
+  hasCode:false
+},
+{
+  id:'tdd', name:'Test-driven Development', jp:'テスト駆動開発（TDD）', cat:'cross',
+  badge:'開発アプローチ', tags:['テストファースト','XP発祥','Red-Green-Refactor'],
+  summary:'<strong>コードより先にテストを書き</strong>、「失敗を確認 → 通る最小の実装 → リファクタリング」という小さなサイクルを高速で繰り返す開発アプローチ。',
+  analogy:'採点基準を先に作ってから答案を書くようなもの。「何ができたら完成か」が常に明確で、書き終わった瞬間に採点（テスト）が済んでいる。',
+  purpose:'テストと開発を一体化し、仕様の明確化・回帰テスト資産の蓄積・「テストされないコード」の根絶を同時に実現する。テスト技法であると同時に開発手法。',
+  who:'開発者。XP（エクストリームプログラミング）で導入され、アジャイル開発を中心に広く普及した。',
+  steps:[
+    '次に実装する<b>機能の小さな断片</b>を特定する',
+    'その断片に対する<b>テストを先に書き</b>、自動テストとして登録する',
+    'テストを実行し、<b>失敗することを確認する（Red）</b>。まだ実装していないのだから失敗するはず',
+    'テストが通る<b>最小限の実装</b>を書き、全テストの成功を確認する（Green）',
+    'コードを<b>リファクタリング</b>して整える（Refactor）。テストがあるから安心して直せる',
+    '次の断片へ。このサイクルを数分単位で回し続ける'
+  ],
+  points:[
+    '<b>まず失敗を見る</b>のが重要。「テスト自体が正しく機能している」ことの検証になる（最初から通るテストは何も確かめていないかもしれない）',
+    '歩幅は小さく。1サイクルで確かめることは1つ',
+    'テストが<b>実行可能な仕様書・ドキュメント</b>の役割を果たす',
+    '最大の利点の1つは<b>回帰テストのコスト削減</b>。テストスイートが開発と同時に育つ',
+    '欠陥の混入から発見までの時間が短いので、デバッグが圧倒的に楽'
+  ],
+  cautions:[
+    '<b>レガシーコードや大規模な再利用コンポーネント</b>には適用しにくい（テスト可能な単位に分解しづらい）',
+    '<b>マルチスレッドシステム</b>では実行ごとに結果が変わり得るため、テストの再現性が崩れることがある',
+    'TDD を採用しても<b>システムテスト・リリーステストは依然として必要</b>。TDD はユニットレベルの技法',
+    '「テストを書くこと」自体が目的化すると本末転倒（テストは手段）'
+  ],
+  examples:[
+    'FizzBuzz を TDD で：convert(3)=="Fizz" のテスト → 失敗 → 最小実装 → convert(5)=="Buzz" のテスト → … と機能を成長させる（下のコード例）'
+  ],
+  related:'単なる「テストファースト」との関係：TDD は<b>リファクタリングまで含めた開発サイクル</b>を指す。振る舞い駆動開発（BDD）は TDD の発展形。',
+  modern:'Kent Beck『テスト駆動開発』（和訳：和田卓人）が原典。BDD（Cucumber・Gherkin）、ペア／モブプログラミングとの併用が定番。近年は AI コーディング支援でも「テストを先に固定して実装を生成させる」形で再評価されている。',
+  hasCode:true
+},
+{
+  id:'inspection', name:'Inspections & Reviews', jp:'インスペクション（静的検査）', cat:'cross',
+  badge:'静的V&V', tags:['実行しない','人間が読む','コードレビューの原型'],
+  summary:'プログラムを<strong>実行せずに</strong>、要求・設計モデル・ソースコードを人間の目（と道具）で検査する静的 V&V 技法。テストの仲間ではないが、最強の相棒。',
+  analogy:'飛行前の機体の目視点検。飛ばして（実行して）確かめる前に、図面と現物を照らし合わせて異常を探す。飛ばさないと分からないこともあるが、飛ばす前に見つかる問題も多い。',
+  purpose:'実行前の早い段階で欠陥・標準違反・保守性の問題を発見する。テスト（動的 V&V）と相互補完の関係にあり、商用開発では両方を使うのが標準。',
+  who:'成果物の作成者<b>以外</b>のレビューア（複数人）。要求・設計・コードと、開発の全工程で実施できる。',
+  steps:[
+    '検査対象の成果物（要求文書・設計モデル・コード）を選ぶ',
+    'チェックリスト（よくある誤り・標準違反の一覧）を準備する',
+    'レビューアが個別に成果物を読み込み、問題候補を挙げる',
+    'レビュー会合で指摘を集約し、欠陥として記録する（その場で直さない）',
+    '作成者が修正し、修正の完了を確認する'
+  ],
+  points:[
+    'テストに対する<b>3つの利点</b>：①誤りが他の誤りに<b>マスク（隠蔽）されない</b>。実行しないので、1回の検査で多数の欠陥を発見できる ②<b>未完成のシステムでも検査できる</b>。追加コストなしで途中成果物を見られる ③標準準拠・移植性・保守性など<b>広い品質属性</b>まで検査できる',
+    '欠陥の発見効率は、実はテストより高いという実証研究も多い',
+    '指摘は成果物へ向ける（人格批判にしない）文化の醸成が成功の鍵'
+  ],
+  cautions:[
+    '<b>テストの代替にはならない</b>。コンポーネント間の予期せぬ相互作用、タイミング、性能の問題は、実行しなければ発見できない',
+    '会合形式のインスペクションは準備・時間のコストが大きい（現代は軽量なレビューが主流）',
+    'チェックリストが古いままだと形骸化する'
+  ],
+  examples:[
+    'プルリクエストのコードレビュー（現代の事実上の標準形）',
+    '静的解析ツール（SonarQube・ESLint 等）によるコードスメル・バグパターンの自動検出',
+    '要求仕様書のウォークスルーで、曖昧・矛盾・テスト不能な要求を洗い出す'
+  ],
+  related:'<b>テスト</b>との違い：実行するか（動的）しないか（静的）。V&V プロセスはこの両輪で成り立つ。',
+  modern:'PR レビューが標準になり、静的解析・型検査・lint・フォーマッタはインスペクションの機械化として CI に組み込まれる。近年は AI によるコードレビュー支援も急速に普及中。',
+  hasCode:false
+},
+/* ---------- テスト設計の視点（技法） ---------- */
+{
+  id:'black-box-testing', name:'Black-box Testing', jp:'ブラックボックステスト', cat:'technique',
+  badge:'設計の視点', tags:['仕様が手がかり','全段階で使える','JSTQB頻出'],
+  summary:'プログラムの内部構造をいっさい見ずに、<strong>仕様（何をすべきか）</strong>だけを手がかりに、入力と出力の関係でテストケースを設計する考え方。',
+  analogy:'自動販売機の検査を「中を開けずに」行うイメージ。お金を入れてボタンを押し、正しい商品とお釣りが出てくるかどうかだけで良し悪しを判断する。中の配線がどうなっているかは見ない。',
+  purpose:'実装から独立に「仕様どおりに振る舞うか」を確かめる。実装者の思い込み（と同じ見落とし）から自由なテストを作る。特定の段階の名前ではなく<b>設計の視点</b>で、ユニットテストからリリーステストまであらゆる段階で使える。',
+  who:'全段階の全員が使う。特に独立チームによるリリーステストは、コードを前提にしないため必然的にブラックボックスになる。',
+  steps:[
+    '仕様（要求・API仕様・画面仕様）を読み込み、入力・出力・状態を整理する',
+    '<b>等価分割</b>で入力をグループ分けし、<b>境界値</b>を選ぶ',
+    '条件の組合せが多いときは<b>デシジョンテーブル</b>（判定表）に整理して漏れなく選ぶ',
+    '画面や状態を持つ対象は<b>状態遷移テスト</b>（遷移図から遷移の列を選ぶ）で設計する',
+    '期待結果は必ず<b>仕様から</b>導く（実装の出力をそのまま期待値にしない）'
+  ],
+  points:[
+    '「実装を知らない」ことが弱点ではなく<b>強み</b>。実装者と同じ勘違いをせずに済む',
+    '代表的な技法ファミリー：等価分割／境界値分析／デシジョンテーブル／状態遷移テスト／ユースケーステスト',
+    'テストを設計しようとして「仕様が曖昧で期待値が書けない」と気づくこと自体が、<b>仕様の欠陥の発見</b>という成果'
+  ],
+  cautions:[
+    '<b>書かれていない仕様はテストできない</b>。暗黙の期待は要求の問題として差し戻す',
+    'コードのどこを実行したか分からないため、<b>テストの十分さ（網羅度）を測りにくい</b>。ホワイトボックスのカバレッジで補完する',
+    '仕様と実装が同じ誤解をしていると、どちらのテストでも見逃す（レビュー・インスペクションの出番）'
+  ],
+  examples:[
+    '入力フォームの値を等価分割・境界値でテストする（本ページの体験デモがまさにこれ）',
+    '「ログイン5回失敗でロック」を状態遷移図（通常→警告→ロック）からテストする',
+    '会員種別×クーポン有無×金額の割引条件をデシジョンテーブルで網羅する'
+  ],
+  related:'<b>ホワイトボックステスト</b>との違い：テストケースの源泉が仕様か、コードの内部構造か。実務では両方を併用する（中間をグレーボックスと呼ぶことも）。',
+  modern:'JSTQB/ISTQBのシラバスで「ブラックボックステスト技法」として体系化されており、資格試験の中心テーマ。OpenAPI などの機械可読な仕様からテストを自動生成するツールも実用化されている。',
+  hasCode:false
+},
+{
+  id:'white-box-testing', name:'White-box Testing', jp:'ホワイトボックステスト（構造テスト）', cat:'technique',
+  badge:'設計の視点', tags:['コード構造が手がかり','カバレッジ','開発者向き'],
+  summary:'ソースコードの<strong>内部構造（命令・分岐・経路）</strong>を手がかりに、「コードをどれだけ通したか」を基準にテストを設計・評価する考え方。',
+  analogy:'建物の点検で、図面を見ながら「全部屋・全通路を少なくとも一度は歩く」計画を立てるようなもの。歩いていない部屋（実行していないコード）に問題が隠れていても絶対に気づけない、という発想が出発点。',
+  purpose:'テストの<b>十分さをカバレッジで測定・改善</b>する。仕様からは見えない実装固有の危険（例外処理・特殊分岐・省略時の挙動）を確かめる。',
+  who:'主に開発者がユニットテストで使う。カバレッジ計測は CI で自動化するのが標準。',
+  steps:[
+    'テスト対象コードの制御フロー（分岐・ループ・例外）を把握する',
+    'カバレッジ基準を選ぶ。<b>命令網羅</b>（全行を実行）＜<b>分岐網羅</b>（全分岐を真偽両方向）＜<b>条件網羅・MC/DC</b>（複合条件の各要素まで）',
+    '既存テストのカバレッジをツールで計測する',
+    '<b>未実行の分岐・経路</b>を狙ったテストケースを追加する',
+    '到達不能コードや仕様にない振る舞いを見つけたら、テストではなく設計・実装に差し戻す'
+  ],
+  points:[
+    'カバレッジは「テストの合格証」ではなく<b>「テストされていない場所を見つける探知機」</b>として使うのが正しい',
+    '安全性が重要な分野では強い基準が要求される（例：航空機ソフトウェアの DO-178C では最高水準に MC/DC）',
+    '狙い目は<b>例外・エラー処理の経路</b>。正常系だけのテストでは決して通らない'
+  ],
+  cautions:[
+    '<b>カバレッジ100% ＝ 正しい、ではない</b>。「実行した」と「検証した」は別物（アサーションが弱ければ、ただ通しただけ）',
+    'カバレッジを目標数値にすると、数字を稼ぐだけの空虚なテストが量産される（測定が目的化する罠）',
+    '「仕様にあるのに実装され忘れた機能」は検出できない。コードが存在しないから（ブラックボックスで補完）'
+  ],
+  examples:[
+    'JaCoCo（Java）や coverage.py（Python）で分岐カバレッジを計測し、未カバーだったエラー処理にテストを追加する',
+    '<code>if (a && b)</code> のような複合条件を、a・b それぞれが結果を左右するケースで設計する（MC/DC）'
+  ],
+  related:'<b>ブラックボックステスト</b>と相互補完。<b>ミューテーションテスト</b>は、カバレッジよりさらに強い「テストの検出力」の測定手段。',
+  modern:'カバレッジ計測は CI の標準メトリクス（JaCoCo・coverage.py・Istanbul）。現場の相場観は「80% 前後を目安に、100% は強制しない」が多数派で、SonarQube などの品質ゲートに組み込まれる。',
+  hasCode:false
+},
+{
+  id:'exploratory-testing', name:'Exploratory Testing', jp:'探索的テスト', cat:'technique',
+  badge:'欠陥テスト中心', tags:['スクリプトなし','チャーター','人間の思考力'],
+  summary:'事前に書いたテストケース（スクリプト）に従わず、<strong>学習・テスト設計・実行を同時に</strong>行いながらシステムを探索する、人間の観察力と直感を最大限に活かすテスト。',
+  analogy:'ガイドブックの行程表どおりに回る旅行（スクリプトテスト）に対して、現地で見つけた気になる路地に入っていく旅。行程表にない場所にこそ、誰も報告していない発見がある。',
+  purpose:'事前に想定できなかった欠陥・使いにくさの発見。仕様書が薄い部分や、リスクが高い・怪しいと感じる部分の集中調査。',
+  who:'テスター・開発者。リリース判定の前などに、時間を区切ったセッションとして実施する。Cem Kaner が命名し、James Bach らがセッションベースの管理手法として体系化した。',
+  steps:[
+    '<b>チャーター</b>（探索の目的）を決める。例：「決済機能の通貨・端数処理まわりを探索する」',
+    '<b>タイムボックス</b>を設定する（60〜90分程度のセッション）',
+    '操作しながら観察し、気づいたことから<b>次のテストをその場で設計</b>して即実行する',
+    '発見した問題・気になった挙動・実施した操作をメモに残す',
+    'セッション後に報告会（デブリーフィング）で発見を共有し、次のチャーターを決める'
+  ],
+  points:[
+    '「無計画」ではない。<b>チャーターとタイムボックスが規律</b>を与える（セッションベースドテスト管理）',
+    'スクリプトテスト（回帰テストなど）と補完関係：機械にできる確認は自動化し、人間は探索に時間を使う',
+    '「怪しい」と感じる直感は経験の蓄積から来る。ドメイン知識・過去の欠陥パターンが武器になる'
+  ],
+  cautions:[
+    '再現手順の記録を怠ると、見つけた欠陥を報告できない（最大の失敗パターン）',
+    '網羅性の保証はない。何をどこまで探索したかの管理はチャーター一覧で別途行う',
+    '無計画にただ触る「アドホックテスト（モンキーテスト）」とは区別する'
+  ],
+  examples:[
+    'リリース前に「新機能Xの境界と異常系」をチャーターに90分の探索セッションを実施',
+    'チーム全員が一斉に30分探索する「バグバッシュ」で、リリース直前の総ざらいをする'
+  ],
+  related:'<b>シナリオテスト</b>との違い：シナリオは事前に書いた物語に従って確かめる。探索的テストは、物語をその場で書き換えながら進む。',
+  modern:'アジャイル開発のリリース判定前の定番プラクティス。近年は AI エージェントに画面を自律探索させて異常を報告させる研究・製品も登場しているが、「何が怪しいか」の判断はまだ人間の強み。',
+  hasCode:false
+},
+/* ---------- 発展的・現代的なテスト ---------- */
+{
+  id:'ui-testing', name:'UI / E2E Testing', jp:'UIテスト（E2E・ビジュアルリグレッション）', cat:'modern',
+  badge:'欠陥テスト中心', tags:['Playwright / Selenium','テストピラミッド','壊れやすい'],
+  summary:'実際の画面（ブラウザ・アプリ）を<strong>ユーザと同じように操作して</strong>確かめるテスト。機能の流れを通しで確かめる E2E テストと、見た目の崩れを画像比較で検出するビジュアルリグレッションテストが2本柱。',
+  analogy:'完成した店舗に実際に客として入り、入店から注文・会計までを通しでやってみる覆面調査。厨房（API）単体の検査では分からない「客から見た体験」の問題を確かめる。',
+  purpose:'ユニット・API レベルのテストでは検出できない、画面と機能の統合の欠陥、レイアウト崩れ、ブラウザ・デバイス差異の問題を発見する。',
+  who:'開発者・QA エンジニアが作成し、CI で自動実行するのが現代の標準。',
+  steps:[
+    'ビジネス上クリティカルな<b>ユーザーフロー</b>（ログイン・購入・投稿など）を少数選ぶ',
+    'Playwright・Selenium などで実ブラウザの操作を自動化する',
+    '<b>壊れにくい書き方</b>をする。専用属性（data-testid）でのセレクタ指定、明示的な自動待機（sleep 固定待ちは禁物）',
+    'ビジュアルリグレッション：基準画像（ベースライン）を保存し、実行のたびにスクリーンショットと画素比較する',
+    '検出された差分を人間がレビューし、意図した変更ならベースラインを更新、意図しなければ欠陥として修正する'
+  ],
+  points:[
+    '<b>テストピラミッド</b>を守る。ユニット（多・速・安）→ 統合/API（中）→ UI/E2E（少・遅・高価）。UI テストは1本の価値が高いぶんコストも高いので、数を絞る',
+    '見た目のわずかな描画揺れ（フォント・アニメーション・日付）による誤検知には、しきい値・マスク・時刻固定で対処する',
+    'テストデータと環境を毎回同じ状態から始める（独立性）。E2E の安定性はほぼ準備で決まる'
+  ],
+  cautions:[
+    'テスト全体の中で<b>もっともフレーキーになりやすい層</b>（非同期・描画・ネットワーク・環境差が全部絡む）',
+    'UI は頻繁に変わるため<b>保守コストが高い</b>。画面の細部ではなく「ユーザに見える振る舞い」を検証する',
+    '実行が遅い。「全部 E2E で確かめる」構成にすると、CI が数時間級になり開発が止まる'
+  ],
+  examples:[
+    'Playwright で「ログイン → 商品検索 → カート → 購入完了」を自動操作し、各画面を <code>toHaveScreenshot()</code> で画像比較する',
+    'Storybook ＋ Chromatic で、UI コンポーネント単位の見た目の回帰を PR ごとに検出する'
+  ],
+  related:'システムテスト（ユースケースベース）の現代的・自動化された姿。<b>スナップショットテスト</b>は、画像の代わりに DOM やデータ構造の差分を見る親戚。',
+  modern:'Web は Playwright・Cypress、モバイルは Appium・Maestro、ビジュアル比較は Percy・Chromatic・Playwright 内蔵機能が定番。AI がセレクタの破損を自己修復するツールも実用化されている。',
+  hasCode:false
+},
+{
+  id:'smoke-testing', name:'Smoke Testing', jp:'スモークテスト', cat:'modern',
+  badge:'欠陥テスト中心', tags:['数分で完了','CI/CDの門番','広く浅く'],
+  summary:'ビルドやデプロイの直後に<strong>「最低限、火を入れて煙が出ないか」</strong>だけを数分で確かめる、浅く広いテスト。詳細なテストに進む価値があるビルドかを判定する門番。',
+  analogy:'電子機器の修理後、まず電源を入れて煙が出ないかを見る（これが語源）。細かい機能の確認は、電源が入ると分かってからやればいい。',
+  purpose:'「起動する・ログインできる・主要画面が開く」レベルの致命的な問題を数分で検出し、壊れたビルドに後続の詳細テストやレビューの時間を浪費させないこと。',
+  who:'CI/CD パイプラインが自動実行する。デプロイ直後の本番環境に対しても行う（ヘルスチェック）。',
+  steps:[
+    'システムの生命線と言える機能を<b>5〜15項目</b>選ぶ（起動・認証・主要画面・外部接続）',
+    '各項目を数十秒以内で確認できる自動テストにする',
+    'ビルド／デプロイのたびに<b>いちばん最初に</b>実行する',
+    '1つでも失敗したら、そのビルドを即座に不合格にする（後続のテストは実行しない）',
+    '合格したビルドだけが回帰テスト・詳細テストに進む'
+  ],
+  points:[
+    '<b>速さが命</b>。数分以内。門番が遅いと全員が待たされる',
+    '「広く浅く」に徹する。深掘りは回帰テスト・詳細テストの仕事',
+    'デプロイ直後の本番スモーク（サニティチェック）は、ロールバック判断の一次情報になる'
+  ],
+  cautions:[
+    'スモーク合格は「詳細テストに進んでよい」以上の意味を持たない。品質の保証ではない',
+    '項目を増やしすぎると門番の意味を失う（それは回帰テストになっている）',
+    '「サニティテスト」という用語は文献によって定義が揺れる（スモークとほぼ同義〜修正箇所の簡易確認）。チーム内で定義を合わせる'
+  ],
+  examples:[
+    'デプロイ直後に <code>/health</code> エンドポイント・ログイン・トップページ表示・DB接続を自動確認する',
+    'ナイトリービルドの最初の関門として実行し、失敗したら詳細テストをスキップして開発者に即通知する'
+  ],
+  related:'<b>回帰テスト</b>との違い：回帰は「既存機能が壊れていないか」を網羅的に、スモークは「そもそも動くか」を最速で。回帰テストの前座として組み合わせる。',
+  modern:'CI/CD パイプラインの標準ステージ。Kubernetes の liveness/readiness プローブや、カナリアリリースの自動合否判定はスモークテストの思想の運用版。',
+  hasCode:false
+},
+{
+  id:'flaky-tests', name:'Flaky Tests', jp:'フレーキーテスト（不安定なテスト）', cat:'modern',
+  badge:'テスト自体の品質', tags:['非決定的','信頼の崩壊','検出と隔離'],
+  summary:'コードを何も変えていないのに<strong>実行のたびに通ったり落ちたりする不安定なテスト</strong>。テストの種類ではなく「テスト自体の品質問題」で、放置するとテストスイート全体への信頼が崩壊する。',
+  analogy:'ときどき誤報を鳴らす火災報知器。誤報が続くと人は本物の警報でも「またいつものやつだ」と無視するようになる。それがいちばん危険な状態。',
+  purpose:'（対処の目的）テストスイートの信頼を守り、「テストが落ちた＝本当に何かが壊れた」と言い切れる状態を維持する。',
+  who:'開発チーム全員＋CI 基盤。Google は大規模な自動管理の仕組みを持ち、「テストの約16%が何らかのフレーキーさを示す」と報告している。',
+  steps:[
+    '<b>検出</b>：同じコードに対してテストを複数回実行し、結果が揺れるものを特定する（CI のリトライ統計を自動集計）',
+    '<b>隔離（quarantine）</b>：フレーキーと判定したテストを本流の合否判定から一時的に外す',
+    '<b>原因分析</b>：待ち方・共有状態・外部依存を疑う',
+    '<b>修正</b>：固定 sleep を明示的な条件待ちに、テスト間の共有状態を排除、時刻・乱数をモックで固定',
+    '安定を確認して本流に<b>復帰</b>させる（隔離しっぱなしにしない）'
+  ],
+  points:[
+    '3大原因（Luo らの実証研究）：①<b>非同期の待ち方</b>（固定 sleep が最多）②<b>並行実行</b>（実行順序・共有資源の競合）③<b>テスト順序依存</b>（前のテストが残した状態に依存）',
+    '対策の原則は<b>決定性の回復</b>：明示的な待機条件、テストの独立化、時刻・乱数・ネットワークの制御',
+    'フレーキー率・リトライ率をメトリクスとして監視する（増加はスイート劣化のシグナル）'
+  ],
+  cautions:[
+    '「リトライしたら通ったので OK」を常態化させない。リトライは<b>検出の道具</b>であって解決ではない',
+    '隔離したまま放置すると、その機能はテストされていないのと同じ（カバレッジの穴）',
+    'フレーキーの原因が<b>製品側の本物の並行性バグ</b>であることもある。安易にテストを消すと、本物のバグまで一緒に葬られる'
+  ],
+  examples:[
+    '「3秒待てば描画が終わるはず」の固定 sleep が、CI の遅いマシンでだけ失敗する',
+    'テストAが作った DB レコードが残っていて、単独では通るテストBが全体実行でだけ落ちる（順序依存）',
+    'アニメーション完了前にスクリーンショットを撮ってしまい、ビジュアル比較がランダムに失敗する'
+  ],
+  related:'<b>UIテスト／E2E</b> で特に発生しやすい（非同期・描画・環境差が絡むため）。<b>回帰テスト</b>の信頼性を内側から蝕む敵。',
+  modern:'CI サービスのフレーキー自動検出・隔離機能（Bazel・Gradle・GitHub Actions のリトライ統計、Datadog・BuildPulse などの専用サービス）。原因の自動特定・自動修復はソフトウェア工学研究の活発なテーマ。',
+  hasCode:false
+},
+{
+  id:'mutation-testing', name:'Mutation Testing', jp:'ミューテーションテスト', cat:'modern',
+  badge:'テスト自体の品質', tags:['テストのテスト','PIT / Stryker','計算コスト大'],
+  summary:'プログラムに<strong>わざと小さなバグ（ミュータント）を機械的に植え付け</strong>、手持ちのテストがそれを検出（kill）できるかで「テストの品質」を測る、いわば<strong>テストのためのテスト</strong>。',
+  analogy:'避難訓練の実効性を、実際に（安全な）煙を焚いて警報が鳴るか確かめるようなもの。「訓練手順書が全フロアにある」（カバレッジ100%）ことと、「警報が実際に機能する」ことは別問題。',
+  purpose:'カバレッジでは測れない<b>テストの検出力</b>を測定する。アサーションが弱いテスト・形だけ実行しているテストをあぶり出す。',
+  who:'開発者。全コードには重すぎるので、重要モジュールに絞って CI の夜間ジョブなどで実施する。',
+  steps:[
+    'ツールがコードに機械的な変異を注入する（<code>==</code> を <code>!=</code> に、<code>+</code> を <code>-</code> に、境界条件をずらす、行を消す等）',
+    'ミュータントごとにテストスイートを実行する',
+    'テストが失敗すれば <b>kill（検出成功）</b>、全部通ってしまえば<b>生存（検出漏れ）</b>',
+    '<b>ミューテーションスコア</b>（kill 数 ÷ ミュータント数）を算出する',
+    '生存ミュータントを見て、足りないアサーション・テストケースを追加する'
+  ],
+  points:[
+    '<b>カバレッジ100%でもスコアが低いことは珍しくない</b>。「実行した」と「検証した」の差がそのまま数字になる',
+    '生存ミュータントは「このバグを混入させても誰も気づかない」という<b>具体的な警告</b>として読める',
+    '意味が変わらない変異（等価ミュータント）は kill できなくて正常。スコア100%を追わない'
+  ],
+  cautions:[
+    '計算コストが非常に大きい（ミュータント数 × テスト実行時間）。変更差分に絞る・サンプリングするのが実用的',
+    'スコアの数値目標化は本末転倒（カバレッジと同じ罠）',
+    '等価ミュータントの自動判定は原理的に難しく、人間のレビューが要る'
+  ],
+  examples:[
+    'PIT（Java）が <code>if (x >= 10000)</code> を <code>if (x > 10000)</code> に変異 → 境界値 10000 のテストがなければ生存 → 境界値テストを追加して kill'
+  ],
+  related:'<b>ホワイトボックステスト</b>のカバレッジより強い「テスト十分性」の基準。<b>TDD</b> で蓄積したテスト資産の品質監査にも有効。',
+  modern:'PIT/Pitest（Java）、Stryker（JS/TS・C#・Scala）、mutmut・cosmic-ray（Python）。Google や Meta は変更差分ベースのミューテーションテストを大規模運用している。AI 生成コードのテストの実効性検証の文脈でも注目が高まっている。',
+  hasCode:false
+},
+{
+  id:'property-fuzzing', name:'Property-based Testing & Fuzzing', jp:'プロパティベーステスト・ファジング', cat:'modern',
+  badge:'欠陥テスト中心', tags:['入力の自動生成','Hypothesis / AFL','人間の盲点を突く'],
+  summary:'人間が例を1つずつ書く代わりに、<strong>機械に大量の入力を自動生成させて</strong>プログラムに浴びせるテスト。「どんな入力でも成り立つべき性質」を検証するのがプロパティベーステスト、予期しない入力でクラッシュを探すのがファジング。',
+  analogy:'テストコースに、人間が思いつく運転パターンではなく、あらゆる路面・速度・操作の組合せをランダム生成するロボットドライバーを乗せるようなもの。人間の想像力の限界を、機械の物量で補う。',
+  purpose:'人間のテストケース設計の盲点を突く。プロパティベース：性質の<b>反例</b>を探す。ファジング：不正入力での<b>クラッシュ・脆弱性</b>を探す。どちらも欠陥テストの機械化・大量化。',
+  who:'プロパティベースは開発者がユニットテストの延長で。ファジングはセキュリティエンジニアや CI 基盤が継続的に実施する。',
+  steps:[
+    '<b>プロパティベース</b>：性質を定義する。「エンコードしてデコードすると元に戻る」「ソート結果は常に昇順」「残高は負にならない」',
+    '入力の生成器（ジェネレータ）を指定し、ツールが数百〜数千の入力で性質を検証する',
+    '反例が見つかると、ツールが<b>自動で最小の再現入力に縮小（shrink）</b>して提示する',
+    '<b>ファジング</b>：種入力（正常なファイル等）を用意し、カバレッジ誘導で入力を変異させながら大量実行する',
+    'クラッシュ・ハング・メモリ異常を収集し、再現入力とともに報告する'
+  ],
+  points:[
+    '例ベースのテストの補完。「この5例で通る」から「この性質がほぼ全域で成り立つ」へ主張を強化できる',
+    'プロパティの定石：<b>往復（逆関数）・不変条件・冪等性・モデル比較</b>（遅いが確実な実装と結果を比べる）',
+    'ファジングは Google の OSS-Fuzz がオープンソースで<b>数万件規模のバグ・脆弱性</b>を発見してきた実績があり、パーサ・プロトコル実装では事実上必須',
+    '乱数のシードを記録して再現性を確保する'
+  ],
+  cautions:[
+    '最初の壁は「性質をどう見つけるか」。等価分割と同じく仕様の理解が問われる',
+    'ランダムテストは網羅ではない。「出なかった＝安全」ではない（Dijkstra の警句はここでも生きる）',
+    'ファジングの誤検知・重複クラッシュの選別（トリアージ）には手間がかかる'
+  ],
+  examples:[
+    'Hypothesis（Python）で <code>decode(encode(x)) == x</code> を自動生成した数百の文字列で検証し、絵文字を含む入力で反例を発見する',
+    'AFL++／libFuzzer で画像パーサに変異入力を投げ続け、バッファオーバーフローを発見する'
+  ],
+  related:'<b>等価分割</b>（人間が代表値を選ぶ）の機械化版。<b>ミューテーションテスト</b>が「テストを疑う」のに対し、こちらは「入力の想定を疑う」。',
+  modern:'QuickCheck（Haskell 発祥）が源流。Hypothesis（Python）、fast-check（JS）、jqwik（Java）。ファジングは AFL++・libFuzzer・OSS-Fuzz が定番で、セキュリティテストの主力兵器でもある。',
+  hasCode:false
+},
+{
+  id:'security-testing', name:'Security Testing', jp:'セキュリティテスト（ペネトレーションテスト）', cat:'modern',
+  badge:'欠陥テスト中心', tags:['攻撃者の視点','OWASP','負のテスト'],
+  summary:'悪意ある攻撃者の視点でシステムを攻撃し、<strong>脆弱性</strong>を見つけるテスト。「仕様どおり動くか」ではなく<strong>「仕様外のことをさせられてしまわないか」</strong>を確かめる。',
+  analogy:'銀行が泥棒役の専門家（ホワイトハッカー）を雇い、実際に侵入を試みてもらう防犯診断。「鍵が開く」ことのテストではなく、「鍵が開けられてしまわない」ことのテスト。',
+  purpose:'機密性・完全性・可用性を脅かす欠陥（脆弱性）を、本物の攻撃者より先に発見する。',
+  who:'日常の自動テストは開発者＋CI、本格的な攻撃シミュレーション（ペネトレーションテスト）はセキュリティ専門チームや外部業者が実施する。',
+  steps:[
+    '<b>脅威モデリング</b>：何を守るのか、誰がどう攻めてくるのかを整理する',
+    '自動スキャン：<b>SAST</b>（コードの静的解析）・<b>DAST</b>(動作中アプリへの動的スキャン)・<b>SCA</b>（依存ライブラリの既知脆弱性チェック）を CI に組み込む',
+    '<b>OWASP Top 10</b>（インジェクション・認証の不備・アクセス制御の不備など）を手がかりに手動で検証する',
+    '<b>ペネトレーションテスト</b>：専門家が実際の攻撃手法で侵入を試みる',
+    '発見した脆弱性を深刻度評価（CVSS）し、優先順位を付けて修正する'
+  ],
+  points:[
+    '通常のテストと発想が逆。「できないはずのこと」を試す<b>負のテスト（negative testing）</b>が中心',
+    '信頼境界（ユーザ入力・外部システムとの境目）を狙う。入力検証・エスケープ・権限チェックの漏れ',
+    '<b>ファジング</b>はセキュリティテストの主力兵器でもある（メモリ破壊系の脆弱性発見）',
+    'OWASP Top 10 は無料で読める最良のチェックリスト'
+  ],
+  cautions:[
+    '他人のシステムへの攻撃テストは<b>必ず事前の許可・契約のもとで</b>行う（不正アクセス禁止法に触れる）',
+    '自動スキャン合格＝安全ではない。ビジネスロジックの脆弱性（例：他人の注文を操作できる）は人間にしか見つけられない',
+    'セキュリティは出荷後も続く。依存ライブラリの新しい脆弱性は毎日公開される（継続監視が前提）'
+  ],
+  examples:[
+    'ログインフォームに <code>&#39; OR &#39;1&#39;=&#39;1</code> を入力し、SQL インジェクションの可能性を確認する',
+    'URL 内の自分の ID を他人の ID に書き換えてアクセスし、アクセス制御の不備（IDOR）を確認する',
+    'CI で依存パッケージの既知脆弱性を検出し、修正版へ自動更新の PR を出す'
+  ],
+  related:'<b>ストレステスト</b>が「量の限界」を攻めるのに対し、セキュリティテストは「悪意の入力」を攻める。どちらも「壊しにいく」欠陥テストの極北。',
+  modern:'OWASP ZAP・Burp Suite（DAST）、Semgrep・CodeQL（SAST）、Dependabot・Trivy（SCA）が定番。バグバウンティ（脆弱性報奨金制度）は「世界中の善意の攻撃者によるベータテスト」とも言える仕組み。',
+  hasCode:false
+},
+{
+  id:'testing-in-production', name:'Testing in Production', jp:'本番環境でのテスト（カナリア・A/B・カオス）', cat:'modern',
+  badge:'妥当性確認中心', tags:['カナリアリリース','フィーチャーフラグ','SREの標準語彙'],
+  summary:'「本番前にすべて確かめる」発想を補い、<strong>本番環境そのものを使って、影響を制御しながら確かめる</strong>現代的アプローチ。カナリアリリース・A/B テスト・カオスエンジニアリングが代表格。',
+  analogy:'新しい橋を開通式でいきなり全面開放するのではなく、まず1台だけ通して計器で監視し、問題なければ徐々に交通量を増やしていく開通方式。失敗の影響を最初から小さく閉じ込めておく。',
+  purpose:'テスト環境では原理的に再現できない「本物のユーザ・本物のデータ・本物の規模」で起こる問題を、影響範囲を制御しながら検出する。',
+  who:'開発チーム＋SRE（サイト信頼性エンジニア）。強力な監視（オブザーバビリティ）と即時ロールバックの仕組みとセットで運用する。',
+  steps:[
+    '<b>カナリアリリース</b>：新バージョンを一部（例：1%）のユーザ・サーバにだけ公開する',
+    'エラー率・レイテンシ・業務指標を旧バージョンと比較しながら監視する',
+    '問題なければ 5% → 25% → 100% と段階的に拡大し、異常があれば<b>自動ロールバック</b>する',
+    '<b>A/B テスト</b>：2つの版にユーザを無作為に振り分け、指標の差を統計的に比較する',
+    '<b>カオスエンジニアリング</b>：本番（相当）環境にわざと障害（サーバ停止・遅延・分断）を注入し、システムの回復力を定常的に確かめる'
+  ],
+  points:[
+    '成立の前提は<b>優れた監視と即時ロールバック</b>。「気づけない・戻せない」状態でやるのは、ただの博打',
+    '<b>フィーチャーフラグ</b>で「デプロイ」（コードを置く）と「リリース」（ユーザに見せる）を分離すると、公開範囲を自在に制御できる',
+    'ベータテストの思想（実環境の多様性で確かめる）を、継続的・自動的にやる仕組みと捉えると教科書とつながる'
+  ],
+  cautions:[
+    'ユーザを実験台にすることへの倫理的・法的配慮が必要（特に金融・医療などの領域）',
+    '監視が未成熟な組織がいきなり真似ると事故になる。テスト環境での検証を省く言い訳にしない',
+    'カオスエンジニアリングは「本番を壊す遊び」ではない。仮説（この障害では回復するはず）を立てて検証する規律ある実験'
+  ],
+  examples:[
+    '新しい推薦アルゴリズムを 5% のユーザに公開し、エラー率とクリック率を旧版と比較してから全体公開する',
+    'Netflix の Chaos Monkey は営業時間中にランダムにサーバを停止させ、自動回復が機能し続けることを常時検証している'
+  ],
+  related:'<b>ベータテスト</b>・<b>受入れテスト</b>の現代的発展。<b>ストレステスト</b>で確かめたフェイルソフトを「本番で常時確認」するのがカオスエンジニアリング。',
+  modern:'フィーチャーフラグ基盤（LaunchDarkly 等）、プログレッシブデリバリー（Argo Rollouts・Flagger）、カオスツール（Chaos Monkey・Gremlin・AWS FIS）。“Testing in Production” は SRE・DevOps の標準語彙になっている。',
+  hasCode:false
+}
+];
+</script>
+<script>
+/* ============== コード例（ユニットテスト / TDD） ============== */
+const CODE = {
+'unit-testing':{
+java:`// 対象：isValid(x) は 10000〜99999 のとき true を返す
+// 自動テストの3部構成：セットアップ → 呼び出し → アサーション
+import org.junit.jupiter.api.Test;
+import static org.junit.jupiter.api.Assertions.*;
+
+class RangeCheckerTest {
+
+  RangeChecker checker = new RangeChecker();   // セットアップ
+
+  @Test void justBelowLowerBound_isInvalid() {
+    assertFalse(checker.isValid(9999));        // 境界のすぐ外
+  }
+  @Test void lowerBound_isValid() {
+    assertTrue(checker.isValid(10000));        // 下側の境界
+  }
+  @Test void typicalValue_isValid() {
+    assertTrue(checker.isValid(55000));        // 中央付近の値
+  }
+  @Test void upperBound_isValid() {
+    assertTrue(checker.isValid(99999));        // 上側の境界
+  }
+  @Test void justAboveUpperBound_isInvalid() {
+    assertFalse(checker.isValid(100000));      // 境界のすぐ外
+  }
+}`,
+python:`# 対象：is_valid(x) は 10000〜99999 のとき True を返す
+# 等価分割＋境界値のテストケースをパラメータ化して列挙
+import pytest
+from range_checker import is_valid
+
+@pytest.mark.parametrize("value, expected", [
+    (9999,   False),   # 境界のすぐ外（無効クラス）
+    (10000,  True),    # 下側の境界
+    (55000,  True),    # 中央付近の値
+    (99999,  True),    # 上側の境界
+    (100000, False),   # 境界のすぐ外（無効クラス）
+])
+def test_is_valid(value, expected):
+    # 呼び出しとアサーション
+    assert is_valid(value) == expected`
+},
+'tdd':{
+java:`// STEP 1: まずテストを書く（FizzBuzz クラスはまだ存在しない）
+@Test void threeIsFizz() {
+    assertEquals("Fizz", new FizzBuzz().convert(3));
+}
+
+// STEP 2: 実行 → コンパイルエラー／失敗（Red）を確認する
+//         「テスト自体が機能している」ことの検証になる
+
+// STEP 3: テストが通る「最小」の実装を書く（Green）
+public class FizzBuzz {
+    public String convert(int n) {
+        if (n % 3 == 0) return "Fizz";
+        return String.valueOf(n);
+    }
+}
+
+// STEP 4: リファクタリングして整える（Refactor）
+// STEP 5: 次のテスト（5 → "Buzz"）を書き、サイクルを繰り返す`,
+python:`# STEP 1: まずテストを書く（fizzbuzz はまだ存在しない）
+def test_three_is_fizz():
+    assert fizzbuzz(3) == "Fizz"
+
+# STEP 2: 実行 → NameError で失敗（Red）を確認する
+#         「テスト自体が機能している」ことの検証になる
+
+# STEP 3: テストが通る「最小」の実装を書く（Green）
+def fizzbuzz(n):
+    if n % 3 == 0:
+        return "Fizz"
+    return str(n)
+
+# STEP 4: リファクタリングして整える（Refactor）
+# STEP 5: 次のテスト（5 → "Buzz"）を書き、サイクルを繰り返す`
+}
+};
+
+/* ============== カード内ダイアグラム ============== */
+const DIAGRAMS = {
+'tdd': `
+<svg viewBox="0 0 720 240" role="img" aria-label="TDDのサイクル">
+  <rect x="40" y="30" width="180" height="64" rx="12" class="dg-box" stroke="#B04A3E" stroke-width="1.4"/>
+  <text x="130" y="57" class="dg-lbl" fill="#B04A3E">① Red</text>
+  <text x="130" y="76" class="dg-el">テストを書き、失敗を確認</text>
+  <rect x="270" y="30" width="180" height="64" rx="12" class="dg-box" stroke="#0E6F5C" stroke-width="1.4"/>
+  <text x="360" y="57" class="dg-lbl" fill="#0A5748">② Green</text>
+  <text x="360" y="76" class="dg-el">通る最小の実装を書く</text>
+  <rect x="500" y="30" width="180" height="64" rx="12" class="dg-box" stroke="#8A6D3B" stroke-width="1.4"/>
+  <text x="590" y="57" class="dg-lbl" fill="#8A6D3B">③ Refactor</text>
+  <text x="590" y="76" class="dg-el">テストを保ったまま整理</text>
+  <path d="M220 62 L266 62" class="dg-line" marker-end="url(#ah3)"/>
+  <path d="M450 62 L496 62" class="dg-line" marker-end="url(#ah3)"/>
+  <path d="M590 94 L590 150 L130 150 L130 98" class="dg-line dg-dash" marker-end="url(#ah3)"/>
+  <text x="360" y="140" class="dg-el">次の機能の断片へ、数分単位でサイクルを回し続ける</text>
+  <text x="360" y="200" class="dg-note">全テストが常に成功している状態を保ちながら、機能を少しずつ成長させる</text>
+  <defs><marker id="ah3" markerWidth="9" markerHeight="9" refX="8" refY="4.5" orient="auto">
+    <path d="M0,0 L9,4.5 L0,9 z" fill="#6B746F"/></marker></defs>
+</svg>`,
+'ui-testing': `
+<svg viewBox="0 0 720 300" role="img" aria-label="テストピラミッド">
+  <polygon points="360,30 480,120 240,120" fill="rgba(176,74,62,.10)" stroke="#B04A3E" stroke-width="1.4"/>
+  <polygon points="480,120 240,120 180,200 540,200" fill="rgba(138,109,59,.10)" stroke="#8A6D3B" stroke-width="1.4"/>
+  <polygon points="180,200 540,200 600,278 120,278" fill="rgba(14,111,92,.10)" stroke="#0E6F5C" stroke-width="1.4"/>
+  <text x="360" y="95" class="dg-lbl" fill="#B04A3E">UI / E2E</text>
+  <text x="360" y="168" class="dg-lbl" fill="#8A6D3B">統合 / API</text>
+  <text x="360" y="245" class="dg-lbl" fill="#0A5748">ユニット</text>
+  <text x="613" y="60" class="dg-el" text-anchor="start">少ない・遅い・高価</text>
+  <text x="613" y="75" class="dg-el" text-anchor="start">忠実度は高い</text>
+  <text x="613" y="240" class="dg-el" text-anchor="start">多い・速い・安価</text>
+  <text x="613" y="255" class="dg-el" text-anchor="start">原因の特定が容易</text>
+  <path d="M600 90 L600 225" class="dg-line" marker-end="url(#ah4)"/>
+  <text x="360" y="296" class="dg-note">テストピラミッド：下の層ほど数を多く、上の層ほど厳選する</text>
+  <defs><marker id="ah4" markerWidth="9" markerHeight="9" refX="8" refY="4.5" orient="auto">
+    <path d="M0,0 L9,4.5 L0,9 z" fill="#6B746F"/></marker></defs>
+</svg>`,
+'white-box-testing': `
+<svg viewBox="0 0 720 250" role="img" aria-label="分岐網羅の考え方">
+  <rect x="290" y="20" width="140" height="44" rx="10" class="dg-box"/>
+  <text x="360" y="47" class="dg-lbl">x &gt;= 10000 ?</text>
+  <rect x="110" y="110" width="180" height="44" rx="10" class="dg-box" stroke="#0E6F5C" stroke-width="1.4"/>
+  <text x="200" y="137" class="dg-lbl" fill="#0A5748">有効として処理</text>
+  <rect x="430" y="110" width="180" height="44" rx="10" class="dg-box" stroke="#B04A3E" stroke-width="1.4"/>
+  <text x="520" y="137" class="dg-lbl" fill="#B04A3E">エラー処理</text>
+  <path d="M320 64 L215 106" class="dg-line" marker-end="url(#ah5)"/>
+  <path d="M400 64 L505 106" class="dg-line dg-dash" marker-end="url(#ah5)"/>
+  <text x="240" y="80" class="dg-el">true（テスト済み）</text>
+  <text x="490" y="80" class="dg-el">false（未実行！）</text>
+  <text x="360" y="195" class="dg-note">正常系のテストだけでは false 側（エラー処理）を一度も実行していない。</text>
+  <text x="360" y="215" class="dg-note">分岐網羅は「両方向を少なくとも一度は通す」ことを要求し、この穴を可視化する。</text>
+  <defs><marker id="ah5" markerWidth="9" markerHeight="9" refX="8" refY="4.5" orient="auto">
+    <path d="M0,0 L9,4.5 L0,9 z" fill="#6B746F"/></marker></defs>
+</svg>`,
+};
+
+/* ============== 理解度クイズ ============== */
+const QUIZ = [
+{ q:'「テストは誤りの存在は示せるが、不在は示せない」、この限界を指摘したのは？',
+  opts:['Dijkstra','Boehm','Sommerville','Kaner'], a:0,
+  why:'E. W. Dijkstra の有名な警句。すべてのテストに合格しても「テストした範囲では見つからなかった」以上のことは言えない。だからテストケースの選び方が本質になる。'},
+{ q:'「私たちは<b>正しいプロダクト</b>を作っているか？」顧客の期待に応えているかを問うのはどちら？',
+  opts:['妥当性確認（Validation）','検証（Verification）'], a:0,
+  why:'<b>検証</b>は「プロダクトを正しく作っているか」（仕様への適合）、<b>妥当性確認</b>は「正しいプロダクトを作っているか」（期待への適合）。' },
+{ q:'あるメソッドに境界値（9999 / 10000 / 99999 / 100000）を与えて単体で検査したい。実施すべきテストは？',
+  opts:['ユニットテスト','コンポーネントテスト','システムテスト','受入れテスト'], a:0,
+  why:'メソッド・クラス単位の検査はユニットテスト。等価分割・境界値分析はユニットテストのテストケース選択で特に活躍する。'},
+{ q:'2つのモジュールを組み合わせたら、片方が「配列は整列済み」と誤解していて誤動作した。この種の欠陥を狙うテストは？',
+  opts:['コンポーネントテスト','ユニットテスト','ベータテスト','性能テスト'], a:0,
+  why:'インタフェースの「誤解」によるエラーは、それぞれの単体テストでは見つからない。ユニットを統合してインタフェースを狙うコンポーネントテストの出番。'},
+{ q:'開発チームとは<b>別の独立したチーム</b>が、仕様から導いたブラックボックステストで「リリースしてよいか」を確かめる。これは？',
+  opts:['リリーステスト','開発テスト','アルファテスト','回帰テスト'], a:0,
+  why:'リリーステストは独立チームによる妥当性確認。開発者は自分のコードに甘くなりがちなので、「別の目」で確かめることに価値がある。'},
+{ q:'機能を追加したら、以前は動いていた別の機能が壊れていないか不安だ。実施すべきテストは？',
+  opts:['回帰テスト','ストレステスト','シナリオテスト','インスペクション'], a:0,
+  why:'変更による既存機能の退行（regression）を検出するのが回帰テスト。自動化されたテスト資産を全再実行して確かめる。'},
+{ q:'設計限界の2倍の負荷をかけて、システムが「安全に劣化する」ことを確かめたい。これは？',
+  opts:['ストレステスト','負荷テスト','要求ベースのテスト','ユニットテスト'], a:0,
+  why:'想定内の負荷で性能を確認するのが負荷テスト、<b>設計限界を超えて</b>壊れ方（フェイルソフトかどうか）を見るのがストレステスト。'},
+{ q:'早期バージョンを多数の外部ユーザに公開し、多様な実行環境での問題を報告してもらう。これは？',
+  opts:['ベータテスト','アルファテスト','受入れテスト','システムテスト'], a:0,
+  why:'多数ユーザ×実環境×自律的な利用がベータテスト。開発側では再現できない環境の多様性こそが価値。'},
+{ q:'顧客が自らの実データでシステムを試し、検収（最終支払い）するかどうかを判断する。これは？',
+  opts:['受入れテスト','ベータテスト','リリーステスト','妥当性確認テスト'], a:0,
+  why:'受入れテストはカスタム開発に固有で、契約上の合否判断を伴う。全テスト合格は稀で、交渉により条件付き受入れとなることが多い。'},
+{ q:'「コードを書く<b>前に</b>テストを書き、失敗を確認してから最小の実装をする」開発の進め方は？',
+  opts:['テスト駆動開発（TDD）','回帰テスト','ペアプログラミング','ウォーターフォール'], a:0,
+  why:'Red（失敗）→ Green（最小実装）→ Refactor のサイクルを小さく回すのが TDD。回帰テストスイートが開発の副産物として育つ。'},
+{ q:'等価分割でテストケースの値を選ぶとき、特に優先して選ぶべきなのは？',
+  opts:['各クラスの境界の値と中央付近の値','ランダムな値を大量に','すべての値','開発者が好きな値'], a:0,
+  why:'誤りは分割の境界で圧倒的に起こりやすい（&lt; と &lt;= の取り違えなど）。境界値＋中央の代表値で、少ないテストが広い範囲をカバーする。'},
+{ q:'実行せずに要求・設計・コードを検査し、「誤りが他の誤りにマスクされない」「未完成でも検査できる」という利点を持つのは？',
+  opts:['インスペクション','システムテスト','ベータテスト','ストレステスト'], a:0,
+  why:'インスペクションは静的 V&V 技法。ただし性能・相互作用の欠陥は実行しないと見つからないため、テストの代替にはならない（相互補完）。'},
+{ q:'内部構造をいっさい見ずに、仕様だけを手がかりに入力と出力でテストケースを設計する考え方は？',
+  opts:['ホワイトボックステスト','ブラックボックステスト','グレーボックステスト','探索的テスト'], a:1,
+  why:'仕様（何をすべきか）から設計するのがブラックボックステスト。等価分割・境界値・デシジョンテーブル・状態遷移などの技法ファミリーを持つ。'},
+{ q:'「すべての分岐を真・偽の両方向に少なくとも一度は実行する」ことを求めるカバレッジ基準は？',
+  opts:['命令網羅（ステートメントカバレッジ）','分岐網羅（ブランチカバレッジ）','MC/DC','ミューテーションスコア'], a:1,
+  why:'分岐網羅は命令網羅より強い基準。さらに複合条件の各要素まで求めるのが条件網羅・MC/DC で、航空機ソフトウェア（DO-178C）などで要求される。'},
+{ q:'コードを何も変えていないのに、実行のたびに通ったり落ちたりするテストを何と呼ぶ？',
+  opts:['リグレッションテスト','フレーキーテスト','スモークテスト','モンキーテスト'], a:1,
+  why:'フレーキーテスト。3大原因は非同期の待ち方・並行実行・テスト順序依存。放置するとテスト全体への信頼が崩壊する（誤報の多い火災報知器）。'},
+{ q:'デプロイ直後に「起動する・ログインできる・主要画面が開く」だけを数分で確かめ、壊れたビルドを早期に弾くテストは？',
+  opts:['受入れテスト','回帰テスト','スモークテスト','性能テスト'], a:2,
+  why:'スモークテストは「火を入れて煙が出ないか」を見る門番。合格しても品質保証にはならず、詳細テストに進んでよいという意味しか持たない。'},
+{ q:'わざと小さなバグ（ミュータント）をコードに植え付け、テストがそれを検出できるかで「テストの品質」を測る手法は？',
+  opts:['ファジング','ミューテーションテスト','カオスエンジニアリング','ペネトレーションテスト'], a:1,
+  why:'ミューテーションテストは「テストのためのテスト」。カバレッジ100%でも検出できない＝アサーションが弱いテストをあぶり出せる。'},
+{ q:'チャーター（探索の目的）とタイムボックスを決め、学習・テスト設計・実行を同時に行いながらシステムを調べるテストは？',
+  opts:['シナリオテスト','探索的テスト','要求ベースのテスト','ユニットテスト'], a:1,
+  why:'探索的テスト。無計画な「アドホックテスト」とは違い、チャーターとタイムボックスという規律を持つ。スクリプトテストと補完関係にある。'},
+{ q:'新バージョンをまず1%のユーザにだけ公開し、エラー率を監視しながら段階的に広げていくリリース・検証の手法は？',
+  opts:['ベータテスト','カナリアリリース','ストレステスト','ウォークスルー'], a:1,
+  why:'カナリアリリース（炭鉱のカナリアが由来）。「本番環境でのテスト」の代表格で、優れた監視と即時ロールバックが成立の前提。'}
+];
+</script>
+<script>
+/* ============== レンダリング ============== */
+const learned = new Set();
+let currentCat = 'all';
+
+function esc(s){return s.replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;");}
+
+function highlight(code, lang){
+  const cmMark = (lang==='python') ? '#' : '//';
+  const kws = (lang==='python')
+    ? ['def','return','import','from','if','elif','else','assert','class','True','False','None','pytest']
+    : ['public','class','void','int','return','new','static','import','if','else','true','false','String'];
+  const kwRe = new RegExp('\\b('+kws.join('|')+')\\b','g');
+  return code.split('\n').map(line=>{
+    const idx = line.indexOf(cmMark);
+    let codePart = (idx>=0) ? line.slice(0,idx) : line;
+    const cmPart = (idx>=0) ? line.slice(idx) : '';
+    const strs = [];
+    codePart = codePart.replace(/"[^"]*"/g, m=>{ strs.push(m); return '@@S'+(strs.length-1)+'@@'; });
+    let h = esc(codePart).replace(kwRe,'<span class="kw">$1</span>');
+    h = h.replace(/@@S(\d+)@@/g,(m,i)=>'<span class="st">'+esc(strs[+i])+'</span>');
+    return h + (cmPart ? '<span class="cm">'+esc(cmPart)+'</span>' : '');
+  }).join('\n');
+}
+
+function togglePattern(id){
+  const card = document.getElementById(id);
+  if(!card) return;
+  const open = card.classList.toggle('open');
+  const head = card.querySelector('.pcard-head');
+  if(head) head.setAttribute('aria-expanded', open ? 'true' : 'false');
+}
+function toggleLearned(id, cb){
+  if(cb.checked) learned.add(id); else learned.delete(id);
+  const card = document.getElementById(id);
+  if(card) card.classList.toggle('done-card', cb.checked);
+  updateLearnUI();
+}
+function updateLearnUI(){
+  const el = document.getElementById('learnNote');
+  if(el) el.textContent = '習得 ' + learned.size + ' / ' + TESTS.length;
+}
+function switchCode(id, lang, btn){
+  document.getElementById(id+'-java').classList.toggle('hidden', lang!=='java');
+  document.getElementById(id+'-python').classList.toggle('hidden', lang!=='python');
+  btn.parentElement.querySelectorAll('button.tab').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+}
+
+function renderTest(t, idx){
+  const pointsLi = t.points.map(v=>`<li>${v}</li>`).join('');
+  const cautionsLi = t.cautions.map(v=>`<li>${v}</li>`).join('');
+  const exLi = t.examples.map(v=>`<li>${v}</li>`).join('');
+  const stepsLi = t.steps.map(v=>`<li>${v}</li>`).join('');
+  const tagsH = (t.tags||[]).map(x=>`<span class="tag">${x}</span>`).join('');
+  const badgeH = `<span class="badge-imp ${BADGE_CLS[t.badge]||'imp1'}">${t.badge}</span>`;
+  const analogyH = t.analogy ? `<div class="analogy"><span><b>たとえるなら</b> ${t.analogy}</span></div>` : '';
+  const dg = DIAGRAMS[t.id];
+  const diagramH = dg ? `<div class="diagram-wrap"><h5>進め方のイメージ</h5>${dg}</div>` : '';
+  let codeH = '';
+  if(t.hasCode && CODE[t.id]){
+    codeH = `
+      <div class="code-wrap">
+        <div class="code-tabs">
+          <span class="lbl">サンプルコード</span>
+          <button class="tab active" onclick="switchCode('${t.id}','java',this)">Java (JUnit 5)</button>
+          <button class="tab" onclick="switchCode('${t.id}','python',this)">Python (pytest)</button>
+        </div>
+        <pre id="${t.id}-java"><code>${highlight(CODE[t.id].java,'java')}</code></pre>
+        <pre id="${t.id}-python" class="hidden"><code>${highlight(CODE[t.id].python,'python')}</code></pre>
+      </div>`;
+  }
+  const searchText = (t.name+' '+t.jp+' '+t.summary+' '+(t.analogy||'')+' '+t.badge+' '+(t.tags||[]).join(' ')).toLowerCase();
+  const catColor = CAT_META[t.cat].color;
+  return `
+  <article class="pcard" id="${t.id}" data-cat="${t.cat}" data-search="${esc(searchText)}">
+    <button class="pcard-head" aria-expanded="false" onclick="togglePattern('${t.id}')">
+      <span class="pnum" style="color:${catColor}">${idx}</span>
+      <span class="ptitle">${t.name}<small>${t.jp}</small></span>
+      <span class="pbadges">${badgeH}</span>
+      <span class="ptags">${tagsH}</span>
+      <span class="pchev" aria-hidden="true">&rsaquo;</span>
+    </button>
+    <p class="summary">${t.summary}</p>
+    <div class="pdetail">
+      ${analogyH}
+      <div class="meta-row">
+        <div class="meta"><h5>実施の目的</h5><p>${t.purpose}</p></div>
+        <div class="meta"><h5>誰が・いつ実施するか</h5><p>${t.who}</p></div>
+      </div>
+      <div class="steps"><h5>実施の仕方（進め方）</h5><ol>${stepsLi}</ol></div>
+      ${diagramH}
+      <div class="grid2">
+        <div class="box pros"><h5>✓ 意識するポイント</h5><ul>${pointsLi}</ul></div>
+        <div class="box cons"><h5>！ 注意点・落とし穴</h5><ul>${cautionsLi}</ul></div>
+      </div>
+      <div class="meta-row">
+        <div class="meta"><h5>具体例</h5><ul>${exLi}</ul></div>
+        <div class="meta"><h5>混同しやすいものとの違い</h5><p>${t.related}</p></div>
+      </div>
+      <div class="meta" style="margin:16px 0"><h5>現場では（ツール・現代的な実践）</h5><p>${t.modern}</p></div>
+      ${codeH}
+      <label class="learn"><input type="checkbox" onchange="toggleLearned('${t.id}',this)">
+        このテストを理解した（習得チェック）</label>
+    </div>
+  </article>`;
+}
+
+function build(){
+  document.getElementById('introProse').innerHTML = INTRO_HTML;
+  document.getElementById('techProse').innerHTML = TECH_HTML;
+  document.getElementById('closingProse').innerHTML = CLOSING_HTML;
+  const container = document.getElementById('tests-list');
+  let html='', n=0;
+  CAT_ORDER.forEach(cat=>{
+    const list = TESTS.filter(t=>t.cat===cat);
+    const meta = CAT_META[cat];
+    html += `<div class="cat-group" data-cat="${cat}">
+      <div class="cat-head" style="--cc:${meta.color}">
+        <span class="cat-dot"></span>
+        <h3>${meta.label}</h3>
+        <span class="cat-badge">${meta.en} · ${list.length}種</span>
+      </div>
+      <p class="cat-desc">${meta.desc}</p>`;
+    list.forEach(t=>{ n++; html += renderTest(t, n); });
+    html += `</div>`;
+  });
+  container.innerHTML = html;
+  updateLearnUI();
+  buildQuiz();
+}
+
+function filterCat(cat, btn){
+  currentCat = cat;
+  document.querySelectorAll('.pill').forEach(b=>b.classList.remove('active'));
+  if(btn) btn.classList.add('active');
+  applyFilter();
+}
+function applyFilter(){
+  const si = document.getElementById('search');
+  const q = (si && si.value ? si.value : '').trim().toLowerCase();
+  document.querySelectorAll('.cat-group').forEach(g=>{
+    const catOk = (currentCat==='all' || currentCat===g.dataset.cat);
+    let shown = 0;
+    g.querySelectorAll('.pcard').forEach(c=>{
+      const hit = catOk && (!q || c.dataset.search.includes(q));
+      c.classList.toggle('hidden', !hit);
+      if(hit) shown++;
+    });
+    g.classList.toggle('hidden', shown===0);
+  });
+}
+
+/* ============== 等価分割デモ ============== */
+function epTry(v){ const i=document.getElementById('epInput'); i.value=v; epCheck(); }
+function epCheck(){
+  const raw = document.getElementById('epInput').value.trim();
+  const out = document.getElementById('epOut');
+  if(!raw){
+    out.className='demo-out';
+    out.innerHTML='値を入力するか、上のボタンで代表値を試してください。境界の前後（9999 / 10000、99999 / 100000）を試すと、境界値分析の考え方が体感できます。';
+    return;
+  }
+  if(!/^-?\d+$/.test(raw)){
+    out.className='demo-out ng';
+    out.innerHTML='<span class="pl">無効クラス</span><b>「整数ではない入力」</b>の等価クラスに属します。仕様が「整数」と言うとき、整数以外の入力（文字列・小数・空文字）にどう振る舞うべきかも立派なテスト対象。<b>異常系</b>のテストケースです。';
+    return;
+  }
+  const n = parseInt(raw,10);
+  let html='';
+  if(n < 10000){
+    out.className='demo-out ng';
+    html = '<span class="pl">無効クラス</span><b>「10000 未満」</b>の等価クラスに属します。'
+      + (n===9999
+        ? ' <span class="bd">境界値</span>9999 は下側境界のすぐ外側。<b>&lt; と &lt;= の取り違え（off-by-one エラー）</b>を暴く、もっとも価値の高いテストケースの1つです。'
+        : ' このクラスの代表値としては、境界のすぐ外側である <b>9999</b> を選ぶのが効率的です（誤りは境界で起こりやすいため）。');
+  } else if(n <= 99999){
+    out.className='demo-out ok';
+    html = '<span class="pl">有効クラス</span><b>「10000〜99999」</b>の有効な等価クラスに属します。'
+      + ((n===10000||n===99999)
+        ? ' <span class="bd">境界値</span>クラスの端そのもの。この値が「有効側に含まれる」ことを確かめる重要なテストケースです。'
+        : (n===55000
+          ? ' 中央付近の値。正常な処理の「代表」として選ぶ定石の値です。'
+          : ' 代表値としては境界（10000・99999）と中央付近（55000 前後）を選ぶのが定石です。'));
+  } else {
+    out.className='demo-out ng';
+    html = '<span class="pl">無効クラス</span><b>「99999 超」</b>の等価クラスに属します。'
+      + (n===100000
+        ? ' <span class="bd">境界値</span>100000 は上側境界のすぐ外側。境界値分析で必ず選ぶべき値です。'
+        : ' このクラスの代表値としては、境界のすぐ外側である <b>100000</b> を選ぶのが効率的です。');
+  }
+  out.innerHTML = html;
+}
+
+/* ============== クイズ（in-memory） ============== */
+let quizState = {answered:0, correct:0};
+let quizOrder = [];
+function buildQuiz(){
+  quizState = {answered:0, correct:0};
+  quizOrder = QUIZ.map(q=>{
+    const idx = q.opts.map((_,k)=>k);
+    for(let i=idx.length-1;i>0;i--){ const j=Math.floor(Math.random()*(i+1)); const t=idx[i]; idx[i]=idx[j]; idx[j]=t; }
+    return idx;
+  });
+  const body = document.getElementById('quizBody');
+  if(!body) return;
+  body.innerHTML = QUIZ.map((q,i)=>`
+    <div class="quiz-q" id="qq${i}">
+      <p class="qtext">Q${i+1}. ${q.q}</p>
+      <div class="qopts">${quizOrder[i].map((oi,j)=>`<button onclick="answerQuiz(${i},${j},this)">${q.opts[oi]}</button>`).join('')}</div>
+      <p class="qwhy" hidden></p>
+    </div>`).join('');
+  updateQuizScore();
+}
+function answerQuiz(i, j, btn){
+  const q = QUIZ[i], box = document.getElementById('qq'+i);
+  if(box.classList.contains('answered')) return;
+  box.classList.add('answered');
+  box.querySelectorAll('.qopts button').forEach((b,k)=>{
+    b.disabled = true;
+    if(quizOrder[i][k]===q.a) b.classList.add('right');
+  });
+  const ok = (quizOrder[i][j]===q.a);
+  if(!ok) btn.classList.add('wrong');
+  quizState.answered++; if(ok) quizState.correct++;
+  const why = box.querySelector('.qwhy');
+  why.hidden = false;
+  why.innerHTML = (ok ? '<b>正解。</b> ' : `<b>不正解。</b>正解は <b>${q.opts[q.a]}</b>。 `) + q.why;
+  updateQuizScore();
+}
+function updateQuizScore(){
+  const el = document.getElementById('quizScore');
+  if(el) el.textContent = quizState.answered
+    ? `（${quizState.answered}問中 ${quizState.correct}問正解）` : `全${QUIZ.length}問。`;
+}
+
+/* ============== 言語切替（サイト共通・localStorage は site-lang のみ） ============== */
+function setLang(l){document.body.classList.remove('lang-ja','lang-en');document.body.classList.add('lang-'+l);document.documentElement.lang=l;
+ try{localStorage.setItem('site-lang',l)}catch(e){}
+ try{var q=new URLSearchParams(location.search);q.set('lang',l);history.replaceState(null,'',location.pathname+'?'+q+location.hash)}catch(e){}}
+function toggleLang(){setLang(document.body.classList.contains('lang-ja')?'en':'ja')}
+(function(){var u=null;try{u=new URLSearchParams(location.search).get('lang')}catch(e){}
+ var s=null;try{s=localStorage.getItem('site-lang')}catch(e){}
+ var l=(u==='en'||u==='ja')?u:((s==='en'||s==='ja')?s:'ja');if(l!=='ja')setLang(l);})();
+
+/* ページ内アンカー（本文中のリンク）でカードへ飛ぶとき、
+   絞り込みを解除して対象カードを開いてから移動する */
+document.addEventListener('click', function(e){
+  var a = e.target.closest('a[href^="#"]');
+  if(!a) return;
+  var id = a.getAttribute('href').slice(1);
+  var card = document.getElementById(id);
+  if(card && card.classList.contains('pcard')){
+    if(currentCat!=='all'){ filterCat('all', document.querySelector('.pill')); }
+    var si = document.getElementById('search');
+    if(si && si.value){ si.value=''; }
+    applyFilter();
+    card.classList.add('open');
+    var head = card.querySelector('.pcard-head');
+    if(head) head.setAttribute('aria-expanded','true');
+  }
+});
+
+window.addEventListener('DOMContentLoaded', function(){
+  build();
+  var si = document.getElementById('search');
+  if(si) si.addEventListener('input', applyFilter);
+  if('IntersectionObserver' in window){
+    var io = new IntersectionObserver(function(es){ es.forEach(function(e){ if(e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target); } }); },{threshold:0.12, rootMargin:"0px 0px -6% 0px"});
+    document.querySelectorAll('.reveal').forEach(function(el){ io.observe(el); });
+  } else { document.querySelectorAll('.reveal').forEach(function(el){ el.classList.add('in'); }); }
+});
+</script>
+</body>
+</html>
