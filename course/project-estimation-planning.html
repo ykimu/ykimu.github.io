@@ -3,13 +3,13 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>プロジェクト計画・見積り学習ガイド - スケジューリング・アジャイル計画・COCOMO / Project Planning &amp; Estimation</title>
+<title>プロジェクト計画・見積もり学習ガイド - スケジューリング・アジャイル計画・COCOMO / Project Planning &amp; Estimation</title>
 <meta name="description" content="A study guide to software project planning and estimation: software pricing, plan-driven scheduling, critical paths and Gantt charts, agile planning, story points and velocity, estimation techniques, and the COCOMO II cost model, with an interactive COCOMO effort calculator, critical-path visualizer, and a comprehension quiz. Part of Yuta Kimura's software engineering course materials.">
 <link rel="canonical" href="https://ykimu.github.io/course/project-estimation-planning.html">
 <link rel="icon" href="../favicon.svg" type="image/svg+xml">
 <meta property="og:site_name" content="Yuta Kimura / 木村祐太">
 <meta property="og:type" content="article">
-<meta property="og:title" content="プロジェクト計画・見積り学習ガイド - スケジューリング・アジャイル計画・COCOMO / Project Planning &amp; Estimation">
+<meta property="og:title" content="プロジェクト計画・見積もり学習ガイド - スケジューリング・アジャイル計画・COCOMO / Project Planning &amp; Estimation">
 <meta property="og:description" content="A study guide to software project planning and estimation: pricing, scheduling, agile planning, estimation techniques, and COCOMO, with interactive calculators and a comprehension quiz.">
 <meta property="og:url" content="https://ykimu.github.io/course/project-estimation-planning.html">
 <meta property="og:image" content="https://ykimu.github.io/assets/og.png">
@@ -540,7 +540,7 @@
 {"@type":"ListItem","position":1,"name":"ホーム","item":"https://ykimu.github.io/"},
 {"@type":"ListItem","position":2,"name":"教育","item":"https://ykimu.github.io/teaching.html"},
 {"@type":"ListItem","position":3,"name":"ソフトウェア工学","item":"https://ykimu.github.io/course/index.html"},
-{"@type":"ListItem","position":4,"name":"プロジェクト計画・見積り学習ガイド","item":"https://ykimu.github.io/course/project-estimation-planning.html"}
+{"@type":"ListItem","position":4,"name":"プロジェクト計画・見積もり学習ガイド","item":"https://ykimu.github.io/course/project-estimation-planning.html"}
 ]}
 </script>
 </head>
@@ -594,7 +594,7 @@
               <div class="navlabel"><span lang="ja">計画・プロセス</span><span lang="en">Planning &amp; Process</span></div>
               <a href="agile-scrum.html"><span lang="ja">アジャイル開発とスクラム</span><span lang="en">Agile &amp; Scrum</span></a>
               <a href="project-management.html"><span lang="ja">プロジェクト管理と見積もり</span><span lang="en">Project Management</span></a>
-              <a class="here" href="project-estimation-planning.html" aria-current="page"><span lang="ja">プロジェクト計画・見積り</span><span lang="en">Project Planning &amp; Estimation</span></a>
+              <a class="here" href="project-estimation-planning.html" aria-current="page"><span lang="ja">プロジェクト計画・見積もり</span><span lang="en">Project Planning &amp; Estimation</span></a>
             </div>
             <div class="megacol">
               <div class="navlabel"><span lang="ja">品質・運用</span><span lang="en">Quality &amp; Operations</span></div>
@@ -659,7 +659,7 @@
       <div class="mobsublabel"><span lang="ja">計画・プロセス</span><span lang="en">Planning &amp; Process</span></div>
       <a href="agile-scrum.html"><span lang="ja">アジャイル開発とスクラム</span><span lang="en">Agile &amp; Scrum</span></a>
       <a href="project-management.html"><span lang="ja">プロジェクト管理と見積もり</span><span lang="en">Project Management</span></a>
-      <a class="here" href="project-estimation-planning.html" aria-current="page"><span lang="ja">プロジェクト計画・見積り</span><span lang="en">Project Planning &amp; Estimation</span></a>
+      <a class="here" href="project-estimation-planning.html" aria-current="page"><span lang="ja">プロジェクト計画・見積もり</span><span lang="en">Project Planning &amp; Estimation</span></a>
       <div class="mobsublabel"><span lang="ja">品質・運用</span><span lang="en">Quality &amp; Operations</span></div>
       <a href="software-testing.html"><span lang="ja">ソフトウェアテスト学習ガイド</span><span lang="en">Software Testing Guide</span></a>
       <a href="dependable-systems.html"><span lang="ja">ディペンダブルシステム</span><span lang="en">Dependable Systems</span></a>
@@ -698,7 +698,7 @@
     <span class="csep" aria-hidden="true">&rsaquo;</span>
     <a href="index.html"><span lang="ja">ソフトウェア工学</span><span lang="en">Software Engineering</span></a>
     <span class="csep" aria-hidden="true">&rsaquo;</span>
-    <span class="cur" aria-current="page"><span lang="ja">プロジェクト計画・見積り学習ガイド</span><span lang="en">Project Planning &amp; Estimation</span></span>
+    <span class="cur" aria-current="page"><span lang="ja">プロジェクト計画・見積もり学習ガイド</span><span lang="en">Project Planning &amp; Estimation</span></span>
   </nav>
 </div>
 
@@ -706,8 +706,8 @@
 <div class="hero">
   <div class="wrap">
     <p class="kick">Project Planning &amp; Estimation</p>
-    <h1>プロジェクト計画・見積り：<em>「いつ・いくらで」</em>を見通す技術</h1>
-    <p class="lead">ソフトウェアプロジェクトの成否は、書いたコードだけでなく<strong>「何を・いつまでに・いくらで・誰が作るか」の見通し</strong>で決まります。価格の決め方（pricing to win）、計画駆動開発のスケジューリング（タスク分割・依存・<strong>クリティカルパス</strong>・ガントチャート）、アジャイルの計画（プランニングゲーム・<strong>ストーリーポイントとベロシティ</strong>）、そして見積り技法と<strong>COCOMO II コストモデル</strong>まで、目的・進め方・意識するポイント・注意点つきで整理しました。この教材の主役は<strong>3つの計算ツール</strong>（COCOMO工数計算機、クリティカルパス／ガントチャート可視化、ベロシティ・プランナー）です。手を動かして「見積りの感覚」をつかんでください。</p>
+    <h1>プロジェクト計画・見積もり：<em>「いつ・いくらで」</em>を見通す技術</h1>
+    <p class="lead">ソフトウェアプロジェクトの成否は、書いたコードだけでなく<strong>「何を・いつまでに・いくらで・誰が作るか」の見通し</strong>で決まります。価格の決め方（pricing to win）、計画駆動開発のスケジューリング（タスク分割・依存・<strong>クリティカルパス</strong>・ガントチャート）、アジャイルの計画（プランニングゲーム・<strong>ストーリーポイントとベロシティ</strong>）、そして見積もり技法と<strong>COCOMO II コストモデル</strong>まで、目的・進め方・意識するポイント・注意点つきで整理しました。この教材の主役は<strong>3つの計算ツール</strong>（COCOMO工数計算機、クリティカルパス／ガントチャート可視化、ベロシティ・プランナー）です。手を動かして「見積もりの感覚」をつかんでください。</p>
     <p class="ja-note"><span lang="ja">この教材は日本語のみで提供しています</span><span lang="en">This learning material is available in Japanese only.</span></p>
     <div class="hero-cta">
       <a class="btn ink" href="#tools" style="padding:12px 22px">
@@ -718,6 +718,13 @@
         <span class="ar" aria-hidden="true">&rsaquo;</span>
       </a>
     </div>
+  </div>
+</div>
+
+<div class="wrap">
+  <div class="callout tip" style="margin-top:8px">
+    <h4>位置づけ・関連教材</h4>
+    この教材は<b>計画・スケジューリング・見積もり（定量）</b>を扱います。リスクマネジメント・人とチームのマネジメント・進捗と健全性のメトリクスは、姉妹教材<a href="project-management.html">「プロジェクト管理」学習ガイド</a>にまとめています。
   </div>
 </div>
 
@@ -737,7 +744,7 @@
 <section id="intro" style="padding-top:20px">
   <div class="wrap reveal">
     <p class="eyebrow"><span lang="ja">はじめに</span><span lang="en">Introduction</span></p>
-    <h2 class="big"><span lang="ja">プロジェクト計画と見積りとは何か</span><span lang="en">What is project planning &amp; estimation?</span></h2>
+    <h2 class="big"><span lang="ja">プロジェクト計画と見積もりとは何か</span><span lang="en">What is project planning &amp; estimation?</span></h2>
     <div class="prose" id="introProse" style="margin-top:22px"></div>
   </div>
 </section>
@@ -746,16 +753,16 @@
 <section class="soft-sec" id="topics" style="padding-top:80px">
   <div class="wrap">
     <p class="eyebrow reveal"><span lang="ja">概念カタログ</span><span lang="en">Concept catalog</span></p>
-    <h2 class="big reveal"><span lang="ja">16の概念・技法カタログ</span><span lang="en">Sixteen concepts and techniques</span></h2>
-    <p class="lead reveal" style="max-width:var(--readw); margin-top:18px">価格決定・計画駆動とスケジューリング・アジャイル計画・見積り技法・COCOMO の5カテゴリに整理しました。カテゴリで絞り込み、各カードをクリックすると、目的・進め方・意識するポイント・注意点・具体例が開きます。この後の<a href="#tools">計算ツール</a>とあわせて読むと理解が深まります。</p>
+    <h2 class="big reveal"><span lang="ja">15の概念・技法カタログ</span><span lang="en">Fifteen concepts and techniques</span></h2>
+    <p class="lead reveal" style="max-width:var(--readw); margin-top:18px">価格決定・計画駆動とスケジューリング・アジャイル計画・見積もり技法・COCOMO の5カテゴリに整理しました。カテゴリで絞り込み、各カードをクリックすると、目的・進め方・意識するポイント・注意点・具体例が開きます。この後の<a href="#tools">計算ツール</a>とあわせて読むと理解が深まります。</p>
     <div class="controls reveal" style="margin-top:26px">
       <div class="pills" role="tablist" aria-label="カテゴリ切替">
-        <button class="pill active" onclick="filterCat('all',this)">すべて<span>16</span></button>
+        <button class="pill active" onclick="filterCat('all',this)">すべて<span>15</span></button>
         <button class="pill" onclick="filterCat('pricing',this)">価格決定<span>2</span></button>
         <button class="pill" onclick="filterCat('planning',this)">計画・スケジュール<span>5</span></button>
         <button class="pill" onclick="filterCat('agile',this)">アジャイル計画<span>3</span></button>
-        <button class="pill" onclick="filterCat('estimation',this)">見積り技法<span>3</span></button>
-        <button class="pill" onclick="filterCat('cocomo',this)">COCOMO・人員<span>3</span></button>
+        <button class="pill" onclick="filterCat('estimation',this)">見積もり技法<span>3</span></button>
+        <button class="pill" onclick="filterCat('cocomo',this)">COCOMO・人員<span>2</span></button>
       </div>
       <div class="ctrl-right">
         <input id="search" class="search" type="text" placeholder="名前・キーワードで絞り込み" aria-label="概念を絞り込み">
@@ -782,7 +789,7 @@
           <div class="field">
             <div class="flabel"><span class="nm">規模：Size（KLOC：千行）</span><span class="val" id="kv">100</span></div>
             <input type="range" id="kloc" min="1" max="300" step="1" value="100" oninput="cocomoCalc()">
-            <div class="hint">見積り対象のコード規模。COCOMO は<b>コード行数</b>を入力にとる（大規模ほど不確かさが増す点に注意）。</div>
+            <div class="hint">見積もり対象のコード規模。COCOMO は<b>コード行数</b>を入力にとる（大規模ほど不確かさが増す点に注意）。</div>
           </div>
           <div class="field">
             <div class="flabel"><span class="nm">係数 A（定数）</span><span class="val" id="av">2.94</span></div>
@@ -868,7 +875,7 @@
           <div class="field">
             <div class="flabel"><span class="nm">ベロシティ（pt / イテレーション）</span><span class="val" id="velv">30</span></div>
             <input type="range" id="velocity" min="5" max="120" step="1" value="30" oninput="velCalc()">
-            <div class="hint">直近数イテレーションの実績平均を使う。「見積り」ではなく<b>実測</b>である点が重要。</div>
+            <div class="hint">直近数イテレーションの実績平均を使う。「見積もり」ではなく<b>実測</b>である点が重要。</div>
           </div>
           <div class="field">
             <div class="flabel"><span class="nm">イテレーション長（週）</span><span class="val" id="itlv">2</span></div>
@@ -904,7 +911,7 @@
 <section id="closing">
   <div class="wrap reveal">
     <p class="eyebrow"><span lang="ja">おわりに</span><span lang="en">In closing</span></p>
-    <h2 class="big"><span lang="ja">計画と見積りに向き合う心構えと、さらに学ぶために</span><span lang="en">How to think about planning, and where to learn more</span></h2>
+    <h2 class="big"><span lang="ja">計画と見積もりに向き合う心構えと、さらに学ぶために</span><span lang="en">How to think about planning, and where to learn more</span></h2>
     <div class="prose" id="closingProse" style="margin-top:22px"></div>
   </div>
 </section>
@@ -915,7 +922,7 @@
 <footer>
   <div class="wrap">
     <div class="cite">
-      <span lang="ja">ソフトウェアのプロジェクト計画と見積り（価格決定・スケジューリング・アジャイル計画・見積り技法・COCOMO）を、これから学ぶ方向けにまとめた学習ガイドです。木村祐太のソフトウェア工学の授業教材の一部としてご覧いただけます。授業の詳細（評価方法・日程等）は最新のシラバスを確認してください。</span>
+      <span lang="ja">ソフトウェアのプロジェクト計画と見積もり（価格決定・スケジューリング・アジャイル計画・見積もり技法・COCOMO）を、これから学ぶ方向けにまとめた学習ガイドです。木村祐太のソフトウェア工学の授業教材の一部としてご覧いただけます。授業の詳細（評価方法・日程等）は最新のシラバスを確認してください。</span>
       <span lang="en">A study guide to software project planning and estimation (pricing, scheduling, agile planning, estimation techniques, and COCOMO), for those new to it. Part of Yuta Kimura's software engineering course materials. For course details such as assessment and schedule, please refer to the latest syllabus.</span>
     </div>
     <div class="foot-grid">
@@ -952,7 +959,7 @@
     </div>
     <div class="foot-rule"></div>
     <p class="foot-note">
-      <span lang="ja">© 2026 Yuta Kimura. プロジェクト計画・見積りの解説は Ian Sommerville『Software Engineering (10th ed.)』第23章に基づく概説です。COCOMO の関係式は学習用に単純化しています。図23.14 のスケジューリング例は同書の演習に基づきます。</span>
+      <span lang="ja">© 2026 Yuta Kimura. プロジェクト計画・見積もりの解説は Ian Sommerville『Software Engineering (10th ed.)』第23章に基づく概説です。COCOMO の関係式は学習用に単純化しています。図23.14 のスケジューリング例は同書の演習に基づきます。</span>
       <span lang="en">© 2026 Yuta Kimura. This overview of project planning and estimation follows Chapter 23 of Ian Sommerville, <i>Software Engineering</i> (10th ed.). The COCOMO equations are simplified for teaching. The Figure 23.14 scheduling example is drawn from the book's exercises.</span>
     </p>
   </div>
@@ -961,8 +968,8 @@
 /* ============== コンテンツデータ ============== */
 const INTRO_HTML = `
 <p><b>プロジェクト計画（project planning）</b>とは、ソフトウェアを「何を・いつまでに・いくらで・誰が」作るのかを見通し、
-その見通しを実行しながら更新し続ける活動です。工数の<b>見積り（estimation）</b>はその心臓部にあたります。
-どんなに優れた設計・実装の技術があっても、計画と見積りが甘ければ、プロジェクトは予算超過・納期遅延・品質崩壊に陥ります。</p>
+その見通しを実行しながら更新し続ける活動です。工数の<b>見積もり（estimation）</b>はその心臓部にあたります。
+どんなに優れた設計・実装の技術があっても、計画と見積もりが甘ければ、プロジェクトは予算超過・納期遅延・品質崩壊に陥ります。</p>
 
 <h4>この回で扱う6つのトピック</h4>
 <div class="principles">
@@ -974,8 +981,8 @@ const INTRO_HTML = `
     <span>作業をタスクに分割し、期間と依存関係を見積もる。<strong>クリティカルパス</strong>が全体の期間を決める。</span></div>
   <div class="p"><b>④ アジャイル計画（agile planning）</b><br>
     <span>リリース計画とイテレーション計画の2段階。<strong>ストーリーポイントとベロシティ</strong>で作業量を見積もる。</span></div>
-  <div class="p"><b>⑤ 見積り技法（estimation）</b><br>
-    <span>経験ベースとアルゴリズム的の2系統。見積りの不確かさは<strong>初期ほど大きい</strong>。</span></div>
+  <div class="p"><b>⑤ 見積もり技法（estimation）</b><br>
+    <span>経験ベースとアルゴリズム的の2系統。見積もりの不確かさは<strong>初期ほど大きい</strong>。</span></div>
   <div class="p"><b>⑥ COCOMO コストモデル</b><br>
     <span>経験的に導かれたアルゴリズム的モデル。<strong>工数 = A × サイズ<sup>B</sup> × M</strong>。</span></div>
 </div>
@@ -986,15 +993,15 @@ const INTRO_HTML = `
 どちらのスタイルでも、計画は一度作って終わりではなく、<strong>問題が起きるたびに見直される反復的なプロセス</strong>である点は共通です。</p>
 
 <div class="callout tip">
-  <h4>見積りの不確かさは「初期ほど大きい」：不確かさの漏斗</h4>
-  同じシステムでも、企画段階の見積りと、設計を終えた後の見積りでは精度がまるで違います。
-  経験的に、ごく初期の見積りは実績に対して<strong>4倍もの幅</strong>を持ちうるとされ（Boehm ら）、開発が進むほど幅は狭まっていきます。
-  だから「初期の一点見積りを約束させられる」のは危険で、見積りは<strong>幅（レンジ）とともに示し、進捗に応じて更新</strong>するのが誠実な姿勢です。
+  <h4>見積もりの不確かさは「初期ほど大きい」：不確かさの漏斗</h4>
+  同じシステムでも、企画段階の見積もりと、設計を終えた後の見積もりでは精度がまるで違います。
+  経験的に、ごく初期の見積もりは実績に対して<strong>4倍もの幅</strong>を持ちうるとされ（Boehm ら）、開発が進むほど幅は狭まっていきます。
+  だから「初期の一点見積もりを約束させられる」のは危険で、見積もりは<strong>幅（レンジ）とともに示し、進捗に応じて更新</strong>するのが誠実な姿勢です。
 </div>
 
 <div class="diagram-wrap">
-<svg viewBox="0 0 760 210" role="img" aria-label="見積りの不確かさの漏斗">
-  <text x="380" y="24" class="dg-lbl">見積りの不確かさ（Cone of Uncertainty）</text>
+<svg viewBox="0 0 760 210" role="img" aria-label="見積もりの不確かさの漏斗">
+  <text x="380" y="24" class="dg-lbl">見積もりの不確かさ（Cone of Uncertainty）</text>
   <path d="M70 105 L690 40 L690 170 Z" fill="rgba(138,109,59,.10)" stroke="#8A6D3B" stroke-width="1.2"/>
   <line x1="70" y1="105" x2="690" y2="105" class="dg-line dg-dash"/>
   <text x="120" y="99" class="dg-el" text-anchor="start">×4</text>
@@ -1003,7 +1010,7 @@ const INTRO_HTML = `
   <text x="80" y="192" class="dg-el" text-anchor="start">企画・要求</text>
   <text x="360" y="192" class="dg-el">設計</text>
   <text x="670" y="192" class="dg-el">実装・引渡し</text>
-  <text x="380" y="206" class="dg-note">開発が進むほど見積りの幅は狭まる。初期の一点見積りを鵜呑みにしない。</text>
+  <text x="380" y="206" class="dg-note">開発が進むほど見積もりの幅は狭まる。初期の一点見積もりを鵜呑みにしない。</text>
 </svg>
 </div>
 
@@ -1027,18 +1034,16 @@ const TOOLS_HTML = `
 const CLOSING_HTML = `
 <p>最後に、個々の技法の知識を「使える判断力」に変えるための視点をまとめます。</p>
 
-<div class="callout warn">
-  <h4>ブルックスの法則：遅れているプロジェクトに人を足すと、もっと遅れる</h4>
-  「工数（人月）」と「期間（月）」は<strong>単純には交換できません</strong>。人を2倍にしても期間は半分になりません：
-  新メンバーの立ち上げ、増えた意思疎通の経路（n人なら n(n−1)/2 通り）、作業の分割不能性がコストとして効くからです。
-  とくに<strong>すでに遅れているプロジェクトに人を追加すると、教育と調整の負荷でかえって遅れます</strong>（Fred Brooks『人月の神話』）。
-  計算ツール①で「必要人員」を鵜呑みにしないこと：人員は増やせば増やすほど効率が落ちる、という前提を忘れないでください。
+<div class="callout tip">
+  <h4>人員追加には限界がある：計算ツール①の「必要人員」を鵜呑みにしない</h4>
+  「工数（人月）」と「期間（月）」は<strong>単純には交換できません</strong>。計算ツール①が示す「必要人員」は、人員を増やすほど意思疎通・教育コストで効率が落ちるという非線形性を織り込んでいない単純な目安です。
+  <strong>人員追加の限界（ブルックスの法則）と、人・チームのマネジメントは、姉妹教材<a href="project-management.html">「プロジェクト管理」学習ガイド</a>で詳説</strong>しています。
 </div>
 
 <div class="callout tip">
-  <h4>見積りは「約束」ではなく「予測」：幅で示し、更新し続ける</h4>
-  初期の見積りは不確かさの漏斗の広い側にいます。一点の数字を「約束」として固定させられると、
-  その数字を守るために品質が犠牲になります。見積りは<strong>レンジ（幅）で示し、進捗に応じて更新</strong>する。
+  <h4>見積もりは「約束」ではなく「予測」：幅で示し、更新し続ける</h4>
+  初期の見積もりは不確かさの漏斗の広い側にいます。一点の数字を「約束」として固定させられると、
+  その数字を守るために品質が犠牲になります。見積もりは<strong>レンジ（幅）で示し、進捗に応じて更新</strong>する。
   アジャイルなら、期日を固定してスコープ（入れる機能）を優先順位で調整する：これが破綻を避ける現実解です。
 </div>
 
@@ -1060,7 +1065,7 @@ const CLOSING_HTML = `
     <td>クリティカルパスはフロート<b>ゼロ</b>のタスクの連なりで、全体期間を決める。フロートのあるタスクは、その範囲なら遅れても全体に影響しない。</td></tr>
   <tr><td><b>マイルストーン</b> と <b>成果物（deliverable）</b></td>
     <td>マイルストーンは進捗を測る<b>予測可能な区切り</b>（報告のタイミング）。成果物は顧客に<b>引き渡される</b>作業産物。すべての成果物はマイルストーンだが、逆は成り立たない。</td></tr>
-  <tr><td><b>経験ベース見積り</b> と <b>アルゴリズム的モデル</b></td>
+  <tr><td><b>経験ベース見積もり</b> と <b>アルゴリズム的モデル</b></td>
     <td>前者は過去の類似案件の<b>経験・判断</b>で見積もる。後者は規模等のパラメータから<b>式で計算</b>する（COCOMO）。両者を突き合わせるのが賢い。</td></tr>
   <tr><td><b>工数（人月）</b> と <b>期間（月）</b></td>
     <td>工数は総労力、期間は暦の長さ。<b>単純に交換できない</b>（人を増やしても期間は比例して縮まない）。ブルックスの法則の核心。</td></tr>
@@ -1074,9 +1079,9 @@ const CLOSING_HTML = `
 <ul>
   <li>I. Sommerville『Software Engineering (10th ed.)』Pearson, 2016年, 第23章：本教材の底本</li>
   <li>B. W. Boehm ほか『Software Cost Estimation with COCOMO II』Prentice Hall, 2000年：COCOMO II の原典</li>
-  <li>F. P. Brooks『人月の神話（新装版）』丸善出版：ブルックスの法則の原典。計画・見積りを学ぶ者の必読書</li>
+  <li>F. P. Brooks『人月の神話（新装版）』丸善出版：ブルックスの法則の原典。計画・見積もりを学ぶ者の必読書</li>
   <li>M. Cohn『アジャイルな見積りと計画づくり』マイナビ出版：ストーリーポイント・ベロシティ・プランニングの定番</li>
-  <li>S. McConnell『ソフトウェア見積り』日経BP：不確かさの漏斗と実務的な見積り技法を網羅</li>
+  <li>S. McConnell『ソフトウェア見積り』日経BP：不確かさの漏斗と実務的な見積もり技法を網羅</li>
 </ul>
 `;
 </script>
@@ -1089,11 +1094,11 @@ const CAT_META = {
   planning:{ label:'計画駆動とスケジューリング', en:'Plan-driven development & scheduling', color:'var(--planning)',
     desc:'作業・担当・スケジュール・成果物を事前に詳細化する計画駆動開発と、その中核であるスケジューリング。タスク分割・依存関係・クリティカルパス・バーチャート（ガント）・マイルストーンといった、期間を見通すための道具立て。'},
   agile:{ label:'アジャイル計画', en:'Agile planning', color:'var(--agile)',
-    desc:'増分ごとに計画する2段階アプローチ（リリース計画とイテレーション計画）。顧客とストーリーの見積り・選択を行うプランニングゲーム、そしてストーリーポイントとベロシティによる作業量の見積り。'},
-  estimation:{ label:'見積り技法', en:'Estimation techniques', color:'var(--estimation)',
-    desc:'工数・コストをどう見積もるか。経験ベースの見積りとアルゴリズム的コストモデルの2系統、そして「初期ほど不確かさが大きい」という見積りの本質的な性質。'},
+    desc:'増分ごとに計画する2段階アプローチ（リリース計画とイテレーション計画）。顧客とストーリーの見積もり・選択を行うプランニングゲーム、そしてストーリーポイントとベロシティによる作業量の見積もり。'},
+  estimation:{ label:'見積もり技法', en:'Estimation techniques', color:'var(--estimation)',
+    desc:'工数・コストをどう見積もるか。経験ベースの見積もりとアルゴリズム的コストモデルの2系統、そして「初期ほど不確かさが大きい」という見積もりの本質的な性質。'},
   cocomo:{ label:'COCOMOと人員計画', en:'COCOMO & staffing', color:'var(--cocomo)',
-    desc:'経験的に導かれた代表的なアルゴリズム的コストモデル COCOMO II。工数=A×サイズ^B×M の構造、スケール要因とコストドライバの効き方、そして工数と期間は単純に交換できないというブルックスの法則。'}
+    desc:'経験的に導かれた代表的なアルゴリズム的コストモデル COCOMO II。工数=A×サイズ^B×M の構造と、スケール要因（指数B）・コストドライバ（乗数M）の効き方の違い。人員追加の限界（ブルックスの法則）は「プロジェクト管理」学習ガイドで詳説。'}
 };
 const BADGE_CLS = {'必須概念':'imp3','コストモデル':'imp3','技法':'imp2','価格戦略':'imp2','原則':'imp1','考え方':'imp1'};
 
@@ -1146,7 +1151,7 @@ const TESTS = [
     '価格・スコープ・リスクの前提を契約に明記する'
   ],
   points:[
-    '価格が<b>先</b>、機能が<b>後</b>：コスト見積りが価格を決めるのではなく、価格が実現機能を決める',
+    '価格が<b>先</b>、機能が<b>後</b>：コスト見積もりが価格を決めるのではなく、価格が実現機能を決める',
     '不確かな要求のプロジェクトで、初期スコープを絞って契約を取る現実的な手',
     'その後の変更・追加を別契約にできれば、全体として採算が合うこともある'
   ],
@@ -1199,7 +1204,7 @@ const TESTS = [
 {
   id:'planning-process', name:'Planning Process', jp:'計画のプロセス（反復的）', cat:'planning',
   badge:'必須概念', tags:['反復','見直し','制約'],
-  summary:'計画は一度作って終わりではなく、<strong>制約の識別 → 進捗の定義 → 見積り → 実行と監視</strong>を繰り返す<strong>反復的なプロセス</strong>。',
+  summary:'計画は一度作って終わりではなく、<strong>制約の識別 → 進捗の定義 → 見積もり → 実行と監視</strong>を繰り返す<strong>反復的なプロセス</strong>。',
   analogy:'航海の計画。出港前に航路を引いても、天候・海流の実際に合わせて針路を絶えず修正し続ける。計画書より「計画し続けること」に価値がある。',
   purpose:'変化する状況（要求変更・遅延・トラブル）に計画を追随させ、常に最新の見通しを保つ。',
   who:'プロジェクトマネージャが、プロジェクトの全期間を通じて継続的に実施する。',
@@ -1244,7 +1249,7 @@ const TESTS = [
   ],
   points:[
     '<b>並行実行の調整</b>が鍵：直列に並べると期間が無駄に伸びる',
-    '<b>コンティンジェンシー</b>（予備の時間）を必ず織り込む。「見積りどおりに進む」前提は危険',
+    '<b>コンティンジェンシー</b>（予備の時間）を必ず織り込む。「見積もりどおりに進む」前提は危険',
     'タスクは「進捗を測れる」大きさに分割する（大きすぎると 90% 完了が続く）'
   ],
   cautions:[
@@ -1333,8 +1338,8 @@ const TESTS = [
   purpose:'先の見通し（どの機能をいつ頃）を粗く保ちつつ、直近の作業だけを詳細に計画することで、変化に強い計画を実現する。',
   who:'開発チーム全体が顧客（プロダクトオーナー）とともに行う。',
   steps:[
-    '<b>リリース計画</b>：数か月先までに実現する機能群を、優先順位とおおよその見積りで並べる',
-    '各機能（ストーリー）を<b>ストーリーポイント</b>で相対見積りする',
+    '<b>リリース計画</b>：数か月先までに実現する機能群を、優先順位とおおよその見積もりで並べる',
+    '各機能（ストーリー）を<b>ストーリーポイント</b>で相対見積もりする',
     '<b>イテレーション計画</b>：直近のイテレーション（数週間）で実装するストーリーを選ぶ',
     '選んだストーリーを<b>タスクに分解</b>し、チームで担当する',
     'イテレーション終了時に<b>動く増分</b>を確認し、次の計画に反映する'
@@ -1359,11 +1364,11 @@ const TESTS = [
 },
 {
   id:'planning-game', name:'Planning Game', jp:'プランニングゲーム', cat:'agile',
-  badge:'技法', tags:['XP','ストーリー見積り','顧客協働'],
-  summary:'XP（エクストリームプログラミング）由来の計画手法。<strong>ストーリーの見積りと選択を顧客とチームが共同で</strong>行う。',
-  analogy:'買い物の予算会議。店側（開発）が各商品の値段（見積り）を示し、客（顧客）が予算内で欲しい順に選ぶ。値段は店、選択は客が決める分業。',
-  purpose:'見積り（技術的判断）と優先順位づけ（ビジネス判断）の責任を明確に分け、チーム全体を計画に巻き込む。',
-  who:'開発チーム（見積り担当）と顧客／プロダクトオーナー（優先順位担当）が共同で行う。',
+  badge:'技法', tags:['XP','ストーリー見積もり','顧客協働'],
+  summary:'XP（エクストリームプログラミング）由来の計画手法。<strong>ストーリーの見積もりと選択を顧客とチームが共同で</strong>行う。',
+  analogy:'買い物の予算会議。店側（開発）が各商品の値段（見積もり）を示し、客（顧客）が予算内で欲しい順に選ぶ。値段は店、選択は客が決める分業。',
+  purpose:'見積もり（技術的判断）と優先順位づけ（ビジネス判断）の責任を明確に分け、チーム全体を計画に巻き込む。',
+  who:'開発チーム（見積もり担当）と顧客／プロダクトオーナー（優先順位担当）が共同で行う。',
   steps:[
     '顧客がシステム要求を<b>ストーリー</b>として記述する',
     'チームが各ストーリーを<b>ストーリーポイントで見積もる</b>（技術的な大きさの判断）',
@@ -1372,8 +1377,8 @@ const TESTS = [
     '問題が起きたら、納期を守るために<b>スコープ（機能）を減らす</b>調整をする'
   ],
   points:[
-    '<b>見積りは開発、優先順位は顧客</b>：責任分担が明確',
-    'プランニングポーカーなどで<b>チーム全員の見積り</b>を集約する',
+    '<b>見積もりは開発、優先順位は顧客</b>：責任分担が明確',
+    'プランニングポーカーなどで<b>チーム全員の見積もり</b>を集約する',
     '計画は増分的に作られ、問題が出れば<b>機能を削って</b>調整（納期は動かさない）'
   ],
   cautions:[
@@ -1382,19 +1387,19 @@ const TESTS = [
     'ストーリーに表れにくい非機能要求・アーキテクチャ上の制約が抜け落ちやすい'
   ],
   examples:[
-    'プランニングポーカーで各ストーリーをフィボナッチ数（1,2,3,5,8…）で見積り',
+    'プランニングポーカーで各ストーリーをフィボナッチ数（1,2,3,5,8…）で見積もり',
     '顧客が「決済 > 在庫 > 通知」と優先順位づけし、ベロシティ分だけ選択',
     '想定外の遅れが出て、優先度の低いストーリーを次リリースに送る'
   ],
-  related:'<b>リリース計画／イテレーション計画</b> を実際に回す<b>具体的な手法</b>がプランニングゲーム。見積りにストーリーポイントを使う。',
-  modern:'プランニングポーカー・Tシャツサイズ見積り・#NoEstimates 論争など、見積りの是非や手法自体が現場で活発に議論されている領域。'
+  related:'<b>リリース計画／イテレーション計画</b> を実際に回す<b>具体的な手法</b>がプランニングゲーム。見積もりにストーリーポイントを使う。',
+  modern:'プランニングポーカー・Tシャツサイズ見積もり・#NoEstimates 論争など、見積もりの是非や手法自体が現場で活発に議論されている領域。'
 },
 {
   id:'story-points-velocity', name:'Story Points & Velocity', jp:'ストーリーポイントとベロシティ', cat:'agile',
-  badge:'必須概念', tags:['相対見積り','実測','予測'],
+  badge:'必須概念', tags:['相対見積もり','実測','予測'],
   summary:'ストーリーの<strong>相対的な大きさ</strong>を無次元の<strong>ストーリーポイント</strong>で表し、1イテレーションで消化した実績＝<strong>ベロシティ</strong>で期間を予測する。',
   analogy:'荷物を「重さ（絶対時間）」ではなく「Sサイズ・Mサイズ・Lサイズ（相対）」で見積もり、「1回の運搬で運べる総サイズ（ベロシティ）」の実績から、何回で運び終わるかを読む。',
-  purpose:'絶対時間の見積りが難しい状況で、相対見積りと実測ベロシティを組み合わせ、完了時期を継続的に予測する。',
+  purpose:'絶対時間の見積もりが難しい状況で、相対見積もりと実測ベロシティを組み合わせ、完了時期を継続的に予測する。',
   who:'開発チームが見積もり、イテレーションごとにベロシティを実測する。',
   steps:[
     '各ストーリーを<b>相対的な大きさ</b>でポイント付けする（基準ストーリーとの比較）',
@@ -1405,13 +1410,13 @@ const TESTS = [
   ],
   points:[
     'ストーリーポイントは<b>無次元</b>：時間ではなく相対的な大きさ・複雑さ・不確かさ',
-    'ベロシティは<b>見積りではなく実測</b>。チーム固有で、他チームと比較しても意味がない',
+    'ベロシティは<b>見積もりではなく実測</b>。チーム固有で、他チームと比較しても意味がない',
     'ポイントは<b>ベロシティを通じて初めて</b>カレンダー期間に換算される'
   ],
   cautions:[
     'ベロシティを<b>チーム間の評価指標</b>に使うと、ポイント水増し（インフレ）を招く',
     'メンバー交代・技術習熟でベロシティは変動する：数イテレーションで安定を待つ',
-    'ポイントを人日に無理やり固定換算すると、相対見積りの利点が消える'
+    'ポイントを人日に無理やり固定換算すると、相対見積もりの利点が消える'
   ],
   examples:[
     '<a href="#tools">計算ツール③</a>：残240ポイント÷ベロシティ30で8イテレーション＝16週と予測',
@@ -1421,52 +1426,52 @@ const TESTS = [
   related:'<b>COCOMO</b> との違い：COCOMO は<b>コード規模から式で</b>工数を出すアルゴリズム的モデル。ベロシティは<b>チームの実測</b>に基づく経験ベースの予測。',
   modern:'Jira のスプリントレポート・バーンダウン／バーンアップチャートがベロシティを自動集計。予測に確率分布（モンテカルロ）を用いる手法も普及しつつある。'
 },
-/* ---------- 見積り技法 ---------- */
+/* ---------- 見積もり技法 ---------- */
 {
-  id:'estimation-uncertainty', name:'Estimation Uncertainty', jp:'見積りの不確かさ（漏斗）', cat:'estimation',
-  badge:'必須概念', tags:['不確かさの漏斗','レンジ見積り','4倍の幅'],
-  summary:'見積りの不確かさは<strong>プロジェクトの初期ほど大きい</strong>。ごく初期は実績に対して<strong>4倍もの幅</strong>を持ちうる。',
+  id:'estimation-uncertainty', name:'Estimation Uncertainty', jp:'見積もりの不確かさ（漏斗）', cat:'estimation',
+  badge:'必須概念', tags:['不確かさの漏斗','レンジ見積もり','4倍の幅'],
+  summary:'見積もりの不確かさは<strong>プロジェクトの初期ほど大きい</strong>。ごく初期は実績に対して<strong>4倍もの幅</strong>を持ちうる。',
   analogy:'旅の所要時間。出発前は「1〜4時間」と幅が大きいが、半分進めば「あと30分±5分」まで狭まる。最初から分単位で約束するのは無理がある。',
-  purpose:'見積りが本質的に持つ不確かさを認識し、一点の数字ではなく幅で示し、進捗に応じて更新する姿勢を身につける。',
-  who:'見積りを行う全員（マネージャ・開発者）が理解しておくべき前提。',
+  purpose:'見積もりが本質的に持つ不確かさを認識し、一点の数字ではなく幅で示し、進捗に応じて更新する姿勢を身につける。',
+  who:'見積もりを行う全員（マネージャ・開発者）が理解しておくべき前提。',
   steps:[
     'プロジェクトの<b>現在の段階</b>を意識する（企画／要求／設計／実装）',
-    '段階に応じた<b>不確かさの幅</b>を見積りに添える（初期は広く）',
+    '段階に応じた<b>不確かさの幅</b>を見積もりに添える（初期は広く）',
     '一点ではなく<b>レンジ（下限〜上限）</b>で示す',
-    '開発が進むごとに<b>見積りを更新</b>し、幅を狭める',
+    '開発が進むごとに<b>見積もりを更新</b>し、幅を狭める',
     '幅の大きさそのものを、リスク管理の材料として使う'
   ],
   points:[
     '不確かさは<b>初期ほど大きく、進むほど狭まる</b>（不確かさの漏斗）',
-    '初期見積りは実績に対し<b>±4倍</b>にもなりうる（Boehm ら）',
-    '見積りは<b>約束ではなく予測</b>：更新されるのが正常'
+    '初期見積もりは実績に対し<b>±4倍</b>にもなりうる（Boehm ら）',
+    '見積もりは<b>約束ではなく予測</b>：更新されるのが正常'
   ],
   cautions:[
-    '初期の一点見積りを「コミット」として固定させられると、品質が犠牲になる',
+    '初期の一点見積もりを「コミット」として固定させられると、品質が犠牲になる',
     '幅を隠して単一の数字だけ伝えると、意思決定者が不確かさを見誤る',
     '「もっと精密に見積もれ」という圧力が、根拠のない精密さ（見せかけの確度）を生む'
   ],
   examples:[
     '企画段階「6〜24人月」、設計後「11〜13人月」と幅を狭めて再提示',
-    '見積りに「前提条件」を明記し、前提が崩れたら見積りも変わることを共有',
+    '見積もりに「前提条件」を明記し、前提が崩れたら見積もりも変わることを共有',
     '不確かさの大きい機能を先に着手して、早期に幅を狭める'
   ],
-  related:'<b>経験ベース／アルゴリズム的見積り</b> との関係：どちらの技法を使っても、初期ほど不確かという性質は消えない。技法は幅を狭める助けにすぎない。',
+  related:'<b>経験ベース／アルゴリズム的見積もり</b> との関係：どちらの技法を使っても、初期ほど不確かという性質は消えない。技法は幅を狭める助けにすぎない。',
   modern:'McConnell『ソフトウェア見積り』が「不確かさの漏斗」を広めた。近年はモンテカルロ法で<b>確率分布として</b>完了時期を示す実務が広がる。'
 },
 {
-  id:'experience-based', name:'Experience-based Estimation', jp:'経験ベースの見積り', cat:'estimation',
+  id:'experience-based', name:'Experience-based Estimation', jp:'経験ベースの見積もり', cat:'estimation',
   badge:'技法', tags:['類推','専門家判断','過去実績'],
   summary:'過去の<strong>類似プロジェクトの経験</strong>から、必要な工数をマネージャや専門家が判断して見積もる方法。',
   analogy:'ベテラン料理人が、レシピを計算せずとも「この品数と客数なら仕込みは半日」と経験から言い当てるようなもの。数式ではなく蓄積が根拠。',
-  purpose:'類似の実績がある領域で、専門家の判断を活かして素早く現実的な見積りを得る。',
+  purpose:'類似の実績がある領域で、専門家の判断を活かして素早く現実的な見積もりを得る。',
   who:'経験豊富なプロジェクトマネージャ・シニア開発者が行う。',
   steps:[
-    '見積り対象と<b>類似する過去プロジェクト</b>を選ぶ',
+    '見積もり対象と<b>類似する過去プロジェクト</b>を選ぶ',
     '過去の<b>実績工数</b>を基準にする',
     '規模・難易度・チームの違いを考慮して<b>調整</b>する',
-    '複数の専門家の見積りを<b>突き合わせ</b>、差異を議論する（例：ワイドバンド・デルファイ）',
-    '合意した見積りを、前提とともに記録する'
+    '複数の専門家の見積もりを<b>突き合わせ</b>、差異を議論する（例：ワイドバンド・デルファイ）',
+    '合意した見積もりを、前提とともに記録する'
   ],
   points:[
     '<b>類似実績がある</b>ほど精度が上がる',
@@ -1480,25 +1485,25 @@ const TESTS = [
   ],
   examples:[
     '過去の類似案件（同種の業務システム）の実績工数を基準に見積もる',
-    'ワイドバンド・デルファイで複数専門家の見積りを収束させる',
-    'COCOMO の計算結果を、経験ベースの見積りと照合して妥当性を確認'
+    'ワイドバンド・デルファイで複数専門家の見積もりを収束させる',
+    'COCOMO の計算結果を、経験ベースの見積もりと照合して妥当性を確認'
   ],
   related:'<b>アルゴリズム的コストモデル</b> との違い：経験ベースは<b>人の判断</b>、アルゴリズム的は<b>式による計算</b>。両者は競合ではなく相互チェックの関係。',
-  modern:'アジャイルの<b>プランニングポーカー</b>は、経験ベース見積りをチームで集約する軽量な手法。過去データを機械学習で使う見積り支援も研究されている。'
+  modern:'アジャイルの<b>プランニングポーカー</b>は、経験ベース見積もりをチームで集約する軽量な手法。過去データを機械学習で使う見積もり支援も研究されている。'
 },
 {
   id:'algorithmic-cost-modeling', name:'Algorithmic Cost Modeling', jp:'アルゴリズム的コストモデル', cat:'estimation',
   badge:'コストモデル', tags:['数式モデル','規模ベース','客観性'],
-  summary:'規模などのプロジェクトパラメータから、<strong>数式で工数を計算</strong>する見積り手法。代表例が COCOMO。',
+  summary:'規模などのプロジェクトパラメータから、<strong>数式で工数を計算</strong>する見積もり手法。代表例が COCOMO。',
   analogy:'荷物の送料計算。「重さ×距離×係数」で機械的に料金が出るように、規模などの入力から工数を式で算出する。',
   purpose:'客観的・再現可能な方法で工数を見積もり、パラメータを変えた「もし〜なら」の分析（感度分析）を可能にする。',
-  who:'見積り担当（マネージャ・見積り専門家）が、経験ベース見積りと併用する。',
+  who:'見積もり担当（マネージャ・見積もり専門家）が、経験ベース見積もりと併用する。',
   steps:[
     'システムの<b>規模</b>を見積もる（コード行数 KLOC、あるいはファンクションポイント）',
     'モデルの<b>係数・指数</b>（A・B・M など）を選ぶ／較正する',
     '<b>式に代入して工数を計算</b>する（例：PM = A × KLOC<sup>B</sup> × M）',
     'パラメータを変えて<b>感度分析</b>する（規模・条件が変わると工数がどう動くか）',
-    '結果を経験ベース見積りと<b>突き合わせて</b>検証する'
+    '結果を経験ベース見積もりと<b>突き合わせて</b>検証する'
   ],
   points:[
     '<b>客観的・再現可能</b>で、根拠を式として説明できる',
@@ -1506,7 +1511,7 @@ const TESTS = [
     '組織の実績データで<b>再較正</b>すると精度が上がる'
   ],
   cautions:[
-    '最大の弱点は<b>規模の見積り自体が不確か</b>なこと：特にコード行数は初期に読めない',
+    '最大の弱点は<b>規模の見積もり自体が不確か</b>なこと：特にコード行数は初期に読めない',
     '<b>超大規模</b>システムではモデルが外れやすい（演習23.9 の論点。非線形性・組織要因が支配的に）',
     '係数・指数を自組織に較正しないと、汎用値は当たらない'
   ],
@@ -1515,17 +1520,17 @@ const TESTS = [
     '規模を50→100KLOC に変えたときの工数増を感度分析',
     'ファンクションポイントからコード行数を換算して規模を推定'
   ],
-  related:'<b>経験ベース見積り</b> との関係：どちらかだけに頼らず<b>両方で相互チェック</b>するのが賢い。<b>COCOMO</b> はこのカテゴリの代表的な実装。',
-  modern:'COCOMO II のほか、ファンクションポイント法・SLIM・SEER-SEM などが実務で使われる。近年は過去プロジェクトのデータを用いた機械学習ベースの見積りも研究が進む。'
+  related:'<b>経験ベース見積もり</b> との関係：どちらかだけに頼らず<b>両方で相互チェック</b>するのが賢い。<b>COCOMO</b> はこのカテゴリの代表的な実装。',
+  modern:'COCOMO II のほか、ファンクションポイント法・SLIM・SEER-SEM などが実務で使われる。近年は過去プロジェクトのデータを用いた機械学習ベースの見積もりも研究が進む。'
 },
 /* ---------- COCOMOと人員計画 ---------- */
 {
   id:'cocomo-ii', name:'COCOMO II', jp:'COCOMO II の式と各モデル', cat:'cocomo',
   badge:'コストモデル', tags:['A×サイズ^B×M','4モデル','較正済み'],
   summary:'経験的に導かれた代表的なアルゴリズム的コストモデル。基本構造は <strong>工数 PM = A × サイズ<sup>B</sup> × M</strong>。',
-  analogy:'完成度に応じて使い分ける「見積りの物差しセット」。企画段階には粗い物差し、設計後には精密な物差し、と段階別に4本のモデルを持つ。',
+  analogy:'完成度に応じて使い分ける「見積もりの物差しセット」。企画段階には粗い物差し、設計後には精密な物差し、と段階別に4本のモデルを持つ。',
   purpose:'プロジェクト・製品・ハードウェア・人員の属性を取り込んで、開発工数を体系的に見積もる。',
-  who:'見積り担当が、開発フェーズに応じたモデルを選んで使う。',
+  who:'見積もり担当が、開発フェーズに応じたモデルを選んで使う。',
   steps:[
     '開発の<b>段階</b>に応じて4モデルから選ぶ',
     'システムの<b>規模</b>（コード行数など）を見積もる',
@@ -1539,7 +1544,7 @@ const TESTS = [
     'サイズは<b>コード行数</b>やファンクションポイント（再利用モデルは既存コードの改変量）'
   ],
   cautions:[
-    '<b>規模の見積りが不確か</b>だと、いくら式が精密でも結果は不確か',
+    '<b>規模の見積もりが不確か</b>だと、いくら式が精密でも結果は不確か',
     '汎用の係数をそのまま使わず、<b>自組織のデータで較正</b>すべき',
     '<b>超大規模</b>では前提が崩れやすい（演習23.9）'
   ],
@@ -1549,7 +1554,7 @@ const TESTS = [
     '既存システムを大幅に再利用する案件で再利用モデルを適用'
   ],
   related:'<b>スケール要因とコストドライバ</b> が、この式の <b>B</b> と <b>M</b> をそれぞれ決める。<b>アルゴリズム的コストモデル</b> の具体的実装。',
-  modern:'COCOMO II（2000年較正）は今も教育・見積りの標準的な参照モデル。アジャイル現場では直接使われないが、「規模の不経済」など<b>考え方</b>は普遍的。'
+  modern:'COCOMO II（2000年較正）は今も教育・見積もりの標準的な参照モデル。アジャイル現場では直接使われないが、「規模の不経済」など<b>考え方</b>は普遍的。'
 },
 {
   id:'scale-factors-cost-drivers', name:'Scale Factors & Cost Drivers', jp:'スケール要因とコストドライバ', cat:'cocomo',
@@ -1557,7 +1562,7 @@ const TESTS = [
   summary:'COCOMO で工数を左右する2種類の調整。<strong>スケール要因は指数 B（規模の不経済）</strong>に、<strong>コストドライバは乗数 M</strong>に効く。',
   analogy:'B は「坂の傾き」、M は「荷物の重さ」。傾き（B）が少し増えるだけで、距離（規模）が伸びたときの負担が急激に膨らむ。重さ（M）は全体を素直に何倍かにする。',
   purpose:'プロジェクトの条件（チーム・プロセス・製品要求・環境）を、工数の式に定量的に織り込む。',
-  who:'見積り担当が、各要因・ドライバを評価して数値化する。',
+  who:'見積もり担当が、各要因・ドライバを評価して数値化する。',
   steps:[
     '<b>スケール要因</b>を評価する（先例性・開発の柔軟性・リスク解決・チームの結束・プロセス成熟度）',
     'スケール要因から<b>指数 B</b> を決める（例：B = 0.91 + 0.01×ΣSF）',
@@ -1573,7 +1578,7 @@ const TESTS = [
   cautions:[
     'B のわずかな増加が、大規模案件では<b>巨大な工数差</b>になる（指数の怖さ）',
     'ドライバの評価は主観が入りやすい：基準を揃えないとブレる',
-    '全ドライバを1（標準）に置いた見積りは出発点にすぎない（演習23.8 の論点）'
+    '全ドライバを1（標準）に置いた見積もりは出発点にすぎない（演習23.8 の論点）'
   ],
   examples:[
     '計算ツール①で B を1.05→1.20 に上げ、100KLOC の工数が跳ね上がるのを確認',
@@ -1582,38 +1587,6 @@ const TESTS = [
   ],
   related:'<b>COCOMO II の式</b> の <b>B</b> と <b>M</b> の中身がこれ。B と M の効き方の違い（指数 vs 乗数）が最重要ポイント。',
   modern:'「規模の不経済」の考え方は、モノリスの肥大化を避けてマイクロサービスに分割する現代的な設計判断とも通じる（小さく保つほど B の効きが穏やかになる）。'
-},
-{
-  id:'brooks-law', name:"Brooks's Law", jp:'ブルックスの法則', cat:'cocomo',
-  badge:'原則', tags:['人月の神話','意思疎通コスト','人員追加'],
-  summary:'「<strong>遅れているプロジェクトに人を足すと、もっと遅れる</strong>」。工数と期間は単純には交換できない。',
-  analogy:'1人で1時間の穴掘りを、60人で1分では終えられない。掘る場所は限られ、道具の受け渡しと指示でかえって混乱する。人海戦術には限界がある。',
-  purpose:'「人員を増やせば期間が比例して縮む」という誤解を正し、工数と期間の非線形な関係を理解する。',
-  who:'プロジェクトマネージャ・見積り担当が、人員計画の判断で意識する。',
-  steps:[
-    '工数（人月）と期間（月）は<b>別物</b>だと認識する',
-    '人員追加に伴う<b>意思疎通のコスト</b>を見積もる（経路は n(n−1)/2 で増える）',
-    '新メンバーの<b>立ち上げ（教育）コスト</b>を考慮する',
-    '作業の<b>分割可能性</b>を検討する（分割できない作業は人を増やしても縮まない）',
-    '遅れているなら、人を足すより<b>スコープ削減・納期再交渉</b>を検討する'
-  ],
-  points:[
-    '<b>工数と期間は単純に交換できない</b>：人を2倍にしても期間は半分にならない',
-    '人員追加は<b>意思疎通コスト</b>と<b>教育コスト</b>を増やす',
-    '<b>すでに遅れている</b>プロジェクトへの追加は、短期的にはさらに遅らせる'
-  ],
-  cautions:[
-    '「炎上したら増員」は多くの場合<b>逆効果</b>',
-    '計算ツール①の「必要人員」も、この非線形性を織り込んでいない単純な目安',
-    '分割可能な作業と不可能な作業を区別しないと、増員判断を誤る'
-  ],
-  examples:[
-    '遅延プロジェクトに新人を投入したら、教育負荷でベテランの手が止まりさらに遅延',
-    '納期死守のため、増員でなくスコープ削減（機能の後回し）を選択',
-    '意思疎通の経路増（5人→10人で経路が10→45通り）を根拠に増員を見送り'
-  ],
-  related:'<b>スケール要因・コストドライバ</b> との関係：ブルックスの法則は、COCOMO でも捉えきれない「人員追加の逆効果」を指摘する原則。<b>スケジューリング</b>の人員計画に直結。',
-  modern:'『人月の神話』(F. Brooks, 1975) の中心命題。半世紀を経ても有効で、小さな自律チーム（2ピザルール）を保つアジャイル／マイクロサービスの思想的な支柱になっている。'
 }
 ];
 
@@ -1628,7 +1601,7 @@ const DIAGRAMS = {
   <text x="265" y="103" class="dg-lbl">進捗の定義</text>
   <text x="265" y="120" class="dg-st">milestones</text>
   <rect x="370" y="80" width="120" height="52" rx="10" class="dg-box dg-if"/>
-  <text x="430" y="103" class="dg-lbl">見積り</text>
+  <text x="430" y="103" class="dg-lbl">見積もり</text>
   <text x="430" y="120" class="dg-st">estimate</text>
   <rect x="530" y="80" width="150" height="52" rx="10" class="dg-box dg-if"/>
   <text x="605" y="103" class="dg-lbl">実行と監視</text>
@@ -1657,7 +1630,7 @@ const DIAGRAMS = {
   <text x="380" y="160" class="dg-note">緑：遅れると全体が遅れる。灰＋点線：余裕があり、範囲内なら遅れても影響なし。</text>
 </svg>`,
 'estimation-uncertainty': `
-<svg viewBox="0 0 760 190" role="img" aria-label="見積りの不確かさの漏斗（カード用）">
+<svg viewBox="0 0 760 190" role="img" aria-label="見積もりの不確かさの漏斗（カード用）">
   <path d="M60 95 L700 45 L700 145 Z" fill="rgba(138,109,59,.10)" stroke="#8A6D3B" stroke-width="1.2"/>
   <line x1="60" y1="95" x2="700" y2="95" class="dg-line dg-dash"/>
   <text x="110" y="88" class="dg-el" text-anchor="start">×4</text>
@@ -1935,7 +1908,7 @@ const QUIZ = [
   why:'pricing to win は価格が先、機能が後。競争の激しい状況で契約獲得を優先する戦略だが、後で高く請求する意図があると倫理的問題になりうる。'},
 { q:'計画駆動開発において、プロジェクト計画は…',
   opts:['一度作って終わり','反復的に見直される'], a:1,
-  why:'計画は制約の識別→進捗の定義→見積り→実行と監視を繰り返す反復的プロセス。初期計画は必ず変わるので、問題が起きたら修正する。'},
+  why:'計画は制約の識別→進捗の定義→見積もり→実行と監視を繰り返す反復的プロセス。初期計画は必ず変わるので、問題が起きたら修正する。'},
 { q:'プロジェクト全体の最短期間を決めるのは？',
   opts:['クリティカルパス','最もフロートの大きいタスク','最も担当者の多いタスク','最初のタスク'], a:0,
   why:'クリティカルパス（フロート0のタスクの連なり）の合計が最短期間。ここを縮めない限り全体は縮まない。'},
@@ -1949,25 +1922,25 @@ const QUIZ = [
   opts:['成果物（deliverable）','マイルストーン','クリティカルパス','ベロシティ'], a:1,
   why:'マイルストーンは進捗を測る区切り。成果物は顧客に引き渡される産物。すべての成果物はマイルストーンだが、逆は成り立たない。'},
 { q:'アジャイルの2段階計画の組み合わせとして正しいのは？',
-  opts:['リリース計画（数か月先）とイテレーション計画（数週間先）','要求分析と設計','単体テストと結合テスト','見積りと検収'], a:0,
+  opts:['リリース計画（数か月先）とイテレーション計画（数週間先）','要求分析と設計','単体テストと結合テスト','見積もりと検収'], a:0,
   why:'先を粗く見るリリース計画と、直近を詳細化するイテレーション計画の2段階。先は粗く、直近は詳細に、が原則。'},
-{ q:'プランニングゲームで「見積り」と「優先順位づけ」を担うのはそれぞれ誰？',
-  opts:['見積り＝開発チーム、優先順位＝顧客','両方とも顧客','両方とも開発チーム','見積り＝顧客、優先順位＝開発チーム'], a:0,
-  why:'技術的な見積りは開発チーム、ビジネス的な優先順位づけは顧客。責任分担が明確なのがプランニングゲームの特徴。'},
+{ q:'プランニングゲームで「見積もり」と「優先順位づけ」を担うのはそれぞれ誰？',
+  opts:['見積もり＝開発チーム、優先順位＝顧客','両方とも顧客','両方とも開発チーム','見積もり＝顧客、優先順位＝開発チーム'], a:0,
+  why:'技術的な見積もりは開発チーム、ビジネス的な優先順位づけは顧客。責任分担が明確なのがプランニングゲームの特徴。'},
 { q:'ストーリーポイントの性質として正しいのは？',
   opts:['相対的な大きさを表す無次元量','絶対的な人日','必ず1〜10の整数','コード行数と等しい'], a:0,
   why:'ストーリーポイントは相対的な大きさ・複雑さを表す無次元量。ベロシティ（実測）を通じて初めてカレンダー期間に換算される。'},
 { q:'ベロシティは何から得るべき？',
   opts:['直近イテレーションの実測（実績）','管理者の希望','契約書の記載','COCOMOの計算'], a:0,
-  why:'ベロシティは見積りではなく実測。チーム固有で、他チームとの比較や評価指標に使うとポイント水増しを招く。'},
+  why:'ベロシティは見積もりではなく実測。チーム固有で、他チームとの比較や評価指標に使うとポイント水増しを招く。'},
 { q:'残240ポイント、ベロシティ30pt/イテレーションのとき、必要イテレーション数は？',
   opts:['8','6','12','24'], a:0,
   why:'240 ÷ 30 = 8。切り上げて8イテレーション。ベロシティが安定していれば、残ポイント÷ベロシティで完了時期を予測できる（計算ツール③）。'},
-{ q:'見積りの不確かさについて正しいのは？',
+{ q:'見積もりの不確かさについて正しいのは？',
   opts:['プロジェクトの初期ほど大きい','常に一定','後期ほど大きい','技法を使えばゼロになる'], a:0,
-  why:'不確かさの漏斗。初期は実績に対し±4倍にもなりうる。見積りは一点でなく幅（レンジ）で示し、進捗に応じて更新する。'},
+  why:'不確かさの漏斗。初期は実績に対し±4倍にもなりうる。見積もりは一点でなく幅（レンジ）で示し、進捗に応じて更新する。'},
 { q:'過去の類似プロジェクトの経験から専門家が判断して見積もる方法は？',
-  opts:['経験ベースの見積り','アルゴリズム的コストモデル','境界値分析','クリティカルパス法'], a:0,
+  opts:['経験ベースの見積もり','アルゴリズム的コストモデル','境界値分析','クリティカルパス法'], a:0,
   why:'経験ベースは人の判断が根拠。新規性が高いと精度が落ちる。式で計算するアルゴリズム的モデル（COCOMO）と突き合わせるのが賢い。'},
 { q:'COCOMO の基本的な工数の式はどれ？',
   opts:['PM = A × サイズ^B × M','PM = A + サイズ + M','PM = サイズ ÷ ベロシティ','PM = A × サイズ × B × M'], a:0,
@@ -1975,12 +1948,9 @@ const QUIZ = [
 { q:'COCOMO で「スケール要因」と「コストドライバ」は、それぞれ何に効く？',
   opts:['スケール要因→指数B、コストドライバ→乗数M','両方とも指数B','両方とも乗数M','スケール要因→乗数M、コストドライバ→指数B'], a:0,
   why:'スケール要因は指数B（規模に対し非線形＝規模の不経済）に、コストドライバは乗数M（全体を比例的にスケール）に効く。効き方の違いが重要。'},
-{ q:'「遅れているプロジェクトに人を足すと、もっと遅れる」という経験則は？',
-  opts:['ブルックスの法則','ムーアの法則','パレートの法則','コンウェイの法則'], a:0,
-  why:'ブルックスの法則（『人月の神話』）。工数と期間は単純に交換できず、人員追加は意思疎通・教育コストを増やす。'},
-{ q:'COCOMO などの見積りモデルが「超大規模システム」でうまく働きにくい主な理由は？',
-  opts:['規模の見積り自体が不確かで、非線形性や組織要因が支配的になるから','小規模専用に作られているから','コードを読まないから','無料だから'], a:0,
-  why:'超大規模では規模（行数）の見積りが極めて不確かで、意思疎通・組織要因など式に載らない非線形効果が支配的になる（演習23.9）。'}
+{ q:'COCOMO などの見積もりモデルが「超大規模システム」でうまく働きにくい主な理由は？',
+  opts:['規模の見積もり自体が不確かで、非線形性や組織要因が支配的になるから','小規模専用に作られているから','コードを読まないから','無料だから'], a:0,
+  why:'超大規模では規模（行数）の見積もりが極めて不確かで、意思疎通・組織要因など式に載らない非線形効果が支配的になる（演習23.9）。'}
 ];
 let quizState = {answered:0, correct:0};
 let quizOrder = [];

@@ -3,14 +3,14 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>プロジェクト管理と見積もり学習ガイド - リスク・チーム・計画・見積もり / Project Management &amp; Estimation</title>
-<meta name="description" content="A study guide to software project management and estimation: risk management, managing people and teamwork, project planning and scheduling, estimation techniques (PERT, planning poker, COCOMO II), agile forecasting, and progress metrics, with a comprehension quiz. Part of Yuta Kimura's software engineering course materials.">
+<title>プロジェクト管理学習ガイド - リスク・人・チーム・進捗 / Project Management</title>
+<meta name="description" content="A study guide to software project management: risk management, managing people and teamwork, Brooks's Law, and progress and health metrics (EVM, DORA, SPACE), with a comprehension quiz. Planning and estimation are covered in a companion guide. Part of Yuta Kimura's software engineering course materials.">
 <link rel="canonical" href="https://ykimu.github.io/course/project-management.html">
 <link rel="icon" href="../favicon.svg" type="image/svg+xml">
 <meta property="og:site_name" content="Yuta Kimura / 木村祐太">
 <meta property="og:type" content="article">
-<meta property="og:title" content="プロジェクト管理と見積もり学習ガイド - リスク・チーム・計画・見積もり / Project Management &amp; Estimation">
-<meta property="og:description" content="A study guide to software project management and estimation: risk management, people and teamwork, planning, scheduling, estimation techniques, and agile forecasting, with a comprehension quiz.">
+<meta property="og:title" content="プロジェクト管理学習ガイド - リスク・人・チーム・進捗 / Project Management">
+<meta property="og:description" content="A study guide to software project management: risk management, people and teamwork, Brooks's Law, and progress and health metrics, with a comprehension quiz. Planning and estimation are covered in a companion guide.">
 <meta property="og:url" content="https://ykimu.github.io/course/project-management.html">
 <meta property="og:image" content="https://ykimu.github.io/assets/og.png">
 <meta name="twitter:card" content="summary_large_image">
@@ -554,7 +554,7 @@
               <div class="navlabel"><span lang="ja">計画・プロセス</span><span lang="en">Planning &amp; Process</span></div>
               <a href="agile-scrum.html"><span lang="ja">アジャイル開発とスクラム</span><span lang="en">Agile &amp; Scrum</span></a>
               <a class="here" href="project-management.html" aria-current="page"><span lang="ja">プロジェクト管理と見積もり</span><span lang="en">Project Management</span></a>
-              <a href="project-estimation-planning.html"><span lang="ja">プロジェクト計画・見積り</span><span lang="en">Project Planning &amp; Estimation</span></a>
+              <a href="project-estimation-planning.html"><span lang="ja">プロジェクト計画・見積もり</span><span lang="en">Project Planning &amp; Estimation</span></a>
             </div>
             <div class="megacol">
               <div class="navlabel"><span lang="ja">品質・運用</span><span lang="en">Quality &amp; Operations</span></div>
@@ -619,7 +619,7 @@
       <div class="mobsublabel"><span lang="ja">計画・プロセス</span><span lang="en">Planning &amp; Process</span></div>
       <a href="agile-scrum.html"><span lang="ja">アジャイル開発とスクラム</span><span lang="en">Agile &amp; Scrum</span></a>
       <a class="here" href="project-management.html" aria-current="page"><span lang="ja">プロジェクト管理と見積もり</span><span lang="en">Project Management</span></a>
-      <a href="project-estimation-planning.html"><span lang="ja">プロジェクト計画・見積り</span><span lang="en">Project Planning &amp; Estimation</span></a>
+      <a href="project-estimation-planning.html"><span lang="ja">プロジェクト計画・見積もり</span><span lang="en">Project Planning &amp; Estimation</span></a>
       <div class="mobsublabel"><span lang="ja">品質・運用</span><span lang="en">Quality &amp; Operations</span></div>
       <a href="software-testing.html"><span lang="ja">ソフトウェアテスト学習ガイド</span><span lang="en">Software Testing Guide</span></a>
       <a href="dependable-systems.html"><span lang="ja">ディペンダブルシステム</span><span lang="en">Dependable Systems</span></a>
@@ -665,9 +665,9 @@
 <!-- HERO -->
 <div class="hero">
   <div class="wrap">
-    <p class="kick">Project Management &amp; Estimation</p>
-    <h1>プロジェクト管理と見積もり：<br>　<span style="white-space:nowrap">不確実性を</span><em style="white-space:nowrap">「マネジメント」</em>する技術</h1>
-    <p class="lead">プロジェクトマネジメントは「予算と納期の制約の下でソフトウェアを届ける」ための活動です。リスクマネジメント、人とチームのマネジメント、計画とスケジューリングから、見積もり技法（三点見積もり・プランニングポーカー・COCOMO II）、アジャイルの確率的予測、進捗メトリクスまで、代表的なトピックを<strong>目的・実施の仕方・意識するポイント・注意点</strong>つきで整理しました。ブルックスの法則、心理的安全性（Google Project Aristotle）、不確実性のコーン、モンテカルロ予測など、教科書の先にある現代的な知見も収録。体験デモ（PERT計算機）、理解度クイズ付きです。</p>
+    <p class="kick">Project Management</p>
+    <h1>プロジェクト管理：<br>　<span style="white-space:nowrap">不確実性を</span><em style="white-space:nowrap">「マネジメント」</em>する技術</h1>
+    <p class="lead">プロジェクトマネジメントは「予算と納期の制約の下でソフトウェアを届ける」ための活動です。このガイドは<strong>リスクマネジメント、人とチームのマネジメント、そして進捗と健全性のメトリクス</strong>に焦点を当て、代表的なトピックを<strong>目的・実施の仕方・意識するポイント・注意点</strong>つきで整理しました。ブルックスの法則、心理的安全性（Google Project Aristotle）、コンウェイの法則、DORA / SPACE など、教科書の先にある現代的な知見も収録。理解度クイズ付きです。計画・スケジューリング・見積もり（三点見積もり・プランニングポーカー・COCOMO II）の詳細は、姉妹教材<a href="project-estimation-planning.html">「プロジェクト計画・見積もり」</a>に集約しています。</p>
     <p class="ja-note"><span lang="ja">この教材は日本語のみで提供しています</span><span lang="en">This learning material is available in Japanese only.</span></p>
     <div class="hero-cta">
       <a class="btn ink" href="#topics" style="padding:12px 22px">
@@ -688,7 +688,7 @@
   <nav class="tocbar-inner" aria-label="ページ内目次">
     <a class="tocpill" href="#intro"><span lang="ja">はじめに</span><span lang="en">Intro</span></a>
     <a class="tocpill" href="#topics"><span lang="ja">技法カタログ</span><span lang="en">Catalog</span></a>
-    <a class="tocpill" href="#estimation"><span lang="ja">見積もり</span><span lang="en">Estimation</span></a>
+    <a class="tocpill" href="#related"><span lang="ja">関連教材</span><span lang="en">Related</span></a>
     <a class="tocpill" href="#quiz"><span lang="ja">理解度クイズ</span><span lang="en">Quiz</span></a>
     <a class="tocpill" href="#closing"><span lang="ja">おわりに</span><span lang="en">Closing</span></a>
   </nav>
@@ -706,14 +706,13 @@
 <section class="soft-sec" id="topics" style="padding-top:80px">
   <div class="wrap">
     <p class="eyebrow reveal"><span lang="ja">トピックカタログ</span><span lang="en">Topic catalog</span></p>
-    <h2 class="big reveal"><span lang="ja">10のトピック・技法カタログ</span><span lang="en">Ten topics in project management</span></h2>
-    <p class="lead reveal" style="max-width:var(--readw); margin-top:18px">リスクと人のマネジメント（Sommerville 22章）、計画とスケジューリング、見積もりと予測・測定（同23章）の3カテゴリに、心理的安全性やモンテカルロ予測など現代の実務知見を織り込みました。カテゴリで絞り込み、各カードをクリックすると、目的・実施の仕方・意識するポイント・注意点・具体例が開きます。</p>
+    <h2 class="big reveal"><span lang="ja">5つのトピック・技法カタログ</span><span lang="en">Five topics in project management</span></h2>
+    <p class="lead reveal" style="max-width:var(--readw); margin-top:18px">リスクと人のマネジメント（Sommerville 22章）と進捗のマネジメントの2カテゴリに、心理的安全性やDORA / SPACE など現代の実務知見を織り込みました。カテゴリで絞り込み、各カードをクリックすると、目的・実施の仕方・意識するポイント・注意点・具体例が開きます。計画・スケジューリング・見積もりの詳細は、姉妹教材<a href="project-estimation-planning.html">「プロジェクト計画・見積もり」</a>に集約しています。</p>
     <div class="controls reveal" style="margin-top:26px">
       <div class="pills" role="tablist" aria-label="カテゴリ切替">
-        <button class="pill active" onclick="filterCat('all',this)">すべて<span>10</span></button>
+        <button class="pill active" onclick="filterCat('all',this)">すべて<span>5</span></button>
         <button class="pill" onclick="filterCat('mgmt',this)">リスクと人<span>4</span></button>
-        <button class="pill" onclick="filterCat('plan',this)">計画とスケジュール<span>2</span></button>
-        <button class="pill" onclick="filterCat('est',this)">見積もりと予測<span>4</span></button>
+        <button class="pill" onclick="filterCat('progress',this)">進捗<span>1</span></button>
       </div>
       <div class="ctrl-right">
         <input id="search" class="search" type="text" placeholder="名前・キーワードで絞り込み" aria-label="トピックを絞り込み">
@@ -724,29 +723,18 @@
   </div>
 </section>
 
-<!-- ESTIMATION BASICS + DEMO -->
-<section id="estimation">
+<!-- RELATED MATERIAL (cross-reference) -->
+<section id="related">
   <div class="wrap">
-    <p class="eyebrow reveal"><span lang="ja">見積もりの基礎</span><span lang="en">Estimation basics</span></p>
-    <h2 class="big reveal"><span lang="ja">「当てられない」を前提に見積もる</span><span lang="en">Estimating under uncertainty</span></h2>
-    <div class="prose reveal" id="techProse" style="margin-top:22px"></div>
-    <div class="demo reveal" id="pertDemo">
-      <h4>体験デモ：三点見積もり（PERT）計算機</h4>
-      <p class="spec">あるタスクについて、<b>楽観値 O</b>（すべて順調なら）・<b>最頻値 M</b>（いちばんありそう）・<b>悲観値 P</b>（問題が重なったら）を人日で入力してください。期待値 <b>E =（O + 4M + P）/ 6</b> と標準偏差 <b>σ =（P − O）/ 6</b> を計算し、68% / 95% 信頼区間を分布のイメージとともに表示します。</p>
-      <div class="demo-row">
-        <input type="text" id="pertO" inputmode="decimal" placeholder="楽観値 O" aria-label="楽観値" style="width:130px" oninput="pertCheck()">
-        <input type="text" id="pertM" inputmode="decimal" placeholder="最頻値 M" aria-label="最頻値" style="width:130px" oninput="pertCheck()">
-        <input type="text" id="pertP" inputmode="decimal" placeholder="悲観値 P" aria-label="悲観値" style="width:130px" oninput="pertCheck()">
-        <div class="try" aria-label="代表例を試す">
-          <button onclick="pertTry(4,7,16)">4 / 7 / 16</button>
-          <button onclick="pertTry(10,12,14)">10 / 12 / 14</button>
-          <button onclick="pertTry(5,10,30)">5 / 10 / 30</button>
-          <button onclick="pertTry(3,3,3)">3 / 3 / 3</button>
-          <button onclick="pertTry(16,7,4)">16 / 7 / 4（矛盾）</button>
-        </div>
+    <p class="eyebrow reveal"><span lang="ja">関連教材</span><span lang="en">Related material</span></p>
+    <h2 class="big reveal"><span lang="ja">計画・見積もりの詳細は「プロジェクト計画・見積もり」へ</span><span lang="en">Planning and estimation live in the companion guide</span></h2>
+    <div class="prose reveal" style="margin-top:22px">
+      <p>このガイドは<strong>リスク・人・チーム・進捗のマネジメント</strong>に集中しています。プロジェクト計画、スケジューリング、経験ベースの見積もり、アルゴリズム的コストモデリング（COCOMO II・ファンクションポイント法）、アジャイルの計画と予測、そして三点見積もり（PERT）の計算ツールは、姉妹教材<b>「プロジェクト計画・見積もり」</b>に集約しました。定量的な見積もり技法と手を動かす計算ツールは、そちらで詳しく学べます。</p>
+      <div class="callout tip">
+        <h4>プロジェクト計画・見積もり（姉妹教材）</h4>
+        計画・スケジューリング・見積もり（三点見積もり／プランニングポーカー／COCOMO II／ファンクションポイント）・アジャイルの確率的予測を、3つの計算ツール（COCOMO工数計算機・クリティカルパス／ガント可視化・ベロシティ・プランナー）つきで扱います。
+        <p style="margin:12px 0 0"><a class="tlink" href="project-estimation-planning.html"><span lang="ja">「プロジェクト計画・見積もり」を開く</span><span lang="en">Open the Planning &amp; Estimation guide</span><span class="ar" aria-hidden="true" style="margin-left:6px">&rsaquo;</span></a></p>
       </div>
-      <div class="demo-out" id="pertOut">3つの値を入力するか、上のボタンで代表例を試してください。「4 / 7 / 16」は悲観側に裾が長い典型的なタスクの例です。</div>
-      <div id="pertViz"></div>
     </div>
   </div>
 </section>
@@ -895,55 +883,16 @@ const INTRO_HTML = `
 
 <div class="callout tip">
   <h4>このページの歩き方</h4>
-  まず下の<a href="#topics">カタログ</a>で、リスク → 人とチーム → 計画 → 見積もりの順に読み進めてください。
-  <a href="#estimation">体験デモ（PERT計算機）</a>で「幅で見積もる」感覚をつかみ、
+  まず下の<a href="#topics">カタログ</a>で、リスク → 人とチーム → 進捗の順に読み進めてください。
+  計画・スケジューリング・見積もりの詳細は<a href="#related">関連教材</a>（姉妹ガイド「プロジェクト計画・見積もり」）にまとめています。
   最後に<a href="#quiz">理解度クイズ</a>で定着を確認しましょう。
-  用語は Sommerville 10th（第22章・第23章）に準拠しています。
+  用語は Sommerville 10th（第22章）に準拠しています。
 </div>
 
 <p style="font-size:13px;color:var(--muted)">各カード末尾の「習得チェック」を付けると、絞り込みバー右側に習得の進捗が表示されます（保存はされず、ページを開いている間だけ保持されます）。</p>
 `;
 </script>
 <script>
-const TECH_HTML = `
-<p>すべての計画は見積もりの上に建っています。そして見積もりは、その名のとおり<strong>不確実な予測</strong>です。
-見積もり技法は大きく2つのファミリーに分かれます（詳細はカタログの<a href="#experience-estimation">経験ベース</a>／<a href="#algorithmic-estimation">アルゴリズム的</a>のカードへ）。</p>
-<div class="principles">
-  <div class="p"><b>経験ベースの見積もり</b><br>
-    <span>過去の類似プロジェクト・タスクの経験から見積もる。類推、三点見積もり（PERT）、プランニングポーカーなど。実務の見積もりの大半はこちら。</span></div>
-  <div class="p"><b>アルゴリズム的コストモデリング</b><br>
-    <span>規模などの推定パラメータから数式で工数を計算する。COCOMO II、ファンクションポイント法など。「規模と工数は比例しない」という重要な洞察をくれる。</span></div>
-</div>
-
-<h4>「正確さ」と「精密さ」は違う</h4>
-<p>見積もりの議論では、<b>精度（accuracy：実際の値にどれだけ近いか）</b>と
-<b>確度（precision：数字がどれだけ細かいか）</b>を区別することが決定的に重要です。
-「247.5人日」という見積もりはとても精密（precise）に見えますが、正確（accurate）とは限りません。
-むしろ不確実な段階で細かい数字を出すことは、<strong>確実さの偽装</strong>になります。
-桁が合っている粗い見積もり（「200〜300人日」）のほうが、桁が違う細かい見積もりよりずっと価値がある：
-これが McConnell『ソフトウェア見積り』の中心的なメッセージの1つです。</p>
-
-<h4>三点見積もり（PERT）：1つの数字ではなく「幅」で見積もる</h4>
-<p>1950年代末、米海軍のポラリス・ミサイル計画のスケジュール管理のために生まれた
-<b>PERT（Program Evaluation and Review Technique）</b>は、タスクごとに3つの値を見積もります。</p>
-<ul>
-  <li><b>楽観値 O</b>：すべてが順調に進んだ場合の最短</li>
-  <li><b>最頻値 M</b>：いちばんありそうな値</li>
-  <li><b>悲観値 P</b>：問題が重なった場合の最長</li>
-</ul>
-<p>期待値は <code>E = (O + 4M + P) / 6</code>、標準偏差は <code>σ = (P − O) / 6</code>（β分布による近似）。
-作業時間の分布は<strong>右（悲観側）に裾が長い</strong>（早く終わる幅には限度があるが、遅れる幅にはほぼ上限がない）ので、
-期待値 E は最頻値 M より悲観側に寄ります。正規分布で近似すれば、<b>E ± 1σ に約68%</b>、<b>E ± 2σ に約95%</b> が収まります。
-「いちばんありそうな値」をそのまま約束すると、五分五分より高い確率で遅れる。これが三点見積もりの最重要の教訓です。</p>
-
-<div class="callout">
-  <h4>見積もり・目標・コミットメントを区別する（McConnell）</h4>
-  <b>見積もり</b>は確率的な<strong>予測</strong>、<b>目標</b>は実現したい<strong>願望</strong>、
-  <b>コミットメント</b>は相手と交わす<strong>約束</strong>。
-  「見積もってくれ」と言いながら実は目標（希望納期）を追認させたい：という会話のすれ違いが、
-  見積もりをめぐる不幸の大半の原因です。まず「いま話しているのはどれか」を確認しましょう。
-</div>
-`;
 
 const CLOSING_HTML = `
 <p>最後に、個々の技法の知識を「使える判断力」に変えるための視点をまとめます。</p>
@@ -1023,14 +972,12 @@ const CLOSING_HTML = `
 </script>
 <script>
 /* ============== トピックデータ（カテゴリ別） ============== */
-const CAT_ORDER = ['mgmt','plan','est'];
+const CAT_ORDER = ['mgmt','progress'];
 const CAT_META = {
   mgmt:{ label:'リスクと人のマネジメント', en:'Risk & people', color:'var(--mgmt)',
     desc:'プロジェクトマネジメントの土台。起きてほしくないこと（リスク）を先回りして管理し、最大の資産である「人」とチームが最高の仕事をできる条件を整える。Sommerville 22章の中心テーマに、ブルックスの法則という古典の教訓を加えた。'},
-  plan:{ label:'計画とスケジューリング', en:'Planning & scheduling', color:'var(--plan)',
-    desc:'作業を分解し、依存関係を見極め、カレンダーに配置する。ポイントは「初期計画は必ず変わる」を前提に、反復的に見直し続ける仕組みを作ること。Sommerville 23章前半に対応。'},
-  est:{ label:'見積もりと予測・測定', en:'Estimation & forecasting', color:'var(--est)',
-    desc:'「いつ終わるか・いくらかかるか」に答えるための技法群。経験ベースの見積もり、アルゴリズム的モデル（COCOMO・FP）、実測にもとづく確率的予測、そして進捗と健全性の測定まで。Sommerville 23章後半＋現代の実務。'}
+  progress:{ label:'進捗のマネジメント', en:'Progress management', color:'var(--est)',
+    desc:'「順調です」という言葉ではなく測定で進捗と健全性を把握する。90%症候群・EVM・DORA・SPACE など、何を・どう測るかそのものを設計する。計画・スケジューリング・見積もりの詳細は姉妹教材「プロジェクト計画・見積もり」に集約。'}
 };
 const BADGE_CLS = {'不確実性の管理':'imp3','見積もり技法':'imp3','人間系':'imp2','計画技法':'imp2','古典の教訓':'imp1','測定と予測':'imp1'};
 
@@ -1067,7 +1014,7 @@ const TOPICS = [
     '組織リスク「組織再編で経営層が交代し支援が失われる」→ 経営層向けに、プロジェクトの事業貢献を簡潔に示す文書を準備しておく（Sommerville の例）',
     '要求リスク「顧客が要求変更を連発する」→ 回避：変更の影響を追跡できる情報管理＋変更に強い設計（変わりやすい部分の分離）'
   ],
-  related:'<b>イシュー（問題）管理</b>との違い：リスクは「まだ起きていない」。起きた瞬間にリスクはイシューになり、コンティンジェンシー計画の出番になる。<a href="#project-planning">プロジェクト計画</a>のリスクマネジメント計画はこの活動の成果物。',
+  related:'<b>イシュー（問題）管理</b>との違い：リスクは「まだ起きていない」。起きた瞬間にリスクはイシューになり、コンティンジェンシー計画の出番になる。プロジェクト計画のリスクマネジメント計画はこの活動の成果物（計画の詳細は<a href="project-estimation-planning.html">「プロジェクト計画・見積もり」</a>）。',
   modern:'リスク登録簿は Jira・Backlog 等のチケットやスプレッドシートで運用するのが実務の定番。アジャイル開発は「リスク対応の仕組み」でもある：短いイテレーションと頻繁なデモが「作るものを間違えるリスク」「統合が失敗するリスク」を構造的に小さくする。実施前に「このプロジェクトは失敗した」と仮定して原因を語り合う<b>プレモーテム</b>も現代的なリスク識別技法。',
   hasCode:false
 },
@@ -1152,7 +1099,7 @@ const TOPICS = [
     '<b>人月はコストの単位であって進捗の単位ではない</b>と認識する：「12人月の仕事」は12人で1か月では終わらない',
     '人を追加すると<b>教育コスト</b>が発生することを織り込む：新メンバーが戦力になるまで、既存メンバーの時間が教育に奪われ、当面の生産量はむしろ下がる',
     '<b>コミュニケーションコストの爆発</b>を数える：n 人の相互経路は n(n−1)/2 本：5人で10本、10人で45本、20人で190本',
-    '分割できない仕事の存在を認める：依存関係の鎖（<a href="#scheduling">クリティカルパス</a>）は人数を増やしても縮まない',
+    '分割できない仕事の存在を認める：依存関係の鎖（クリティカルパス）は人数を増やしても縮まない',
     '増員以外の選択肢を先に検討する：スコープ削減・スケジュール再交渉・（増員するなら）教育コストが小さい独立した仕事の切り出し'
   ],
   points:[
@@ -1172,190 +1119,13 @@ const TOPICS = [
     'Amazon の「ピザ2枚チーム」やマイクロサービス化は、「経路を減らす」方向の組織的・アーキテクチャ的対処と読める',
     '見積もりモデル COCOMO の「スケジュール圧縮ドライバ」は、期間短縮が工数を非線形に増やすことを数式で示す：ブルックスの法則の定量版'
   ],
-  related:'<a href="#scheduling">スケジューリング</a>のクリティカルパス（全体期間を決めるのは最長の依存の鎖）と、<a href="#algorithmic-estimation">COCOMO</a> の非線形性が、この法則を定量的に裏付ける。<a href="#teamwork">チームワーク</a>の「小さく保つ」原則の根拠でもある。',
+  related:'スケジューリングのクリティカルパス（全体期間を決めるのは最長の依存の鎖）と、COCOMO の非線形性が、この法則を定量的に裏付ける（いずれも<a href="project-estimation-planning.html">「プロジェクト計画・見積もり」</a>で詳説）。<a href="#teamwork">チームワーク</a>の「小さく保つ」原則の根拠でもある。',
   modern:'2020年代でも「炎上プロジェクトへの大量投入」の失敗は繰り返されている。Team Topologies の「認知負荷」概念、コミュニケーションを減らす API 設計・ドキュメント文化（Amazon の 6-pager 等）が現代の処方箋。「AI コーディング支援は銀の弾丸か」は現在進行形の論争：本質的複雑性（何を作るべきかの決定）には効きにくい、という Brooks の枠組みで議論されている。',
   hasCode:false
 },
-/* ---------- 計画とスケジューリング ---------- */
+/* ---------- 進捗のマネジメント ---------- */
 {
-  id:'project-planning', name:'Project Planning', jp:'プロジェクト計画', cat:'plan',
-  badge:'計画技法', tags:['補助計画','ローリングウェーブ','計画は必ず変わる'],
-  summary:'作業の分割・担当・スケジュール・成果物を定義する活動。要点は「<strong>初期計画は必ず変わる</strong>」を前提に、反復的に見直し続けること。計画は文書ではなく活動。',
-  analogy:'登山計画。ルート・装備・行程表を綿密に作るが、当日の天候と体調で必ず変わる。計画の価値は「そのとおりに登る」ことではなく、「いまどこにいて、次にどう動くべきか」をいつでも判断できる状態を作ること。',
-  purpose:'プロジェクトの作業・工数・スケジュール・責任分担を定義し、進捗を測る基準を作る。提案（価格見積もり）時・立ち上げ時・実行中と、目的の違う計画を粒度を変えて作り分ける。',
-  who:'プロジェクトマネージャ。計画駆動開発では事前に詳細化する。アジャイルでも計画活動はなくならない：形（頻度と粒度）が変わるだけ。',
-  steps:[
-    '<b>制約を識別</b>する：納期・使える要員・総予算など',
-    'プロジェクトの<b>マイルストーン</b>（活動の予測可能な結果＝進捗確認点）と<b>成果物</b>（顧客への引き渡し物）を定義する',
-    'スケジュールを作成し（<a href="#scheduling">次のカード</a>）、活動を開始する',
-    '一定期間ごとに進捗を確認し、<b>見積もりと計画を修正</b>する',
-    '問題が起きたら、リスク・スコープ・スケジュールを再検討・再交渉する：このループをプロジェクトが終わるまで回す'
-  ],
-  points:[
-    'プロジェクト計画本体は<b>補助計画</b>で補完される：<b>品質計画</b>（目標とする品質基準とレビュー体制）・<b>構成管理計画</b>（バージョン管理と変更手順）・<b>リスクマネジメント計画</b>・保守計画・スタッフ育成計画',
-    '<b>計画駆動の長所</b>：早い段階で全体像と依存関係を考え抜ける／組織間の調整・契約・規制対応に強い／進捗を測る基準が明確',
-    '<b>計画駆動の短所</b>：もっとも情報が少ない初期の決定に縛られる／変更コストが大きい／計画の作成・維持そのものに大きな工数がかかる',
-    '<b>ローリングウェーブ計画</b>：近い将来は詳細に、遠い将来は粗く計画し、進むにつれて詳細化する：計画駆動と適応型の中間にある現実解'
-  ],
-  cautions:[
-    '「計画を作ること」と「計画に従うこと」を混同しない：計画の価値の大半は、作る過程で得た理解と選択肢にある',
-    '初期計画は系統的に<b>楽観に偏る</b>：リスク分析とバッファで補正する（<a href="#experience-estimation">見積もりバイアス</a>）',
-    '最初の計画が顧客・経営層への「約束」として固定されると、以後の学習を計画に反映できなくなる：計画の見直しサイクルを最初に合意しておく',
-    '補助計画がテンプレートを埋めるだけの儀式になる：使われない計画文書は書かないほうがまし'
-  ],
-  examples:[
-    '粒度の使い分け：提案時の概算計画 → 立ち上げ時のプロジェクト計画 → イテレーションごとの詳細計画（Sommerville 23.2）',
-    '品質計画の例：コードレビュー必須・静的解析のしきい値・テストカバレッジ目標を定義する',
-    '構成管理計画の例：Git のブランチ戦略・リリース手順・変更承認フローを定義する'
-  ],
-  related:'<a href="#scheduling">スケジューリング</a>は計画の中核成分。<a href="#agile-planning">アジャイルの計画</a>は「詳細な事前計画」を「頻繁な再計画」で置き換えたもの：計画しないのではない。',
-  modern:'計画は Confluence・Notion 等で「生きた文書」として管理するのが主流。実務の多数派は「全体はマイルストーン計画＋中身はスクラム」のハイブリッドで、PMBOK 第7版も予測型・適応型の使い分けを前提にした構成に改訂された。',
-  hasCode:false
-},
-{
-  id:'scheduling', name:'Project Scheduling', jp:'スケジューリング', cat:'plan',
-  badge:'計画技法', tags:['WBS','クリティカルパス','ガントチャート'],
-  summary:'作業をタスクに分割し、<strong>依存関係と期間</strong>を見積もってカレンダーに配置する。プロジェクト全体の期間を決めるのは<strong>クリティカルパス</strong>：最長の依存の鎖。',
-  analogy:'宴会のコース料理の仕込み。「2時間の煮込み」を最初に火にかけないと、他の作業をどれだけ手早くしても開宴は遅れる。開宴時刻を決めているのは、作業の合計量ではなく「いちばん長い待ちの連鎖」。',
-  purpose:'タスクの並行実行を調整して資源（人・機材）を有効に使い、進捗を測る基準（マイルストーン）を置き、全体期間の見通しと「どこが遅れると致命的か」を明らかにする。',
-  who:'プロジェクトマネージャが、チームの見積もりをもとに作成・更新する。',
-  steps:[
-    '<b>WBS（Work Breakdown Structure）</b>：成果物と作業を階層的に分解する。1タスクの目安は1〜2週間程度（大きすぎると進捗が見えず、細かすぎると管理自体が仕事になる）',
-    'タスク間の<b>依存関係</b>を特定する（「T3 は T1 の成果物がないと開始できない」等）',
-    '各タスクの工数・期間を見積もり、要員を割り当てる（同一人物のタスクは並行できない）',
-    '<b>クリティカルパス</b>を特定する：依存の鎖のうち最長の経路。この経路上のタスクの遅れは、そのまま全体の遅れになる',
-    'バーチャート（<b>ガントチャート</b>）に表現し、マイルストーンを置く（下図）',
-    '予期せぬ問題に備えて<b>余裕（コンティンジェンシー）</b>を積む：Sommerville の経験則は「予期する問題に +30%、予期しない問題にさらに +20%」'
-  ],
-  points:[
-    'ガントチャートの読み方：横棒＝タスクの期間、矢印＝依存関係、菱形＝マイルストーン。クリティカルパスを色や太線で強調するのが定石',
-    'クリティカルパス上に<b>ない</b>タスクには<b>フロート（余裕時間）</b>がある：多少遅れても全体に響かないので、資源のやりくりに使える',
-    'バッファは各タスクに隠さず、<b>まとめて見える場所に</b>置く：タスクごとの隠しバッファは「締め切り直前まで着手しない」行動（学生症候群）に食い潰される（クリティカルチェーンの知見）',
-    'スケジュールは「作る」より「更新し続ける」：進捗会議のたびにクリティカルパスが移動していないか確認する'
-  ],
-  cautions:[
-    'ガントチャートは見た目が精密なぶん、計画を実際以上に確実に見せる<b>魔力</b>がある：中身は見積もりの束にすぎないと自覚する',
-    '人の稼働をチャート上で100%埋めない：複数タスクの掛け持ちには切り替えコストがあり、割り込み仕事は必ず来る',
-    '依存関係の見落としが最大の敵：特に外部チーム・調達・承認プロセスなど「自分たちの外」にある依存',
-    '進捗だけ聞いてチャートを更新しない「化石ガント」は、ないほうがましな誤情報になる'
-  ],
-  examples:[
-    'Sommerville 23章の演習（T1〜T16 のタスク表からバーチャートを描き、T5 が大幅遅延したら組み直す）は、この技法の教科書的トレーニング',
-    'ツール：Microsoft Project が古典。現代は Asana・Notion・Backlog・GanttProject など軽量ツールでの運用が多い',
-    '建設・ハードウェア混在プロジェクトでは、クリティカルパス法（CPM）による厳密な日程計算がいまも現役'
-  ],
-  related:'<a href="#brooks-law">ブルックスの法則</a>：クリティカルパスは人数を増やしても縮まない。<a href="#agile-planning">アジャイル</a>ではガントの代わりにバックログとバーンダウンで管理する（closing の比較表も参照）。',
-  modern:'数か月先まで引いた長大な事前ガントは減り、「四半期のマイルストーン＋スプリント計画」のハイブリッドが主流。一方で依存関係の可視化そのものは、複数チーム開発・プラットフォーム移行の文脈でむしろ再評価されている。',
-  hasCode:false
-},
-/* ---------- 見積もりと予測・測定 ---------- */
-{
-  id:'experience-estimation', name:'Experience-based Estimation', jp:'経験ベースの見積もり技法', cat:'est',
-  badge:'見積もり技法', tags:['類推','三点見積もり（PERT）','プランニングポーカー'],
-  summary:'過去の類似プロジェクト・タスクの<strong>経験</strong>をもとに見積もる技法群。実務の見積もりの大半はこれ。<strong>複数人・複数視点・幅を持たせる</strong>工夫で、人間のバイアスを打ち消す。',
-  analogy:'引っ越し業者の見積もり。間取りを見れば、過去数千件の経験から「この規模なら作業4時間・トラック2台」と即答できる。ただし「開かずの物置」が出てくると外れる：経験にない要素こそが精度の敵。',
-  purpose:'統計モデルを作れるほどのデータがなくても、妥当な工数・期間の予測を得る。同時に、見積もりの過程で作業の分解と理解が深まる：この副産物こそが見積もりの隠れた価値。',
-  who:'実際に作業する開発チーム自身が見積もるのが原則（他人の仕事の見積もりは系統的に楽観に寄る）。マネージャは前提と制約を示す役。',
-  steps:[
-    '<b>類推見積もり</b>：過去の類似プロジェクト・機能を探し、規模・技術・チームの差分で補正する',
-    '<b>分解</b>：大きな仕事をタスクに分けて個別に見積もり、合算する（分解は精度を上げるが、「分解し忘れた仕事」は合算に入らないことに注意）',
-    '<b>三点見積もり（PERT）</b>：楽観値 O・最頻値 M・悲観値 P を出し、期待値 E =（O+4M+P）/6 と標準偏差 σ =（P−O）/6 で「幅つき」の見積もりにする（<a href="#estimation">体験デモ</a>で試せる）',
-    '<b>プランニングポーカー</b>：全員が同時にカードを出し、最大・最小を出した人が理由を説明してから再投票：数回で収束する',
-    '<b>相対見積もり</b>：絶対時間ではなく「あのストーリーの2倍」という相対サイズ（ストーリーポイント）で見積もる：人間は絶対値より比較のほうが得意'
-  ],
-  points:[
-    '三点見積もりの本質：作業時間の分布は<b>右（悲観側）に裾が長い</b>ので、期待値は最頻値より悲観寄りになる。「いちばんありそうな値」で約束すると、五分五分より高い確率で遅れる',
-    'プランニングポーカーの理論的背景は<b>集団の知恵（wisdom of crowds）</b>：独立した複数の判断の集約は、しばしば個人の専門家より正確。ただし条件は「独立性」：だから相談する前に<b>同時に</b>カードを出す（他人の数字に引きずられる<b>アンカリング</b>の防止）',
-    'ストーリーポイントにフィボナッチ数列（1, 2, 3, 5, 8, 13, …）を使うのは、「大きいものほど正確には見積もれない」ことを数列の粗さで表現するため',
-    '見積もりと同時に<b>前提</b>を記録する（「APIが仕様どおり動くこと」等）：外れたとき、原因が数字か前提かを切り分けられる'
-  ],
-  cautions:[
-    '経験ベースの根本的弱点：<b>経験にない要素</b>（新技術・新ドメイン・新チーム）には無力：そこはスパイク（調査タスク）で経験を先に買う',
-    '希望的観測と営業的圧力が数字を歪める：「見積もり（予測）」「目標（願望）」「コミットメント（約束）」を言葉として区別する（McConnell）',
-    'アンカリング：先に聞いた数字（顧客の予算・上司の期待）に無意識に引きずられる：見積もる前に「期待される答え」を聞かない',
-    'ストーリーポイントをチーム間比較や人事評価に使うと、即座にポイントのインフレが起きて壊れる'
-  ],
-  examples:[
-    '相対見積もり：「ログイン機能が3ポイントだったから、この決済機能はその2〜3倍で8ポイント」',
-    'PERT：O=4日・M=7日・P=16日 → E=8日・σ=2日 →「68%の確率で6〜10日、95%なら4〜12日」',
-    'プランニングポーカーのデッキ：0, 1/2, 1, 2, 3, 5, 8, 13, 20, 40, 100, ?（わからない）, コーヒーカップ（休憩）'
-  ],
-  related:'<a href="#algorithmic-estimation">アルゴリズム的見積もり</a>は経験を「モデルとデータ」で置き換える発想。<a href="#agile-planning">アジャイルの予測</a>は「見積もり」を「実測からの外挿」に置き換える発想。時間が許すなら複数の技法で見積もって突き合わせる（三角測量）のが理想。',
-  modern:'プランニングポーカーはオンラインツールでリモート標準になった。粗い T シャツサイズ（S/M/L）見積もりや、見積もり自体を減らして実測スループットで予測するモンテカルロ法（<a href="#agile-planning">次カード</a>）へのシフトも進む。McConnell『ソフトウェア見積り』は現在も実務者の定番書。',
-  hasCode:false
-},
-{
-  id:'algorithmic-estimation', name:'Algorithmic Cost Modeling', jp:'アルゴリズム的見積もり（COCOMO・FP法）', cat:'est',
-  badge:'見積もり技法', tags:['COCOMO II','ファンクションポイント','規模の不経済'],
-  summary:'規模などの推定パラメータから<strong>数式で工数を計算する</strong>技法。核心は「工数 = A × サイズ<sup>E</sup> × M」の<strong>指数 E が 1 を超える</strong>こと：規模が2倍になると、工数は2倍では済まない。',
-  analogy:'建築の坪単価計算：ただし「床面積2倍の家は建築費2倍では済まない」という補正つき。大きな建物ほど構造計算・配管・調整が非線形に複雑になる。ソフトウェアも同じで、規模とともに統合とコミュニケーションのコストが利いてくる。',
-  purpose:'主観に依存しない再現可能な見積もりの根拠を作る。大規模・契約型・公共調達での価格根拠として、また「規模と工数の関係」の直感を鍛える教材として価値がある。',
-  who:'見積もり専門家・PMO。原型は Boehm が TRW 社の63プロジェクトの実績データから導いた COCOMO（1981）。現代版の COCOMO II（2000）は反復開発・再利用を前提に再設計された。',
-  steps:[
-    '<b>規模を推定</b>する：コード行数（KLOC）または<b>ファンクションポイント（FP）</b>：外部入力・出力・照会・ファイルの数と複雑さから「機能の量」を点数化する（Albrecht, IBM, 1979）',
-    '<b>スケール要因</b>を評価して指数 E を決める：先例性・開発の柔軟性・リスク解決・チームの結束・プロセス成熟度の5要因。良いほど E が小さくなり、規模の不経済が緩む',
-    '<b>コストドライバ</b>（乗数 M）を評価する：要求信頼性・複雑さ・実行時間制約・ツール・スケジュール圧縮など17項目の積',
-    '工数 PM = A × Size<sup>E</sup> × M を計算する（COCOMO II ポストアーキテクチャモデル、A ≈ 2.94）',
-    '段階に応じてモデルを使い分ける：応用合成 → 初期設計 → 再利用 → ポストアーキテクチャ（後の段階ほど入力が詳細になり、精度が上がる）'
-  ],
-  points:[
-    '最大の教訓は<b>非線形性（規模の不経済）</b>：E≈1.1 のとき規模10倍で工数は約12.6倍。統合・回帰テスト・コミュニケーションのコストが規模とともに非線形に増える：<a href="#brooks-law">ブルックスの法則</a>の定量版',
-    '<b>スケジュール圧縮は高くつく</b>：期間短縮のコストドライバは強い乗数を持つ。「期間を少し縮めるために工数が大きく増える」関係を数式が教えてくれる',
-    'FP 法は「コード行数は言語で変わる」問題への回答：機能量で測るので言語非依存で、要求段階から数えられる',
-    'モデルは<b>自組織のデータでの較正（キャリブレーション）</b>があって初めて機能する：デフォルト係数のまま使うのは「他社の過去の平均」を信じること'
-  ],
-  cautions:[
-    '入力自体が見積もり：規模の推定を誤れば結果はすべて狂う。初期段階の規模推定は、まさに不確実性のコーンのまっただ中にある',
-    '数百万行級の超大規模システムでは合わない：コンポーネント間の相互作用と組織間調整が支配的になる（Sommerville 演習 23.9 の論点）',
-    '<b>現代あまり使われない理由</b>を理解しておく：①アジャイル・反復開発では「最終的なコード行数」を事前に決められない ②クラウド・OSS・コード生成で「書く量」と「価値」の関係が崩れた ③較正データを維持できる組織が少ない',
-    '数式の出力を「客観的な真実」としてスケジュール交渉の武器にする誘惑：モデルは仮定の塊であることを忘れない'
-  ],
-  examples:[
-    '下のコード例：スケール要因からE≈1.10を計算し、10 KLOC→約41人月、100 KLOC→約518人月：規模10倍で工数12.6倍',
-    '日本のエンタープライズ開発では、IPA のソフトウェア開発データ白書や JUAS 調査を較正データとして FP ベースの見積もりが今も使われている',
-    '防衛・航空宇宙の調達では SEER-SEM・TruePlanning などの商用パラメトリックモデルが現役'
-  ],
-  related:'<a href="#experience-estimation">経験ベース</a>と対をなす。結果が大きく食い違ったら、どちらかが間違っているのではなく「理解が足りない部分」が見つかったと考える。',
-  modern:'汎用モデルとしては退潮し、自社実績データ＋機械学習による工数予測支援や、実測スループットにもとづく<a href="#agile-planning">モンテカルロ予測</a>に置き換わりつつある。ISBSG のプロジェクトデータベースは研究・ベンチマークで現役。「規模→工数の非線形」という洞察の価値だけは、モデルが廃れても不変。',
-  hasCode:true
-},
-{
-  id:'agile-planning', name:'Agile Planning & Forecasting', jp:'アジャイルの計画と予測', cat:'est',
-  badge:'測定と予測', tags:['ベロシティ','バーンダウン','#NoEstimates'],
-  summary:'機能を事前に固定せず、<strong>実測値（ベロシティ・スループット）から外挿して</strong>「いつ・どれだけできるか」を予測する。見積もりを「当てる」から「測って予測する」への転換。',
-  analogy:'マラソンの完走時刻予測。スタート前に「4時間で走ります」と宣言する（事前見積もり）より、10km の通過タイムから残りを外挿するほうが正確で、しかも走るほど精度が上がる。大事なのは「まず走り始めて、測る」こと。',
-  purpose:'不確実性の高い開発で、優先順位にもとづく柔軟な計画（価値の高いものから作る）と、実績データにもとづく現実的な見通しを両立する。',
-  who:'開発チーム＋プロダクトオーナー。計画は2段階：<b>リリース計画</b>（数か月先・粗い）と<b>イテレーション計画</b>（数週間先・詳細）。XP ではこの共同作業を<b>プランニングゲーム</b>と呼ぶ。',
-  steps:[
-    'ストーリーを<b>ストーリーポイント</b>で相対見積もりする（プランニングポーカー等）',
-    'イテレーションごとに完成したポイント数＝<b>ベロシティ</b>を実測する',
-    '<b>バーンダウン／バーンアップチャート</b>で残作業・完成量の推移を可視化する（バーンアップはスコープの増減も見える）',
-    'ベロシティの<b>ばらつき</b>から幅で予測する：「実績が15〜25pt/スプリントなら、残り120ptは5〜8スプリント」',
-    'さらに進めるなら<b>モンテカルロ・シミュレーション</b>：実績分布から数千回「仮想的に完了させて」みて、「85%の確率で Xスプリント以内」という確率つき予測を得る（下のコード例）'
-  ],
-  points:[
-    '計画哲学の転換：機能固定・期間可変（従来）から<b>期間固定・機能可変</b>（アジャイル）へ：遅れたら納期を延ばすのではなく、優先度の低い機能を落とす',
-    '<b>#NoEstimates 論争</b>（2012年頃〜、Woody Zuill・Vasco Duarte ら）：「見積もりに費やす時間は価値を生まない。仕事を小さく揃えて<b>数を数える</b>（スループット）ほうが正確では？」という問題提起。「見積もり全廃」の主張と読むより「その見積もり、コストに見合う価値があるか？」という問いとして読むのが生産的',
-    'モンテカルロ予測（Vacanti『Actionable Agile Metrics for Predictability』等）は #NoEstimates 側の実装：答えは1つの数字ではなく「50%なら◯スプリント、85%なら△スプリント」という<b>確率の分布</b>で出てくる',
-    'ベロシティは<b>チーム固有の相対値</b>：チーム間比較や目標値にした瞬間、ポイントのインフレが始まって予測の道具として死ぬ'
-  ],
-  cautions:[
-    '外挿の前提は「チームと作業の性質が安定していること」：メンバー交代・技術の変わり目・作業の種類の変化では過去実績が無効になる',
-    'Sommerville の指摘する課題：顧客の継続的な関与が前提／機能を固定しない進め方は固定価格契約となじみにくい',
-    'バーンダウンが順調な直線に見えても、「簡単なものから消化」していれば終盤に失速する（90%症候群の亜種）',
-    'モンテカルロも「過去の分布が未来も続く」という仮定の上にある：万能ではなく、外れる条件（前提の崩れ）を知って使う'
-  ],
-  examples:[
-    'バーンダウンチャート：縦軸＝残ポイント、横軸＝日。理想線と実績線の乖離が早期警報になる',
-    'モンテカルロ：Jira のプラグインや ActionableAgile 等のツールがスループット実績から自動で確率予測を出してくれる',
-    'リリース計画の言い方：「85%の信頼度で、3月末までに優先度上位40ストーリーをリリースできます」'
-  ],
-  related:'<a href="#experience-estimation">経験ベース見積もり</a>のストーリーポイントを入力に使いつつ、予測の主役を「実測データ」に移したもの。<a href="#progress-metrics">メトリクス</a>はこの実測文化の一般化。',
-  modern:'Kanban 系コミュニティ（ProKanban 等）ではサイクルタイム分布とモンテカルロによる確率予測が標準の語彙になった。#NoEstimates は今も定期的に再燃する論争だが、「仕事を小さく切って数を数え、確率で予測する」という実務は静かに広まっている。',
-  hasCode:true
-},
-{
-  id:'progress-metrics', name:'Progress & Health Metrics', jp:'進捗と健全性のメトリクス', cat:'est',
+  id:'progress-metrics', name:'Progress & Health Metrics', jp:'進捗と健全性のメトリクス', cat:'progress',
   badge:'測定と予測', tags:['90%症候群','EVM','DORA / SPACE'],
   summary:'「順調です」という言葉ではなく<strong>測定</strong>で進捗と健全性を把握する。ただし測定は人の行動を変えてしまう：<strong>何を・どう測るか</strong>自体が設計問題。',
   analogy:'健康診断。体重（進捗率）だけ見ても健康かは分からない。血圧・血糖値など複数の指標を組み合わせ、しかも「診断の直前だけ節制する」（数字合わせ）が起きにくい測り方を選ぶ必要がある。',
@@ -1385,7 +1155,7 @@ const TOPICS = [
     'DORA はパフォーマンス水準（エリート〜ロー）を年次レポートで更新している：「エリートはデプロイをオンデマンドで行い、変更失敗率が低い」など',
     '2024〜2025年の DORA レポートは AI コーディング支援の影響を主要テーマに据え、開発者体験（DX Core 4 など後続フレームワーク）へと測定の対象が広がっている'
   ],
-  related:'<a href="#agile-planning">アジャイルの予測</a>が「いつ終わるか」に答えるなら、こちらは「健全に進んでいるか」に答える。<a href="#risk-management">リスク監視</a>の指標設計とも直結。',
+  related:'アジャイルの予測（<a href="project-estimation-planning.html">「プロジェクト計画・見積もり」</a>）が「いつ終わるか」に答えるなら、こちらは「健全に進んでいるか」に答える。<a href="#risk-management">リスク監視</a>の指標設計とも直結。',
   modern:'生成 AI 時代の生産性測定が最前線の論争（「AI でコード量が増えた＝生産的か？」）。単一指標の危うさが増したぶん、SPACE 的な多次元測定と、DORA のような成果ベース指標の重要性がむしろ高まっている。',
   hasCode:false
 }
@@ -1583,24 +1353,12 @@ const QUIZ = [
 { q:'6人のチームで、メンバー同士の1対1のコミュニケーション経路は何本？',
   opts:['15本','6本','30本','36本'], a:0,
   why:'n(n−1)/2 = 6×5÷2 = <b>15本</b>。10人なら45本、20人なら190本。人数の2乗のオーダーで増えるのが「チームは小さく」の数学的な根拠。'},
-{ q:'ガントチャート上で、クリティカルパス上のタスクが1週間遅れた。プロジェクト全体はどうなる？',
-  opts:['全体の完了も1週間遅れる','他のタスクの余裕（フロート）で自動的に吸収される','影響は半分の3.5日で済む','クリティカルパスは全体の期間とは無関係'], a:0,
-  why:'クリティカルパスは「最長の依存の鎖」で、プロジェクト全体の期間を決めている。この経路上の遅れはそのまま全体の遅れになる。フロートがあるのはクリティカルパス上に<b>ない</b>タスク。'},
-{ q:'三点見積もりで、楽観値 O=4人日・最頻値 M=7人日・悲観値 P=16人日 のとき、PERT の期待値 E は？',
-  opts:['8人日','7人日','9人日','27人日'], a:0,
-  why:'E =（O + 4M + P）/ 6 =（4 + 28 + 16）/ 6 = <b>8人日</b>。最頻値の7人日より悲観側に寄るのがポイント：作業時間の分布は遅れる方向に裾が長い。'},
-{ q:'ストーリーポイントが表しているものとして、もっとも適切なのは？',
-  opts:['他のストーリーと比べた相対的な大きさ','正確な作業時間（時間数）','書くべきコードの行数','担当する人数'], a:0,
-  why:'ストーリーポイントは<b>相対見積もり</b>の単位。「あのストーリーの2倍くらい」という比較で見積もり、実測ベロシティと組み合わせて初めて期間に変換できる。チーム間比較には使えない。'},
 { q:'進捗報告で「90%完成です」という状態が何週間も続いている。この現象のもっとも適切な説明は？',
   opts:['残り10%に統合・テストなどの重い仕事が潜み、「完成」の定義も曖昧だから','チームが怠けているから','進捗率の計算にバグがあるから','実際には数日で終わる誤差だから'], a:0,
   why:'<b>90%症候群</b>。楽観バイアスと「完成」の定義の曖昧さが原因で、悪意や怠慢ではない。だから対策は人を責めることではなく、完了の二値（Definition of Done）で数える仕組みにすること。'},
 { q:'Google の Project Aristotle（180チームの調査）が「チームの効果性にもっとも重要」と結論づけた要因は？',
   opts:['心理的安全性','メンバー個人の技術力の高さ','チームの人数','全員が同じ場所で働くこと'], a:0,
   why:'誰がいるかより「どう協働しているか」が効き、その筆頭が<b>心理的安全性</b>：対人リスク（質問・反対・失敗の告白）を取っても罰されないという共有された信念（Edmondson, 1999）。'},
-{ q:'COCOMO のようなアルゴリズム的コストモデルの、もっとも主要な入力は？',
-  opts:['推定されるソフトウェアの規模（コード行数やFP）','チームの士気','会議の回数','顧客満足度'], a:0,
-  why:'工数 = A × <b>サイズ</b><sup>E</sup> × M。規模の推定値が主入力で、スケール要因が指数を、コストドライバが乗数を調整する。「入力の規模自体が見積もり」という弱点も一緒に覚えておく。'},
 { q:'「システムを設計する組織は、その組織の◯◯を写し取った構造の設計を生み出す」（コンウェイの法則）。◯◯に入るのは？',
   opts:['コミュニケーション構造','給与体系','オフィスの間取り','プログラミング言語'], a:0,
   why:'Conway（1968）。チーム構造とシステム構造は写像関係になるため、チーム設計はアーキテクチャ設計の一部になる。これを逆手に取るのが『Team Topologies』の逆コンウェイ戦略。'},
@@ -1702,8 +1460,8 @@ function renderTopic(t, idx){
       <div class="steps"><h5>実施の仕方（進め方）</h5><ol>${stepsLi}</ol></div>
       ${diagramH}
       <div class="grid2">
-        <div class="box pros"><h5>✓ 意識するポイント</h5><ul>${pointsLi}</ul></div>
-        <div class="box cons"><h5>！ 注意点・落とし穴</h5><ul>${cautionsLi}</ul></div>
+        <div class="box pros"><h5>&#10003; 意識するポイント</h5><ul>${pointsLi}</ul></div>
+        <div class="box cons"><h5>&#65281; 注意点・落とし穴</h5><ul>${cautionsLi}</ul></div>
       </div>
       <div class="meta-row">
         <div class="meta"><h5>具体例</h5><ul>${exLi}</ul></div>
@@ -1719,7 +1477,6 @@ function renderTopic(t, idx){
 
 function build(){
   document.getElementById('introProse').innerHTML = INTRO_HTML;
-  document.getElementById('techProse').innerHTML = TECH_HTML;
   document.getElementById('closingProse').innerHTML = CLOSING_HTML;
   const container = document.getElementById('topics-list');
   let html='', n=0;
