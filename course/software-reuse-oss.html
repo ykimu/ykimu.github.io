@@ -1,0 +1,1861 @@
+<!DOCTYPE html>
+<html lang="ja" class="no-js">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ソフトウェア再利用とOSS学習ガイド - 「作らない」という設計判断 / Software Reuse &amp; OSS</title>
+<meta name="description" content="A study guide to software reuse and open source software: libraries and package ecosystems, application frameworks, software product lines, COTS, component-based software engineering, OSS licenses, contribution, and supply chain security, with a license-chooser demo and a comprehension quiz. Part of Yuta Kimura's software engineering course materials.">
+<link rel="canonical" href="https://ykimu.github.io/course/software-reuse-oss.html">
+<link rel="icon" href="../favicon.svg" type="image/svg+xml">
+<meta property="og:site_name" content="Yuta Kimura / 木村祐太">
+<meta property="og:type" content="article">
+<meta property="og:title" content="ソフトウェア再利用とOSS学習ガイド - 「作らない」という設計判断 / Software Reuse &amp; OSS">
+<meta property="og:description" content="A study guide to software reuse and OSS: package ecosystems, frameworks, product lines, COTS, CBSE, licenses, contribution, and supply chain security, with demos and a quiz.">
+<meta property="og:url" content="https://ykimu.github.io/course/software-reuse-oss.html">
+<meta property="og:image" content="https://ykimu.github.io/assets/og.png">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="color-scheme" content="light">
+<script>document.documentElement.className="js";</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&family=Noto+Sans+JP:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#FBFCFB; --bg-2:#F3F6F4; --bg-3:#EBEFED; --card:#FFFFFF;
+    --ink:#101312; --ink-2:#3C4340; --muted:#6B746F; --faint:#B7C0BB;
+    --line:#E7ECE9; --hair:rgba(16,19,18,.08); --shell:rgba(16,19,18,.035);
+    --accent:#0E6F5C; --accent-2:#0A5748; --accent-soft:rgba(14,111,92,.08);
+    --soft:0 1px 2px rgba(16,19,18,.04), 0 24px 60px -28px rgba(16,19,18,.16);
+    --inhi:inset 0 1px 0 rgba(255,255,255,.85);
+    --ease:cubic-bezier(.32,.72,0,1);
+    --sans:"Plus Jakarta Sans","Noto Sans JP",-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+    --disp:"Space Grotesk","Plus Jakarta Sans","Noto Sans JP",sans-serif;
+    --mono:ui-monospace,SFMono-Regular,Menlo,Consolas,"Liberation Mono",monospace;
+    --maxw:1440px; --readw:clamp(680px, 62vw, 1060px);
+    /* category accents (kept within the brand green + neutral family) */
+    --reuse:#0E6F5C; --oss:#0A5748; --risk:#8A6D3B;
+    /* compatibility aliases used by reused content/diagram/quiz markup */
+    --panel:var(--card); --panel2:var(--bg-2); --chip:var(--bg-3);
+    --code-bg:var(--shell); --code-ink:#2F3A33;
+    --good:#0E6F5C; --bad:#B04A3E; --warn:#8A6D3B; --accent2:var(--accent-2);
+    --kw:#0A5748; --ty:#3C4340; --st:#7A5C34; --cm:#87918C;
+  }
+  html{color-scheme:light}
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth; -webkit-text-size-adjust:100%}
+  body{margin:0; background:var(--bg); color:var(--ink); font-family:var(--sans);
+    font-size:17px; line-height:1.75; font-weight:400; -webkit-font-smoothing:antialiased; text-rendering:optimizeLegibility}
+  body.lang-ja [lang=en]{display:none}
+  body.lang-en [lang=ja]{display:none}
+  ::selection{background:rgba(14,111,92,.16)}
+  h1,h2,h3{margin:0; color:var(--ink); font-weight:500; line-height:1.16; letter-spacing:-.02em; font-family:var(--disp); text-wrap:balance}
+  body.lang-ja h1,body.lang-ja h2,body.lang-ja h3{letter-spacing:0; font-family:var(--sans)}
+  p,.lead,.cite,.muted-s{text-wrap:pretty}
+  [lang="en"]{line-break:auto}
+  [lang="ja"]{line-break:strict; word-break:normal}
+  h1 [lang="ja"],h2 [lang="ja"],h3 [lang="ja"]{word-break:auto-phrase}
+  p{margin:0 0 1em}
+  a{color:var(--accent-2); text-decoration:none; transition:color .3s var(--ease)}
+  a:hover{color:var(--accent)}
+  a:focus-visible,button:focus-visible,.btn:focus-visible,[tabindex]:focus-visible{outline:2px solid var(--accent); outline-offset:3px; border-radius:8px}
+  .wrap{max-width:var(--maxw); margin:0 auto; padding:0 40px}
+  [id]{scroll-margin-top:96px}
+  section{padding:100px 0}
+
+  .skip{position:fixed; top:10px; left:10px; padding:10px 16px; background:var(--ink); color:#fff; border-radius:999px; transform:translateY(-200%); transition:none; z-index:100}
+  .skip:focus{transform:none}
+
+  /* film grain overlay */
+  body::after{content:""; position:fixed; inset:0; z-index:1; pointer-events:none; opacity:.02;
+    background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='g'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23g)'/%3E%3C/svg%3E")}
+
+  h2.big{font-size:clamp(1.9rem,3.2vw,2.7rem); font-weight:500; letter-spacing:-.025em; max-width:26ch}
+  body.lang-ja h2.big{letter-spacing:-.01em; max-width:none}
+  .eyebrow,.kick{display:inline-flex; align-items:center; gap:8px; width:max-content; max-width:100%;
+    padding:5px 13px 5px 11px; border-radius:999px; border:1px solid var(--hair); background:#fff;
+    font:600 .66rem/1 var(--disp); letter-spacing:.14em; text-transform:uppercase; color:var(--ink-2); margin:0 0 18px}
+  .eyebrow::before,.kick::before{content:""; flex:0 0 auto; width:6px; height:6px; border-radius:50%; background:var(--accent)}
+  .lead{font-size:1.12rem; color:var(--ink-2); line-height:1.78; font-weight:400}
+
+  /* motion */
+  .js .reveal{opacity:0; transform:translateY(18px); filter:blur(6px); transition:opacity .9s var(--ease), transform .9s var(--ease), filter .9s var(--ease)}
+  .js .reveal.in{opacity:1; transform:none; filter:none}
+  @media (prefers-reduced-motion:reduce){
+    .js .reveal{opacity:1!important; transform:none!important; filter:none!important}
+    .btn:active,.btn.ink:hover .ic,.pcard:hover,.pill:hover{transform:none!important}
+    html{scroll-behavior:auto}
+  }
+
+  /* floating island nav */
+  header.bar{position:sticky; top:18px; z-index:60; background:transparent; border-bottom:none}
+  .bar .wrap{display:flex; align-items:center; justify-content:space-between;
+    width:max-content; max-width:calc(100% - 32px); margin:0 auto; height:auto;
+    padding:9px 12px 9px 20px; gap:20px; border-radius:999px;
+    background:rgba(255,255,255,.72); -webkit-backdrop-filter:saturate(1.4) blur(18px); backdrop-filter:saturate(1.4) blur(18px);
+    border:1px solid var(--hair); box-shadow:var(--soft)}
+  .brand{font-weight:600; font-size:.92rem; letter-spacing:-.01em; color:var(--ink); display:inline-flex; align-items:center; gap:8px}
+  .brand span.sep{color:var(--muted); font-weight:400; margin:0 2px}
+  .navlinks{display:flex; gap:22px; align-items:center}
+  .navlinks a{font-size:.86rem; font-weight:500; color:var(--ink-2); transition:color .3s var(--ease)}
+  .navlinks a:hover{color:var(--ink)}
+  @media(max-width:860px){.navlinks{display:none}}
+  .bar-right{display:flex; align-items:center; gap:8px}
+
+  /* buttons */
+  .btn{display:inline-flex; align-items:center; gap:10px; font:500 .85rem/1 var(--sans); padding:10px 18px;
+    border-radius:999px; border:1px solid var(--hair); background:#fff; color:var(--ink); cursor:pointer;
+    transition:transform .4s var(--ease), box-shadow .4s var(--ease), border-color .3s var(--ease), background .3s var(--ease), color .3s var(--ease)}
+  .btn:hover{border-color:var(--ink); transform:translateY(-1px); color:var(--ink)}
+  .btn:active{transform:scale(.98)}
+  .btn.ink{background:var(--ink); border-color:var(--ink); color:#fff; padding:10px 10px 10px 22px;
+    box-shadow:0 12px 26px -14px rgba(16,19,18,.5)}
+  .btn.ink:not(:has(.ic)){padding:10px 22px}
+  .btn.ink:hover{box-shadow:0 16px 32px -14px rgba(16,19,18,.55); color:#fff}
+  .btn .ic{width:32px; height:32px; border-radius:999px; background:rgba(255,255,255,.18); display:grid; place-items:center;
+    transition:transform .45s var(--ease); flex:0 0 auto}
+  .btn.ink:hover .ic{transform:translate(3px,-1px)}
+  .tlink{display:inline-flex; align-items:center; gap:8px; font-weight:500; font-size:.95rem; color:var(--ink)}
+  .tlink .ar{transition:transform .4s var(--ease)}
+  .tlink:hover .ar{transform:translateX(4px)}
+
+  /* hero */
+  .hero{position:relative; overflow:hidden}
+  .hero > .wrap{position:relative; z-index:1}
+  .hero::before{content:""; position:absolute; z-index:0; width:640px; height:640px; right:-150px; top:-240px;
+    border-radius:50%; pointer-events:none; opacity:.55;
+    background:radial-gradient(circle, var(--accent-soft), transparent 62%); filter:blur(20px)}
+  .hero .wrap{padding-top:72px; padding-bottom:70px}
+  .hero h1{font-size:clamp(2.6rem,5vw,4.2rem); font-weight:500; letter-spacing:-.03em; line-height:1.08; color:var(--ink); max-width:none}
+  body.lang-ja .hero h1{font-size:clamp(2rem,4.2vw,3.1rem); font-weight:500; letter-spacing:0; line-height:1.24}
+  .hero h1 em{font-style:normal; color:var(--accent)}
+  .hero .lead{max-width:var(--readw); margin-top:24px}
+  .ja-note{display:inline-flex; align-items:center; gap:8px; margin-top:22px; padding:7px 15px; border-radius:999px;
+    border:1px solid var(--hair); background:var(--accent-soft); font-size:.8rem; font-weight:500; color:var(--accent-2)}
+  .ja-note::before{content:""; width:6px; height:6px; border-radius:50%; background:var(--accent); flex:0 0 auto}
+  .hero-cta{display:flex; gap:20px; align-items:center; flex-wrap:wrap; margin-top:28px}
+
+  .soft-sec{background:var(--bg-2); border-top:1px solid var(--line); border-bottom:1px solid var(--line)}
+
+  /* prose */
+  .prose{max-width:var(--readw)}
+  .prose p{margin:0 0 1em; color:var(--ink-2)}
+  .prose h4{font-family:var(--sans); font-size:1.12rem; font-weight:600; letter-spacing:0; color:var(--ink); margin:1.6em 0 .6em}
+  .prose ul{margin:0 0 1.2em; padding-left:0; list-style:none}
+  .prose ul li{position:relative; padding-left:22px; margin:12px 0; color:var(--ink-2)}
+  .prose ul li::before{content:""; position:absolute; left:0; top:13px; width:11px; height:1.5px; background:var(--accent)}
+  .prose ul li b{color:var(--ink); font-weight:600}
+  .prose b{color:var(--ink); font-weight:600}
+  .prose i{color:var(--ink-2)}
+  .prose code{font-family:var(--mono); font-size:.86em; background:var(--shell); border:1px solid var(--hair); border-radius:6px; padding:.08em .4em; color:var(--accent-2)}
+
+  .callout{border-radius:16px; padding:18px 22px; margin:18px 0; max-width:var(--readw);
+    background:var(--card); box-shadow:0 0 0 6px var(--shell),0 0 0 6.5px var(--hair),var(--soft)}
+  .callout h4{margin:0 0 6px; font-size:1rem; font-family:var(--sans); font-weight:600; letter-spacing:0; color:var(--ink)}
+  .callout.tip{background:var(--accent-soft)}
+  .callout.warn{background:rgba(138,109,59,.08)}
+  .callout a{font-weight:600}
+
+  .principles{display:grid; grid-template-columns:repeat(auto-fit,minmax(230px,1fr)); gap:14px; margin:18px 0; max-width:var(--readw)}
+  .principles .p{background:var(--card); border-radius:16px; padding:16px 18px;
+    box-shadow:0 0 0 6px var(--shell),0 0 0 6.5px var(--hair),var(--soft)}
+  .principles .p b{color:var(--accent-2)}
+  .principles .p span{font-size:.9rem; color:var(--muted)}
+
+  .cmp-table{border-collapse:separate; border-spacing:0; margin:16px 0; max-width:var(--readw); width:100%; font-size:.92rem;
+    border-radius:14px; overflow:hidden; box-shadow:0 0 0 6px var(--shell),0 0 0 6.5px var(--hair),var(--soft)}
+  .cmp-table th,.cmp-table td{border-bottom:1px solid var(--line); border-right:1px solid var(--line); padding:11px 14px; text-align:left; vertical-align:top; background:var(--card)}
+  .cmp-table tr:last-child th,.cmp-table tr:last-child td{border-bottom:none}
+  .cmp-table th{background:var(--bg-2); font-weight:600; color:var(--ink)}
+  .cmp-table td:last-child,.cmp-table th:last-child{border-right:none}
+  .cmp-table td b{color:var(--accent-2)}
+
+  /* controls: category pills + search */
+  .controls{display:flex; align-items:center; justify-content:space-between; gap:20px; flex-wrap:wrap; margin:0 0 12px}
+  .pills{display:flex; gap:8px; flex-wrap:wrap}
+  .pill{display:inline-flex; align-items:center; gap:8px; font:500 .9rem/1 var(--sans); padding:9px 16px;
+    border-radius:999px; border:1px solid var(--hair); background:#fff; color:var(--ink-2); cursor:pointer;
+    transition:transform .4s var(--ease), border-color .3s var(--ease), background .3s var(--ease), color .3s var(--ease)}
+  .pill:hover{border-color:var(--ink); transform:translateY(-1px)}
+  .pill span{font:600 .72rem/1 var(--disp); color:var(--muted)}
+  .pill.active{background:var(--ink); border-color:var(--ink); color:#fff}
+  .pill.active span{color:rgba(255,255,255,.7)}
+  .ctrl-right{display:flex; align-items:center; gap:14px}
+  .search{width:min(280px,60vw); padding:10px 16px; border-radius:999px; border:1px solid var(--hair);
+    background:#fff; color:var(--ink); font:400 .9rem/1 var(--sans); outline:none; transition:border-color .3s var(--ease)}
+  .search:focus{border-color:var(--accent)}
+  .learn-note{font:600 .78rem/1 var(--disp); color:var(--muted); white-space:nowrap}
+
+  /* category groups */
+  .cat-group{margin-top:34px}
+  .cat-group.hidden{display:none}
+  .cat-head{display:flex; align-items:center; gap:12px; margin:0 0 4px}
+  .cat-head .cat-dot{width:10px; height:10px; border-radius:50%; background:var(--cc); flex:0 0 auto}
+  .cat-head h3{font-family:var(--sans); font-size:1.4rem; font-weight:600; letter-spacing:0; color:var(--ink)}
+  .cat-badge{font:600 .66rem/1 var(--disp); letter-spacing:.08em; text-transform:uppercase; color:var(--muted);
+    border:1px solid var(--hair); background:#fff; padding:5px 11px; border-radius:999px}
+  .cat-desc{max-width:var(--readw); color:var(--muted); font-size:.96rem; margin:0 0 12px}
+
+  /* test card (double-bezel) */
+  .pcard{border-radius:21px; background:var(--card); margin:16px 0; scroll-margin-top:96px;
+    box-shadow:0 0 0 7px var(--shell),0 0 0 7.5px var(--hair),var(--soft);
+    transition:box-shadow .4s var(--ease)}
+  .pcard.hidden{display:none}
+  .pcard-head{display:flex; align-items:center; gap:14px; width:100%; text-align:left;
+    background:transparent; border:none; cursor:pointer; padding:22px 26px 8px; font-family:var(--sans)}
+  .pnum{font:600 .95rem/1 var(--disp); font-variant-numeric:tabular-nums; flex:0 0 auto; min-width:24px}
+  .ptitle{font-family:var(--disp); font-weight:500; font-size:1.18rem; color:var(--ink); letter-spacing:-.01em; flex:0 0 auto}
+  .ptitle small{display:block; font-family:var(--sans); font-size:.8rem; color:var(--muted); font-weight:400; margin-top:2px}
+  .pbadges{display:flex; gap:8px; align-items:center}
+  .ptags{display:flex; gap:6px; flex-wrap:wrap; margin-left:auto; justify-content:flex-end}
+  .pchev{flex:0 0 auto; font-size:1.5rem; color:var(--muted); transition:transform .4s var(--ease); margin-left:6px; line-height:1}
+  .pcard.open .pchev{transform:rotate(90deg); color:var(--accent-2)}
+  .summary{margin:0; padding:0 26px 22px; color:var(--ink-2); font-size:1rem}
+  .summary strong{color:var(--ink); font-weight:600}
+  .pdetail{display:none; padding:0 26px 26px}
+  .pcard.open .pdetail{display:block}
+  .pcard.done-card{box-shadow:0 0 0 7px var(--accent-soft),0 0 0 7.5px rgba(14,111,92,.24),var(--soft)}
+
+  .badge-imp{font:700 .68rem/1 var(--disp); letter-spacing:.06em; padding:4px 10px; border-radius:999px; white-space:nowrap}
+  .imp3{background:var(--accent); color:#fff}
+  .imp2{background:var(--accent-soft); color:var(--accent-2)}
+  .imp1{background:var(--bg-3); color:var(--muted)}
+  .tag{font:500 .72rem/1 var(--sans); padding:5px 10px; border-radius:999px; background:var(--bg-2); color:var(--muted); border:1px solid var(--hair)}
+
+  .analogy{display:flex; gap:10px; align-items:flex-start; background:var(--accent-soft);
+    border-radius:14px; padding:14px 18px; margin:16px 0; font-size:.94rem; color:var(--ink-2)}
+  .analogy b{color:var(--accent-2); font-weight:600}
+
+  .grid2{display:grid; grid-template-columns:1fr 1fr; gap:16px; margin:18px 0}
+  .box{border-radius:16px; padding:16px 18px; background:var(--card);
+    box-shadow:0 0 0 6px var(--shell),0 0 0 6.5px var(--hair),var(--soft)}
+  .box h5{margin:0 0 10px; font-size:.92rem; font-family:var(--sans); font-weight:600; letter-spacing:0; display:flex; align-items:center; gap:7px}
+  .box.pros h5{color:var(--accent-2)}
+  .box.cons h5{color:var(--bad)}
+  .box ul{margin:0; padding-left:18px}
+  .box li{margin:6px 0; font-size:.9rem; color:var(--ink-2)}
+
+  .meta-row{display:grid; grid-template-columns:1fr 1fr; gap:16px; margin:16px 0}
+  .meta h5{margin:0 0 8px; font-size:.92rem; font-family:var(--sans); font-weight:600; letter-spacing:0; color:var(--accent-2)}
+  .meta p,.meta li{font-size:.92rem; color:var(--ink-2)}
+  .meta ul{margin:0; padding-left:18px}
+  .meta p{margin:0}
+  .meta code,.box code,.analogy code,.steps code{font-family:var(--mono); font-size:.86em; background:var(--shell); border:1px solid var(--hair); border-radius:5px; padding:.05em .35em; color:var(--accent-2)}
+
+  /* numbered procedure steps */
+  .steps{border-radius:16px; padding:16px 18px; margin:16px 0; background:var(--card);
+    box-shadow:0 0 0 6px var(--shell),0 0 0 6.5px var(--hair),var(--soft)}
+  .steps h5{margin:0 0 10px; font-size:.92rem; font-family:var(--sans); font-weight:600; letter-spacing:0; color:var(--accent-2)}
+  .steps ol{margin:0; padding:0; list-style:none; counter-reset:st}
+  .steps ol li{counter-increment:st; position:relative; padding-left:36px; margin:9px 0; font-size:.92rem; color:var(--ink-2)}
+  .steps ol li::before{content:counter(st); position:absolute; left:0; top:3px; width:23px; height:23px; border-radius:50%;
+    background:var(--accent-soft); color:var(--accent-2); font:600 .74rem/23px var(--disp); text-align:center}
+  .steps ol li b{color:var(--ink); font-weight:600}
+
+  /* diagrams */
+  .diagram-wrap{margin:18px 0; max-width:var(--readw)}
+  .diagram-wrap h5{margin:0 0 8px; font-size:.92rem; font-family:var(--sans); font-weight:600; letter-spacing:0; color:var(--accent-2)}
+  .diagram-wrap svg{display:block; width:100%; height:auto; background:var(--shell);
+    border:1px solid var(--hair); border-radius:12px; padding:8px}
+  .dg-box{fill:var(--card); stroke:var(--line); stroke-width:1.2}
+  .dg-if{stroke:var(--accent)}
+  .dg-lbl{fill:var(--ink); font-size:12px; font-weight:600; text-anchor:middle; font-family:var(--sans)}
+  .dg-st{fill:var(--accent-2); font-size:10px; text-anchor:middle}
+  .dg-line{stroke:var(--muted); stroke-width:1.4; fill:none}
+  .dg-dash{stroke-dasharray:5 4}
+  .dg-el{fill:var(--ink-2); font-size:10.5px; text-anchor:middle}
+  .dg-note{fill:var(--muted); font-size:11px; font-style:italic; text-anchor:middle}
+  .dg-legend{font-size:.78rem; color:var(--muted); margin-top:8px}
+
+  /* code blocks */
+  .code-wrap{margin-top:16px; border:1px solid var(--hair); border-radius:14px; overflow:hidden; background:var(--shell)}
+  .code-tabs{display:flex; align-items:center; gap:0; background:var(--bg-2); border-bottom:1px solid var(--hair)}
+  .code-tabs .lbl{margin-right:auto; padding:10px 16px; font:500 .78rem/1 var(--sans); color:var(--muted)}
+  .code-tabs .tab{background:transparent; border:none; color:var(--muted); padding:10px 18px; font:600 .82rem/1 var(--sans);
+    cursor:pointer; border-bottom:2px solid transparent; transition:color .3s var(--ease), border-color .3s var(--ease)}
+  .code-tabs .tab:hover{color:var(--ink)}
+  .code-tabs .tab.active{color:var(--ink); border-bottom-color:var(--accent)}
+  pre{margin:0; background:var(--shell); padding:16px 18px; overflow-x:auto; font-size:.82rem; line-height:1.65}
+  pre code{font-family:var(--mono); color:var(--code-ink); white-space:pre}
+  pre.hidden{display:none}
+  .kw{color:var(--kw); font-weight:600} .ty{color:var(--ty)} .st{color:var(--st)} .cm{color:var(--cm); font-style:italic}
+
+  .learn{display:inline-flex; align-items:center; gap:10px; margin-top:20px; font-size:.9rem;
+    color:var(--muted); cursor:pointer; user-select:none}
+  .learn input{accent-color:var(--accent); width:16px; height:16px; cursor:pointer}
+
+  /* equivalence-partition demo */
+  .demo{border-radius:16px; padding:20px 22px; margin:22px 0; max-width:var(--readw); background:var(--card);
+    box-shadow:0 0 0 6px var(--shell),0 0 0 6.5px var(--hair),var(--soft)}
+  .demo h4{margin:0 0 6px; font-size:1rem; font-family:var(--sans); font-weight:600; color:var(--ink)}
+  .demo .spec{font-size:.9rem; color:var(--muted); margin:0 0 14px}
+  .demo-row{display:flex; gap:10px; flex-wrap:wrap; align-items:center}
+  .demo input[type=text]{width:min(220px,100%); padding:10px 16px; border-radius:999px; border:1px solid var(--hair);
+    background:#fff; color:var(--ink); font:500 .95rem/1 var(--mono); outline:none; transition:border-color .3s var(--ease)}
+  .demo input[type=text]:focus{border-color:var(--accent)}
+  .demo .try{display:flex; gap:6px; flex-wrap:wrap}
+  .demo .try button{background:#fff; border:1px solid var(--hair); color:var(--ink-2); border-radius:999px;
+    padding:7px 13px; font:500 .82rem/1 var(--mono); cursor:pointer; transition:border-color .3s var(--ease), transform .3s var(--ease)}
+  .demo .try button:hover{border-color:var(--ink); transform:translateY(-1px)}
+  .demo-out{margin-top:14px; border-radius:12px; padding:14px 16px; font-size:.92rem; background:var(--bg-2); color:var(--ink-2)}
+  .demo-out b{font-weight:600}
+  .demo-out.ok{background:var(--accent-soft); }
+  .demo-out.ng{background:rgba(176,74,62,.08)}
+  .demo-out .pl{display:inline-block; font:600 .72rem/1 var(--disp); letter-spacing:.05em; padding:4px 10px; border-radius:999px; margin-right:8px}
+  .demo-out.ok .pl{background:var(--accent); color:#fff}
+  .demo-out.ng .pl{background:var(--bad); color:#fff}
+  .demo-out .bd{display:inline-block; font:600 .72rem/1 var(--disp); letter-spacing:.05em; padding:4px 10px; border-radius:999px; margin-right:8px; background:rgba(138,109,59,.15); color:var(--warn)}
+
+  /* quiz */
+  .quiz-q{border-radius:16px; padding:18px 20px; margin:16px 0; max-width:var(--readw); background:var(--card);
+    box-shadow:0 0 0 6px var(--shell),0 0 0 6.5px var(--hair),var(--soft)}
+  .qtext{margin:0 0 12px; font-weight:600; color:var(--ink)}
+  .qopts{display:flex; flex-wrap:wrap; gap:8px}
+  .qopts button{background:#fff; border:1px solid var(--hair); color:var(--ink); border-radius:999px;
+    padding:9px 16px; font:500 .88rem/1 var(--sans); cursor:pointer; transition:border-color .3s var(--ease), transform .3s var(--ease)}
+  .qopts button:hover:not(:disabled){border-color:var(--ink); transform:translateY(-1px)}
+  .qopts button:disabled{cursor:default}
+  .qopts button.right{background:var(--accent-soft); color:var(--accent-2); border-color:var(--accent); font-weight:600}
+  .qopts button.wrong{background:rgba(176,74,62,.1); color:var(--bad); border-color:var(--bad)}
+  .qwhy{font-size:.9rem; color:var(--ink-2); margin:12px 0 0; padding-top:12px; border-top:1px solid var(--line)}
+  .qwhy b{color:var(--ink); font-weight:600}
+  .quiz-reset{margin-top:16px}
+  #quizScore{color:var(--muted); font-size:.92rem; font-weight:500}
+
+  /* footer */
+  footer{border-top:1px solid var(--line); padding:64px 0 46px; background:var(--bg)}
+  footer h3{font-size:.72rem; font-weight:600; letter-spacing:.12em; text-transform:uppercase; color:var(--muted); margin:0 0 1em; font-family:var(--disp)}
+  .foot-grid{display:grid; grid-template-columns:1.4fr 1fr 1fr; gap:44px}
+  .cite{font-size:.98rem; color:var(--ink-2); line-height:1.7; max-width:56ch; margin-bottom:36px}
+  .muted-s{color:var(--muted); font-size:.9rem; line-height:1.75}
+  .muted-s b{color:var(--ink); font-weight:600}
+  .foot-rule{height:1px; background:var(--line); margin:44px 0 20px}
+  .foot-note{color:var(--muted); font-size:.82rem}
+  @media(max-width:760px){.foot-grid{grid-template-columns:1fr 1fr}}
+  @media(max-width:560px){.foot-grid{grid-template-columns:1fr}}
+
+  @media(max-width:860px){
+    section{padding:72px 0}
+    .hero .wrap{padding-top:52px; padding-bottom:56px}
+    .wrap{padding:0 24px}
+    .grid2,.meta-row{grid-template-columns:1fr}
+    .ptags{flex-basis:100%; margin-left:0; justify-content:flex-start}
+    .pcard-head{flex-wrap:wrap}
+  }
+  @media(max-width:640px){
+    .bar-right .btn:not(.ink):not(.jp-toggle){display:none}
+    .brand{font-size:.82rem}
+    .controls{align-items:flex-start; flex-direction:column}
+    .qopts button{flex:1 1 44%}
+  }
+
+  /* JP-only teaching page: fill content width for body text & boxes */
+  .lead,
+  .prose,
+  .callout,
+  .principles,
+  .cmp-table,
+  .diagram-wrap,
+  .demo{max-width:none !important}
+  /* ==================== NAV SYSTEM v4 (NAV_SPEC A-F) ==================== */
+  .navlinks{display:flex; gap:4px; align-items:center}
+  .navlinks .navgroup{position:relative; display:flex}
+  .navlinks .navtop{display:inline-flex; align-items:center; gap:7px; font-size:.86rem; font-weight:500;
+    color:var(--ink-2); padding:8px 13px; border-radius:999px; white-space:nowrap;
+    transition:color .3s var(--ease), background .3s var(--ease)}
+  .navlinks .navtop:hover{color:var(--ink)}
+  .navlinks .navgroup:hover .navtop,.navlinks .navgroup:focus-within .navtop{color:var(--ink); background:var(--bg-2)}
+  .navlinks .navtop.on{color:var(--ink)}
+  .navlinks .navtop.on::before{content:""; flex:0 0 auto; width:6px; height:6px; border-radius:50%; background:var(--accent)}
+  .navlinks .navpanel{position:absolute; top:100%; left:50%; margin-top:9px; min-width:238px; padding:10px;
+    transform:translateX(-50%) translateY(6px); text-align:left;
+    background:var(--card); border:1px solid var(--hair); border-radius:16px; box-shadow:var(--soft);
+    opacity:0; visibility:hidden; pointer-events:none;
+    transition:opacity .25s var(--ease), transform .25s var(--ease), visibility 0s linear .25s; z-index:5}
+  .navlinks .navpanel::before{content:""; position:absolute; top:-13px; left:0; right:0; height:14px}
+  .navlinks .navgroup:hover .navpanel,.navlinks .navgroup:focus-within .navpanel{
+    opacity:1; visibility:visible; pointer-events:auto; transform:translateX(-50%) translateY(0);
+    transition:opacity .25s var(--ease), transform .25s var(--ease), visibility 0s linear 0s}
+  .navlinks .navgroup.collapsed .navpanel{opacity:0; visibility:hidden; pointer-events:none}
+  .navlinks .navpanel a{display:flex; align-items:center; gap:9px; padding:9px 12px; border-radius:11px;
+    font-size:.85rem; font-weight:500; color:var(--ink-2); white-space:nowrap;
+    transition:background .25s var(--ease), color .25s var(--ease)}
+  .navlinks .navpanel a:hover{background:var(--accent-soft); color:var(--ink)}
+  .navlinks .navpanel a.here{background:var(--accent-soft); color:var(--ink)}
+  .navlinks .navpanel a.here::before{content:""; flex:0 0 auto; width:6px; height:6px; border-radius:50%; background:var(--accent)}
+  .navlinks .navlabel{padding:8px 12px 3px; font:600 .6rem/1 var(--disp); letter-spacing:.13em;
+    text-transform:uppercase; color:var(--muted)}
+  .navlinks .navpanel hr.navdiv{border:0; border-top:1px solid var(--line); margin:8px 6px}
+
+  .lswitch{display:inline-flex; align-items:center; gap:2px; padding:3px; border-radius:999px;
+    border:1px solid var(--hair); background:#fff}
+  .lswitch button{appearance:none; -webkit-appearance:none; border:0; background:transparent; cursor:pointer;
+    font:600 .78rem/1 var(--disp); letter-spacing:.03em; color:var(--ink-2); padding:8px 13px; border-radius:999px;
+    transition:background .3s var(--ease), color .3s var(--ease)}
+  .lswitch button:hover{color:var(--ink)}
+  body.lang-ja .lswitch .ls-ja,body.lang-en .lswitch .ls-en{background:var(--ink); color:#fff}
+
+  .navtoggle{display:none; position:relative; width:42px; height:42px; flex:0 0 auto;
+    border-radius:999px; border:1px solid var(--hair); background:#fff; cursor:pointer; padding:0}
+  .navtoggle span{position:absolute; left:11px; right:11px; height:2px; background:var(--ink); border-radius:2px;
+    transition:transform .35s var(--ease), opacity .2s var(--ease)}
+  .navtoggle span:nth-child(1){top:15px}
+  .navtoggle span:nth-child(2){top:20px}
+  .navtoggle span:nth-child(3){top:25px}
+  body.navopen .navtoggle span:nth-child(1){transform:translateY(5px) rotate(45deg)}
+  body.navopen .navtoggle span:nth-child(2){opacity:0}
+  body.navopen .navtoggle span:nth-child(3){transform:translateY(-5px) rotate(-45deg)}
+
+  .mobnav{position:fixed; inset:0; z-index:80; display:flex; flex-direction:column; overflow-y:auto;
+    background:rgba(251,252,251,.9); -webkit-backdrop-filter:saturate(1.2) blur(24px); backdrop-filter:saturate(1.2) blur(24px);
+    opacity:0; visibility:hidden; pointer-events:none;
+    transition:opacity .35s var(--ease), visibility 0s linear .35s}
+  body.navopen .mobnav{opacity:1; visibility:visible; pointer-events:auto; transition:opacity .35s var(--ease), visibility 0s linear 0s}
+  body.navopen{overflow:hidden}
+  body.navopen header.bar{z-index:90}
+  .mobnav-inner{width:100%; max-width:600px; margin:0 auto; padding:104px 28px 64px;
+    display:flex; flex-direction:column; gap:24px}
+  .mobgroup{display:flex; flex-direction:column; gap:1px}
+  .moblabel{font:600 .64rem/1 var(--disp); letter-spacing:.14em; text-transform:uppercase; color:var(--muted); margin-bottom:9px}
+  .mobgroup a{font-size:1.28rem; font-weight:500; color:var(--ink); padding:7px 0; line-height:1.24}
+  .mobgroup a:hover{color:var(--accent-2)}
+  .mobgroup a.here{color:var(--accent-2)}
+  .mobgroup a.here::before{content:""; display:inline-block; width:6px; height:6px; border-radius:50%;
+    background:var(--accent); margin-right:9px; vertical-align:middle}
+  .mobfoot{display:flex; align-items:center; justify-content:space-between; gap:16px; flex-wrap:wrap;
+    margin-top:6px; padding-top:22px; border-top:1px solid var(--line)}
+  .mobext{font-size:1rem; font-weight:500; color:var(--ink-2)}
+  .mobext:hover{color:var(--ink)}
+  .js .mobnav-inner > *{opacity:0; transform:translateY(12px);
+    transition:opacity .4s var(--ease), transform .4s var(--ease)}
+  body.navopen .mobnav-inner > *{opacity:1; transform:none}
+  body.navopen .mobnav-inner > *:nth-child(1){transition-delay:.04s}
+  body.navopen .mobnav-inner > *:nth-child(2){transition-delay:.08s}
+  body.navopen .mobnav-inner > *:nth-child(3){transition-delay:.12s}
+  body.navopen .mobnav-inner > *:nth-child(4){transition-delay:.16s}
+  body.navopen .mobnav-inner > *:nth-child(5){transition-delay:.20s}
+  body.navopen .mobnav-inner > *:nth-child(6){transition-delay:.24s}
+
+  /* E. breadcrumb */
+  .crumbs{display:flex; flex-wrap:wrap; align-items:center; gap:7px; margin:0;
+    font-size:.8rem; font-weight:500; color:var(--muted)}
+  .crumbs a{color:var(--muted)}
+  .crumbs a:hover{color:var(--ink)}
+  .crumbs .csep{color:var(--faint)}
+  .crumbs .cur{color:var(--ink)}
+
+  /* F. sticky TOC bar */
+  .tocbar{position:sticky; top:84px; z-index:40; margin:8px 0 0;
+    background:rgba(255,255,255,.82); -webkit-backdrop-filter:saturate(1.4) blur(14px); backdrop-filter:saturate(1.4) blur(14px);
+    border-top:1px solid var(--hair); border-bottom:1px solid var(--hair)}
+  .tocbar-inner{max-width:var(--maxw); margin:0 auto; padding:9px 40px; display:flex; gap:8px;
+    overflow-x:auto; scrollbar-width:none; -ms-overflow-style:none}
+  .tocbar-inner::-webkit-scrollbar{display:none}
+  .tocpill{flex:0 0 auto; display:inline-flex; align-items:center; gap:7px; padding:7px 14px; border-radius:999px;
+    font-size:.8rem; font-weight:500; color:var(--ink-2); border:1px solid transparent; white-space:nowrap;
+    transition:background .25s var(--ease), color .25s var(--ease), border-color .25s var(--ease)}
+  .tocpill:hover{color:var(--ink); border-color:var(--hair)}
+  .tocpill.on{background:var(--accent-soft); color:var(--ink)}
+  .tocpill.on::before{content:""; flex:0 0 auto; width:6px; height:6px; border-radius:50%; background:var(--accent)}
+  section[id]{scroll-margin-top:150px}
+
+  /* F. back to top */
+  .totop{position:fixed; right:22px; bottom:22px; z-index:55; width:46px; height:46px; border-radius:999px;
+    display:grid; place-items:center; background:#fff; border:1px solid var(--hair); box-shadow:var(--soft);
+    color:var(--ink); cursor:pointer; font-size:1.15rem; line-height:1;
+    opacity:0; transform:translateY(10px) scale(.9); pointer-events:none;
+    transition:opacity .35s var(--ease), transform .35s var(--ease)}
+  .totop.show{opacity:1; transform:none; pointer-events:auto}
+  .totop:hover{transform:translateY(-2px)}
+
+  @media(max-width:860px){
+    .navtoggle{display:block}
+    .navlinks{display:none}
+    .bar-right .btn{display:none}
+    .tocbar{top:76px}
+  }
+  @media(max-width:430px){
+    .bar-right .lswitch{display:none}
+  }
+  @media (prefers-reduced-motion:reduce){
+    .navlinks .navpanel,.navtoggle span,.mobnav,.js .mobnav-inner > *,.navtop,.lswitch button,.totop,.tocpill{transition-duration:.001ms !important}
+    .js .mobnav-inner > *{transition-delay:0s !important}
+    .navtoggle:hover,.totop:hover{transform:none !important}
+  }
+</style>
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[
+{"@type":"ListItem","position":1,"name":"ホーム","item":"https://ykimu.github.io/"},
+{"@type":"ListItem","position":2,"name":"教育","item":"https://ykimu.github.io/teaching.html"},
+{"@type":"ListItem","position":3,"name":"ソフトウェア工学","item":"https://ykimu.github.io/course/index.html"},
+{"@type":"ListItem","position":4,"name":"ソフトウェア再利用とOSS","item":"https://ykimu.github.io/course/software-reuse-oss.html"}
+]}
+</script>
+</head>
+<body class="lang-ja">
+
+<a class="skip" href="#main"><span lang="ja">本文へスキップ</span><span lang="en">Skip to content</span></a>
+
+<header class="bar">
+  <div class="wrap">
+    <a class="brand" href="../index.html">
+      <span aria-hidden="true">&lsaquo;</span>
+      <span lang="ja">Yuta Kimura</span><span lang="en">Yuta Kimura</span>
+      <span class="sep">·</span><span lang="ja">木村祐太</span><span lang="en">Kimura</span>
+    </a>
+    <nav class="navlinks" aria-label="メイン">
+      <div class="navgroup">
+        <a class="navtop" href="../publications.html" aria-haspopup="true" aria-expanded="false"><span lang="ja">研究</span><span lang="en">Research</span></a>
+        <div class="navpanel">
+          <a href="../publications.html"><span lang="ja">業績・研究活動</span><span lang="en">Publications &amp; activity</span></a>
+          <a href="../research/technical-debt-metrics.html"><span lang="ja">技術的負債とメトリクス</span><span lang="en">Technical debt &amp; metrics</span></a>
+          <a href="../research/apr-coding-standards.html"><span lang="ja">自動生成パッチと規約</span><span lang="en">Auto-generated patches &amp; standards</span></a>
+          <a href="../research/td-repayment-refactoring.html"><span lang="ja">負債返済とリファクタリング</span><span lang="en">Debt repayment &amp; refactoring</span></a>
+          <a href="../research/satd-issue-classification.html"><span lang="ja">課題票の負債分類</span><span lang="en">Issue-ticket debt classification</span></a>
+        </div>
+      </div>
+      <div class="navgroup">
+        <a class="navtop on" href="../teaching.html" aria-haspopup="true" aria-expanded="false"><span lang="ja">教育</span><span lang="en">Teaching</span></a>
+        <div class="navpanel">
+          <div class="navlabel"><span lang="ja">科目</span><span lang="en">Courses</span></div>
+          <a href="../teaching.html"><span lang="ja">教育・担当授業</span><span lang="en">Teaching &amp; courses</span></a>
+          <a href="index.html"><span lang="ja">ソフトウェア工学</span><span lang="en">Software Engineering</span></a>
+          <a href="logic-circuits.html"><span lang="ja">論理回路1</span><span lang="en">Logic Circuits I</span></a>
+          <a href="intelligent-informatics-1.html"><span lang="ja">知能情報実験実習1</span><span lang="en">Intelligent Informatics Lab I</span></a>
+          <hr class="navdiv">
+          <div class="navlabel"><span lang="ja">教材</span><span lang="en">Materials</span></div>
+          <a href="design-patterns.html"><span lang="ja">デザインパターン学習ガイド</span><span lang="en">Design Patterns Guide</span></a>
+          <a href="software-architecture.html"><span lang="ja">アーキテクチャパターン大全</span><span lang="en">Software Architecture</span></a>
+          <a href="uml-guide.html"><span lang="ja">クラス図/シーケンス図ガイド</span><span lang="en">UML Diagram Guide</span></a>
+          <a href="software-testing.html"><span lang="ja">ソフトウェアテスト学習ガイド</span><span lang="en">Software Testing Guide</span></a>
+          <a href="agile-scrum.html"><span lang="ja">アジャイル開発とスクラム</span><span lang="en">Agile &amp; Scrum</span></a>
+          <a href="requirements-engineering.html"><span lang="ja">要求工学</span><span lang="en">Requirements Engineering</span></a>
+          <a href="software-evolution.html"><span lang="ja">ソフトウェア進化と技術的負債</span><span lang="en">Software Evolution</span></a>
+          <a class="here" href="software-reuse-oss.html" aria-current="page"><span lang="ja">ソフトウェア再利用とOSS</span><span lang="en">Software Reuse &amp; OSS</span></a>
+          <a href="project-management.html"><span lang="ja">プロジェクト管理と見積もり</span><span lang="en">Project Management</span></a>
+          <a href="version-control-cicd.html"><span lang="ja">バージョン管理とCI/CD</span><span lang="en">Version Control &amp; CI/CD</span></a>
+        </div>
+      </div>
+      <div class="navgroup">
+        <a class="navtop" href="../software-engineering.html" aria-haspopup="true" aria-expanded="false"><span lang="ja">ガイド</span><span lang="en">Guides</span></a>
+        <div class="navpanel">
+          <a href="../software-engineering.html"><span lang="ja">ソフトウェア工学とは</span><span lang="en">What is software engineering</span></a>
+          <a href="../technical-debt.html"><span lang="ja">技術的負債とは</span><span lang="en">What is technical debt</span></a>
+          <a href="../glossary.html"><span lang="ja">研究用語ミニ辞典</span><span lang="en">Research glossary</span></a>
+        </div>
+      </div>
+      <div class="navgroup">
+        <a class="navtop" href="../students.html"><span lang="ja">学生の皆さんへ</span><span lang="en">For Students</span></a>
+      </div>
+    </nav>
+    <div class="bar-right">
+      <a class="btn" href="https://researchmap.jp/kimura_yuta" target="_blank" rel="noopener">researchmap</a>
+      <div class="lswitch" role="group" aria-label="言語 / Language">
+        <button type="button" class="ls-ja" onclick="setLang('ja')" aria-pressed="true">JA</button>
+        <button type="button" class="ls-en" onclick="setLang('en')" aria-pressed="false">EN</button>
+      </div>
+      <button class="navtoggle" id="navToggle" type="button" aria-label="メニュー" aria-expanded="false" aria-controls="mobnav">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </div>
+</header>
+
+<div class="mobnav" id="mobnav" aria-hidden="true">
+  <div class="mobnav-inner">
+    <div class="mobgroup">
+      <div class="moblabel"><span lang="ja">研究</span><span lang="en">Research</span></div>
+      <a href="../publications.html"><span lang="ja">業績・研究活動</span><span lang="en">Publications &amp; activity</span></a>
+      <a href="../research/technical-debt-metrics.html"><span lang="ja">技術的負債とメトリクス</span><span lang="en">Technical debt &amp; metrics</span></a>
+      <a href="../research/apr-coding-standards.html"><span lang="ja">自動生成パッチと規約</span><span lang="en">Auto-generated patches &amp; standards</span></a>
+      <a href="../research/td-repayment-refactoring.html"><span lang="ja">負債返済とリファクタリング</span><span lang="en">Debt repayment &amp; refactoring</span></a>
+      <a href="../research/satd-issue-classification.html"><span lang="ja">課題票の負債分類</span><span lang="en">Issue-ticket debt classification</span></a>
+    </div>
+    <div class="mobgroup">
+      <div class="moblabel"><span lang="ja">教育</span><span lang="en">Teaching</span></div>
+      <a href="../teaching.html"><span lang="ja">教育・担当授業</span><span lang="en">Teaching &amp; courses</span></a>
+      <a href="index.html"><span lang="ja">ソフトウェア工学</span><span lang="en">Software Engineering</span></a>
+      <a href="logic-circuits.html"><span lang="ja">論理回路1</span><span lang="en">Logic Circuits I</span></a>
+      <a href="intelligent-informatics-1.html"><span lang="ja">知能情報実験実習1</span><span lang="en">Intelligent Informatics Lab I</span></a>
+      <a href="design-patterns.html"><span lang="ja">デザインパターン学習ガイド</span><span lang="en">Design Patterns Guide</span></a>
+      <a href="software-architecture.html"><span lang="ja">アーキテクチャパターン大全</span><span lang="en">Software Architecture</span></a>
+      <a href="uml-guide.html"><span lang="ja">クラス図/シーケンス図ガイド</span><span lang="en">UML Diagram Guide</span></a>
+      <a href="software-testing.html"><span lang="ja">ソフトウェアテスト学習ガイド</span><span lang="en">Software Testing Guide</span></a>
+      <a href="agile-scrum.html"><span lang="ja">アジャイル開発とスクラム</span><span lang="en">Agile &amp; Scrum</span></a>
+      <a href="requirements-engineering.html"><span lang="ja">要求工学</span><span lang="en">Requirements Engineering</span></a>
+      <a href="software-evolution.html"><span lang="ja">ソフトウェア進化と技術的負債</span><span lang="en">Software Evolution</span></a>
+      <a class="here" href="software-reuse-oss.html" aria-current="page"><span lang="ja">ソフトウェア再利用とOSS</span><span lang="en">Software Reuse &amp; OSS</span></a>
+      <a href="project-management.html"><span lang="ja">プロジェクト管理と見積もり</span><span lang="en">Project Management</span></a>
+      <a href="version-control-cicd.html"><span lang="ja">バージョン管理とCI/CD</span><span lang="en">Version Control &amp; CI/CD</span></a>
+    </div>
+    <div class="mobgroup">
+      <div class="moblabel"><span lang="ja">ガイド</span><span lang="en">Guides</span></div>
+      <a href="../software-engineering.html"><span lang="ja">ソフトウェア工学とは</span><span lang="en">What is software engineering</span></a>
+      <a href="../technical-debt.html"><span lang="ja">技術的負債とは</span><span lang="en">What is technical debt</span></a>
+      <a href="../glossary.html"><span lang="ja">研究用語ミニ辞典</span><span lang="en">Research glossary</span></a>
+    </div>
+    <div class="mobgroup">
+      <div class="moblabel"><span lang="ja">学生の皆さんへ</span><span lang="en">For Students</span></div>
+      <a href="../students.html"><span lang="ja">学生の皆さんへ</span><span lang="en">For Students</span></a>
+    </div>
+    <div class="mobfoot">
+      <a class="mobext" href="https://researchmap.jp/kimura_yuta" target="_blank" rel="noopener">researchmap</a>
+      <div class="lswitch" role="group" aria-label="言語 / Language">
+        <button type="button" class="ls-ja" onclick="setLang('ja')" aria-pressed="true">JA</button>
+        <button type="button" class="ls-en" onclick="setLang('en')" aria-pressed="false">EN</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<main id="main">
+
+<button class="totop" type="button" aria-label="上へ戻る" title="上へ戻る">&uarr;</button>
+
+<div class="wrap" style="padding-top:24px">
+  <nav class="crumbs" aria-label="パンくず">
+    <a href="../index.html"><span lang="ja">ホーム</span><span lang="en">Home</span></a>
+    <span class="csep" aria-hidden="true">&rsaquo;</span>
+    <a href="../teaching.html"><span lang="ja">教育</span><span lang="en">Teaching</span></a>
+    <span class="csep" aria-hidden="true">&rsaquo;</span>
+    <a href="index.html"><span lang="ja">ソフトウェア工学</span><span lang="en">Software Engineering</span></a>
+    <span class="csep" aria-hidden="true">&rsaquo;</span>
+    <span class="cur" aria-current="page"><span lang="ja">ソフトウェア再利用とOSS</span><span lang="en">Software Reuse &amp; OSS</span></span>
+  </nav>
+</div>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="wrap">
+    <p class="kick">Software Reuse &amp; OSS</p>
+    <h1>ソフトウェア再利用とOSS：<em>「作らない」</em>という設計判断</h1>
+    <p class="lead">現代のソフトウェア開発は「ゼロから書く」より「既にあるものを賢く組み合わせる」活動です。ライブラリとパッケージエコシステム、アプリケーションフレームワーク、ソフトウェアプロダクトライン、COTS（既製システム）、そしてコンポーネントベース開発：教科書が整理する再利用の技法を、<strong>目的・進め方・意識するポイント・注意点</strong>つきでカタログにしました。さらに、再利用の主戦場である<strong>OSS（オープンソースソフトウェア）</strong>の仕組み・ライセンス・貢献の作法・サプライチェーンセキュリティまで収録。OSSライセンス選択ガイドの体験デモ、理解度クイズ付きです。</p>
+    <p class="ja-note"><span lang="ja">この教材は日本語のみで提供しています</span><span lang="en">This learning material is available in Japanese only.</span></p>
+    <div class="hero-cta">
+      <a class="btn ink" href="#topics" style="padding:12px 22px">
+        <span lang="ja">再利用カタログへ</span><span lang="en">Jump to the reuse catalog</span>
+      </a>
+      <a class="tlink" href="#quiz">
+        <span lang="ja">理解度クイズへ</span><span lang="en">Comprehension quiz</span>
+        <span class="ar" aria-hidden="true">&rsaquo;</span>
+      </a>
+    </div>
+  </div>
+</div>
+
+<!-- INTRO -->
+<div id="toTopSentinel" aria-hidden="true"></div>
+
+<div class="tocbar">
+  <nav class="tocbar-inner" aria-label="ページ内目次">
+    <a class="tocpill" href="#intro"><span lang="ja">はじめに</span><span lang="en">Intro</span></a>
+    <a class="tocpill" href="#topics"><span lang="ja">再利用カタログ</span><span lang="en">Reuse catalog</span></a>
+    <a class="tocpill" href="#license-guide"><span lang="ja">ライセンス選択</span><span lang="en">License guide</span></a>
+    <a class="tocpill" href="#quiz"><span lang="ja">理解度クイズ</span><span lang="en">Quiz</span></a>
+    <a class="tocpill" href="#closing"><span lang="ja">おわりに</span><span lang="en">Closing</span></a>
+  </nav>
+</div>
+
+<section id="intro" style="padding-top:20px">
+  <div class="wrap reveal">
+    <p class="eyebrow"><span lang="ja">はじめに</span><span lang="en">Introduction</span></p>
+    <h2 class="big"><span lang="ja">ソフトウェア再利用とは何か</span><span lang="en">What is software reuse?</span></h2>
+    <div class="prose" id="introProse" style="margin-top:22px"></div>
+  </div>
+</section>
+
+<!-- REUSE CATALOG -->
+<section class="soft-sec" id="topics" style="padding-top:80px">
+  <div class="wrap">
+    <p class="eyebrow reveal"><span lang="ja">再利用カタログ</span><span lang="en">Reuse catalog</span></p>
+    <h2 class="big reveal"><span lang="ja">10の再利用技法・OSSトピック</span><span lang="en">Ten reuse techniques and OSS topics</span></h2>
+    <p class="lead reveal" style="max-width:var(--readw); margin-top:18px">再利用の技法（パッケージ・フレームワーク・プロダクトライン・COTS・コンポーネント）に加えて、再利用の最大の供給源であるOSSの世界（仕組み・ライセンス・貢献）、そして再利用に伴うリスクと現代的な形（サプライチェーン・API）を収録しました。カテゴリで絞り込み、各カードをクリックすると、目的・進め方・意識するポイント・注意点・具体例が開きます。</p>
+    <div class="controls reveal" style="margin-top:26px">
+      <div class="pills" role="tablist" aria-label="カテゴリ切替">
+        <button class="pill active" onclick="filterCat('all',this)">すべて<span>10</span></button>
+        <button class="pill" onclick="filterCat('reuse',this)">再利用の技法<span>5</span></button>
+        <button class="pill" onclick="filterCat('oss',this)">OSSの世界<span>3</span></button>
+        <button class="pill" onclick="filterCat('risk',this)">リスクと現代の再利用<span>2</span></button>
+      </div>
+      <div class="ctrl-right">
+        <input id="search" class="search" type="text" placeholder="名前・キーワードで絞り込み" aria-label="トピックを絞り込み">
+        <span class="learn-note" id="learnNote"></span>
+      </div>
+    </div>
+    <div id="topics-list"></div>
+  </div>
+</section>
+
+<!-- LICENSE CHOOSER -->
+<section id="license-guide">
+  <div class="wrap">
+    <p class="eyebrow reveal"><span lang="ja">ライセンスの選び方</span><span lang="en">Choosing a license</span></p>
+    <h2 class="big reveal"><span lang="ja">OSSライセンスをどう選ぶか</span><span lang="en">How to choose an OSS license</span></h2>
+    <div class="prose reveal" id="techProse" style="margin-top:22px"></div>
+    <div class="demo reveal" id="licDemo">
+      <h4>体験デモ：OSSライセンス選択ガイド</h4>
+      <p class="spec">あなたが自分の書いたソフトウェアをOSSとして公開するとします。3つの質問に答えると、考え方の合う代表的なライセンスを提案します。<b>※これは学習用の簡易ガイドであり、法的助言ではありません。</b>実際の選択では原文と専門家の助言を確認してください。</p>
+      <div id="licQ1" style="margin:18px 0 6px">
+        <p class="spec" style="margin:0 0 8px; color:var(--ink-2)"><b>Q1.</b> あなたのコードを改変・利用した人に、その<b>ソースコードの公開を義務づけたい</b>ですか？</p>
+        <div class="demo-row"><div class="try">
+          <button onclick="licAns(1,'always',this)">はい：派生物すべてに</button>
+          <button onclick="licAns(1,'lib',this)">部品（ライブラリ・ファイル）の改変分だけ</button>
+          <button onclick="licAns(1,'no',this)">いいえ：義務づけない</button>
+        </div></div>
+      </div>
+      <div id="licQ2" style="margin:18px 0 6px">
+        <p class="spec" style="margin:0 0 8px; color:var(--ink-2)"><b>Q2.</b> 利用者を<b>特許訴訟から守る「特許条項」</b>を明文で入れたいですか？</p>
+        <div class="demo-row"><div class="try">
+          <button onclick="licAns(2,'yes',this)">はい：明文で欲しい</button>
+          <button onclick="licAns(2,'simple',this)">こだわらない：短く簡潔がよい</button>
+        </div></div>
+      </div>
+      <div id="licQ3" style="margin:18px 0 6px">
+        <p class="spec" style="margin:0 0 8px; color:var(--ink-2)"><b>Q3.</b> 企業の<b>クローズドな製品への組み込み</b>も歓迎しますか？</p>
+        <div class="demo-row"><div class="try">
+          <button onclick="licAns(3,'yes',this)">はい：広く使われたい</button>
+          <button onclick="licAns(3,'no',this)">オープンな世界の中で使ってほしい</button>
+        </div></div>
+      </div>
+      <div class="demo-out" id="licOut">3つの質問すべてに答えると、おすすめのライセンスと理由がここに表示されます。答えを変えると提案も変わるので、いろいろ試してみてください。</div>
+    </div>
+  </div>
+</section>
+
+<!-- QUIZ -->
+<section class="soft-sec" id="quiz" style="padding-top:80px">
+  <div class="wrap">
+    <p class="eyebrow reveal"><span lang="ja">理解度チェック</span><span lang="en">Check your understanding</span></p>
+    <h2 class="big reveal"><span lang="ja">理解度チェッククイズ</span><span lang="en">Comprehension quiz</span></h2>
+    <p class="lead reveal" style="max-width:var(--readw); margin-top:18px">それぞれの状況に<strong>もっとも適した技法・用語</strong>を選んでください。<span id="quizScore"></span></p>
+    <div id="quizBody" class="reveal"></div>
+    <button class="btn ink quiz-reset" onclick="buildQuiz()" style="padding:11px 22px">
+      <span lang="ja">もう一度挑戦する</span><span lang="en">Try again</span>
+    </button>
+  </div>
+</section>
+
+<!-- CLOSING -->
+<section id="closing">
+  <div class="wrap reveal">
+    <p class="eyebrow"><span lang="ja">おわりに</span><span lang="en">In closing</span></p>
+    <h2 class="big"><span lang="ja">再利用に向き合う心構えと、さらに学ぶために</span><span lang="en">How to think about reuse, and where to learn more</span></h2>
+    <div class="prose" id="closingProse" style="margin-top:22px"></div>
+  </div>
+</section>
+
+</main>
+
+<!-- FOOTER -->
+<footer>
+  <div class="wrap">
+    <div class="cite">
+      <span lang="ja">ソフトウェア再利用とOSS（パッケージエコシステム・フレームワーク・プロダクトライン・COTS・コンポーネントベース開発・OSSライセンスとサプライチェーン）を、これから学ぶ方向けにまとめた学習ガイドです。木村祐太のソフトウェア工学の授業教材の一部としてご覧いただけます。授業の詳細（評価方法・日程等）は最新のシラバスを確認してください。</span>
+      <span lang="en">A study guide to software reuse and open source software (package ecosystems, frameworks, product lines, COTS, CBSE, OSS licensing, and supply chain security), for those new to it. Part of Yuta Kimura's software engineering course materials. For course details such as assessment and schedule, please refer to the latest syllabus.</span>
+    </div>
+    <div class="foot-grid">
+      <div>
+        <h3><span lang="ja">連絡先</span><span lang="en">Contact</span></h3>
+        <p class="muted-s">
+          <b>木村 祐太 / Yuta Kimura</b><br>
+          <span lang="ja">大阪公立大学工業高等専門学校</span><span lang="en">Osaka Metropolitan University College of Technology</span><br>
+          <a href="mailto:y.kimura@omu.ac.jp">y.kimura [at] omu.ac.jp</a>
+        </p>
+      </div>
+      <div>
+        <h3><span lang="ja">サイト</span><span lang="en">Site</span></h3>
+        <p class="muted-s">
+          <a href="../index.html"><span lang="ja">ホーム</span><span lang="en">Home</span></a><br>
+          <a href="../publications.html"><span lang="ja">業績・研究活動</span><span lang="en">Publications &amp; research activities</span></a><br>
+          <a href="../teaching.html"><span lang="ja">教育</span><span lang="en">Teaching</span></a><br>
+          <a href="../software-engineering.html"><span lang="ja">ソフトウェア工学とは</span><span lang="en">What is software engineering?</span></a><br>
+          <a href="../technical-debt.html"><span lang="ja">技術的負債とは</span><span lang="en">What is technical debt?</span></a><br>
+          <a href="../students.html"><span lang="ja">学生の皆さんへ</span><span lang="en">For students</span></a><br>
+          <a href="../glossary.html"><span lang="ja">用語集</span><span lang="en">Glossary</span></a>
+        </p>
+      </div>
+      <div>
+        <h3><span lang="ja">研究</span><span lang="en">Research</span></h3>
+        <p class="muted-s">
+          <a href="../research/technical-debt-metrics.html"><span lang="ja">メトリクスによる分類・特徴づけ</span><span lang="en">Classifying debt with metrics</span></a><br>
+          <a href="../research/apr-coding-standards.html"><span lang="ja">自動生成パッチと品質</span><span lang="en">Auto-generated patches and quality</span></a><br>
+          <a href="../research/td-repayment-refactoring.html"><span lang="ja">返済とリファクタリング</span><span lang="en">Repayment and refactoring</span></a><br>
+          <a href="../research/satd-issue-classification.html"><span lang="ja">TD-Issue の自動分類</span><span lang="en">Automatic TD-Issue classification</span></a><br>
+          <a href="https://researchmap.jp/kimura_yuta" target="_blank" rel="noopener">researchmap</a>
+        </p>
+      </div>
+    </div>
+    <div class="foot-rule"></div>
+    <p class="foot-note">
+      <span lang="ja">© 2026 Yuta Kimura. ソフトウェア再利用とコンポーネントベースソフトウェア工学の解説は Ian Sommerville『Software Engineering (10th ed.)』第15章・第16章に基づく概説です。OSSライセンス・エコシステム・サプライチェーンセキュリティの解説は、OSI・OpenSSF・CISA・Black Duck（OSSRA）等の公開資料と実務慣行に基づきます。本ページのライセンスに関する記述は教育目的の概説であり、法的助言ではありません。</span>
+      <span lang="en">© 2026 Yuta Kimura. This overview of software reuse and CBSE follows Chapters 15 and 16 of Ian Sommerville, <i>Software Engineering</i> (10th ed.). Sections on OSS licensing, ecosystems, and supply chain security draw on publicly available sources (OSI, OpenSSF, CISA, Black Duck OSSRA). License notes are for education only and are not legal advice.</span>
+    </p>
+  </div>
+</footer>
+<script>
+/* ============== コンテンツデータ ============== */
+const INTRO_HTML = `
+<p><b>ソフトウェア再利用（software reuse）</b>とは、既存のソフトウェア（クラス・ライブラリ・コンポーネント・システム全体）を
+新しいシステムの開発に活かすことです。既存資産の再利用を前提とした<b>再利用ベースのソフトウェア工学</b>は
+2000年頃から一般化し、現在では<strong>標準的な開発アプローチ</strong>になっています。
+同じドメイン（応用分野）のシステムは互いに似ているため、再利用できる可能性が高い：これが出発点の洞察です。</p>
+
+<p>実際、Linux Foundation の調査（Census II）は「現代のソフトウェアの<strong>70〜90%はオープンソース（FOSS）で構成されている</strong>」と述べ、
+Black Duck 社の OSSRA 2025 レポート（商用コードベース965件の監査）でも、1アプリケーションあたりのオープンソースファイル数は
+2020年の約5,300から2024年には<strong>約16,000へと3倍</strong>に増えたと報告されています。
+つまり現代の開発者が書く「自分のコード」は氷山の一角で、その下に巨大な再利用の土台が広がっています。
+「何を作り、何を作らないか」：再利用はコーディングのテクニックではなく、<strong>設計判断そのもの</strong>なのです。</p>
+
+<h4>再利用の利点：なぜ「作らない」のか</h4>
+<div class="principles">
+  <div class="p"><b>① 開発の迅速化</b><br>
+    <span>すでに動くものを使えば、市場投入までの時間（time to market）を大きく短縮できる。開発スケジュールが短いほど、既製システムの利用が有利になる。</span></div>
+  <div class="p"><b>② 低コスト・低リスク</b><br>
+    <span>開発すべき量が減ればコストの<strong>見積もりの不確実さ</strong>も減る。すでに存在するものは「作れないリスク」がない。</span></div>
+  <div class="p"><b>③ 高い信頼性（dependability）</b><br>
+    <span>広く使われてきたソフトウェアは、多くの環境で試験され、欠陥が発見・修正済み。自作の初物より実績のぶんだけ信頼できる。</span></div>
+  <div class="p"><b>④ 専門知識の共有</b><br>
+    <span>暗号・数値計算・日時処理などの専門家の知識を、再利用要素という形でチーム全体・世界全体で共有できる。標準への準拠（UIの定番動作など）も部品ごと手に入る。</span></div>
+</div>
+
+<div class="callout warn">
+  <h4>ただし「タダ」ではない：再利用の隠れたコスト</h4>
+  再利用には固有のコストと問題が伴います。①<strong>探すコスト</strong>：要求に合う部品を発見・選定する時間、
+  ②<strong>理解するコスト</strong>：他人が書いたものの仕様・前提・くせを学ぶ時間、
+  ③<strong>統合するコスト</strong>：自分のシステムやほかの部品と組み合わせて動かす手間（インタフェースの不適合・想定の衝突）、
+  ④<strong>保守追随のコスト</strong>：部品側のバージョンアップ・脆弱性修正に追従し続ける負担。
+  さらに「よそで作られたものは信用しない」という<strong>NIH（Not Invented Here）症候群</strong>という組織的・心理的な障壁もあります。
+  再利用の判断とは、これらのコストと利点を天秤にかけることです。
+</div>
+
+<h4>再利用のレベル：何を再利用するのか</h4>
+<p>「再利用」と一口に言っても、その<strong>抽象度と規模</strong>には段階があります。
+小さく抽象的なものほど柔軟に使えますが、得られる「出来合いの機能」は少なく、
+大きく具体的なものほど一気に機能が手に入りますが、自分の要求に合わせる自由は減ります。</p>
+<div class="diagram-wrap">
+<svg viewBox="0 0 760 300" role="img" aria-label="再利用のレベル：抽象・オブジェクト・コンポーネント・システム">
+  <rect x="20" y="40" width="400" height="52" rx="12" class="dg-box" stroke="#5B655F" stroke-width="1.4"/>
+  <text x="220" y="62" class="dg-lbl">① 抽象（アイデア）の再利用</text>
+  <text x="220" y="80" class="dg-el">設計パターン・アーキテクチャ：コードは書き直す</text>
+  <rect x="60" y="104" width="400" height="52" rx="12" class="dg-box" stroke="#3E5C50" stroke-width="1.4"/>
+  <text x="260" y="126" class="dg-lbl">② オブジェクト・関数の再利用</text>
+  <text x="260" y="144" class="dg-el">クラスライブラリ・npm / PyPI のパッケージ</text>
+  <rect x="100" y="168" width="400" height="52" rx="12" class="dg-box" stroke="#0E6F5C" stroke-width="1.4"/>
+  <text x="300" y="190" class="dg-lbl">③ コンポーネントの再利用</text>
+  <text x="300" y="208" class="dg-el">オブジェクトの集合体：フレームワーク・CBSEの単位</text>
+  <rect x="140" y="232" width="400" height="52" rx="12" class="dg-box" stroke="#0A5748" stroke-width="1.6"/>
+  <text x="340" y="254" class="dg-lbl">④ システムの再利用</text>
+  <text x="340" y="272" class="dg-el">COTS・ERP・SaaS・プロダクトライン</text>
+  <path d="M620 52 L620 272" class="dg-line" marker-end="url(#ahL)"/>
+  <text x="636" y="60" class="dg-el" text-anchor="start">抽象的・小粒</text>
+  <text x="636" y="76" class="dg-el" text-anchor="start">柔軟だが手間は残る</text>
+  <text x="636" y="252" class="dg-el" text-anchor="start">具体的・大粒</text>
+  <text x="636" y="268" class="dg-el" text-anchor="start">機能は一括、自由は減る</text>
+  <defs><marker id="ahL" markerWidth="9" markerHeight="9" refX="8" refY="4.5" orient="auto">
+    <path d="M0,0 L9,4.5 L0,9 z" fill="#6B746F"/></marker></defs>
+</svg>
+<div class="dg-legend">再利用のレベル：下に行くほど再利用の単位が大きくなり、「作る量」は減るが「合わせる・妥協する」比重が増える。</div>
+</div>
+
+<h4>再利用の風景（reuse landscape）</h4>
+<p>教科書（Sommerville 10th, Ch.15）は、抽象度と規模の異なる多くの再利用技法の全体を
+<b>再利用の風景（reuse landscape）</b>と呼びます。このページのカタログは、この風景の主要な住人たちを1枚ずつ訪ねていく構成です。</p>
+<div class="diagram-wrap">
+<svg viewBox="0 0 760 250" role="img" aria-label="再利用の風景：主要な技法の全体図">
+  <rect x="20" y="30" width="720" height="185" rx="14" fill="none" stroke="var(--line)" stroke-width="1.2"/>
+  <text x="380" y="54" class="dg-lbl">再利用の風景（reuse landscape）：主要な技法たち</text>
+  <rect x="40" y="72" width="160" height="58" rx="10" class="dg-box" stroke="#3E5C50" stroke-width="1.3"/>
+  <text x="120" y="96" class="dg-lbl">ライブラリ / パッケージ</text>
+  <text x="120" y="114" class="dg-el">npm・PyPI・Maven</text>
+  <rect x="216" y="72" width="160" height="58" rx="10" class="dg-box" stroke="#0E6F5C" stroke-width="1.3"/>
+  <text x="296" y="96" class="dg-lbl">フレームワーク</text>
+  <text x="296" y="114" class="dg-el">Rails・Spring・React</text>
+  <rect x="392" y="72" width="160" height="58" rx="10" class="dg-box" stroke="#0E6F5C" stroke-width="1.3"/>
+  <text x="472" y="96" class="dg-lbl">コンポーネント（CBSE）</text>
+  <text x="472" y="114" class="dg-el">独立配備・合成</text>
+  <rect x="568" y="72" width="160" height="58" rx="10" class="dg-box" stroke="#8A6D3B" stroke-width="1.3"/>
+  <text x="648" y="96" class="dg-lbl">Webサービス / API</text>
+  <text x="648" y="114" class="dg-el">決済・地図・生成AI</text>
+  <rect x="40" y="146" width="160" height="58" rx="10" class="dg-box" stroke="#5B655F" stroke-width="1.3"/>
+  <text x="120" y="170" class="dg-lbl">設計 / アーキテクチャ</text>
+  <text x="120" y="188" class="dg-el">パターンの再利用</text>
+  <rect x="216" y="146" width="160" height="58" rx="10" class="dg-box" stroke="#0A5748" stroke-width="1.3"/>
+  <text x="296" y="170" class="dg-lbl">プロダクトライン</text>
+  <text x="296" y="188" class="dg-el">コア資産＋可変点</text>
+  <rect x="392" y="146" width="160" height="58" rx="10" class="dg-box" stroke="#0A5748" stroke-width="1.3"/>
+  <text x="472" y="170" class="dg-lbl">COTS / ERP</text>
+  <text x="472" y="188" class="dg-el">構成して使う既製品</text>
+  <rect x="568" y="146" width="160" height="58" rx="10" class="dg-box" stroke="#8A6D3B" stroke-width="1.3"/>
+  <text x="648" y="170" class="dg-lbl">SaaS / クラウド</text>
+  <text x="648" y="188" class="dg-el">借りて使う既製品</text>
+  <text x="380" y="238" class="dg-note">左上ほど「コードとして取り込む」再利用、右下ほど「できあいのサービスをそのまま使う」再利用</text>
+</svg>
+<div class="dg-legend">どの技法を選ぶかに絶対の正解はなく、要求・技術・組織の状況で決まる。複数を組み合わせるのが普通。</div>
+</div>
+
+<h4>技法をどう選ぶか：考慮すべきこと</h4>
+<ul>
+  <li><b>開発スケジュール</b>：短いなら、大粒の再利用（既製システムの利用）が有利。</li>
+  <li><b>ソフトウェアの想定寿命</b>：長く使うシステムなら、部品の<strong>進化可能性</strong>（ベンダーやコミュニティが将来も保守してくれるか）を重視する。</li>
+  <li><b>チームの能力・スキル</b>：フレームワークの学習コストは高い。チームが使いこなせる技術かどうか。</li>
+  <li><b>ソフトウェアの重要度</b>：高い信頼性が要るシステムでは、中身を検査できない部品（ソース非公開のCOTS）はリスクになる。</li>
+  <li><b>アプリケーションドメインとプラットフォーム</b>：そのドメイン向けの既製品（ERPなど）や、プラットフォームに縛られた部品の有無。</li>
+</ul>
+
+<div class="callout tip">
+  <h4>この教材の歩き方</h4>
+  カタログは「<b>再利用の技法</b>」（教科書 Ch.15-16 の柱）→「<b>OSSの世界</b>」（現代の再利用の最大の供給源）→
+  「<b>リスクと現代の再利用</b>」（サプライチェーン・API）の順に並んでいます。
+  各カード末尾の「習得チェック」を付けると、絞り込みバー右側に進捗が表示されます（保存はされず、ページを開いている間だけ保持されます）。
+  一通り読んだら<a href="#quiz">理解度チェッククイズ</a>で定着を確認しましょう。
+</div>
+`;
+</script>
+<script>
+const TECH_HTML = `
+<p>OSSの再利用で技術と同じくらい重要なのが<strong>ライセンス</strong>です。ライセンスは「このソフトウェアを、どんな条件で使ってよいか」という
+著作権者からの許諾であり、条件を守らない利用は<strong>著作権侵害</strong>になり得ます。
+大きく分けると、改変版にも同じ自由を義務づける<b>コピーレフト型</b>（GPL系）と、
+表示さえ守ればクローズドな製品への組み込みも許す<b>パーミッシブ型</b>（MIT・Apache-2.0・BSD）の2つの思想があります。</p>
+<div class="principles">
+  <div class="p"><b>コピーレフト（copyleft）の発想</b><br>
+    <span>「自由なソフトウェアから作られたものは、自由であり続けるべきだ」。GPLで受け取った自由を、次の利用者にも<strong>同じ条件で</strong>引き継がせる。強さに段階がある（GPL＞LGPL＞MPL）。</span></div>
+  <div class="p"><b>パーミッシブ（permissive）の発想</b><br>
+    <span>「とにかく広く使われることが価値だ」。著作権表示と免責の維持だけを求め、商用のクローズドな製品への組み込みも自由。MIT・BSD・Apache-2.0 が代表。</span></div>
+</div>
+<p>自分がOSSを<strong>使う</strong>ときはライセンスの義務（表示・ソース開示など）を守る側に、
+自分が<strong>公開する</strong>ときはライセンスを選ぶ側に立ちます。
+下のデモは「公開する側」の考え方を体験するものです。実務では
+<a href="https://choosealicense.com/" target="_blank" rel="noopener">choosealicense.com</a>（GitHub運営）や
+<a href="https://opensource.org/licenses" target="_blank" rel="noopener">OSI のライセンス一覧</a>が定番の出発点になります。</p>
+`;
+
+const CLOSING_HTML = `
+<p>最後に、個々の技法の知識を「使える判断力」に変えるための視点をまとめます。</p>
+<div class="callout warn">
+  <h4>「作らない」ことにも設計とコストがある</h4>
+  再利用は「楽をする」ことではなく、<strong>探す・理解する・統合する・追随し続ける</strong>という別の仕事を引き受けることです。
+  依存を1つ追加することは、その部品の将来のバージョンアップ・脆弱性・開発停止まで引き受けるという長期の契約に近い：
+  「この依存は、この仕事量に見合うか？」と問う習慣が、よい設計判断の第一歩です。
+  逆に、実績ある部品があるのに「よそのものは信用できない」と自作に走るNIH症候群も、同じくらい高くつきます。
+</div>
+<div class="callout tip">
+  <h4>OSSは「無料の資材置き場」ではなく、人が保守する公共財</h4>
+  あなたが使うライブラリの向こう側には、多くの場合ごく少数の（ときに無償の）メンテナがいます。
+  Nadia Eghbal『Working in Public』は、広く使われるOSSの保守が一部の個人に集中する構造を描き、
+  xz-utils 事件はまさに「疲弊した単独メンテナ」が攻撃の入口になりました。
+  Issue の書き方ひとつ、PR のマナーひとつが、この公共財の持続可能性に関わっています。
+</div>
+<div class="callout">
+  <h4>依存は「見える化」して管理する</h4>
+  自分のシステムが何に依存しているか（推移的依存を含めて）を言えないなら、それはもう管理できていません。
+  lockファイルによる再現性の確保、SBOMによる部品表の整備、Dependabot などによる継続的な脆弱性監視：
+  現代の開発では、依存の管理はコードを書くことと同格の日常業務です。
+</div>
+
+<h4 style="margin-top:26px">混同しやすい用語の見分け方</h4>
+<p>似ている用語は、<strong>「誰が主導権を持つか」「何を義務づけるか」</strong>で見分けます。試験でも実務でも問われるポイントです。</p>
+<table class="cmp-table">
+  <tr><th>似ている用語</th><th>見分けるポイント</th></tr>
+  <tr><td><b>ライブラリ</b> と <b>フレームワーク</b></td>
+    <td>制御の向きが逆。ライブラリは<b>自分のコードが呼ぶ</b>。フレームワークは<b>フレームワークが自分のコードを呼ぶ</b>（制御の逆転・ハリウッド原則）。</td></tr>
+  <tr><td><b>コピーレフト</b> と <b>パーミッシブ</b></td>
+    <td>改変・組み込んだ側に<b>ソース公開を義務づける</b>のがコピーレフト（GPL系）。表示・免責の維持だけを求め、クローズド化も許すのがパーミッシブ（MIT・Apache-2.0・BSD）。</td></tr>
+  <tr><td><b>GPL</b> と <b>LGPL</b></td>
+    <td>強さの違い。GPLは<b>リンクして作ったプログラム全体</b>に及ぶ。LGPLは<b>ライブラリ本体の改変分だけ</b>で、動的リンクして使うアプリはクローズドでもよい。</td></tr>
+  <tr><td><b>MIT</b> と <b>Apache-2.0</b></td>
+    <td>どちらもパーミッシブ。Apache-2.0 は<b>明文の特許ライセンス条項</b>と変更点の明示義務を持つ、条文の整った「企業向けMIT」。MITは極限まで短くシンプル。</td></tr>
+  <tr><td><b>COTS利用</b> と <b>自作（カスタム開発）</b></td>
+    <td>COTSは<b>速い・安い・実績あり</b>だが、要求との不一致には「業務を合わせる」しかなく、進化の主導権はベンダーにある。自作は要求に完全に合うが、遅い・高い・リスクは自分持ち。</td></tr>
+  <tr><td><b>コンポーネント</b> と <b>オブジェクト（クラス）</b></td>
+    <td>コンポーネントは<b>単体で配備できるバイナリ単位</b>で、インタフェース（provides / requires）だけで完全に定義される。クラスはソースコードレベルの構成単位で、単体配備はできない。</td></tr>
+  <tr><td><b>再利用のためのCBSE</b> と <b>再利用によるCBSE</b></td>
+    <td>前者は再利用可能なコンポーネントを<b>作る</b>プロセス（汎用化する）。後者はコンポーネントを<b>使って</b>システムを作るプロセス（要求とコンポーネントをすり合わせる）。</td></tr>
+  <tr><td><b>フォーク</b> と <b>コントリビュート</b></td>
+    <td>フォークはコピーして<b>自分の系統として維持</b>すること（保守負担も引き取る）。コントリビュートは変更を<b>本家に還元</b>すること（PRを送りマージしてもらう）。GitHubの「fork→PR」は後者の作業手順としてのフォーク。</td></tr>
+  <tr><td><b>SBOM</b> と <b>SCA</b></td>
+    <td>SBOMは「何が入っているか」の<b>部品表（成果物）</b>。SCA（Software Composition Analysis）はそれを作り、既知の脆弱性・ライセンス問題を検出する<b>分析活動・ツール</b>。</td></tr>
+  <tr><td><b>OSS</b> と <b>「ソースが見えるだけ」のソフトウェア</b></td>
+    <td>OSSはOSI の定義（OSD）を満たすもの：<b>自由な再配布・改変・利用分野の無差別</b>など。ソース公開でも「商用利用禁止」「競合利用禁止」等の制限付き（source-available）はOSSではない。</td></tr>
+</table>
+
+<h4 style="margin-top:26px">研究者の視点：再利用はいま、研究の最前線でもある</h4>
+<div class="callout">
+  <h4>ソフトウェアエコシステムの実証研究</h4>
+  npm や PyPI のような巨大エコシステムは、依存関係のグラフ・脆弱性の伝播・メンテナの持続可能性を実データで研究できる場になっています。
+  left-pad 事件後には「取るに足らない小さなパッケージ（trivial packages）はなぜ使われるのか」という実証研究が生まれ、
+  依存の自動更新（Dependabot のようなボット）が開発者の行動に与える影響、
+  推移的依存に潜む脆弱性が実際に呼び出されているかを判定する到達可能性解析、
+  そして生成AIがパッケージ選択・供給網に与える影響など、マイニングソフトウェアリポジトリ（MSR）分野の中心テーマであり続けています。
+</div>
+
+<h4 style="margin-top:26px">さらに学ぶための文献・資料</h4>
+<ul>
+  <li>I. Sommerville『Software Engineering (10th ed.)』Pearson, 2016年, 第15章（Software reuse）・第16章（Component-based software engineering）：本教材の底本</li>
+  <li><a href="https://opensource.org/osd" target="_blank" rel="noopener">Open Source Initiative（OSI）: The Open Source Definition</a>：「オープンソース」の公式定義とライセンス一覧</li>
+  <li><a href="https://choosealicense.com/" target="_blank" rel="noopener">choosealicense.com</a>（GitHub）：ライセンス選択の定番ガイド。日本語なら IPA・情報処理推進機構のOSSライセンス関連資料も参考になる</li>
+  <li>Nadia Eghbal『Working in Public: The Making and Maintenance of Open Source Software』Stripe Press, 2020年：OSSの開発・保守の実態を描いた現代の必読書</li>
+  <li><a href="https://openssf.org/" target="_blank" rel="noopener">OpenSSF（Open Source Security Foundation）</a>：OSSサプライチェーンセキュリティのベストプラクティス（Scorecard・SLSA など）</li>
+  <li><a href="https://www.cisa.gov/sbom" target="_blank" rel="noopener">CISA: Software Bill of Materials (SBOM)</a>：SBOMの最小要素（2025年更新）と関連資料</li>
+  <li><a href="https://www.blackduck.com/resources/analyst-reports/open-source-security-risk-analysis.html" target="_blank" rel="noopener">Black Duck『Open Source Security and Risk Analysis Report（OSSRA）』</a>：商用コードベースのOSS利用実態の年次調査（旧 Synopsys）</li>
+  <li>E. Raymond『伽藍とバザール』：OSS開発様式の古典的エッセイ。歴史的背景を知るならこちら</li>
+</ul>
+`;
+</script>
+<script>
+/* ============== トピックデータ（カテゴリ別） ============== */
+const CAT_ORDER = ['reuse','oss','risk'];
+const CAT_META = {
+  reuse:{ label:'再利用の技法', en:'Reuse techniques', color:'var(--reuse)',
+    desc:'教科書（Sommerville 10th, Ch.15-16）が整理する再利用の主要な技法。粒度の小さいライブラリから、フレームワーク、コンポーネント、製品の族（プロダクトライン）、そして既製システム（COTS）まで：「どの大きさの単位で再利用するか」の選択肢を順に見ていく。'},
+  oss:{ label:'OSSの世界', en:'The open source world', color:'var(--oss)',
+    desc:'現代の再利用の最大の供給源がOSS（オープンソースソフトウェア）。それは技術であると同時に、ライセンスという法の仕組みであり、世界規模の共同開発の文化でもある。使う・選ぶ・貢献する：3つの立場から理解する。'},
+  risk:{ label:'リスクと現代の再利用', en:'Risks & modern reuse', color:'var(--risk)',
+    desc:'再利用は「他人のコードとサービスに自分のシステムの一部を委ねる」ことでもある。依存がもたらすサプライチェーンのリスクと、コードを取り込まずにサービスとして再利用する現代的な形（API・クラウド）を押さえる。'}
+};
+const BADGE_CLS = {'再利用の技法':'imp3','導入の判断':'imp2','仕組みと文化':'imp2','法とライセンス':'imp3','貢献の作法':'imp1','リスク管理':'imp3','現代の再利用':'imp2'};
+
+const ITEMS = [
+/* ---------- 再利用の技法 ---------- */
+{
+  id:'package-ecosystems', name:'Libraries & Package Ecosystems', jp:'ライブラリとパッケージエコシステム', cat:'reuse',
+  badge:'再利用の技法', tags:['npm / PyPI / Maven','依存解決','lockファイル'],
+  summary:'関数・クラスの再利用を世界規模に拡大した仕組み。<strong>パッケージマネージャ</strong>が中央レジストリから部品を取得し、<strong>依存関係を自動解決</strong>する：現代の再利用のもっとも日常的な形。',
+  analogy:'世界中の部品メーカーのカタログから型番で注文すると、その部品が必要とする下位部品まで自動でまとめて届く通販システム。便利な反面、1つの注文の裏で何百個の部品が届いているかは、明細（lockファイル）を見ないと分からない。',
+  purpose:'汎用的な機能（HTTP通信・日時処理・数値計算・UI部品）を自作せず、実績あるライブラリで済ませる。バージョン管理と依存解決を機械に任せ、部品の入手・更新のコストを最小化する。',
+  who:'すべての開発者が日常的に使う。言語ごとにエコシステムがある：npm（JavaScript）・PyPI（Python）・Maven Central（Java）・crates.io（Rust）・RubyGems（Ruby）。',
+  steps:[
+    '必要な機能を提供するパッケージを<b>探して比較する</b>（機能・人気・保守の活発さ・ライセンス）',
+    'マニフェストファイル（<code>package.json</code>・<code>requirements.txt</code>・<code>pom.xml</code>）に<b>依存とバージョン範囲を宣言</b>する',
+    'パッケージマネージャが<b>依存解決</b>を行う：そのパッケージが依存するパッケージ（推移的依存）まで芋づる式に取得する',
+    '解決結果の正確なバージョンを<b>lockファイル</b>（<code>package-lock.json</code>・<code>poetry.lock</code>）に固定し、誰のマシンでも同じ構成を再現できるようにする',
+    '定期的に更新を取り込み、脆弱性情報を監視する（保守追随）'
+  ],
+  points:[
+    '<b>セマンティックバージョニング（SemVer）</b>を理解する：<code>MAJOR.MINOR.PATCH</code>（例 4.18.2）で、MAJORは非互換変更・MINORは後方互換の機能追加・PATCHはバグ修正。<code>^4.18.2</code> は「4.x の範囲で更新可」、<code>~4.18.2</code> は「4.18.x のみ」という範囲指定',
+    '<b>lockファイルは必ずコミットする</b>：マニフェストだけでは「昨日と今日でインストール結果が違う」が起こり得る（再現性の要）',
+    '選定では<b>保守の活発さ</b>（最終更新・Issue対応）と<b>ライセンス</b>を必ず確認する（OSSRA 2024 では、監査対象コードベースの49%に2年以上更新のない部品が含まれていた）',
+    '直接の依存は数個でも、<b>推移的依存は数百個</b>に膨らむのが普通：「自分が何をインストールしたか」に自覚的になる'
+  ],
+  cautions:[
+    '<b>依存地獄（dependency hell）</b>：パッケージAとBが同じライブラリCの互換性のない別バージョンを要求して解決不能になる、更新が連鎖して壊れる、といった泥沼。依存が増えるほど起こりやすい',
+    '<code>^</code> のような範囲指定は便利だが、<b>作者がSemVerを守らない</b>と「パッチ更新のはずが壊れた」が起きる：lockファイルとCIでの検証が保険',
+    '左記の「探す・理解する」コストを飛ばして<b>星の数だけで選ぶ</b>と、保守停止・脆弱性・ライセンス問題を引き込む',
+    'インストール時にスクリプトが走るエコシステムでは、パッケージ追加は<b>他人のコードの実行</b>そのもの：タイポスクワッティング（名前の似た悪意あるパッケージ）に注意'
+  ],
+  examples:[
+    'npm レジストリは<b>数百万パッケージ</b>規模の世界最大のエコシステム。<code>npm install express</code> 一発でWebサーバの土台が手に入る',
+    'Python の <code>requests</code>（HTTP）、Java の Apache Commons、Rust の <code>serde</code>（シリアライズ）：各言語の「定番部品」',
+    '下のコード例：<code>package.json</code> と <code>requirements.txt</code> の依存指定とバージョン範囲の書き方'
+  ],
+  related:'<b>フレームワーク</b>との違い：ライブラリは「自分のコードから呼び出す」部品で、制御は常に自分側にある。<b>コンポーネント（CBSE）</b>のような独立配備の単位ではなく、ソース・バイナリとして自分のプログラムに取り込まれる。',
+  modern:'モノレポと pnpm / uv などの高速ツール、GitHub の Dependabot / Renovate による更新自動化が標準。生成AIがコードとともに「存在しないパッケージ名」を提案する問題（スロップスクワッティングと呼ばれる攻撃の温床）も指摘され、依存の検証はますます重要になっている。',
+  hasCode:true
+},
+{
+  id:'application-frameworks', name:'Application Frameworks', jp:'アプリケーションフレームワーク', cat:'reuse',
+  badge:'再利用の技法', tags:['制御の逆転','MVC','Rails / Spring / Django / React'],
+  summary:'アプリケーションの<strong>骨格そのもの</strong>を再利用する技法。拡張して使うことを前提に統合された、汎用的な抽象・具象クラスの集合。あなたのコードは骨格の「空欄」を埋める形で書かれる。',
+  analogy:'具材を差し替えられる「型」が決まった駅弁のフランチャイズ。容器・仕切り・調理場・レジ（＝共通の骨格）は本部が用意し、加盟店は自分の具材（＝アプリ固有のコード）を決まった枠に詰める。開店は速いが、枠の形は変えられない。',
+  purpose:'Webアプリなどの定型的なアーキテクチャ（ルーティング・DB接続・画面描画・認証）を毎回作り直さず、実績ある骨格の上でアプリ固有の部分だけを書く。設計パターンの良い実践が骨格に組み込み済みであることも価値。',
+  who:'開発チームがアプリケーションの土台として採用する。Webアプリケーションフレームワーク（WAF）が最も広く使われる形。',
+  steps:[
+    'アプリの種類・言語・チームのスキルに合うフレームワークを<b>選定する</b>（この選択は後から変えにくい）',
+    'フレームワークの<b>規約と構造</b>（ディレクトリ構成・命名・ライフサイクル）を学ぶ',
+    '骨格の拡張点に自分のコードを書く：<b>継承</b>（抽象クラスの実装）・<b>コールバック登録</b>・<b>プラグイン追加</b>が典型的な拡張手段',
+    'フレームワークが提供する部品（ORM・テンプレート・認証）を組み合わせて機能を作る',
+    'フレームワーク本体のバージョンアップに追随する'
+  ],
+  points:[
+    '核心は<b>制御の逆転（Inversion of Control）</b>：ライブラリでは自分のコードがライブラリを呼ぶが、フレームワークでは<b>フレームワークがイベント（HTTPリクエスト・GUI操作）を検知し、あなたのコードを呼び出す</b>。「われわれを呼ぶな、必要ならこちらから呼ぶ」：ハリウッド原則と呼ばれる',
+    '代表的な設計として <b>MVC（Model-View-Controller）</b>：データ（Model）・見た目（View）・入力処理（Controller）を分離し、同じModelに複数のViewを付けられる。多くのWAFの土台',
+    '「設定より規約（Convention over Configuration）」：Rails が広めた思想。規約に従う限り書く量が激減する',
+    'フレームワークは<b>良い設計の缶詰</b>：Observer などの設計パターンが骨格に埋め込まれており、使いながら設計を学べる'
+  ],
+  cautions:[
+    '<b>学習コストが高い</b>：本格的なフレームワークの習得には数か月かかることもあり、短期プロジェクトでは元が取れないことがある',
+    '骨格に従う代わりに<b>自由を失う</b>：フレームワークの想定から外れた要件は、途端に実装が苦しくなる',
+    '<b>制御の逆転ゆえの統合問題</b>：教科書も指摘するとおり、同じ「自分がイベントを検知して制御する」前提のフレームワーク（やシステム）同士を1つに統合しようとすると、主導権の取り合いで衝突する',
+    'フレームワークの寿命＝アプリの寿命になりがち。メジャーバージョンアップ・開発終了への追随コストを見込んでおく'
+  ],
+  examples:[
+    'Webアプリ：<b>Ruby on Rails</b>・<b>Django</b>（Python）・<b>Spring Boot</b>（Java）・<b>Laravel</b>（PHP）',
+    'フロントエンド：<b>React</b>・<b>Vue</b>・<b>Angular</b>：コンポーネントのレンダリングをフレームワーク側が制御する',
+    'テスティングフレームワーク JUnit も同じ構造：テストの発見と実行は JUnit が主導し、あなたはテストメソッドを「登録」するだけ'
+  ],
+  related:'<b>ライブラリ</b>との違いは制御の向き（呼ぶか・呼ばれるか）。<b>プロダクトライン</b>との違い：フレームワークは汎用の骨格で、ドメインの機能は空。プロダクトラインは特定ドメインの機能まで含んだ「ほぼ完成品の族」。',
+  modern:'フルスタックWAF（Rails・Django）に加え、フロントエンドではメタフレームワーク（Next.js・Nuxt）が主流。React のフック、Spring のDIコンテナなど「制御の逆転」は形を変えて健在。フレームワーク選定はコミュニティの活発さ（＝将来の保守）を含めて判断するのが現代の常識。',
+  hasCode:false
+},
+{
+  id:'product-lines', name:'Software Product Lines', jp:'ソフトウェアプロダクトライン', cat:'reuse',
+  badge:'再利用の技法', tags:['コア資産＋可変点','製品の族','車載・組込み'],
+  summary:'共通のコア（基盤）を持つ<strong>類似システムの族（family）</strong>として製品群を開発する技法。共通アーキテクチャとコア資産を、顧客・機器ごとに<strong>特殊化</strong>して個別製品を素早く生み出す。',
+  analogy:'自動車の「プラットフォーム共通化」。同じ車台・エンジン系（コア資産）から、セダン・SUV・ワゴンという別の車種（プロダクトインスタンス）を派生させる。車種ごとにゼロから設計するメーカーには、開発速度でもコストでも勝ち目がない。',
+  purpose:'同じドメインで少しずつ違う製品を多数出荷する組織が、個別開発の重複をなくし、コア資産への投資を全製品で回収する。組織的・計画的な再利用のもっとも成熟した形。',
+  who:'同一ドメインの製品群を持つ企業（車載機器・医療機器・通信機器・業務パッケージのベンダー）。コア資産チームと製品チームに分かれる体制が典型。',
+  steps:[
+    'ドメイン分析で製品群の<b>共通部分（commonality）と可変部分（variability）</b>を見極める',
+    '<b>ベースシステム</b>を設計する：①全製品共通の<b>コアコンポーネント</b>、②製品ごとに調整できる<b>構成可能な部分</b>、③<b>顧客固有の部分</b>を差し込む枠、の3層構成',
+    '新しい顧客・製品の<b>要求を引き出す</b>',
+    '<b>もっとも近い族のメンバー（既存製品）を選び</b>、要求とのずれを洗い出して<b>要求を再交渉する</b>：ベースに寄せられる要求は寄せる',
+    'ベースシステムを<b>適応（特殊化）</b>させて新メンバーを開発・納入する',
+    '得られた汎用的な改良はコア資産に還元する'
+  ],
+  points:[
+    '特殊化には4つの軸がある：<b>プラットフォーム特殊化</b>（OS・ハード違い）・<b>環境特殊化</b>（周辺機器・通信環境違い）・<b>機能特殊化</b>（顧客ごとの機能違い）・<b>プロセス特殊化</b>（業務プロセス違い）',
+    '<b>可変点（variation point）を設計時に計画しておく</b>のが肝：後から「ここも変えたい」を継ぎ足すとコアが腐る',
+    '「要求の再交渉」が特徴的：<b>製品に要求を全部合わせるのではなく、要求を族に寄せる</b>ことでコアの共通性を守る',
+    'コア資産は資産であると同時に負債にもなり得る：コアの品質・文書化に最優先で投資する'
+  ],
+  cautions:[
+    '初期投資が大きく、<b>製品数が少ないうちは個別開発より高くつく</b>：族として何製品出すかの見通しが前提',
+    'コアと製品の<b>分岐（フォーク）を放置</b>すると、ただの「似た別システムの山」に退化する（プロダクトライン最大の失敗パターン）',
+    '組織の壁：コア資産チームと製品チームの利害調整（製品の納期 vs コアの整合性）はマネジメントの問題でもある'
+  ],
+  examples:[
+    '教科書の例：<b>車両派遣システム</b>（消防・救急・警察向けに、地図・車種・指令規則を特殊化した族）や、機器ごとに構成を変える<b>組込み制御システム</b>の製品群',
+    '車載ソフトウェア：<b>AUTOSAR</b>という標準プラットフォームの上に、車種・グレードごとの機能構成を載せる産業規模のプロダクトライン',
+    '身近な例：同じコアを持つ「無料版・Pro版・企業版」構成や、地域ごとの法規制対応版'
+  ],
+  related:'<b>構成可能なアプリケーションシステム（ERP）</b>との違い：ERPは1つの汎用製品を設定で合わせる（コードは既製のまま）。プロダクトラインはベースシステムを<b>コードレベルで適応・拡張</b>して族の新メンバーを作る。',
+  modern:'フィーチャーモデルで可変性を管理するSPLE（Software Product Line Engineering）が体系化され、車載・航空宇宙で標準実践。近年はフィーチャーフラグやビルド構成による「1コードベース内の可変性管理」として、Web開発にも同じ発想が浸透している。',
+  hasCode:false
+},
+{
+  id:'cots-reuse', name:'COTS & Application System Reuse', jp:'COTS・既製アプリケーションシステムの利用', cat:'reuse',
+  badge:'導入の判断', tags:['作る前に買う/借りる','ERP','設定による適応'],
+  summary:'<strong>システム全体を丸ごと再利用</strong>する、もっとも大粒の再利用。COTS（Commercial Off-The-Shelf：市販の既製品）を、ソースコードを変えずに<strong>設定（構成）</strong>で自組織の要求に適応させて使う。',
+  analogy:'オフィスを構えるとき、建物を建てずに賃貸オフィスに入るようなもの。間取りは決まっているが、パーティションと什器の配置（＝設定）で自社流にできる。入居は圧倒的に速いが、壁の位置（＝機能そのもの）は動かせず、ビルの改修計画（＝製品の進化）は大家が決める。',
+  purpose:'会計・人事・販売管理のような「どの組織にもある業務」を、自作せず既製品で賄い、コストと期間を劇的に削減する。汎用機能は既製品・競争力の源泉だけ自作、という配分の実現。',
+  who:'情報システム部門・経営層が「Build or Buy（作るか買うか）」の判断として決定する。SaaSの普及で「借りる（Rent）」も選択肢に加わった。',
+  steps:[
+    '業務要求を整理し、<b>「作る・買う・借りる」の候補</b>を比較する（機能適合度・総所有コスト・ベンダーの信頼性）',
+    '既製システムの利用形態を選ぶ：<b>単体の構成可能システム</b>として使うか、<b>複数の既製システムを統合</b>して使うか',
+    '<b>構成（コンフィギュレーション）</b>：構成用のデータベースとビジネスルールを設定し、組織の業務に適応させる（ERPの導入作業の中心）',
+    '複数システムの統合では、<b>ラッピング</b>（既製システムにAPIの皮をかぶせる）やアダプタで接続する',
+    '「システムに合わせて業務を変える」か「カスタマイズするか」を判断する：過剰カスタマイズは後で高くつく',
+    '運用後はベンダーのリリースサイクルに追随する'
+  ],
+  points:[
+    '教科書の分類では<b>構成可能なアプリケーションシステム</b>（例：ERP を設定で使う）と<b>統合アプリケーションシステム</b>（複数の既製品を組み合わせる）の2方式',
+    '<b>ERP（企業資源計画）システム</b>は最大級の再利用の成功例：SAP などの汎用機能を、構成データベースとルールで各社に適応させる。世界の大企業の基幹業務の多くがこの方式',
+    '機能は既製のままなので、<b>業務をシステムに合わせる</b>決断が必要になることがある：それは必ずしも悪ではない（ベストプラクティスの導入と捉える）',
+    '採用判断では<b>適応・統合・依存のコスト</b>まで見積もる：ライセンス料は氷山の一角'
+  ],
+  cautions:[
+    '<b>要求との不一致</b>：機能が要求と完全に一致することはない。「あと少し」を埋めるカスタマイズが膨らむと、既製品の利点（安さ・更新の容易さ）が消える',
+    '<b>ベンダーへの依存</b>：機能・性能・進化の主導権はベンダーにある。値上げ・サポート終了・買収のリスクを負う',
+    '<b>統合の難しさ</b>：既製システム同士は互いを想定せずに作られており、データ形式・処理の前提が衝突する（アダプタ・ラッパーで調停するが、限界がある）',
+    'SaaSでは<b>データの所在と退出（エグジット）</b>を契約前に確認する：「やめるときにデータを持ち出せるか」'
+  ],
+  examples:[
+    '大学の教務システム・企業の会計システムをパッケージ製品＋設定で導入する（フルスクラッチ開発はもはや例外）',
+    'SAP S/4HANA・Oracle などのERP導入プロジェクト（導入＝構成作業＋業務改革）',
+    'Salesforce（CRM）・kintone のようなSaaS：設定・ローコード開発による適応で「借りて使う」'
+  ],
+  related:'<b>プロダクトライン</b>との違い：主導権の所在。プロダクトラインは自組織がベースを進化させる。COTSはベンダーの製品を設定で使う側。<b>API再利用</b>との違い：COTSはシステム全体の導入、APIは機能単位のサービス利用。',
+  modern:'「Buy before Build」（作る前に買え）はCIO の標準方針になり、SaaS の普及で判断は Build / Buy / Rent の三択に。ノーコード・ローコード基盤は「構成による開発」の現代形。生成AIによる開発コスト低下が、この天秤を再び「Build」側に傾けるかは現在進行形の論点。',
+  hasCode:false
+},
+{
+  id:'cbse-components', name:'Component-based Software Engineering', jp:'コンポーネントベース開発（CBSE）', cat:'reuse',
+  badge:'再利用の技法', tags:['provides / requires','独立配備','グルーコード'],
+  summary:'オブジェクトより粒度の大きい<strong>独立したコンポーネント</strong>を合成してシステムを作る開発法。コンポーネントは<strong>インタフェースがすべて</strong>：実装を知らなくても、つなげば使える単位。',
+  analogy:'電源タップやUSB機器のような「規格化された差し込み口を持つ機器」。中の回路（実装）を知らなくても、プラグの形（インタフェース）が合えば差して使える。ただし海外製品には変換アダプタ（グルーコード）が要ることもある。',
+  purpose:'システムを疎結合な独立ユニットの合成として構築し、部品の交換・再利用を可能にする。1990年代末、オブジェクト単位の再利用が細かすぎて失敗した反省から、より大きな再利用の単位として登場した。',
+  who:'コンポーネントを「作る側」（再利用のためのCBSE）と「使う側」（再利用によるCBSE）の2つのプロセスがある。ミドルウェア（コンポーネントモデルの実装）が両者を支える。',
+  steps:[
+    'コンポーネントの要件を確認する：<b>合成可能</b>（インタフェース経由で相互作用）・<b>配備可能</b>（バイナリとして単体で動く）・<b>文書化</b>・<b>独立</b>・<b>標準化</b>の5特性',
+    'インタフェースを定義する：外部に提供するサービスの<b>提供（provides）インタフェース</b>と、動作のために必要とする<b>要求（requires）インタフェース</b>',
+    '<b>コンポーネントモデル</b>（EJB・.NET など）の標準に従って実装・文書化・配備する',
+    '使う側は「要求の概要 → コンポーネント発見 → 要求の修正 → 合成」と、<b>要求定義と部品探索を行き来</b>しながら進める（再利用によるCBSE）',
+    '合成する：<b>順次合成</b>（Aの結果をBへ）・<b>階層合成</b>（AがBを呼ぶ）・<b>付加的合成</b>（AとBを並べて1つに見せる）',
+    'インタフェースが噛み合わない場合は<b>アダプタ（グルーコード）</b>を書いて調停する'
+  ],
+  points:[
+    '<b>「インタフェースがすべて」</b>：機能と依存が公開インタフェースで完全に定義され、実装は隠蔽される。だから実装を知らずに合成でき、別実装への交換もできる',
+    '再利用可能にするには<b>汎用化</b>が必要：アプリ固有の前提・文脈への依存を取り除き、安定したドメイン抽象に基づかせる。ただし<b>汎用的なほど理解と適用は難しくなる</b>（再利用性と使いやすさのトレードオフ）',
+    'インタフェースの<b>意味</b>まで仕様化する：OCL（Object Constraint Language）で事前条件・事後条件を書き、振る舞いの想定を明確にして誤用を防ぐ',
+    '合成の選び方は非機能特性に効く：グルーコードの追加は性能を下げうる。将来の要求変更・部品交換のしやすさまで考えて合成を選ぶ'
+  ],
+  cautions:[
+    '<b>「仕様どおり」でも事故は起きる</b>：Ariane 5 ロケットは、前機種で実績あるソフトウェアを再利用したが、新しい飛行条件では想定外の値が発生して爆発した。コンポーネントが「何をするか」だけでなく<b>「何をしないか」「どんな文脈を仮定しているか」の検証</b>が重要',
+    '<b>インタフェースの不適合</b>は日常茶飯事：パラメータの型・単位の不一致、必要な操作の欠如：アダプタで調停するが、そのグルーコードが複雑さとバグの温床になり得る',
+    'ソースが見えないバイナリ部品は、欠陥があってもデバッグできない：供給元の信頼性が品質の上限になる'
+  ],
+  examples:[
+    '教科書の例：気象観測所の<b>データコレクタ</b>コンポーネント：provides（addSensor / report など）と requires（センサー群の管理インタフェース）で完全に定義される',
+    'コンポーネントモデルの実装：<b>EJB（Enterprise Java Beans）</b>・<b>.NET</b>：インタフェース・命名・配備の標準をミドルウェアが支援',
+    '現代の例：Docker コンテナやマイクロサービスは「独立配備・インタフェース（API）経由で合成」というCBSEの理念の直系の子孫'
+  ],
+  related:'<b>オブジェクト（クラス）</b>との違い：コンポーネントは単体配備できるバイナリ単位で、粒度が大きい。<b>Webサービス</b>との関係：教科書は「外部サービスとして参照されるコンポーネント」も認めており、サービスはCBSEの発展形と位置づけられる。',
+  modern:'CORBA・EJBのような重いコンポーネントモデルは廃れたが、思想は<b>マイクロサービス</b>（独立配備・API契約・交換可能）と<b>Web Components / Reactコンポーネント</b>（UIの合成単位）に継承された。API契約を管理するスキーマ（OpenAPI・gRPC）は provides インタフェースの現代版。',
+  hasCode:false
+},
+/* ---------- OSSの世界 ---------- */
+{
+  id:'oss-ecosystem', name:'How OSS Works', jp:'OSSの仕組みとビジネス', cat:'oss',
+  badge:'仕組みと文化', tags:['OSD','ガバナンス','収益モデル'],
+  summary:'OSSは「ソースが見えるソフトウェア」ではなく、<strong>OSI の定義（OSD）を満たす自由な利用・改変・再配布の許諾</strong>を伴うソフトウェア。その裏には、ガバナンス（統治）と経済の仕組みがある。',
+  analogy:'町内の共有菜園。誰でも収穫してよい（利用）し、株分けして自分の庭に植えてもよい（再配布・改変）。ただし菜園には世話人（メンテナ）と運営ルール（ガバナンス）があり、世話をする人がいなければ荒れる。「無料の八百屋」と誤解した人が「トマトがまだか」と世話人を急かすのはお門違い。',
+  purpose:'（学ぶ目的）自分が依存するOSSが「誰によって・どんな動機で・どう維持されているか」を理解し、依存先の持続可能性を評価できるようになる。',
+  who:'個人開発者・企業・財団が混在して開発する。GitHub などのプラットフォーム上で、世界規模の共同開発として進む。',
+  steps:[
+    '<b>定義を確認する</b>：OSI の The Open Source Definition（OSD）は、自由な再配布・ソースコードの入手可能性・派生物の許可・<b>利用分野を差別しないこと</b>（商用利用の禁止は不可）などを要求する',
+    '<b>ガバナンスを見る</b>：単独メンテナか、<b>BDFL</b>（Benevolent Dictator For Life：慈悲深き終身独裁者。例：Linux の Linus Torvalds、かつての Python の Guido van Rossum）か、<b>財団</b>（Apache・Linux Foundation・CNCF）による合議制か',
+    '<b>開発フローを見る</b>：GitHub 上の Issue（課題報告）→ Pull Request（変更提案）→ レビュー → マージ、という公開の共同作業。運営は公開の議論とリリースノートで追える',
+    '<b>お金の流れを見る</b>：誰がメンテナの生活を支えているのか：企業雇用か、寄付（GitHub Sponsors）か、後述のビジネスモデルか',
+    '以上から「この依存は5年後も保守されていそうか」を判断する'
+  ],
+  points:[
+    '主要な収益モデル：①<b>サポート・コンサル型</b>（Red Hat：ソフトは自由、商用サポートを販売）②<b>オープンコア型</b>（GitLab：コアはOSS、企業向け機能は有償）③<b>クラウド・ホスティング型</b>（Databricks・MongoDB：自分で運用する自由はあるが、運用してもらうと有償）④<b>デュアルライセンス型</b>（同じコードをGPLと商用ライセンスの二本立てで提供）',
+    '現代のOSSの主役は企業でもある：Linux カーネルの開発者の多くは企業に雇用されており、「善意のボランティアの集まり」という像は半分しか正しくない',
+    '「クラウド事業者によるただ乗り」への対抗として、Elastic や Redis が一時 OSD 非準拠のライセンス（SSPL 等）へ移行した論争（2018〜2024年頃）は、OSSの定義と経済の緊張関係を示す好例（両者とも後にOSSライセンス併用へ回帰）',
+    '健全性のシグナル：コミット・リリースの頻度、メンテナの人数（バス係数）、財団の後ろ盾、行動規範と CONTRIBUTING の整備'
+  ],
+  cautions:[
+    '「ソースが公開されている」だけのソフトウェア（source-available）と OSS を混同しない：商用利用や競合利用を制限するものはOSD を満たさない',
+    '無料で使えることと、<b>無保証</b>であることはセット：ほぼすべてのOSSライセンスは AS IS（現状有姿）で責任を否認している。品質保証は使う側の仕事',
+    '人気プロジェクトでも<b>保守は少数に依存</b>していることが多い（left-pad・xz-utils はその帰結）：スターの数を保守体制の証拠と読み違えない'
+  ],
+  examples:[
+    '<b>Linux</b>：BDFL＋企業開発者の混成で30年以上続く、史上最大級の共同開発プロジェクト',
+    '<b>Apache Software Foundation</b>：財団ガバナンスの代表。「Apache Way」と呼ばれる合議制で数百プロジェクトを運営',
+    '<b>Red Hat</b>：OSSサポートビジネスの元祖として上場し、IBMが約340億ドルで買収（2019年）：「無料のソフトで巨大企業が成り立つ」ことの証明'
+  ],
+  related:'<b>フリーソフトウェア</b>との関係：FSF の「自由ソフトウェア」運動が源流で、1998年に実務・企業寄りの言葉として「オープンソース」が作られた。指す集合はほぼ同じだが、思想の力点（倫理 vs 実利）が違う。',
+  modern:'GitHub が事実上の共同開発の標準基盤（2018年に Microsoft が買収）。企業には OSPO（オープンソースプログラムオフィス）を置いて利用・貢献・コンプライアンスを統括する動きが定着。政府レベルでも欧州を中心に「公金で作ったソフトは公開（Public Money, Public Code）」の潮流がある。',
+  hasCode:false
+},
+{
+  id:'oss-licenses', name:'OSS Licenses', jp:'OSSライセンス', cat:'oss',
+  badge:'法とライセンス', tags:['GPL / MIT / Apache','コピーレフト','組み合わせ注意'],
+  summary:'OSS利用の条件を定める法的な許諾。<strong>コピーレフト型（GPL系）</strong>は改変・結合したソフトにも同じ自由（ソース公開）を義務づけ、<strong>パーミッシブ型（MIT・Apache・BSD）</strong>は表示さえ守れば商用クローズド利用も許す。',
+  analogy:'レシピの公開条件。パーミッシブは「レシピ考案者の名前を書いてくれれば、アレンジして店の秘伝にしてもいい」。コピーレフトは「このレシピを使った料理のレシピは、同じ条件で必ず公開すること」：自由を連鎖させる仕掛けそのものがライセンスに書き込まれている。',
+  purpose:'著作権者の意図（自由の連鎖か、普及の最大化か）を法的に実現する。使う側にとっては、義務（表示・開示・特許）を理解し、ライセンス違反のリスクを避けるために必須の知識。',
+  who:'公開する開発者がライセンスを選び、利用する開発者・企業が条件を守る。企業では法務・OSPO がコンプライアンスを管理する。',
+  steps:[
+    '使う前に<b>ライセンスを特定する</b>（LICENSE ファイル・パッケージのメタデータ。SPDX 識別子（MIT, Apache-2.0, GPL-3.0-only など）が標準表記）',
+    '<b>義務を確認する</b>：著作権表示・ライセンス文の同梱（ほぼ全ライセンス共通）／変更点の明示（Apache-2.0）／ソース開示（GPL系）／特許関連条項',
+    '<b>結合の影響を確認する</b>：GPLのコードを組み込んで頒布すると、プログラム全体をGPLで提供する義務が生じる（このコピーレフトの伝播を俗に「GPL汚染」と呼ぶが、設計どおりの機能である）',
+    '複数OSSを組み合わせる場合は<b>ライセンス間の両立性</b>を確認する（例：GPLv2-only と Apache-2.0 は非両立とされる）',
+    '頒布物に表示・ライセンス文を同梱し、GPL系ならソース提供の手段を用意する'
+  ],
+  points:[
+    'コピーレフトには強さの段階がある：<b>AGPL</b>（ネットワーク越しの利用にも開示義務）＞ <b>GPL</b>（リンクした全体に及ぶ）＞ <b>LGPL</b>（ライブラリ本体の改変分のみ。動的リンクするアプリは対象外）＞ <b>MPL</b>（ファイル単位）',
+    '<b>Apache-2.0 の特許条項</b>：貢献者は利用者に特許を無償許諾し、特許訴訟を起こした利用者は許諾を失う：特許リスクに敏感な企業がMITよりApache-2.0を好む理由',
+    '<b>GPLはソースの「公開」を万人に義務づけるのではない</b>：頒布した相手にソースを提供する義務。社内利用だけなら開示義務は生じない。また「ネットワーク経由のサービス提供」は GPL では頒布に当たらない（それを埋めるのが AGPL）',
+    '迷ったら実績のある主要ライセンスから選ぶ：独自ライセンスの発明は両立性の混乱のもと（OSSRA 2025 では監査対象の33%に「ライセンス不明・独自ライセンス」のコードが含まれていた）'
+  ],
+  cautions:[
+    '<b>ライセンス違反は現実の訴訟リスク</b>：GPL違反の訴訟・和解事例は国内外に多数（ルータ・テレビ等の組込み機器でのGPLコード不開示が典型）。「バレない」は通用しない：バイナリ解析で検出される',
+    '<b>推移的依存のライセンスも自分の義務</b>：直接入れた覚えのないGPLコードが依存の奥に潜んでいることがある（OSSRA 2025：監査コードベースの56%にライセンス衝突、その約3割は推移的依存由来）',
+    'ライセンスのないコード（GitHubで LICENSE ファイルなし）は「自由に使ってよい」ではなく<b>デフォルトで全著作権保留</b>：原則使えない',
+    'AIコーディング支援が出力したコードのライセンス的な由来は現在も論争中：コピペ由来の混入に注意する'
+  ],
+  examples:[
+    '<b>GPL-3.0</b>：Linux（v2）・Bash・GCC。<b>LGPL</b>：glibc など「クローズドアプリからも使わせたいライブラリ」',
+    '<b>MIT</b>：React・Rails・jQuery など、普及最優先の定番。<b>Apache-2.0</b>：Kubernetes・Android(AOSP)・TensorFlow など企業主導プロジェクトの定番',
+    '<b>MPL-2.0</b>：Firefox：ファイル単位コピーレフトの代表'
+  ],
+  related:'<b>デュアルライセンス</b>：同じコードをGPLと商用ライセンスで二本立て提供するビジネス手法（Qt・MySQL）。<b>クリエイティブ・コモンズ（CC）</b>はコンテンツ向けで、ソフトウェアには非推奨：似て非なる体系。',
+  modern:'SPDX 識別子によるライセンスの機械可読化が標準になり、SCAツール（Black Duck・FOSSA・Trivy）がCIでライセンス衝突を自動検出する。クラウド時代の緊張から生まれた非OSSライセンス（SSPL・BUSL）と、それに対するOSI・コミュニティの反発は、いまも続く現在進行形の論争。',
+  hasCode:false
+},
+{
+  id:'oss-contribution', name:'Contributing to OSS', jp:'OSSへの貢献', cat:'oss',
+  badge:'貢献の作法', tags:['Issue → PR → レビュー','CONTRIBUTING','行動規範'],
+  summary:'OSSは使うだけでなく<strong>貢献（contribution）</strong>できる。バグ報告・ドキュメント修正・コード変更：小さな貢献の積み重ねが世界のインフラを支え、あなたの<strong>公開の実績</strong>にもなる。',
+  analogy:'公共図書館の利用者が、破れたページを補修したり、蔵書の誤りを司書に報告したりするようなもの。図書館には補修の手順書（CONTRIBUTING）と利用マナー（行動規範）があり、いきなり書架を並べ替える（巨大PRを送りつける）のは歓迎されない。',
+  purpose:'自分が使うソフトウェアの問題を上流で直し、フォークを抱え込む保守コストを避ける（upstream first）。学習者にとっては、実プロダクトのコードリーディング・レビュー文化・国際協働を経験できる最高の演習場。',
+  who:'誰でも。コードだけでなく、ドキュメント・翻訳・バグ報告・再現手順の整理・質問への回答も立派な貢献。',
+  steps:[
+    '<b>CONTRIBUTING.md を読む</b>：貢献の手順・ブランチ運用・コーディング規約・テストの要求が書いてある。<b>行動規範（Code of Conduct）</b>にも目を通す',
+    '<b>Issue から始める</b>：バグは再現手順・期待と実際の動作・環境を添えて報告する。機能提案はまず議論を起こす（いきなり実装しない）',
+    '初貢献は <b>good first issue</b> ラベルの付いた課題や、ドキュメントのタイポ修正など小さなものを選ぶ',
+    'リポジトリを<b>フォーク</b>し、トピックブランチで変更し、テストを通してから<b>Pull Request</b> を送る：PRは小さく、目的を1つに絞り、説明文に「なぜ」を書く',
+    '<b>レビューに応える</b>：指摘は成果物への意見であって人格への攻撃ではない。修正・議論を経てマージされる',
+    'マージ後も関連 Issue を見守る：継続的な貢献が信頼（コミット権）につながる'
+  ],
+  points:[
+    'メンテナの時間は<b>もっとも希少な資源</b>：「再現できる完璧なバグ報告」は下手なパッチより価値があることも多い',
+    '<b>CLA / DCO</b>：プロジェクトによっては貢献者ライセンス同意書（CLA）や Developer Certificate of Origin（DCO, <code>Signed-off-by</code>）への同意を求められる：自分の貢献の著作権・ライセンスの扱いを確認する仕組み',
+    '学生がOSS貢献から得られるもの：実コードのレビュー経験・英語での技術コミュニケーション・<b>公開ポートフォリオ</b>（就職活動で実力の証拠になる）・コミュニティの人脈',
+    'Google Summer of Code のような、学生の貢献を支援する制度もある'
+  ],
+  cautions:[
+    '<b>マージされない覚悟</b>も必要：プロジェクトの方針に合わない変更は、正しくても取り込まれない。事前の Issue 議論がその保険',
+    '巨大な「全部入り」PRはレビュー不能で放置されがち：分割は貢献者の義務',
+    '会社の業務で書いたコードの貢献は、<b>雇用契約・就業規則上の著作権の帰属</b>を確認してから（勝手に出すとトラブルになる）',
+    '返信の催促・レビューの強要はマナー違反：メンテナは義務で応対しているのではない'
+  ],
+  examples:[
+    'first-timers-only / good first issue ラベルを掲げて初心者を歓迎するプロジェクト群（React・Kubernetes など多数）',
+    'ドキュメント翻訳（MDN・Python 公式ドキュメント日本語訳）：コードを書かない重要な貢献',
+    'Hacktoberfest：毎年10月のOSS貢献イベント。初PRのきっかけとして人気（雑なスパムPRが問題化した反省から、質を重視する運営に変わった）'
+  ],
+  related:'<b>フォーク</b>との違い：貢献は本家（upstream）への還元。フォークして独自改変を抱え込むと、本家の更新に追随する保守負担を永久に負う：「upstream first」が原則。',
+  modern:'GitHub Sponsors・Open Collective による個人メンテナへの資金貢献も「貢献」の一形態として定着。企業も従業員のOSS貢献を業務として認める方向にあり、OSPO がその窓口になる。AIによるPR自動生成は、低品質PRの洪水としてメンテナ負担の新しい火種にもなっている。',
+  hasCode:false
+},
+/* ---------- リスクと現代の再利用 ---------- */
+{
+  id:'supply-chain-security', name:'Supply Chain Security', jp:'サプライチェーンセキュリティ', cat:'risk',
+  badge:'リスク管理', tags:['left-pad / Log4Shell / xz','SBOM','Dependabot'],
+  summary:'依存の連鎖は<strong>攻撃と障害の連鎖</strong>でもある。部品の削除・脆弱性・悪意ある混入が、それを組み込んだ全システムに一斉に波及する：再利用時代の新しいリスク領域。',
+  analogy:'食品業界の産地偽装・異物混入問題。自社工場がどれだけ清潔でも、仕入れた原材料（依存パッケージ）に問題があれば製品は汚染される。だから食品業界には原材料表示（SBOM）とトレーサビリティがある：ソフトウェアも同じ段階に来た。',
+  purpose:'自分のシステムに「何が入っているか」を把握し（透明性）、部品由来の脆弱性・悪意ある変更を素早く検知・対処できる状態を保つ。',
+  who:'開発チーム＋セキュリティチーム。米国大統領令14028（2021年）やEUサイバーレジリエンス法（CRA）により、政府・規制レベルの要求事項にもなった。',
+  steps:[
+    '依存の<b>棚卸し</b>：lockファイル・SCAツールで直接・推移的依存を列挙する',
+    '<b>SBOM（Software Bill of Materials：ソフトウェア部品表）</b>を生成する：SPDX または CycloneDX 形式が標準。「この製品にはどの部品のどのバージョンが入っているか」の機械可読な目録',
+    '<b>継続的に監視する</b>：Dependabot・Renovate・Trivy などで既知脆弱性（CVE）との突合と更新PRの自動生成を回す',
+    '新しい依存の追加時に<b>健全性を審査する</b>（OpenSSF Scorecard などで保守状況・セキュリティ実践を採点）',
+    'インシデント時はSBOMで<b>影響範囲を即座に特定</b>し、更新・緩和策を展開する'
+  ],
+  points:[
+    '<b>left-pad 事件（2016）</b>：文字列を左詰めするだけの11行のnpmパッケージを、作者が名称紛争への抗議で削除（unpublish）→ これに（推移的に）依存していた Babel や React など数千のプロジェクトのビルドが世界中で一斉に停止した。教訓：<b>どんな小さな依存も単一障害点になり得る</b>。npm はこの事件を機に unpublish を制限した',
+    '<b>Log4Shell（2021）</b>：Javaの定番ログライブラリ Log4j 2 の脆弱性（CVE-2021-44228, CVSS 10.0）。文字列を記録させるだけで任意コード実行が可能で、世界中のサービスが影響を受けた。教訓：<b>ありふれた部品ほど影響が甚大</b>で、「自分がLog4jを使っているか」を即答できない組織が続出した：SBOMが注目された直接の契機',
+    '<b>xz-utils 事件（2024）</b>：圧縮ライブラリ xz の共同メンテナ「Jia Tan」が、<b>約3年かけて信頼を築いた末に</b>バージョン5.6.0/5.6.1へバックドアを混入（CVE-2024-3094, CVSS 10.0）。liblzma 経由で sshd の認証を迂回する精巧なもので、Microsoft のエンジニア Andres Freund が「SSHログインがわずかに遅い」ことを不審に思い、広く配布される直前に発見した。教訓：<b>攻撃対象は「コード」だけでなく「疲弊したメンテナの信頼」そのもの</b>',
+    'SBOMの現在地：米国では大統領令14028が連邦調達にSBOM提出を要求し、CISAが最小要素を定義（2025年に更新）。EUのサイバーレジリエンス法も製品へのSBOM整備を義務化する：「あれば良い」から<b>「規制要件」</b>へ'
+  ],
+  cautions:[
+    '「更新しない」ことは安定ではなく<b>リスクの蓄積</b>：OSSRA 2025 では監査コードベースの90%に4年以上更新されていない部品が含まれ、86%が既知脆弱性を含んでいた',
+    '自動更新にも供給網リスクはある：更新そのものが攻撃経路（悪意あるバージョンの即時取り込み）になり得るため、<b>lockファイル＋検証付きの段階的更新</b>が現実解',
+    'SBOMは作って終わりではない：<b>脆弱性情報と突合し続ける運用</b>（と、それを可能にする正確さ）が本体',
+    'タイポスクワッティング・依存関係かく乱（dependency confusion）など、パッケージ登録の仕組み自体を突く攻撃が常態化している：社内パッケージ名の予約・レジストリ設定の確認まで含めて防御する'
+  ],
+  examples:[
+    'GitHub の <b>Dependabot</b>：脆弱な依存を検知して更新PRを自動作成。Renovate はより柔軟な更新ポリシーを設定できる',
+    '<b>OpenSSF Scorecard</b>：OSSプロジェクトのセキュリティ実践を自動採点。<b>SLSA</b>はビルドの完全性のフレームワーク',
+    'Syft / Trivy で SBOM（SPDX・CycloneDX）を生成し、Grype や Dependency-Track で脆弱性と突合する構成'
+  ],
+  related:'<b>SCA（Software Composition Analysis）</b>はこの領域の分析活動・ツールの総称で、SBOMはその成果物・交換形式。<b>OSSライセンス</b>のカードで見たライセンス監査も、同じSCAの一部として行われる。',
+  modern:'xz事件以降、「単独メンテナの重要部品」への資金・人的支援（Sovereign Tech Fund 等）が政策課題になった。npm・PyPIは2FA必須化やTrusted Publishing（証明付き公開）を導入。生成AIによる偽パッケージ名の氾濫（スロップスクワッティング）が最新の攻撃面として警戒されている。',
+  hasCode:false
+},
+{
+  id:'api-cloud-reuse', name:'APIs & Cloud Service Reuse', jp:'API・クラウドサービスの再利用', cat:'risk',
+  badge:'現代の再利用', tags:['APIエコノミー','SaaS / BaaS','ベンダーロックイン'],
+  summary:'コードを取り込む代わりに、<strong>動いているサービスをネットワーク越しに呼び出して再利用</strong>する形。決済・地図・認証・AI：「自社の中核でない難題」はAPIで借りるのが現代の定石。',
+  analogy:'自家発電をやめて電力会社から電気を買うようなもの。発電所（決済基盤・地図データ・GPU群）を自前で持つのは非現実的で、使った分だけ払って専門家の運用ごと借りる。ただしコンセントの規格（API）は電力会社ごとに違い、引っ越し（乗り換え）は簡単ではない。',
+  purpose:'高度に専門的な機能（決済のコンプライアンス、地図データの整備、大規模MLモデルの運用）を、開発どころか運用まで含めて外部に委ね、自社は差別化の核心に集中する。',
+  who:'あらゆる規模の開発チーム。「APIエコノミー」：API提供をビジネスとする企業群（Stripe・Twilio など）と、それを組み合わせる企業の生態系。',
+  steps:[
+    '外部化してよい機能かを判断する：<b>差別化の核心でない・専門性が高い・規制が重い</b>機能はAPI向き',
+    '候補サービスを比較する：機能・料金体系（従量課金の見積もり）・SLA（稼働率保証）・データの扱い・<b>退出のしやすさ</b>',
+    'APIの契約（OpenAPI 仕様・SDK）に沿って統合し、<b>自分のコードとの境界にアダプタ層</b>を置く（直接呼び出しを散らばらせない）',
+    '障害に備える：タイムアウト・リトライ・フォールバック（外部サービスは<b>必ず</b>落ちる前提で設計する）',
+    '利用量・コスト・エラー率を監視し、値上げ・仕様変更・終了のアナウンスを追う'
+  ],
+  points:[
+    '教科書の文脈では、<b>統合アプリケーションシステム</b>（複数の既製システムをAPIで統合）と<b>サービスとしてのコンポーネント</b>の現代形：CBSEの provides インタフェースがHTTP APIになったと見ると見通しがよい',
+    '<b>マイクロサービスの外部利用</b>：自社システムを内製サービス＋外部APIの合成として設計する。認証は Auth0、決済は Stripe、通知は Twilio、地図は Google Maps：「組み合わせるだけ」で製品の骨格ができる',
+    '<b>ベンダーロックインとのトレードオフ</b>を最初から見積もる：固有機能に深く依存するほど生産性は上がるが、乗り換えコストが積み上がる。アダプタ層・標準規格（OpenID Connect・S3互換APIなど）がロックインの緩和策',
+    '料金は<b>従量課金</b>が基本：スケールしたときのコスト曲線を導入前に試算する（「成功したら破産する」料金設計を避ける）'
+  ],
+  cautions:[
+    '<b>可用性を他社に委ねる</b>：大手クラウドの障害では、それに依存する無数のサービスが同時に止まる（2024〜2025年にも大規模事例が繰り返された）。自分のSLAは依存先のSLAより良くならない',
+    '<b>仕様変更・値上げ・提供終了のリスク</b>：APIの廃止（サンセット）は日常。Google Maps API の大幅値上げ（2018）や各種無料枠の縮小のように、前提が一夜で変わる',
+    '<b>データの所在と法規制</b>：個人情報を外部APIに送る設計は、プライバシー法制（GDPR・個人情報保護法）の検討が必須',
+    'ネットワーク越しの再利用は<b>レイテンシと部分故障</b>という分散システムの問題を持ち込む：ローカルなライブラリ呼び出しと同じ感覚で設計しない'
+  ],
+  examples:[
+    '<b>Stripe</b>（決済）・<b>Twilio</b>（通信）・<b>Auth0</b>（認証）・<b>Google Maps</b>（地図）：「APIファースト企業」の代表格',
+    'クラウドのマネージドサービス：AWS S3/RDS・Firebase（BaaS）：インフラ運用ごと再利用する形',
+    '生成AI API（OpenAI・Anthropic・Google）：最新の「自前では作れないものを借りる」再利用。モデルの更新・廃止への追随が新しい保守追随問題になっている'
+  ],
+  related:'<b>COTS</b>との違い：COTS/SaaSは業務システム全体の導入、API再利用は機能単位の部品調達。<b>ライブラリ</b>との違い：コードは手元になく、実行も相手側：ネットワーク・課金・可用性が新たな設計変数になる。',
+  modern:'API仕様の標準は OpenAPI、サービス間は gRPC も定番。API ゲートウェイ・APIマーケットプレイスがエコシステムを支える。生成AIエージェントが「APIを自分で見つけて呼ぶ」時代に向け、機械可読なAPI記述（MCPなど）の整備が次の主戦場になりつつある。',
+  hasCode:false
+}
+];
+</script>
+<script>
+/* ============== コード例（依存の宣言とバージョン範囲） ============== */
+const CODE = {
+'package-ecosystems':{
+npm:`{
+  "name": "my-app",
+  "version": "1.0.0",
+  "dependencies": {
+    "express": "^4.18.2",
+    "lodash": "~4.17.21",
+    "react": "18.2.0"
+  },
+  "devDependencies": {
+    "jest": "^29.7.0"
+  }
+}
+
+// バージョン範囲の意味（セマンティックバージョニング）
+//   "4.18.2"   … このバージョンに固定（ピン留め）
+//   "~4.17.21" … 4.17.x のパッチ更新のみ許可（4.18.0 は不可）
+//   "^4.18.2"  … 4.x.x のマイナー・パッチ更新を許可（5.0.0 は不可）
+// devDependencies は開発時のみ必要な依存（テストツール等）
+// 実際に解決された正確な構成は package-lock.json に固定される`,
+pip:`# requirements.txt - Python の依存宣言
+requests==2.32.3        # 完全固定（ピン留め。再現性が最も高い）
+Django>=5.0,<6.0        # 範囲指定：5.x 系なら可（6 は不可）
+numpy~=1.26.4           # 「互換リリース」：1.26.x のみ可
+pytest                  # 指定なし＝最新（再現性がなく非推奨）
+
+# 現代的なやり方：pyproject.toml ＋ lockファイル
+# [project]
+# dependencies = [
+#   "requests>=2.32",
+#   "django>=5.0,<6.0",
+# ]
+# uv や poetry が uv.lock / poetry.lock に正確な構成を固定し、
+# 誰のマシンでも同じ依存ツリーを再現できるようにする`
+}
+};
+
+/* ============== カード内ダイアグラム ============== */
+const DIAGRAMS = {
+'cbse-components': `
+<svg viewBox="0 0 720 240" role="img" aria-label="コンポーネントの提供インタフェースと要求インタフェース">
+  <rect x="255" y="55" width="210" height="90" rx="14" class="dg-box dg-if"/>
+  <text x="360" y="95" class="dg-lbl">データコレクタ</text>
+  <text x="360" y="115" class="dg-st">コンポーネント（実装は隠蔽）</text>
+  <path d="M465 100 L544 100" class="dg-line"/>
+  <circle cx="558" cy="100" r="13" fill="none" stroke="#0E6F5C" stroke-width="1.6"/>
+  <text x="588" y="66" class="dg-lbl" text-anchor="start">提供（provides）</text>
+  <text x="588" y="84" class="dg-el" text-anchor="start">外部に提供するサービス</text>
+  <text x="588" y="122" class="dg-el" text-anchor="start">addSensor / report など</text>
+  <path d="M255 100 L204 100" class="dg-line"/>
+  <path d="M204 116 A 16 16 0 0 1 204 84" fill="none" stroke="#8A6D3B" stroke-width="1.6"/>
+  <text x="132" y="66" class="dg-lbl" text-anchor="end">要求（requires）</text>
+  <text x="132" y="84" class="dg-el" text-anchor="end">動作のために必要とするサービス</text>
+  <text x="132" y="122" class="dg-el" text-anchor="end">センサー管理 など</text>
+  <text x="360" y="188" class="dg-note">「ボール（提供）」と「ソケット（要求）」が合えば、実装を知らなくても合成できる。</text>
+  <text x="360" y="208" class="dg-note">合わないときはアダプタ（グルーコード）で調停する。</text>
+</svg>`,
+'oss-licenses': `
+<svg viewBox="0 0 720 250" role="img" aria-label="OSSライセンスの分類：コピーレフトの強さの階段">
+  <text x="360" y="28" class="dg-lbl">コピーレフト 強 ←------------------→ パーミッシブ</text>
+  <rect x="30" y="50" width="150" height="88" rx="12" class="dg-box" stroke="#0A5748" stroke-width="1.8"/>
+  <text x="105" y="76" class="dg-lbl">AGPL / GPL</text>
+  <text x="105" y="96" class="dg-el">結合した全体に</text>
+  <text x="105" y="111" class="dg-el">ソース開示義務</text>
+  <text x="105" y="127" class="dg-st">強いコピーレフト</text>
+  <rect x="200" y="50" width="150" height="88" rx="12" class="dg-box" stroke="#0E6F5C" stroke-width="1.5"/>
+  <text x="275" y="76" class="dg-lbl">LGPL</text>
+  <text x="275" y="96" class="dg-el">ライブラリ本体の</text>
+  <text x="275" y="111" class="dg-el">改変分のみ開示</text>
+  <text x="275" y="127" class="dg-st">弱いコピーレフト</text>
+  <rect x="370" y="50" width="150" height="88" rx="12" class="dg-box" stroke="#3E5C50" stroke-width="1.4"/>
+  <text x="445" y="76" class="dg-lbl">MPL-2.0</text>
+  <text x="445" y="96" class="dg-el">改変したファイル</text>
+  <text x="445" y="111" class="dg-el">単位でのみ開示</text>
+  <text x="445" y="127" class="dg-st">ファイル単位</text>
+  <rect x="540" y="50" width="150" height="88" rx="12" class="dg-box" stroke="#8A6D3B" stroke-width="1.4"/>
+  <text x="615" y="76" class="dg-lbl">Apache-2.0 / MIT / BSD</text>
+  <text x="615" y="96" class="dg-el">表示・免責の維持のみ</text>
+  <text x="615" y="111" class="dg-el">クローズド組込み可</text>
+  <text x="615" y="127" class="dg-st">パーミッシブ</text>
+  <path d="M105 150 L105 168 L615 168 L615 150" class="dg-line dg-dash"/>
+  <text x="360" y="192" class="dg-el">左ほど「自由の連鎖」を義務づけ、右ほど「普及の最大化」を優先する</text>
+  <text x="360" y="222" class="dg-note">Apache-2.0 はパーミッシブだが明文の特許条項を持つ点で MIT / BSD と区別される。</text>
+</svg>`,
+};
+
+/* ============== 理解度クイズ ============== */
+const QUIZ = [
+{ q:'再利用のレベルのうち、「クラスやメソッドより粒度が大きく、独立して配備でき、インタフェースだけで定義される単位」の再利用は？',
+  opts:['コンポーネントの再利用','抽象（設計パターン）の再利用','オブジェクト・関数の再利用','システム全体の再利用'], a:0,
+  why:'再利用のレベルは 抽象 → オブジェクト → コンポーネント → システム。コンポーネントは複数のオブジェクトの集合体で、単体配備でき、provides / requires インタフェースだけで定義される。'},
+{ q:'フレームワークでは、HTTPリクエストなどのイベントを検知して「あなたのコード」を呼び出すのはフレームワーク側である。この性質を何と呼ぶ？',
+  opts:['制御の逆転（Inversion of Control）','関心の分離','情報隠蔽','依存解決'], a:0,
+  why:'ライブラリは自分のコードが呼ぶが、フレームワークはフレームワークがあなたのコードを呼ぶ。「われわれを呼ぶな、必要ならこちらから呼ぶ」のハリウッド原則とも呼ばれる。'},
+{ q:'共通のコア資産と可変点を持つ「類似システムの族」として製品群を開発し、顧客ごとに特殊化する再利用技法は？',
+  opts:['ソフトウェアプロダクトライン','アプリケーションフレームワーク','COTS利用','パッケージエコシステム'], a:0,
+  why:'プロダクトラインは共通アーキテクチャ＋コア資産を、プラットフォーム・環境・機能・プロセスの軸で特殊化して族の新メンバーを作る。車載・組込みの製品群が典型例。'},
+{ q:'GPL と MIT のもっとも本質的な違いは？',
+  opts:['GPLは改変・結合して頒布するソフトにもソース公開を義務づけるが、MITは表示の維持だけを求める','GPLは商用利用を禁止しているが、MITは許可している','GPLは有料で、MITは無料である','GPLはアメリカ、MITは日本のライセンスである'], a:0,
+  why:'両者とも商用利用可・無料。違いはコピーレフトの有無：GPLは頒布時に全体へ同じ自由（ソース提供）を義務づけ、MITは著作権表示と免責の維持のみを求める。'},
+{ q:'コンポーネントが持つ2種類のインタフェースの正しい組み合わせは？',
+  opts:['提供（provides）と要求（requires）','入力（input）と出力（output）','公開（public）と非公開（private）','同期（sync）と非同期（async）'], a:0,
+  why:'提供インタフェースは外部に提供するサービス、要求インタフェースは動作のために必要とするサービス。コンポーネントはこの2つで完全に定義され、実装は隠蔽される。'},
+{ q:'2つの既製コンポーネントを合成したいが、パラメータの形式が合わない。教科書的な解決策は？',
+  opts:['アダプタ（グルーコード）を書いて不適合を調停する','片方のソースコードを直接書き換える','合成をあきらめて全部自作する','同じ会社の製品だけを使う'], a:0,
+  why:'自分のために書かれていないコンポーネント同士の合成では、インタフェースの不適合（パラメータ・操作の欠如）をアダプタ＝グルーコードで調停するのが標準的な方法。'},
+{ q:'SBOM（Software Bill of Materials）とは何か？',
+  opts:['製品にどの部品（依存）のどのバージョンが入っているかを示す機械可読な「部品表」','ソフトウェアの営業用カタログ','ビルドを高速化するキャッシュの仕組み','バグ報告のテンプレート'], a:0,
+  why:'SBOMは食品の原材料表示に当たる部品目録（SPDX・CycloneDX形式が標準）。Log4Shell で「自分が何を使っているか分からない」組織が続出したことを機に、米大統領令14028やEUサイバーレジリエンス法で規制要件になった。'},
+{ q:'left-pad 事件（2016）が示した最大の教訓は？',
+  opts:['ごく小さな依存の消失でも、推移的依存を通じて世界中のビルドが連鎖的に壊れ得る','JavaScriptは文字列処理が苦手である','npmには良いパッケージがない','OSSは商用利用できない'], a:0,
+  why:'わずか11行のパッケージの削除（unpublish）が、それに間接依存していた Babel・React など数千プロジェクトのビルドを止めた。依存の連鎖は障害の連鎖でもある。'},
+{ q:'xz-utils 事件（2024）で攻撃者「Jia Tan」が使った主要な手口は？',
+  opts:['数年かけてメンテナの信頼を得て共同メンテナになり、正規のリリースにバックドアを仕込んだ','サーバに不正侵入してコードを書き換えた','偽サイトで改ざん版を配布した','パスワードを総当たりで破った'], a:0,
+  why:'技術的侵入ではなく、疲弊した単独メンテナを支援者を装って引き継ぎ、約3年の「貢献」の末に5.6.0/5.6.1へsshd認証を迂回するバックドアを混入した（CVE-2024-3094）。ソーシャルエンジニアリングによるサプライチェーン攻撃の代表例。'},
+{ q:'ERPのような「構成可能なアプリケーションシステム」の再利用で、組織の要求に適応させる基本手段は？',
+  opts:['構成用のデータベースとルールの設定（コンフィギュレーション）','ソースコードの直接改造','システムの全面的な作り直し','ハードウェアの交換'], a:0,
+  why:'既製システムはソースコードを変えずに、設定（構成）で組織に適応させる。機能は既製のままなので、逆に業務をシステムに合わせる判断をすることもある。'},
+{ q:'COTS（既製システム）採用の判断で、教科書が挙げる代表的なリスクの組み合わせとして正しいのは？',
+  opts:['要求との不一致・ベンダーへの依存・他システムとの統合の難しさ','コンパイル時間の増加・変数名の衝突・コメント不足','画面の色使い・フォントの好み・ロゴの変更','特になし（既製品にリスクはない）'], a:0,
+  why:'機能が要求と完全一致することはなく、進化の主導権はベンダーが握り、既製システム同士は互いを想定せず作られている。採用判断では適応・統合・依存のコストまで見積もる。'},
+{ q:'package.json の依存指定 <code>"express": "^4.18.2"</code> の意味は？',
+  opts:['4.x の範囲で後方互換の更新（マイナー・パッチ）を許可する（5.0.0 は不可）','必ず 4.18.2 だけを使う','5.0.0 以上を含むすべての更新を許可する','4.18.x のパッチ更新のみを許可する'], a:0,
+  why:'セマンティックバージョニングで ^ はメジャーバージョンを固定した範囲指定。~4.18.2 なら 4.18.x のみ。正確な解決結果は lockファイルに固定してコミットする。'}
+];
+</script>
+<script>
+/* ============== レンダリング ============== */
+const learned = new Set();
+let currentCat = 'all';
+
+function esc(s){return s.replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;");}
+
+function highlight(code, lang){
+  const cmMark = (lang==='pip') ? '#' : '//';
+  return code.split('\n').map(line=>{
+    const idx = line.indexOf(cmMark);
+    let codePart = (idx>=0) ? line.slice(0,idx) : line;
+    const cmPart = (idx>=0) ? line.slice(idx) : '';
+    const strs = [];
+    codePart = codePart.replace(/"[^"]*"/g, m=>{ strs.push(m); return '@@S'+(strs.length-1)+'@@'; });
+    let h = esc(codePart).replace(/(==|&gt;=|&lt;=|~=|,&lt;)/g,'<span class="kw">$1</span>');
+    h = h.replace(/@@S(\d+)@@/g,(m,i)=>'<span class="st">'+esc(strs[+i])+'</span>');
+    return h + (cmPart ? '<span class="cm">'+esc(cmPart)+'</span>' : '');
+  }).join('\n');
+}
+
+function togglePattern(id){
+  const card = document.getElementById(id);
+  if(!card) return;
+  const open = card.classList.toggle('open');
+  const head = card.querySelector('.pcard-head');
+  if(head) head.setAttribute('aria-expanded', open ? 'true' : 'false');
+}
+function toggleLearned(id, cb){
+  if(cb.checked) learned.add(id); else learned.delete(id);
+  const card = document.getElementById(id);
+  if(card) card.classList.toggle('done-card', cb.checked);
+  updateLearnUI();
+}
+function updateLearnUI(){
+  const el = document.getElementById('learnNote');
+  if(el) el.textContent = '習得 ' + learned.size + ' / ' + ITEMS.length;
+}
+function switchCode(id, lang, btn){
+  document.getElementById(id+'-npm').classList.toggle('hidden', lang!=='npm');
+  document.getElementById(id+'-pip').classList.toggle('hidden', lang!=='pip');
+  btn.parentElement.querySelectorAll('button.tab').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+}
+
+function renderItem(t, idx){
+  const pointsLi = t.points.map(v=>`<li>${v}</li>`).join('');
+  const cautionsLi = t.cautions.map(v=>`<li>${v}</li>`).join('');
+  const exLi = t.examples.map(v=>`<li>${v}</li>`).join('');
+  const stepsLi = t.steps.map(v=>`<li>${v}</li>`).join('');
+  const tagsH = (t.tags||[]).map(x=>`<span class="tag">${x}</span>`).join('');
+  const badgeH = `<span class="badge-imp ${BADGE_CLS[t.badge]||'imp1'}">${t.badge}</span>`;
+  const analogyH = t.analogy ? `<div class="analogy"><span><b>たとえるなら</b> ${t.analogy}</span></div>` : '';
+  const dg = DIAGRAMS[t.id];
+  const diagramH = dg ? `<div class="diagram-wrap"><h5>図解</h5>${dg}</div>` : '';
+  let codeH = '';
+  if(t.hasCode && CODE[t.id]){
+    codeH = `
+      <div class="code-wrap">
+        <div class="code-tabs">
+          <span class="lbl">依存宣言の例</span>
+          <button class="tab active" onclick="switchCode('${t.id}','npm',this)">package.json (npm)</button>
+          <button class="tab" onclick="switchCode('${t.id}','pip',this)">requirements.txt (pip)</button>
+        </div>
+        <pre id="${t.id}-npm"><code>${highlight(CODE[t.id].npm,'npm')}</code></pre>
+        <pre id="${t.id}-pip" class="hidden"><code>${highlight(CODE[t.id].pip,'pip')}</code></pre>
+      </div>`;
+  }
+  const searchText = (t.name+' '+t.jp+' '+t.summary+' '+(t.analogy||'')+' '+t.badge+' '+(t.tags||[]).join(' ')).toLowerCase();
+  const catColor = CAT_META[t.cat].color;
+  return `
+  <article class="pcard" id="${t.id}" data-cat="${t.cat}" data-search="${esc(searchText)}">
+    <button class="pcard-head" aria-expanded="false" onclick="togglePattern('${t.id}')">
+      <span class="pnum" style="color:${catColor}">${idx}</span>
+      <span class="ptitle">${t.name}<small>${t.jp}</small></span>
+      <span class="pbadges">${badgeH}</span>
+      <span class="ptags">${tagsH}</span>
+      <span class="pchev" aria-hidden="true">&rsaquo;</span>
+    </button>
+    <p class="summary">${t.summary}</p>
+    <div class="pdetail">
+      ${analogyH}
+      <div class="meta-row">
+        <div class="meta"><h5>目的・ねらい</h5><p>${t.purpose}</p></div>
+        <div class="meta"><h5>誰が・どこで使うか</h5><p>${t.who}</p></div>
+      </div>
+      <div class="steps"><h5>実施の仕方（進め方）</h5><ol>${stepsLi}</ol></div>
+      ${diagramH}
+      <div class="grid2">
+        <div class="box pros"><h5>✓ 意識するポイント</h5><ul>${pointsLi}</ul></div>
+        <div class="box cons"><h5>！ 注意点・落とし穴</h5><ul>${cautionsLi}</ul></div>
+      </div>
+      <div class="meta-row">
+        <div class="meta"><h5>具体例</h5><ul>${exLi}</ul></div>
+        <div class="meta"><h5>混同しやすいものとの違い</h5><p>${t.related}</p></div>
+      </div>
+      <div class="meta" style="margin:16px 0"><h5>現場では（ツール・現代的な実践）</h5><p>${t.modern}</p></div>
+      ${codeH}
+      <label class="learn"><input type="checkbox" onchange="toggleLearned('${t.id}',this)">
+        このトピックを理解した（習得チェック）</label>
+    </div>
+  </article>`;
+}
+
+function build(){
+  document.getElementById('introProse').innerHTML = INTRO_HTML;
+  document.getElementById('techProse').innerHTML = TECH_HTML;
+  document.getElementById('closingProse').innerHTML = CLOSING_HTML;
+  const container = document.getElementById('topics-list');
+  let html='', n=0;
+  CAT_ORDER.forEach(cat=>{
+    const list = ITEMS.filter(t=>t.cat===cat);
+    const meta = CAT_META[cat];
+    html += `<div class="cat-group" data-cat="${cat}">
+      <div class="cat-head" style="--cc:${meta.color}">
+        <span class="cat-dot"></span>
+        <h3>${meta.label}</h3>
+        <span class="cat-badge">${meta.en} · ${list.length}種</span>
+      </div>
+      <p class="cat-desc">${meta.desc}</p>`;
+    list.forEach(t=>{ n++; html += renderItem(t, n); });
+    html += `</div>`;
+  });
+  container.innerHTML = html;
+  updateLearnUI();
+  buildQuiz();
+}
+
+function filterCat(cat, btn){
+  currentCat = cat;
+  document.querySelectorAll('.pill').forEach(b=>b.classList.remove('active'));
+  if(btn) btn.classList.add('active');
+  applyFilter();
+}
+function applyFilter(){
+  const si = document.getElementById('search');
+  const q = (si && si.value ? si.value : '').trim().toLowerCase();
+  document.querySelectorAll('.cat-group').forEach(g=>{
+    const catOk = (currentCat==='all' || currentCat===g.dataset.cat);
+    let shown = 0;
+    g.querySelectorAll('.pcard').forEach(c=>{
+      const hit = catOk && (!q || c.dataset.search.includes(q));
+      c.classList.toggle('hidden', !hit);
+      if(hit) shown++;
+    });
+    g.classList.toggle('hidden', shown===0);
+  });
+}
+
+/* ============== OSSライセンス選択ガイド（体験デモ） ============== */
+const licState = {1:null, 2:null, 3:null};
+function licAns(q, val, btn){
+  licState[q] = val;
+  btn.parentElement.querySelectorAll('button').forEach(b=>{
+    b.style.borderColor=''; b.style.background=''; b.style.color=''; b.style.fontWeight='';
+    b.setAttribute('aria-pressed','false');
+  });
+  btn.style.borderColor='var(--accent)'; btn.style.background='var(--accent-soft)';
+  btn.style.color='var(--accent-2)'; btn.style.fontWeight='600';
+  btn.setAttribute('aria-pressed','true');
+  licUpdate();
+}
+function licUpdate(){
+  const out = document.getElementById('licOut');
+  const remain = [1,2,3].filter(k=>!licState[k]).length;
+  if(remain>0){
+    out.className='demo-out';
+    out.innerHTML = 'あと <b>' + remain + '問</b> です。すべて答えると、おすすめのライセンスと理由が表示されます。';
+    return;
+  }
+  const a1=licState[1], a2=licState[2], a3=licState[3];
+  let name='', why='', note='';
+  if(a1==='always'){
+    name='GPL-3.0';
+    why='派生物すべてに同じ自由（ソース公開）を義務づけたいなら、<b>強いコピーレフト</b>の GPL-3.0 が王道です。GPL-3.0 には明文の特許条項も含まれています。'
+      + (a2==='simple' ? '条文は長大ですが、コピーレフトを法的に成立させるにはこの精密さが必要です。' : '');
+    note = (a3==='yes')
+      ? '<br><b>注意：</b>「クローズド製品への組み込みも歓迎」とは緊張関係があります。GPLコードを組み込んで頒布する製品は全体のソース提供義務を負うため、企業のクローズド組み込みは事実上難しくなります。組み込みやすさを優先するなら LGPL / MPL、あるいはパーミッシブを再検討してください。'
+      : '<br>Webサービスとしての利用（頒布を伴わない）にまで開示義務を広げたい場合は、さらに強い <b>AGPL-3.0</b> も検討対象になります。';
+  } else if(a1==='lib'){
+    if(a2==='yes'){
+      name='MPL-2.0';
+      why='部品（ファイル）単位の開示義務にとどめつつ、<b>明文の特許条項</b>を持つのが MPL-2.0（Firefox のライセンス）です。改変したファイルだけ公開すればよく、クローズドなコードと組み合わせて製品化できます。';
+    } else {
+      name='LGPL-3.0';
+      why='「ライブラリ本体の改良は還元してほしい。ただし、それを利用するアプリまでは縛らない」：この考え方に対応する<b>弱いコピーレフト</b>が LGPL-3.0 です。動的リンクして使うアプリはクローズドのままで構いません。より簡素なファイル単位の義務でよければ MPL-2.0 も候補です。';
+    }
+    note = (a3==='no')
+      ? '<br><b>補足：</b>「オープンな世界の中で使ってほしい」気持ちが強いなら、ライブラリ利用のアプリにも及ぶ GPL-3.0 まで強めることも検討してください。'
+      : '<br>クローズド製品からも使ってもらいつつ、部品自体の改良は共有される：ライブラリ公開の定番バランスです。';
+  } else {
+    if(a2==='yes'){
+      name='Apache-2.0';
+      why='開示義務を課さない<b>パーミッシブ型</b>のうち、<b>明文の特許ライセンス条項</b>（特許訴訟を起こした利用者は許諾を失う仕組み）を持つのが Apache-2.0 です。特許リスクに敏感な企業にも安心して採用してもらえます。Kubernetes・Android(AOSP) など企業主導のOSSの定番です。';
+    } else {
+      name='MIT';
+      why='著作権表示と免責の維持だけを求める、<b>もっとも短くシンプルなパーミッシブライセンス</b>が MIT です。「とにかく自由に、広く使ってほしい」に最適で、React・Rails など普及最優先のプロジェクトの定番です。';
+    }
+    note = (a3==='no')
+      ? '<br><b>注意：</b>パーミッシブ型は改変版のクローズド化を止められません。「オープンな世界の中で使ってほしい」なら、コピーレフト型（GPL / LGPL / MPL）を再検討してください。'
+      : '<br>クローズド製品への組み込みも自由なので、Q3の希望とも整合しています。';
+  }
+  out.className='demo-out ok';
+  out.innerHTML = '<span class="pl">おすすめ：' + name + '</span>' + why + note
+    + '<br><span style="font-size:.82rem;color:var(--muted)">※学習用の簡易ガイドです。実際の選択ではライセンス原文・choosealicense.com・専門家の助言を確認してください。</span>';
+}
+
+/* ============== クイズ（in-memory） ============== */
+let quizState = {answered:0, correct:0};
+let quizOrder = [];
+function buildQuiz(){
+  quizState = {answered:0, correct:0};
+  quizOrder = QUIZ.map(q=>{
+    const idx = q.opts.map((_,k)=>k);
+    for(let i=idx.length-1;i>0;i--){ const j=Math.floor(Math.random()*(i+1)); const t=idx[i]; idx[i]=idx[j]; idx[j]=t; }
+    return idx;
+  });
+  const body = document.getElementById('quizBody');
+  if(!body) return;
+  body.innerHTML = QUIZ.map((q,i)=>`
+    <div class="quiz-q" id="qq${i}">
+      <p class="qtext">Q${i+1}. ${q.q}</p>
+      <div class="qopts">${quizOrder[i].map((oi,j)=>`<button onclick="answerQuiz(${i},${j},this)">${q.opts[oi]}</button>`).join('')}</div>
+      <p class="qwhy" hidden></p>
+    </div>`).join('');
+  updateQuizScore();
+}
+function answerQuiz(i, j, btn){
+  const q = QUIZ[i], box = document.getElementById('qq'+i);
+  if(box.classList.contains('answered')) return;
+  box.classList.add('answered');
+  box.querySelectorAll('.qopts button').forEach((b,k)=>{
+    b.disabled = true;
+    if(quizOrder[i][k]===q.a) b.classList.add('right');
+  });
+  const ok = (quizOrder[i][j]===q.a);
+  if(!ok) btn.classList.add('wrong');
+  quizState.answered++; if(ok) quizState.correct++;
+  const why = box.querySelector('.qwhy');
+  why.hidden = false;
+  why.innerHTML = (ok ? '<b>正解。</b> ' : `<b>不正解。</b>正解は <b>${q.opts[q.a]}</b>。 `) + q.why;
+  updateQuizScore();
+}
+function updateQuizScore(){
+  const el = document.getElementById('quizScore');
+  if(el) el.textContent = quizState.answered
+    ? `（${quizState.answered}問中 ${quizState.correct}問正解）` : `全${QUIZ.length}問。`;
+}
+
+/* ============== 言語切替（サイト共通・localStorage は site-lang のみ） ============== */
+function setLang(l){document.body.classList.remove('lang-ja','lang-en');document.body.classList.add('lang-'+l);document.documentElement.lang=l;
+ try{localStorage.setItem('site-lang',l)}catch(e){}
+ try{var q=new URLSearchParams(location.search);q.set('lang',l);history.replaceState(null,'',location.pathname+'?'+q+location.hash)}catch(e){}}
+function toggleLang(){setLang(document.body.classList.contains('lang-ja')?'en':'ja')}
+(function(){var u=null;try{u=new URLSearchParams(location.search).get('lang')}catch(e){}
+ var s=null;try{s=localStorage.getItem('site-lang')}catch(e){}
+ var l=(u==='en'||u==='ja')?u:((s==='en'||s==='ja')?s:'ja');if(l!=='ja')setLang(l);})();
+
+/* ページ内アンカー（本文中のリンク）でカードへ飛ぶとき、
+   絞り込みを解除して対象カードを開いてから移動する */
+document.addEventListener('click', function(e){
+  var a = e.target.closest('a[href^="#"]');
+  if(!a) return;
+  var id = a.getAttribute('href').slice(1);
+  var card = document.getElementById(id);
+  if(card && card.classList.contains('pcard')){
+    if(currentCat!=='all'){ filterCat('all', document.querySelector('.pill')); }
+    var si = document.getElementById('search');
+    if(si && si.value){ si.value=''; }
+    applyFilter();
+    card.classList.add('open');
+    var head = card.querySelector('.pcard-head');
+    if(head) head.setAttribute('aria-expanded','true');
+  }
+});
+
+window.addEventListener('DOMContentLoaded', function(){
+  build();
+  var si = document.getElementById('search');
+  if(si) si.addEventListener('input', applyFilter);
+  if('IntersectionObserver' in window){
+    var io = new IntersectionObserver(function(es){ es.forEach(function(e){ if(e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target); } }); },{threshold:0.12, rootMargin:"0px 0px -6% 0px"});
+    document.querySelectorAll('.reveal').forEach(function(el){ io.observe(el); });
+  } else { document.querySelectorAll('.reveal').forEach(function(el){ el.classList.add('in'); }); }
+});
+</script>
+<script>
+/* ==================== NAV SYSTEM v4 controllers (self-contained) ==================== */
+(function(){
+  function syncLangUI(l){
+    var ja = l==='ja';
+    var lists=document.querySelectorAll('.lswitch');
+    for(var i=0;i<lists.length;i++){
+      var a=lists[i].querySelector('.ls-ja'), e=lists[i].querySelector('.ls-en');
+      if(a) a.setAttribute('aria-pressed', ja?'true':'false');
+      if(e) e.setAttribute('aria-pressed', ja?'false':'true');
+    }
+  }
+  window.syncLangUI=syncLangUI;
+  if(typeof window.setLang==='function'){
+    var _setLang=window.setLang;
+    window.setLang=function(l){ _setLang(l); syncLangUI(l); };
+  }
+  syncLangUI(document.body.classList.contains('lang-en')?'en':'ja');
+
+  var groups=document.querySelectorAll('.navlinks .navgroup');
+  for(var g=0; g<groups.length; g++){ (function(grp){
+    var top=grp.querySelector('.navtop'), panel=grp.querySelector('.navpanel');
+    if(!panel||!top) return;
+    function set(x){ top.setAttribute('aria-expanded', x?'true':'false'); }
+    grp.addEventListener('mouseenter', function(){ grp.classList.remove('collapsed'); set(true); });
+    grp.addEventListener('mouseleave', function(){ set(false); });
+    grp.addEventListener('focusin', function(){ if(!grp.classList.contains('collapsed')) set(true); });
+    grp.addEventListener('focusout', function(e){ if(!grp.contains(e.relatedTarget)){ grp.classList.remove('collapsed'); set(false); } });
+    grp.addEventListener('keydown', function(e){ if(e.key==='Escape'){ grp.classList.add('collapsed'); set(false); top.focus(); } });
+  })(groups[g]); }
+
+  var tog=document.getElementById('navToggle'), ov=document.getElementById('mobnav');
+  if(tog && ov){
+    function openNav(){ document.body.classList.add('navopen'); tog.setAttribute('aria-expanded','true'); ov.setAttribute('aria-hidden','false');
+      var f=ov.querySelector('a,button'); if(f){ requestAnimationFrame(function(){ f.focus(); }); } }
+    function closeNav(){ document.body.classList.remove('navopen'); tog.setAttribute('aria-expanded','false'); ov.setAttribute('aria-hidden','true'); tog.focus(); }
+    tog.addEventListener('click', function(){ document.body.classList.contains('navopen')?closeNav():openNav(); });
+    ov.addEventListener('click', function(e){ if(e.target.closest('a')) closeNav(); });
+    document.addEventListener('keydown', function(e){ if(e.key==='Escape' && document.body.classList.contains('navopen')) closeNav(); });
+  }
+
+  /* F. TOC scroll-spy (IntersectionObserver, no scroll listeners) */
+  var bar=document.querySelector('.tocbar');
+  if(bar){
+    var pills=Array.prototype.slice.call(bar.querySelectorAll('.tocpill'));
+    var map={};
+    pills.forEach(function(p){ map[p.getAttribute('href').slice(1)]=p; });
+    if('IntersectionObserver' in window){
+      var spy=new IntersectionObserver(function(es){
+        es.forEach(function(e){
+          if(e.isIntersecting){
+            pills.forEach(function(p){ p.classList.remove('on'); });
+            var m=map[e.target.id]; if(m) m.classList.add('on');
+          }
+        });
+      },{rootMargin:'-45% 0px -50% 0px', threshold:0});
+      pills.forEach(function(p){ var s=document.getElementById(p.getAttribute('href').slice(1)); if(s) spy.observe(s); });
+    }
+  }
+
+  /* F. back to top */
+  var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var bt=document.querySelector('.totop'), sen=document.getElementById('toTopSentinel');
+  if(bt && sen && 'IntersectionObserver' in window){
+    new IntersectionObserver(function(es){
+      es.forEach(function(e){ if(e.isIntersecting) bt.classList.remove('show'); else bt.classList.add('show'); });
+    },{threshold:0}).observe(sen);
+  }
+  if(bt){ bt.addEventListener('click', function(){ window.scrollTo({top:0, behavior:reduce?'auto':'smooth'}); }); }
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,1985 @@
+<!DOCTYPE html>
+<html lang="ja" class="no-js">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>プロジェクト管理と見積もり学習ガイド - リスク・チーム・計画・見積もり / Project Management &amp; Estimation</title>
+<meta name="description" content="A study guide to software project management and estimation: risk management, managing people and teamwork, project planning and scheduling, estimation techniques (PERT, planning poker, COCOMO II), agile forecasting, and progress metrics, with a comprehension quiz. Part of Yuta Kimura's software engineering course materials.">
+<link rel="canonical" href="https://ykimu.github.io/course/project-management.html">
+<link rel="icon" href="../favicon.svg" type="image/svg+xml">
+<meta property="og:site_name" content="Yuta Kimura / 木村祐太">
+<meta property="og:type" content="article">
+<meta property="og:title" content="プロジェクト管理と見積もり学習ガイド - リスク・チーム・計画・見積もり / Project Management &amp; Estimation">
+<meta property="og:description" content="A study guide to software project management and estimation: risk management, people and teamwork, planning, scheduling, estimation techniques, and agile forecasting, with a comprehension quiz.">
+<meta property="og:url" content="https://ykimu.github.io/course/project-management.html">
+<meta property="og:image" content="https://ykimu.github.io/assets/og.png">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="color-scheme" content="light">
+<script>document.documentElement.className="js";</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&family=Noto+Sans+JP:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#FBFCFB; --bg-2:#F3F6F4; --bg-3:#EBEFED; --card:#FFFFFF;
+    --ink:#101312; --ink-2:#3C4340; --muted:#6B746F; --faint:#B7C0BB;
+    --line:#E7ECE9; --hair:rgba(16,19,18,.08); --shell:rgba(16,19,18,.035);
+    --accent:#0E6F5C; --accent-2:#0A5748; --accent-soft:rgba(14,111,92,.08);
+    --soft:0 1px 2px rgba(16,19,18,.04), 0 24px 60px -28px rgba(16,19,18,.16);
+    --inhi:inset 0 1px 0 rgba(255,255,255,.85);
+    --ease:cubic-bezier(.32,.72,0,1);
+    --sans:"Plus Jakarta Sans","Noto Sans JP",-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+    --disp:"Space Grotesk","Plus Jakarta Sans","Noto Sans JP",sans-serif;
+    --mono:ui-monospace,SFMono-Regular,Menlo,Consolas,"Liberation Mono",monospace;
+    --maxw:1440px; --readw:clamp(680px, 62vw, 1060px);
+    /* category accents (kept within the brand green + neutral family) */
+    --mgmt:#0E6F5C; --plan:#3E5C50; --est:#8A6D3B;
+    /* compatibility aliases used by reused content/diagram/quiz markup */
+    --panel:var(--card); --panel2:var(--bg-2); --chip:var(--bg-3);
+    --code-bg:var(--shell); --code-ink:#2F3A33;
+    --good:#0E6F5C; --bad:#B04A3E; --warn:#8A6D3B; --accent2:var(--accent-2);
+    --kw:#0A5748; --ty:#3C4340; --st:#7A5C34; --cm:#87918C;
+  }
+  html{color-scheme:light}
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth; -webkit-text-size-adjust:100%}
+  body{margin:0; background:var(--bg); color:var(--ink); font-family:var(--sans);
+    font-size:17px; line-height:1.75; font-weight:400; -webkit-font-smoothing:antialiased; text-rendering:optimizeLegibility}
+  body.lang-ja [lang=en]{display:none}
+  body.lang-en [lang=ja]{display:none}
+  ::selection{background:rgba(14,111,92,.16)}
+  h1,h2,h3{margin:0; color:var(--ink); font-weight:500; line-height:1.16; letter-spacing:-.02em; font-family:var(--disp); text-wrap:balance}
+  body.lang-ja h1,body.lang-ja h2,body.lang-ja h3{letter-spacing:0; font-family:var(--sans)}
+  p,.lead,.cite,.muted-s{text-wrap:pretty}
+  [lang="en"]{line-break:auto}
+  [lang="ja"]{line-break:strict; word-break:normal}
+  h1 [lang="ja"],h2 [lang="ja"],h3 [lang="ja"]{word-break:auto-phrase}
+  p{margin:0 0 1em}
+  a{color:var(--accent-2); text-decoration:none; transition:color .3s var(--ease)}
+  a:hover{color:var(--accent)}
+  a:focus-visible,button:focus-visible,.btn:focus-visible,[tabindex]:focus-visible{outline:2px solid var(--accent); outline-offset:3px; border-radius:8px}
+  .wrap{max-width:var(--maxw); margin:0 auto; padding:0 40px}
+  [id]{scroll-margin-top:96px}
+  section{padding:100px 0}
+
+  .skip{position:fixed; top:10px; left:10px; padding:10px 16px; background:var(--ink); color:#fff; border-radius:999px; transform:translateY(-200%); transition:none; z-index:100}
+  .skip:focus{transform:none}
+
+  /* film grain overlay */
+  body::after{content:""; position:fixed; inset:0; z-index:1; pointer-events:none; opacity:.02;
+    background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='g'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23g)'/%3E%3C/svg%3E")}
+
+  h2.big{font-size:clamp(1.9rem,3.2vw,2.7rem); font-weight:500; letter-spacing:-.025em; max-width:26ch}
+  body.lang-ja h2.big{letter-spacing:-.01em; max-width:none}
+  .eyebrow,.kick{display:inline-flex; align-items:center; gap:8px; width:max-content; max-width:100%;
+    padding:5px 13px 5px 11px; border-radius:999px; border:1px solid var(--hair); background:#fff;
+    font:600 .66rem/1 var(--disp); letter-spacing:.14em; text-transform:uppercase; color:var(--ink-2); margin:0 0 18px}
+  .eyebrow::before,.kick::before{content:""; flex:0 0 auto; width:6px; height:6px; border-radius:50%; background:var(--accent)}
+  .lead{font-size:1.12rem; color:var(--ink-2); line-height:1.78; font-weight:400}
+
+  /* motion */
+  .js .reveal{opacity:0; transform:translateY(18px); filter:blur(6px); transition:opacity .9s var(--ease), transform .9s var(--ease), filter .9s var(--ease)}
+  .js .reveal.in{opacity:1; transform:none; filter:none}
+  @media (prefers-reduced-motion:reduce){
+    .js .reveal{opacity:1!important; transform:none!important; filter:none!important}
+    .btn:active,.btn.ink:hover .ic,.pcard:hover,.pill:hover{transform:none!important}
+    html{scroll-behavior:auto}
+  }
+
+  /* floating island nav */
+  header.bar{position:sticky; top:18px; z-index:60; background:transparent; border-bottom:none}
+  .bar .wrap{display:flex; align-items:center; justify-content:space-between;
+    width:max-content; max-width:calc(100% - 32px); margin:0 auto; height:auto;
+    padding:9px 12px 9px 20px; gap:20px; border-radius:999px;
+    background:rgba(255,255,255,.72); -webkit-backdrop-filter:saturate(1.4) blur(18px); backdrop-filter:saturate(1.4) blur(18px);
+    border:1px solid var(--hair); box-shadow:var(--soft)}
+  .brand{font-weight:600; font-size:.92rem; letter-spacing:-.01em; color:var(--ink); display:inline-flex; align-items:center; gap:8px}
+  .brand span.sep{color:var(--muted); font-weight:400; margin:0 2px}
+  .navlinks{display:flex; gap:22px; align-items:center}
+  .navlinks a{font-size:.86rem; font-weight:500; color:var(--ink-2); transition:color .3s var(--ease)}
+  .navlinks a:hover{color:var(--ink)}
+  @media(max-width:860px){.navlinks{display:none}}
+  .bar-right{display:flex; align-items:center; gap:8px}
+
+  /* buttons */
+  .btn{display:inline-flex; align-items:center; gap:10px; font:500 .85rem/1 var(--sans); padding:10px 18px;
+    border-radius:999px; border:1px solid var(--hair); background:#fff; color:var(--ink); cursor:pointer;
+    transition:transform .4s var(--ease), box-shadow .4s var(--ease), border-color .3s var(--ease), background .3s var(--ease), color .3s var(--ease)}
+  .btn:hover{border-color:var(--ink); transform:translateY(-1px); color:var(--ink)}
+  .btn:active{transform:scale(.98)}
+  .btn.ink{background:var(--ink); border-color:var(--ink); color:#fff; padding:10px 10px 10px 22px;
+    box-shadow:0 12px 26px -14px rgba(16,19,18,.5)}
+  .btn.ink:not(:has(.ic)){padding:10px 22px}
+  .btn.ink:hover{box-shadow:0 16px 32px -14px rgba(16,19,18,.55); color:#fff}
+  .btn .ic{width:32px; height:32px; border-radius:999px; background:rgba(255,255,255,.18); display:grid; place-items:center;
+    transition:transform .45s var(--ease); flex:0 0 auto}
+  .btn.ink:hover .ic{transform:translate(3px,-1px)}
+  .tlink{display:inline-flex; align-items:center; gap:8px; font-weight:500; font-size:.95rem; color:var(--ink)}
+  .tlink .ar{transition:transform .4s var(--ease)}
+  .tlink:hover .ar{transform:translateX(4px)}
+
+  /* hero */
+  .hero{position:relative; overflow:hidden}
+  .hero > .wrap{position:relative; z-index:1}
+  .hero::before{content:""; position:absolute; z-index:0; width:640px; height:640px; right:-150px; top:-240px;
+    border-radius:50%; pointer-events:none; opacity:.55;
+    background:radial-gradient(circle, var(--accent-soft), transparent 62%); filter:blur(20px)}
+  .hero .wrap{padding-top:72px; padding-bottom:70px}
+  .hero h1{font-size:clamp(2.6rem,5vw,4.2rem); font-weight:500; letter-spacing:-.03em; line-height:1.08; color:var(--ink); max-width:none}
+  body.lang-ja .hero h1{font-size:clamp(2rem,4.2vw,3.1rem); font-weight:500; letter-spacing:0; line-height:1.24}
+  .hero h1 em{font-style:normal; color:var(--accent)}
+  .hero .lead{max-width:var(--readw); margin-top:24px}
+  .ja-note{display:inline-flex; align-items:center; gap:8px; margin-top:22px; padding:7px 15px; border-radius:999px;
+    border:1px solid var(--hair); background:var(--accent-soft); font-size:.8rem; font-weight:500; color:var(--accent-2)}
+  .ja-note::before{content:""; width:6px; height:6px; border-radius:50%; background:var(--accent); flex:0 0 auto}
+  .hero-cta{display:flex; gap:20px; align-items:center; flex-wrap:wrap; margin-top:28px}
+
+  .soft-sec{background:var(--bg-2); border-top:1px solid var(--line); border-bottom:1px solid var(--line)}
+
+  /* prose */
+  .prose{max-width:var(--readw)}
+  .prose p{margin:0 0 1em; color:var(--ink-2)}
+  .prose h4{font-family:var(--sans); font-size:1.12rem; font-weight:600; letter-spacing:0; color:var(--ink); margin:1.6em 0 .6em}
+  .prose ul{margin:0 0 1.2em; padding-left:0; list-style:none}
+  .prose ul li{position:relative; padding-left:22px; margin:12px 0; color:var(--ink-2)}
+  .prose ul li::before{content:""; position:absolute; left:0; top:13px; width:11px; height:1.5px; background:var(--accent)}
+  .prose ul li b{color:var(--ink); font-weight:600}
+  .prose b{color:var(--ink); font-weight:600}
+  .prose i{color:var(--ink-2)}
+  .prose code{font-family:var(--mono); font-size:.86em; background:var(--shell); border:1px solid var(--hair); border-radius:6px; padding:.08em .4em; color:var(--accent-2)}
+
+  .callout{border-radius:16px; padding:18px 22px; margin:18px 0; max-width:var(--readw);
+    background:var(--card); box-shadow:0 0 0 6px var(--shell),0 0 0 6.5px var(--hair),var(--soft)}
+  .callout h4{margin:0 0 6px; font-size:1rem; font-family:var(--sans); font-weight:600; letter-spacing:0; color:var(--ink)}
+  .callout.tip{background:var(--accent-soft)}
+  .callout.warn{background:rgba(138,109,59,.08)}
+  .callout a{font-weight:600}
+
+  .principles{display:grid; grid-template-columns:repeat(auto-fit,minmax(230px,1fr)); gap:14px; margin:18px 0; max-width:var(--readw)}
+  .principles .p{background:var(--card); border-radius:16px; padding:16px 18px;
+    box-shadow:0 0 0 6px var(--shell),0 0 0 6.5px var(--hair),var(--soft)}
+  .principles .p b{color:var(--accent-2)}
+  .principles .p span{font-size:.9rem; color:var(--muted)}
+
+  .cmp-table{border-collapse:separate; border-spacing:0; margin:16px 0; max-width:var(--readw); width:100%; font-size:.92rem;
+    border-radius:14px; overflow:hidden; box-shadow:0 0 0 6px var(--shell),0 0 0 6.5px var(--hair),var(--soft)}
+  .cmp-table th,.cmp-table td{border-bottom:1px solid var(--line); border-right:1px solid var(--line); padding:11px 14px; text-align:left; vertical-align:top; background:var(--card)}
+  .cmp-table tr:last-child th,.cmp-table tr:last-child td{border-bottom:none}
+  .cmp-table th{background:var(--bg-2); font-weight:600; color:var(--ink)}
+  .cmp-table td:last-child,.cmp-table th:last-child{border-right:none}
+  .cmp-table td b{color:var(--accent-2)}
+
+  /* controls: category pills + search */
+  .controls{display:flex; align-items:center; justify-content:space-between; gap:20px; flex-wrap:wrap; margin:0 0 12px}
+  .pills{display:flex; gap:8px; flex-wrap:wrap}
+  .pill{display:inline-flex; align-items:center; gap:8px; font:500 .9rem/1 var(--sans); padding:9px 16px;
+    border-radius:999px; border:1px solid var(--hair); background:#fff; color:var(--ink-2); cursor:pointer;
+    transition:transform .4s var(--ease), border-color .3s var(--ease), background .3s var(--ease), color .3s var(--ease)}
+  .pill:hover{border-color:var(--ink); transform:translateY(-1px)}
+  .pill span{font:600 .72rem/1 var(--disp); color:var(--muted)}
+  .pill.active{background:var(--ink); border-color:var(--ink); color:#fff}
+  .pill.active span{color:rgba(255,255,255,.7)}
+  .ctrl-right{display:flex; align-items:center; gap:14px}
+  .search{width:min(280px,60vw); padding:10px 16px; border-radius:999px; border:1px solid var(--hair);
+    background:#fff; color:var(--ink); font:400 .9rem/1 var(--sans); outline:none; transition:border-color .3s var(--ease)}
+  .search:focus{border-color:var(--accent)}
+  .learn-note{font:600 .78rem/1 var(--disp); color:var(--muted); white-space:nowrap}
+
+  /* category groups */
+  .cat-group{margin-top:34px}
+  .cat-group.hidden{display:none}
+  .cat-head{display:flex; align-items:center; gap:12px; margin:0 0 4px}
+  .cat-head .cat-dot{width:10px; height:10px; border-radius:50%; background:var(--cc); flex:0 0 auto}
+  .cat-head h3{font-family:var(--sans); font-size:1.4rem; font-weight:600; letter-spacing:0; color:var(--ink)}
+  .cat-badge{font:600 .66rem/1 var(--disp); letter-spacing:.08em; text-transform:uppercase; color:var(--muted);
+    border:1px solid var(--hair); background:#fff; padding:5px 11px; border-radius:999px}
+  .cat-desc{max-width:var(--readw); color:var(--muted); font-size:.96rem; margin:0 0 12px}
+
+  /* test card (double-bezel) */
+  .pcard{border-radius:21px; background:var(--card); margin:16px 0; scroll-margin-top:96px;
+    box-shadow:0 0 0 7px var(--shell),0 0 0 7.5px var(--hair),var(--soft);
+    transition:box-shadow .4s var(--ease)}
+  .pcard.hidden{display:none}
+  .pcard-head{display:flex; align-items:center; gap:14px; width:100%; text-align:left;
+    background:transparent; border:none; cursor:pointer; padding:22px 26px 8px; font-family:var(--sans)}
+  .pnum{font:600 .95rem/1 var(--disp); font-variant-numeric:tabular-nums; flex:0 0 auto; min-width:24px}
+  .ptitle{font-family:var(--disp); font-weight:500; font-size:1.18rem; color:var(--ink); letter-spacing:-.01em; flex:0 0 auto}
+  .ptitle small{display:block; font-family:var(--sans); font-size:.8rem; color:var(--muted); font-weight:400; margin-top:2px}
+  .pbadges{display:flex; gap:8px; align-items:center}
+  .ptags{display:flex; gap:6px; flex-wrap:wrap; margin-left:auto; justify-content:flex-end}
+  .pchev{flex:0 0 auto; font-size:1.5rem; color:var(--muted); transition:transform .4s var(--ease); margin-left:6px; line-height:1}
+  .pcard.open .pchev{transform:rotate(90deg); color:var(--accent-2)}
+  .summary{margin:0; padding:0 26px 22px; color:var(--ink-2); font-size:1rem}
+  .summary strong{color:var(--ink); font-weight:600}
+  .pdetail{display:none; padding:0 26px 26px}
+  .pcard.open .pdetail{display:block}
+  .pcard.done-card{box-shadow:0 0 0 7px var(--accent-soft),0 0 0 7.5px rgba(14,111,92,.24),var(--soft)}
+
+  .badge-imp{font:700 .68rem/1 var(--disp); letter-spacing:.06em; padding:4px 10px; border-radius:999px; white-space:nowrap}
+  .imp3{background:var(--accent); color:#fff}
+  .imp2{background:var(--accent-soft); color:var(--accent-2)}
+  .imp1{background:var(--bg-3); color:var(--muted)}
+  .tag{font:500 .72rem/1 var(--sans); padding:5px 10px; border-radius:999px; background:var(--bg-2); color:var(--muted); border:1px solid var(--hair)}
+
+  .analogy{display:flex; gap:10px; align-items:flex-start; background:var(--accent-soft);
+    border-radius:14px; padding:14px 18px; margin:16px 0; font-size:.94rem; color:var(--ink-2)}
+  .analogy b{color:var(--accent-2); font-weight:600}
+
+  .grid2{display:grid; grid-template-columns:1fr 1fr; gap:16px; margin:18px 0}
+  .box{border-radius:16px; padding:16px 18px; background:var(--card);
+    box-shadow:0 0 0 6px var(--shell),0 0 0 6.5px var(--hair),var(--soft)}
+  .box h5{margin:0 0 10px; font-size:.92rem; font-family:var(--sans); font-weight:600; letter-spacing:0; display:flex; align-items:center; gap:7px}
+  .box.pros h5{color:var(--accent-2)}
+  .box.cons h5{color:var(--bad)}
+  .box ul{margin:0; padding-left:18px}
+  .box li{margin:6px 0; font-size:.9rem; color:var(--ink-2)}
+
+  .meta-row{display:grid; grid-template-columns:1fr 1fr; gap:16px; margin:16px 0}
+  .meta h5{margin:0 0 8px; font-size:.92rem; font-family:var(--sans); font-weight:600; letter-spacing:0; color:var(--accent-2)}
+  .meta p,.meta li{font-size:.92rem; color:var(--ink-2)}
+  .meta ul{margin:0; padding-left:18px}
+  .meta p{margin:0}
+  .meta code,.box code,.analogy code,.steps code{font-family:var(--mono); font-size:.86em; background:var(--shell); border:1px solid var(--hair); border-radius:5px; padding:.05em .35em; color:var(--accent-2)}
+
+  /* numbered procedure steps */
+  .steps{border-radius:16px; padding:16px 18px; margin:16px 0; background:var(--card);
+    box-shadow:0 0 0 6px var(--shell),0 0 0 6.5px var(--hair),var(--soft)}
+  .steps h5{margin:0 0 10px; font-size:.92rem; font-family:var(--sans); font-weight:600; letter-spacing:0; color:var(--accent-2)}
+  .steps ol{margin:0; padding:0; list-style:none; counter-reset:st}
+  .steps ol li{counter-increment:st; position:relative; padding-left:36px; margin:9px 0; font-size:.92rem; color:var(--ink-2)}
+  .steps ol li::before{content:counter(st); position:absolute; left:0; top:3px; width:23px; height:23px; border-radius:50%;
+    background:var(--accent-soft); color:var(--accent-2); font:600 .74rem/23px var(--disp); text-align:center}
+  .steps ol li b{color:var(--ink); font-weight:600}
+
+  /* diagrams */
+  .diagram-wrap{margin:18px 0; max-width:var(--readw)}
+  .diagram-wrap h5{margin:0 0 8px; font-size:.92rem; font-family:var(--sans); font-weight:600; letter-spacing:0; color:var(--accent-2)}
+  .diagram-wrap svg{display:block; width:100%; height:auto; background:var(--shell);
+    border:1px solid var(--hair); border-radius:12px; padding:8px}
+  .dg-box{fill:var(--card); stroke:var(--line); stroke-width:1.2}
+  .dg-if{stroke:var(--accent)}
+  .dg-lbl{fill:var(--ink); font-size:12px; font-weight:600; text-anchor:middle; font-family:var(--sans)}
+  .dg-st{fill:var(--accent-2); font-size:10px; text-anchor:middle}
+  .dg-line{stroke:var(--muted); stroke-width:1.4; fill:none}
+  .dg-dash{stroke-dasharray:5 4}
+  .dg-el{fill:var(--ink-2); font-size:10.5px; text-anchor:middle}
+  .dg-note{fill:var(--muted); font-size:11px; font-style:italic; text-anchor:middle}
+  .dg-legend{font-size:.78rem; color:var(--muted); margin-top:8px}
+
+  /* code blocks */
+  .code-wrap{margin-top:16px; border:1px solid var(--hair); border-radius:14px; overflow:hidden; background:var(--shell)}
+  .code-tabs{display:flex; align-items:center; gap:0; background:var(--bg-2); border-bottom:1px solid var(--hair)}
+  .code-tabs .lbl{margin-right:auto; padding:10px 16px; font:500 .78rem/1 var(--sans); color:var(--muted)}
+  .code-tabs .tab{background:transparent; border:none; color:var(--muted); padding:10px 18px; font:600 .82rem/1 var(--sans);
+    cursor:pointer; border-bottom:2px solid transparent; transition:color .3s var(--ease), border-color .3s var(--ease)}
+  .code-tabs .tab:hover{color:var(--ink)}
+  .code-tabs .tab.active{color:var(--ink); border-bottom-color:var(--accent)}
+  pre{margin:0; background:var(--shell); padding:16px 18px; overflow-x:auto; font-size:.82rem; line-height:1.65}
+  pre code{font-family:var(--mono); color:var(--code-ink); white-space:pre}
+  pre.hidden{display:none}
+  .kw{color:var(--kw); font-weight:600} .ty{color:var(--ty)} .st{color:var(--st)} .cm{color:var(--cm); font-style:italic}
+
+  .learn{display:inline-flex; align-items:center; gap:10px; margin-top:20px; font-size:.9rem;
+    color:var(--muted); cursor:pointer; user-select:none}
+  .learn input{accent-color:var(--accent); width:16px; height:16px; cursor:pointer}
+
+  /* equivalence-partition demo */
+  .demo{border-radius:16px; padding:20px 22px; margin:22px 0; max-width:var(--readw); background:var(--card);
+    box-shadow:0 0 0 6px var(--shell),0 0 0 6.5px var(--hair),var(--soft)}
+  .demo h4{margin:0 0 6px; font-size:1rem; font-family:var(--sans); font-weight:600; color:var(--ink)}
+  .demo .spec{font-size:.9rem; color:var(--muted); margin:0 0 14px}
+  .demo-row{display:flex; gap:10px; flex-wrap:wrap; align-items:center}
+  .demo input[type=text]{width:min(220px,100%); padding:10px 16px; border-radius:999px; border:1px solid var(--hair);
+    background:#fff; color:var(--ink); font:500 .95rem/1 var(--mono); outline:none; transition:border-color .3s var(--ease)}
+  .demo input[type=text]:focus{border-color:var(--accent)}
+  .demo .try{display:flex; gap:6px; flex-wrap:wrap}
+  .demo .try button{background:#fff; border:1px solid var(--hair); color:var(--ink-2); border-radius:999px;
+    padding:7px 13px; font:500 .82rem/1 var(--mono); cursor:pointer; transition:border-color .3s var(--ease), transform .3s var(--ease)}
+  .demo .try button:hover{border-color:var(--ink); transform:translateY(-1px)}
+  .demo-out{margin-top:14px; border-radius:12px; padding:14px 16px; font-size:.92rem; background:var(--bg-2); color:var(--ink-2)}
+  .demo-out b{font-weight:600}
+  .demo-out.ok{background:var(--accent-soft); }
+  .demo-out.ng{background:rgba(176,74,62,.08)}
+  .demo-out .pl{display:inline-block; font:600 .72rem/1 var(--disp); letter-spacing:.05em; padding:4px 10px; border-radius:999px; margin-right:8px}
+  .demo-out.ok .pl{background:var(--accent); color:#fff}
+  .demo-out.ng .pl{background:var(--bad); color:#fff}
+  .demo-out .bd{display:inline-block; font:600 .72rem/1 var(--disp); letter-spacing:.05em; padding:4px 10px; border-radius:999px; margin-right:8px; background:rgba(138,109,59,.15); color:var(--warn)}
+
+  /* quiz */
+  .quiz-q{border-radius:16px; padding:18px 20px; margin:16px 0; max-width:var(--readw); background:var(--card);
+    box-shadow:0 0 0 6px var(--shell),0 0 0 6.5px var(--hair),var(--soft)}
+  .qtext{margin:0 0 12px; font-weight:600; color:var(--ink)}
+  .qopts{display:flex; flex-wrap:wrap; gap:8px}
+  .qopts button{background:#fff; border:1px solid var(--hair); color:var(--ink); border-radius:999px;
+    padding:9px 16px; font:500 .88rem/1 var(--sans); cursor:pointer; transition:border-color .3s var(--ease), transform .3s var(--ease)}
+  .qopts button:hover:not(:disabled){border-color:var(--ink); transform:translateY(-1px)}
+  .qopts button:disabled{cursor:default}
+  .qopts button.right{background:var(--accent-soft); color:var(--accent-2); border-color:var(--accent); font-weight:600}
+  .qopts button.wrong{background:rgba(176,74,62,.1); color:var(--bad); border-color:var(--bad)}
+  .qwhy{font-size:.9rem; color:var(--ink-2); margin:12px 0 0; padding-top:12px; border-top:1px solid var(--line)}
+  .qwhy b{color:var(--ink); font-weight:600}
+  .quiz-reset{margin-top:16px}
+  #quizScore{color:var(--muted); font-size:.92rem; font-weight:500}
+
+  /* footer */
+  footer{border-top:1px solid var(--line); padding:64px 0 46px; background:var(--bg)}
+  footer h3{font-size:.72rem; font-weight:600; letter-spacing:.12em; text-transform:uppercase; color:var(--muted); margin:0 0 1em; font-family:var(--disp)}
+  .foot-grid{display:grid; grid-template-columns:1.4fr 1fr 1fr; gap:44px}
+  .cite{font-size:.98rem; color:var(--ink-2); line-height:1.7; max-width:56ch; margin-bottom:36px}
+  .muted-s{color:var(--muted); font-size:.9rem; line-height:1.75}
+  .muted-s b{color:var(--ink); font-weight:600}
+  .foot-rule{height:1px; background:var(--line); margin:44px 0 20px}
+  .foot-note{color:var(--muted); font-size:.82rem}
+  @media(max-width:760px){.foot-grid{grid-template-columns:1fr 1fr}}
+  @media(max-width:560px){.foot-grid{grid-template-columns:1fr}}
+
+  @media(max-width:860px){
+    section{padding:72px 0}
+    .hero .wrap{padding-top:52px; padding-bottom:56px}
+    .wrap{padding:0 24px}
+    .grid2,.meta-row{grid-template-columns:1fr}
+    .ptags{flex-basis:100%; margin-left:0; justify-content:flex-start}
+    .pcard-head{flex-wrap:wrap}
+  }
+  @media(max-width:640px){
+    .bar-right .btn:not(.ink):not(.jp-toggle){display:none}
+    .brand{font-size:.82rem}
+    .controls{align-items:flex-start; flex-direction:column}
+    .qopts button{flex:1 1 44%}
+  }
+
+  /* JP-only teaching page: fill content width for body text & boxes */
+  .lead,
+  .prose,
+  .callout,
+  .principles,
+  .cmp-table,
+  .diagram-wrap,
+  .demo{max-width:none !important}
+  /* ==================== NAV SYSTEM v4 (NAV_SPEC A-F) ==================== */
+  .navlinks{display:flex; gap:4px; align-items:center}
+  .navlinks .navgroup{position:relative; display:flex}
+  .navlinks .navtop{display:inline-flex; align-items:center; gap:7px; font-size:.86rem; font-weight:500;
+    color:var(--ink-2); padding:8px 13px; border-radius:999px; white-space:nowrap;
+    transition:color .3s var(--ease), background .3s var(--ease)}
+  .navlinks .navtop:hover{color:var(--ink)}
+  .navlinks .navgroup:hover .navtop,.navlinks .navgroup:focus-within .navtop{color:var(--ink); background:var(--bg-2)}
+  .navlinks .navtop.on{color:var(--ink)}
+  .navlinks .navtop.on::before{content:""; flex:0 0 auto; width:6px; height:6px; border-radius:50%; background:var(--accent)}
+  .navlinks .navpanel{position:absolute; top:100%; left:50%; margin-top:9px; min-width:238px; padding:10px;
+    transform:translateX(-50%) translateY(6px); text-align:left;
+    background:var(--card); border:1px solid var(--hair); border-radius:16px; box-shadow:var(--soft);
+    opacity:0; visibility:hidden; pointer-events:none;
+    transition:opacity .25s var(--ease), transform .25s var(--ease), visibility 0s linear .25s; z-index:5}
+  .navlinks .navpanel::before{content:""; position:absolute; top:-13px; left:0; right:0; height:14px}
+  .navlinks .navgroup:hover .navpanel,.navlinks .navgroup:focus-within .navpanel{
+    opacity:1; visibility:visible; pointer-events:auto; transform:translateX(-50%) translateY(0);
+    transition:opacity .25s var(--ease), transform .25s var(--ease), visibility 0s linear 0s}
+  .navlinks .navgroup.collapsed .navpanel{opacity:0; visibility:hidden; pointer-events:none}
+  .navlinks .navpanel a{display:flex; align-items:center; gap:9px; padding:9px 12px; border-radius:11px;
+    font-size:.85rem; font-weight:500; color:var(--ink-2); white-space:nowrap;
+    transition:background .25s var(--ease), color .25s var(--ease)}
+  .navlinks .navpanel a:hover{background:var(--accent-soft); color:var(--ink)}
+  .navlinks .navpanel a.here{background:var(--accent-soft); color:var(--ink)}
+  .navlinks .navpanel a.here::before{content:""; flex:0 0 auto; width:6px; height:6px; border-radius:50%; background:var(--accent)}
+  .navlinks .navlabel{padding:8px 12px 3px; font:600 .6rem/1 var(--disp); letter-spacing:.13em;
+    text-transform:uppercase; color:var(--muted)}
+  .navlinks .navpanel hr.navdiv{border:0; border-top:1px solid var(--line); margin:8px 6px}
+
+  .lswitch{display:inline-flex; align-items:center; gap:2px; padding:3px; border-radius:999px;
+    border:1px solid var(--hair); background:#fff}
+  .lswitch button{appearance:none; -webkit-appearance:none; border:0; background:transparent; cursor:pointer;
+    font:600 .78rem/1 var(--disp); letter-spacing:.03em; color:var(--ink-2); padding:8px 13px; border-radius:999px;
+    transition:background .3s var(--ease), color .3s var(--ease)}
+  .lswitch button:hover{color:var(--ink)}
+  body.lang-ja .lswitch .ls-ja,body.lang-en .lswitch .ls-en{background:var(--ink); color:#fff}
+
+  .navtoggle{display:none; position:relative; width:42px; height:42px; flex:0 0 auto;
+    border-radius:999px; border:1px solid var(--hair); background:#fff; cursor:pointer; padding:0}
+  .navtoggle span{position:absolute; left:11px; right:11px; height:2px; background:var(--ink); border-radius:2px;
+    transition:transform .35s var(--ease), opacity .2s var(--ease)}
+  .navtoggle span:nth-child(1){top:15px}
+  .navtoggle span:nth-child(2){top:20px}
+  .navtoggle span:nth-child(3){top:25px}
+  body.navopen .navtoggle span:nth-child(1){transform:translateY(5px) rotate(45deg)}
+  body.navopen .navtoggle span:nth-child(2){opacity:0}
+  body.navopen .navtoggle span:nth-child(3){transform:translateY(-5px) rotate(-45deg)}
+
+  .mobnav{position:fixed; inset:0; z-index:80; display:flex; flex-direction:column; overflow-y:auto;
+    background:rgba(251,252,251,.9); -webkit-backdrop-filter:saturate(1.2) blur(24px); backdrop-filter:saturate(1.2) blur(24px);
+    opacity:0; visibility:hidden; pointer-events:none;
+    transition:opacity .35s var(--ease), visibility 0s linear .35s}
+  body.navopen .mobnav{opacity:1; visibility:visible; pointer-events:auto; transition:opacity .35s var(--ease), visibility 0s linear 0s}
+  body.navopen{overflow:hidden}
+  body.navopen header.bar{z-index:90}
+  .mobnav-inner{width:100%; max-width:600px; margin:0 auto; padding:104px 28px 64px;
+    display:flex; flex-direction:column; gap:24px}
+  .mobgroup{display:flex; flex-direction:column; gap:1px}
+  .moblabel{font:600 .64rem/1 var(--disp); letter-spacing:.14em; text-transform:uppercase; color:var(--muted); margin-bottom:9px}
+  .mobgroup a{font-size:1.28rem; font-weight:500; color:var(--ink); padding:7px 0; line-height:1.24}
+  .mobgroup a:hover{color:var(--accent-2)}
+  .mobgroup a.here{color:var(--accent-2)}
+  .mobgroup a.here::before{content:""; display:inline-block; width:6px; height:6px; border-radius:50%;
+    background:var(--accent); margin-right:9px; vertical-align:middle}
+  .mobfoot{display:flex; align-items:center; justify-content:space-between; gap:16px; flex-wrap:wrap;
+    margin-top:6px; padding-top:22px; border-top:1px solid var(--line)}
+  .mobext{font-size:1rem; font-weight:500; color:var(--ink-2)}
+  .mobext:hover{color:var(--ink)}
+  .js .mobnav-inner > *{opacity:0; transform:translateY(12px);
+    transition:opacity .4s var(--ease), transform .4s var(--ease)}
+  body.navopen .mobnav-inner > *{opacity:1; transform:none}
+  body.navopen .mobnav-inner > *:nth-child(1){transition-delay:.04s}
+  body.navopen .mobnav-inner > *:nth-child(2){transition-delay:.08s}
+  body.navopen .mobnav-inner > *:nth-child(3){transition-delay:.12s}
+  body.navopen .mobnav-inner > *:nth-child(4){transition-delay:.16s}
+  body.navopen .mobnav-inner > *:nth-child(5){transition-delay:.20s}
+  body.navopen .mobnav-inner > *:nth-child(6){transition-delay:.24s}
+
+  /* E. breadcrumb */
+  .crumbs{display:flex; flex-wrap:wrap; align-items:center; gap:7px; margin:0;
+    font-size:.8rem; font-weight:500; color:var(--muted)}
+  .crumbs a{color:var(--muted)}
+  .crumbs a:hover{color:var(--ink)}
+  .crumbs .csep{color:var(--faint)}
+  .crumbs .cur{color:var(--ink)}
+
+  /* F. sticky TOC bar */
+  .tocbar{position:sticky; top:84px; z-index:40; margin:8px 0 0;
+    background:rgba(255,255,255,.82); -webkit-backdrop-filter:saturate(1.4) blur(14px); backdrop-filter:saturate(1.4) blur(14px);
+    border-top:1px solid var(--hair); border-bottom:1px solid var(--hair)}
+  .tocbar-inner{max-width:var(--maxw); margin:0 auto; padding:9px 40px; display:flex; gap:8px;
+    overflow-x:auto; scrollbar-width:none; -ms-overflow-style:none}
+  .tocbar-inner::-webkit-scrollbar{display:none}
+  .tocpill{flex:0 0 auto; display:inline-flex; align-items:center; gap:7px; padding:7px 14px; border-radius:999px;
+    font-size:.8rem; font-weight:500; color:var(--ink-2); border:1px solid transparent; white-space:nowrap;
+    transition:background .25s var(--ease), color .25s var(--ease), border-color .25s var(--ease)}
+  .tocpill:hover{color:var(--ink); border-color:var(--hair)}
+  .tocpill.on{background:var(--accent-soft); color:var(--ink)}
+  .tocpill.on::before{content:""; flex:0 0 auto; width:6px; height:6px; border-radius:50%; background:var(--accent)}
+  section[id]{scroll-margin-top:150px}
+
+  /* F. back to top */
+  .totop{position:fixed; right:22px; bottom:22px; z-index:55; width:46px; height:46px; border-radius:999px;
+    display:grid; place-items:center; background:#fff; border:1px solid var(--hair); box-shadow:var(--soft);
+    color:var(--ink); cursor:pointer; font-size:1.15rem; line-height:1;
+    opacity:0; transform:translateY(10px) scale(.9); pointer-events:none;
+    transition:opacity .35s var(--ease), transform .35s var(--ease)}
+  .totop.show{opacity:1; transform:none; pointer-events:auto}
+  .totop:hover{transform:translateY(-2px)}
+
+  @media(max-width:860px){
+    .navtoggle{display:block}
+    .navlinks{display:none}
+    .bar-right .btn{display:none}
+    .tocbar{top:76px}
+  }
+  @media(max-width:430px){
+    .bar-right .lswitch{display:none}
+  }
+  @media (prefers-reduced-motion:reduce){
+    .navlinks .navpanel,.navtoggle span,.mobnav,.js .mobnav-inner > *,.navtop,.lswitch button,.totop,.tocpill{transition-duration:.001ms !important}
+    .js .mobnav-inner > *{transition-delay:0s !important}
+    .navtoggle:hover,.totop:hover{transform:none !important}
+  }
+</style>
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[
+{"@type":"ListItem","position":1,"name":"ホーム","item":"https://ykimu.github.io/"},
+{"@type":"ListItem","position":2,"name":"教育","item":"https://ykimu.github.io/teaching.html"},
+{"@type":"ListItem","position":3,"name":"ソフトウェア工学","item":"https://ykimu.github.io/course/index.html"},
+{"@type":"ListItem","position":4,"name":"プロジェクト管理と見積もり","item":"https://ykimu.github.io/course/project-management.html"}
+]}
+</script>
+</head>
+<body class="lang-ja">
+
+<a class="skip" href="#main"><span lang="ja">本文へスキップ</span><span lang="en">Skip to content</span></a>
+
+<header class="bar">
+  <div class="wrap">
+    <a class="brand" href="../index.html">
+      <span aria-hidden="true">&lsaquo;</span>
+      <span lang="ja">Yuta Kimura</span><span lang="en">Yuta Kimura</span>
+      <span class="sep">·</span><span lang="ja">木村祐太</span><span lang="en">Kimura</span>
+    </a>
+    <nav class="navlinks" aria-label="メイン">
+      <div class="navgroup">
+        <a class="navtop" href="../publications.html" aria-haspopup="true" aria-expanded="false"><span lang="ja">研究</span><span lang="en">Research</span></a>
+        <div class="navpanel">
+          <a href="../publications.html"><span lang="ja">業績・研究活動</span><span lang="en">Publications &amp; activity</span></a>
+          <a href="../research/technical-debt-metrics.html"><span lang="ja">技術的負債とメトリクス</span><span lang="en">Technical debt &amp; metrics</span></a>
+          <a href="../research/apr-coding-standards.html"><span lang="ja">自動生成パッチと規約</span><span lang="en">Auto-generated patches &amp; standards</span></a>
+          <a href="../research/td-repayment-refactoring.html"><span lang="ja">負債返済とリファクタリング</span><span lang="en">Debt repayment &amp; refactoring</span></a>
+          <a href="../research/satd-issue-classification.html"><span lang="ja">課題票の負債分類</span><span lang="en">Issue-ticket debt classification</span></a>
+        </div>
+      </div>
+      <div class="navgroup">
+        <a class="navtop on" href="../teaching.html" aria-haspopup="true" aria-expanded="false"><span lang="ja">教育</span><span lang="en">Teaching</span></a>
+        <div class="navpanel">
+          <div class="navlabel"><span lang="ja">科目</span><span lang="en">Courses</span></div>
+          <a href="../teaching.html"><span lang="ja">教育・担当授業</span><span lang="en">Teaching &amp; courses</span></a>
+          <a href="index.html"><span lang="ja">ソフトウェア工学</span><span lang="en">Software Engineering</span></a>
+          <a href="logic-circuits.html"><span lang="ja">論理回路1</span><span lang="en">Logic Circuits I</span></a>
+          <a href="intelligent-informatics-1.html"><span lang="ja">知能情報実験実習1</span><span lang="en">Intelligent Informatics Lab I</span></a>
+          <hr class="navdiv">
+          <div class="navlabel"><span lang="ja">教材</span><span lang="en">Materials</span></div>
+          <a href="design-patterns.html"><span lang="ja">デザインパターン学習ガイド</span><span lang="en">Design Patterns Guide</span></a>
+          <a href="software-architecture.html"><span lang="ja">アーキテクチャパターン大全</span><span lang="en">Software Architecture</span></a>
+          <a href="uml-guide.html"><span lang="ja">クラス図/シーケンス図ガイド</span><span lang="en">UML Diagram Guide</span></a>
+          <a href="software-testing.html"><span lang="ja">ソフトウェアテスト学習ガイド</span><span lang="en">Software Testing Guide</span></a>
+          <a href="agile-scrum.html"><span lang="ja">アジャイル開発とスクラム</span><span lang="en">Agile &amp; Scrum</span></a>
+          <a href="requirements-engineering.html"><span lang="ja">要求工学</span><span lang="en">Requirements Engineering</span></a>
+          <a href="software-evolution.html"><span lang="ja">ソフトウェア進化と技術的負債</span><span lang="en">Software Evolution</span></a>
+          <a href="software-reuse-oss.html"><span lang="ja">ソフトウェア再利用とOSS</span><span lang="en">Software Reuse &amp; OSS</span></a>
+          <a class="here" href="project-management.html" aria-current="page"><span lang="ja">プロジェクト管理と見積もり</span><span lang="en">Project Management</span></a>
+          <a href="version-control-cicd.html"><span lang="ja">バージョン管理とCI/CD</span><span lang="en">Version Control &amp; CI/CD</span></a>
+        </div>
+      </div>
+      <div class="navgroup">
+        <a class="navtop" href="../software-engineering.html" aria-haspopup="true" aria-expanded="false"><span lang="ja">ガイド</span><span lang="en">Guides</span></a>
+        <div class="navpanel">
+          <a href="../software-engineering.html"><span lang="ja">ソフトウェア工学とは</span><span lang="en">What is software engineering</span></a>
+          <a href="../technical-debt.html"><span lang="ja">技術的負債とは</span><span lang="en">What is technical debt</span></a>
+          <a href="../glossary.html"><span lang="ja">研究用語ミニ辞典</span><span lang="en">Research glossary</span></a>
+        </div>
+      </div>
+      <div class="navgroup">
+        <a class="navtop" href="../students.html"><span lang="ja">学生の皆さんへ</span><span lang="en">For Students</span></a>
+      </div>
+    </nav>
+    <div class="bar-right">
+      <a class="btn" href="https://researchmap.jp/kimura_yuta" target="_blank" rel="noopener">researchmap</a>
+      <div class="lswitch" role="group" aria-label="言語 / Language">
+        <button type="button" class="ls-ja" onclick="setLang('ja')" aria-pressed="true">JA</button>
+        <button type="button" class="ls-en" onclick="setLang('en')" aria-pressed="false">EN</button>
+      </div>
+      <button class="navtoggle" id="navToggle" type="button" aria-label="メニュー" aria-expanded="false" aria-controls="mobnav">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </div>
+</header>
+
+<div class="mobnav" id="mobnav" aria-hidden="true">
+  <div class="mobnav-inner">
+    <div class="mobgroup">
+      <div class="moblabel"><span lang="ja">研究</span><span lang="en">Research</span></div>
+      <a href="../publications.html"><span lang="ja">業績・研究活動</span><span lang="en">Publications &amp; activity</span></a>
+      <a href="../research/technical-debt-metrics.html"><span lang="ja">技術的負債とメトリクス</span><span lang="en">Technical debt &amp; metrics</span></a>
+      <a href="../research/apr-coding-standards.html"><span lang="ja">自動生成パッチと規約</span><span lang="en">Auto-generated patches &amp; standards</span></a>
+      <a href="../research/td-repayment-refactoring.html"><span lang="ja">負債返済とリファクタリング</span><span lang="en">Debt repayment &amp; refactoring</span></a>
+      <a href="../research/satd-issue-classification.html"><span lang="ja">課題票の負債分類</span><span lang="en">Issue-ticket debt classification</span></a>
+    </div>
+    <div class="mobgroup">
+      <div class="moblabel"><span lang="ja">教育</span><span lang="en">Teaching</span></div>
+      <a href="../teaching.html"><span lang="ja">教育・担当授業</span><span lang="en">Teaching &amp; courses</span></a>
+      <a href="index.html"><span lang="ja">ソフトウェア工学</span><span lang="en">Software Engineering</span></a>
+      <a href="logic-circuits.html"><span lang="ja">論理回路1</span><span lang="en">Logic Circuits I</span></a>
+      <a href="intelligent-informatics-1.html"><span lang="ja">知能情報実験実習1</span><span lang="en">Intelligent Informatics Lab I</span></a>
+      <a href="design-patterns.html"><span lang="ja">デザインパターン学習ガイド</span><span lang="en">Design Patterns Guide</span></a>
+      <a href="software-architecture.html"><span lang="ja">アーキテクチャパターン大全</span><span lang="en">Software Architecture</span></a>
+      <a href="uml-guide.html"><span lang="ja">クラス図/シーケンス図ガイド</span><span lang="en">UML Diagram Guide</span></a>
+      <a href="software-testing.html"><span lang="ja">ソフトウェアテスト学習ガイド</span><span lang="en">Software Testing Guide</span></a>
+      <a href="agile-scrum.html"><span lang="ja">アジャイル開発とスクラム</span><span lang="en">Agile &amp; Scrum</span></a>
+      <a href="requirements-engineering.html"><span lang="ja">要求工学</span><span lang="en">Requirements Engineering</span></a>
+      <a href="software-evolution.html"><span lang="ja">ソフトウェア進化と技術的負債</span><span lang="en">Software Evolution</span></a>
+      <a href="software-reuse-oss.html"><span lang="ja">ソフトウェア再利用とOSS</span><span lang="en">Software Reuse &amp; OSS</span></a>
+      <a class="here" href="project-management.html" aria-current="page"><span lang="ja">プロジェクト管理と見積もり</span><span lang="en">Project Management</span></a>
+      <a href="version-control-cicd.html"><span lang="ja">バージョン管理とCI/CD</span><span lang="en">Version Control &amp; CI/CD</span></a>
+    </div>
+    <div class="mobgroup">
+      <div class="moblabel"><span lang="ja">ガイド</span><span lang="en">Guides</span></div>
+      <a href="../software-engineering.html"><span lang="ja">ソフトウェア工学とは</span><span lang="en">What is software engineering</span></a>
+      <a href="../technical-debt.html"><span lang="ja">技術的負債とは</span><span lang="en">What is technical debt</span></a>
+      <a href="../glossary.html"><span lang="ja">研究用語ミニ辞典</span><span lang="en">Research glossary</span></a>
+    </div>
+    <div class="mobgroup">
+      <div class="moblabel"><span lang="ja">学生の皆さんへ</span><span lang="en">For Students</span></div>
+      <a href="../students.html"><span lang="ja">学生の皆さんへ</span><span lang="en">For Students</span></a>
+    </div>
+    <div class="mobfoot">
+      <a class="mobext" href="https://researchmap.jp/kimura_yuta" target="_blank" rel="noopener">researchmap</a>
+      <div class="lswitch" role="group" aria-label="言語 / Language">
+        <button type="button" class="ls-ja" onclick="setLang('ja')" aria-pressed="true">JA</button>
+        <button type="button" class="ls-en" onclick="setLang('en')" aria-pressed="false">EN</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<main id="main">
+
+<button class="totop" type="button" aria-label="上へ戻る" title="上へ戻る">&uarr;</button>
+
+<div class="wrap" style="padding-top:24px">
+  <nav class="crumbs" aria-label="パンくず">
+    <a href="../index.html"><span lang="ja">ホーム</span><span lang="en">Home</span></a>
+    <span class="csep" aria-hidden="true">&rsaquo;</span>
+    <a href="../teaching.html"><span lang="ja">教育</span><span lang="en">Teaching</span></a>
+    <span class="csep" aria-hidden="true">&rsaquo;</span>
+    <a href="index.html"><span lang="ja">ソフトウェア工学</span><span lang="en">Software Engineering</span></a>
+    <span class="csep" aria-hidden="true">&rsaquo;</span>
+    <span class="cur" aria-current="page"><span lang="ja">プロジェクト管理と見積もり</span><span lang="en">Project Management</span></span>
+  </nav>
+</div>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="wrap">
+    <p class="kick">Project Management &amp; Estimation</p>
+    <h1>プロジェクト管理と見積もり：<br>　<span style="white-space:nowrap">不確実性を</span><em style="white-space:nowrap">「マネジメント」</em>する技術</h1>
+    <p class="lead">プロジェクトマネジメントは「予算と納期の制約の下でソフトウェアを届ける」ための活動です。リスクマネジメント、人とチームのマネジメント、計画とスケジューリングから、見積もり技法（三点見積もり・プランニングポーカー・COCOMO II）、アジャイルの確率的予測、進捗メトリクスまで、代表的なトピックを<strong>目的・実施の仕方・意識するポイント・注意点</strong>つきで整理しました。ブルックスの法則、心理的安全性（Google Project Aristotle）、不確実性のコーン、モンテカルロ予測など、教科書の先にある現代的な知見も収録。体験デモ（PERT計算機）、理解度クイズ付きです。</p>
+    <p class="ja-note"><span lang="ja">この教材は日本語のみで提供しています</span><span lang="en">This learning material is available in Japanese only.</span></p>
+    <div class="hero-cta">
+      <a class="btn ink" href="#topics" style="padding:12px 22px">
+        <span lang="ja">トピックカタログへ</span><span lang="en">Jump to the topic catalog</span>
+      </a>
+      <a class="tlink" href="#quiz">
+        <span lang="ja">理解度クイズへ</span><span lang="en">Comprehension quiz</span>
+        <span class="ar" aria-hidden="true">&rsaquo;</span>
+      </a>
+    </div>
+  </div>
+</div>
+
+<!-- INTRO -->
+<div id="toTopSentinel" aria-hidden="true"></div>
+
+<div class="tocbar">
+  <nav class="tocbar-inner" aria-label="ページ内目次">
+    <a class="tocpill" href="#intro"><span lang="ja">はじめに</span><span lang="en">Intro</span></a>
+    <a class="tocpill" href="#topics"><span lang="ja">技法カタログ</span><span lang="en">Catalog</span></a>
+    <a class="tocpill" href="#estimation"><span lang="ja">見積もり</span><span lang="en">Estimation</span></a>
+    <a class="tocpill" href="#quiz"><span lang="ja">理解度クイズ</span><span lang="en">Quiz</span></a>
+    <a class="tocpill" href="#closing"><span lang="ja">おわりに</span><span lang="en">Closing</span></a>
+  </nav>
+</div>
+
+<section id="intro" style="padding-top:20px">
+  <div class="wrap reveal">
+    <p class="eyebrow"><span lang="ja">はじめに</span><span lang="en">Introduction</span></p>
+    <h2 class="big"><span lang="ja">ソフトウェアのプロジェクトマネジメントとは何か</span><span lang="en">What is software project management?</span></h2>
+    <div class="prose" id="introProse" style="margin-top:22px"></div>
+  </div>
+</section>
+
+<!-- TOPIC CATALOG -->
+<section class="soft-sec" id="topics" style="padding-top:80px">
+  <div class="wrap">
+    <p class="eyebrow reveal"><span lang="ja">トピックカタログ</span><span lang="en">Topic catalog</span></p>
+    <h2 class="big reveal"><span lang="ja">10のトピック・技法カタログ</span><span lang="en">Ten topics in project management</span></h2>
+    <p class="lead reveal" style="max-width:var(--readw); margin-top:18px">リスクと人のマネジメント（Sommerville 22章）、計画とスケジューリング、見積もりと予測・測定（同23章）の3カテゴリに、心理的安全性やモンテカルロ予測など現代の実務知見を織り込みました。カテゴリで絞り込み、各カードをクリックすると、目的・実施の仕方・意識するポイント・注意点・具体例が開きます。</p>
+    <div class="controls reveal" style="margin-top:26px">
+      <div class="pills" role="tablist" aria-label="カテゴリ切替">
+        <button class="pill active" onclick="filterCat('all',this)">すべて<span>10</span></button>
+        <button class="pill" onclick="filterCat('mgmt',this)">リスクと人<span>4</span></button>
+        <button class="pill" onclick="filterCat('plan',this)">計画とスケジュール<span>2</span></button>
+        <button class="pill" onclick="filterCat('est',this)">見積もりと予測<span>4</span></button>
+      </div>
+      <div class="ctrl-right">
+        <input id="search" class="search" type="text" placeholder="名前・キーワードで絞り込み" aria-label="トピックを絞り込み">
+        <span class="learn-note" id="learnNote"></span>
+      </div>
+    </div>
+    <div id="topics-list"></div>
+  </div>
+</section>
+
+<!-- ESTIMATION BASICS + DEMO -->
+<section id="estimation">
+  <div class="wrap">
+    <p class="eyebrow reveal"><span lang="ja">見積もりの基礎</span><span lang="en">Estimation basics</span></p>
+    <h2 class="big reveal"><span lang="ja">「当てられない」を前提に見積もる</span><span lang="en">Estimating under uncertainty</span></h2>
+    <div class="prose reveal" id="techProse" style="margin-top:22px"></div>
+    <div class="demo reveal" id="pertDemo">
+      <h4>体験デモ：三点見積もり（PERT）計算機</h4>
+      <p class="spec">あるタスクについて、<b>楽観値 O</b>（すべて順調なら）・<b>最頻値 M</b>（いちばんありそう）・<b>悲観値 P</b>（問題が重なったら）を人日で入力してください。期待値 <b>E =（O + 4M + P）/ 6</b> と標準偏差 <b>σ =（P − O）/ 6</b> を計算し、68% / 95% 信頼区間を分布のイメージとともに表示します。</p>
+      <div class="demo-row">
+        <input type="text" id="pertO" inputmode="decimal" placeholder="楽観値 O" aria-label="楽観値" style="width:130px" oninput="pertCheck()">
+        <input type="text" id="pertM" inputmode="decimal" placeholder="最頻値 M" aria-label="最頻値" style="width:130px" oninput="pertCheck()">
+        <input type="text" id="pertP" inputmode="decimal" placeholder="悲観値 P" aria-label="悲観値" style="width:130px" oninput="pertCheck()">
+        <div class="try" aria-label="代表例を試す">
+          <button onclick="pertTry(4,7,16)">4 / 7 / 16</button>
+          <button onclick="pertTry(10,12,14)">10 / 12 / 14</button>
+          <button onclick="pertTry(5,10,30)">5 / 10 / 30</button>
+          <button onclick="pertTry(3,3,3)">3 / 3 / 3</button>
+          <button onclick="pertTry(16,7,4)">16 / 7 / 4（矛盾）</button>
+        </div>
+      </div>
+      <div class="demo-out" id="pertOut">3つの値を入力するか、上のボタンで代表例を試してください。「4 / 7 / 16」は悲観側に裾が長い典型的なタスクの例です。</div>
+      <div id="pertViz"></div>
+    </div>
+  </div>
+</section>
+
+<!-- QUIZ -->
+<section class="soft-sec" id="quiz" style="padding-top:80px">
+  <div class="wrap">
+    <p class="eyebrow reveal"><span lang="ja">理解度チェック</span><span lang="en">Check your understanding</span></p>
+    <h2 class="big reveal"><span lang="ja">理解度チェッククイズ</span><span lang="en">Comprehension quiz</span></h2>
+    <p class="lead reveal" style="max-width:var(--readw); margin-top:18px">それぞれの状況に<strong>もっとも適した概念・技法</strong>を選んでください。<span id="quizScore"></span></p>
+    <div id="quizBody" class="reveal"></div>
+    <button class="btn ink quiz-reset" onclick="buildQuiz()" style="padding:11px 22px">
+      <span lang="ja">もう一度挑戦する</span><span lang="en">Try again</span>
+    </button>
+  </div>
+</section>
+
+<!-- CLOSING -->
+<section id="closing">
+  <div class="wrap reveal">
+    <p class="eyebrow"><span lang="ja">おわりに</span><span lang="en">In closing</span></p>
+    <h2 class="big"><span lang="ja">不確実性に向き合う心構えと、さらに学ぶために</span><span lang="en">How to think about uncertainty, and where to learn more</span></h2>
+    <div class="prose" id="closingProse" style="margin-top:22px"></div>
+  </div>
+</section>
+
+</main>
+
+<!-- FOOTER -->
+<footer>
+  <div class="wrap">
+    <div class="cite">
+      <span lang="ja">ソフトウェアプロジェクトマネジメントの全体像（リスクマネジメント・人とチームのマネジメント・計画とスケジューリング・見積もり技法）を、これから学ぶ方向けにまとめた学習ガイドです。木村祐太のソフトウェア工学の授業教材の一部としてご覧いただけます。授業の詳細（評価方法・日程等）は最新のシラバスを確認してください。</span>
+      <span lang="en">A study guide to software project management and estimation (risk management, managing people and teams, planning and scheduling, and estimation techniques), for those new to it. Part of Yuta Kimura's software engineering course materials. For course details such as assessment and schedule, please refer to the latest syllabus.</span>
+    </div>
+    <div class="foot-grid">
+      <div>
+        <h3><span lang="ja">連絡先</span><span lang="en">Contact</span></h3>
+        <p class="muted-s">
+          <b>木村 祐太 / Yuta Kimura</b><br>
+          <span lang="ja">大阪公立大学工業高等専門学校</span><span lang="en">Osaka Metropolitan University College of Technology</span><br>
+          <a href="mailto:y.kimura@omu.ac.jp">y.kimura [at] omu.ac.jp</a>
+        </p>
+      </div>
+      <div>
+        <h3><span lang="ja">サイト</span><span lang="en">Site</span></h3>
+        <p class="muted-s">
+          <a href="../index.html"><span lang="ja">ホーム</span><span lang="en">Home</span></a><br>
+          <a href="../publications.html"><span lang="ja">業績・研究活動</span><span lang="en">Publications &amp; research activities</span></a><br>
+          <a href="../teaching.html"><span lang="ja">教育</span><span lang="en">Teaching</span></a><br>
+          <a href="../software-engineering.html"><span lang="ja">ソフトウェア工学とは</span><span lang="en">What is software engineering?</span></a><br>
+          <a href="../technical-debt.html"><span lang="ja">技術的負債とは</span><span lang="en">What is technical debt?</span></a><br>
+          <a href="../students.html"><span lang="ja">学生の皆さんへ</span><span lang="en">For students</span></a><br>
+          <a href="../glossary.html"><span lang="ja">用語集</span><span lang="en">Glossary</span></a>
+        </p>
+      </div>
+      <div>
+        <h3><span lang="ja">研究</span><span lang="en">Research</span></h3>
+        <p class="muted-s">
+          <a href="../research/technical-debt-metrics.html"><span lang="ja">メトリクスによる分類・特徴づけ</span><span lang="en">Classifying debt with metrics</span></a><br>
+          <a href="../research/apr-coding-standards.html"><span lang="ja">自動生成パッチと品質</span><span lang="en">Auto-generated patches and quality</span></a><br>
+          <a href="../research/td-repayment-refactoring.html"><span lang="ja">返済とリファクタリング</span><span lang="en">Repayment and refactoring</span></a><br>
+          <a href="../research/satd-issue-classification.html"><span lang="ja">TD-Issue の自動分類</span><span lang="en">Automatic TD-Issue classification</span></a><br>
+          <a href="https://researchmap.jp/kimura_yuta" target="_blank" rel="noopener">researchmap</a>
+        </p>
+      </div>
+    </div>
+    <div class="foot-rule"></div>
+    <p class="foot-note">
+      <span lang="ja">© 2026 Yuta Kimura. プロジェクトマネジメントと計画・見積もりの解説は Ian Sommerville『Software Engineering (10th ed.)』第22章・第23章に基づく概説です。心理的安全性（Google re:Work）・DORA / SPACE・モンテカルロ予測など現代的トピックの解説は、各分野の公開資料と実務慣行に基づきます。</span>
+      <span lang="en">© 2026 Yuta Kimura. This overview of project management, planning, and estimation follows Chapters 22 and 23 of Ian Sommerville, <i>Software Engineering</i> (10th ed.). Sections on modern topics (psychological safety, DORA / SPACE, Monte Carlo forecasting, etc.) draw on publicly available industry sources.</span>
+    </p>
+  </div>
+</footer>
+<script>
+/* ============== コンテンツデータ ============== */
+const INTRO_HTML = `
+<p><b>プロジェクトマネジメント</b>とは、<strong>予算と納期の制約の下で</strong>ソフトウェアを確実に届けるための活動全体です。
+組織はソフトウェア開発に投資し、その投資に見合う価値が返ってくることを期待します：だからマネジメントが必要になります。
+ここで最初に覚えておくべき非対称性があります。
+<strong>良い管理はプロジェクトの成功を保証しません。しかし悪い管理は、ほぼ確実に失敗を生みます</strong>。
+納期は遅れ、コストは超過し、チームは疲弊する：その多くは技術の失敗ではなく、マネジメントの失敗です。</p>
+
+<h4>ソフトウェアのマネジメントはなぜ特別に難しいのか</h4>
+<div class="principles">
+  <div class="p"><b>① 成果物が無形（intangible）</b><br>
+    <span>進捗が目に見えない。橋の建設なら「半分架かった」ことが誰の目にも見えるが、ソフトウェアの進捗はドキュメントと申告を信じるしかない。だから「90%完成」という言葉が危険になる。</span></div>
+  <div class="p"><b>② 大規模プロジェクトは「一点物」</b><br>
+    <span>過去とまったく同じプロジェクトは存在せず、過去の経験がそのまま通用しない。さらに技術の変化が速く、せっかくの経験も数年で陳腐化する。</span></div>
+  <div class="p"><b>③ プロセスが標準化されていない</b><br>
+    <span>開発プロセスは組織ごとに多様で、機械工学や土木のような成熟した「これに従えば大丈夫」という標準がまだない。プロセスと問題の切り分け自体が難しい。</span></div>
+</div>
+
+<h4>プロジェクトマネージャの4つの重要活動</h4>
+<p>Sommerville は、ほとんどのプロジェクトマネージャに共通する仕事として次を挙げています。
+このページのカタログは、この活動の全体を順にカバーします。</p>
+<div class="principles">
+  <div class="p"><b>プロポーザル作成</b><br>
+    <span>新しいプロジェクトの提案書を書き、受注する。目的・進め方・価格の見積もりを含む「勝たなければ次がない」仕事。</span></div>
+  <div class="p"><b>プロジェクト計画</b><br>
+    <span>計画立案・見積もり・スケジューリング。作業を分解し、担当と期日を決め、進捗を測る基準を作る。</span></div>
+  <div class="p"><b>リスクマネジメント</b><br>
+    <span>起きてほしくないことを先回りして識別・分析し、対応を計画し、監視し続ける。</span></div>
+  <div class="p"><b>人のマネジメント</b><br>
+    <span>チームを編成し、人が最高の仕事をできる環境と動機づけを用意する。人は組織の最大の資産。</span></div>
+</div>
+<p>これに<b>報告</b>（顧客と経営層に対して、簡潔な文書と口頭で進捗を的確に伝えること）が加わります。
+技術情報を要約して伝える能力は、プロジェクトマネージャの必須スキルです。</p>
+
+<div class="callout warn">
+  <h4>この難しさの共通点：不確実性こそがマネジメントの主戦場</h4>
+  見えない成果物・一点物・多様なプロセス。3つの難しさに共通するのは<strong>不確実性</strong>です。
+  プロジェクトマネジメントの本質は、不確実性をゼロにすること（それは不可能です）ではなく、
+  <strong>識別し、測り、減らし、残った分に備える</strong>こと。
+  リスクマネジメントも、見積もり技法も、アジャイルの計画も、すべてこの一点に向かっています。
+</div>
+
+<h4>見積もりはどれくらいブレるのか：不確実性のコーン</h4>
+<p>プロジェクトの<strong>初期ほど見積もりは大きくブレます</strong>。Boehm らの古典的な分析によれば、
+初期構想の段階での規模・工数の見積もりは、実績に対して<strong>4倍〜1/4倍</strong>の幅でブレえます。
+要求が決まり、設計が進むにつれて幅は狭まっていく：この漏斗型の図を、McConnell は
+<b>不確実性のコーン（Cone of Uncertainty）</b>と名付けました。</p>
+<div class="diagram-wrap">
+<svg viewBox="0 0 760 320" role="img" aria-label="不確実性のコーン：プロジェクトが進むほど見積もりのブレ幅が狭まる">
+  <path d="M70 30 L70 272 L730 272" class="dg-line"/>
+  <path d="M70 155 L730 155" class="dg-line dg-dash" opacity=".5"/>
+  <polygon points="90,45 240,100 400,123 560,137 700,155 560,173 400,187 240,210 90,265"
+    fill="rgba(14,111,92,.10)" stroke="#0E6F5C" stroke-width="1.4"/>
+  <text x="62" y="49" class="dg-el" style="text-anchor:end">4倍</text>
+  <text x="62" y="104" class="dg-el" style="text-anchor:end">2倍</text>
+  <text x="62" y="159" class="dg-el" style="text-anchor:end">等倍</text>
+  <text x="62" y="214" class="dg-el" style="text-anchor:end">1/2</text>
+  <text x="62" y="269" class="dg-el" style="text-anchor:end">1/4</text>
+  <text x="90" y="292" class="dg-el">初期構想</text>
+  <text x="240" y="292" class="dg-el">要求定義</text>
+  <text x="400" y="292" class="dg-el">設計</text>
+  <text x="560" y="292" class="dg-el">実装</text>
+  <text x="700" y="292" class="dg-el">完了</text>
+  <text x="240" y="160" class="dg-lbl" fill="#0A5748">見積もりのブレ幅</text>
+  <text x="380" y="314" class="dg-note">縦軸：実績に対する見積もりの比（対数目盛のイメージ）</text>
+</svg>
+<div class="dg-legend">Boehm（1981）が示し、McConnell『ソフトウェア見積り』（2006）が広めた古典的知見。
+重要な注意が2つ：①コーンは<b>放っておいても狭まらない</b>：要求を確定し、リスクを潰す「仕事」によってのみ狭まる。
+②実証研究には「実際のプロジェクトはこんなにきれいに収束しない」という批判もある。図は法則ではなく「初期の見積もりを断言するな」という警告として読むこと。</div>
+</div>
+
+<div class="callout tip">
+  <h4>このページの歩き方</h4>
+  まず下の<a href="#topics">カタログ</a>で、リスク → 人とチーム → 計画 → 見積もりの順に読み進めてください。
+  <a href="#estimation">体験デモ（PERT計算機）</a>で「幅で見積もる」感覚をつかみ、
+  最後に<a href="#quiz">理解度クイズ</a>で定着を確認しましょう。
+  用語は Sommerville 10th（第22章・第23章）に準拠しています。
+</div>
+
+<p style="font-size:13px;color:var(--muted)">各カード末尾の「習得チェック」を付けると、絞り込みバー右側に習得の進捗が表示されます（保存はされず、ページを開いている間だけ保持されます）。</p>
+`;
+</script>
+<script>
+const TECH_HTML = `
+<p>すべての計画は見積もりの上に建っています。そして見積もりは、その名のとおり<strong>不確実な予測</strong>です。
+見積もり技法は大きく2つのファミリーに分かれます（詳細はカタログの<a href="#experience-estimation">経験ベース</a>／<a href="#algorithmic-estimation">アルゴリズム的</a>のカードへ）。</p>
+<div class="principles">
+  <div class="p"><b>経験ベースの見積もり</b><br>
+    <span>過去の類似プロジェクト・タスクの経験から見積もる。類推、三点見積もり（PERT）、プランニングポーカーなど。実務の見積もりの大半はこちら。</span></div>
+  <div class="p"><b>アルゴリズム的コストモデリング</b><br>
+    <span>規模などの推定パラメータから数式で工数を計算する。COCOMO II、ファンクションポイント法など。「規模と工数は比例しない」という重要な洞察をくれる。</span></div>
+</div>
+
+<h4>「正確さ」と「精密さ」は違う</h4>
+<p>見積もりの議論では、<b>精度（accuracy：実際の値にどれだけ近いか）</b>と
+<b>確度（precision：数字がどれだけ細かいか）</b>を区別することが決定的に重要です。
+「247.5人日」という見積もりはとても精密（precise）に見えますが、正確（accurate）とは限りません。
+むしろ不確実な段階で細かい数字を出すことは、<strong>確実さの偽装</strong>になります。
+桁が合っている粗い見積もり（「200〜300人日」）のほうが、桁が違う細かい見積もりよりずっと価値がある：
+これが McConnell『ソフトウェア見積り』の中心的なメッセージの1つです。</p>
+
+<h4>三点見積もり（PERT）：1つの数字ではなく「幅」で見積もる</h4>
+<p>1950年代末、米海軍のポラリス・ミサイル計画のスケジュール管理のために生まれた
+<b>PERT（Program Evaluation and Review Technique）</b>は、タスクごとに3つの値を見積もります。</p>
+<ul>
+  <li><b>楽観値 O</b>：すべてが順調に進んだ場合の最短</li>
+  <li><b>最頻値 M</b>：いちばんありそうな値</li>
+  <li><b>悲観値 P</b>：問題が重なった場合の最長</li>
+</ul>
+<p>期待値は <code>E = (O + 4M + P) / 6</code>、標準偏差は <code>σ = (P − O) / 6</code>（β分布による近似）。
+作業時間の分布は<strong>右（悲観側）に裾が長い</strong>（早く終わる幅には限度があるが、遅れる幅にはほぼ上限がない）ので、
+期待値 E は最頻値 M より悲観側に寄ります。正規分布で近似すれば、<b>E ± 1σ に約68%</b>、<b>E ± 2σ に約95%</b> が収まります。
+「いちばんありそうな値」をそのまま約束すると、五分五分より高い確率で遅れる。これが三点見積もりの最重要の教訓です。</p>
+
+<div class="callout">
+  <h4>見積もり・目標・コミットメントを区別する（McConnell）</h4>
+  <b>見積もり</b>は確率的な<strong>予測</strong>、<b>目標</b>は実現したい<strong>願望</strong>、
+  <b>コミットメント</b>は相手と交わす<strong>約束</strong>。
+  「見積もってくれ」と言いながら実は目標（希望納期）を追認させたい：という会話のすれ違いが、
+  見積もりをめぐる不幸の大半の原因です。まず「いま話しているのはどれか」を確認しましょう。
+</div>
+`;
+
+const CLOSING_HTML = `
+<p>最後に、個々の技法の知識を「使える判断力」に変えるための視点をまとめます。</p>
+<div class="callout warn">
+  <h4>不確実性を隠さない：「幅と確率」で語る勇気</h4>
+  断言は頼もしく聞こえますが、不確実な段階での断言は誠実さではなく、無知の表明です。
+  「85%の確率で4月末まで。50%なら4月中旬」という語り方は歯切れが悪いのではなく、
+  <strong>知っていることと知らないことを正確に伝える</strong>専門家の仕事です。
+  相手が1つの数字を求めてきたら、その数字が「見積もり・目標・コミットメント」のどれなのかを確認すること。
+</div>
+<div class="callout tip">
+  <h4>人を「資源」と呼ばない</h4>
+  人月という単位の便利さは、「人は交換可能な部品だ」という錯覚を招きます。
+  しかしソフトウェアは頭脳労働の産物であり、生産性の個人差は数倍規模、
+  チームの凝集性・心理的安全性は「ソフトな話」ではなく<strong>生産性の一次要因</strong>です
+  （『ピープルウェア』の古典的主張と、Google Project Aristotle の実証が同じ結論を指しています）。
+  ブルックスの法則もコンウェイの法則も、突き詰めれば「ソフトウェア開発の律速はコミュニケーションだ」と言っています。
+</div>
+<div class="callout">
+  <h4>計画は無価値、計画づくりがすべて</h4>
+  アイゼンハワーの言葉「Plans are worthless, but planning is everything」。
+  計画の価値は文書そのものではなく、<strong>作る過程で得た理解・洗い出した依存関係・考え抜いた選択肢</strong>にあります。
+  だから初期計画が崩れても（必ず崩れます）計画づくりは無駄ではないし、
+  計画は「作って終わり」ではなく「更新し続ける活動」なのです。
+</div>
+
+<h4 style="margin-top:26px">混同しやすい用語の見分け方</h4>
+<p>似ている用語は、<strong>「何に影響するか」「何を測っているか」</strong>で見分けます。試験でも実務でも問われるポイントです。</p>
+<table class="cmp-table">
+  <tr><th>似ている用語</th><th>見分けるポイント</th></tr>
+  <tr><td><b>プロジェクトリスク</b> と <b>プロダクトリスク</b> と <b>ビジネスリスク</b></td>
+    <td>何に影響するかで分ける。<b>スケジュール・資源</b>（例：熟練者の離職）／<b>成果物の品質・性能</b>（例：購入部品の性能不足）／<b>開発組織・事業</b>（例：競合の先行リリース）。同じ出来事が複数に該当することもある。</td></tr>
+  <tr><td><b>ガントチャート</b> と <b>バーンダウンチャート</b></td>
+    <td>ガントは<b>タスクと依存関係</b>をカレンダーに配置する（計画駆動）。バーンダウンは<b>残作業量の推移</b>だけを見る（アジャイル）。前者は「何をいつ」、後者は「いつ終わりそうか」に答える。</td></tr>
+  <tr><td><b>絶対見積もり</b> と <b>相対見積もり</b></td>
+    <td>「3人日」と絶対時間で見積もるか、「あのストーリーの2倍」と<b>比較</b>で見積もるか。人間は絶対値より比較が得意。相対値（ストーリーポイント）は実測ベロシティと組み合わせて初めて時間に変換できる。</td></tr>
+  <tr><td><b>精度（accuracy）</b> と <b>確度（precision）</b></td>
+    <td>accuracy は「実際の値にどれだけ<b>近いか</b>」、precision は「数字がどれだけ<b>細かいか</b>」。「247.5人日」は precise だが accurate とは限らない。不確実な段階で細かい数字を出すのは確実さの偽装。</td></tr>
+  <tr><td><b>工数（人月）</b> と <b>期間（カレンダー月）</b></td>
+    <td>工数は<b>コスト</b>の単位（人数×時間）、期間は<b>暦</b>。両者は交換できない：12人月の仕事は12人でも1か月では終わらない（ブルックスの法則）。</td></tr>
+  <tr><td><b>マイルストーン</b> と <b>成果物（deliverable）</b></td>
+    <td>マイルストーンは活動の<b>予測可能な結果</b>＝進捗確認点（例：要求仕様の承認）。成果物は<b>顧客に引き渡す</b>作業産物。成果物は通常マイルストーンでもあるが、逆は成り立たない。</td></tr>
+  <tr><td><b>ベロシティ</b> と <b>スループット</b></td>
+    <td>ベロシティは<b>ストーリーポイントの消化量</b>／スプリント（見積もりが前提）。スループットは<b>完了アイテム数</b>／期間（見積もり不要）。#NoEstimates 系のモンテカルロ予測は後者を使う。</td></tr>
+  <tr><td><b>マネジメント</b> と <b>リーダーシップ</b></td>
+    <td>Kotter の古典的整理では、マネジメントは<b>複雑さに対処する</b>（計画・組織化・統制）、リーダーシップは<b>変化に対処する</b>（方向づけ・動機づけ）。プロジェクトには両方必要で、役職と機能は別物。</td></tr>
+  <tr><td><b>見積もり</b> と <b>目標</b> と <b>コミットメント</b></td>
+    <td>確率的な<b>予測</b>／実現したい<b>願望</b>／相手との<b>約束</b>。この3つを言葉として区別するだけで、見積もりをめぐる衝突の多くは消える（McConnell）。</td></tr>
+  <tr><td><b>リスク</b> と <b>イシュー（問題）</b></td>
+    <td>リスクは「<b>まだ起きていない</b>」不確実な事象、イシューは「<b>すでに起きた</b>」問題。リスクが現実化した瞬間にイシューになり、コンティンジェンシー計画の出番になる。</td></tr>
+</table>
+
+<h4 style="margin-top:26px">研究者の視点：見積もりと生産性は、いまも研究の最前線</h4>
+<div class="callout">
+  <h4>実証的ソフトウェア工学とプロジェクトデータ</h4>
+  「工数をどう予測するか」は実証的ソフトウェア工学の古典テーマで、ISBSG などのプロジェクト実績データベースを使った
+  機械学習ベースの工数予測、見積もりの認知バイアス（楽観・アンカリング）の実験研究が続いています。
+  開発者の生産性測定も、単一指標批判（<strong>SPACE フレームワーク</strong>）や DORA の年次大規模調査など、
+  産学が重なる活発な分野です。「AI コーディング支援は生産性と見積もりをどう変えるか」は、
+  まさにいま測定が進んでいる問いです。
+</div>
+
+<h4 style="margin-top:26px">さらに学ぶための文献・資料</h4>
+<ul>
+  <li>I. Sommerville『Software Engineering (10th ed.)』Pearson, 2016年, 第22章・第23章：本教材の底本</li>
+  <li>F. P. Brooks, Jr.『人月の神話【新装版】』丸善出版, 2014年（原著 1975 / 1995）：ブルックスの法則と「銀の弾丸はない」の原典。ソフトウェア工学でもっとも読み継がれている本</li>
+  <li>T. DeMarco & T. Lister『ピープルウェア 第3版』日経BP, 2013年：「われわれの仕事の主要な問題は、技術的というより社会学的なものだ」</li>
+  <li>S. McConnell『ソフトウェア見積り』日経BP, 2006年：不確実性のコーン、見積もり・目標・コミットメントの区別など、見積もり実務の定番書</li>
+  <li>D. Pink『モチベーション3.0』講談社, 2010年（原題 <i>Drive</i>）：内発的動機（自律・熟達・目的）</li>
+  <li>M. Skelton & M. Pais『チームトポロジー』日本能率協会マネジメントセンター, 2021年：コンウェイの法則を活かすチーム設計</li>
+  <li>N. Forsgren, J. Humble, G. Kim『LeanとDevOpsの科学』インプレス, 2018年（原題 <i>Accelerate</i>）：DORA 4指標の背景となった調査研究</li>
+  <li><a href="https://rework.withgoogle.com/intl/en/guides/understand-team-effectiveness" target="_blank" rel="noopener">Google re:Work「チームの効果性を理解する」</a>：Project Aristotle の調査手法と結果の一次資料</li>
+  <li><a href="https://dora.dev/" target="_blank" rel="noopener">DORA（dora.dev）</a>：年次 State of DevOps Report と4指標の定義</li>
+  <li><a href="https://queue.acm.org/detail.cfm?id=3454124" target="_blank" rel="noopener">The SPACE of Developer Productivity（ACM Queue, 2021）</a>：開発者生産性の多次元測定フレームワークの原典</li>
+</ul>
+`;
+</script>
+<script>
+/* ============== トピックデータ（カテゴリ別） ============== */
+const CAT_ORDER = ['mgmt','plan','est'];
+const CAT_META = {
+  mgmt:{ label:'リスクと人のマネジメント', en:'Risk & people', color:'var(--mgmt)',
+    desc:'プロジェクトマネジメントの土台。起きてほしくないこと（リスク）を先回りして管理し、最大の資産である「人」とチームが最高の仕事をできる条件を整える。Sommerville 22章の中心テーマに、ブルックスの法則という古典の教訓を加えた。'},
+  plan:{ label:'計画とスケジューリング', en:'Planning & scheduling', color:'var(--plan)',
+    desc:'作業を分解し、依存関係を見極め、カレンダーに配置する。ポイントは「初期計画は必ず変わる」を前提に、反復的に見直し続ける仕組みを作ること。Sommerville 23章前半に対応。'},
+  est:{ label:'見積もりと予測・測定', en:'Estimation & forecasting', color:'var(--est)',
+    desc:'「いつ終わるか・いくらかかるか」に答えるための技法群。経験ベースの見積もり、アルゴリズム的モデル（COCOMO・FP）、実測にもとづく確率的予測、そして進捗と健全性の測定まで。Sommerville 23章後半＋現代の実務。'}
+};
+const BADGE_CLS = {'不確実性の管理':'imp3','見積もり技法':'imp3','人間系':'imp2','計画技法':'imp2','古典の教訓':'imp1','測定と予測':'imp1'};
+
+const TOPICS = [
+/* ---------- リスクと人のマネジメント ---------- */
+{
+  id:'risk-management', name:'Risk Management', jp:'リスクマネジメント', cat:'mgmt',
+  badge:'不確実性の管理', tags:['識別→分析→計画→監視','確率×影響','リスク登録簿'],
+  summary:'プロジェクトを脅かす「起きてほしくないこと」を先回りして<strong>識別し、確率×影響で分析し、対応を計画し、監視し続ける</strong>反復プロセス。プロジェクトマネージャの中核業務。',
+  analogy:'長い航海に出る船長の仕事。嵐・座礁・食料不足という「起こりうる悪いこと」を出港前に列挙し、可能性と被害の大きさで優先順位を付け、航路変更（回避）や救命ボート（緊急時対応）を準備し、航海中も気圧計を見張り続ける。',
+  purpose:'問題が「起きてから慌てる」のではなく、起きる前に発生確率を下げ（回避）、起きたときの被害を小さくし（最小化）、それでも起きたときの行動を準備しておく（コンティンジェンシー）。',
+  who:'プロジェクトマネージャが計画段階で開始し、プロジェクトが終わるまで反復する。ただしリスクの報告者はチーム全員：悪い知らせが上がってくる空気が前提条件。',
+  steps:[
+    '<b>識別</b>：技術・人・組織・ツール・要求・見積もりの6つの観点でリスクを洗い出す（チームでのブレインストーミングが有効）',
+    '<b>分析</b>：各リスクの<b>発生確率</b>（低い〜非常に高い）と<b>影響度</b>（許容可能〜破滅的）を見積もり、優先順位を付ける',
+    '<b>計画</b>：重要なリスクに戦略を割り当てる：<b>回避</b>（確率を下げる）／<b>最小化</b>（影響を下げる）／<b>コンティンジェンシー計画</b>（起きたときの行動計画）',
+    '<b>監視</b>：リスクの兆候となる指標を進捗会議のたびに評価し、確率と影響の変化を追う',
+    'リスク登録簿（リスクレジスタ）を更新しながら、①〜④を<b>プロジェクトが終わるまで反復</b>する'
+  ],
+  points:[
+    'リスクは<b>3分類</b>で考える：<b>プロジェクトリスク</b>（スケジュール・資源に影響。例：熟練者の離職）／<b>プロダクトリスク</b>(成果物の品質・性能に影響。例：購入コンポーネントの性能不足)／<b>ビジネスリスク</b>（組織・事業に影響。例：競合が先に類似製品を出す）',
+    '1つの出来事が複数の顔を持つ：経験あるプログラマの離職は、プロジェクトリスク（遅延）でもありプロダクトリスク（品質低下）でもありうる',
+    '「確率×影響」の掛け算だけで機械的に決めない：影響が破滅的なリスクは、確率が低くてもコンティンジェンシー計画を用意する',
+    'コンティンジェンシー計画は<b>発動条件</b>まで決めておく（どの指標がどうなったら切り替えるか）'
+  ],
+  cautions:[
+    '<b>リスクを口にしにくい空気こそ最大のリスク</b>：悪い知らせが上がってこないプロジェクトでは監視が機能しない（<a href="#teamwork">心理的安全性</a>と直結する話）',
+    '登録簿を作って満足し、更新が止まる「一度きりの儀式」化が最頻出の失敗パターン',
+    '<b>見積もりリスク</b>（自分たちの見積もり自体が誤っているリスク）は自覚しにくく、見落とされがち',
+    'すべてのリスクには備えられない：上位のリスクに資源を集中する'
+  ],
+  examples:[
+    '要員リスク「DB担当が退職したら」→ 最小化戦略：情報をチームに共有し、ドキュメント化とペア作業で属人化を防ぐ',
+    '組織リスク「組織再編で経営層が交代し支援が失われる」→ 経営層向けに、プロジェクトの事業貢献を簡潔に示す文書を準備しておく（Sommerville の例）',
+    '要求リスク「顧客が要求変更を連発する」→ 回避：変更の影響を追跡できる情報管理＋変更に強い設計（変わりやすい部分の分離）'
+  ],
+  related:'<b>イシュー（問題）管理</b>との違い：リスクは「まだ起きていない」。起きた瞬間にリスクはイシューになり、コンティンジェンシー計画の出番になる。<a href="#project-planning">プロジェクト計画</a>のリスクマネジメント計画はこの活動の成果物。',
+  modern:'リスク登録簿は Jira・Backlog 等のチケットやスプレッドシートで運用するのが実務の定番。アジャイル開発は「リスク対応の仕組み」でもある：短いイテレーションと頻繁なデモが「作るものを間違えるリスク」「統合が失敗するリスク」を構造的に小さくする。実施前に「このプロジェクトは失敗した」と仮定して原因を語り合う<b>プレモーテム</b>も現代的なリスク識別技法。',
+  hasCode:false
+},
+{
+  id:'managing-people', name:'Managing People & Motivation', jp:'人のマネジメントとモチベーション', cat:'mgmt',
+  badge:'人間系', tags:['Maslowの階層','内発的動機','ピープルウェア'],
+  summary:'「人は組織の最大の資産」。給料や設備だけでは人は動かない：<strong>仕事そのものの設計と、承認・成長の機会</strong>がソフトウェア技術者の動機づけを左右する。',
+  analogy:'植物を育てる仕事に似ている。水と日光（給料・作業環境）は前提条件にすぎず、それだけでは花は咲かない。土壌（仕事そのものの面白さ）と日々の手入れ（承認・成長の機会）がそろって初めて育つ。',
+  purpose:'優秀な人を集めるだけでなく、その人たちがもっとも生産的に働ける仕事の設計・環境・承認を用意する。動機づけの失敗は、離職・品質低下・スケジュール遅延としてプロジェクトに跳ね返る。',
+  who:'マネージャの日常業務。ただし動機づけの多くは制度ではなく、仕事の設計そのものに埋め込まれる。',
+  steps:[
+    'Maslow の<b>欲求階層</b>を出発点にする：生理的 → 安全 → 社会的 → 尊重 → 自己実現',
+    'ソフトウェア技術者では<b>尊重（承認）と自己実現（成長）</b>が特に重要：低次の欲求は（先進国の専門職では）おおむね満たされているから',
+    '人の<b>指向タイプ</b>を観察する：<b>タスク指向</b>（仕事そのものの面白さで動く）／<b>自己指向</b>（自身の成功・キャリアで動く）／<b>相互作用指向</b>（仲間と働くことで動く）',
+    'タイプに応じて仕事を設計する：挑戦的な技術課題を任せる／キャリアパスと責任を与える／協働の機会をつくる',
+    '承認をこまめに行う：進捗の見える化、成果のクレジット、学ぶ機会（研修・カンファレンス・新技術の担当）'
+  ],
+  points:[
+    'Maslow の階層は万能理論ではない：実証的な支持は弱く、順序も強さも人によって違う。<b>「考える出発点」として、限界を知って使う</b>のが正しい距離感',
+    'McClelland の<b>達成動機</b>理論：達成欲求の強い人は「適度に難しい」目標でもっとも動機づけられる（簡単すぎても無謀すぎてもだめ）',
+    'Pink『Drive』（邦題：モチベーション3.0）の内発的動機の3要素：<b>自律（Autonomy）・熟達（Mastery）・目的（Purpose）</b>。ルーチンでない知識労働では、アメとムチ（外発的動機づけ）はむしろ成果を下げうる',
+    'DeMarco & Lister『ピープルウェア』の核心：「われわれの仕事の主要な問題は、技術的というより<b>社会学的</b>なものだ」：静かな作業環境や中断の少なさが生産性を大きく左右する'
+  ],
+  cautions:[
+    '<b>プログラマは交換可能な資源ではない</b>：「人月」で人を差し替えられる前提の計画は破綻する。生産性の個人差は数倍規模あり、暗黙知の引き継ぎには長い時間がかかる',
+    '金銭的インセンティブの乱用は内発的動機を壊すことがある（アンダーマイニング効果）',
+    '「あの人はやる気がない」と個人を責める前に、仕事の設計・環境・承認の欠如を疑う：原因の多くはシステム側にある',
+    'タイプ分類をレッテル貼りに使わない：同じ人でも状況・時期で指向は変わる'
+  ],
+  examples:[
+    'Sommerville のケーススタディ：優秀だが会議で発言しなくなったエンジニア。実は相互作用指向ではなく自己指向で、キャリアの停滞に不満だった：マネージャは研修と新技術の担当で応えた',
+    'Google の「20%ルール」（勤務時間の一部を自主プロジェクトに使える）は自律への投資の有名例',
+    '『ピープルウェア』が報告するオフィス環境の影響：静かで中断の少ない環境のチームは、騒がしい環境のチームより一貫して高い生産性を示した'
+  ],
+  related:'<a href="#teamwork">チームワーク</a>との関係：このカードは「個人」の動機づけ、次のカードは「集団」としての生産性。相互作用指向の人の動機づけはチーム設計と不可分。',
+  modern:'1on1 ミーティングの定例化、エンゲージメントサーベイ、開発者体験（DevEx）への投資が現代版の実践。リモート／ハイブリッド勤務では「見えない貢献をどう承認するか」が新しい課題になっている。DORA・SPACE の調査でも、満足度とウェルビーイングは生産性の独立した次元として扱われる。',
+  hasCode:false
+},
+{
+  id:'teamwork', name:'Teamwork & Team Composition', jp:'チームワークとチーム編成', cat:'mgmt',
+  badge:'人間系', tags:['凝集性','心理的安全性','コンウェイの法則'],
+  summary:'生産性を決めるのは個人の能力の総和ではなく、<strong>チームの凝集性・組織のされ方・コミュニケーション</strong>。「誰がいるか」より「どう協働しているか」が効く。',
+  analogy:'スター選手を11人集めても優勝できないサッカーチームと同じ。パスが回り（情報が流れ）、守備の穴を互いに埋め（相互に助け）、監督の戦術を全員が理解している（基準を共有している）チームが勝つ。',
+  purpose:'<b>結束した（cohesive）グループ</b>を作ること。結束したグループでは、品質基準の共有・互いからの学習・知識の共有・変化への強さが生まれ、個人の総和を超える生産性が出る。',
+  who:'マネージャがチームを編成し環境を整えるが、凝集性そのものはメンバー全員の日々の行動の産物。アジャイル開発は自律的なチームを前提とする。',
+  steps:[
+    '<b>編成</b>：技術力だけでなく、指向タイプ（タスク・自己・相互作用）の混成を考える：全員が自己指向のチームは内部競争で壊れやすい',
+    '<b>規模</b>：小さく保つ。目安は「ピザ2枚で足りる人数」（Amazon の経験則。おおむね10人以下）：人数が増えるとコミュニケーション経路が爆発する（<a href="#brooks-law">次のカード</a>）',
+    '<b>組織</b>：小規模・非階層的な組織が有効なことが多い。役割と責任は明確に、階層は浅く',
+    '<b>コミュニケーション</b>：規模・構造・構成（性格・多様性）・物理的な作業環境が影響する。雑談やランチのような<b>非公式な場</b>を意識的に設計する',
+    '品質基準と目標の共有：基準づくりにチーム全員が参加すると、基準への当事者意識が生まれる'
+  ],
+  points:[
+    'Google の <b>Project Aristotle</b>（社内180チームを調べた2012〜2015年の調査）：チームの効果性を決めるのは「誰がいるか」より「<b>どう協働しているか</b>」。5つの鍵の筆頭が<b>心理的安全性</b>で、以下、相互の信頼性・構造と明確さ・仕事の意味・仕事のインパクトと続く',
+    '<b>心理的安全性</b>（Edmondson, 1999）＝「対人リスク（質問する・反対する・失敗を認める）を取っても罰されない」という共有された信念。「ぬるい仲良しクラブ」ではなく、<b>率直さが安全</b>であること',
+    '<b>コンウェイの法則</b>（1968）：「システムを設計する組織は、その組織のコミュニケーション構造を写し取った設計を生み出す」：チーム構造の設計はアーキテクチャ設計の一部である',
+    'コミュニケーションに影響する要因（Sommerville）：グループの規模・構造・構成・物理的な作業環境。規模が最も強烈に効く'
+  ],
+  cautions:[
+    '凝集性の暗黒面＝<b>集団思考（groupthink）</b>：結束が強すぎると批判的な検討が失われる。外部レビューや「悪魔の代弁者」役を意識的に入れる',
+    '心理的安全性は基準の低さではない：「安全×高い基準」の組み合わせが学習と成果を生む（安全だけなら快適ゾーン、基準だけなら不安ゾーン）',
+    'チームの解散・再編成の繰り返しは、凝集性への投資を毎回ゼロに戻す（できたばかりのチームは「本来の生産性」を出せない）',
+    'リモートでは非公式コミュニケーションが自然発生しない：待っていても起きないので、意図的に設計する'
+  ],
+  examples:[
+    'Project Aristotle の手法と結果は Google re:Work で公開されており、心理的安全性を測る質問例（「このチームでミスをすると非難されるか」等）も読める',
+    '『Team Topologies』（Skelton & Pais, 2019）：コンウェイの法則を逆手に取り、望むアーキテクチャに合わせてチームを設計する「逆コンウェイ戦略」。ストリームアラインド・プラットフォーム・イネイブリング・複雑サブシステムの4類型で整理',
+    'Amazon の「ピザ2枚チーム」：ピザ2枚で足りない人数になったらチームを分割する'
+  ],
+  related:'<a href="#managing-people">人のマネジメント</a>が個人の動機なら、こちらは集団の構造。<a href="#brooks-law">ブルックスの法則</a>は「チーム規模とコミュニケーションコスト」の数学的根拠を与える。',
+  modern:'心理的安全性はサーベイで定点測定するのが大企業の標準になった。Team Topologies は DevOps 時代のチーム設計の共通言語。リモート時代は、意図的な雑談の場（バーチャルコーヒー・オフサイト）と、非同期コミュニケーションを支えるドキュメント文化が凝集性の新しい道具になっている。',
+  hasCode:false
+},
+{
+  id:'brooks-law', name:"Brooks's Law & The Mythical Man-Month", jp:'ブルックスの法則と人月の神話', cat:'mgmt',
+  badge:'古典の教訓', tags:['人月の神話','n(n−1)/2','銀の弾丸はない'],
+  summary:'「<strong>遅れているソフトウェアプロジェクトへの人員追加は、さらに遅らせる</strong>」：工数（人月）と期間は交換できない。ソフトウェア工学でもっとも有名で、もっとも破られ続けている教訓。',
+  analogy:'畑の草むしりなら10人でやれば10分の1の時間で済む。しかし「赤ちゃんを産む」仕事は、妊婦を9人集めても1か月では終わらない。ソフトウェア開発が畑仕事より出産に近いのは、分割できない依存関係と、新しく来た人に伝えるべき膨大な文脈があるから。',
+  purpose:'（このカードの目的）「遅れたら人を足せばよい」という直感がなぜ裏目に出るのかを、教育コストとコミュニケーションコストで説明できるようになり、締め切り前の安易な増員という定番の失敗を避ける。',
+  who:'原典は Fred Brooks『人月の神話』（1975）。Brooks は IBM の OS/360（当時世界最大級のソフトウェアプロジェクト）の開発責任者で、自らの失敗の分析からこの法則を導いた。すべてのマネージャとエンジニアの教養。',
+  steps:[
+    '<b>人月はコストの単位であって進捗の単位ではない</b>と認識する：「12人月の仕事」は12人で1か月では終わらない',
+    '人を追加すると<b>教育コスト</b>が発生することを織り込む：新メンバーが戦力になるまで、既存メンバーの時間が教育に奪われ、当面の生産量はむしろ下がる',
+    '<b>コミュニケーションコストの爆発</b>を数える：n 人の相互経路は n(n−1)/2 本：5人で10本、10人で45本、20人で190本',
+    '分割できない仕事の存在を認める：依存関係の鎖（<a href="#scheduling">クリティカルパス</a>）は人数を増やしても縮まない',
+    '増員以外の選択肢を先に検討する：スコープ削減・スケジュール再交渉・（増員するなら）教育コストが小さい独立した仕事の切り出し'
+  ],
+  points:[
+    'ブルックスの法則の2大メカニズム：①<b>立ち上げ（教育）コスト</b> ②<b>コミュニケーション経路の組合せ爆発</b>（下図）',
+    '『人月の神話』のもう1つの遺産「<b>銀の弾丸はない</b>」（1986）：ソフトウェアの難しさの本質（複雑性・同調性・可変性・不可視性）を一撃で解決する万能技術は存在しない：新しい技術は「偶有的な難しさ」しか消せない、という警告は生成AI時代も議論の出発点であり続けている',
+    '<b>セカンドシステム症候群</b>：設計者にとって2作目がもっとも危険：1作目で我慢した機能を全部盛り込みたくなる（同書の有名な観察）',
+    '法則は「絶対法則」ではなく傾向：プロジェクト初期・独立性の高い仕事・受け入れ体制の整ったチームなら、増員が効く場合もある'
+  ],
+  cautions:[
+    '「遅れたら人を足せばいい」という直感は経営層に根強い：経路数と教育コストという<b>数字で</b>説明できるように準備しておく',
+    '逆に「絶対に人を足すな」と教条化しない：仕事の独立性と受け入れ体制次第で答えは変わる',
+    '人月単価ベースの受託契約は、「人は交換可能」という神話を制度に埋め込んでしまう：日本のSI業界で長く議論されている構造問題',
+    '増員の代わりの「残業でカバー」も同じ神話の変種（持続不可能で、品質低下として跳ね返る）'
+  ],
+  examples:[
+    'OS/360：Brooks 自身が遅延に対して増員を繰り返し、さらに遅らせた経験がこの本の出発点',
+    'Amazon の「ピザ2枚チーム」やマイクロサービス化は、「経路を減らす」方向の組織的・アーキテクチャ的対処と読める',
+    '見積もりモデル COCOMO の「スケジュール圧縮ドライバ」は、期間短縮が工数を非線形に増やすことを数式で示す：ブルックスの法則の定量版'
+  ],
+  related:'<a href="#scheduling">スケジューリング</a>のクリティカルパス（全体期間を決めるのは最長の依存の鎖）と、<a href="#algorithmic-estimation">COCOMO</a> の非線形性が、この法則を定量的に裏付ける。<a href="#teamwork">チームワーク</a>の「小さく保つ」原則の根拠でもある。',
+  modern:'2020年代でも「炎上プロジェクトへの大量投入」の失敗は繰り返されている。Team Topologies の「認知負荷」概念、コミュニケーションを減らす API 設計・ドキュメント文化（Amazon の 6-pager 等）が現代の処方箋。「AI コーディング支援は銀の弾丸か」は現在進行形の論争：本質的複雑性（何を作るべきかの決定）には効きにくい、という Brooks の枠組みで議論されている。',
+  hasCode:false
+},
+/* ---------- 計画とスケジューリング ---------- */
+{
+  id:'project-planning', name:'Project Planning', jp:'プロジェクト計画', cat:'plan',
+  badge:'計画技法', tags:['補助計画','ローリングウェーブ','計画は必ず変わる'],
+  summary:'作業の分割・担当・スケジュール・成果物を定義する活動。要点は「<strong>初期計画は必ず変わる</strong>」を前提に、反復的に見直し続けること。計画は文書ではなく活動。',
+  analogy:'登山計画。ルート・装備・行程表を綿密に作るが、当日の天候と体調で必ず変わる。計画の価値は「そのとおりに登る」ことではなく、「いまどこにいて、次にどう動くべきか」をいつでも判断できる状態を作ること。',
+  purpose:'プロジェクトの作業・工数・スケジュール・責任分担を定義し、進捗を測る基準を作る。提案（価格見積もり）時・立ち上げ時・実行中と、目的の違う計画を粒度を変えて作り分ける。',
+  who:'プロジェクトマネージャ。計画駆動開発では事前に詳細化する。アジャイルでも計画活動はなくならない：形（頻度と粒度）が変わるだけ。',
+  steps:[
+    '<b>制約を識別</b>する：納期・使える要員・総予算など',
+    'プロジェクトの<b>マイルストーン</b>（活動の予測可能な結果＝進捗確認点）と<b>成果物</b>（顧客への引き渡し物）を定義する',
+    'スケジュールを作成し（<a href="#scheduling">次のカード</a>）、活動を開始する',
+    '一定期間ごとに進捗を確認し、<b>見積もりと計画を修正</b>する',
+    '問題が起きたら、リスク・スコープ・スケジュールを再検討・再交渉する：このループをプロジェクトが終わるまで回す'
+  ],
+  points:[
+    'プロジェクト計画本体は<b>補助計画</b>で補完される：<b>品質計画</b>（目標とする品質基準とレビュー体制）・<b>構成管理計画</b>（バージョン管理と変更手順）・<b>リスクマネジメント計画</b>・保守計画・スタッフ育成計画',
+    '<b>計画駆動の長所</b>：早い段階で全体像と依存関係を考え抜ける／組織間の調整・契約・規制対応に強い／進捗を測る基準が明確',
+    '<b>計画駆動の短所</b>：もっとも情報が少ない初期の決定に縛られる／変更コストが大きい／計画の作成・維持そのものに大きな工数がかかる',
+    '<b>ローリングウェーブ計画</b>：近い将来は詳細に、遠い将来は粗く計画し、進むにつれて詳細化する：計画駆動と適応型の中間にある現実解'
+  ],
+  cautions:[
+    '「計画を作ること」と「計画に従うこと」を混同しない：計画の価値の大半は、作る過程で得た理解と選択肢にある',
+    '初期計画は系統的に<b>楽観に偏る</b>：リスク分析とバッファで補正する（<a href="#experience-estimation">見積もりバイアス</a>）',
+    '最初の計画が顧客・経営層への「約束」として固定されると、以後の学習を計画に反映できなくなる：計画の見直しサイクルを最初に合意しておく',
+    '補助計画がテンプレートを埋めるだけの儀式になる：使われない計画文書は書かないほうがまし'
+  ],
+  examples:[
+    '粒度の使い分け：提案時の概算計画 → 立ち上げ時のプロジェクト計画 → イテレーションごとの詳細計画（Sommerville 23.2）',
+    '品質計画の例：コードレビュー必須・静的解析のしきい値・テストカバレッジ目標を定義する',
+    '構成管理計画の例：Git のブランチ戦略・リリース手順・変更承認フローを定義する'
+  ],
+  related:'<a href="#scheduling">スケジューリング</a>は計画の中核成分。<a href="#agile-planning">アジャイルの計画</a>は「詳細な事前計画」を「頻繁な再計画」で置き換えたもの：計画しないのではない。',
+  modern:'計画は Confluence・Notion 等で「生きた文書」として管理するのが主流。実務の多数派は「全体はマイルストーン計画＋中身はスクラム」のハイブリッドで、PMBOK 第7版も予測型・適応型の使い分けを前提にした構成に改訂された。',
+  hasCode:false
+},
+{
+  id:'scheduling', name:'Project Scheduling', jp:'スケジューリング', cat:'plan',
+  badge:'計画技法', tags:['WBS','クリティカルパス','ガントチャート'],
+  summary:'作業をタスクに分割し、<strong>依存関係と期間</strong>を見積もってカレンダーに配置する。プロジェクト全体の期間を決めるのは<strong>クリティカルパス</strong>：最長の依存の鎖。',
+  analogy:'宴会のコース料理の仕込み。「2時間の煮込み」を最初に火にかけないと、他の作業をどれだけ手早くしても開宴は遅れる。開宴時刻を決めているのは、作業の合計量ではなく「いちばん長い待ちの連鎖」。',
+  purpose:'タスクの並行実行を調整して資源（人・機材）を有効に使い、進捗を測る基準（マイルストーン）を置き、全体期間の見通しと「どこが遅れると致命的か」を明らかにする。',
+  who:'プロジェクトマネージャが、チームの見積もりをもとに作成・更新する。',
+  steps:[
+    '<b>WBS（Work Breakdown Structure）</b>：成果物と作業を階層的に分解する。1タスクの目安は1〜2週間程度（大きすぎると進捗が見えず、細かすぎると管理自体が仕事になる）',
+    'タスク間の<b>依存関係</b>を特定する（「T3 は T1 の成果物がないと開始できない」等）',
+    '各タスクの工数・期間を見積もり、要員を割り当てる（同一人物のタスクは並行できない）',
+    '<b>クリティカルパス</b>を特定する：依存の鎖のうち最長の経路。この経路上のタスクの遅れは、そのまま全体の遅れになる',
+    'バーチャート（<b>ガントチャート</b>）に表現し、マイルストーンを置く（下図）',
+    '予期せぬ問題に備えて<b>余裕（コンティンジェンシー）</b>を積む：Sommerville の経験則は「予期する問題に +30%、予期しない問題にさらに +20%」'
+  ],
+  points:[
+    'ガントチャートの読み方：横棒＝タスクの期間、矢印＝依存関係、菱形＝マイルストーン。クリティカルパスを色や太線で強調するのが定石',
+    'クリティカルパス上に<b>ない</b>タスクには<b>フロート（余裕時間）</b>がある：多少遅れても全体に響かないので、資源のやりくりに使える',
+    'バッファは各タスクに隠さず、<b>まとめて見える場所に</b>置く：タスクごとの隠しバッファは「締め切り直前まで着手しない」行動（学生症候群）に食い潰される（クリティカルチェーンの知見）',
+    'スケジュールは「作る」より「更新し続ける」：進捗会議のたびにクリティカルパスが移動していないか確認する'
+  ],
+  cautions:[
+    'ガントチャートは見た目が精密なぶん、計画を実際以上に確実に見せる<b>魔力</b>がある：中身は見積もりの束にすぎないと自覚する',
+    '人の稼働をチャート上で100%埋めない：複数タスクの掛け持ちには切り替えコストがあり、割り込み仕事は必ず来る',
+    '依存関係の見落としが最大の敵：特に外部チーム・調達・承認プロセスなど「自分たちの外」にある依存',
+    '進捗だけ聞いてチャートを更新しない「化石ガント」は、ないほうがましな誤情報になる'
+  ],
+  examples:[
+    'Sommerville 23章の演習（T1〜T16 のタスク表からバーチャートを描き、T5 が大幅遅延したら組み直す）は、この技法の教科書的トレーニング',
+    'ツール：Microsoft Project が古典。現代は Asana・Notion・Backlog・GanttProject など軽量ツールでの運用が多い',
+    '建設・ハードウェア混在プロジェクトでは、クリティカルパス法（CPM）による厳密な日程計算がいまも現役'
+  ],
+  related:'<a href="#brooks-law">ブルックスの法則</a>：クリティカルパスは人数を増やしても縮まない。<a href="#agile-planning">アジャイル</a>ではガントの代わりにバックログとバーンダウンで管理する（closing の比較表も参照）。',
+  modern:'数か月先まで引いた長大な事前ガントは減り、「四半期のマイルストーン＋スプリント計画」のハイブリッドが主流。一方で依存関係の可視化そのものは、複数チーム開発・プラットフォーム移行の文脈でむしろ再評価されている。',
+  hasCode:false
+},
+/* ---------- 見積もりと予測・測定 ---------- */
+{
+  id:'experience-estimation', name:'Experience-based Estimation', jp:'経験ベースの見積もり技法', cat:'est',
+  badge:'見積もり技法', tags:['類推','三点見積もり（PERT）','プランニングポーカー'],
+  summary:'過去の類似プロジェクト・タスクの<strong>経験</strong>をもとに見積もる技法群。実務の見積もりの大半はこれ。<strong>複数人・複数視点・幅を持たせる</strong>工夫で、人間のバイアスを打ち消す。',
+  analogy:'引っ越し業者の見積もり。間取りを見れば、過去数千件の経験から「この規模なら作業4時間・トラック2台」と即答できる。ただし「開かずの物置」が出てくると外れる：経験にない要素こそが精度の敵。',
+  purpose:'統計モデルを作れるほどのデータがなくても、妥当な工数・期間の予測を得る。同時に、見積もりの過程で作業の分解と理解が深まる：この副産物こそが見積もりの隠れた価値。',
+  who:'実際に作業する開発チーム自身が見積もるのが原則（他人の仕事の見積もりは系統的に楽観に寄る）。マネージャは前提と制約を示す役。',
+  steps:[
+    '<b>類推見積もり</b>：過去の類似プロジェクト・機能を探し、規模・技術・チームの差分で補正する',
+    '<b>分解</b>：大きな仕事をタスクに分けて個別に見積もり、合算する（分解は精度を上げるが、「分解し忘れた仕事」は合算に入らないことに注意）',
+    '<b>三点見積もり（PERT）</b>：楽観値 O・最頻値 M・悲観値 P を出し、期待値 E =（O+4M+P）/6 と標準偏差 σ =（P−O）/6 で「幅つき」の見積もりにする（<a href="#estimation">体験デモ</a>で試せる）',
+    '<b>プランニングポーカー</b>：全員が同時にカードを出し、最大・最小を出した人が理由を説明してから再投票：数回で収束する',
+    '<b>相対見積もり</b>：絶対時間ではなく「あのストーリーの2倍」という相対サイズ（ストーリーポイント）で見積もる：人間は絶対値より比較のほうが得意'
+  ],
+  points:[
+    '三点見積もりの本質：作業時間の分布は<b>右（悲観側）に裾が長い</b>ので、期待値は最頻値より悲観寄りになる。「いちばんありそうな値」で約束すると、五分五分より高い確率で遅れる',
+    'プランニングポーカーの理論的背景は<b>集団の知恵（wisdom of crowds）</b>：独立した複数の判断の集約は、しばしば個人の専門家より正確。ただし条件は「独立性」：だから相談する前に<b>同時に</b>カードを出す（他人の数字に引きずられる<b>アンカリング</b>の防止）',
+    'ストーリーポイントにフィボナッチ数列（1, 2, 3, 5, 8, 13, …）を使うのは、「大きいものほど正確には見積もれない」ことを数列の粗さで表現するため',
+    '見積もりと同時に<b>前提</b>を記録する（「APIが仕様どおり動くこと」等）：外れたとき、原因が数字か前提かを切り分けられる'
+  ],
+  cautions:[
+    '経験ベースの根本的弱点：<b>経験にない要素</b>（新技術・新ドメイン・新チーム）には無力：そこはスパイク（調査タスク）で経験を先に買う',
+    '希望的観測と営業的圧力が数字を歪める：「見積もり（予測）」「目標（願望）」「コミットメント（約束）」を言葉として区別する（McConnell）',
+    'アンカリング：先に聞いた数字（顧客の予算・上司の期待）に無意識に引きずられる：見積もる前に「期待される答え」を聞かない',
+    'ストーリーポイントをチーム間比較や人事評価に使うと、即座にポイントのインフレが起きて壊れる'
+  ],
+  examples:[
+    '相対見積もり：「ログイン機能が3ポイントだったから、この決済機能はその2〜3倍で8ポイント」',
+    'PERT：O=4日・M=7日・P=16日 → E=8日・σ=2日 →「68%の確率で6〜10日、95%なら4〜12日」',
+    'プランニングポーカーのデッキ：0, 1/2, 1, 2, 3, 5, 8, 13, 20, 40, 100, ?（わからない）, コーヒーカップ（休憩）'
+  ],
+  related:'<a href="#algorithmic-estimation">アルゴリズム的見積もり</a>は経験を「モデルとデータ」で置き換える発想。<a href="#agile-planning">アジャイルの予測</a>は「見積もり」を「実測からの外挿」に置き換える発想。時間が許すなら複数の技法で見積もって突き合わせる（三角測量）のが理想。',
+  modern:'プランニングポーカーはオンラインツールでリモート標準になった。粗い T シャツサイズ（S/M/L）見積もりや、見積もり自体を減らして実測スループットで予測するモンテカルロ法（<a href="#agile-planning">次カード</a>）へのシフトも進む。McConnell『ソフトウェア見積り』は現在も実務者の定番書。',
+  hasCode:false
+},
+{
+  id:'algorithmic-estimation', name:'Algorithmic Cost Modeling', jp:'アルゴリズム的見積もり（COCOMO・FP法）', cat:'est',
+  badge:'見積もり技法', tags:['COCOMO II','ファンクションポイント','規模の不経済'],
+  summary:'規模などの推定パラメータから<strong>数式で工数を計算する</strong>技法。核心は「工数 = A × サイズ<sup>E</sup> × M」の<strong>指数 E が 1 を超える</strong>こと：規模が2倍になると、工数は2倍では済まない。',
+  analogy:'建築の坪単価計算：ただし「床面積2倍の家は建築費2倍では済まない」という補正つき。大きな建物ほど構造計算・配管・調整が非線形に複雑になる。ソフトウェアも同じで、規模とともに統合とコミュニケーションのコストが利いてくる。',
+  purpose:'主観に依存しない再現可能な見積もりの根拠を作る。大規模・契約型・公共調達での価格根拠として、また「規模と工数の関係」の直感を鍛える教材として価値がある。',
+  who:'見積もり専門家・PMO。原型は Boehm が TRW 社の63プロジェクトの実績データから導いた COCOMO（1981）。現代版の COCOMO II（2000）は反復開発・再利用を前提に再設計された。',
+  steps:[
+    '<b>規模を推定</b>する：コード行数（KLOC）または<b>ファンクションポイント（FP）</b>：外部入力・出力・照会・ファイルの数と複雑さから「機能の量」を点数化する（Albrecht, IBM, 1979）',
+    '<b>スケール要因</b>を評価して指数 E を決める：先例性・開発の柔軟性・リスク解決・チームの結束・プロセス成熟度の5要因。良いほど E が小さくなり、規模の不経済が緩む',
+    '<b>コストドライバ</b>（乗数 M）を評価する：要求信頼性・複雑さ・実行時間制約・ツール・スケジュール圧縮など17項目の積',
+    '工数 PM = A × Size<sup>E</sup> × M を計算する（COCOMO II ポストアーキテクチャモデル、A ≈ 2.94）',
+    '段階に応じてモデルを使い分ける：応用合成 → 初期設計 → 再利用 → ポストアーキテクチャ（後の段階ほど入力が詳細になり、精度が上がる）'
+  ],
+  points:[
+    '最大の教訓は<b>非線形性（規模の不経済）</b>：E≈1.1 のとき規模10倍で工数は約12.6倍。統合・回帰テスト・コミュニケーションのコストが規模とともに非線形に増える：<a href="#brooks-law">ブルックスの法則</a>の定量版',
+    '<b>スケジュール圧縮は高くつく</b>：期間短縮のコストドライバは強い乗数を持つ。「期間を少し縮めるために工数が大きく増える」関係を数式が教えてくれる',
+    'FP 法は「コード行数は言語で変わる」問題への回答：機能量で測るので言語非依存で、要求段階から数えられる',
+    'モデルは<b>自組織のデータでの較正（キャリブレーション）</b>があって初めて機能する：デフォルト係数のまま使うのは「他社の過去の平均」を信じること'
+  ],
+  cautions:[
+    '入力自体が見積もり：規模の推定を誤れば結果はすべて狂う。初期段階の規模推定は、まさに不確実性のコーンのまっただ中にある',
+    '数百万行級の超大規模システムでは合わない：コンポーネント間の相互作用と組織間調整が支配的になる（Sommerville 演習 23.9 の論点）',
+    '<b>現代あまり使われない理由</b>を理解しておく：①アジャイル・反復開発では「最終的なコード行数」を事前に決められない ②クラウド・OSS・コード生成で「書く量」と「価値」の関係が崩れた ③較正データを維持できる組織が少ない',
+    '数式の出力を「客観的な真実」としてスケジュール交渉の武器にする誘惑：モデルは仮定の塊であることを忘れない'
+  ],
+  examples:[
+    '下のコード例：スケール要因からE≈1.10を計算し、10 KLOC→約41人月、100 KLOC→約518人月：規模10倍で工数12.6倍',
+    '日本のエンタープライズ開発では、IPA のソフトウェア開発データ白書や JUAS 調査を較正データとして FP ベースの見積もりが今も使われている',
+    '防衛・航空宇宙の調達では SEER-SEM・TruePlanning などの商用パラメトリックモデルが現役'
+  ],
+  related:'<a href="#experience-estimation">経験ベース</a>と対をなす。結果が大きく食い違ったら、どちらかが間違っているのではなく「理解が足りない部分」が見つかったと考える。',
+  modern:'汎用モデルとしては退潮し、自社実績データ＋機械学習による工数予測支援や、実測スループットにもとづく<a href="#agile-planning">モンテカルロ予測</a>に置き換わりつつある。ISBSG のプロジェクトデータベースは研究・ベンチマークで現役。「規模→工数の非線形」という洞察の価値だけは、モデルが廃れても不変。',
+  hasCode:true
+},
+{
+  id:'agile-planning', name:'Agile Planning & Forecasting', jp:'アジャイルの計画と予測', cat:'est',
+  badge:'測定と予測', tags:['ベロシティ','バーンダウン','#NoEstimates'],
+  summary:'機能を事前に固定せず、<strong>実測値（ベロシティ・スループット）から外挿して</strong>「いつ・どれだけできるか」を予測する。見積もりを「当てる」から「測って予測する」への転換。',
+  analogy:'マラソンの完走時刻予測。スタート前に「4時間で走ります」と宣言する（事前見積もり）より、10km の通過タイムから残りを外挿するほうが正確で、しかも走るほど精度が上がる。大事なのは「まず走り始めて、測る」こと。',
+  purpose:'不確実性の高い開発で、優先順位にもとづく柔軟な計画（価値の高いものから作る）と、実績データにもとづく現実的な見通しを両立する。',
+  who:'開発チーム＋プロダクトオーナー。計画は2段階：<b>リリース計画</b>（数か月先・粗い）と<b>イテレーション計画</b>（数週間先・詳細）。XP ではこの共同作業を<b>プランニングゲーム</b>と呼ぶ。',
+  steps:[
+    'ストーリーを<b>ストーリーポイント</b>で相対見積もりする（プランニングポーカー等）',
+    'イテレーションごとに完成したポイント数＝<b>ベロシティ</b>を実測する',
+    '<b>バーンダウン／バーンアップチャート</b>で残作業・完成量の推移を可視化する（バーンアップはスコープの増減も見える）',
+    'ベロシティの<b>ばらつき</b>から幅で予測する：「実績が15〜25pt/スプリントなら、残り120ptは5〜8スプリント」',
+    'さらに進めるなら<b>モンテカルロ・シミュレーション</b>：実績分布から数千回「仮想的に完了させて」みて、「85%の確率で Xスプリント以内」という確率つき予測を得る（下のコード例）'
+  ],
+  points:[
+    '計画哲学の転換：機能固定・期間可変（従来）から<b>期間固定・機能可変</b>（アジャイル）へ：遅れたら納期を延ばすのではなく、優先度の低い機能を落とす',
+    '<b>#NoEstimates 論争</b>（2012年頃〜、Woody Zuill・Vasco Duarte ら）：「見積もりに費やす時間は価値を生まない。仕事を小さく揃えて<b>数を数える</b>（スループット）ほうが正確では？」という問題提起。「見積もり全廃」の主張と読むより「その見積もり、コストに見合う価値があるか？」という問いとして読むのが生産的',
+    'モンテカルロ予測（Vacanti『Actionable Agile Metrics for Predictability』等）は #NoEstimates 側の実装：答えは1つの数字ではなく「50%なら◯スプリント、85%なら△スプリント」という<b>確率の分布</b>で出てくる',
+    'ベロシティは<b>チーム固有の相対値</b>：チーム間比較や目標値にした瞬間、ポイントのインフレが始まって予測の道具として死ぬ'
+  ],
+  cautions:[
+    '外挿の前提は「チームと作業の性質が安定していること」：メンバー交代・技術の変わり目・作業の種類の変化では過去実績が無効になる',
+    'Sommerville の指摘する課題：顧客の継続的な関与が前提／機能を固定しない進め方は固定価格契約となじみにくい',
+    'バーンダウンが順調な直線に見えても、「簡単なものから消化」していれば終盤に失速する（90%症候群の亜種）',
+    'モンテカルロも「過去の分布が未来も続く」という仮定の上にある：万能ではなく、外れる条件（前提の崩れ）を知って使う'
+  ],
+  examples:[
+    'バーンダウンチャート：縦軸＝残ポイント、横軸＝日。理想線と実績線の乖離が早期警報になる',
+    'モンテカルロ：Jira のプラグインや ActionableAgile 等のツールがスループット実績から自動で確率予測を出してくれる',
+    'リリース計画の言い方：「85%の信頼度で、3月末までに優先度上位40ストーリーをリリースできます」'
+  ],
+  related:'<a href="#experience-estimation">経験ベース見積もり</a>のストーリーポイントを入力に使いつつ、予測の主役を「実測データ」に移したもの。<a href="#progress-metrics">メトリクス</a>はこの実測文化の一般化。',
+  modern:'Kanban 系コミュニティ（ProKanban 等）ではサイクルタイム分布とモンテカルロによる確率予測が標準の語彙になった。#NoEstimates は今も定期的に再燃する論争だが、「仕事を小さく切って数を数え、確率で予測する」という実務は静かに広まっている。',
+  hasCode:true
+},
+{
+  id:'progress-metrics', name:'Progress & Health Metrics', jp:'進捗と健全性のメトリクス', cat:'est',
+  badge:'測定と予測', tags:['90%症候群','EVM','DORA / SPACE'],
+  summary:'「順調です」という言葉ではなく<strong>測定</strong>で進捗と健全性を把握する。ただし測定は人の行動を変えてしまう：<strong>何を・どう測るか</strong>自体が設計問題。',
+  analogy:'健康診断。体重（進捗率）だけ見ても健康かは分からない。血圧・血糖値など複数の指標を組み合わせ、しかも「診断の直前だけ節制する」（数字合わせ）が起きにくい測り方を選ぶ必要がある。',
+  purpose:'問題（遅れ・品質劣化・チームの疲弊）の早期発見と、改善の効果検証。報告のためではなく<b>行動を変えるため</b>の測定。',
+  who:'プロジェクトマネージャ・チーム・組織のエンジニアリングマネジメント。',
+  steps:[
+    'まず<b>進捗の罠</b>を知る：「90%完成しました」という申告が何週間も続く<b>90%症候群</b>：残り10%に統合・テスト・例外処理という重い仕事が潜み、「完成」の定義も曖昧だから起こる',
+    '進捗は<b>完了の二値</b>で数える：「80%できたタスク3つ」ではなく「完了したタスク2つ」。完成の定義（Definition of Done）を先に固定する',
+    '<b>EVM（Earned Value Management：出来高管理）</b>の考え方を知る：計画価値 PV・出来高 EV・実コスト AC の3本立てで、スケジュール効率（SPI = EV/PV）とコスト効率（CPI = EV/AC）を分離して測る',
+    'デリバリーの健全性は <b>DORA の4指標</b>で見る：デプロイ頻度・変更のリードタイム・変更失敗率・復旧時間：「速度と安定性はトレードオフではなく両立する」が DORA 調査の中心的発見',
+    '生産性を1つの数字に潰さない：<b>SPACE フレームワーク</b>：満足度と健康（S）・パフォーマンス（P）・アクティビティ（A）・コミュニケーションと協働（C）・効率とフロー（E）の複数次元で見る'
+  ],
+  points:[
+    'EVM の核心：「使った金額・時間」は進捗ではない：予算の半分を使ったことは、半分できたことを意味しない。「計画のどれだけの<b>価値</b>が完成したか」で測る',
+    'DORA（DevOps Research and Assessment）は Forsgren らの継続的な大規模調査。書籍『Accelerate（LeanとDevOpsの科学）』と年次 State of DevOps Report が一次資料で、現在は Google Cloud が運営',
+    'SPACE（Forsgren・Storey・Zimmermann ら, ACM Queue 2021）は「コミット数・行数のような単一のアクティビティ指標で生産性を測るな」という学術側からの明確な回答',
+    'すべてのメトリクス運用の大前提＝<b>グッドハートの法則</b>：「測定が目標になると、よい測定ではなくなる」'
+  ],
+  cautions:[
+    '90%症候群は嘘や怠慢ではなく<b>認知の問題</b>：だから人を責めても直らない。「完了の定義」と小さなタスク分割という仕組みで直す',
+    'EVM は要求が安定した計画駆動型に向く：アジャイルでは「計画価値」自体が動くため、形式的に適用しても空回りする',
+    '個人のアクティビティ指標（コミット数・PR数・行数）での人事評価は、ほぼ確実に行動を歪める（SPACE 論文の警告そのもの）',
+    'メトリクスは「会話の始まり」であって「評決」ではない：数字の背景を聞く前に結論を出さない'
+  ],
+  examples:[
+    'SPI = 0.8 は「計画の8割のペース」、CPI = 0.9 は「1円の価値を作るのに約1.11円かかっている」と読む',
+    'DORA はパフォーマンス水準（エリート〜ロー）を年次レポートで更新している：「エリートはデプロイをオンデマンドで行い、変更失敗率が低い」など',
+    '2024〜2025年の DORA レポートは AI コーディング支援の影響を主要テーマに据え、開発者体験（DX Core 4 など後続フレームワーク）へと測定の対象が広がっている'
+  ],
+  related:'<a href="#agile-planning">アジャイルの予測</a>が「いつ終わるか」に答えるなら、こちらは「健全に進んでいるか」に答える。<a href="#risk-management">リスク監視</a>の指標設計とも直結。',
+  modern:'生成 AI 時代の生産性測定が最前線の論争（「AI でコード量が増えた＝生産的か？」）。単一指標の危うさが増したぶん、SPACE 的な多次元測定と、DORA のような成果ベース指標の重要性がむしろ高まっている。',
+  hasCode:false
+}
+];
+</script>
+<script>
+/* ============== コード例（COCOMO / モンテカルロ） ============== */
+const CODE = {
+'algorithmic-estimation':{
+python:`# COCOMO II（ポストアーキテクチャ）の考え方を単純化した計算例
+# 工数 PM = A × (KLOC)^E × M   （E > 1 なら「規模の不経済」）
+
+A = 2.94
+SF = [3.72, 3.04, 4.24, 3.29, 4.68]   # スケール要因（先例性・チーム結束・成熟度など）
+E = 0.91 + 0.01 * sum(SF)             # 指数 E は約 1.10 → 規模の不経済
+
+EM = [1.10, 0.88, 1.15]               # コストドライバ（信頼性要求・ツール・スケジュール等）
+M = 1.0
+for em in EM:
+    M *= em
+
+def cocomo_pm(kloc):
+    return A * (kloc ** E) * M
+
+for kloc in [10, 50, 100]:
+    print(kloc, "KLOC ->", round(cocomo_pm(kloc)), "人月")
+
+# 10 KLOC -> 約41人月 / 50 KLOC -> 約242人月 / 100 KLOC -> 約518人月
+# 規模10倍で工数は約12.6倍 - 線形（10倍）では増えない`,
+java:`// COCOMO II（ポストアーキテクチャ）の考え方を単純化した計算例
+// 工数 PM = A × (KLOC)^E × M   （E > 1 なら「規模の不経済」）
+public class CocomoDemo {
+    public static void main(String[] args) {
+        double A = 2.94;
+        double[] sf = {3.72, 3.04, 4.24, 3.29, 4.68}; // スケール要因
+        double sum = 0;
+        for (double f : sf) sum += f;
+        double E = 0.91 + 0.01 * sum;                 // 指数 E は約 1.10
+
+        double[] em = {1.10, 0.88, 1.15};             // コストドライバ（乗数）
+        double M = 1.0;
+        for (double m : em) M *= m;
+
+        for (int kloc : new int[]{10, 50, 100}) {
+            double pm = A * Math.pow(kloc, E) * M;
+            System.out.println(kloc + " KLOC -> 約" + Math.round(pm) + "人月");
+        }
+        // 10 KLOC -> 約41人月 / 100 KLOC -> 約518人月
+        // 規模10倍で工数は約12.6倍 - 線形では増えない
+    }
+}`
+},
+'agile-planning':{
+python:`# ベロシティの実績から「いつ終わるか」を確率で予測する
+# モンテカルロ・シミュレーション
+import random
+
+velocity_history = [18, 23, 15, 21, 25, 17, 20, 22]  # 過去スプリントの実績
+backlog = 120                                         # 残作業（ストーリーポイント）
+
+def simulate_once():
+    done, sprints = 0, 0
+    while done < backlog:
+        done += random.choice(velocity_history)  # 実績からランダムに1つ引く
+        sprints += 1
+    return sprints
+
+results = sorted(simulate_once() for _ in range(10000))
+print("50%の確率で:", results[5000], "スプリント以内")
+print("85%の確率で:", results[8500], "スプリント以内")
+print("95%の確率で:", results[9500], "スプリント以内")
+
+# 答えは1つの数字ではなく「確率つきの範囲」で出てくる
+# 「85%の信頼度で7スプリント以内」のように語れる`,
+java:`// ベロシティの実績から「いつ終わるか」を確率で予測する
+// モンテカルロ・シミュレーション
+import java.util.Arrays;
+import java.util.Random;
+
+public class ForecastDemo {
+    public static void main(String[] args) {
+        int[] history = {18, 23, 15, 21, 25, 17, 20, 22}; // 過去の実績
+        int backlog = 120;                                 // 残ポイント
+        int trials = 10000;
+        int[] results = new int[trials];
+        Random rnd = new Random();
+
+        for (int t = 0; t < trials; t++) {
+            int done = 0, sprints = 0;
+            while (done < backlog) {
+                done += history[rnd.nextInt(history.length)];
+                sprints++;
+            }
+            results[t] = sprints;
+        }
+        Arrays.sort(results);
+        System.out.println("50%の確率で: " + results[5000] + " スプリント以内");
+        System.out.println("85%の確率で: " + results[8500] + " スプリント以内");
+        System.out.println("95%の確率で: " + results[9500] + " スプリント以内");
+    }
+}`
+}
+};
+
+/* ============== カード内ダイアグラム ============== */
+const DIAGRAMS = {
+'risk-management': `
+<svg viewBox="0 0 760 255" role="img" aria-label="リスクマネジメントのプロセス：識別・分析・計画・監視の反復">
+  <rect x="30" y="45" width="160" height="64" rx="12" class="dg-box dg-if"/>
+  <text x="110" y="71" class="dg-lbl">リスク識別</text>
+  <text x="110" y="88" class="dg-st">Identification</text>
+  <rect x="215" y="45" width="160" height="64" rx="12" class="dg-box dg-if"/>
+  <text x="295" y="71" class="dg-lbl">リスク分析</text>
+  <text x="295" y="88" class="dg-st">Analysis</text>
+  <rect x="400" y="45" width="160" height="64" rx="12" class="dg-box dg-if"/>
+  <text x="480" y="71" class="dg-lbl">リスク計画</text>
+  <text x="480" y="88" class="dg-st">Planning</text>
+  <rect x="585" y="45" width="160" height="64" rx="12" class="dg-box dg-if"/>
+  <text x="665" y="71" class="dg-lbl">リスク監視</text>
+  <text x="665" y="88" class="dg-st">Monitoring</text>
+  <text x="110" y="130" class="dg-el">起こりうる悪いことを列挙</text>
+  <text x="295" y="130" class="dg-el">確率×影響で優先順位</text>
+  <text x="480" y="130" class="dg-el">回避・最小化・備え</text>
+  <text x="665" y="130" class="dg-el">兆候の指標を定期評価</text>
+  <path d="M190 77 L211 77" class="dg-line" marker-end="url(#ahr)"/>
+  <path d="M375 77 L396 77" class="dg-line" marker-end="url(#ahr)"/>
+  <path d="M560 77 L581 77" class="dg-line" marker-end="url(#ahr)"/>
+  <path d="M665 109 L665 175 L110 175 L110 113" class="dg-line dg-dash" marker-end="url(#ahr)"/>
+  <text x="388" y="166" class="dg-el">プロジェクトが終わるまで反復（リスク登録簿を更新し続ける）</text>
+  <text x="380" y="215" class="dg-note">リスクの確率と影響は固定ではない：進行とともに変化するので、監視から識別・分析へ戻るループが本体。</text>
+  <defs><marker id="ahr" markerWidth="9" markerHeight="9" refX="8" refY="4.5" orient="auto">
+    <path d="M0,0 L9,4.5 L0,9 z" fill="#6B746F"/></marker></defs>
+</svg>`,
+'brooks-law': `
+<svg viewBox="0 0 760 270" role="img" aria-label="人数とコミュニケーション経路の組合せ爆発">
+  <text x="380" y="26" class="dg-lbl">n 人チームの相互コミュニケーション経路 = n(n−1)/2</text>
+  <path d="M140 65L84 163M140 65L196 163M84 163L196 163" class="dg-line" opacity=".55"/>
+  <circle cx="140" cy="65" r="7" fill="#0E6F5C"/><circle cx="84" cy="163" r="7" fill="#0E6F5C"/><circle cx="196" cy="163" r="7" fill="#0E6F5C"/>
+  <path d="M380 65L318 110M380 65L342 183M380 65L418 183M380 65L442 110M318 110L342 183M318 110L418 183M318 110L442 110M342 183L418 183M342 183L442 110M418 183L442 110" class="dg-line" opacity=".55"/>
+  <circle cx="380" cy="65" r="7" fill="#0E6F5C"/><circle cx="318" cy="110" r="7" fill="#0E6F5C"/><circle cx="342" cy="183" r="7" fill="#0E6F5C"/><circle cx="418" cy="183" r="7" fill="#0E6F5C"/><circle cx="442" cy="110" r="7" fill="#0E6F5C"/>
+  <path d="M630 65L584 84M630 65L565 130M630 65L584 176M630 65L630 195M630 65L676 176M630 65L695 130M630 65L676 84M584 84L565 130M584 84L584 176M584 84L630 195M584 84L676 176M584 84L695 130M584 84L676 84M565 130L584 176M565 130L630 195M565 130L676 176M565 130L695 130M565 130L676 84M584 176L630 195M584 176L676 176M584 176L695 130M584 176L676 84M630 195L676 176M630 195L695 130M630 195L676 84M676 176L695 130M676 176L676 84M695 130L676 84" class="dg-line" opacity=".55"/>
+  <circle cx="630" cy="65" r="7" fill="#0E6F5C"/><circle cx="584" cy="84" r="7" fill="#0E6F5C"/><circle cx="565" cy="130" r="7" fill="#0E6F5C"/><circle cx="584" cy="176" r="7" fill="#0E6F5C"/><circle cx="630" cy="195" r="7" fill="#0E6F5C"/><circle cx="676" cy="176" r="7" fill="#0E6F5C"/><circle cx="695" cy="130" r="7" fill="#0E6F5C"/><circle cx="676" cy="84" r="7" fill="#0E6F5C"/>
+  <text x="140" y="235" class="dg-lbl">3人 → 3本</text>
+  <text x="380" y="235" class="dg-lbl">5人 → 10本</text>
+  <text x="630" y="235" class="dg-lbl">8人 → 28本</text>
+  <text x="380" y="260" class="dg-note">人数を2倍にすると経路は約4倍：「伝える・すり合わせる」コストは人数の2乗のオーダーで効いてくる。</text>
+</svg>`,
+'scheduling': `
+<svg viewBox="0 0 760 322" role="img" aria-label="ガントチャートの例（クリティカルパスつき）">
+  <text x="380" y="24" class="dg-lbl">ガントチャート（アクティビティバーチャート）の例</text>
+  <path d="M140 40 L140 260 M198 40 L198 260 M256 40 L256 260 M314 40 L314 260 M372 40 L372 260 M430 40 L430 260 M488 40 L488 260 M546 40 L546 260 M604 40 L604 260 M662 40 L662 260 M720 40 L720 260" stroke="#E7ECE9" stroke-width="1" fill="none"/>
+  <text x="140" y="278" class="dg-el">0週</text>
+  <text x="256" y="278" class="dg-el">2週</text>
+  <text x="372" y="278" class="dg-el">4週</text>
+  <text x="488" y="278" class="dg-el">6週</text>
+  <text x="604" y="278" class="dg-el">8週</text>
+  <text x="720" y="278" class="dg-el">10週</text>
+  <text x="132" y="65" class="dg-el" style="text-anchor:end">T1 要求定義</text>
+  <text x="132" y="100" class="dg-el" style="text-anchor:end">T2 UI設計</text>
+  <text x="132" y="135" class="dg-el" style="text-anchor:end">T3 DB・API設計</text>
+  <text x="132" y="170" class="dg-el" style="text-anchor:end">T4 画面実装</text>
+  <text x="132" y="205" class="dg-el" style="text-anchor:end">T5 サーバ実装</text>
+  <text x="132" y="240" class="dg-el" style="text-anchor:end">T6 統合テスト</text>
+  <rect x="140" y="50" width="116" height="22" rx="5" fill="rgba(14,111,92,.16)" stroke="#0E6F5C" stroke-width="1.6"/>
+  <rect x="256" y="85" width="116" height="22" rx="5" fill="rgba(107,116,111,.12)" stroke="#6B746F" stroke-width="1.2"/>
+  <rect x="256" y="120" width="174" height="22" rx="5" fill="rgba(14,111,92,.16)" stroke="#0E6F5C" stroke-width="1.6"/>
+  <rect x="372" y="155" width="174" height="22" rx="5" fill="rgba(107,116,111,.12)" stroke="#6B746F" stroke-width="1.2"/>
+  <rect x="430" y="190" width="174" height="22" rx="5" fill="rgba(14,111,92,.16)" stroke="#0E6F5C" stroke-width="1.6"/>
+  <rect x="604" y="225" width="116" height="22" rx="5" fill="rgba(14,111,92,.16)" stroke="#0E6F5C" stroke-width="1.6"/>
+  <path d="M372 96 L372 151" class="dg-line dg-dash" marker-end="url(#ahg)"/>
+  <path d="M430 131 L430 186" class="dg-line dg-dash" marker-end="url(#ahg)"/>
+  <path d="M546 166 L546 236 L600 236" class="dg-line dg-dash" marker-end="url(#ahg)"/>
+  <path d="M604 201 L604 221" class="dg-line dg-dash" marker-end="url(#ahg)"/>
+  <polygon points="728,228 736,236 728,244 720,236" fill="#8A6D3B"/>
+  <text x="728" y="222" class="dg-el">M1</text>
+  <text x="380" y="300" class="dg-note">緑＝クリティカルパス（T1→T3→T5→T6）：この鎖の遅れがそのまま全体の遅れになる。</text>
+  <text x="380" y="316" class="dg-note">灰色のT2・T4には余裕（フロート）がある。破線＝依存関係、菱形＝マイルストーン（リリース判定）。</text>
+  <defs><marker id="ahg" markerWidth="9" markerHeight="9" refX="8" refY="4.5" orient="auto">
+    <path d="M0,0 L9,4.5 L0,9 z" fill="#6B746F"/></marker></defs>
+</svg>`
+};
+</script>
+<script>
+/* ============== 理解度クイズ ============== */
+const QUIZ = [
+{ q:'「競合他社が、自社より先によく似た製品をリリースしてしまうかもしれない」：これはどの種類のリスク？',
+  opts:['ビジネスリスク','プロジェクトリスク','プロダクトリスク','技術的負債'], a:0,
+  why:'開発組織・事業そのものに影響するのが<b>ビジネスリスク</b>。スケジュール・資源への影響ならプロジェクトリスク、成果物の品質・性能への影響ならプロダクトリスク。「何に影響するか」で見分ける。'},
+{ q:'リスクマネジメントのプロセスの正しい流れは？',
+  opts:['識別 → 分析 → 計画 → 監視（を反復する）','分析 → 識別 → 監視 → 計画','計画 → 識別 → 分析 → 監視（一度だけ行う）','監視 → 計画 → 分析 → 識別'], a:0,
+  why:'識別（列挙）→ 分析（確率×影響で優先順位）→ 計画（回避・最小化・コンティンジェンシー）→ 監視（指標の定期評価）。しかも一度きりではなく、プロジェクトが終わるまで反復する。'},
+{ q:'納期に遅れているプロジェクトに、新しいメンバーを大量に追加した。ブルックスの法則によれば何が起こりやすい？',
+  opts:['教育とコミュニケーションのコストで、さらに遅れる','人数に比例して期間が縮む','品質だけが向上する','必ず予定どおりに戻る'], a:0,
+  why:'新メンバーの教育に既存メンバーの時間が奪われ、コミュニケーション経路が n(n−1)/2 で爆発する。「遅れているプロジェクトへの人員追加はさらに遅らせる」（Brooks, 1975）。'},
+{ q:'6人のチームで、メンバー同士の1対1のコミュニケーション経路は何本？',
+  opts:['15本','6本','30本','36本'], a:0,
+  why:'n(n−1)/2 = 6×5÷2 = <b>15本</b>。10人なら45本、20人なら190本。人数の2乗のオーダーで増えるのが「チームは小さく」の数学的な根拠。'},
+{ q:'ガントチャート上で、クリティカルパス上のタスクが1週間遅れた。プロジェクト全体はどうなる？',
+  opts:['全体の完了も1週間遅れる','他のタスクの余裕（フロート）で自動的に吸収される','影響は半分の3.5日で済む','クリティカルパスは全体の期間とは無関係'], a:0,
+  why:'クリティカルパスは「最長の依存の鎖」で、プロジェクト全体の期間を決めている。この経路上の遅れはそのまま全体の遅れになる。フロートがあるのはクリティカルパス上に<b>ない</b>タスク。'},
+{ q:'三点見積もりで、楽観値 O=4人日・最頻値 M=7人日・悲観値 P=16人日 のとき、PERT の期待値 E は？',
+  opts:['8人日','7人日','9人日','27人日'], a:0,
+  why:'E =（O + 4M + P）/ 6 =（4 + 28 + 16）/ 6 = <b>8人日</b>。最頻値の7人日より悲観側に寄るのがポイント：作業時間の分布は遅れる方向に裾が長い。'},
+{ q:'ストーリーポイントが表しているものとして、もっとも適切なのは？',
+  opts:['他のストーリーと比べた相対的な大きさ','正確な作業時間（時間数）','書くべきコードの行数','担当する人数'], a:0,
+  why:'ストーリーポイントは<b>相対見積もり</b>の単位。「あのストーリーの2倍くらい」という比較で見積もり、実測ベロシティと組み合わせて初めて期間に変換できる。チーム間比較には使えない。'},
+{ q:'進捗報告で「90%完成です」という状態が何週間も続いている。この現象のもっとも適切な説明は？',
+  opts:['残り10%に統合・テストなどの重い仕事が潜み、「完成」の定義も曖昧だから','チームが怠けているから','進捗率の計算にバグがあるから','実際には数日で終わる誤差だから'], a:0,
+  why:'<b>90%症候群</b>。楽観バイアスと「完成」の定義の曖昧さが原因で、悪意や怠慢ではない。だから対策は人を責めることではなく、完了の二値（Definition of Done）で数える仕組みにすること。'},
+{ q:'Google の Project Aristotle（180チームの調査）が「チームの効果性にもっとも重要」と結論づけた要因は？',
+  opts:['心理的安全性','メンバー個人の技術力の高さ','チームの人数','全員が同じ場所で働くこと'], a:0,
+  why:'誰がいるかより「どう協働しているか」が効き、その筆頭が<b>心理的安全性</b>：対人リスク（質問・反対・失敗の告白）を取っても罰されないという共有された信念（Edmondson, 1999）。'},
+{ q:'COCOMO のようなアルゴリズム的コストモデルの、もっとも主要な入力は？',
+  opts:['推定されるソフトウェアの規模（コード行数やFP）','チームの士気','会議の回数','顧客満足度'], a:0,
+  why:'工数 = A × <b>サイズ</b><sup>E</sup> × M。規模の推定値が主入力で、スケール要因が指数を、コストドライバが乗数を調整する。「入力の規模自体が見積もり」という弱点も一緒に覚えておく。'},
+{ q:'「システムを設計する組織は、その組織の◯◯を写し取った構造の設計を生み出す」（コンウェイの法則）。◯◯に入るのは？',
+  opts:['コミュニケーション構造','給与体系','オフィスの間取り','プログラミング言語'], a:0,
+  why:'Conway（1968）。チーム構造とシステム構造は写像関係になるため、チーム設計はアーキテクチャ設計の一部になる。これを逆手に取るのが『Team Topologies』の逆コンウェイ戦略。'},
+{ q:'リリース時期を経営層に聞かれた。不確実性がまだ大きい段階での、もっとも誠実な答え方は？',
+  opts:['「85%の確率で4月末まで、50%なら4月中旬です」と幅と確率で答える','「4月1日です」と断言する','「わかりません」とだけ答える','楽観値をそのまま伝えて期待に応える'], a:0,
+  why:'見積もりは約束ではなく確率的な予測。幅と確率で語るのは歯切れが悪いのではなく、知っていることと知らないことを正確に伝える専門家の仕事。断言や楽観値の提示は後で必ず裏切りになる。'}
+];
+</script>
+<script>
+/* ============== レンダリング ============== */
+const learned = new Set();
+let currentCat = 'all';
+
+function esc(s){return s.replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;");}
+
+function highlight(code, lang){
+  const cmMark = (lang==='python') ? '#' : '//';
+  const kws = (lang==='python')
+    ? ['def','return','import','from','if','elif','else','assert','class','True','False','None','for','while','in','print','sorted','sum','round','range']
+    : ['public','class','void','int','return','new','static','import','if','else','true','false','String','double','for','while'];
+  const kwRe = new RegExp('\\b('+kws.join('|')+')\\b','g');
+  return code.split('\n').map(line=>{
+    const idx = line.indexOf(cmMark);
+    let codePart = (idx>=0) ? line.slice(0,idx) : line;
+    const cmPart = (idx>=0) ? line.slice(idx) : '';
+    const strs = [];
+    codePart = codePart.replace(/"[^"]*"/g, m=>{ strs.push(m); return '@@S'+(strs.length-1)+'@@'; });
+    let h = esc(codePart).replace(kwRe,'<span class="kw">$1</span>');
+    h = h.replace(/@@S(\d+)@@/g,(m,i)=>'<span class="st">'+esc(strs[+i])+'</span>');
+    return h + (cmPart ? '<span class="cm">'+esc(cmPart)+'</span>' : '');
+  }).join('\n');
+}
+
+function togglePattern(id){
+  const card = document.getElementById(id);
+  if(!card) return;
+  const open = card.classList.toggle('open');
+  const head = card.querySelector('.pcard-head');
+  if(head) head.setAttribute('aria-expanded', open ? 'true' : 'false');
+}
+function toggleLearned(id, cb){
+  if(cb.checked) learned.add(id); else learned.delete(id);
+  const card = document.getElementById(id);
+  if(card) card.classList.toggle('done-card', cb.checked);
+  updateLearnUI();
+}
+function updateLearnUI(){
+  const el = document.getElementById('learnNote');
+  if(el) el.textContent = '習得 ' + learned.size + ' / ' + TOPICS.length;
+}
+function switchCode(id, lang, btn){
+  document.getElementById(id+'-java').classList.toggle('hidden', lang!=='java');
+  document.getElementById(id+'-python').classList.toggle('hidden', lang!=='python');
+  btn.parentElement.querySelectorAll('button.tab').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+}
+
+function renderTopic(t, idx){
+  const pointsLi = t.points.map(v=>`<li>${v}</li>`).join('');
+  const cautionsLi = t.cautions.map(v=>`<li>${v}</li>`).join('');
+  const exLi = t.examples.map(v=>`<li>${v}</li>`).join('');
+  const stepsLi = t.steps.map(v=>`<li>${v}</li>`).join('');
+  const tagsH = (t.tags||[]).map(x=>`<span class="tag">${x}</span>`).join('');
+  const badgeH = `<span class="badge-imp ${BADGE_CLS[t.badge]||'imp1'}">${t.badge}</span>`;
+  const analogyH = t.analogy ? `<div class="analogy"><span><b>たとえるなら</b> ${t.analogy}</span></div>` : '';
+  const dg = DIAGRAMS[t.id];
+  const diagramH = dg ? `<div class="diagram-wrap"><h5>図解</h5>${dg}</div>` : '';
+  let codeH = '';
+  if(t.hasCode && CODE[t.id]){
+    codeH = `
+      <div class="code-wrap">
+        <div class="code-tabs">
+          <span class="lbl">サンプルコード</span>
+          <button class="tab active" onclick="switchCode('${t.id}','python',this)">Python</button>
+          <button class="tab" onclick="switchCode('${t.id}','java',this)">Java</button>
+        </div>
+        <pre id="${t.id}-python"><code>${highlight(CODE[t.id].python,'python')}</code></pre>
+        <pre id="${t.id}-java" class="hidden"><code>${highlight(CODE[t.id].java,'java')}</code></pre>
+      </div>`;
+  }
+  const searchText = (t.name+' '+t.jp+' '+t.summary+' '+(t.analogy||'')+' '+t.badge+' '+(t.tags||[]).join(' ')).toLowerCase();
+  const catColor = CAT_META[t.cat].color;
+  return `
+  <article class="pcard" id="${t.id}" data-cat="${t.cat}" data-search="${esc(searchText)}">
+    <button class="pcard-head" aria-expanded="false" onclick="togglePattern('${t.id}')">
+      <span class="pnum" style="color:${catColor}">${idx}</span>
+      <span class="ptitle">${t.name}<small>${t.jp}</small></span>
+      <span class="pbadges">${badgeH}</span>
+      <span class="ptags">${tagsH}</span>
+      <span class="pchev" aria-hidden="true">&rsaquo;</span>
+    </button>
+    <p class="summary">${t.summary}</p>
+    <div class="pdetail">
+      ${analogyH}
+      <div class="meta-row">
+        <div class="meta"><h5>実施の目的</h5><p>${t.purpose}</p></div>
+        <div class="meta"><h5>誰が・いつ実施するか</h5><p>${t.who}</p></div>
+      </div>
+      <div class="steps"><h5>実施の仕方（進め方）</h5><ol>${stepsLi}</ol></div>
+      ${diagramH}
+      <div class="grid2">
+        <div class="box pros"><h5>✓ 意識するポイント</h5><ul>${pointsLi}</ul></div>
+        <div class="box cons"><h5>！ 注意点・落とし穴</h5><ul>${cautionsLi}</ul></div>
+      </div>
+      <div class="meta-row">
+        <div class="meta"><h5>具体例</h5><ul>${exLi}</ul></div>
+        <div class="meta"><h5>混同しやすいものとの違い</h5><p>${t.related}</p></div>
+      </div>
+      <div class="meta" style="margin:16px 0"><h5>現場では（ツール・現代的な実践）</h5><p>${t.modern}</p></div>
+      ${codeH}
+      <label class="learn"><input type="checkbox" onchange="toggleLearned('${t.id}',this)">
+        このトピックを理解した（習得チェック）</label>
+    </div>
+  </article>`;
+}
+
+function build(){
+  document.getElementById('introProse').innerHTML = INTRO_HTML;
+  document.getElementById('techProse').innerHTML = TECH_HTML;
+  document.getElementById('closingProse').innerHTML = CLOSING_HTML;
+  const container = document.getElementById('topics-list');
+  let html='', n=0;
+  CAT_ORDER.forEach(cat=>{
+    const list = TOPICS.filter(t=>t.cat===cat);
+    const meta = CAT_META[cat];
+    html += `<div class="cat-group" data-cat="${cat}">
+      <div class="cat-head" style="--cc:${meta.color}">
+        <span class="cat-dot"></span>
+        <h3>${meta.label}</h3>
+        <span class="cat-badge">${meta.en} · ${list.length}種</span>
+      </div>
+      <p class="cat-desc">${meta.desc}</p>`;
+    list.forEach(t=>{ n++; html += renderTopic(t, n); });
+    html += `</div>`;
+  });
+  container.innerHTML = html;
+  updateLearnUI();
+  buildQuiz();
+}
+
+function filterCat(cat, btn){
+  currentCat = cat;
+  document.querySelectorAll('.pill').forEach(b=>b.classList.remove('active'));
+  if(btn) btn.classList.add('active');
+  applyFilter();
+}
+function applyFilter(){
+  const si = document.getElementById('search');
+  const q = (si && si.value ? si.value : '').trim().toLowerCase();
+  document.querySelectorAll('.cat-group').forEach(g=>{
+    const catOk = (currentCat==='all' || currentCat===g.dataset.cat);
+    let shown = 0;
+    g.querySelectorAll('.pcard').forEach(c=>{
+      const hit = catOk && (!q || c.dataset.search.includes(q));
+      c.classList.toggle('hidden', !hit);
+      if(hit) shown++;
+    });
+    g.classList.toggle('hidden', shown===0);
+  });
+}
+
+/* ============== 三点見積もり（PERT）デモ ============== */
+function pertTry(o,m,p){
+  document.getElementById('pertO').value = o;
+  document.getElementById('pertM').value = m;
+  document.getElementById('pertP').value = p;
+  pertCheck();
+}
+function r1(v){ return Math.round(v*10)/10; }
+function pertCheck(){
+  const rawO = document.getElementById('pertO').value.trim();
+  const rawM = document.getElementById('pertM').value.trim();
+  const rawP = document.getElementById('pertP').value.trim();
+  const out = document.getElementById('pertOut');
+  const viz = document.getElementById('pertViz');
+  if(!rawO && !rawM && !rawP){
+    out.className = 'demo-out';
+    out.innerHTML = '3つの値を入力するか、上のボタンで代表例を試してください。「4 / 7 / 16」は悲観側に裾が長い典型的なタスクの例です。';
+    viz.innerHTML = '';
+    return;
+  }
+  const o = parseFloat(rawO), m = parseFloat(rawM), p = parseFloat(rawP);
+  if(!isFinite(o) || !isFinite(m) || !isFinite(p)){
+    out.className = 'demo-out ng';
+    out.innerHTML = '<span class="pl">入力エラー</span>3つとも<b>数値</b>で入力してください（例：O=4, M=7, P=16）。';
+    viz.innerHTML = '';
+    return;
+  }
+  if(o < 0 || m < 0 || p < 0){
+    out.className = 'demo-out ng';
+    out.innerHTML = '<span class="pl">入力エラー</span>負の作業時間はありません。0以上の値を入力してください。';
+    viz.innerHTML = '';
+    return;
+  }
+  if(!(o <= m && m <= p)){
+    out.className = 'demo-out ng';
+    out.innerHTML = '<span class="pl">矛盾</span><b>O ≤ M ≤ P</b> になるように入力してください。「楽観値が悲観値より大きい」見積もりは定義上あり得ません：実際の見積もり会議でも、この種の入力ミス・認識ズレはよく起こります。';
+    viz.innerHTML = '';
+    return;
+  }
+  const e = (o + 4*m + p) / 6;
+  const s = (p - o) / 6;
+  if(s === 0){
+    out.className = 'demo-out ok';
+    out.innerHTML = '<span class="pl">計算結果</span>期待値 <b>E = ' + r1(e) + '人日</b>、標準偏差 <b>σ = 0</b>。3つの値がすべて同じ＝不確実性ゼロの見積もりです。現実のタスクでまずあり得ない、という点にこそ意味があります：OとPの幅を正直に見積もることから始めましょう。';
+    viz.innerHTML = '';
+    return;
+  }
+  const lo68 = r1(e - s), hi68 = r1(e + s);
+  const lo95 = r1(Math.max(0, e - 2*s)), hi95 = r1(e + 2*s);
+  let skew = '';
+  if((p - m) > (m - o)){
+    skew = ' 悲観側の裾が長いため、期待値 E（' + r1(e) + '）は最頻値 M（' + r1(m) + '）より<b>大きく</b>なっています。「いちばんありそうな値」で約束すると五分五分より高い確率で遅れる：三点見積もりの最重要の教訓です。';
+  } else if((p - m) < (m - o)){
+    skew = ' この例では珍しく楽観側の裾が長いため、期待値 E は最頻値 M より小さくなっています。';
+  } else {
+    skew = ' 楽観・悲観が対称なので、期待値 E は最頻値 M と一致します。';
+  }
+  out.className = 'demo-out ok';
+  out.innerHTML = '<span class="pl">計算結果</span>期待値 <b>E = ' + r1(e) + '人日</b>、標準偏差 <b>σ = ' + r1(s) + '</b>。'
+    + '<b>68%信頼区間：' + lo68 + '〜' + hi68 + '人日</b>／<b>95%信頼区間：' + lo95 + '〜' + hi95 + '人日</b>（正規分布近似）。'
+    + skew;
+  viz.innerHTML = pertSvg(o, m, p, e, s);
+}
+function pertSvg(o, m, p, e, s){
+  const lo = Math.min(o, e - 3.2*s);
+  const hi = Math.max(p, e + 3.2*s);
+  const X = v => 40 + (v - lo) / (hi - lo) * 680;
+  const y0 = 160, amp = 112;
+  const Y = v => y0 - amp * Math.exp(-((v - e)*(v - e)) / (2*s*s));
+  const N = 120;
+  const pts = [];
+  for(let i = 0; i <= N; i++){
+    const v = lo + (hi - lo) * i / N;
+    pts.push([X(v), Y(v)]);
+  }
+  const curve = 'M' + pts.map(q => r1(q[0]) + ' ' + r1(q[1])).join(' L');
+  function region(a, b){
+    const seg = [];
+    const steps = 60;
+    for(let i = 0; i <= steps; i++){
+      const v = a + (b - a) * i / steps;
+      seg.push(r1(X(v)) + ',' + r1(Y(v)));
+    }
+    return 'M' + r1(X(a)) + ' ' + y0 + ' L' + seg.join(' L') + ' L' + r1(X(b)) + ' ' + y0 + ' Z';
+  }
+  const svg = `
+<div class="diagram-wrap" style="margin:14px 0 0">
+<svg viewBox="0 0 760 215" role="img" aria-label="三点見積もりの分布イメージ">
+  <path d="${region(e-2*s, e+2*s)}" fill="rgba(14,111,92,.07)"/>
+  <path d="${region(e-s, e+s)}" fill="rgba(14,111,92,.18)"/>
+  <path d="${curve}" fill="none" stroke="#0E6F5C" stroke-width="1.8"/>
+  <path d="M40 ${y0} L720 ${y0}" class="dg-line"/>
+  <path d="M${r1(X(e))} ${y0} L${r1(X(e))} ${Y(e)-4}" stroke="#0A5748" stroke-width="1.6"/>
+  <path d="M${r1(X(e-s))} ${y0} L${r1(X(e-s))} ${r1(Y(e-s))} M${r1(X(e+s))} ${y0} L${r1(X(e+s))} ${r1(Y(e+s))}" class="dg-line dg-dash"/>
+  <circle cx="${r1(X(o))}" cy="${y0}" r="5" fill="#8A6D3B"/>
+  <circle cx="${r1(X(m))}" cy="${y0}" r="5" fill="#3E5C50"/>
+  <circle cx="${r1(X(p))}" cy="${y0}" r="5" fill="#B04A3E"/>
+  <text x="${r1(X(o))}" y="${y0+20}" class="dg-el">O=${r1(o)}</text>
+  <text x="${r1(X(m))}" y="${y0+34}" class="dg-el">M=${r1(m)}</text>
+  <text x="${r1(X(p))}" y="${y0+20}" class="dg-el">P=${r1(p)}</text>
+  <text x="${r1(X(e))}" y="30" class="dg-lbl" fill="#0A5748">E=${r1(e)}</text>
+  <text x="${r1(X(e))}" y="${y0-14}" class="dg-el">68%</text>
+  <text x="380" y="211" class="dg-note">濃い緑＝E±1σ（約68%）、薄い緑＝E±2σ（約95%）。悲観側に裾が長いほど、E は M より右にずれる。</text>
+</svg>
+</div>`;
+  return svg;
+}
+
+/* ============== クイズ（in-memory） ============== */
+let quizState = {answered:0, correct:0};
+let quizOrder = [];
+function buildQuiz(){
+  quizState = {answered:0, correct:0};
+  quizOrder = QUIZ.map(q=>{
+    const idx = q.opts.map((_,k)=>k);
+    for(let i=idx.length-1;i>0;i--){ const j=Math.floor(Math.random()*(i+1)); const t=idx[i]; idx[i]=idx[j]; idx[j]=t; }
+    return idx;
+  });
+  const body = document.getElementById('quizBody');
+  if(!body) return;
+  body.innerHTML = QUIZ.map((q,i)=>`
+    <div class="quiz-q" id="qq${i}">
+      <p class="qtext">Q${i+1}. ${q.q}</p>
+      <div class="qopts">${quizOrder[i].map((oi,j)=>`<button onclick="answerQuiz(${i},${j},this)">${q.opts[oi]}</button>`).join('')}</div>
+      <p class="qwhy" hidden></p>
+    </div>`).join('');
+  updateQuizScore();
+}
+function answerQuiz(i, j, btn){
+  const q = QUIZ[i], box = document.getElementById('qq'+i);
+  if(box.classList.contains('answered')) return;
+  box.classList.add('answered');
+  box.querySelectorAll('.qopts button').forEach((b,k)=>{
+    b.disabled = true;
+    if(quizOrder[i][k]===q.a) b.classList.add('right');
+  });
+  const ok = (quizOrder[i][j]===q.a);
+  if(!ok) btn.classList.add('wrong');
+  quizState.answered++; if(ok) quizState.correct++;
+  const why = box.querySelector('.qwhy');
+  why.hidden = false;
+  why.innerHTML = (ok ? '<b>正解。</b> ' : `<b>不正解。</b>正解は <b>${q.opts[q.a]}</b>。 `) + q.why;
+  updateQuizScore();
+}
+function updateQuizScore(){
+  const el = document.getElementById('quizScore');
+  if(el) el.textContent = quizState.answered
+    ? `（${quizState.answered}問中 ${quizState.correct}問正解）` : `全${QUIZ.length}問。`;
+}
+
+/* ============== 言語切替（サイト共通・localStorage は site-lang のみ） ============== */
+function setLang(l){document.body.classList.remove('lang-ja','lang-en');document.body.classList.add('lang-'+l);document.documentElement.lang=l;
+ try{localStorage.setItem('site-lang',l)}catch(e){}
+ try{var q=new URLSearchParams(location.search);q.set('lang',l);history.replaceState(null,'',location.pathname+'?'+q+location.hash)}catch(e){}}
+function toggleLang(){setLang(document.body.classList.contains('lang-ja')?'en':'ja')}
+(function(){var u=null;try{u=new URLSearchParams(location.search).get('lang')}catch(e){}
+ var s=null;try{s=localStorage.getItem('site-lang')}catch(e){}
+ var l=(u==='en'||u==='ja')?u:((s==='en'||s==='ja')?s:'ja');if(l!=='ja')setLang(l);})();
+
+/* ページ内アンカー（本文中のリンク）でカードへ飛ぶとき、
+   絞り込みを解除して対象カードを開いてから移動する */
+document.addEventListener('click', function(e){
+  var a = e.target.closest('a[href^="#"]');
+  if(!a) return;
+  var id = a.getAttribute('href').slice(1);
+  var card = document.getElementById(id);
+  if(card && card.classList.contains('pcard')){
+    if(currentCat!=='all'){ filterCat('all', document.querySelector('.pill')); }
+    var si = document.getElementById('search');
+    if(si && si.value){ si.value=''; }
+    applyFilter();
+    card.classList.add('open');
+    var head = card.querySelector('.pcard-head');
+    if(head) head.setAttribute('aria-expanded','true');
+  }
+});
+
+window.addEventListener('DOMContentLoaded', function(){
+  build();
+  var si = document.getElementById('search');
+  if(si) si.addEventListener('input', applyFilter);
+  if('IntersectionObserver' in window){
+    var io = new IntersectionObserver(function(es){ es.forEach(function(e){ if(e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target); } }); },{threshold:0.12, rootMargin:"0px 0px -6% 0px"});
+    document.querySelectorAll('.reveal').forEach(function(el){ io.observe(el); });
+  } else { document.querySelectorAll('.reveal').forEach(function(el){ el.classList.add('in'); }); }
+});
+</script>
+<script>
+/* ==================== NAV SYSTEM v4 controllers (self-contained) ==================== */
+(function(){
+  function syncLangUI(l){
+    var ja = l==='ja';
+    var lists=document.querySelectorAll('.lswitch');
+    for(var i=0;i<lists.length;i++){
+      var a=lists[i].querySelector('.ls-ja'), e=lists[i].querySelector('.ls-en');
+      if(a) a.setAttribute('aria-pressed', ja?'true':'false');
+      if(e) e.setAttribute('aria-pressed', ja?'false':'true');
+    }
+  }
+  window.syncLangUI=syncLangUI;
+  if(typeof window.setLang==='function'){
+    var _setLang=window.setLang;
+    window.setLang=function(l){ _setLang(l); syncLangUI(l); };
+  }
+  syncLangUI(document.body.classList.contains('lang-en')?'en':'ja');
+
+  var groups=document.querySelectorAll('.navlinks .navgroup');
+  for(var g=0; g<groups.length; g++){ (function(grp){
+    var top=grp.querySelector('.navtop'), panel=grp.querySelector('.navpanel');
+    if(!panel||!top) return;
+    function set(x){ top.setAttribute('aria-expanded', x?'true':'false'); }
+    grp.addEventListener('mouseenter', function(){ grp.classList.remove('collapsed'); set(true); });
+    grp.addEventListener('mouseleave', function(){ set(false); });
+    grp.addEventListener('focusin', function(){ if(!grp.classList.contains('collapsed')) set(true); });
+    grp.addEventListener('focusout', function(e){ if(!grp.contains(e.relatedTarget)){ grp.classList.remove('collapsed'); set(false); } });
+    grp.addEventListener('keydown', function(e){ if(e.key==='Escape'){ grp.classList.add('collapsed'); set(false); top.focus(); } });
+  })(groups[g]); }
+
+  var tog=document.getElementById('navToggle'), ov=document.getElementById('mobnav');
+  if(tog && ov){
+    function openNav(){ document.body.classList.add('navopen'); tog.setAttribute('aria-expanded','true'); ov.setAttribute('aria-hidden','false');
+      var f=ov.querySelector('a,button'); if(f){ requestAnimationFrame(function(){ f.focus(); }); } }
+    function closeNav(){ document.body.classList.remove('navopen'); tog.setAttribute('aria-expanded','false'); ov.setAttribute('aria-hidden','true'); tog.focus(); }
+    tog.addEventListener('click', function(){ document.body.classList.contains('navopen')?closeNav():openNav(); });
+    ov.addEventListener('click', function(e){ if(e.target.closest('a')) closeNav(); });
+    document.addEventListener('keydown', function(e){ if(e.key==='Escape' && document.body.classList.contains('navopen')) closeNav(); });
+  }
+
+  /* F. TOC scroll-spy (IntersectionObserver, no scroll listeners) */
+  var bar=document.querySelector('.tocbar');
+  if(bar){
+    var pills=Array.prototype.slice.call(bar.querySelectorAll('.tocpill'));
+    var map={};
+    pills.forEach(function(p){ map[p.getAttribute('href').slice(1)]=p; });
+    if('IntersectionObserver' in window){
+      var spy=new IntersectionObserver(function(es){
+        es.forEach(function(e){
+          if(e.isIntersecting){
+            pills.forEach(function(p){ p.classList.remove('on'); });
+            var m=map[e.target.id]; if(m) m.classList.add('on');
+          }
+        });
+      },{rootMargin:'-45% 0px -50% 0px', threshold:0});
+      pills.forEach(function(p){ var s=document.getElementById(p.getAttribute('href').slice(1)); if(s) spy.observe(s); });
+    }
+  }
+
+  /* F. back to top */
+  var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var bt=document.querySelector('.totop'), sen=document.getElementById('toTopSentinel');
+  if(bt && sen && 'IntersectionObserver' in window){
+    new IntersectionObserver(function(es){
+      es.forEach(function(e){ if(e.isIntersecting) bt.classList.remove('show'); else bt.classList.add('show'); });
+    },{threshold:0}).observe(sen);
+  }
+  if(bt){ bt.addEventListener('click', function(){ window.scrollTo({top:0, behavior:reduce?'auto':'smooth'}); }); }
+})();
+</script>
+</body>
+</html>

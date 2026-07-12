@@ -1,0 +1,1880 @@
+<!DOCTYPE html>
+<html lang="ja" class="no-js">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>バージョン管理とCI/CD学習ガイド - 構成管理・Git・継続的デリバリー / Version Control &amp; CI/CD</title>
+<meta name="description" content="A study guide to version control and CI/CD: the four configuration management activities (version management, system building, change management, release management), Git branching and merging, branching strategies, pull requests, continuous integration and delivery, semantic versioning, and DevOps metrics, with a comprehension quiz. Part of Yuta Kimura's software engineering course materials.">
+<link rel="canonical" href="https://ykimu.github.io/course/version-control-cicd.html">
+<link rel="icon" href="../favicon.svg" type="image/svg+xml">
+<meta property="og:site_name" content="Yuta Kimura / 木村祐太">
+<meta property="og:type" content="article">
+<meta property="og:title" content="バージョン管理とCI/CD学習ガイド - 構成管理・Git・継続的デリバリー / Version Control &amp; CI/CD">
+<meta property="og:description" content="A study guide to version control and CI/CD: configuration management, Git branching, CI/CD pipelines, semantic versioning, and DevOps metrics, with a comprehension quiz.">
+<meta property="og:url" content="https://ykimu.github.io/course/version-control-cicd.html">
+<meta property="og:image" content="https://ykimu.github.io/assets/og.png">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="color-scheme" content="light">
+<script>document.documentElement.className="js";</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&family=Noto+Sans+JP:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#FBFCFB; --bg-2:#F3F6F4; --bg-3:#EBEFED; --card:#FFFFFF;
+    --ink:#101312; --ink-2:#3C4340; --muted:#6B746F; --faint:#B7C0BB;
+    --line:#E7ECE9; --hair:rgba(16,19,18,.08); --shell:rgba(16,19,18,.035);
+    --accent:#0E6F5C; --accent-2:#0A5748; --accent-soft:rgba(14,111,92,.08);
+    --soft:0 1px 2px rgba(16,19,18,.04), 0 24px 60px -28px rgba(16,19,18,.16);
+    --inhi:inset 0 1px 0 rgba(255,255,255,.85);
+    --ease:cubic-bezier(.32,.72,0,1);
+    --sans:"Plus Jakarta Sans","Noto Sans JP",-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+    --disp:"Space Grotesk","Plus Jakarta Sans","Noto Sans JP",sans-serif;
+    --mono:ui-monospace,SFMono-Regular,Menlo,Consolas,"Liberation Mono",monospace;
+    --maxw:1440px; --readw:clamp(680px, 62vw, 1060px);
+    /* category accents (kept within the brand green + neutral family) */
+    --vc:#0E6F5C; --auto:#0A5748; --mgmt:#8A6D3B; --team:#5B655F;
+    /* compatibility aliases used by reused content/diagram/quiz markup */
+    --panel:var(--card); --panel2:var(--bg-2); --chip:var(--bg-3);
+    --code-bg:var(--shell); --code-ink:#2F3A33;
+    --good:#0E6F5C; --bad:#B04A3E; --warn:#8A6D3B; --accent2:var(--accent-2);
+    --kw:#0A5748; --ty:#3C4340; --st:#7A5C34; --cm:#87918C;
+  }
+  html{color-scheme:light}
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth; -webkit-text-size-adjust:100%}
+  body{margin:0; background:var(--bg); color:var(--ink); font-family:var(--sans);
+    font-size:17px; line-height:1.75; font-weight:400; -webkit-font-smoothing:antialiased; text-rendering:optimizeLegibility}
+  body.lang-ja [lang=en]{display:none}
+  body.lang-en [lang=ja]{display:none}
+  ::selection{background:rgba(14,111,92,.16)}
+  h1,h2,h3{margin:0; color:var(--ink); font-weight:500; line-height:1.16; letter-spacing:-.02em; font-family:var(--disp); text-wrap:balance}
+  body.lang-ja h1,body.lang-ja h2,body.lang-ja h3{letter-spacing:0; font-family:var(--sans)}
+  p,.lead,.cite,.muted-s{text-wrap:pretty}
+  [lang="en"]{line-break:auto}
+  [lang="ja"]{line-break:strict; word-break:normal}
+  h1 [lang="ja"],h2 [lang="ja"],h3 [lang="ja"]{word-break:auto-phrase}
+  p{margin:0 0 1em}
+  a{color:var(--accent-2); text-decoration:none; transition:color .3s var(--ease)}
+  a:hover{color:var(--accent)}
+  a:focus-visible,button:focus-visible,.btn:focus-visible,[tabindex]:focus-visible{outline:2px solid var(--accent); outline-offset:3px; border-radius:8px}
+  .wrap{max-width:var(--maxw); margin:0 auto; padding:0 40px}
+  [id]{scroll-margin-top:96px}
+  section{padding:100px 0}
+
+  .skip{position:fixed; top:10px; left:10px; padding:10px 16px; background:var(--ink); color:#fff; border-radius:999px; transform:translateY(-200%); transition:none; z-index:100}
+  .skip:focus{transform:none}
+
+  /* film grain overlay */
+  body::after{content:""; position:fixed; inset:0; z-index:1; pointer-events:none; opacity:.02;
+    background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='g'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23g)'/%3E%3C/svg%3E")}
+
+  h2.big{font-size:clamp(1.9rem,3.2vw,2.7rem); font-weight:500; letter-spacing:-.025em; max-width:26ch}
+  body.lang-ja h2.big{letter-spacing:-.01em; max-width:none}
+  .eyebrow,.kick{display:inline-flex; align-items:center; gap:8px; width:max-content; max-width:100%;
+    padding:5px 13px 5px 11px; border-radius:999px; border:1px solid var(--hair); background:#fff;
+    font:600 .66rem/1 var(--disp); letter-spacing:.14em; text-transform:uppercase; color:var(--ink-2); margin:0 0 18px}
+  .eyebrow::before,.kick::before{content:""; flex:0 0 auto; width:6px; height:6px; border-radius:50%; background:var(--accent)}
+  .lead{font-size:1.12rem; color:var(--ink-2); line-height:1.78; font-weight:400}
+
+  /* motion */
+  .js .reveal{opacity:0; transform:translateY(18px); filter:blur(6px); transition:opacity .9s var(--ease), transform .9s var(--ease), filter .9s var(--ease)}
+  .js .reveal.in{opacity:1; transform:none; filter:none}
+  @media (prefers-reduced-motion:reduce){
+    .js .reveal{opacity:1!important; transform:none!important; filter:none!important}
+    .btn:active,.btn.ink:hover .ic,.pcard:hover,.pill:hover{transform:none!important}
+    html{scroll-behavior:auto}
+  }
+
+  /* floating island nav */
+  header.bar{position:sticky; top:18px; z-index:60; background:transparent; border-bottom:none}
+  .bar .wrap{display:flex; align-items:center; justify-content:space-between;
+    width:max-content; max-width:calc(100% - 32px); margin:0 auto; height:auto;
+    padding:9px 12px 9px 20px; gap:20px; border-radius:999px;
+    background:rgba(255,255,255,.72); -webkit-backdrop-filter:saturate(1.4) blur(18px); backdrop-filter:saturate(1.4) blur(18px);
+    border:1px solid var(--hair); box-shadow:var(--soft)}
+  .brand{font-weight:600; font-size:.92rem; letter-spacing:-.01em; color:var(--ink); display:inline-flex; align-items:center; gap:8px}
+  .brand span.sep{color:var(--muted); font-weight:400; margin:0 2px}
+  .navlinks{display:flex; gap:22px; align-items:center}
+  .navlinks a{font-size:.86rem; font-weight:500; color:var(--ink-2); transition:color .3s var(--ease)}
+  .navlinks a:hover{color:var(--ink)}
+  @media(max-width:860px){.navlinks{display:none}}
+  .bar-right{display:flex; align-items:center; gap:8px}
+
+  /* buttons */
+  .btn{display:inline-flex; align-items:center; gap:10px; font:500 .85rem/1 var(--sans); padding:10px 18px;
+    border-radius:999px; border:1px solid var(--hair); background:#fff; color:var(--ink); cursor:pointer;
+    transition:transform .4s var(--ease), box-shadow .4s var(--ease), border-color .3s var(--ease), background .3s var(--ease), color .3s var(--ease)}
+  .btn:hover{border-color:var(--ink); transform:translateY(-1px); color:var(--ink)}
+  .btn:active{transform:scale(.98)}
+  .btn.ink{background:var(--ink); border-color:var(--ink); color:#fff; padding:10px 10px 10px 22px;
+    box-shadow:0 12px 26px -14px rgba(16,19,18,.5)}
+  .btn.ink:not(:has(.ic)){padding:10px 22px}
+  .btn.ink:hover{box-shadow:0 16px 32px -14px rgba(16,19,18,.55); color:#fff}
+  .btn .ic{width:32px; height:32px; border-radius:999px; background:rgba(255,255,255,.18); display:grid; place-items:center;
+    transition:transform .45s var(--ease); flex:0 0 auto}
+  .btn.ink:hover .ic{transform:translate(3px,-1px)}
+  .tlink{display:inline-flex; align-items:center; gap:8px; font-weight:500; font-size:.95rem; color:var(--ink)}
+  .tlink .ar{transition:transform .4s var(--ease)}
+  .tlink:hover .ar{transform:translateX(4px)}
+
+  /* hero */
+  .hero{position:relative; overflow:hidden}
+  .hero > .wrap{position:relative; z-index:1}
+  .hero::before{content:""; position:absolute; z-index:0; width:640px; height:640px; right:-150px; top:-240px;
+    border-radius:50%; pointer-events:none; opacity:.55;
+    background:radial-gradient(circle, var(--accent-soft), transparent 62%); filter:blur(20px)}
+  .hero .wrap{padding-top:72px; padding-bottom:70px}
+  .hero h1{font-size:clamp(2.6rem,5vw,4.2rem); font-weight:500; letter-spacing:-.03em; line-height:1.08; color:var(--ink); max-width:none}
+  body.lang-ja .hero h1{font-size:clamp(2rem,4.2vw,3.1rem); font-weight:500; letter-spacing:0; line-height:1.24}
+  .hero h1 em{font-style:normal; color:var(--accent)}
+  .hero .lead{max-width:var(--readw); margin-top:24px}
+  .ja-note{display:inline-flex; align-items:center; gap:8px; margin-top:22px; padding:7px 15px; border-radius:999px;
+    border:1px solid var(--hair); background:var(--accent-soft); font-size:.8rem; font-weight:500; color:var(--accent-2)}
+  .ja-note::before{content:""; width:6px; height:6px; border-radius:50%; background:var(--accent); flex:0 0 auto}
+  .hero-cta{display:flex; gap:20px; align-items:center; flex-wrap:wrap; margin-top:28px}
+
+  .soft-sec{background:var(--bg-2); border-top:1px solid var(--line); border-bottom:1px solid var(--line)}
+
+  /* prose */
+  .prose{max-width:var(--readw)}
+  .prose p{margin:0 0 1em; color:var(--ink-2)}
+  .prose h4{font-family:var(--sans); font-size:1.12rem; font-weight:600; letter-spacing:0; color:var(--ink); margin:1.6em 0 .6em}
+  .prose ul{margin:0 0 1.2em; padding-left:0; list-style:none}
+  .prose ul li{position:relative; padding-left:22px; margin:12px 0; color:var(--ink-2)}
+  .prose ul li::before{content:""; position:absolute; left:0; top:13px; width:11px; height:1.5px; background:var(--accent)}
+  .prose ul li b{color:var(--ink); font-weight:600}
+  .prose b{color:var(--ink); font-weight:600}
+  .prose i{color:var(--ink-2)}
+  .prose code{font-family:var(--mono); font-size:.86em; background:var(--shell); border:1px solid var(--hair); border-radius:6px; padding:.08em .4em; color:var(--accent-2)}
+
+  .callout{border-radius:16px; padding:18px 22px; margin:18px 0; max-width:var(--readw);
+    background:var(--card); box-shadow:0 0 0 6px var(--shell),0 0 0 6.5px var(--hair),var(--soft)}
+  .callout h4{margin:0 0 6px; font-size:1rem; font-family:var(--sans); font-weight:600; letter-spacing:0; color:var(--ink)}
+  .callout.tip{background:var(--accent-soft)}
+  .callout.warn{background:rgba(138,109,59,.08)}
+  .callout a{font-weight:600}
+
+  .principles{display:grid; grid-template-columns:repeat(auto-fit,minmax(230px,1fr)); gap:14px; margin:18px 0; max-width:var(--readw)}
+  .principles .p{background:var(--card); border-radius:16px; padding:16px 18px;
+    box-shadow:0 0 0 6px var(--shell),0 0 0 6.5px var(--hair),var(--soft)}
+  .principles .p b{color:var(--accent-2)}
+  .principles .p span{font-size:.9rem; color:var(--muted)}
+
+  .cmp-table{border-collapse:separate; border-spacing:0; margin:16px 0; max-width:var(--readw); width:100%; font-size:.92rem;
+    border-radius:14px; overflow:hidden; box-shadow:0 0 0 6px var(--shell),0 0 0 6.5px var(--hair),var(--soft)}
+  .cmp-table th,.cmp-table td{border-bottom:1px solid var(--line); border-right:1px solid var(--line); padding:11px 14px; text-align:left; vertical-align:top; background:var(--card)}
+  .cmp-table tr:last-child th,.cmp-table tr:last-child td{border-bottom:none}
+  .cmp-table th{background:var(--bg-2); font-weight:600; color:var(--ink)}
+  .cmp-table td:last-child,.cmp-table th:last-child{border-right:none}
+  .cmp-table td b{color:var(--accent-2)}
+
+  /* controls: category pills + search */
+  .controls{display:flex; align-items:center; justify-content:space-between; gap:20px; flex-wrap:wrap; margin:0 0 12px}
+  .pills{display:flex; gap:8px; flex-wrap:wrap}
+  .pill{display:inline-flex; align-items:center; gap:8px; font:500 .9rem/1 var(--sans); padding:9px 16px;
+    border-radius:999px; border:1px solid var(--hair); background:#fff; color:var(--ink-2); cursor:pointer;
+    transition:transform .4s var(--ease), border-color .3s var(--ease), background .3s var(--ease), color .3s var(--ease)}
+  .pill:hover{border-color:var(--ink); transform:translateY(-1px)}
+  .pill span{font:600 .72rem/1 var(--disp); color:var(--muted)}
+  .pill.active{background:var(--ink); border-color:var(--ink); color:#fff}
+  .pill.active span{color:rgba(255,255,255,.7)}
+  .ctrl-right{display:flex; align-items:center; gap:14px}
+  .search{width:min(280px,60vw); padding:10px 16px; border-radius:999px; border:1px solid var(--hair);
+    background:#fff; color:var(--ink); font:400 .9rem/1 var(--sans); outline:none; transition:border-color .3s var(--ease)}
+  .search:focus{border-color:var(--accent)}
+  .learn-note{font:600 .78rem/1 var(--disp); color:var(--muted); white-space:nowrap}
+
+  /* category groups */
+  .cat-group{margin-top:34px}
+  .cat-group.hidden{display:none}
+  .cat-head{display:flex; align-items:center; gap:12px; margin:0 0 4px}
+  .cat-head .cat-dot{width:10px; height:10px; border-radius:50%; background:var(--cc); flex:0 0 auto}
+  .cat-head h3{font-family:var(--sans); font-size:1.4rem; font-weight:600; letter-spacing:0; color:var(--ink)}
+  .cat-badge{font:600 .66rem/1 var(--disp); letter-spacing:.08em; text-transform:uppercase; color:var(--muted);
+    border:1px solid var(--hair); background:#fff; padding:5px 11px; border-radius:999px}
+  .cat-desc{max-width:var(--readw); color:var(--muted); font-size:.96rem; margin:0 0 12px}
+
+  /* test card (double-bezel) */
+  .pcard{border-radius:21px; background:var(--card); margin:16px 0; scroll-margin-top:96px;
+    box-shadow:0 0 0 7px var(--shell),0 0 0 7.5px var(--hair),var(--soft);
+    transition:box-shadow .4s var(--ease)}
+  .pcard.hidden{display:none}
+  .pcard-head{display:flex; align-items:center; gap:14px; width:100%; text-align:left;
+    background:transparent; border:none; cursor:pointer; padding:22px 26px 8px; font-family:var(--sans)}
+  .pnum{font:600 .95rem/1 var(--disp); font-variant-numeric:tabular-nums; flex:0 0 auto; min-width:24px}
+  .ptitle{font-family:var(--disp); font-weight:500; font-size:1.18rem; color:var(--ink); letter-spacing:-.01em; flex:0 0 auto}
+  .ptitle small{display:block; font-family:var(--sans); font-size:.8rem; color:var(--muted); font-weight:400; margin-top:2px}
+  .pbadges{display:flex; gap:8px; align-items:center}
+  .ptags{display:flex; gap:6px; flex-wrap:wrap; margin-left:auto; justify-content:flex-end}
+  .pchev{flex:0 0 auto; font-size:1.5rem; color:var(--muted); transition:transform .4s var(--ease); margin-left:6px; line-height:1}
+  .pcard.open .pchev{transform:rotate(90deg); color:var(--accent-2)}
+  .summary{margin:0; padding:0 26px 22px; color:var(--ink-2); font-size:1rem}
+  .summary strong{color:var(--ink); font-weight:600}
+  .pdetail{display:none; padding:0 26px 26px}
+  .pcard.open .pdetail{display:block}
+  .pcard.done-card{box-shadow:0 0 0 7px var(--accent-soft),0 0 0 7.5px rgba(14,111,92,.24),var(--soft)}
+
+  .badge-imp{font:700 .68rem/1 var(--disp); letter-spacing:.06em; padding:4px 10px; border-radius:999px; white-space:nowrap}
+  .imp3{background:var(--accent); color:#fff}
+  .imp2{background:var(--accent-soft); color:var(--accent-2)}
+  .imp1{background:var(--bg-3); color:var(--muted)}
+  .tag{font:500 .72rem/1 var(--sans); padding:5px 10px; border-radius:999px; background:var(--bg-2); color:var(--muted); border:1px solid var(--hair)}
+
+  .analogy{display:flex; gap:10px; align-items:flex-start; background:var(--accent-soft);
+    border-radius:14px; padding:14px 18px; margin:16px 0; font-size:.94rem; color:var(--ink-2)}
+  .analogy b{color:var(--accent-2); font-weight:600}
+
+  .grid2{display:grid; grid-template-columns:1fr 1fr; gap:16px; margin:18px 0}
+  .box{border-radius:16px; padding:16px 18px; background:var(--card);
+    box-shadow:0 0 0 6px var(--shell),0 0 0 6.5px var(--hair),var(--soft)}
+  .box h5{margin:0 0 10px; font-size:.92rem; font-family:var(--sans); font-weight:600; letter-spacing:0; display:flex; align-items:center; gap:7px}
+  .box.pros h5{color:var(--accent-2)}
+  .box.cons h5{color:var(--bad)}
+  .box ul{margin:0; padding-left:18px}
+  .box li{margin:6px 0; font-size:.9rem; color:var(--ink-2)}
+
+  .meta-row{display:grid; grid-template-columns:1fr 1fr; gap:16px; margin:16px 0}
+  .meta h5{margin:0 0 8px; font-size:.92rem; font-family:var(--sans); font-weight:600; letter-spacing:0; color:var(--accent-2)}
+  .meta p,.meta li{font-size:.92rem; color:var(--ink-2)}
+  .meta ul{margin:0; padding-left:18px}
+  .meta p{margin:0}
+  .meta code,.box code,.analogy code,.steps code{font-family:var(--mono); font-size:.86em; background:var(--shell); border:1px solid var(--hair); border-radius:5px; padding:.05em .35em; color:var(--accent-2)}
+
+  /* numbered procedure steps */
+  .steps{border-radius:16px; padding:16px 18px; margin:16px 0; background:var(--card);
+    box-shadow:0 0 0 6px var(--shell),0 0 0 6.5px var(--hair),var(--soft)}
+  .steps h5{margin:0 0 10px; font-size:.92rem; font-family:var(--sans); font-weight:600; letter-spacing:0; color:var(--accent-2)}
+  .steps ol{margin:0; padding:0; list-style:none; counter-reset:st}
+  .steps ol li{counter-increment:st; position:relative; padding-left:36px; margin:9px 0; font-size:.92rem; color:var(--ink-2)}
+  .steps ol li::before{content:counter(st); position:absolute; left:0; top:3px; width:23px; height:23px; border-radius:50%;
+    background:var(--accent-soft); color:var(--accent-2); font:600 .74rem/23px var(--disp); text-align:center}
+  .steps ol li b{color:var(--ink); font-weight:600}
+
+  /* diagrams */
+  .diagram-wrap{margin:18px 0; max-width:var(--readw)}
+  .diagram-wrap h5{margin:0 0 8px; font-size:.92rem; font-family:var(--sans); font-weight:600; letter-spacing:0; color:var(--accent-2)}
+  .diagram-wrap svg{display:block; width:100%; height:auto; background:var(--shell);
+    border:1px solid var(--hair); border-radius:12px; padding:8px}
+  .dg-box{fill:var(--card); stroke:var(--line); stroke-width:1.2}
+  .dg-if{stroke:var(--accent)}
+  .dg-lbl{fill:var(--ink); font-size:12px; font-weight:600; text-anchor:middle; font-family:var(--sans)}
+  .dg-st{fill:var(--accent-2); font-size:10px; text-anchor:middle}
+  .dg-line{stroke:var(--muted); stroke-width:1.4; fill:none}
+  .dg-dash{stroke-dasharray:5 4}
+  .dg-el{fill:var(--ink-2); font-size:10.5px; text-anchor:middle}
+  .dg-note{fill:var(--muted); font-size:11px; font-style:italic; text-anchor:middle}
+  .dg-legend{font-size:.78rem; color:var(--muted); margin-top:8px}
+
+  /* code blocks */
+  .code-wrap{margin-top:16px; border:1px solid var(--hair); border-radius:14px; overflow:hidden; background:var(--shell)}
+  .code-tabs{display:flex; align-items:center; gap:0; background:var(--bg-2); border-bottom:1px solid var(--hair)}
+  .code-tabs .lbl{margin-right:auto; padding:10px 16px; font:500 .78rem/1 var(--sans); color:var(--muted)}
+  .code-tabs .tab{background:transparent; border:none; color:var(--muted); padding:10px 18px; font:600 .82rem/1 var(--sans);
+    cursor:pointer; border-bottom:2px solid transparent; transition:color .3s var(--ease), border-color .3s var(--ease)}
+  .code-tabs .tab:hover{color:var(--ink)}
+  .code-tabs .tab.active{color:var(--ink); border-bottom-color:var(--accent)}
+  pre{margin:0; background:var(--shell); padding:16px 18px; overflow-x:auto; font-size:.82rem; line-height:1.65}
+  pre code{font-family:var(--mono); color:var(--code-ink); white-space:pre}
+  pre.hidden{display:none}
+  .kw{color:var(--kw); font-weight:600} .ty{color:var(--ty)} .st{color:var(--st)} .cm{color:var(--cm); font-style:italic}
+
+  .learn{display:inline-flex; align-items:center; gap:10px; margin-top:20px; font-size:.9rem;
+    color:var(--muted); cursor:pointer; user-select:none}
+  .learn input{accent-color:var(--accent); width:16px; height:16px; cursor:pointer}
+
+  /* equivalence-partition demo */
+  .demo{border-radius:16px; padding:20px 22px; margin:22px 0; max-width:var(--readw); background:var(--card);
+    box-shadow:0 0 0 6px var(--shell),0 0 0 6.5px var(--hair),var(--soft)}
+  .demo h4{margin:0 0 6px; font-size:1rem; font-family:var(--sans); font-weight:600; color:var(--ink)}
+  .demo .spec{font-size:.9rem; color:var(--muted); margin:0 0 14px}
+  .demo-row{display:flex; gap:10px; flex-wrap:wrap; align-items:center}
+  .demo input[type=text]{width:min(220px,100%); padding:10px 16px; border-radius:999px; border:1px solid var(--hair);
+    background:#fff; color:var(--ink); font:500 .95rem/1 var(--mono); outline:none; transition:border-color .3s var(--ease)}
+  .demo input[type=text]:focus{border-color:var(--accent)}
+  .demo .try{display:flex; gap:6px; flex-wrap:wrap}
+  .demo .try button{background:#fff; border:1px solid var(--hair); color:var(--ink-2); border-radius:999px;
+    padding:7px 13px; font:500 .82rem/1 var(--mono); cursor:pointer; transition:border-color .3s var(--ease), transform .3s var(--ease)}
+  .demo .try button:hover{border-color:var(--ink); transform:translateY(-1px)}
+  .demo-out{margin-top:14px; border-radius:12px; padding:14px 16px; font-size:.92rem; background:var(--bg-2); color:var(--ink-2)}
+  .demo-out b{font-weight:600}
+  .demo-out.ok{background:var(--accent-soft); }
+  .demo-out.ng{background:rgba(176,74,62,.08)}
+  .demo-out .pl{display:inline-block; font:600 .72rem/1 var(--disp); letter-spacing:.05em; padding:4px 10px; border-radius:999px; margin-right:8px}
+  .demo-out.ok .pl{background:var(--accent); color:#fff}
+  .demo-out.ng .pl{background:var(--bad); color:#fff}
+  .demo-out .bd{display:inline-block; font:600 .72rem/1 var(--disp); letter-spacing:.05em; padding:4px 10px; border-radius:999px; margin-right:8px; background:rgba(138,109,59,.15); color:var(--warn)}
+
+  /* quiz */
+  .quiz-q{border-radius:16px; padding:18px 20px; margin:16px 0; max-width:var(--readw); background:var(--card);
+    box-shadow:0 0 0 6px var(--shell),0 0 0 6.5px var(--hair),var(--soft)}
+  .qtext{margin:0 0 12px; font-weight:600; color:var(--ink)}
+  .qopts{display:flex; flex-wrap:wrap; gap:8px}
+  .qopts button{background:#fff; border:1px solid var(--hair); color:var(--ink); border-radius:999px;
+    padding:9px 16px; font:500 .88rem/1 var(--sans); cursor:pointer; transition:border-color .3s var(--ease), transform .3s var(--ease)}
+  .qopts button:hover:not(:disabled){border-color:var(--ink); transform:translateY(-1px)}
+  .qopts button:disabled{cursor:default}
+  .qopts button.right{background:var(--accent-soft); color:var(--accent-2); border-color:var(--accent); font-weight:600}
+  .qopts button.wrong{background:rgba(176,74,62,.1); color:var(--bad); border-color:var(--bad)}
+  .qwhy{font-size:.9rem; color:var(--ink-2); margin:12px 0 0; padding-top:12px; border-top:1px solid var(--line)}
+  .qwhy b{color:var(--ink); font-weight:600}
+  .quiz-reset{margin-top:16px}
+  #quizScore{color:var(--muted); font-size:.92rem; font-weight:500}
+
+  /* footer */
+  footer{border-top:1px solid var(--line); padding:64px 0 46px; background:var(--bg)}
+  footer h3{font-size:.72rem; font-weight:600; letter-spacing:.12em; text-transform:uppercase; color:var(--muted); margin:0 0 1em; font-family:var(--disp)}
+  .foot-grid{display:grid; grid-template-columns:1.4fr 1fr 1fr; gap:44px}
+  .cite{font-size:.98rem; color:var(--ink-2); line-height:1.7; max-width:56ch; margin-bottom:36px}
+  .muted-s{color:var(--muted); font-size:.9rem; line-height:1.75}
+  .muted-s b{color:var(--ink); font-weight:600}
+  .foot-rule{height:1px; background:var(--line); margin:44px 0 20px}
+  .foot-note{color:var(--muted); font-size:.82rem}
+  @media(max-width:760px){.foot-grid{grid-template-columns:1fr 1fr}}
+  @media(max-width:560px){.foot-grid{grid-template-columns:1fr}}
+
+  @media(max-width:860px){
+    section{padding:72px 0}
+    .hero .wrap{padding-top:52px; padding-bottom:56px}
+    .wrap{padding:0 24px}
+    .grid2,.meta-row{grid-template-columns:1fr}
+    .ptags{flex-basis:100%; margin-left:0; justify-content:flex-start}
+    .pcard-head{flex-wrap:wrap}
+  }
+  @media(max-width:640px){
+    .bar-right .btn:not(.ink):not(.jp-toggle){display:none}
+    .brand{font-size:.82rem}
+    .controls{align-items:flex-start; flex-direction:column}
+    .qopts button{flex:1 1 44%}
+  }
+
+  /* JP-only teaching page: fill content width for body text & boxes */
+  .lead,
+  .prose,
+  .callout,
+  .principles,
+  .cmp-table,
+  .diagram-wrap,
+  .demo{max-width:none !important}
+  /* ==================== NAV SYSTEM v4 (NAV_SPEC A-F) ==================== */
+  .navlinks{display:flex; gap:4px; align-items:center}
+  .navlinks .navgroup{position:relative; display:flex}
+  .navlinks .navtop{display:inline-flex; align-items:center; gap:7px; font-size:.86rem; font-weight:500;
+    color:var(--ink-2); padding:8px 13px; border-radius:999px; white-space:nowrap;
+    transition:color .3s var(--ease), background .3s var(--ease)}
+  .navlinks .navtop:hover{color:var(--ink)}
+  .navlinks .navgroup:hover .navtop,.navlinks .navgroup:focus-within .navtop{color:var(--ink); background:var(--bg-2)}
+  .navlinks .navtop.on{color:var(--ink)}
+  .navlinks .navtop.on::before{content:""; flex:0 0 auto; width:6px; height:6px; border-radius:50%; background:var(--accent)}
+  .navlinks .navpanel{position:absolute; top:100%; left:50%; margin-top:9px; min-width:238px; padding:10px;
+    transform:translateX(-50%) translateY(6px); text-align:left;
+    background:var(--card); border:1px solid var(--hair); border-radius:16px; box-shadow:var(--soft);
+    opacity:0; visibility:hidden; pointer-events:none;
+    transition:opacity .25s var(--ease), transform .25s var(--ease), visibility 0s linear .25s; z-index:5}
+  .navlinks .navpanel::before{content:""; position:absolute; top:-13px; left:0; right:0; height:14px}
+  .navlinks .navgroup:hover .navpanel,.navlinks .navgroup:focus-within .navpanel{
+    opacity:1; visibility:visible; pointer-events:auto; transform:translateX(-50%) translateY(0);
+    transition:opacity .25s var(--ease), transform .25s var(--ease), visibility 0s linear 0s}
+  .navlinks .navgroup.collapsed .navpanel{opacity:0; visibility:hidden; pointer-events:none}
+  .navlinks .navpanel a{display:flex; align-items:center; gap:9px; padding:9px 12px; border-radius:11px;
+    font-size:.85rem; font-weight:500; color:var(--ink-2); white-space:nowrap;
+    transition:background .25s var(--ease), color .25s var(--ease)}
+  .navlinks .navpanel a:hover{background:var(--accent-soft); color:var(--ink)}
+  .navlinks .navpanel a.here{background:var(--accent-soft); color:var(--ink)}
+  .navlinks .navpanel a.here::before{content:""; flex:0 0 auto; width:6px; height:6px; border-radius:50%; background:var(--accent)}
+  .navlinks .navlabel{padding:8px 12px 3px; font:600 .6rem/1 var(--disp); letter-spacing:.13em;
+    text-transform:uppercase; color:var(--muted)}
+  .navlinks .navpanel hr.navdiv{border:0; border-top:1px solid var(--line); margin:8px 6px}
+
+  .lswitch{display:inline-flex; align-items:center; gap:2px; padding:3px; border-radius:999px;
+    border:1px solid var(--hair); background:#fff}
+  .lswitch button{appearance:none; -webkit-appearance:none; border:0; background:transparent; cursor:pointer;
+    font:600 .78rem/1 var(--disp); letter-spacing:.03em; color:var(--ink-2); padding:8px 13px; border-radius:999px;
+    transition:background .3s var(--ease), color .3s var(--ease)}
+  .lswitch button:hover{color:var(--ink)}
+  body.lang-ja .lswitch .ls-ja,body.lang-en .lswitch .ls-en{background:var(--ink); color:#fff}
+
+  .navtoggle{display:none; position:relative; width:42px; height:42px; flex:0 0 auto;
+    border-radius:999px; border:1px solid var(--hair); background:#fff; cursor:pointer; padding:0}
+  .navtoggle span{position:absolute; left:11px; right:11px; height:2px; background:var(--ink); border-radius:2px;
+    transition:transform .35s var(--ease), opacity .2s var(--ease)}
+  .navtoggle span:nth-child(1){top:15px}
+  .navtoggle span:nth-child(2){top:20px}
+  .navtoggle span:nth-child(3){top:25px}
+  body.navopen .navtoggle span:nth-child(1){transform:translateY(5px) rotate(45deg)}
+  body.navopen .navtoggle span:nth-child(2){opacity:0}
+  body.navopen .navtoggle span:nth-child(3){transform:translateY(-5px) rotate(-45deg)}
+
+  .mobnav{position:fixed; inset:0; z-index:80; display:flex; flex-direction:column; overflow-y:auto;
+    background:rgba(251,252,251,.9); -webkit-backdrop-filter:saturate(1.2) blur(24px); backdrop-filter:saturate(1.2) blur(24px);
+    opacity:0; visibility:hidden; pointer-events:none;
+    transition:opacity .35s var(--ease), visibility 0s linear .35s}
+  body.navopen .mobnav{opacity:1; visibility:visible; pointer-events:auto; transition:opacity .35s var(--ease), visibility 0s linear 0s}
+  body.navopen{overflow:hidden}
+  body.navopen header.bar{z-index:90}
+  .mobnav-inner{width:100%; max-width:600px; margin:0 auto; padding:104px 28px 64px;
+    display:flex; flex-direction:column; gap:24px}
+  .mobgroup{display:flex; flex-direction:column; gap:1px}
+  .moblabel{font:600 .64rem/1 var(--disp); letter-spacing:.14em; text-transform:uppercase; color:var(--muted); margin-bottom:9px}
+  .mobgroup a{font-size:1.28rem; font-weight:500; color:var(--ink); padding:7px 0; line-height:1.24}
+  .mobgroup a:hover{color:var(--accent-2)}
+  .mobgroup a.here{color:var(--accent-2)}
+  .mobgroup a.here::before{content:""; display:inline-block; width:6px; height:6px; border-radius:50%;
+    background:var(--accent); margin-right:9px; vertical-align:middle}
+  .mobfoot{display:flex; align-items:center; justify-content:space-between; gap:16px; flex-wrap:wrap;
+    margin-top:6px; padding-top:22px; border-top:1px solid var(--line)}
+  .mobext{font-size:1rem; font-weight:500; color:var(--ink-2)}
+  .mobext:hover{color:var(--ink)}
+  .js .mobnav-inner > *{opacity:0; transform:translateY(12px);
+    transition:opacity .4s var(--ease), transform .4s var(--ease)}
+  body.navopen .mobnav-inner > *{opacity:1; transform:none}
+  body.navopen .mobnav-inner > *:nth-child(1){transition-delay:.04s}
+  body.navopen .mobnav-inner > *:nth-child(2){transition-delay:.08s}
+  body.navopen .mobnav-inner > *:nth-child(3){transition-delay:.12s}
+  body.navopen .mobnav-inner > *:nth-child(4){transition-delay:.16s}
+  body.navopen .mobnav-inner > *:nth-child(5){transition-delay:.20s}
+  body.navopen .mobnav-inner > *:nth-child(6){transition-delay:.24s}
+
+  /* E. breadcrumb */
+  .crumbs{display:flex; flex-wrap:wrap; align-items:center; gap:7px; margin:0;
+    font-size:.8rem; font-weight:500; color:var(--muted)}
+  .crumbs a{color:var(--muted)}
+  .crumbs a:hover{color:var(--ink)}
+  .crumbs .csep{color:var(--faint)}
+  .crumbs .cur{color:var(--ink)}
+
+  /* F. sticky TOC bar */
+  .tocbar{position:sticky; top:84px; z-index:40; margin:8px 0 0;
+    background:rgba(255,255,255,.82); -webkit-backdrop-filter:saturate(1.4) blur(14px); backdrop-filter:saturate(1.4) blur(14px);
+    border-top:1px solid var(--hair); border-bottom:1px solid var(--hair)}
+  .tocbar-inner{max-width:var(--maxw); margin:0 auto; padding:9px 40px; display:flex; gap:8px;
+    overflow-x:auto; scrollbar-width:none; -ms-overflow-style:none}
+  .tocbar-inner::-webkit-scrollbar{display:none}
+  .tocpill{flex:0 0 auto; display:inline-flex; align-items:center; gap:7px; padding:7px 14px; border-radius:999px;
+    font-size:.8rem; font-weight:500; color:var(--ink-2); border:1px solid transparent; white-space:nowrap;
+    transition:background .25s var(--ease), color .25s var(--ease), border-color .25s var(--ease)}
+  .tocpill:hover{color:var(--ink); border-color:var(--hair)}
+  .tocpill.on{background:var(--accent-soft); color:var(--ink)}
+  .tocpill.on::before{content:""; flex:0 0 auto; width:6px; height:6px; border-radius:50%; background:var(--accent)}
+  section[id]{scroll-margin-top:150px}
+
+  /* F. back to top */
+  .totop{position:fixed; right:22px; bottom:22px; z-index:55; width:46px; height:46px; border-radius:999px;
+    display:grid; place-items:center; background:#fff; border:1px solid var(--hair); box-shadow:var(--soft);
+    color:var(--ink); cursor:pointer; font-size:1.15rem; line-height:1;
+    opacity:0; transform:translateY(10px) scale(.9); pointer-events:none;
+    transition:opacity .35s var(--ease), transform .35s var(--ease)}
+  .totop.show{opacity:1; transform:none; pointer-events:auto}
+  .totop:hover{transform:translateY(-2px)}
+
+  @media(max-width:860px){
+    .navtoggle{display:block}
+    .navlinks{display:none}
+    .bar-right .btn{display:none}
+    .tocbar{top:76px}
+  }
+  @media(max-width:430px){
+    .bar-right .lswitch{display:none}
+  }
+  @media (prefers-reduced-motion:reduce){
+    .navlinks .navpanel,.navtoggle span,.mobnav,.js .mobnav-inner > *,.navtop,.lswitch button,.totop,.tocpill{transition-duration:.001ms !important}
+    .js .mobnav-inner > *{transition-delay:0s !important}
+    .navtoggle:hover,.totop:hover{transform:none !important}
+  }
+</style>
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[
+{"@type":"ListItem","position":1,"name":"ホーム","item":"https://ykimu.github.io/"},
+{"@type":"ListItem","position":2,"name":"教育","item":"https://ykimu.github.io/teaching.html"},
+{"@type":"ListItem","position":3,"name":"ソフトウェア工学","item":"https://ykimu.github.io/course/index.html"},
+{"@type":"ListItem","position":4,"name":"バージョン管理とCI/CD","item":"https://ykimu.github.io/course/version-control-cicd.html"}
+]}
+</script>
+</head>
+<body class="lang-ja">
+
+<a class="skip" href="#main"><span lang="ja">本文へスキップ</span><span lang="en">Skip to content</span></a>
+
+<header class="bar">
+  <div class="wrap">
+    <a class="brand" href="../index.html">
+      <span aria-hidden="true">&lsaquo;</span>
+      <span lang="ja">Yuta Kimura</span><span lang="en">Yuta Kimura</span>
+      <span class="sep">·</span><span lang="ja">木村祐太</span><span lang="en">Kimura</span>
+    </a>
+    <nav class="navlinks" aria-label="メイン">
+      <div class="navgroup">
+        <a class="navtop" href="../publications.html" aria-haspopup="true" aria-expanded="false"><span lang="ja">研究</span><span lang="en">Research</span></a>
+        <div class="navpanel">
+          <a href="../publications.html"><span lang="ja">業績・研究活動</span><span lang="en">Publications &amp; activity</span></a>
+          <a href="../research/technical-debt-metrics.html"><span lang="ja">技術的負債とメトリクス</span><span lang="en">Technical debt &amp; metrics</span></a>
+          <a href="../research/apr-coding-standards.html"><span lang="ja">自動生成パッチと規約</span><span lang="en">Auto-generated patches &amp; standards</span></a>
+          <a href="../research/td-repayment-refactoring.html"><span lang="ja">負債返済とリファクタリング</span><span lang="en">Debt repayment &amp; refactoring</span></a>
+          <a href="../research/satd-issue-classification.html"><span lang="ja">課題票の負債分類</span><span lang="en">Issue-ticket debt classification</span></a>
+        </div>
+      </div>
+      <div class="navgroup">
+        <a class="navtop on" href="../teaching.html" aria-haspopup="true" aria-expanded="false"><span lang="ja">教育</span><span lang="en">Teaching</span></a>
+        <div class="navpanel">
+          <div class="navlabel"><span lang="ja">科目</span><span lang="en">Courses</span></div>
+          <a href="../teaching.html"><span lang="ja">教育・担当授業</span><span lang="en">Teaching &amp; courses</span></a>
+          <a href="index.html"><span lang="ja">ソフトウェア工学</span><span lang="en">Software Engineering</span></a>
+          <a href="logic-circuits.html"><span lang="ja">論理回路1</span><span lang="en">Logic Circuits I</span></a>
+          <a href="intelligent-informatics-1.html"><span lang="ja">知能情報実験実習1</span><span lang="en">Intelligent Informatics Lab I</span></a>
+          <hr class="navdiv">
+          <div class="navlabel"><span lang="ja">教材</span><span lang="en">Materials</span></div>
+          <a href="design-patterns.html"><span lang="ja">デザインパターン学習ガイド</span><span lang="en">Design Patterns Guide</span></a>
+          <a href="software-architecture.html"><span lang="ja">アーキテクチャパターン大全</span><span lang="en">Software Architecture</span></a>
+          <a href="uml-guide.html"><span lang="ja">クラス図/シーケンス図ガイド</span><span lang="en">UML Diagram Guide</span></a>
+          <a href="software-testing.html"><span lang="ja">ソフトウェアテスト学習ガイド</span><span lang="en">Software Testing Guide</span></a>
+          <a href="agile-scrum.html"><span lang="ja">アジャイル開発とスクラム</span><span lang="en">Agile &amp; Scrum</span></a>
+          <a href="requirements-engineering.html"><span lang="ja">要求工学</span><span lang="en">Requirements Engineering</span></a>
+          <a href="software-evolution.html"><span lang="ja">ソフトウェア進化と技術的負債</span><span lang="en">Software Evolution</span></a>
+          <a href="software-reuse-oss.html"><span lang="ja">ソフトウェア再利用とOSS</span><span lang="en">Software Reuse &amp; OSS</span></a>
+          <a href="project-management.html"><span lang="ja">プロジェクト管理と見積もり</span><span lang="en">Project Management</span></a>
+          <a class="here" href="version-control-cicd.html" aria-current="page"><span lang="ja">バージョン管理とCI/CD</span><span lang="en">Version Control &amp; CI/CD</span></a>
+        </div>
+      </div>
+      <div class="navgroup">
+        <a class="navtop" href="../software-engineering.html" aria-haspopup="true" aria-expanded="false"><span lang="ja">ガイド</span><span lang="en">Guides</span></a>
+        <div class="navpanel">
+          <a href="../software-engineering.html"><span lang="ja">ソフトウェア工学とは</span><span lang="en">What is software engineering</span></a>
+          <a href="../technical-debt.html"><span lang="ja">技術的負債とは</span><span lang="en">What is technical debt</span></a>
+          <a href="../glossary.html"><span lang="ja">研究用語ミニ辞典</span><span lang="en">Research glossary</span></a>
+        </div>
+      </div>
+      <div class="navgroup">
+        <a class="navtop" href="../students.html"><span lang="ja">学生の皆さんへ</span><span lang="en">For Students</span></a>
+      </div>
+    </nav>
+    <div class="bar-right">
+      <a class="btn" href="https://researchmap.jp/kimura_yuta" target="_blank" rel="noopener">researchmap</a>
+      <div class="lswitch" role="group" aria-label="言語 / Language">
+        <button type="button" class="ls-ja" onclick="setLang('ja')" aria-pressed="true">JA</button>
+        <button type="button" class="ls-en" onclick="setLang('en')" aria-pressed="false">EN</button>
+      </div>
+      <button class="navtoggle" id="navToggle" type="button" aria-label="メニュー" aria-expanded="false" aria-controls="mobnav">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </div>
+</header>
+
+<div class="mobnav" id="mobnav" aria-hidden="true">
+  <div class="mobnav-inner">
+    <div class="mobgroup">
+      <div class="moblabel"><span lang="ja">研究</span><span lang="en">Research</span></div>
+      <a href="../publications.html"><span lang="ja">業績・研究活動</span><span lang="en">Publications &amp; activity</span></a>
+      <a href="../research/technical-debt-metrics.html"><span lang="ja">技術的負債とメトリクス</span><span lang="en">Technical debt &amp; metrics</span></a>
+      <a href="../research/apr-coding-standards.html"><span lang="ja">自動生成パッチと規約</span><span lang="en">Auto-generated patches &amp; standards</span></a>
+      <a href="../research/td-repayment-refactoring.html"><span lang="ja">負債返済とリファクタリング</span><span lang="en">Debt repayment &amp; refactoring</span></a>
+      <a href="../research/satd-issue-classification.html"><span lang="ja">課題票の負債分類</span><span lang="en">Issue-ticket debt classification</span></a>
+    </div>
+    <div class="mobgroup">
+      <div class="moblabel"><span lang="ja">教育</span><span lang="en">Teaching</span></div>
+      <a href="../teaching.html"><span lang="ja">教育・担当授業</span><span lang="en">Teaching &amp; courses</span></a>
+      <a href="index.html"><span lang="ja">ソフトウェア工学</span><span lang="en">Software Engineering</span></a>
+      <a href="logic-circuits.html"><span lang="ja">論理回路1</span><span lang="en">Logic Circuits I</span></a>
+      <a href="intelligent-informatics-1.html"><span lang="ja">知能情報実験実習1</span><span lang="en">Intelligent Informatics Lab I</span></a>
+      <a href="design-patterns.html"><span lang="ja">デザインパターン学習ガイド</span><span lang="en">Design Patterns Guide</span></a>
+      <a href="software-architecture.html"><span lang="ja">アーキテクチャパターン大全</span><span lang="en">Software Architecture</span></a>
+      <a href="uml-guide.html"><span lang="ja">クラス図/シーケンス図ガイド</span><span lang="en">UML Diagram Guide</span></a>
+      <a href="software-testing.html"><span lang="ja">ソフトウェアテスト学習ガイド</span><span lang="en">Software Testing Guide</span></a>
+      <a href="agile-scrum.html"><span lang="ja">アジャイル開発とスクラム</span><span lang="en">Agile &amp; Scrum</span></a>
+      <a href="requirements-engineering.html"><span lang="ja">要求工学</span><span lang="en">Requirements Engineering</span></a>
+      <a href="software-evolution.html"><span lang="ja">ソフトウェア進化と技術的負債</span><span lang="en">Software Evolution</span></a>
+      <a href="software-reuse-oss.html"><span lang="ja">ソフトウェア再利用とOSS</span><span lang="en">Software Reuse &amp; OSS</span></a>
+      <a href="project-management.html"><span lang="ja">プロジェクト管理と見積もり</span><span lang="en">Project Management</span></a>
+      <a class="here" href="version-control-cicd.html" aria-current="page"><span lang="ja">バージョン管理とCI/CD</span><span lang="en">Version Control &amp; CI/CD</span></a>
+    </div>
+    <div class="mobgroup">
+      <div class="moblabel"><span lang="ja">ガイド</span><span lang="en">Guides</span></div>
+      <a href="../software-engineering.html"><span lang="ja">ソフトウェア工学とは</span><span lang="en">What is software engineering</span></a>
+      <a href="../technical-debt.html"><span lang="ja">技術的負債とは</span><span lang="en">What is technical debt</span></a>
+      <a href="../glossary.html"><span lang="ja">研究用語ミニ辞典</span><span lang="en">Research glossary</span></a>
+    </div>
+    <div class="mobgroup">
+      <div class="moblabel"><span lang="ja">学生の皆さんへ</span><span lang="en">For Students</span></div>
+      <a href="../students.html"><span lang="ja">学生の皆さんへ</span><span lang="en">For Students</span></a>
+    </div>
+    <div class="mobfoot">
+      <a class="mobext" href="https://researchmap.jp/kimura_yuta" target="_blank" rel="noopener">researchmap</a>
+      <div class="lswitch" role="group" aria-label="言語 / Language">
+        <button type="button" class="ls-ja" onclick="setLang('ja')" aria-pressed="true">JA</button>
+        <button type="button" class="ls-en" onclick="setLang('en')" aria-pressed="false">EN</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<main id="main">
+
+<button class="totop" type="button" aria-label="上へ戻る" title="上へ戻る">&uarr;</button>
+
+<div class="wrap" style="padding-top:24px">
+  <nav class="crumbs" aria-label="パンくず">
+    <a href="../index.html"><span lang="ja">ホーム</span><span lang="en">Home</span></a>
+    <span class="csep" aria-hidden="true">&rsaquo;</span>
+    <a href="../teaching.html"><span lang="ja">教育</span><span lang="en">Teaching</span></a>
+    <span class="csep" aria-hidden="true">&rsaquo;</span>
+    <a href="index.html"><span lang="ja">ソフトウェア工学</span><span lang="en">Software Engineering</span></a>
+    <span class="csep" aria-hidden="true">&rsaquo;</span>
+    <span class="cur" aria-current="page"><span lang="ja">バージョン管理とCI/CD</span><span lang="en">Version Control &amp; CI/CD</span></span>
+  </nav>
+</div>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="wrap">
+    <p class="kick">Version Control &amp; CI/CD</p>
+    <h1>バージョン管理とCI/CD：<br>　<em style="white-space:nowrap">「変更」</em>を安全に、速く届ける技術</h1>
+    <p class="lead">ソフトウェアは一度作って終わりではなく、リリースされたあとも絶えず<strong>変更</strong>され続けます。複数人が同じコードを同時に書き換え、複数の版が世の中で同時に動く：その混乱を秩序に変えるのが<strong>構成管理（Configuration Management）</strong>です。この教材では、構成管理の4つの活動（バージョン管理・システム構築・変更管理・リリース管理）を骨格に、Gitのブランチとマージ、ブランチ戦略、プルリクエストとコードレビュー、継続的インテグレーション（CI）と継続的デリバリー（CD）、セマンティックバージョニング、そしてDevOpsとDORAメトリクスまで、<strong>目的・実施の仕方・意識するポイント・注意点</strong>つきで整理しました。体験デモ、理解度クイズ付きです。</p>
+    <p class="ja-note"><span lang="ja">この教材は日本語のみで提供しています</span><span lang="en">This learning material is available in Japanese only.</span></p>
+    <div class="hero-cta">
+      <a class="btn ink" href="#practices" style="padding:12px 22px">
+        <span lang="ja">プラクティスカタログへ</span><span lang="en">Jump to the practice catalog</span>
+      </a>
+      <a class="tlink" href="#quiz">
+        <span lang="ja">理解度クイズへ</span><span lang="en">Comprehension quiz</span>
+        <span class="ar" aria-hidden="true">&rsaquo;</span>
+      </a>
+    </div>
+  </div>
+</div>
+
+<!-- INTRO -->
+<div id="toTopSentinel" aria-hidden="true"></div>
+
+<div class="tocbar">
+  <nav class="tocbar-inner" aria-label="ページ内目次">
+    <a class="tocpill" href="#intro"><span lang="ja">はじめに</span><span lang="en">Intro</span></a>
+    <a class="tocpill" href="#practices"><span lang="ja">プラクティス</span><span lang="en">Practices</span></a>
+    <a class="tocpill" href="#versioning"><span lang="ja">バージョニング</span><span lang="en">Versioning</span></a>
+    <a class="tocpill" href="#quiz"><span lang="ja">理解度クイズ</span><span lang="en">Quiz</span></a>
+    <a class="tocpill" href="#closing"><span lang="ja">おわりに</span><span lang="en">Closing</span></a>
+  </nav>
+</div>
+
+<section id="intro" style="padding-top:20px">
+  <div class="wrap reveal">
+    <p class="eyebrow"><span lang="ja">はじめに</span><span lang="en">Introduction</span></p>
+    <h2 class="big"><span lang="ja">なぜ「変更の管理」が必要なのか</span><span lang="en">Why manage change?</span></h2>
+    <div class="prose" id="introProse" style="margin-top:22px"></div>
+  </div>
+</section>
+
+<!-- PRACTICE CATALOG -->
+<section class="soft-sec" id="practices" style="padding-top:80px">
+  <div class="wrap">
+    <p class="eyebrow reveal"><span lang="ja">プラクティスカタログ</span><span lang="en">Practice catalog</span></p>
+    <h2 class="big reveal"><span lang="ja">10のプラクティス・技術カタログ</span><span lang="en">Ten practices and technologies</span></h2>
+    <p class="lead reveal" style="max-width:var(--readw); margin-top:18px">構成管理の4活動を現代の道具立てに対応づけて、<strong>バージョン管理とチーム開発／システム構築とCI/CD／変更・リリース管理とDevOps</strong>の3カテゴリ・10枚のカードに整理しました。カテゴリで絞り込み、各カードをクリックすると、目的・実施の仕方・意識するポイント・注意点・具体例が開きます。</p>
+    <div class="controls reveal" style="margin-top:26px">
+      <div class="pills" role="tablist" aria-label="カテゴリ切替">
+        <button class="pill active" onclick="filterCat('all',this)">すべて<span>10</span></button>
+        <button class="pill" onclick="filterCat('vc',this)">バージョン管理とチーム開発<span>4</span></button>
+        <button class="pill" onclick="filterCat('auto',this)">システム構築とCI/CD<span>3</span></button>
+        <button class="pill" onclick="filterCat('mgmt',this)">変更・リリース管理とDevOps<span>3</span></button>
+      </div>
+      <div class="ctrl-right">
+        <input id="search" class="search" type="text" placeholder="名前・キーワードで絞り込み" aria-label="プラクティスを絞り込み">
+        <span class="learn-note" id="learnNote"></span>
+      </div>
+    </div>
+    <div id="practices-list"></div>
+  </div>
+</section>
+
+<!-- VERSIONING / DEMO -->
+<section id="versioning">
+  <div class="wrap">
+    <p class="eyebrow reveal"><span lang="ja">リリースの実践</span><span lang="en">Versioning in practice</span></p>
+    <h2 class="big reveal"><span lang="ja">バージョン番号は「約束」：semver を体験する</span><span lang="en">Version numbers are promises</span></h2>
+    <div class="prose reveal" id="techProse" style="margin-top:22px"></div>
+    <div class="demo reveal" id="svDemo">
+      <h4>体験デモ：セマンティックバージョニング判定</h4>
+      <p class="spec">現在のバージョンを入力し（初期値 <b>1.4.2</b>）、次のリリースに含まれる<b>いちばん大きな変更</b>をボタンで選ぶと、semver のルールに従って次のバージョン番号を判定します。</p>
+      <div class="demo-row">
+        <input type="text" id="svVer" value="1.4.2" inputmode="decimal" aria-label="現在のバージョン" oninput="svCalc()">
+        <div class="try" aria-label="変更の種類を選ぶ">
+          <button onclick="svBump('patch')">バグ修正のみ</button>
+          <button onclick="svBump('minor')">後方互換の機能追加</button>
+          <button onclick="svBump('major')">破壊的変更あり</button>
+        </div>
+      </div>
+      <div class="demo-out" id="svOut">上のボタンから「どんな変更をしたリリースか」を選んでください。バージョンを <b>0.9.1</b> などの 0 始まりに変えて試すと、開発初期版の扱いも学べます。</div>
+    </div>
+  </div>
+</section>
+
+<!-- QUIZ -->
+<section class="soft-sec" id="quiz" style="padding-top:80px">
+  <div class="wrap">
+    <p class="eyebrow reveal"><span lang="ja">理解度チェック</span><span lang="en">Check your understanding</span></p>
+    <h2 class="big reveal"><span lang="ja">理解度チェッククイズ</span><span lang="en">Comprehension quiz</span></h2>
+    <p class="lead reveal" style="max-width:var(--readw); margin-top:18px">それぞれの状況に<strong>もっとも適した用語・プラクティス</strong>を選んでください。<span id="quizScore"></span></p>
+    <div id="quizBody" class="reveal"></div>
+    <button class="btn ink quiz-reset" onclick="buildQuiz()" style="padding:11px 22px">
+      <span lang="ja">もう一度挑戦する</span><span lang="en">Try again</span>
+    </button>
+  </div>
+</section>
+
+<!-- CLOSING -->
+<section id="closing">
+  <div class="wrap reveal">
+    <p class="eyebrow"><span lang="ja">おわりに</span><span lang="en">In closing</span></p>
+    <h2 class="big"><span lang="ja">変更に向き合う心構えと、さらに学ぶために</span><span lang="en">How to think about change, and where to learn more</span></h2>
+    <div class="prose" id="closingProse" style="margin-top:22px"></div>
+  </div>
+</section>
+
+</main>
+
+<!-- FOOTER -->
+<footer>
+  <div class="wrap">
+    <div class="cite">
+      <span lang="ja">バージョン管理とCI/CD（構成管理・Git・継続的デリバリー・DevOps）の全体像を、これから学ぶ方向けにまとめた学習ガイドです。木村祐太のソフトウェア工学の授業教材の一部としてご覧いただけます。授業の詳細（評価方法・日程等）は最新のシラバスを確認してください。</span>
+      <span lang="en">A study guide to version control and CI/CD (configuration management, Git, continuous delivery, and DevOps), for those new to it. Part of Yuta Kimura's software engineering course materials. For course details such as assessment and schedule, please refer to the latest syllabus.</span>
+    </div>
+    <div class="foot-grid">
+      <div>
+        <h3><span lang="ja">連絡先</span><span lang="en">Contact</span></h3>
+        <p class="muted-s">
+          <b>木村 祐太 / Yuta Kimura</b><br>
+          <span lang="ja">大阪公立大学工業高等専門学校</span><span lang="en">Osaka Metropolitan University College of Technology</span><br>
+          <a href="mailto:y.kimura@omu.ac.jp">y.kimura [at] omu.ac.jp</a>
+        </p>
+      </div>
+      <div>
+        <h3><span lang="ja">サイト</span><span lang="en">Site</span></h3>
+        <p class="muted-s">
+          <a href="../index.html"><span lang="ja">ホーム</span><span lang="en">Home</span></a><br>
+          <a href="../publications.html"><span lang="ja">業績・研究活動</span><span lang="en">Publications &amp; research activities</span></a><br>
+          <a href="../teaching.html"><span lang="ja">教育</span><span lang="en">Teaching</span></a><br>
+          <a href="../software-engineering.html"><span lang="ja">ソフトウェア工学とは</span><span lang="en">What is software engineering?</span></a><br>
+          <a href="../technical-debt.html"><span lang="ja">技術的負債とは</span><span lang="en">What is technical debt?</span></a><br>
+          <a href="../students.html"><span lang="ja">学生の皆さんへ</span><span lang="en">For students</span></a><br>
+          <a href="../glossary.html"><span lang="ja">用語集</span><span lang="en">Glossary</span></a>
+        </p>
+      </div>
+      <div>
+        <h3><span lang="ja">研究</span><span lang="en">Research</span></h3>
+        <p class="muted-s">
+          <a href="../research/technical-debt-metrics.html"><span lang="ja">メトリクスによる分類・特徴づけ</span><span lang="en">Classifying debt with metrics</span></a><br>
+          <a href="../research/apr-coding-standards.html"><span lang="ja">自動生成パッチと品質</span><span lang="en">Auto-generated patches and quality</span></a><br>
+          <a href="../research/td-repayment-refactoring.html"><span lang="ja">返済とリファクタリング</span><span lang="en">Repayment and refactoring</span></a><br>
+          <a href="../research/satd-issue-classification.html"><span lang="ja">TD-Issue の自動分類</span><span lang="en">Automatic TD-Issue classification</span></a><br>
+          <a href="https://researchmap.jp/kimura_yuta" target="_blank" rel="noopener">researchmap</a>
+        </p>
+      </div>
+    </div>
+    <div class="foot-rule"></div>
+    <p class="foot-note">
+      <span lang="ja">© 2026 Yuta Kimura. 構成管理（バージョン管理・システム構築・変更管理・リリース管理）の解説は Ian Sommerville『Software Engineering (10th ed.)』第25章に基づく概説です。CI/CD・ブランチ戦略・DevOps メトリクスなど現代的なトピックの解説は、DORA の公開レポートおよび各分野の公開資料と実務慣行に基づきます。</span>
+      <span lang="en">© 2026 Yuta Kimura. This overview of configuration management follows Chapter 25 of Ian Sommerville, <i>Software Engineering</i> (10th ed.). Sections on modern topics (CI/CD, branching strategies, DevOps metrics, etc.) draw on DORA publications and publicly available industry sources.</span>
+    </p>
+  </div>
+</footer>
+<script>
+/* ============== コンテンツデータ ============== */
+const INTRO_HTML = `
+<p>「昨日まで動いていたのに、今日は動かない」「私のPCでは動くのに」「どのファイルが最新か分からない」「直したはずのバグが、次の版で復活した」：
+<strong>複数人</strong>で、<strong>長期間</strong>、<strong>複数の版</strong>を抱えて開発するソフトウェアでは、こうした混乱は放っておくと必ず起こります。
+第2回で学んだとおり、ソフトウェアは要求の変化とともに<strong>進化し続ける</strong>ものであり、変更そのものを止めることはできません（変更の不可避性）。
+だとすれば必要なのは、変更を<strong>安全に・速く・追跡可能に</strong>扱う仕組みです。
+それを体系化したのが<b>構成管理（Configuration Management, CM）</b>：変化し続けるソフトウェアシステムを管理するための方針・プロセス・ツールの総称です。</p>
+
+<h4>構成管理の4つの活動</h4>
+<p>Sommerville は構成管理を、互いに連携する<strong>4つの活動</strong>に整理しています。このページのカタログもこの4活動を骨格にしています。</p>
+<div class="principles">
+  <div class="p"><b>① バージョン管理（Version management）</b><br>
+    <span>コードと成果物の<strong>あらゆる版を記録</strong>し、複数開発者の並行作業がお互いを壊さないよう調停する。Git・リポジトリ・ブランチの世界。</span></div>
+  <div class="p"><b>② システム構築（System building）</b><br>
+    <span>ソースコード・ライブラリ・設定から、<strong>動くシステムを自動で組み立てる</strong>。ビルドツール・依存管理・コンテナの世界。</span></div>
+  <div class="p"><b>③ 変更管理（Change management）</b><br>
+    <span>顧客や開発者からの<strong>変更要求を記録・分析</strong>し、費用対効果で「やる／やらない」を判断して追跡する。Issue・チケットの世界。</span></div>
+  <div class="p"><b>④ リリース管理（Release management）</b><br>
+    <span>システムの特定の版を<strong>顧客に届く形に整えて世に出す</strong>。バージョン番号・チェンジログ・配布の世界。</span></div>
+</div>
+<div class="diagram-wrap">
+<svg viewBox="0 0 760 320" role="img" aria-label="構成管理の4つの活動とその関係">
+  <text x="380" y="26" class="dg-lbl">構成管理（CM）の4活動：互いに連携して「変更」を支える</text>
+  <rect x="50" y="50" width="300" height="86" rx="14" class="dg-box dg-if"/>
+  <text x="200" y="82" class="dg-lbl">バージョン管理</text>
+  <text x="200" y="99" class="dg-st">Version management</text>
+  <text x="200" y="119" class="dg-el">版の記録・並行作業の調停</text>
+  <rect x="410" y="50" width="300" height="86" rx="14" class="dg-box dg-if"/>
+  <text x="560" y="82" class="dg-lbl">システム構築</text>
+  <text x="560" y="99" class="dg-st">System building</text>
+  <text x="560" y="119" class="dg-el">ソースから動くシステムを組み立てる</text>
+  <rect x="50" y="196" width="300" height="86" rx="14" class="dg-box dg-if"/>
+  <text x="200" y="228" class="dg-lbl">変更管理</text>
+  <text x="200" y="245" class="dg-st">Change management</text>
+  <text x="200" y="265" class="dg-el">変更要求の判断と追跡</text>
+  <rect x="410" y="196" width="300" height="86" rx="14" class="dg-box dg-if"/>
+  <text x="560" y="228" class="dg-lbl">リリース管理</text>
+  <text x="560" y="245" class="dg-st">Release management</text>
+  <text x="560" y="265" class="dg-el">特定の版を世に出す</text>
+  <path d="M350 93 L406 93" class="dg-line" marker-end="url(#ahv)"/>
+  <path d="M200 192 L200 136" class="dg-line" marker-end="url(#ahv)"/>
+  <path d="M560 136 L560 192" class="dg-line dg-dash" marker-end="url(#ahv)"/>
+  <path d="M350 239 L406 239" class="dg-line" marker-end="url(#ahv)"/>
+  <text x="378" y="82" class="dg-el">版をビルド</text>
+  <text x="248" y="168" class="dg-el">承認された変更をコミット</text>
+  <text x="615" y="168" class="dg-el">ビルド成果物を配布</text>
+  <text x="378" y="228" class="dg-el">リリース対象を選ぶ</text>
+  <defs><marker id="ahv" markerWidth="9" markerHeight="9" refX="8" refY="4.5" orient="auto">
+    <path d="M0,0 L9,4.5 L0,9 z" fill="#6B746F"/></marker></defs>
+</svg>
+<div class="dg-legend">変更要求（変更管理）が承認されるとコミットされ（バージョン管理）、その版がビルドされ（システム構築）、選ばれた版が世に出る（リリース管理）。4活動はひとつの流れとして連携する。</div>
+</div>
+
+<h4>用語メモ：構成管理の基本語彙</h4>
+<div class="principles">
+  <div class="p"><b>リポジトリ（repository）</b><br>
+    <span>成果物とその<strong>全履歴</strong>を保管する保存庫。バージョン管理システムの中心。</span></div>
+  <div class="p"><b>コミット（commit）</b><br>
+    <span>「この時点の状態」を意味のある単位で履歴に<strong>記録</strong>する操作。誰が・いつ・何を・なぜ変えたかが残る。</span></div>
+  <div class="p"><b>メインライン／トランク</b><br>
+    <span>開発の<strong>本流</strong>となるコードライン（版の系列）。Git では <code>main</code> ブランチが担うことが多い。</span></div>
+  <div class="p"><b>ベースライン（baseline)</b><br>
+    <span>「この構成で確かに動く」と固定した<strong>基準点</strong>。コンポーネントの版の組合せを確定したもので、リリースの土台になる。</span></div>
+</div>
+
+<h4>手動リリースから DevOps へ：歴史の流れ</h4>
+<p>かつてソフトウェアの統合とリリースは、数か月に一度の「一大イベント」でした。
+別々に開発したコードを持ち寄って統合すると大量の不整合が噴き出す：いわゆる<strong>統合地獄（integration hell）</strong>です。
+第3回で学んだ XP（エクストリーム・プログラミング）は「痛いことほど頻繁にやれ」と発想を逆転させ、
+<strong>1日に何度もビルドし、全テストに合格したときだけ受け入れる</strong>という実践を打ち出しました。これが CI の原点です。</p>
+<div class="diagram-wrap">
+<svg viewBox="0 0 760 210" role="img" aria-label="手動リリースからDevOpsへの歴史的な流れ">
+  <rect x="20" y="45" width="160" height="88" rx="13" class="dg-box"/>
+  <text x="100" y="74" class="dg-lbl">手動の統合・リリース</text>
+  <text x="100" y="91" class="dg-st">〜1990年代</text>
+  <text x="100" y="111" class="dg-el">数か月ごとの統合地獄</text>
+  <rect x="212" y="45" width="160" height="88" rx="13" class="dg-box dg-if"/>
+  <text x="292" y="74" class="dg-lbl">CI</text>
+  <text x="292" y="91" class="dg-st">1990年代末〜</text>
+  <text x="292" y="111" class="dg-el">XP発。統合ごとに自動検証</text>
+  <rect x="404" y="45" width="160" height="88" rx="13" class="dg-box dg-if"/>
+  <text x="484" y="74" class="dg-lbl">CD</text>
+  <text x="484" y="91" class="dg-st">2010年〜</text>
+  <text x="484" y="111" class="dg-el">「いつでも出せる」を常態に</text>
+  <rect x="596" y="45" width="144" height="88" rx="13" class="dg-box dg-if"/>
+  <text x="668" y="74" class="dg-lbl">DevOps</text>
+  <text x="668" y="91" class="dg-st">2010年代〜</text>
+  <text x="668" y="111" class="dg-el">開発と運用の一体化・計測</text>
+  <path d="M180 89 L208 89" class="dg-line" marker-end="url(#ahh)"/>
+  <path d="M372 89 L400 89" class="dg-line" marker-end="url(#ahh)"/>
+  <path d="M564 89 L592 89" class="dg-line" marker-end="url(#ahh)"/>
+  <text x="380" y="168" class="dg-note">リリースの頻度：年単位 → 月単位 → 週単位 → 1日に何度でも。自動化と文化がそれを可能にした</text>
+  <defs><marker id="ahh" markerWidth="9" markerHeight="9" refX="8" refY="4.5" orient="auto">
+    <path d="M0,0 L9,4.5 L0,9 z" fill="#6B746F"/></marker></defs>
+</svg>
+</div>
+
+<div class="callout tip">
+  <h4>講義とのつながり</h4>
+  この単元は第2回（ソフトウェアプロセス：進化・変更への対処・インクリメンタルデリバリ）と
+  第3回（アジャイル開発：XP・継続的インテグレーション・スクラム）の続きにあたります。
+  アジャイルが「変化を受け入れる」<strong>心構え</strong>だとすれば、構成管理と CI/CD はそれを可能にする<strong>足腰</strong>です。
+  自動テスト（第8回で扱うソフトウェアテスト）とあわせて、三点セットで理解してください。
+</div>
+
+<p style="font-size:13px;color:var(--muted)">各カード末尾の「習得チェック」を付けると、絞り込みバー右側に習得の進捗が表示されます（保存はされず、ページを開いている間だけ保持されます）。
+一通り読んだら<a href="#quiz">理解度チェッククイズ</a>で定着を確認しましょう。</p>
+`;
+</script>
+<script>
+const TECH_HTML = `
+<p>リリース管理の実務でまず身につけたいのが<b>セマンティックバージョニング（Semantic Versioning, semver）</b>：
+バージョン番号を「ただの連番」ではなく<strong>互換性についての約束</strong>として使うルールです。
+番号は <code>MAJOR.MINOR.PATCH</code>（例：<code>1.4.2</code>）の3つの部分からなり、
+リリースに含まれる<strong>いちばん大きな変更</strong>に応じて、上げる桁が決まります。</p>
+<div class="principles">
+  <div class="p"><b>MAJOR（メジャー）を上げる</b><br>
+    <span><strong>後方互換性を壊す変更</strong>をしたとき。関数の削除・引数の変更など、利用者のコードが壊れる可能性がある。<code>1.4.2 → 2.0.0</code></span></div>
+  <div class="p"><b>MINOR（マイナー）を上げる</b><br>
+    <span><strong>後方互換な機能追加</strong>をしたとき。既存の使い方はそのまま動く。<code>1.4.2 → 1.5.0</code>（PATCH は 0 に戻す）</span></div>
+  <div class="p"><b>PATCH（パッチ）を上げる</b><br>
+    <span><strong>後方互換なバグ修正のみ</strong>のとき。APIは何も変わらない。<code>1.4.2 → 1.4.3</code></span></div>
+</div>
+<p>この約束があるからこそ、パッケージマネージャは「<code>^1.4.2</code>（1.x の範囲で最新）」のような
+<strong>互換範囲つきの依存指定</strong>ができ、利用者は安心して更新できます。
+逆に言えば、semver は<strong>信頼で成り立つ約束</strong>です。MINOR や PATCH のつもりのリリースで互換性を壊せば、
+世界中の利用者のビルドを壊すことになります（だからこそ、リリース前の回帰テストと CI が重要になります）。</p>
+<p>なお、MAJOR が <b>0</b> の間（<code>0.y.z</code>）は「開発初期版」を意味し、semver 上は<strong>いつ何が変わってもよい</strong>とされます。
+<code>1.0.0</code> を公開することが「ここから互換性の約束を守ります」という宣言になるのです。
+下のデモで、変更の種類とバージョン番号の対応を体感してみてください。</p>
+<div class="callout tip">
+  <h4>リリースノートとチェンジログも「約束」の一部</h4>
+  番号だけでは「何が変わったか」までは伝わりません。<strong>CHANGELOG</strong>（開発者向けの変更履歴）と
+  <strong>リリースノート</strong>（利用者向けの説明）をセットで書くのがリリース管理の作法です。
+  特に MAJOR リリースでは、<strong>何が壊れるか・どう移行するか</strong>を必ず案内します。
+  詳しくはカタログの<a href="#release-management">リリース管理とバージョニング</a>のカードへ。
+</div>
+`;
+
+const CLOSING_HTML = `
+<p>最後に、個々のプラクティスの知識を「使える判断力」に変えるための視点をまとめます。</p>
+<div class="callout warn">
+  <h4>「壊すな」ではなく「壊してもすぐ戻せるようにせよ」</h4>
+  変更が怖いからと変更を避ければ、ソフトウェアは要求とずれてゆき、静かに価値を失います（第2回：ソフトウェア進化）。
+  優れたチームは変更を減らすのではなく、<strong>バージョン管理・自動テスト・CI/CD・即時ロールバック</strong>という
+  安全網を整えることで、変更のコストとリスクを下げています。DORA の調査が示したのは、
+  「速さと安定性はトレードオフではなく、<strong>両立している所が強い</strong>」という事実でした。
+</div>
+<div class="callout tip">
+  <h4>履歴は未来の自分へのメッセージ</h4>
+  コミットメッセージ・PRの説明・Issue・CHANGELOG の読み手は、半年後のあなた自身と、まだ見ぬ後任者です。
+  「なぜこの変更をしたのか」が残っているリポジトリは、それ自体が最良のドキュメントになります。
+  卒業研究や課題のコードでも、今日から「意味のある単位でコミットし、理由を書く」習慣を始めましょう。
+</div>
+<div class="callout">
+  <h4>ツールの導入はゴールではない</h4>
+  GitHub Actions を設定しただけでは CI にはなりません。CI の本体は「全員が頻繁に統合し、壊れたら即直す」という
+  <strong>実践と文化</strong>であり、ツールはそれを支える道具です。DevOps も同様に、ツールチェーンの名前ではなく
+  <strong>開発と運用が責任を共有する文化</strong>の名前です。形から入るのは良い一歩ですが、形だけで終わらせないこと。
+</div>
+
+<h4 style="margin-top:26px">混同しやすい用語の見分け方</h4>
+<p>この単元は似た用語のペアが多く、試験でも実務でも繰り返し問われます。<strong>「何を」「どこまで」</strong>を意識して見分けましょう。</p>
+<table class="cmp-table">
+  <tr><th>似ている用語</th><th>見分けるポイント</th></tr>
+  <tr><td><b>集中型</b> と <b>分散型</b></td>
+    <td>完全な履歴を持つのが<b>中央サーバ1か所</b>（Subversion）か、<b>開発者全員の手元</b>（Git）か。分散型はオフラインでコミットでき、動作も速い。</td></tr>
+  <tr><td><b>コミット</b> と <b>プッシュ</b></td>
+    <td>コミットは<b>手元のリポジトリへの記録</b>、プッシュはその履歴を<b>リモートの共有リポジトリへ送る</b>操作。Git では2段階に分かれている。</td></tr>
+  <tr><td><b>マージ</b> と <b>リベース</b></td>
+    <td>どちらもブランチの合流。マージは<b>合流点（マージコミット）を残し</b>、リベースは<b>履歴を付け替えて一直線</b>にする。結果のコードは同じでも履歴の形が違う。公開済みブランチのリベースは原則禁止。</td></tr>
+  <tr><td><b>Git Flow</b> / <b>GitHub Flow</b> / <b>trunk-based</b></td>
+    <td>ブランチの<b>種類と寿命</b>が違う。Git Flow は develop・release など多層で複数版の並行保守向き。GitHub Flow は main＋短命ブランチ＋PR。trunk-based は<b>毎日本流へ統合</b>し未完成機能はフィーチャーフラグで隠す。</td></tr>
+  <tr><td><b>CI</b> と <b>CD</b></td>
+    <td>パイプラインを<b>どこまで伸ばすか</b>。CI は「統合ごとに自動ビルド＋テスト」まで。CD はさらに「本番に出せる状態（あるいは本番に出すこと）」まで自動化する。</td></tr>
+  <tr><td><b>継続的デリバリー</b> と <b>継続的デプロイ</b></td>
+    <td>本番への最後の一歩を<b>人が判断して押す</b>（デリバリー）か、<b>テスト合格で自動的に出る</b>（デプロイ）か。デリバリーは「いつでも出せる」、デプロイは「出続ける」。</td></tr>
+  <tr><td><b>デプロイ</b> と <b>リリース</b></td>
+    <td>デプロイは<b>コードを本番環境に置く</b>技術的行為、リリースは<b>機能をユーザに公開する</b>ビジネス的行為。フィーチャーフラグで分離でき、カナリアリリースの土台になる。</td></tr>
+  <tr><td><b>バージョン管理</b> と <b>変更管理</b></td>
+    <td>バージョン管理は変更の<b>記録と合流</b>（コミット・ブランチ）、変更管理は変更の<b>判断と追跡</b>（変更要求・Issue・CCB）。チケット番号とコミットの紐づけで両者がつながる。</td></tr>
+  <tr><td><b>タグ</b> と <b>ブランチ</b></td>
+    <td>どちらもコミットを指す名前だが、ブランチはコミットのたびに<b>先へ動くポインタ</b>、タグは特定のコミットに打つ<b>動かない印</b>（リリース地点 <code>v1.5.0</code> の記録に使う）。</td></tr>
+  <tr><td><b>ビルド</b> と <b>デプロイ</b></td>
+    <td>ビルドは<b>ソースから実行可能な成果物を作る</b>こと、デプロイは<b>その成果物を環境に配置して動かす</b>こと。「一度ビルドした成果物を各環境へ運ぶ」のが CD の原則。</td></tr>
+</table>
+
+<h4 style="margin-top:26px">研究者の視点：リポジトリは研究データの宝庫</h4>
+<div class="callout">
+  <h4>マイニングソフトウェアリポジトリ（MSR）</h4>
+  バージョン管理の履歴・Issue・プルリクエストには、「ソフトウェアがどう作られ、どう壊れ、どう直されたか」の記録が
+  すべて残っています。これを大規模に分析する<strong>リポジトリマイニング</strong>は、ソフトウェア工学の主要な研究手法になりました。
+  「どんなコミットがバグを生みやすいか」「技術的負債はどんな Issue として報告されるか」「レビューの何が品質を左右するか」：
+  みなさんが今日から書くコミットメッセージも、未来の研究データかもしれません。
+  DORA の State of DevOps Report のような大規模調査も、この「開発をデータで理解する」流れの一部です。
+</div>
+
+<h4 style="margin-top:26px">さらに学ぶための文献・資料</h4>
+<ul>
+  <li>I. Sommerville『Software Engineering (10th ed.)』Pearson, 2016年, 第25章（Configuration Management）：本教材の底本</li>
+  <li>J. Humble, D. Farley『継続的デリバリー』KADOKAWA／アスキードワンゴ, 2017年（原著 2010年）：CDの原典</li>
+  <li>N. Forsgren, J. Humble, G. Kim『LeanとDevOpsの科学』インプレス, 2018年：DORA研究の書籍化。Four Keys の理論的背景</li>
+  <li>S. Chacon, B. Straub『Pro Git（第2版）』：<a href="https://git-scm.com/book/ja/v2" target="_blank" rel="noopener">git-scm.com で日本語版が無料公開</a>。Gitの仕組みを深く知る定番</li>
+  <li><a href="https://dora.dev/" target="_blank" rel="noopener">DORA（dora.dev）</a>：State of DevOps Report と能力カタログ。自チームの診断（Quick Check）もできる</li>
+  <li><a href="https://semver.org/lang/ja/" target="_blank" rel="noopener">セマンティックバージョニング 2.0.0（semver.org）</a>：仕様の原文（日本語訳あり）</li>
+  <li><a href="https://martinfowler.com/articles/continuousIntegration.html" target="_blank" rel="noopener">M. Fowler「Continuous Integration」</a>：CIの古典的解説（2023年改訂）</li>
+  <li><a href="https://trunkbaseddevelopment.com/" target="_blank" rel="noopener">trunkbaseddevelopment.com</a>：trunk-based development の実践パターン集</li>
+</ul>
+`;
+</script>
+<script>
+/* ============== プラクティスデータ（カテゴリ別） ============== */
+const CAT_ORDER = ['vc','auto','mgmt'];
+const CAT_META = {
+  vc:{ label:'バージョン管理とチーム開発', en:'Version control & collaboration', color:'var(--vc)',
+    desc:'コードと成果物のあらゆる版を記録し、複数人の並行作業を衝突なく合流させるための土台。Gitの仕組みそのものから、チームとしての運用ルール（ブランチ戦略・レビュー）までを扱う。構成管理4活動の「バージョン管理」に対応。'},
+  auto:{ label:'システム構築とCI/CD', en:'System building & CI/CD', color:'var(--auto)',
+    desc:'ソースコードから動くシステムを組み立て（ビルド）、テストし、本番環境まで届ける流れを自動化する活動。構成管理4活動の「システム構築」を土台に、現代の開発の生産性と品質を支えるエンジンルーム。'},
+  mgmt:{ label:'変更・リリース管理とDevOps', en:'Change, release & DevOps', color:'var(--mgmt)',
+    desc:'「どの変更を・いつ・どんな形で届けるか」を管理するプロセスの側面。変更要求の判断と追跡、バージョン番号とリリースノート、そして開発と運用を一体化するDevOpsとその計測（DORA）まで。'}
+};
+const BADGE_CLS = {'基礎技術':'imp3','チームの実践':'imp2','自動化の要':'imp2','プロセス管理':'imp1','文化と計測':'imp1'};
+
+const PRACTICES = [
+/* ---------- バージョン管理とチーム開発 ---------- */
+{
+  id:'vcs-basics', name:'Version Control Basics', jp:'バージョン管理の基本モデル（集中型と分散型）', cat:'vc',
+  badge:'基礎技術', tags:['リポジトリ','Git / Subversion','すべての土台'],
+  summary:'すべての成果物の版（バージョン）を<strong>リポジトリ</strong>に記録し、「いつ・誰が・何を・なぜ」変えたかを永久にたどれるようにする、構成管理の土台。',
+  analogy:'「レポート_最終_修正版_v2(2).docx」とファイルを増殖させる代わりに、変更のたびに日付とメモ付きで自動記録され、いつでも過去のどの版にも戻れる「タイムマシン付きの保存庫」。しかも誰がどこを変えたかまで分かる。',
+  purpose:'変更の履歴を完全に記録し、①過去の任意の版の復元、②複数人の並行作業の調停、③「どの変更で問題が入ったか」の特定を可能にする。これがないチーム開発は、命綱なしの綱渡りに等しい。',
+  who:'開発者全員が毎日使う。1人での開発・卒業研究でも必須（履歴・バックアップ・実験の安全網として働く）。',
+  steps:[
+    'リポジトリを作る（<code>git init</code>）か、既存のものを複製する（<code>git clone</code>）',
+    '作業ディレクトリでファイルを編集する',
+    '意味のある単位で変更を選び（ステージング）、<b>メッセージ付きでコミット</b>する',
+    '<code>push</code> で自分の履歴を共有リポジトリへ送り、<code>pull</code> で仲間の変更を取り込む',
+    '<code>log</code> や <code>diff</code> で「いつ・誰が・何を・なぜ」を追跡する'
+  ],
+  points:[
+    '<b>集中型と分散型の違い</b>を押さえる：集中型（Subversion）は完全な履歴が中央サーバに1つ。分散型（Git）は<b>全員が履歴ごと完全な複製</b>を持つ',
+    '分散型の利点：オフラインでもコミット・履歴参照ができ、操作が高速。サーバ障害にも強い（誰かの手元に完全な複製がある）',
+    'コミットは<b>意味のある1つの変更</b>単位で。「なぜ」をメッセージに書く（Issue番号を添える）',
+    'コードだけでなく<b>ドキュメント・設定ファイル・インフラ定義</b>も管理対象にする（構成管理の発想）'
+  ],
+  cautions:[
+    '<b>パスワード・APIキーを絶対にコミットしない</b>：履歴は消えないのが売りなので、漏れた秘密を履歴から消すのは大仕事。漏えい検知サービスが常時クロールしている',
+    '巨大なバイナリファイル（動画・データセット）は履歴を肥大化させる：Git LFS などの専用機構を使う',
+    '「動いたから全部まとめてコミット」は履歴を無意味にする：あとで原因を探すとき、巨大コミットは分割できない'
+  ],
+  examples:[
+    '<b>Git</b>：2005年に Linus Torvalds が Linux カーネル開発のために作った分散型VCS。Stack Overflow の開発者調査では回答者の9割以上が使用と、事実上の標準',
+    '<b>Subversion（SVN）</b>：集中型の代表。2000年代の主流で、今も企業内システムで現役',
+    '<b>GitHub / GitLab / Bitbucket</b>：Git リポジトリのホスティングサービス。レビュー・CI・課題管理まで統合したプラットフォームに成長'
+  ],
+  related:'<b>変更管理</b>との違い：バージョン管理は変更の「記録と合流」の仕組み、変更管理は変更を「受け入れるかどうか判断し追跡する」プロセス。両者はチケット番号⇔コミットの紐づけでつながる。',
+  modern:'現在は Git がほぼ一強で、「バージョン管理＝Git」の時代。GitHub などのホスティングがプルリクエスト・CI・Issue を統合し、開発の中心基盤になった。Google や Meta は数億行を単一リポジトリで管理する「モノレポ」という大規模運用も行っている。',
+  hasCode:false
+},
+{
+  id:'git-branching', name:'Branching & Merging', jp:'Gitのブランチとマージ', cat:'vc',
+  badge:'基礎技術', tags:['ブランチ','コンフリクト','rebase'],
+  summary:'開発の流れを<strong>枝分かれ（ブランチ）</strong>させて安全に並行作業し、あとで<strong>合流（マージ）</strong>させる、Gitの中核機能。コンフリクトの解決までがワンセット。',
+  analogy:'執筆中の小説のコピーを作って別の結末を試し、良ければ本編に取り込むイメージ。ただし Git のブランチは「コピー」ではなく「しおり（ポインタ）」なので、作るのは一瞬・何本作ってもタダ同然。',
+  purpose:'本流（main）を常に動く状態に保ちながら、機能追加・実験・バグ修正を隔離して進める。複数人の変更を、秩序立てて・履歴を保ったまま合流させる。',
+  who:'開発者全員。ブランチを作る→コミットを重ねる→合流する、が日々の基本動作になる。',
+  steps:[
+    '<code>git switch -c feature/login</code> で作業用ブランチを作って切り替える',
+    'ブランチ上でコミットを重ねる（本流には影響しない）',
+    '合流前に本流の最新を取り込む（<code>merge</code> または <code>rebase</code>）',
+    '<b>コンフリクト</b>が出たら、衝突箇所を人間が意味を確認して編集し、解決をコミットする',
+    '本流へマージし、役目を終えたブランチは削除する'
+  ],
+  points:[
+    'ブランチの実体は<b>コミットを指す軽量なポインタ</b>：だから作成も切替も一瞬（Subversion時代の重いブランチとの最大の違い）',
+    'マージは<b>共通の祖先・自分・相手の3点</b>を比べて自動合成される（3方向マージ）。同じ箇所を双方が変えたときだけコンフリクトになる',
+    '<b>rebase は履歴の付け替え</b>：マージコミットを作らず一直線のきれいな履歴になるが、コミットが作り直される',
+    '鉄則：<b>公開済み（push済み）のブランチを rebase しない</b>：他人の持つ履歴と食い違い、大混乱を招く'
+  ],
+  cautions:[
+    '<b>長生きするブランチほどコンフリクトは深刻化</b>する：「マージ地獄」を避ける最善策は、こまめな統合（ブランチ戦略のカードへ）',
+    'コンフリクト解決は「どちらかを機械的に選ぶ」作業ではない：<b>両方の変更の意図</b>を理解して、正しい姿を書く。解決後はテストで確認',
+    '<code>git push --force</code> は共有ブランチでは原則禁止：仲間のコミットを消し飛ばす事故のもと（使うなら <code>--force-with-lease</code>）'
+  ],
+  examples:[
+    'Linux カーネル：世界中の数千人の開発者の変更が、ブランチとマージの仕組みで日々統合されている',
+    'GitHub のマージボタンには「Merge / Squash and merge / Rebase and merge」の3方式があり、チームの履歴の好みで選ぶ',
+    '演習：わざと同じ行を2つのブランチで変えてマージし、コンフリクトマーカー（<code>&lt;&lt;&lt;&lt;&lt;&lt;&lt;</code>）を実際に見てみる（下のコード例）'
+  ],
+  related:'<b>マージ vs リベース</b>：合流結果のコードは同じで、履歴の形が違う。マージは「事実の記録」（合流点が残る）、リベースは「履歴の整形」（一直線）。チームの方針に従う。',
+  modern:'VS Code などエディタ内蔵のGit機能とコンフリクト解決UIが充実。GitHub では履歴を1コミットに畳む squash merge が人気。AI コーディング支援によるコンフリクト解決の提案も実用化されつつあるが、「意図の確認」は依然として人間の仕事。',
+  hasCode:true
+},
+{
+  id:'branching-strategies', name:'Branching Strategies', jp:'ブランチ戦略（Git Flow / GitHub Flow / trunk-based）', cat:'vc',
+  badge:'チームの実践', tags:['Git Flow','GitHub Flow','trunk-based'],
+  summary:'「どんなブランチを作り、いつ本流へ合流させるか」という<strong>チームの取り決め</strong>。Git Flow・GitHub Flow・trunk-based development が3大流派で、近年の主流は短命ブランチ＋頻繁な統合。',
+  analogy:'道路の交通ルール。車（変更）が多い交差点（リポジトリ）では、信号や通行ルール（戦略）を決めておかないと衝突（コンフリクト）だらけになる。ルールは交通量と道路の形（チーム規模・リリース形態）に合わせて選ぶもの。',
+  purpose:'並行開発の秩序を保ち、リリースの流れを予測可能にする。統合の頻度をコントロールすることで、コンフリクトの規模と「統合の痛み」を管理する。',
+  who:'チーム全員で合意して運用する。リポジトリの保護ルール（branch protection）として設定に落とし込むのが定石。',
+  steps:[
+    'プロダクトのリリース形態を確認する（Webサービスで常時デプロイか、複数バージョンを並行保守するパッケージ製品か）',
+    'チーム規模・テスト自動化の成熟度をふまえて戦略を選ぶ',
+    'ブランチの命名規則と保護ルール（mainへの直push禁止・CI合格必須など）を設定する',
+    'CI/CD パイプラインと接続する（どのブランチで何が走るか）',
+    '運用しながら見直す：ブランチの寿命とコンフリクト頻度が健全さのシグナル'
+  ],
+  points:[
+    '<b>Git Flow</b>（2010, Vincent Driessen）：develop・feature・release・hotfix と役割別の多層ブランチ。<b>複数バージョンの並行保守</b>が要る製品に向くが、統合が遅く複雑',
+    '<b>GitHub Flow</b>：main＋短命の作業ブランチ＋プルリクエストだけのシンプルな流儀。<b>常時デプロイするWebサービス</b>向き',
+    '<b>trunk-based development</b>：全員が<b>毎日（数日以内に）trunk＝main へ統合</b>。未完成の機能はフィーチャーフラグで隠して先にマージする',
+    'DORA の調査は、trunk-based（短命ブランチ・頻繁な統合）が<b>高いデリバリーパフォーマンスと相関</b>することを繰り返し報告している'
+  ],
+  cautions:[
+    'Git Flow の考案者自身が2020年に「Webアプリなら GitHub Flow のようなシンプルな流儀を検討せよ」と原記事に追記した：<b>戦略は文脈依存</b>で、盲目的なコピペ導入が最大の失敗',
+    'trunk-based は<b>テスト自動化とフィーチャーフラグ運用が前提</b>：CIが未整備のまま真似ると、壊れた main を全員が引き当てる',
+    'フィーチャーフラグは便利だが<b>消し忘れると技術的負債</b>になる：フラグの棚卸しをルール化する'
+  ],
+  examples:[
+    'Google・Meta は trunk-based＋モノレポの代表例。数千人が同じ本流に日々コミットする',
+    'フィーチャーフラグ基盤：LaunchDarkly、OSSの Unleash など。「デプロイと公開の分離」を実現する道具',
+    '年1〜2回リリースの組込み・パッケージ製品では、release ブランチを持つ Git Flow 系が今も現役'
+  ],
+  related:'<b>GitHub Flow と trunk-based</b> は「短命ブランチ＋頻繁統合」という点で近い親戚。違いは統合の頻度の目安（trunk-based は1日単位を明示）とフラグ活用の徹底度。',
+  modern:'近年の主流は明確に<b>短命ブランチ＋頻繁統合（trunk-based / GitHub Flow 系）＋フィーチャーフラグ</b>。Atlassian・DORA とも、継続的デリバリーの前提条件として trunk-based を挙げる。Git Flow は「複数版の並行保守」という条件つきで選ばれる戦略になった。',
+  hasCode:false
+},
+{
+  id:'pull-requests', name:'Pull Requests & Code Review', jp:'プルリクエストとコードレビュー', cat:'vc',
+  badge:'チームの実践', tags:['PR','レビュー文化','小さく出す'],
+  summary:'変更を本流に取り込む前に「取り込んでください」と<strong>プルリクエスト（PR）</strong>を出し、別の開発者が<strong>レビュー</strong>してからマージする、現代のチーム開発の標準プロセス。',
+  analogy:'新聞記事が紙面に載る前に必ずデスク（校閲）を通る仕組み。書いた本人には決して見えない誤りを、別の目が「刷り上がる前に」見つける。しかも校閲のやりとりが記録として残る。',
+  purpose:'欠陥の早期発見に加えて、知識の共有（属人化の防止）、コードの一貫性の維持、そして「なぜこの変更をしたか」の議論の記録を残す。第8回で学ぶインスペクション（静的V&V）の、軽量で日常的な現代形。',
+  who:'変更の作成者が PR を出し、チームメイト1〜2名がレビューする。多くのチームで「CI合格＋承認1名以上」をマージ条件として設定する。',
+  steps:[
+    'ブランチで変更を作り、PR を開く：<b>目的・背景・確認方法</b>を説明文に書く',
+    'CI が自動でビルド・テスト・静的解析を実行する（機械にできる指摘は機械に任せる）',
+    'レビューアがコードを読み、質問・指摘をコメントする',
+    '作成者が修正を反映し、議論を収束させる',
+    '承認と CI 合格がそろったらマージし、ブランチを削除する'
+  ],
+  points:[
+    '<b>PR は小さく</b>：Google のエンジニアリングプラクティスも「小さな変更（目安：数百行以下）ほど速く・正確にレビューされる」と明言している',
+    'レビューの観点を持つ：<b>正しさ・テストの有無・可読性・設計・セキュリティ</b>。スタイル指摘はフォーマッタと lint に任せる',
+    '指摘は<b>コードに向ける</b>（人格に向けない）。「なぜそうしたの？」と質問形で聞く文化が心理的安全性を作る',
+    'レビューは<b>教育の場</b>でもある：新人はレビューを受けて学び、レビューをして他人のコードから学ぶ'
+  ],
+  cautions:[
+    '巨大な PR は「LGTM（Looks Good To Me）」で素通りされる：<b>レビューの質は PR のサイズに反比例</b>する',
+    'レビュー待ちがボトルネックになりやすい：対応時間の目安（例：1営業日以内）や当番制を決める',
+    '承認が形式化（スタンプラリー化）すると品質ゲートの意味を失う：ときどき「レビューで何が見つかっているか」を振り返る'
+  ],
+  examples:[
+    'GitHub の Pull Request / GitLab の Merge Request が二大実装',
+    'Google はほぼすべての変更に社内ツール Critique でのレビューを必須にしている',
+    'OSS への貢献は PR が入口：最初の PR（first contribution）はドキュメント修正から始めるのが定番'
+  ],
+  related:'<b>インスペクション</b>との関係：会合形式の重厚なインスペクションが、非同期・軽量・ツール統合の形に進化したもの。「作成者以外の目で見る」という本質は同じ。',
+  modern:'CODEOWNERS による自動レビュアー割当、Dependabot など機械が出す PR、AI によるレビュー支援（GitHub Copilot code review 等）が普及。trunk-based を徹底するチームでは、ペアプログラミングを「リアルタイムのレビュー」としてPRレビューの代わりにする流儀もある。',
+  hasCode:false
+},
+/* ---------- システム構築とCI/CD ---------- */
+{
+  id:'system-building', name:'System Building', jp:'システム構築（ビルド自動化と依存管理）', cat:'auto',
+  badge:'自動化の要', tags:['ビルド','依存管理','Docker'],
+  summary:'ソースコード・ライブラリ・設定・データから<strong>実行可能なシステムを自動で組み立てる</strong>活動。構成管理4活動の1つで、CI/CD すべての前提になる技術。',
+  analogy:'正確なレシピ。材料（ソースと依存ライブラリ）と手順（ビルドスクリプト）が正確に書かれていれば、誰の台所（環境）でも同じ料理（実行ファイル）ができる。「私の台所でしか作れない」（＝俺のマシンでは動く）をなくすのが目標。',
+  purpose:'「ソースから動くシステムまで」を、コマンド1つで・誰の環境でも・同じ結果で再現できるようにする（再現性）。手作業のビルドは、ミス・属人化・「ビルドできる人が休むと止まる」の温床。',
+  who:'開発者がビルド定義を整備し、開発者全員と CI サーバが毎日何十回も実行する。',
+  steps:[
+    '言語標準のビルドツールを選ぶ（Gradle・npm・cargo など）',
+    '依存ライブラリを設定ファイルで<b>宣言</b>する（<code>package.json</code>・<code>build.gradle</code>）',
+    'コンパイル・テスト・パッケージングをタスクとして定義する',
+    '<b>クリーンな環境</b>（新品の環境）でビルドが通ることを確認する',
+    'CI に組み込み、変更のたびに自動で走らせる'
+  ],
+  points:[
+    '依存のバージョンを<b>ロックファイル</b>（<code>package-lock.json</code> 等）で固定する：「今日入れたら違う版が入った」を防ぐ再現性の要',
+    '<b>増分ビルドとキャッシュ</b>で高速化する：遅いビルドは全員の待ち時間×回数で膨大なコストになる',
+    '<b>Docker などのコンテナは「実行環境ごと構成管理する」</b>技術：OS・ライブラリ・設定まで丸ごと記述して配れる',
+    '健全さの目安：「リポジトリを clone して<b>1コマンド</b>でビルド・テストできるか」'
+  ],
+  cautions:[
+    '「俺のマシンでは動く」問題：環境の差（OS・ツールの版・環境変数）はビルド定義とコンテナで消し込む',
+    '依存の連鎖（推移的依存）は把握しづらい：2016年の npm <b>left-pad 事件</b>では、わずか十数行のパッケージの公開停止で世界中のビルドが壊れた',
+    '<b>サプライチェーン攻撃</b>：依存パッケージに悪意あるコードが混入する攻撃が増加中：依存の出所と更新に無関心でいられない時代',
+    'ビルドスクリプト自体もコード：レビューとバージョン管理の対象にする'
+  ],
+  examples:[
+    '<b>Make</b>（1976年）：最古参のビルドツール。依存関係に基づく増分ビルドの考え方の原点',
+    '<b>Gradle / Maven</b>（Java）、<b>npm / pnpm</b>（JavaScript）、<b>cargo</b>（Rust）：言語ごとの標準ビルド＋依存管理',
+    '<b>Docker</b>（2013年）：環境ごとパッケージして配布。<b>Bazel</b>（Google製）：巨大モノレポ向けの高速ビルド'
+  ],
+  related:'<b>CI</b> との関係：CI は「システム構築＋テスト」を変更のたびに自動で回す仕組み。まずビルドの自動化と再現性があって、はじめて CI が成立する。',
+  modern:'コンテナ（Docker）でビルド・実行環境を差分なく配るのが標準になり、さらに Terraform などの IaC（Infrastructure as Code）でインフラまで「コードとして構成管理」する。依存の部品表（SBOM）を出荷物に添える動きもセキュリティ要件として広がっている。',
+  hasCode:false
+},
+{
+  id:'ci', name:'Continuous Integration', jp:'継続的インテグレーション（CI）', cat:'auto',
+  badge:'自動化の要', tags:['XP発祥','自動テスト','壊れたら即修理'],
+  summary:'全員の変更を<strong>1日に何度も本流へ統合し、統合のたびに自動ビルド＋自動テストで検証</strong>する実践。統合の痛みは「ためるから大きくなる」：だから頻繁にやる。',
+  analogy:'毎日のこまめな片づけと、年末の大掃除。統合（片づけ）をためこむほど作業は巨大化し、どこから手を付けるかも分からなくなる。CI は「散らかったら数分で警報が鳴る」見張り付きの、毎日片づく部屋。',
+  purpose:'統合時の問題（コンフリクト・つなぎ目のバグ・回帰）を発生から数分で検出し、「いつでも動くバージョンが存在する」状態を保つ。第8回で学ぶ回帰テストの自動実行装置でもある。',
+  who:'開発者全員＋CIサービス。XP（Kent Beck）の実践として1990年代末に登場し、Martin Fowler の解説記事で広く普及した。第3回で見た「1日に何度もビルドし、全テスト合格のときだけ受け入れる」がまさにこれ。',
+  steps:[
+    'リポジトリに CI 設定ファイルを置く（例：<code>.github/workflows/ci.yml</code>）',
+    'push や PR のたびに、CI がクリーン環境で<b>ビルド＋全テスト＋静的解析</b>を自動実行する',
+    '結果が PR に表示され、<b>失敗したらマージできない</b>ようにルール設定する',
+    '壊れたら<b>最優先で修復</b>する（直せなければ revert で即座に戻す）',
+    'テストを育て続ける：CI の検出力はテスト資産の質で決まる'
+  ],
+  points:[
+    '統合は<b>小さく頻繁に</b>：少なくとも1日1回は本流へ。長生きブランチのままでは「継続的」ではない',
+    '<b>壊れたビルドは全員のブロッカー</b>という文化：直るまで上に変更を積まない。「ビルドを壊したら直すのが最優先」をチームの合意にする',
+    '<b>速さが命</b>：フィードバックは10分以内が目安。遅い CI は無視され始める',
+    'lint・フォーマッタ・型検査も CI に載せ、<b>機械にできる指摘は機械に任せる</b>（人間のレビューを設計と意図に集中させる）'
+  ],
+  cautions:[
+    'テストが薄い CI は「コンパイルが通った」以上の安心を与えない：<b>CI の価値はテストの質</b>で決まる',
+    '<b>フレーキーテスト</b>（たまに落ちる不安定なテスト）を放置すると、「また例のやつか」と警報が無視され、CI への信頼が崩壊する',
+    '「CI ツールを入れた＝CI をしている」ではない：Fowler が強調するとおり、本体は<b>頻繁な統合という実践</b>であってツールではない'
+  ],
+  examples:[
+    '<b>GitHub Actions</b>（2019年正式公開）：現在もっとも使われる CI。JetBrains の2025年調査では個人の62%・組織の41%が使用',
+    '<b>Jenkins</b>（前身は2005年〜）：自社サーバで動かす老舗。大企業で今も現役。<b>GitLab CI</b>・<b>CircleCI</b> も定番',
+    'PR ごとに「ビルド＋数千件のユニットテスト＋lint」が数分で走り、緑のチェックが付くまでマージ不可：という運用が現代の標準風景'
+  ],
+  related:'<b>CD</b> との関係：CI は「統合とテスト」まで。CD はパイプラインをさらに本番の手前（または本番そのもの）まで伸ばす。CI なしの CD はあり得ない。',
+  modern:'クラウド CI が標準になり、キャッシュ・並列実行・影響範囲に絞ったテスト選択で高速化が進む。JetBrains の2025年調査では組織の32%が2つ以上の CI ツールを併用。AI がテスト失敗の原因を要約する機能も各社が搭載し始めている。',
+  hasCode:true
+},
+{
+  id:'cd', name:'Continuous Delivery & Deployment', jp:'継続的デリバリー／継続的デプロイ（CD）', cat:'auto',
+  badge:'自動化の要', tags:['パイプライン','ステージング','カナリア'],
+  summary:'CI の先へパイプラインを伸ばし、<strong>「いつでもボタン1つで本番に出せる」状態を常に保つ</strong>のが継続的デリバリー。最後の人間の判断も省き、<strong>合格した変更が自動で本番へ流れる</strong>のが継続的デプロイ。',
+  analogy:'工場の自動生産ライン。材料（コミット）を投入すると検査装置（テスト）を次々と通過し、合格品だけが出荷口（本番）まで自動搬送される。不合格品はその場でラインから弾かれ、どの工程で弾かれたかが一目で分かる。',
+  purpose:'リリースを「数か月に一度の徹夜イベント」から「日常の退屈な作業」に変える。小さく頻繁に出すほど1回あたりの変更は小さく、リスクも問題の切り分けも小さくなる：「痛いことほど頻繁にやる」の完成形。',
+  who:'開発チーム＋運用チーム（一体化すれば DevOps）。Jez Humble と David Farley の『継続的デリバリー』（2010年）が体系化した。',
+  steps:[
+    '<b>デプロイパイプライン</b>を定義する：ビルド → 自動テスト → ステージング環境へ配備 → 受入れ・性能テスト → 本番へ',
+    '環境をコードで定義し、<b>本番相当のステージング環境</b>を用意する',
+    'デプロイを自動化し、<b>ロールバック（切り戻し）も自動化</b>する',
+    '<b>カナリアリリース</b>：まず一部（例：5%）のユーザにだけ新版を公開し、指標を監視する',
+    '問題なければ段階的に100%へ。異常があれば即ロールバック'
+  ],
+  points:[
+    '<b>デリバリーとデプロイの違い</b>は「本番への最後の一歩を人が押すか、自動か」だけ：どちらも「いつでも出せる」状態が土台',
+    '<b>デプロイとリリースの分離</b>：フィーチャーフラグを使えば「コードを本番に置く」（デプロイ）と「ユーザに見せる」（リリース）を別々に制御できる',
+    'パイプラインは<b>品質ゲートの直列</b>：どの段階で落ちたかが即分かるように設計する',
+    '<b>一度ビルドした成果物を各環境へ運ぶ</b>のが原則（環境ごとにビルドし直すと「テストしたものと違うもの」を出すことになる）'
+  ],
+  cautions:[
+    '<b>監視とロールバックのない自動デプロイは事故製造機</b>：「気づけない・戻せない」状態で自動化してはいけない',
+    'ステージングと本番の差（設定・データ量・トラフィック）が「ステージングでは動いたのに」を生む：差を計測して詰める',
+    'データベースのスキーマ変更（マイグレーション）は切り戻しが難しい：後方互換な段階的変更として設計する',
+    '規制の強い業界では変更承認プロセスとの整合が必要：「自動化＝無承認」ではなく、承認の証跡をパイプラインに組み込む'
+  ],
+  examples:[
+    '<b>Amazon</b> は2011年の時点で「平均11.6秒に1回」本番デプロイしていると報告（Velocity 2011）：大規模CDの象徴的な数字',
+    '<b>Netflix</b> の Spinnaker、<b>Kubernetes ＋ Argo CD</b>（GitOps）：宣言した状態に環境を自動で一致させる',
+    'スマホアプリのストア審査があるプロダクトでは「デリバリーまで自動＋提出は人が判断」という形が現実解'
+  ],
+  related:'<b>デプロイ</b>（コードを本番環境に置く）と<b>リリース</b>（機能をユーザに公開する）は別の行為。この分離が、カナリアや A/B テストなど「本番で安全に試す」技術の土台になる。',
+  modern:'Git を唯一の真実として環境を同期させる <b>GitOps</b>、カナリア・Blue-Green を自動化する<b>プログレッシブデリバリー</b>が現在形。DORA の調査では、エリートチームは<b>オンデマンド（1日に何度でも）</b>デプロイし、失敗からの復旧も1時間未満。',
+  hasCode:false
+},
+/* ---------- 変更・リリース管理とDevOps ---------- */
+{
+  id:'change-management', name:'Change Management', jp:'変更管理（変更要求と課題管理）', cat:'mgmt',
+  badge:'プロセス管理', tags:['変更要求','CCB','Issue駆動'],
+  summary:'顧客や開発者から届く<strong>変更要求（Change Request）を記録・分析し、「やる／やらない／いつやる」を判断して追跡する</strong>プロセス。コードの変更そのものではなく、変更の<strong>意思決定</strong>を管理する。',
+  analogy:'レストランの「ご意見箱」と厨房の指示書の関係。お客の要望を全部そのまま厨房に投げ込んだら大混乱。要望を集めて、費用と効果を見比べ、どれを今日のメニュー改訂に入れるかを決める「編集会議」が要る。',
+  purpose:'変更の費用対効果とリスクを評価し、限られた開発資源を価値の高い変更に集中させる。「誰かが勝手に変えた」「言った言わないの水掛け論」を防ぎ、<b>変更の理由と経緯</b>を後から追える形で残す。',
+  who:'顧客・利用者・開発者が要求を出し、開発チームが影響分析を行い、<b>変更管理委員会（CCB：Change Control Board）</b>や製品オーナーが採否を判断する。プロジェクトの性格により軽量にも厳格にもなる。',
+  steps:[
+    '変更要求を<b>チケット（Issue）</b>として記録する：再現手順・期待する動作・背景を書く',
+    '有効性を確認する（重複・誤解・仕様どおりの動作でないか）',
+    '<b>影響分析</b>：実装コスト、他機能への波及、リスクを見積もる',
+    '判断する：承認／却下／延期（バックログへ）',
+    '実装・テストし、<b>コミットとチケットを紐づけて</b>クローズする'
+  ],
+  points:[
+    'すべての変更に「なぜ」を残す：コミットメッセージに <code>#123</code> と Issue 番号を書くだけで、コードと理由がつながる',
+    '課題管理システムは<b>変更の一覧・優先順位・状態</b>をチーム全員に可視化する（第3回のプロダクトバックログはこの軽量版）',
+    '緊急バグ修正の「特急ルート」も<b>事前に</b>定義しておく：非常時に無手順にならないように',
+    '却下した要求も記録に残す：「前も検討して、この理由でやめた」が言えるのは強い'
+  ],
+  cautions:[
+    '<b>重すぎる変更管理は改善を窒息させる</b>：リファクタリングまで委員会承認が要るなら、誰もコードを良くしなくなる（アジャイルとの摩擦が起きやすいポイント。第3回参照）',
+    '軽すぎると「勝手な変更」が本流に混ざり、障害時に経緯を追えなくなる',
+    'チケットとコミットの紐づけを怠ると、監査もデバッグも考古学になる'
+  ],
+  examples:[
+    '<b>GitHub Issues / Jira</b> でのチケット駆動開発：「fix #123」と書いたコミットがマージされると Issue が自動で閉じる',
+    '医療機器・航空など安全重要システムでは、正式な CCB が変更の採否を審査する（規格で要求される）',
+    'OSS では Issue が世界中のユーザからのバグ報告・機能要望の受付窓口として機能している'
+  ],
+  related:'<b>バージョン管理</b>との違い：バージョン管理は変更の「記録と合流」、変更管理は変更の「判断と追跡」。チケット⇔コミット⇔PRの紐づけが両者をつなぐ背骨になる。',
+  modern:'Issue テンプレート・PR テンプレートで報告の質を揃え、GitHub Projects や Linear でバックログとロードマップを統合するのが現在形。ITIL 型の重い変更承認（CAB）は、DevOps の文脈では「小さく頻繁な変更＋自動ゲート」へ置き換える流れが進む。',
+  hasCode:false
+},
+{
+  id:'release-management', name:'Release Management & Versioning', jp:'リリース管理とバージョニング（semver）', cat:'mgmt',
+  badge:'プロセス管理', tags:['semver','CHANGELOG','タグ'],
+  summary:'システムの特定の版を<strong>「リリース」として切り出し、番号を付け、変更内容を記録して世に出す</strong>活動。番号付けの共通言語が<strong>セマンティックバージョニング（semver）</strong>。',
+  analogy:'書籍の「第2版 第3刷」。どの状態を印刷したのか、前の版から何が変わったのかが、奥付と改訂履歴で誰にでも分かる。だから読者も図書館も書店も、安心してその本を扱える。',
+  purpose:'「ユーザの手元で動いているのはどの版か」を正確に特定できるようにし、変更内容を利用者に伝える。障害調査・サポート・依存関係の管理は、すべてこの特定可能性の上に成り立つ。',
+  who:'開発チーム・リリース担当。パッケージ製品やライブラリでは専任のリリースマネージャを置くこともある。',
+  steps:[
+    'リリース対象のコミットを決め、<b>タグ</b>を打つ（<code>git tag v1.5.0</code>）',
+    '<b>semver</b> で番号を決める：破壊的変更＝MAJOR／互換な機能追加＝MINOR／バグ修正のみ＝PATCH（上の体験デモで練習）',
+    '<b>CHANGELOG</b>（変更履歴）と<b>リリースノート</b>（利用者向け説明）を書く',
+    '成果物をビルドし、必要なら署名して配布する（パッケージレジストリ・ストア・ダウンロードサイト）',
+    '旧バージョンのサポート方針（いつまで修正を出すか）を明確にする'
+  ],
+  points:[
+    'semver は<b>互換性の約束</b>：<code>MAJOR.MINOR.PATCH</code>。この約束があるから <code>^1.4.2</code> のような互換範囲での依存指定が成立する',
+    '<code>0.y.z</code> は「開発初期版＝何が変わってもよい」。<b>1.0.0 の公開が約束の開始宣言</b>',
+    'リリースは<b>再現可能</b>に：タグ＋ビルド手順から、同じ成果物をいつでも作り直せること（障害調査の生命線）',
+    'CHANGELOG は<b>利用者の言葉</b>で書く：コミットログの羅列は開発者にしか読めない'
+  ],
+  cautions:[
+    'semver は<b>自動保証ではなく自己申告</b>：MINOR のつもりで互換性を壊す事故は実際に起こる。利用側は依存更新をテストで守る',
+    'マーケティング上の番号（大きく見せたい）と技術的な意味の混同は、利用者の信頼を削る',
+    'Webサービスの連続デプロイでは「バージョン番号」の意味が薄れ、コミットハッシュやビルドIDが版の識別子になる：文脈で使い分ける'
+  ],
+  examples:[
+    '<b>semver.org</b>：Tom Preston-Werner（GitHub共同創業者）による仕様。npm・cargo など主要パッケージマネージャの前提',
+    '<b>npm</b> の <code>^1.4.2</code>・<code>~1.4.2</code> は semver を前提にした互換範囲指定',
+    '別流儀の例：<b>Ubuntu</b> は「年.月」（24.04）、ブラウザは単調増加の大きな番号：プロダクトの性格で流儀は変わる',
+    '<b>Keep a Changelog</b>：CHANGELOG の書き方のデファクト標準'
+  ],
+  related:'<b>デプロイ</b>との違い：リリース管理は「どの版を、どんな説明とともに世に出すか」の管理。常時デプロイのWebサービスでは連続的な流れに溶け込むが、ライブラリ・パッケージ製品では今も明確な節目として残る。',
+  modern:'GitHub Releases のリリースノート自動生成、コミットメッセージ規約（Conventional Commits）から次のバージョン番号を自動判定する semantic-release、アプリストアの段階的公開など、リリース作業自体の自動化が進んでいる。',
+  hasCode:false
+},
+{
+  id:'devops-metrics', name:'DevOps & the DORA Metrics', jp:'DevOpsとメトリクス（DORA Four Keys）', cat:'mgmt',
+  badge:'文化と計測', tags:['DORA','Four Keys','LeanとDevOpsの科学'],
+  summary:'開発（Dev）と運用（Ops）の壁を壊し、<strong>作ったチームが届けて動かすところまで責任を持つ</strong>文化と実践が DevOps。その効果を測る世界標準の物差しが <strong>DORA の Four Keys</strong>。',
+  analogy:'「作る料理人」と「運ぶ配達員」が別会社で、遅配のたびに責任を押し付け合う出前サービスと、厨房から玄関先までを一体で改善するサービス。後者は「届くまでの時間」と「事故率」を毎日測っているから、どこを直せばよいかが分かる。',
+  purpose:'「速く出せば品質が犠牲になる」という思い込みをデータで壊す。DORA の長年の調査は、優れたチームは<b>速く、かつ安定している</b>（速さと安定性は両立する）ことを示した（『LeanとDevOpsの科学』）。',
+  who:'開発・運用を含む組織全体。DORA（DevOps Research and Assessment）は Google Cloud の研究プログラムで、毎年の State of DevOps Report として世界数万人規模の調査を継続している。',
+  steps:[
+    '<b>Four Keys</b> を計測する：①デプロイ頻度 ②変更のリードタイム（コミット→本番までの時間） ③変更失敗率 ④失敗からの復旧時間',
+    '自チームの現在地を知る（dora.dev の Quick Check で診断できる）',
+    'ボトルネックを特定する：リードタイムが長いなら、PR滞留？ テストが遅い？ 承認待ち？',
+    'CI/CD・trunk-based・小さいバッチなどの<b>能力（capability）</b>を改善する',
+    '再計測して学ぶ：指標は評価（成績表）ではなく<b>学習（体温計）</b>に使う'
+  ],
+  points:[
+    '①②は<b>速さ（スループット）</b>、③④は<b>安定性</b>の指標：4つセットで見るから「速いだけ」「慎重なだけ」を防げる',
+    'エリートチームの目安：<b>オンデマンド（1日複数回）デプロイ、リードタイム1日未満、復旧1時間未満</b>',
+    'Four Keys を押し上げる能力として、trunk-based・CI/CD・小さいバッチ・疎結合アーキテクチャ・ブレームレスな文化が特定されている',
+    '指標は進化している：MTTR は「<b>失敗したデプロイからの復旧時間</b>」に改められ、2025年の整理では5つ目の指標<b>リワーク率</b>（本番の問題対応による計画外デプロイの割合）が加わった'
+  ],
+  cautions:[
+    '<b>指標をノルマにすると壊れる</b>（Goodhart の法則：測定が目標になると、良い測定でなくなる）：「デプロイ回数を稼ぐための空デプロイ」に意味はない',
+    'Four Keys は<b>デリバリーの健康指標</b>であって、プロダクトが価値を生んでいるかは別に測る必要がある',
+    'DORA 2024 は「<b>AI コーディング支援は個人の生産性を上げる一方、デリバリーの安定性を下げ得る</b>」と報告：小さいバッチと自動テストという基本は AI 時代も変わらない',
+    'チーム間の比較・競争に使わない：文脈が違う数字の比較は改善ではなく萎縮を生む'
+  ],
+  examples:[
+    '<b>dora.dev</b>：研究の総本山。Four Keys の定義・能力カタログ・診断ツールが公開されている',
+    '『<b>LeanとDevOpsの科学</b>』（Forsgren, Humble, Kim, 2018）：4年分の調査データで「速さと安定性の両立」を示した',
+    'GitHub や CI のイベントから Four Keys を自動集計する OSS・SaaS（Four Keys プロジェクト、各社の開発者生産性ダッシュボード）'
+  ],
+  related:'<b>CI/CD</b> との関係：CI/CD は DevOps の技術面の柱。DevOps はそれに加えて、運用との責任共有・障害を人のせいにしない（ブレームレス）文化・計測と学習のループまでを含む、より広い概念。',
+  modern:'2024年版レポートの主題は AI とプラットフォームエンジニアリング。社内開発者基盤（プラットフォーム）は生産性を上げる一方、安定性への副作用も報告された：「導入すれば終わり」ではなく、使い方と文化が問われるという結論は一貫している。',
+  hasCode:false
+}
+];
+</script>
+<script>
+/* ============== コード例（Gitブランチ / CI） ============== */
+const CODE = {
+'git-branching':[
+{ label:'ブランチとマージ (bash)', lang:'bash', code:`# 新しいブランチを作って切り替える（-c は create の意味）
+git switch -c feature/login
+
+# 編集してコミットを重ねる（本流 main には影響しない）
+git add src/login.py
+git commit -m "ログイン画面の入力チェックを追加 (#42)"
+
+# 本流に戻り、最新化してから合流させる
+git switch main
+git pull                      # 仲間の変更を取り込んでから
+git merge feature/login       # 合流（マージコミットができる）
+
+# 役目を終えたブランチは削除してよい（履歴は残る）
+git branch -d feature/login` },
+{ label:'コンフリクト解決 (bash)', lang:'bash', code:`git merge feature/pricing
+# CONFLICT (content): Merge conflict in price.py
+# Automatic merge failed; fix conflicts and then commit the result.
+
+git status                    # どのファイルが衝突したか確認
+
+# price.py を開くと、衝突箇所に「印」が付いている：
+#   <<<<<<< HEAD
+#   tax = 0.10        ここから上が自分（main）の変更
+#   =======
+#   tax = 0.08        ここから下が相手（feature/pricing）の変更
+#   >>>>>>> feature/pricing
+# どちらが正しいかを「意味」で判断して書き直し、印ごと消す
+
+git add price.py              # 「解決済み」の印を付ける
+git commit                    # マージを完了（その後テストで確認！）` }
+],
+'ci':[
+{ label:'GitHub Actions (YAML)', lang:'yaml', code:`# .github/workflows/ci.yml - push と PR のたびに自動実行される
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest       # 毎回まっさらな環境で実行（再現性）
+    steps:
+      - uses: actions/checkout@v4        # リポジトリを取得
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: pip install -r requirements.txt
+      - run: ruff check .                # 静的解析（lint）
+      - run: pytest --cov                # 全テスト＋カバレッジ計測` },
+{ label:'コマンド操作 (bash)', lang:'bash', code:`# CI が回すのと同じ検証を、手元でも同じコマンドで再現できるようにしておく
+git switch -c feature/search
+# ... 編集 ...
+
+pip install -r requirements.txt   # 依存を揃える（ロックファイルで再現）
+ruff check .                      # push 前に手元でも同じチェック
+pytest                            # 全テストを実行
+
+git add -A
+git commit -m "検索機能を追加 (#57)"
+git push -u origin feature/search
+# → GitHub 上で PR を開くと CI が自動実行され、
+#   緑のチェックが付くまでマージできない（branch protection）` }
+]
+};
+
+/* ============== カード内ダイアグラム ============== */
+const DIAGRAMS = {
+'branching-strategies': `
+<svg viewBox="0 0 760 430" role="img" aria-label="3つのブランチ戦略の比較図">
+  <text x="30" y="40" class="dg-lbl" style="text-anchor:start">Git Flow：多層ブランチ・複数版の並行保守向き</text>
+  <text x="108" y="74" class="dg-el" style="text-anchor:end">main</text>
+  <path d="M120 70 H730" class="dg-line"/>
+  <text x="108" y="104" class="dg-el" style="text-anchor:end">develop</text>
+  <path d="M120 100 H730" class="dg-line"/>
+  <path d="M250 100 L280 130 L370 130 L400 100" class="dg-line dg-dash"/>
+  <text x="325" y="147" class="dg-el">feature</text>
+  <path d="M520 100 L560 70" class="dg-line" marker-end="url(#ahb)"/>
+  <text x="585" y="92" class="dg-el">release で main へ</text>
+  <circle cx="250" cy="100" r="4" fill="#6B746F"/><circle cx="400" cy="100" r="4" fill="#6B746F"/>
+  <circle cx="520" cy="100" r="4" fill="#6B746F"/><circle cx="560" cy="70" r="4" fill="#8A6D3B"/>
+  <text x="700" y="55" class="dg-el">タグ v2.0</text>
+
+  <text x="30" y="192" class="dg-lbl" style="text-anchor:start">GitHub Flow：main＋短命ブランチ＋プルリクエスト</text>
+  <text x="108" y="229" class="dg-el" style="text-anchor:end">main</text>
+  <path d="M120 225 H730" class="dg-line"/>
+  <path d="M200 225 L230 255 L300 255 L330 225" class="dg-line dg-dash"/>
+  <path d="M430 225 L460 255 L530 255 L560 225" class="dg-line dg-dash"/>
+  <circle cx="330" cy="225" r="4" fill="#0E6F5C"/><circle cx="560" cy="225" r="4" fill="#0E6F5C"/>
+  <text x="265" y="272" class="dg-el">数日で PR → レビュー → マージ</text>
+  <text x="495" y="272" class="dg-el">マージのたびにデプロイ可能</text>
+
+  <text x="30" y="322" class="dg-lbl" style="text-anchor:start">trunk-based development：毎日 trunk へ統合（近年の主流）</text>
+  <text x="108" y="359" class="dg-el" style="text-anchor:end">trunk</text>
+  <path d="M120 355 H730" stroke="#0E6F5C" stroke-width="2" fill="none"/>
+  <path d="M180 355 L200 375 L240 375 L260 355" class="dg-line dg-dash"/>
+  <path d="M320 355 L340 375 L380 375 L400 355" class="dg-line dg-dash"/>
+  <path d="M460 355 L480 375 L520 375 L540 355" class="dg-line dg-dash"/>
+  <circle cx="260" cy="355" r="4" fill="#0E6F5C"/><circle cx="400" cy="355" r="4" fill="#0E6F5C"/><circle cx="540" cy="355" r="4" fill="#0E6F5C"/>
+  <text x="360" y="400" class="dg-el">ブランチの寿命は〜1日。未完成の機能はフィーチャーフラグで隠して先に統合する</text>
+  <text x="650" y="345" class="dg-el">常にリリース可能</text>
+  <defs><marker id="ahb" markerWidth="9" markerHeight="9" refX="8" refY="4.5" orient="auto">
+    <path d="M0,0 L9,4.5 L0,9 z" fill="#6B746F"/></marker></defs>
+</svg>`,
+'cd': `
+<svg viewBox="0 0 760 250" role="img" aria-label="継続的デリバリーのデプロイパイプライン">
+  <text x="380" y="26" class="dg-lbl">デプロイパイプライン：品質ゲートの直列</text>
+  <rect x="20" y="50" width="128" height="72" rx="12" class="dg-box"/>
+  <text x="84" y="80" class="dg-lbl">コミット</text>
+  <text x="84" y="99" class="dg-el">変更を push</text>
+  <rect x="168" y="50" width="128" height="72" rx="12" class="dg-box dg-if"/>
+  <text x="232" y="80" class="dg-lbl">CI</text>
+  <text x="232" y="99" class="dg-el">ビルド＋自動テスト</text>
+  <rect x="316" y="50" width="128" height="72" rx="12" class="dg-box dg-if"/>
+  <text x="380" y="80" class="dg-lbl">ステージング</text>
+  <text x="380" y="99" class="dg-el">本番相当環境へ配備</text>
+  <rect x="464" y="50" width="128" height="72" rx="12" class="dg-box dg-if"/>
+  <text x="528" y="80" class="dg-lbl">受入れ・性能</text>
+  <text x="528" y="99" class="dg-el">自動受入れテスト</text>
+  <rect x="612" y="50" width="128" height="72" rx="12" class="dg-box" stroke="#0E6F5C" stroke-width="1.6"/>
+  <text x="676" y="80" class="dg-lbl" fill="#0A5748">本番</text>
+  <text x="676" y="99" class="dg-el">カナリア 5%→100%</text>
+  <path d="M148 86 L164 86" class="dg-line" marker-end="url(#ahc)"/>
+  <path d="M296 86 L312 86" class="dg-line" marker-end="url(#ahc)"/>
+  <path d="M444 86 L460 86" class="dg-line" marker-end="url(#ahc)"/>
+  <path d="M592 86 L608 86" class="dg-line" marker-end="url(#ahc)"/>
+  <path d="M676 122 L676 160 L232 160 L232 126" class="dg-line dg-dash" marker-end="url(#ahc)"/>
+  <text x="454" y="152" class="dg-el" fill="#B04A3E">異常を検知したら即ロールバック（自動）</text>
+  <text x="380" y="200" class="dg-note">どこかのゲートで失敗 → その場でパイプラインを停止し、開発者に即通知。</text>
+  <text x="380" y="222" class="dg-note">継続的デリバリーは「本番」の手前に人の承認ボタンを置き、継続的デプロイはそれも自動にする。</text>
+  <defs><marker id="ahc" markerWidth="9" markerHeight="9" refX="8" refY="4.5" orient="auto">
+    <path d="M0,0 L9,4.5 L0,9 z" fill="#6B746F"/></marker></defs>
+</svg>`,
+};
+
+/* ============== 理解度クイズ ============== */
+const QUIZ = [
+{ q:'分散型バージョン管理（Git）が集中型（Subversion）と決定的に違う点は？',
+  opts:['開発者全員が、全履歴を含むリポジトリの完全な複製を手元に持つ','サーバもバックアップも一切不要になる','コンフリクトが原理的に起こらなくなる','コミットすると自動で本番に反映される'], a:0,
+  why:'分散型では clone した各自の手元に全履歴があるため、オフラインでもコミット・履歴参照ができ、動作も高速。コンフリクトがなくなるわけではない（並行編集の合流には必ず調停が要る）。'},
+{ q:'「手元のリポジトリに記録した変更履歴を、リモートの共有リポジトリへ送る」Git の操作は？',
+  opts:['push','pull','commit','merge'], a:0,
+  why:'Git では記録が2段階：<b>commit</b> は手元のリポジトリへの記録、<b>push</b> がそれをリモートへ送る操作。逆に取り込むのが pull。'},
+{ q:'マージとリベースの違いとして正しいのは？',
+  opts:['リベースは履歴を付け替えて一直線にし、マージは合流点（マージコミット）を残す','マージではコンフリクトが起こらない','リベースのほうが常に安全である','マージすると過去の履歴が消える'], a:0,
+  why:'合流結果のコードは同じでも、履歴の形が違う。リベースはコミットを作り直すため、<b>公開済みブランチへのリベースは原則禁止</b>（他人の履歴と食い違う）。'},
+{ q:'コンフリクト（衝突）が発生するのは、どんなとき？',
+  opts:['2人が同じファイルの同じ箇所を別々に変更し、それを合流させたとき','2人が別々のファイルを変更したとき','コミットメッセージが他人と重複したとき','ブランチ名が他人と同じだったとき'], a:0,
+  why:'Git は共通の祖先と両者の変更を比べて自動合成する（3方向マージ）。同じ箇所への異なる変更だけは機械には決められないため、人間が意味を確認して解決する。'},
+{ q:'trunk-based development の説明として正しいのは？',
+  opts:['全員が短命ブランチで毎日 trunk（main）に統合し、未完成の機能はフィーチャーフラグで隠す','リリースごとに長期の release ブランチを必ず切る','開発者ごとに専用のリポジトリを完全に分ける','main へのマージは年に数回だけ行う'], a:0,
+  why:'統合を頻繁にすることでコンフリクトと「統合の痛み」を小さく保つ戦略。DORA の調査でも高いデリバリーパフォーマンスとの相関が繰り返し報告されている。'},
+{ q:'継続的インテグレーション（CI）の本質は？',
+  opts:['変更を頻繁に本流へ統合し、そのたびに自動ビルドと自動テストで検証すること','CI ツールを導入すること','月末にまとめて全員の変更を統合すること','テスト担当者が手動で統合テストを行うこと'], a:0,
+  why:'ツールは手段にすぎない。Fowler が強調するとおり、本体は「頻繁な統合」という<b>実践</b>。長生きブランチのままツールだけ入れても CI にはならない。'},
+{ q:'CI でビルドが壊れた（テストが失敗した）ときの正しい文化は？',
+  opts:['最優先で修復するか revert し、直るまで上に変更を積まない','週末にまとめて直す','失敗したテストを削除して通す','通知をミュートして作業を続ける'], a:0,
+  why:'壊れた本流は全員のブロッカー。「ビルドを壊したら直すのが最優先」という合意が、CI の信頼性と「いつでも動く版がある」状態を守る。'},
+{ q:'継続的デリバリーと継続的デプロイの違いは？',
+  opts:['本番への最後のデプロイを人が判断して実行するか、自動で行われるか','自動テストをするかしないか','クラウドを使うかどうか','ブランチを使うかどうか'], a:0,
+  why:'どちらも「いつでも出せる状態」を保つのは同じ。デリバリーは最後の一歩を人が押し、デプロイは合格した変更が自動で本番まで流れる。'},
+{ q:'「デプロイ」と「リリース」を分離するための代表的な仕組みは？',
+  opts:['フィーチャーフラグ','コードフリーズ','ペアプログラミング','ウォーターフォールモデル'], a:0,
+  why:'フィーチャーフラグを使うと、コードを本番に置く（デプロイ）ことと機能をユーザに見せる（リリース）ことを別々に制御できる。カナリアリリースや trunk-based の土台。'},
+{ q:'現在 1.4.2 のライブラリに、後方互換な機能追加をしてリリースする。semver での次の番号は？',
+  opts:['1.5.0','1.4.3','2.0.0','1.5.2'], a:0,
+  why:'後方互換な機能追加は MINOR を +1 し、PATCH は 0 にリセットする。バグ修正のみなら 1.4.3、破壊的変更なら 2.0.0。'},
+{ q:'DORA の Four Keys に<b>含まれない</b>のは？',
+  opts:['書いたコードの行数','デプロイ頻度','変更のリードタイム','変更失敗率'], a:0,
+  why:'Four Keys はデプロイ頻度・変更のリードタイム・変更失敗率・失敗からの復旧時間。コード行数は成果の指標にならない（多いほど良いわけではない）。'},
+{ q:'コードレビュー（PR）の効果を高める、もっとも確実な方法は？',
+  opts:['PR を小さく保つ','できるだけ多くの機能を1つの PR にまとめる','レビューを省略してマージを速くする','レビューは管理職だけが行うようにする'], a:0,
+  why:'小さい PR ほど速く・正確にレビューされる（Google のプラクティスも明言）。巨大 PR は「LGTM」で素通りされがちで、レビューの質はサイズに反比例する。'}
+];
+</script>
+<script>
+/* ============== レンダリング ============== */
+const learned = new Set();
+let currentCat = 'all';
+
+function esc(s){return s.replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;");}
+
+function highlight(code, lang){
+  const kws1 = ['git','docker','npm','pip','pytest','ruff','make'];
+  const kws2 = ['clone','init','add','commit','push','pull','fetch','branch','switch','merge','rebase','status','log','tag','diff'];
+  const re1 = new RegExp('\\b('+kws1.join('|')+')\\b','g');
+  const re2 = new RegExp('\\b('+kws2.join('|')+')\\b','g');
+  return code.split('\n').map(line=>{
+    const idx = line.indexOf('#');
+    let codePart = (idx>=0) ? line.slice(0,idx) : line;
+    const cmPart = (idx>=0) ? line.slice(idx) : '';
+    const strs = [];
+    codePart = codePart.replace(/"[^"]*"/g, m=>{ strs.push(m); return '@@S'+(strs.length-1)+'@@'; });
+    let h = esc(codePart);
+    if(lang==='yaml'){
+      h = h.replace(/^(\s*-?\s*)([A-Za-z_][\w-]*)(:)/, '$1<span class="kw">$2</span>$3');
+    } else {
+      h = h.replace(re1,'<span class="kw">$1</span>').replace(re2,'<span class="st">$1</span>');
+    }
+    h = h.replace(/@@S(\d+)@@/g,(m,i)=>'<span class="st">'+esc(strs[+i])+'</span>');
+    return h + (cmPart ? '<span class="cm">'+esc(cmPart)+'</span>' : '');
+  }).join('\n');
+}
+
+function togglePattern(id){
+  const card = document.getElementById(id);
+  if(!card) return;
+  const open = card.classList.toggle('open');
+  const head = card.querySelector('.pcard-head');
+  if(head) head.setAttribute('aria-expanded', open ? 'true' : 'false');
+}
+function toggleLearned(id, cb){
+  if(cb.checked) learned.add(id); else learned.delete(id);
+  const card = document.getElementById(id);
+  if(card) card.classList.toggle('done-card', cb.checked);
+  updateLearnUI();
+}
+function updateLearnUI(){
+  const el = document.getElementById('learnNote');
+  if(el) el.textContent = '習得 ' + learned.size + ' / ' + PRACTICES.length;
+}
+function switchCode(id, k, btn){
+  CODE[id].forEach((_,i)=>{
+    const pre = document.getElementById(id+'-code-'+i);
+    if(pre) pre.classList.toggle('hidden', i!==k);
+  });
+  btn.parentElement.querySelectorAll('button.tab').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+}
+
+function renderPractice(t, idx){
+  const pointsLi = t.points.map(v=>`<li>${v}</li>`).join('');
+  const cautionsLi = t.cautions.map(v=>`<li>${v}</li>`).join('');
+  const exLi = t.examples.map(v=>`<li>${v}</li>`).join('');
+  const stepsLi = t.steps.map(v=>`<li>${v}</li>`).join('');
+  const tagsH = (t.tags||[]).map(x=>`<span class="tag">${x}</span>`).join('');
+  const badgeH = `<span class="badge-imp ${BADGE_CLS[t.badge]||'imp1'}">${t.badge}</span>`;
+  const analogyH = t.analogy ? `<div class="analogy"><span><b>たとえるなら</b> ${t.analogy}</span></div>` : '';
+  const dg = DIAGRAMS[t.id];
+  const diagramH = dg ? `<div class="diagram-wrap"><h5>図解イメージ</h5>${dg}</div>` : '';
+  let codeH = '';
+  if(t.hasCode && CODE[t.id]){
+    const tabsH = CODE[t.id].map((c,k)=>`<button class="tab${k===0?' active':''}" onclick="switchCode('${t.id}',${k},this)">${c.label}</button>`).join('');
+    const presH = CODE[t.id].map((c,k)=>`<pre id="${t.id}-code-${k}"${k===0?'':' class="hidden"'}><code>${highlight(c.code,c.lang)}</code></pre>`).join('');
+    codeH = `
+      <div class="code-wrap">
+        <div class="code-tabs">
+          <span class="lbl">サンプル</span>
+          ${tabsH}
+        </div>
+        ${presH}
+      </div>`;
+  }
+  const searchText = (t.name+' '+t.jp+' '+t.summary+' '+(t.analogy||'')+' '+t.badge+' '+(t.tags||[]).join(' ')).toLowerCase();
+  const catColor = CAT_META[t.cat].color;
+  return `
+  <article class="pcard" id="${t.id}" data-cat="${t.cat}" data-search="${esc(searchText)}">
+    <button class="pcard-head" aria-expanded="false" onclick="togglePattern('${t.id}')">
+      <span class="pnum" style="color:${catColor}">${idx}</span>
+      <span class="ptitle">${t.name}<small>${t.jp}</small></span>
+      <span class="pbadges">${badgeH}</span>
+      <span class="ptags">${tagsH}</span>
+      <span class="pchev" aria-hidden="true">&rsaquo;</span>
+    </button>
+    <p class="summary">${t.summary}</p>
+    <div class="pdetail">
+      ${analogyH}
+      <div class="meta-row">
+        <div class="meta"><h5>実施の目的</h5><p>${t.purpose}</p></div>
+        <div class="meta"><h5>誰が・いつ使うか</h5><p>${t.who}</p></div>
+      </div>
+      <div class="steps"><h5>実施の仕方（進め方）</h5><ol>${stepsLi}</ol></div>
+      ${diagramH}
+      <div class="grid2">
+        <div class="box pros"><h5>✓ 意識するポイント</h5><ul>${pointsLi}</ul></div>
+        <div class="box cons"><h5>！ 注意点・落とし穴</h5><ul>${cautionsLi}</ul></div>
+      </div>
+      <div class="meta-row">
+        <div class="meta"><h5>具体例</h5><ul>${exLi}</ul></div>
+        <div class="meta"><h5>混同しやすいものとの違い</h5><p>${t.related}</p></div>
+      </div>
+      <div class="meta" style="margin:16px 0"><h5>現場では（ツール・現代的な実践）</h5><p>${t.modern}</p></div>
+      ${codeH}
+      <label class="learn"><input type="checkbox" onchange="toggleLearned('${t.id}',this)">
+        このプラクティスを理解した（習得チェック）</label>
+    </div>
+  </article>`;
+}
+
+function build(){
+  document.getElementById('introProse').innerHTML = INTRO_HTML;
+  document.getElementById('techProse').innerHTML = TECH_HTML;
+  document.getElementById('closingProse').innerHTML = CLOSING_HTML;
+  const container = document.getElementById('practices-list');
+  let html='', n=0;
+  CAT_ORDER.forEach(cat=>{
+    const list = PRACTICES.filter(t=>t.cat===cat);
+    const meta = CAT_META[cat];
+    html += `<div class="cat-group" data-cat="${cat}">
+      <div class="cat-head" style="--cc:${meta.color}">
+        <span class="cat-dot"></span>
+        <h3>${meta.label}</h3>
+        <span class="cat-badge">${meta.en} · ${list.length}種</span>
+      </div>
+      <p class="cat-desc">${meta.desc}</p>`;
+    list.forEach(t=>{ n++; html += renderPractice(t, n); });
+    html += `</div>`;
+  });
+  container.innerHTML = html;
+  updateLearnUI();
+  buildQuiz();
+}
+
+function filterCat(cat, btn){
+  currentCat = cat;
+  document.querySelectorAll('.pill').forEach(b=>b.classList.remove('active'));
+  if(btn) btn.classList.add('active');
+  applyFilter();
+}
+function applyFilter(){
+  const si = document.getElementById('search');
+  const q = (si && si.value ? si.value : '').trim().toLowerCase();
+  document.querySelectorAll('.cat-group').forEach(g=>{
+    const catOk = (currentCat==='all' || currentCat===g.dataset.cat);
+    let shown = 0;
+    g.querySelectorAll('.pcard').forEach(c=>{
+      const hit = catOk && (!q || c.dataset.search.includes(q));
+      c.classList.toggle('hidden', !hit);
+      if(hit) shown++;
+    });
+    g.classList.toggle('hidden', shown===0);
+  });
+}
+
+/* ============== semver 判定デモ ============== */
+let svLastKind = null;
+function svBump(kind){ svLastKind = kind; svCalc(); }
+function svCalc(){
+  const raw = document.getElementById('svVer').value.trim();
+  const out = document.getElementById('svOut');
+  const m = raw.match(/^(\d+)\.(\d+)\.(\d+)$/);
+  if(!m){
+    out.className='demo-out ng';
+    out.innerHTML='<span class="pl">形式エラー</span>バージョンは <b>MAJOR.MINOR.PATCH</b> の形式（例：<b>1.4.2</b>）で入力してください。3つの数字をドットでつなぐのが semver の決まりです。';
+    return;
+  }
+  if(!svLastKind){
+    out.className='demo-out';
+    out.innerHTML='上のボタンから「どんな変更をしたリリースか」を選んでください。バージョンを <b>0.9.1</b> などの 0 始まりに変えて試すと、開発初期版の扱いも学べます。';
+    return;
+  }
+  const maj=+m[1], min=+m[2], pat=+m[3];
+  let next, pl, why;
+  if(svLastKind==='patch'){
+    next = maj+'.'+min+'.'+(pat+1); pl='PATCH を上げる';
+    why = '後方互換な<b>バグ修正のみ</b>なので、いちばん右の PATCH を +1 します。API は何も変わらないため、利用者は「直っただけ」と分かり、安心してすぐ更新できます。';
+  } else if(svLastKind==='minor'){
+    next = maj+'.'+(min+1)+'.0'; pl='MINOR を上げる';
+    why = '<b>後方互換な機能追加</b>なので MINOR を +1 し、PATCH は <b>0 にリセット</b>します。既存の使い方はそのまま動くので、利用者は新機能目当てに更新できます（<code>^'+raw+'</code> のような互換範囲指定にも収まります）。';
+  } else {
+    next = (maj+1)+'.0.0'; pl='MAJOR を上げる';
+    why = '<b>後方互換性を壊す変更</b>が1つでも含まれるので MAJOR を +1 し、MINOR と PATCH は <b>0 にリセット</b>します。利用者のコードが壊れる可能性がある：リリースノートで「何が壊れるか・どう移行するか」を必ず案内します。';
+  }
+  out.className = (svLastKind==='major') ? 'demo-out ng' : 'demo-out ok';
+  const extra = (maj===0)
+    ? '<br><span class="bd">0.y.z</span>MAJOR が 0 の間は「開発初期版」で、semver 上は<b>いつ何が変わってもよい</b>とされます。<b>1.0.0</b> の公開が「ここから互換性の約束を守ります」という宣言になります。'
+    : '';
+  out.innerHTML = '<span class="pl">'+pl+'</span><b>'+raw+' → '+next+'</b>。 '+why+extra;
+}
+
+/* ============== クイズ（in-memory） ============== */
+let quizState = {answered:0, correct:0};
+let quizOrder = [];
+function buildQuiz(){
+  quizState = {answered:0, correct:0};
+  quizOrder = QUIZ.map(q=>{
+    const idx = q.opts.map((_,k)=>k);
+    for(let i=idx.length-1;i>0;i--){ const j=Math.floor(Math.random()*(i+1)); const t=idx[i]; idx[i]=idx[j]; idx[j]=t; }
+    return idx;
+  });
+  const body = document.getElementById('quizBody');
+  if(!body) return;
+  body.innerHTML = QUIZ.map((q,i)=>`
+    <div class="quiz-q" id="qq${i}">
+      <p class="qtext">Q${i+1}. ${q.q}</p>
+      <div class="qopts">${quizOrder[i].map((oi,j)=>`<button onclick="answerQuiz(${i},${j},this)">${q.opts[oi]}</button>`).join('')}</div>
+      <p class="qwhy" hidden></p>
+    </div>`).join('');
+  updateQuizScore();
+}
+function answerQuiz(i, j, btn){
+  const q = QUIZ[i], box = document.getElementById('qq'+i);
+  if(box.classList.contains('answered')) return;
+  box.classList.add('answered');
+  box.querySelectorAll('.qopts button').forEach((b,k)=>{
+    b.disabled = true;
+    if(quizOrder[i][k]===q.a) b.classList.add('right');
+  });
+  const ok = (quizOrder[i][j]===q.a);
+  if(!ok) btn.classList.add('wrong');
+  quizState.answered++; if(ok) quizState.correct++;
+  const why = box.querySelector('.qwhy');
+  why.hidden = false;
+  why.innerHTML = (ok ? '<b>正解。</b> ' : `<b>不正解。</b>正解は <b>${q.opts[q.a]}</b>。 `) + q.why;
+  updateQuizScore();
+}
+function updateQuizScore(){
+  const el = document.getElementById('quizScore');
+  if(el) el.textContent = quizState.answered
+    ? `（${quizState.answered}問中 ${quizState.correct}問正解）` : `全${QUIZ.length}問。`;
+}
+
+/* ============== 言語切替（サイト共通・localStorage は site-lang のみ） ============== */
+function setLang(l){document.body.classList.remove('lang-ja','lang-en');document.body.classList.add('lang-'+l);document.documentElement.lang=l;
+ try{localStorage.setItem('site-lang',l)}catch(e){}
+ try{var q=new URLSearchParams(location.search);q.set('lang',l);history.replaceState(null,'',location.pathname+'?'+q+location.hash)}catch(e){}}
+function toggleLang(){setLang(document.body.classList.contains('lang-ja')?'en':'ja')}
+(function(){var u=null;try{u=new URLSearchParams(location.search).get('lang')}catch(e){}
+ var s=null;try{s=localStorage.getItem('site-lang')}catch(e){}
+ var l=(u==='en'||u==='ja')?u:((s==='en'||s==='ja')?s:'ja');if(l!=='ja')setLang(l);})();
+
+/* ページ内アンカー（本文中のリンク）でカードへ飛ぶとき、
+   絞り込みを解除して対象カードを開いてから移動する */
+document.addEventListener('click', function(e){
+  var a = e.target.closest('a[href^="#"]');
+  if(!a) return;
+  var id = a.getAttribute('href').slice(1);
+  var card = document.getElementById(id);
+  if(card && card.classList.contains('pcard')){
+    if(currentCat!=='all'){ filterCat('all', document.querySelector('.pill')); }
+    var si = document.getElementById('search');
+    if(si && si.value){ si.value=''; }
+    applyFilter();
+    card.classList.add('open');
+    var head = card.querySelector('.pcard-head');
+    if(head) head.setAttribute('aria-expanded','true');
+  }
+});
+
+window.addEventListener('DOMContentLoaded', function(){
+  build();
+  var si = document.getElementById('search');
+  if(si) si.addEventListener('input', applyFilter);
+  if('IntersectionObserver' in window){
+    var io = new IntersectionObserver(function(es){ es.forEach(function(e){ if(e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target); } }); },{threshold:0.12, rootMargin:"0px 0px -6% 0px"});
+    document.querySelectorAll('.reveal').forEach(function(el){ io.observe(el); });
+  } else { document.querySelectorAll('.reveal').forEach(function(el){ el.classList.add('in'); }); }
+});
+</script>
+<script>
+/* ==================== NAV SYSTEM v4 controllers (self-contained) ==================== */
+(function(){
+  function syncLangUI(l){
+    var ja = l==='ja';
+    var lists=document.querySelectorAll('.lswitch');
+    for(var i=0;i<lists.length;i++){
+      var a=lists[i].querySelector('.ls-ja'), e=lists[i].querySelector('.ls-en');
+      if(a) a.setAttribute('aria-pressed', ja?'true':'false');
+      if(e) e.setAttribute('aria-pressed', ja?'false':'true');
+    }
+  }
+  window.syncLangUI=syncLangUI;
+  if(typeof window.setLang==='function'){
+    var _setLang=window.setLang;
+    window.setLang=function(l){ _setLang(l); syncLangUI(l); };
+  }
+  syncLangUI(document.body.classList.contains('lang-en')?'en':'ja');
+
+  var groups=document.querySelectorAll('.navlinks .navgroup');
+  for(var g=0; g<groups.length; g++){ (function(grp){
+    var top=grp.querySelector('.navtop'), panel=grp.querySelector('.navpanel');
+    if(!panel||!top) return;
+    function set(x){ top.setAttribute('aria-expanded', x?'true':'false'); }
+    grp.addEventListener('mouseenter', function(){ grp.classList.remove('collapsed'); set(true); });
+    grp.addEventListener('mouseleave', function(){ set(false); });
+    grp.addEventListener('focusin', function(){ if(!grp.classList.contains('collapsed')) set(true); });
+    grp.addEventListener('focusout', function(e){ if(!grp.contains(e.relatedTarget)){ grp.classList.remove('collapsed'); set(false); } });
+    grp.addEventListener('keydown', function(e){ if(e.key==='Escape'){ grp.classList.add('collapsed'); set(false); top.focus(); } });
+  })(groups[g]); }
+
+  var tog=document.getElementById('navToggle'), ov=document.getElementById('mobnav');
+  if(tog && ov){
+    function openNav(){ document.body.classList.add('navopen'); tog.setAttribute('aria-expanded','true'); ov.setAttribute('aria-hidden','false');
+      var f=ov.querySelector('a,button'); if(f){ requestAnimationFrame(function(){ f.focus(); }); } }
+    function closeNav(){ document.body.classList.remove('navopen'); tog.setAttribute('aria-expanded','false'); ov.setAttribute('aria-hidden','true'); tog.focus(); }
+    tog.addEventListener('click', function(){ document.body.classList.contains('navopen')?closeNav():openNav(); });
+    ov.addEventListener('click', function(e){ if(e.target.closest('a')) closeNav(); });
+    document.addEventListener('keydown', function(e){ if(e.key==='Escape' && document.body.classList.contains('navopen')) closeNav(); });
+  }
+
+  /* F. TOC scroll-spy (IntersectionObserver, no scroll listeners) */
+  var bar=document.querySelector('.tocbar');
+  if(bar){
+    var pills=Array.prototype.slice.call(bar.querySelectorAll('.tocpill'));
+    var map={};
+    pills.forEach(function(p){ map[p.getAttribute('href').slice(1)]=p; });
+    if('IntersectionObserver' in window){
+      var spy=new IntersectionObserver(function(es){
+        es.forEach(function(e){
+          if(e.isIntersecting){
+            pills.forEach(function(p){ p.classList.remove('on'); });
+            var m=map[e.target.id]; if(m) m.classList.add('on');
+          }
+        });
+      },{rootMargin:'-45% 0px -50% 0px', threshold:0});
+      pills.forEach(function(p){ var s=document.getElementById(p.getAttribute('href').slice(1)); if(s) spy.observe(s); });
+    }
+  }
+
+  /* F. back to top */
+  var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var bt=document.querySelector('.totop'), sen=document.getElementById('toTopSentinel');
+  if(bt && sen && 'IntersectionObserver' in window){
+    new IntersectionObserver(function(es){
+      es.forEach(function(e){ if(e.isIntersecting) bt.classList.remove('show'); else bt.classList.add('show'); });
+    },{threshold:0}).observe(sen);
+  }
+  if(bt){ bt.addEventListener('click', function(){ window.scrollTo({top:0, behavior:reduce?'auto':'smooth'}); }); }
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,1902 @@
+<!DOCTYPE html>
+<html lang="ja" class="no-js">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>要求工学とユーザーストーリー学習ガイド - 「何を作るか」を確かめる技術 / Requirements Engineering</title>
+<meta name="description" content="A study guide to requirements engineering: functional and non-functional requirements, elicitation, specification (SRS), validation, requirements management, plus user stories, acceptance criteria and MVP, with purposes, procedures, key points, and a comprehension quiz. Part of Yuta Kimura's software engineering course materials.">
+<link rel="canonical" href="https://ykimu.github.io/course/requirements-engineering.html">
+<link rel="icon" href="../favicon.svg" type="image/svg+xml">
+<meta property="og:site_name" content="Yuta Kimura / 木村祐太">
+<meta property="og:type" content="article">
+<meta property="og:title" content="要求工学とユーザーストーリー学習ガイド - 「何を作るか」を確かめる技術 / Requirements Engineering">
+<meta property="og:description" content="A study guide to requirements engineering: functional and non-functional requirements, elicitation, specification, validation, requirements management, user stories and MVP, with a comprehension quiz.">
+<meta property="og:url" content="https://ykimu.github.io/course/requirements-engineering.html">
+<meta property="og:image" content="https://ykimu.github.io/assets/og.png">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="color-scheme" content="light">
+<script>document.documentElement.className="js";</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&family=Noto+Sans+JP:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#FBFCFB; --bg-2:#F3F6F4; --bg-3:#EBEFED; --card:#FFFFFF;
+    --ink:#101312; --ink-2:#3C4340; --muted:#6B746F; --faint:#B7C0BB;
+    --line:#E7ECE9; --hair:rgba(16,19,18,.08); --shell:rgba(16,19,18,.035);
+    --accent:#0E6F5C; --accent-2:#0A5748; --accent-soft:rgba(14,111,92,.08);
+    --soft:0 1px 2px rgba(16,19,18,.04), 0 24px 60px -28px rgba(16,19,18,.16);
+    --inhi:inset 0 1px 0 rgba(255,255,255,.85);
+    --ease:cubic-bezier(.32,.72,0,1);
+    --sans:"Plus Jakarta Sans","Noto Sans JP",-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+    --disp:"Space Grotesk","Plus Jakarta Sans","Noto Sans JP",sans-serif;
+    --mono:ui-monospace,SFMono-Regular,Menlo,Consolas,"Liberation Mono",monospace;
+    --maxw:1440px; --readw:clamp(680px, 62vw, 1060px);
+    /* category accents (kept within the brand green + neutral family) */
+    --elicit:#0E6F5C; --spec:#3E5C50; --agile:#8A6D3B;
+    /* compatibility aliases used by reused content/diagram/quiz markup */
+    --panel:var(--card); --panel2:var(--bg-2); --chip:var(--bg-3);
+    --code-bg:var(--shell); --code-ink:#2F3A33;
+    --good:#0E6F5C; --bad:#B04A3E; --warn:#8A6D3B; --accent2:var(--accent-2);
+    --kw:#0A5748; --ty:#3C4340; --st:#7A5C34; --cm:#87918C;
+  }
+  html{color-scheme:light}
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth; -webkit-text-size-adjust:100%}
+  body{margin:0; background:var(--bg); color:var(--ink); font-family:var(--sans);
+    font-size:17px; line-height:1.75; font-weight:400; -webkit-font-smoothing:antialiased; text-rendering:optimizeLegibility}
+  body.lang-ja [lang=en]{display:none}
+  body.lang-en [lang=ja]{display:none}
+  ::selection{background:rgba(14,111,92,.16)}
+  h1,h2,h3{margin:0; color:var(--ink); font-weight:500; line-height:1.16; letter-spacing:-.02em; font-family:var(--disp); text-wrap:balance}
+  body.lang-ja h1,body.lang-ja h2,body.lang-ja h3{letter-spacing:0; font-family:var(--sans)}
+  p,.lead,.cite,.muted-s{text-wrap:pretty}
+  [lang="en"]{line-break:auto}
+  [lang="ja"]{line-break:strict; word-break:normal}
+  h1 [lang="ja"],h2 [lang="ja"],h3 [lang="ja"]{word-break:auto-phrase}
+  p{margin:0 0 1em}
+  a{color:var(--accent-2); text-decoration:none; transition:color .3s var(--ease)}
+  a:hover{color:var(--accent)}
+  a:focus-visible,button:focus-visible,.btn:focus-visible,[tabindex]:focus-visible{outline:2px solid var(--accent); outline-offset:3px; border-radius:8px}
+  .wrap{max-width:var(--maxw); margin:0 auto; padding:0 40px}
+  [id]{scroll-margin-top:96px}
+  section{padding:100px 0}
+
+  .skip{position:fixed; top:10px; left:10px; padding:10px 16px; background:var(--ink); color:#fff; border-radius:999px; transform:translateY(-200%); transition:none; z-index:100}
+  .skip:focus{transform:none}
+
+  /* film grain overlay */
+  body::after{content:""; position:fixed; inset:0; z-index:1; pointer-events:none; opacity:.02;
+    background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='g'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23g)'/%3E%3C/svg%3E")}
+
+  h2.big{font-size:clamp(1.9rem,3.2vw,2.7rem); font-weight:500; letter-spacing:-.025em; max-width:26ch}
+  body.lang-ja h2.big{letter-spacing:-.01em; max-width:none}
+  .eyebrow,.kick{display:inline-flex; align-items:center; gap:8px; width:max-content; max-width:100%;
+    padding:5px 13px 5px 11px; border-radius:999px; border:1px solid var(--hair); background:#fff;
+    font:600 .66rem/1 var(--disp); letter-spacing:.14em; text-transform:uppercase; color:var(--ink-2); margin:0 0 18px}
+  .eyebrow::before,.kick::before{content:""; flex:0 0 auto; width:6px; height:6px; border-radius:50%; background:var(--accent)}
+  .lead{font-size:1.12rem; color:var(--ink-2); line-height:1.78; font-weight:400}
+
+  /* motion */
+  .js .reveal{opacity:0; transform:translateY(18px); filter:blur(6px); transition:opacity .9s var(--ease), transform .9s var(--ease), filter .9s var(--ease)}
+  .js .reveal.in{opacity:1; transform:none; filter:none}
+  @media (prefers-reduced-motion:reduce){
+    .js .reveal{opacity:1!important; transform:none!important; filter:none!important}
+    .btn:active,.btn.ink:hover .ic,.pcard:hover,.pill:hover{transform:none!important}
+    html{scroll-behavior:auto}
+  }
+
+  /* floating island nav */
+  header.bar{position:sticky; top:18px; z-index:60; background:transparent; border-bottom:none}
+  .bar .wrap{display:flex; align-items:center; justify-content:space-between;
+    width:max-content; max-width:calc(100% - 32px); margin:0 auto; height:auto;
+    padding:9px 12px 9px 20px; gap:20px; border-radius:999px;
+    background:rgba(255,255,255,.72); -webkit-backdrop-filter:saturate(1.4) blur(18px); backdrop-filter:saturate(1.4) blur(18px);
+    border:1px solid var(--hair); box-shadow:var(--soft)}
+  .brand{font-weight:600; font-size:.92rem; letter-spacing:-.01em; color:var(--ink); display:inline-flex; align-items:center; gap:8px}
+  .brand span.sep{color:var(--muted); font-weight:400; margin:0 2px}
+  .navlinks{display:flex; gap:22px; align-items:center}
+  .navlinks a{font-size:.86rem; font-weight:500; color:var(--ink-2); transition:color .3s var(--ease)}
+  .navlinks a:hover{color:var(--ink)}
+  @media(max-width:860px){.navlinks{display:none}}
+  .bar-right{display:flex; align-items:center; gap:8px}
+
+  /* buttons */
+  .btn{display:inline-flex; align-items:center; gap:10px; font:500 .85rem/1 var(--sans); padding:10px 18px;
+    border-radius:999px; border:1px solid var(--hair); background:#fff; color:var(--ink); cursor:pointer;
+    transition:transform .4s var(--ease), box-shadow .4s var(--ease), border-color .3s var(--ease), background .3s var(--ease), color .3s var(--ease)}
+  .btn:hover{border-color:var(--ink); transform:translateY(-1px); color:var(--ink)}
+  .btn:active{transform:scale(.98)}
+  .btn.ink{background:var(--ink); border-color:var(--ink); color:#fff; padding:10px 10px 10px 22px;
+    box-shadow:0 12px 26px -14px rgba(16,19,18,.5)}
+  .btn.ink:not(:has(.ic)){padding:10px 22px}
+  .btn.ink:hover{box-shadow:0 16px 32px -14px rgba(16,19,18,.55); color:#fff}
+  .btn .ic{width:32px; height:32px; border-radius:999px; background:rgba(255,255,255,.18); display:grid; place-items:center;
+    transition:transform .45s var(--ease); flex:0 0 auto}
+  .btn.ink:hover .ic{transform:translate(3px,-1px)}
+  .tlink{display:inline-flex; align-items:center; gap:8px; font-weight:500; font-size:.95rem; color:var(--ink)}
+  .tlink .ar{transition:transform .4s var(--ease)}
+  .tlink:hover .ar{transform:translateX(4px)}
+
+  /* hero */
+  .hero{position:relative; overflow:hidden}
+  .hero > .wrap{position:relative; z-index:1}
+  .hero::before{content:""; position:absolute; z-index:0; width:640px; height:640px; right:-150px; top:-240px;
+    border-radius:50%; pointer-events:none; opacity:.55;
+    background:radial-gradient(circle, var(--accent-soft), transparent 62%); filter:blur(20px)}
+  .hero .wrap{padding-top:72px; padding-bottom:70px}
+  .hero h1{font-size:clamp(2.6rem,5vw,4.2rem); font-weight:500; letter-spacing:-.03em; line-height:1.08; color:var(--ink); max-width:none}
+  body.lang-ja .hero h1{font-size:clamp(2rem,4.2vw,3.1rem); font-weight:500; letter-spacing:0; line-height:1.24}
+  .hero h1 em{font-style:normal; color:var(--accent)}
+  .hero .lead{max-width:var(--readw); margin-top:24px}
+  .ja-note{display:inline-flex; align-items:center; gap:8px; margin-top:22px; padding:7px 15px; border-radius:999px;
+    border:1px solid var(--hair); background:var(--accent-soft); font-size:.8rem; font-weight:500; color:var(--accent-2)}
+  .ja-note::before{content:""; width:6px; height:6px; border-radius:50%; background:var(--accent); flex:0 0 auto}
+  .hero-cta{display:flex; gap:20px; align-items:center; flex-wrap:wrap; margin-top:28px}
+
+  .soft-sec{background:var(--bg-2); border-top:1px solid var(--line); border-bottom:1px solid var(--line)}
+
+  /* prose */
+  .prose{max-width:var(--readw)}
+  .prose p{margin:0 0 1em; color:var(--ink-2)}
+  .prose h4{font-family:var(--sans); font-size:1.12rem; font-weight:600; letter-spacing:0; color:var(--ink); margin:1.6em 0 .6em}
+  .prose ul{margin:0 0 1.2em; padding-left:0; list-style:none}
+  .prose ul li{position:relative; padding-left:22px; margin:12px 0; color:var(--ink-2)}
+  .prose ul li::before{content:""; position:absolute; left:0; top:13px; width:11px; height:1.5px; background:var(--accent)}
+  .prose ul li b{color:var(--ink); font-weight:600}
+  .prose b{color:var(--ink); font-weight:600}
+  .prose i{color:var(--ink-2)}
+  .prose code{font-family:var(--mono); font-size:.86em; background:var(--shell); border:1px solid var(--hair); border-radius:6px; padding:.08em .4em; color:var(--accent-2)}
+
+  .callout{border-radius:16px; padding:18px 22px; margin:18px 0; max-width:var(--readw);
+    background:var(--card); box-shadow:0 0 0 6px var(--shell),0 0 0 6.5px var(--hair),var(--soft)}
+  .callout h4{margin:0 0 6px; font-size:1rem; font-family:var(--sans); font-weight:600; letter-spacing:0; color:var(--ink)}
+  .callout.tip{background:var(--accent-soft)}
+  .callout.warn{background:rgba(138,109,59,.08)}
+  .callout a{font-weight:600}
+
+  .principles{display:grid; grid-template-columns:repeat(auto-fit,minmax(230px,1fr)); gap:14px; margin:18px 0; max-width:var(--readw)}
+  .principles .p{background:var(--card); border-radius:16px; padding:16px 18px;
+    box-shadow:0 0 0 6px var(--shell),0 0 0 6.5px var(--hair),var(--soft)}
+  .principles .p b{color:var(--accent-2)}
+  .principles .p span{font-size:.9rem; color:var(--muted)}
+
+  .cmp-table{border-collapse:separate; border-spacing:0; margin:16px 0; max-width:var(--readw); width:100%; font-size:.92rem;
+    border-radius:14px; overflow:hidden; box-shadow:0 0 0 6px var(--shell),0 0 0 6.5px var(--hair),var(--soft)}
+  .cmp-table th,.cmp-table td{border-bottom:1px solid var(--line); border-right:1px solid var(--line); padding:11px 14px; text-align:left; vertical-align:top; background:var(--card)}
+  .cmp-table tr:last-child th,.cmp-table tr:last-child td{border-bottom:none}
+  .cmp-table th{background:var(--bg-2); font-weight:600; color:var(--ink)}
+  .cmp-table td:last-child,.cmp-table th:last-child{border-right:none}
+  .cmp-table td b{color:var(--accent-2)}
+
+  /* controls: category pills + search */
+  .controls{display:flex; align-items:center; justify-content:space-between; gap:20px; flex-wrap:wrap; margin:0 0 12px}
+  .pills{display:flex; gap:8px; flex-wrap:wrap}
+  .pill{display:inline-flex; align-items:center; gap:8px; font:500 .9rem/1 var(--sans); padding:9px 16px;
+    border-radius:999px; border:1px solid var(--hair); background:#fff; color:var(--ink-2); cursor:pointer;
+    transition:transform .4s var(--ease), border-color .3s var(--ease), background .3s var(--ease), color .3s var(--ease)}
+  .pill:hover{border-color:var(--ink); transform:translateY(-1px)}
+  .pill span{font:600 .72rem/1 var(--disp); color:var(--muted)}
+  .pill.active{background:var(--ink); border-color:var(--ink); color:#fff}
+  .pill.active span{color:rgba(255,255,255,.7)}
+  .ctrl-right{display:flex; align-items:center; gap:14px}
+  .search{width:min(280px,60vw); padding:10px 16px; border-radius:999px; border:1px solid var(--hair);
+    background:#fff; color:var(--ink); font:400 .9rem/1 var(--sans); outline:none; transition:border-color .3s var(--ease)}
+  .search:focus{border-color:var(--accent)}
+  .learn-note{font:600 .78rem/1 var(--disp); color:var(--muted); white-space:nowrap}
+
+  /* category groups */
+  .cat-group{margin-top:34px}
+  .cat-group.hidden{display:none}
+  .cat-head{display:flex; align-items:center; gap:12px; margin:0 0 4px}
+  .cat-head .cat-dot{width:10px; height:10px; border-radius:50%; background:var(--cc); flex:0 0 auto}
+  .cat-head h3{font-family:var(--sans); font-size:1.4rem; font-weight:600; letter-spacing:0; color:var(--ink)}
+  .cat-badge{font:600 .66rem/1 var(--disp); letter-spacing:.08em; text-transform:uppercase; color:var(--muted);
+    border:1px solid var(--hair); background:#fff; padding:5px 11px; border-radius:999px}
+  .cat-desc{max-width:var(--readw); color:var(--muted); font-size:.96rem; margin:0 0 12px}
+
+  /* test card (double-bezel) */
+  .pcard{border-radius:21px; background:var(--card); margin:16px 0; scroll-margin-top:96px;
+    box-shadow:0 0 0 7px var(--shell),0 0 0 7.5px var(--hair),var(--soft);
+    transition:box-shadow .4s var(--ease)}
+  .pcard.hidden{display:none}
+  .pcard-head{display:flex; align-items:center; gap:14px; width:100%; text-align:left;
+    background:transparent; border:none; cursor:pointer; padding:22px 26px 8px; font-family:var(--sans)}
+  .pnum{font:600 .95rem/1 var(--disp); font-variant-numeric:tabular-nums; flex:0 0 auto; min-width:24px}
+  .ptitle{font-family:var(--disp); font-weight:500; font-size:1.18rem; color:var(--ink); letter-spacing:-.01em; flex:0 0 auto}
+  .ptitle small{display:block; font-family:var(--sans); font-size:.8rem; color:var(--muted); font-weight:400; margin-top:2px}
+  .pbadges{display:flex; gap:8px; align-items:center}
+  .ptags{display:flex; gap:6px; flex-wrap:wrap; margin-left:auto; justify-content:flex-end}
+  .pchev{flex:0 0 auto; font-size:1.5rem; color:var(--muted); transition:transform .4s var(--ease); margin-left:6px; line-height:1}
+  .pcard.open .pchev{transform:rotate(90deg); color:var(--accent-2)}
+  .summary{margin:0; padding:0 26px 22px; color:var(--ink-2); font-size:1rem}
+  .summary strong{color:var(--ink); font-weight:600}
+  .pdetail{display:none; padding:0 26px 26px}
+  .pcard.open .pdetail{display:block}
+  .pcard.done-card{box-shadow:0 0 0 7px var(--accent-soft),0 0 0 7.5px rgba(14,111,92,.24),var(--soft)}
+
+  .badge-imp{font:700 .68rem/1 var(--disp); letter-spacing:.06em; padding:4px 10px; border-radius:999px; white-space:nowrap}
+  .imp3{background:var(--accent); color:#fff}
+  .imp2{background:var(--accent-soft); color:var(--accent-2)}
+  .imp1{background:var(--bg-3); color:var(--muted)}
+  .tag{font:500 .72rem/1 var(--sans); padding:5px 10px; border-radius:999px; background:var(--bg-2); color:var(--muted); border:1px solid var(--hair)}
+
+  .analogy{display:flex; gap:10px; align-items:flex-start; background:var(--accent-soft);
+    border-radius:14px; padding:14px 18px; margin:16px 0; font-size:.94rem; color:var(--ink-2)}
+  .analogy b{color:var(--accent-2); font-weight:600}
+
+  .grid2{display:grid; grid-template-columns:1fr 1fr; gap:16px; margin:18px 0}
+  .box{border-radius:16px; padding:16px 18px; background:var(--card);
+    box-shadow:0 0 0 6px var(--shell),0 0 0 6.5px var(--hair),var(--soft)}
+  .box h5{margin:0 0 10px; font-size:.92rem; font-family:var(--sans); font-weight:600; letter-spacing:0; display:flex; align-items:center; gap:7px}
+  .box.pros h5{color:var(--accent-2)}
+  .box.cons h5{color:var(--bad)}
+  .box ul{margin:0; padding-left:18px}
+  .box li{margin:6px 0; font-size:.9rem; color:var(--ink-2)}
+
+  .meta-row{display:grid; grid-template-columns:1fr 1fr; gap:16px; margin:16px 0}
+  .meta h5{margin:0 0 8px; font-size:.92rem; font-family:var(--sans); font-weight:600; letter-spacing:0; color:var(--accent-2)}
+  .meta p,.meta li{font-size:.92rem; color:var(--ink-2)}
+  .meta ul{margin:0; padding-left:18px}
+  .meta p{margin:0}
+  .meta code,.box code,.analogy code,.steps code{font-family:var(--mono); font-size:.86em; background:var(--shell); border:1px solid var(--hair); border-radius:5px; padding:.05em .35em; color:var(--accent-2)}
+
+  /* numbered procedure steps */
+  .steps{border-radius:16px; padding:16px 18px; margin:16px 0; background:var(--card);
+    box-shadow:0 0 0 6px var(--shell),0 0 0 6.5px var(--hair),var(--soft)}
+  .steps h5{margin:0 0 10px; font-size:.92rem; font-family:var(--sans); font-weight:600; letter-spacing:0; color:var(--accent-2)}
+  .steps ol{margin:0; padding:0; list-style:none; counter-reset:st}
+  .steps ol li{counter-increment:st; position:relative; padding-left:36px; margin:9px 0; font-size:.92rem; color:var(--ink-2)}
+  .steps ol li::before{content:counter(st); position:absolute; left:0; top:3px; width:23px; height:23px; border-radius:50%;
+    background:var(--accent-soft); color:var(--accent-2); font:600 .74rem/23px var(--disp); text-align:center}
+  .steps ol li b{color:var(--ink); font-weight:600}
+
+  /* diagrams */
+  .diagram-wrap{margin:18px 0; max-width:var(--readw)}
+  .diagram-wrap h5{margin:0 0 8px; font-size:.92rem; font-family:var(--sans); font-weight:600; letter-spacing:0; color:var(--accent-2)}
+  .diagram-wrap svg{display:block; width:100%; height:auto; background:var(--shell);
+    border:1px solid var(--hair); border-radius:12px; padding:8px}
+  .dg-box{fill:var(--card); stroke:var(--line); stroke-width:1.2}
+  .dg-if{stroke:var(--accent)}
+  .dg-lbl{fill:var(--ink); font-size:12px; font-weight:600; text-anchor:middle; font-family:var(--sans)}
+  .dg-st{fill:var(--accent-2); font-size:10px; text-anchor:middle}
+  .dg-line{stroke:var(--muted); stroke-width:1.4; fill:none}
+  .dg-dash{stroke-dasharray:5 4}
+  .dg-el{fill:var(--ink-2); font-size:10.5px; text-anchor:middle}
+  .dg-note{fill:var(--muted); font-size:11px; font-style:italic; text-anchor:middle}
+  .dg-legend{font-size:.78rem; color:var(--muted); margin-top:8px}
+
+  /* code blocks */
+  .code-wrap{margin-top:16px; border:1px solid var(--hair); border-radius:14px; overflow:hidden; background:var(--shell)}
+  .code-tabs{display:flex; align-items:center; gap:0; background:var(--bg-2); border-bottom:1px solid var(--hair)}
+  .code-tabs .lbl{margin-right:auto; padding:10px 16px; font:500 .78rem/1 var(--sans); color:var(--muted)}
+  .code-tabs .tab{background:transparent; border:none; color:var(--muted); padding:10px 18px; font:600 .82rem/1 var(--sans);
+    cursor:pointer; border-bottom:2px solid transparent; transition:color .3s var(--ease), border-color .3s var(--ease)}
+  .code-tabs .tab:hover{color:var(--ink)}
+  .code-tabs .tab.active{color:var(--ink); border-bottom-color:var(--accent)}
+  pre{margin:0; background:var(--shell); padding:16px 18px; overflow-x:auto; font-size:.82rem; line-height:1.65}
+  pre code{font-family:var(--mono); color:var(--code-ink); white-space:pre}
+  pre.hidden{display:none}
+  .kw{color:var(--kw); font-weight:600} .ty{color:var(--ty)} .st{color:var(--st)} .cm{color:var(--cm); font-style:italic}
+
+  .learn{display:inline-flex; align-items:center; gap:10px; margin-top:20px; font-size:.9rem;
+    color:var(--muted); cursor:pointer; user-select:none}
+  .learn input{accent-color:var(--accent); width:16px; height:16px; cursor:pointer}
+
+  /* equivalence-partition demo */
+  .demo{border-radius:16px; padding:20px 22px; margin:22px 0; max-width:var(--readw); background:var(--card);
+    box-shadow:0 0 0 6px var(--shell),0 0 0 6.5px var(--hair),var(--soft)}
+  .demo h4{margin:0 0 6px; font-size:1rem; font-family:var(--sans); font-weight:600; color:var(--ink)}
+  .demo .spec{font-size:.9rem; color:var(--muted); margin:0 0 14px}
+  .demo-row{display:flex; gap:10px; flex-wrap:wrap; align-items:center}
+  .demo input[type=text]{width:min(220px,100%); padding:10px 16px; border-radius:999px; border:1px solid var(--hair);
+    background:#fff; color:var(--ink); font:500 .95rem/1 var(--mono); outline:none; transition:border-color .3s var(--ease)}
+  .demo input[type=text]:focus{border-color:var(--accent)}
+  .demo .try{display:flex; gap:6px; flex-wrap:wrap}
+  .demo .try button{background:#fff; border:1px solid var(--hair); color:var(--ink-2); border-radius:999px;
+    padding:7px 13px; font:500 .82rem/1 var(--mono); cursor:pointer; transition:border-color .3s var(--ease), transform .3s var(--ease)}
+  .demo .try button:hover{border-color:var(--ink); transform:translateY(-1px)}
+  .demo-out{margin-top:14px; border-radius:12px; padding:14px 16px; font-size:.92rem; background:var(--bg-2); color:var(--ink-2)}
+  .demo-out b{font-weight:600}
+  .demo-out.ok{background:var(--accent-soft); }
+  .demo-out.ng{background:rgba(176,74,62,.08)}
+  .demo-out .pl{display:inline-block; font:600 .72rem/1 var(--disp); letter-spacing:.05em; padding:4px 10px; border-radius:999px; margin-right:8px}
+  .demo-out.ok .pl{background:var(--accent); color:#fff}
+  .demo-out.ng .pl{background:var(--bad); color:#fff}
+  .demo-out .bd{display:inline-block; font:600 .72rem/1 var(--disp); letter-spacing:.05em; padding:4px 10px; border-radius:999px; margin-right:8px; background:rgba(138,109,59,.15); color:var(--warn)}
+
+  /* quiz */
+  .quiz-q{border-radius:16px; padding:18px 20px; margin:16px 0; max-width:var(--readw); background:var(--card);
+    box-shadow:0 0 0 6px var(--shell),0 0 0 6.5px var(--hair),var(--soft)}
+  .qtext{margin:0 0 12px; font-weight:600; color:var(--ink)}
+  .qopts{display:flex; flex-wrap:wrap; gap:8px}
+  .qopts button{background:#fff; border:1px solid var(--hair); color:var(--ink); border-radius:999px;
+    padding:9px 16px; font:500 .88rem/1 var(--sans); cursor:pointer; transition:border-color .3s var(--ease), transform .3s var(--ease)}
+  .qopts button:hover:not(:disabled){border-color:var(--ink); transform:translateY(-1px)}
+  .qopts button:disabled{cursor:default}
+  .qopts button.right{background:var(--accent-soft); color:var(--accent-2); border-color:var(--accent); font-weight:600}
+  .qopts button.wrong{background:rgba(176,74,62,.1); color:var(--bad); border-color:var(--bad)}
+  .qwhy{font-size:.9rem; color:var(--ink-2); margin:12px 0 0; padding-top:12px; border-top:1px solid var(--line)}
+  .qwhy b{color:var(--ink); font-weight:600}
+  .quiz-reset{margin-top:16px}
+  #quizScore{color:var(--muted); font-size:.92rem; font-weight:500}
+
+  /* footer */
+  footer{border-top:1px solid var(--line); padding:64px 0 46px; background:var(--bg)}
+  footer h3{font-size:.72rem; font-weight:600; letter-spacing:.12em; text-transform:uppercase; color:var(--muted); margin:0 0 1em; font-family:var(--disp)}
+  .foot-grid{display:grid; grid-template-columns:1.4fr 1fr 1fr; gap:44px}
+  .cite{font-size:.98rem; color:var(--ink-2); line-height:1.7; max-width:56ch; margin-bottom:36px}
+  .muted-s{color:var(--muted); font-size:.9rem; line-height:1.75}
+  .muted-s b{color:var(--ink); font-weight:600}
+  .foot-rule{height:1px; background:var(--line); margin:44px 0 20px}
+  .foot-note{color:var(--muted); font-size:.82rem}
+  @media(max-width:760px){.foot-grid{grid-template-columns:1fr 1fr}}
+  @media(max-width:560px){.foot-grid{grid-template-columns:1fr}}
+
+  @media(max-width:860px){
+    section{padding:72px 0}
+    .hero .wrap{padding-top:52px; padding-bottom:56px}
+    .wrap{padding:0 24px}
+    .grid2,.meta-row{grid-template-columns:1fr}
+    .ptags{flex-basis:100%; margin-left:0; justify-content:flex-start}
+    .pcard-head{flex-wrap:wrap}
+  }
+  @media(max-width:640px){
+    .bar-right .btn:not(.ink):not(.jp-toggle){display:none}
+    .brand{font-size:.82rem}
+    .controls{align-items:flex-start; flex-direction:column}
+    .qopts button{flex:1 1 44%}
+  }
+
+  /* JP-only teaching page: fill content width for body text & boxes */
+  .lead,
+  .prose,
+  .callout,
+  .principles,
+  .cmp-table,
+  .diagram-wrap,
+  .demo{max-width:none !important}
+
+  /* ambiguous-requirement checker demo */
+  .demo textarea{width:100%; min-height:112px; padding:12px 16px; border-radius:14px; border:1px solid var(--hair);
+    background:#fff; color:var(--ink); font:400 .95rem/1.75 var(--sans); outline:none; resize:vertical; transition:border-color .3s var(--ease)}
+  .demo textarea:focus{border-color:var(--accent)}
+  .amb-text{white-space:pre-wrap; margin:0 0 10px}
+  .amb-hl{background:rgba(138,109,59,.16); border-bottom:2px solid var(--warn); border-radius:4px; padding:0 2px; font-weight:600; color:#5c4823}
+  .amb-hints{margin:10px 0 0; padding-left:0; list-style:none}
+  .amb-hints li{position:relative; padding-left:22px; margin:8px 0; font-size:.9rem; color:var(--ink-2)}
+  .amb-hints li::before{content:""; position:absolute; left:0; top:12px; width:11px; height:1.5px; background:var(--warn)}
+  .amb-hints li b{color:#7A5C34; font-weight:600}
+  /* ==================== NAV SYSTEM v4 (NAV_SPEC A-F) ==================== */
+  .navlinks{display:flex; gap:4px; align-items:center}
+  .navlinks .navgroup{position:relative; display:flex}
+  .navlinks .navtop{display:inline-flex; align-items:center; gap:7px; font-size:.86rem; font-weight:500;
+    color:var(--ink-2); padding:8px 13px; border-radius:999px; white-space:nowrap;
+    transition:color .3s var(--ease), background .3s var(--ease)}
+  .navlinks .navtop:hover{color:var(--ink)}
+  .navlinks .navgroup:hover .navtop,.navlinks .navgroup:focus-within .navtop{color:var(--ink); background:var(--bg-2)}
+  .navlinks .navtop.on{color:var(--ink)}
+  .navlinks .navtop.on::before{content:""; flex:0 0 auto; width:6px; height:6px; border-radius:50%; background:var(--accent)}
+  .navlinks .navpanel{position:absolute; top:100%; left:50%; margin-top:9px; min-width:238px; padding:10px;
+    transform:translateX(-50%) translateY(6px); text-align:left;
+    background:var(--card); border:1px solid var(--hair); border-radius:16px; box-shadow:var(--soft);
+    opacity:0; visibility:hidden; pointer-events:none;
+    transition:opacity .25s var(--ease), transform .25s var(--ease), visibility 0s linear .25s; z-index:5}
+  .navlinks .navpanel::before{content:""; position:absolute; top:-13px; left:0; right:0; height:14px}
+  .navlinks .navgroup:hover .navpanel,.navlinks .navgroup:focus-within .navpanel{
+    opacity:1; visibility:visible; pointer-events:auto; transform:translateX(-50%) translateY(0);
+    transition:opacity .25s var(--ease), transform .25s var(--ease), visibility 0s linear 0s}
+  .navlinks .navgroup.collapsed .navpanel{opacity:0; visibility:hidden; pointer-events:none}
+  .navlinks .navpanel a{display:flex; align-items:center; gap:9px; padding:9px 12px; border-radius:11px;
+    font-size:.85rem; font-weight:500; color:var(--ink-2); white-space:nowrap;
+    transition:background .25s var(--ease), color .25s var(--ease)}
+  .navlinks .navpanel a:hover{background:var(--accent-soft); color:var(--ink)}
+  .navlinks .navpanel a.here{background:var(--accent-soft); color:var(--ink)}
+  .navlinks .navpanel a.here::before{content:""; flex:0 0 auto; width:6px; height:6px; border-radius:50%; background:var(--accent)}
+  .navlinks .navlabel{padding:8px 12px 3px; font:600 .6rem/1 var(--disp); letter-spacing:.13em;
+    text-transform:uppercase; color:var(--muted)}
+  .navlinks .navpanel hr.navdiv{border:0; border-top:1px solid var(--line); margin:8px 6px}
+
+  .lswitch{display:inline-flex; align-items:center; gap:2px; padding:3px; border-radius:999px;
+    border:1px solid var(--hair); background:#fff}
+  .lswitch button{appearance:none; -webkit-appearance:none; border:0; background:transparent; cursor:pointer;
+    font:600 .78rem/1 var(--disp); letter-spacing:.03em; color:var(--ink-2); padding:8px 13px; border-radius:999px;
+    transition:background .3s var(--ease), color .3s var(--ease)}
+  .lswitch button:hover{color:var(--ink)}
+  body.lang-ja .lswitch .ls-ja,body.lang-en .lswitch .ls-en{background:var(--ink); color:#fff}
+
+  .navtoggle{display:none; position:relative; width:42px; height:42px; flex:0 0 auto;
+    border-radius:999px; border:1px solid var(--hair); background:#fff; cursor:pointer; padding:0}
+  .navtoggle span{position:absolute; left:11px; right:11px; height:2px; background:var(--ink); border-radius:2px;
+    transition:transform .35s var(--ease), opacity .2s var(--ease)}
+  .navtoggle span:nth-child(1){top:15px}
+  .navtoggle span:nth-child(2){top:20px}
+  .navtoggle span:nth-child(3){top:25px}
+  body.navopen .navtoggle span:nth-child(1){transform:translateY(5px) rotate(45deg)}
+  body.navopen .navtoggle span:nth-child(2){opacity:0}
+  body.navopen .navtoggle span:nth-child(3){transform:translateY(-5px) rotate(-45deg)}
+
+  .mobnav{position:fixed; inset:0; z-index:80; display:flex; flex-direction:column; overflow-y:auto;
+    background:rgba(251,252,251,.9); -webkit-backdrop-filter:saturate(1.2) blur(24px); backdrop-filter:saturate(1.2) blur(24px);
+    opacity:0; visibility:hidden; pointer-events:none;
+    transition:opacity .35s var(--ease), visibility 0s linear .35s}
+  body.navopen .mobnav{opacity:1; visibility:visible; pointer-events:auto; transition:opacity .35s var(--ease), visibility 0s linear 0s}
+  body.navopen{overflow:hidden}
+  body.navopen header.bar{z-index:90}
+  .mobnav-inner{width:100%; max-width:600px; margin:0 auto; padding:104px 28px 64px;
+    display:flex; flex-direction:column; gap:24px}
+  .mobgroup{display:flex; flex-direction:column; gap:1px}
+  .moblabel{font:600 .64rem/1 var(--disp); letter-spacing:.14em; text-transform:uppercase; color:var(--muted); margin-bottom:9px}
+  .mobgroup a{font-size:1.28rem; font-weight:500; color:var(--ink); padding:7px 0; line-height:1.24}
+  .mobgroup a:hover{color:var(--accent-2)}
+  .mobgroup a.here{color:var(--accent-2)}
+  .mobgroup a.here::before{content:""; display:inline-block; width:6px; height:6px; border-radius:50%;
+    background:var(--accent); margin-right:9px; vertical-align:middle}
+  .mobfoot{display:flex; align-items:center; justify-content:space-between; gap:16px; flex-wrap:wrap;
+    margin-top:6px; padding-top:22px; border-top:1px solid var(--line)}
+  .mobext{font-size:1rem; font-weight:500; color:var(--ink-2)}
+  .mobext:hover{color:var(--ink)}
+  .js .mobnav-inner > *{opacity:0; transform:translateY(12px);
+    transition:opacity .4s var(--ease), transform .4s var(--ease)}
+  body.navopen .mobnav-inner > *{opacity:1; transform:none}
+  body.navopen .mobnav-inner > *:nth-child(1){transition-delay:.04s}
+  body.navopen .mobnav-inner > *:nth-child(2){transition-delay:.08s}
+  body.navopen .mobnav-inner > *:nth-child(3){transition-delay:.12s}
+  body.navopen .mobnav-inner > *:nth-child(4){transition-delay:.16s}
+  body.navopen .mobnav-inner > *:nth-child(5){transition-delay:.20s}
+  body.navopen .mobnav-inner > *:nth-child(6){transition-delay:.24s}
+
+  /* E. breadcrumb */
+  .crumbs{display:flex; flex-wrap:wrap; align-items:center; gap:7px; margin:0;
+    font-size:.8rem; font-weight:500; color:var(--muted)}
+  .crumbs a{color:var(--muted)}
+  .crumbs a:hover{color:var(--ink)}
+  .crumbs .csep{color:var(--faint)}
+  .crumbs .cur{color:var(--ink)}
+
+  /* F. sticky TOC bar */
+  .tocbar{position:sticky; top:84px; z-index:40; margin:8px 0 0;
+    background:rgba(255,255,255,.82); -webkit-backdrop-filter:saturate(1.4) blur(14px); backdrop-filter:saturate(1.4) blur(14px);
+    border-top:1px solid var(--hair); border-bottom:1px solid var(--hair)}
+  .tocbar-inner{max-width:var(--maxw); margin:0 auto; padding:9px 40px; display:flex; gap:8px;
+    overflow-x:auto; scrollbar-width:none; -ms-overflow-style:none}
+  .tocbar-inner::-webkit-scrollbar{display:none}
+  .tocpill{flex:0 0 auto; display:inline-flex; align-items:center; gap:7px; padding:7px 14px; border-radius:999px;
+    font-size:.8rem; font-weight:500; color:var(--ink-2); border:1px solid transparent; white-space:nowrap;
+    transition:background .25s var(--ease), color .25s var(--ease), border-color .25s var(--ease)}
+  .tocpill:hover{color:var(--ink); border-color:var(--hair)}
+  .tocpill.on{background:var(--accent-soft); color:var(--ink)}
+  .tocpill.on::before{content:""; flex:0 0 auto; width:6px; height:6px; border-radius:50%; background:var(--accent)}
+  section[id]{scroll-margin-top:150px}
+
+  /* F. back to top */
+  .totop{position:fixed; right:22px; bottom:22px; z-index:55; width:46px; height:46px; border-radius:999px;
+    display:grid; place-items:center; background:#fff; border:1px solid var(--hair); box-shadow:var(--soft);
+    color:var(--ink); cursor:pointer; font-size:1.15rem; line-height:1;
+    opacity:0; transform:translateY(10px) scale(.9); pointer-events:none;
+    transition:opacity .35s var(--ease), transform .35s var(--ease)}
+  .totop.show{opacity:1; transform:none; pointer-events:auto}
+  .totop:hover{transform:translateY(-2px)}
+
+  @media(max-width:860px){
+    .navtoggle{display:block}
+    .navlinks{display:none}
+    .bar-right .btn{display:none}
+    .tocbar{top:76px}
+  }
+  @media(max-width:430px){
+    .bar-right .lswitch{display:none}
+  }
+  @media (prefers-reduced-motion:reduce){
+    .navlinks .navpanel,.navtoggle span,.mobnav,.js .mobnav-inner > *,.navtop,.lswitch button,.totop,.tocpill{transition-duration:.001ms !important}
+    .js .mobnav-inner > *{transition-delay:0s !important}
+    .navtoggle:hover,.totop:hover{transform:none !important}
+  }
+</style>
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[
+{"@type":"ListItem","position":1,"name":"ホーム","item":"https://ykimu.github.io/"},
+{"@type":"ListItem","position":2,"name":"教育","item":"https://ykimu.github.io/teaching.html"},
+{"@type":"ListItem","position":3,"name":"ソフトウェア工学","item":"https://ykimu.github.io/course/index.html"},
+{"@type":"ListItem","position":4,"name":"要求工学とユーザーストーリー学習ガイド","item":"https://ykimu.github.io/course/requirements-engineering.html"}
+]}
+</script>
+</head>
+<body class="lang-ja">
+
+<a class="skip" href="#main"><span lang="ja">本文へスキップ</span><span lang="en">Skip to content</span></a>
+
+<header class="bar">
+  <div class="wrap">
+    <a class="brand" href="../index.html">
+      <span aria-hidden="true">&lsaquo;</span>
+      <span lang="ja">Yuta Kimura</span><span lang="en">Yuta Kimura</span>
+      <span class="sep">·</span><span lang="ja">木村祐太</span><span lang="en">Kimura</span>
+    </a>
+    <nav class="navlinks" aria-label="メイン">
+      <div class="navgroup">
+        <a class="navtop" href="../publications.html" aria-haspopup="true" aria-expanded="false"><span lang="ja">研究</span><span lang="en">Research</span></a>
+        <div class="navpanel">
+          <a href="../publications.html"><span lang="ja">業績・研究活動</span><span lang="en">Publications &amp; activity</span></a>
+          <a href="../research/technical-debt-metrics.html"><span lang="ja">技術的負債とメトリクス</span><span lang="en">Technical debt &amp; metrics</span></a>
+          <a href="../research/apr-coding-standards.html"><span lang="ja">自動生成パッチと規約</span><span lang="en">Auto-generated patches &amp; standards</span></a>
+          <a href="../research/td-repayment-refactoring.html"><span lang="ja">負債返済とリファクタリング</span><span lang="en">Debt repayment &amp; refactoring</span></a>
+          <a href="../research/satd-issue-classification.html"><span lang="ja">課題票の負債分類</span><span lang="en">Issue-ticket debt classification</span></a>
+        </div>
+      </div>
+      <div class="navgroup">
+        <a class="navtop on" href="../teaching.html" aria-haspopup="true" aria-expanded="false"><span lang="ja">教育</span><span lang="en">Teaching</span></a>
+        <div class="navpanel">
+          <div class="navlabel"><span lang="ja">科目</span><span lang="en">Courses</span></div>
+          <a href="../teaching.html"><span lang="ja">教育・担当授業</span><span lang="en">Teaching &amp; courses</span></a>
+          <a href="index.html"><span lang="ja">ソフトウェア工学</span><span lang="en">Software Engineering</span></a>
+          <a href="logic-circuits.html"><span lang="ja">論理回路1</span><span lang="en">Logic Circuits I</span></a>
+          <a href="intelligent-informatics-1.html"><span lang="ja">知能情報実験実習1</span><span lang="en">Intelligent Informatics Lab I</span></a>
+          <hr class="navdiv">
+          <div class="navlabel"><span lang="ja">教材</span><span lang="en">Materials</span></div>
+          <a href="design-patterns.html"><span lang="ja">デザインパターン学習ガイド</span><span lang="en">Design Patterns Guide</span></a>
+          <a href="software-architecture.html"><span lang="ja">アーキテクチャパターン大全</span><span lang="en">Software Architecture</span></a>
+          <a href="uml-guide.html"><span lang="ja">クラス図/シーケンス図ガイド</span><span lang="en">UML Diagram Guide</span></a>
+          <a href="software-testing.html"><span lang="ja">ソフトウェアテスト学習ガイド</span><span lang="en">Software Testing Guide</span></a>
+          <a href="agile-scrum.html"><span lang="ja">アジャイル開発とスクラム</span><span lang="en">Agile &amp; Scrum</span></a>
+          <a class="here" href="requirements-engineering.html" aria-current="page"><span lang="ja">要求工学</span><span lang="en">Requirements Engineering</span></a>
+          <a href="software-evolution.html"><span lang="ja">ソフトウェア進化と技術的負債</span><span lang="en">Software Evolution</span></a>
+          <a href="software-reuse-oss.html"><span lang="ja">ソフトウェア再利用とOSS</span><span lang="en">Software Reuse &amp; OSS</span></a>
+          <a href="project-management.html"><span lang="ja">プロジェクト管理と見積もり</span><span lang="en">Project Management</span></a>
+          <a href="version-control-cicd.html"><span lang="ja">バージョン管理とCI/CD</span><span lang="en">Version Control &amp; CI/CD</span></a>
+        </div>
+      </div>
+      <div class="navgroup">
+        <a class="navtop" href="../software-engineering.html" aria-haspopup="true" aria-expanded="false"><span lang="ja">ガイド</span><span lang="en">Guides</span></a>
+        <div class="navpanel">
+          <a href="../software-engineering.html"><span lang="ja">ソフトウェア工学とは</span><span lang="en">What is software engineering</span></a>
+          <a href="../technical-debt.html"><span lang="ja">技術的負債とは</span><span lang="en">What is technical debt</span></a>
+          <a href="../glossary.html"><span lang="ja">研究用語ミニ辞典</span><span lang="en">Research glossary</span></a>
+        </div>
+      </div>
+      <div class="navgroup">
+        <a class="navtop" href="../students.html"><span lang="ja">学生の皆さんへ</span><span lang="en">For Students</span></a>
+      </div>
+    </nav>
+    <div class="bar-right">
+      <a class="btn" href="https://researchmap.jp/kimura_yuta" target="_blank" rel="noopener">researchmap</a>
+      <div class="lswitch" role="group" aria-label="言語 / Language">
+        <button type="button" class="ls-ja" onclick="setLang('ja')" aria-pressed="true">JA</button>
+        <button type="button" class="ls-en" onclick="setLang('en')" aria-pressed="false">EN</button>
+      </div>
+      <button class="navtoggle" id="navToggle" type="button" aria-label="メニュー" aria-expanded="false" aria-controls="mobnav">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </div>
+</header>
+
+<div class="mobnav" id="mobnav" aria-hidden="true">
+  <div class="mobnav-inner">
+    <div class="mobgroup">
+      <div class="moblabel"><span lang="ja">研究</span><span lang="en">Research</span></div>
+      <a href="../publications.html"><span lang="ja">業績・研究活動</span><span lang="en">Publications &amp; activity</span></a>
+      <a href="../research/technical-debt-metrics.html"><span lang="ja">技術的負債とメトリクス</span><span lang="en">Technical debt &amp; metrics</span></a>
+      <a href="../research/apr-coding-standards.html"><span lang="ja">自動生成パッチと規約</span><span lang="en">Auto-generated patches &amp; standards</span></a>
+      <a href="../research/td-repayment-refactoring.html"><span lang="ja">負債返済とリファクタリング</span><span lang="en">Debt repayment &amp; refactoring</span></a>
+      <a href="../research/satd-issue-classification.html"><span lang="ja">課題票の負債分類</span><span lang="en">Issue-ticket debt classification</span></a>
+    </div>
+    <div class="mobgroup">
+      <div class="moblabel"><span lang="ja">教育</span><span lang="en">Teaching</span></div>
+      <a href="../teaching.html"><span lang="ja">教育・担当授業</span><span lang="en">Teaching &amp; courses</span></a>
+      <a href="index.html"><span lang="ja">ソフトウェア工学</span><span lang="en">Software Engineering</span></a>
+      <a href="logic-circuits.html"><span lang="ja">論理回路1</span><span lang="en">Logic Circuits I</span></a>
+      <a href="intelligent-informatics-1.html"><span lang="ja">知能情報実験実習1</span><span lang="en">Intelligent Informatics Lab I</span></a>
+      <a href="design-patterns.html"><span lang="ja">デザインパターン学習ガイド</span><span lang="en">Design Patterns Guide</span></a>
+      <a href="software-architecture.html"><span lang="ja">アーキテクチャパターン大全</span><span lang="en">Software Architecture</span></a>
+      <a href="uml-guide.html"><span lang="ja">クラス図/シーケンス図ガイド</span><span lang="en">UML Diagram Guide</span></a>
+      <a href="software-testing.html"><span lang="ja">ソフトウェアテスト学習ガイド</span><span lang="en">Software Testing Guide</span></a>
+      <a href="agile-scrum.html"><span lang="ja">アジャイル開発とスクラム</span><span lang="en">Agile &amp; Scrum</span></a>
+      <a class="here" href="requirements-engineering.html" aria-current="page"><span lang="ja">要求工学</span><span lang="en">Requirements Engineering</span></a>
+      <a href="software-evolution.html"><span lang="ja">ソフトウェア進化と技術的負債</span><span lang="en">Software Evolution</span></a>
+      <a href="software-reuse-oss.html"><span lang="ja">ソフトウェア再利用とOSS</span><span lang="en">Software Reuse &amp; OSS</span></a>
+      <a href="project-management.html"><span lang="ja">プロジェクト管理と見積もり</span><span lang="en">Project Management</span></a>
+      <a href="version-control-cicd.html"><span lang="ja">バージョン管理とCI/CD</span><span lang="en">Version Control &amp; CI/CD</span></a>
+    </div>
+    <div class="mobgroup">
+      <div class="moblabel"><span lang="ja">ガイド</span><span lang="en">Guides</span></div>
+      <a href="../software-engineering.html"><span lang="ja">ソフトウェア工学とは</span><span lang="en">What is software engineering</span></a>
+      <a href="../technical-debt.html"><span lang="ja">技術的負債とは</span><span lang="en">What is technical debt</span></a>
+      <a href="../glossary.html"><span lang="ja">研究用語ミニ辞典</span><span lang="en">Research glossary</span></a>
+    </div>
+    <div class="mobgroup">
+      <div class="moblabel"><span lang="ja">学生の皆さんへ</span><span lang="en">For Students</span></div>
+      <a href="../students.html"><span lang="ja">学生の皆さんへ</span><span lang="en">For Students</span></a>
+    </div>
+    <div class="mobfoot">
+      <a class="mobext" href="https://researchmap.jp/kimura_yuta" target="_blank" rel="noopener">researchmap</a>
+      <div class="lswitch" role="group" aria-label="言語 / Language">
+        <button type="button" class="ls-ja" onclick="setLang('ja')" aria-pressed="true">JA</button>
+        <button type="button" class="ls-en" onclick="setLang('en')" aria-pressed="false">EN</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<main id="main">
+
+<button class="totop" type="button" aria-label="上へ戻る" title="上へ戻る">&uarr;</button>
+
+<div class="wrap" style="padding-top:24px">
+  <nav class="crumbs" aria-label="パンくず">
+    <a href="../index.html"><span lang="ja">ホーム</span><span lang="en">Home</span></a>
+    <span class="csep" aria-hidden="true">&rsaquo;</span>
+    <a href="../teaching.html"><span lang="ja">教育</span><span lang="en">Teaching</span></a>
+    <span class="csep" aria-hidden="true">&rsaquo;</span>
+    <a href="index.html"><span lang="ja">ソフトウェア工学</span><span lang="en">Software Engineering</span></a>
+    <span class="csep" aria-hidden="true">&rsaquo;</span>
+    <span class="cur" aria-current="page"><span lang="ja">要求工学とユーザーストーリー学習ガイド</span><span lang="en">Requirements Engineering Guide</span></span>
+  </nav>
+</div>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="wrap">
+    <p class="kick">Requirements Engineering</p>
+    <h1>要求工学：<em>「何を作るか」</em>を確かめる技術</h1>
+    <p class="lead">ソフトウェア開発の失敗の多くは、コードを書く前：「何を作るか」の合意でつまずいています。要求工学は、ステークホルダのニーズを<strong>発見（抽出）し、分析し、文書化（仕様化）し、妥当性を確認し、変更を管理する</strong>一連の活動です。機能要求と非機能要求、利用者要求とシステム要求という基本の区別から、インタビュー・エスノグラフィ・ユースケース・SRS・トレーサビリティ、そしてアジャイル開発のユーザーストーリー・受入れ基準・MVPまで、<strong>目的・進め方・意識するポイント・注意点</strong>つきで整理しました。曖昧な要求文を検出する体験デモ、理解度クイズ付きです。</p>
+    <p class="ja-note"><span lang="ja">この教材は日本語のみで提供しています</span><span lang="en">This learning material is available in Japanese only.</span></p>
+    <div class="hero-cta">
+      <a class="btn ink" href="#requirements" style="padding:12px 22px">
+        <span lang="ja">要求カタログへ</span><span lang="en">Jump to the catalog</span>
+      </a>
+      <a class="tlink" href="#quiz">
+        <span lang="ja">理解度クイズへ</span><span lang="en">Comprehension quiz</span>
+        <span class="ar" aria-hidden="true">&rsaquo;</span>
+      </a>
+    </div>
+  </div>
+</div>
+
+<div id="toTopSentinel" aria-hidden="true"></div>
+
+<div class="tocbar">
+  <nav class="tocbar-inner" aria-label="ページ内目次">
+    <a class="tocpill" href="#intro"><span lang="ja">はじめに</span><span lang="en">Intro</span></a>
+    <a class="tocpill" href="#requirements"><span lang="ja">活動カタログ</span><span lang="en">Catalog</span></a>
+    <a class="tocpill" href="#techniques"><span lang="ja">要求の書き方</span><span lang="en">Writing</span></a>
+    <a class="tocpill" href="#quiz"><span lang="ja">理解度クイズ</span><span lang="en">Quiz</span></a>
+    <a class="tocpill" href="#closing"><span lang="ja">心構え</span><span lang="en">Wrap-up</span></a>
+  </nav>
+</div>
+
+<!-- INTRO -->
+<section id="intro" style="padding-top:20px">
+  <div class="wrap reveal">
+    <p class="eyebrow"><span lang="ja">はじめに</span><span lang="en">Introduction</span></p>
+    <h2 class="big"><span lang="ja">要求工学とは何か</span><span lang="en">What is requirements engineering?</span></h2>
+    <div class="prose" id="introProse" style="margin-top:22px"></div>
+  </div>
+</section>
+
+<!-- REQUIREMENTS CATALOG -->
+<section class="soft-sec" id="requirements" style="padding-top:80px">
+  <div class="wrap">
+    <p class="eyebrow reveal"><span lang="ja">要求カタログ</span><span lang="en">Requirements catalog</span></p>
+    <h2 class="big reveal"><span lang="ja">10の活動・技法カタログ</span><span lang="en">Ten activities and techniques</span></h2>
+    <p class="lead reveal" style="max-width:var(--readw); margin-top:18px">要求工学のプロセス（抽出と分析／仕様化と品質）に加えて、アジャイル開発における要求の現代的な形（ユーザーストーリー・バックログ・MVP）も収録しました。カテゴリで絞り込み、各カードをクリックすると、目的・進め方・意識するポイント・注意点・具体例が開きます。</p>
+    <div class="controls reveal" style="margin-top:26px">
+      <div class="pills" role="tablist" aria-label="カテゴリ切替">
+        <button class="pill active" onclick="filterCat('all',this)">すべて<span>10</span></button>
+        <button class="pill" onclick="filterCat('elicit',this)">抽出と分析<span>4</span></button>
+        <button class="pill" onclick="filterCat('spec',this)">仕様化と品質<span>4</span></button>
+        <button class="pill" onclick="filterCat('agile',this)">アジャイルな要求<span>2</span></button>
+      </div>
+      <div class="ctrl-right">
+        <input id="search" class="search" type="text" placeholder="名前・キーワードで絞り込み" aria-label="カードを絞り込み">
+        <span class="learn-note" id="learnNote"></span>
+      </div>
+    </div>
+    <div id="tests-list"></div>
+  </div>
+</section>
+
+<!-- AMBIGUITY CHECKER -->
+<section id="techniques">
+  <div class="wrap">
+    <p class="eyebrow reveal"><span lang="ja">要求の書き方</span><span lang="en">Writing requirements</span></p>
+    <h2 class="big reveal"><span lang="ja">曖昧な要求を、検証できる要求へ</span><span lang="en">From vague to verifiable</span></h2>
+    <div class="prose reveal" id="techProse" style="margin-top:22px"></div>
+    <div class="demo reveal" id="ambDemo">
+      <h4>体験デモ：あいまい要求チェッカー</h4>
+      <p class="spec">要求文を入力すると、<b>曖昧語</b>（「高速に」「使いやすい」「適切に」「〜など」…）を検出してハイライトし、<b>計量化のヒント</b>を提示します。レビューで曖昧語を探す「レビューアの目」を体験してみましょう。</p>
+      <div class="demo-row" style="width:100%">
+        <textarea id="ambInput" aria-label="検査する要求文" placeholder="例：システムは大量のアクセスに対しても高速に応答し、使いやすい画面を提供すること。" oninput="ambCheck()"></textarea>
+      </div>
+      <div class="demo-row" style="margin-top:10px">
+        <div class="try" aria-label="サンプル文を試す">
+          <button onclick="ambTry(0)">サンプル①：性能の要求</button>
+          <button onclick="ambTry(1)">サンプル②：運用の要求</button>
+          <button onclick="ambTry(2)">サンプル③：書き直した要求</button>
+        </div>
+      </div>
+      <div class="demo-out" id="ambOut">要求文を入力するか、上のボタンでサンプル文を試してください。曖昧語が検出されると、その語を<b>測定可能な記述</b>に直すヒントが表示されます。</div>
+    </div>
+  </div>
+</section>
+
+<!-- QUIZ -->
+<section class="soft-sec" id="quiz" style="padding-top:80px">
+  <div class="wrap">
+    <p class="eyebrow reveal"><span lang="ja">理解度チェック</span><span lang="en">Check your understanding</span></p>
+    <h2 class="big reveal"><span lang="ja">理解度チェッククイズ</span><span lang="en">Comprehension quiz</span></h2>
+    <p class="lead reveal" style="max-width:var(--readw); margin-top:18px">それぞれの状況に<strong>もっとも適した用語・技法</strong>を選んでください。<span id="quizScore"></span></p>
+    <div id="quizBody" class="reveal"></div>
+    <button class="btn ink quiz-reset" onclick="buildQuiz()" style="padding:11px 22px">
+      <span lang="ja">もう一度挑戦する</span><span lang="en">Try again</span>
+    </button>
+  </div>
+</section>
+
+<!-- CLOSING -->
+<section id="closing">
+  <div class="wrap reveal">
+    <p class="eyebrow"><span lang="ja">おわりに</span><span lang="en">In closing</span></p>
+    <h2 class="big"><span lang="ja">要求に向き合う心構えと、さらに学ぶために</span><span lang="en">How to think about requirements, and where to learn more</span></h2>
+    <div class="prose" id="closingProse" style="margin-top:22px"></div>
+  </div>
+</section>
+
+</main>
+
+<!-- FOOTER -->
+<footer>
+  <div class="wrap">
+    <div class="cite">
+      <span lang="ja">要求工学の全体像（機能要求と非機能要求、要求の抽出・分析・仕様化・妥当性確認・管理、ユーザーストーリーとMVP）を、これから学ぶ方向けにまとめた学習ガイドです。木村祐太のソフトウェア工学の授業教材の一部としてご覧いただけます。授業の詳細（評価方法・日程等）は最新のシラバスを確認してください。</span>
+      <span lang="en">A study guide to requirements engineering (functional and non-functional requirements; elicitation, specification, validation and management; user stories and MVP), for those new to it. Part of Yuta Kimura's software engineering course materials. For course details such as assessment and schedule, please refer to the latest syllabus.</span>
+    </div>
+    <div class="foot-grid">
+      <div>
+        <h3><span lang="ja">連絡先</span><span lang="en">Contact</span></h3>
+        <p class="muted-s">
+          <b>木村 祐太 / Yuta Kimura</b><br>
+          <span lang="ja">大阪公立大学工業高等専門学校</span><span lang="en">Osaka Metropolitan University College of Technology</span><br>
+          <a href="mailto:y.kimura@omu.ac.jp">y.kimura [at] omu.ac.jp</a>
+        </p>
+      </div>
+      <div>
+        <h3><span lang="ja">サイト</span><span lang="en">Site</span></h3>
+        <p class="muted-s">
+          <a href="../index.html"><span lang="ja">ホーム</span><span lang="en">Home</span></a><br>
+          <a href="../publications.html"><span lang="ja">業績・研究活動</span><span lang="en">Publications &amp; research activities</span></a><br>
+          <a href="../teaching.html"><span lang="ja">教育</span><span lang="en">Teaching</span></a><br>
+          <a href="../software-engineering.html"><span lang="ja">ソフトウェア工学とは</span><span lang="en">What is software engineering?</span></a><br>
+          <a href="../technical-debt.html"><span lang="ja">技術的負債とは</span><span lang="en">What is technical debt?</span></a><br>
+          <a href="../students.html"><span lang="ja">学生の皆さんへ</span><span lang="en">For students</span></a><br>
+          <a href="../glossary.html"><span lang="ja">用語集</span><span lang="en">Glossary</span></a>
+        </p>
+      </div>
+      <div>
+        <h3><span lang="ja">研究</span><span lang="en">Research</span></h3>
+        <p class="muted-s">
+          <a href="../research/technical-debt-metrics.html"><span lang="ja">メトリクスによる分類・特徴づけ</span><span lang="en">Classifying debt with metrics</span></a><br>
+          <a href="../research/apr-coding-standards.html"><span lang="ja">自動生成パッチと品質</span><span lang="en">Auto-generated patches and quality</span></a><br>
+          <a href="../research/td-repayment-refactoring.html"><span lang="ja">返済とリファクタリング</span><span lang="en">Repayment and refactoring</span></a><br>
+          <a href="../research/satd-issue-classification.html"><span lang="ja">TD-Issue の自動分類</span><span lang="en">Automatic TD-Issue classification</span></a><br>
+          <a href="https://researchmap.jp/kimura_yuta" target="_blank" rel="noopener">researchmap</a>
+        </p>
+      </div>
+    </div>
+    <div class="foot-rule"></div>
+    <p class="foot-note">
+      <span lang="ja">© 2026 Yuta Kimura. 要求工学の解説は Ian Sommerville『Software Engineering (10th ed.)』第4章に基づく概説です。ユーザーストーリー・MVP・プロダクトマネジメントなど現代的なトピックの解説は、各分野の公開資料（Standish Group CHAOS Report、ISO/IEC/IEEE 29148 ほか）と実務慣行に基づきます。</span>
+      <span lang="en">© 2026 Yuta Kimura. This overview of requirements engineering follows Chapter 4 of Ian Sommerville, <i>Software Engineering</i> (10th ed.). Sections on modern topics (user stories, MVP, product management) draw on publicly available sources including the Standish Group CHAOS Report and ISO/IEC/IEEE 29148.</span>
+    </p>
+  </div>
+</footer>
+<script>
+/* ============== コンテンツデータ ============== */
+const INTRO_HTML = `
+<p>開発するシステムへの<b>要求（requirements）</b>とは、システムが<strong>提供すべきサービスと、運用上の制約</strong>に関する記述のことです。
+「装置を制御したい」「注文を処理したい」「情報を検索したい」：要求は、顧客が目的を達成するためのニーズを反映しています。
+そして、この要求を<strong>発見（抽出）し、分析し、文書化し、妥当性を確認する</strong>一連の活動を<b>要求工学（Requirements Engineering; RE）</b>と呼びます。</p>
+
+<div class="callout warn">
+  <h4>なぜ要求が大事なのか ： プロジェクト失敗の統計</h4>
+  米 Standish Group が世界の IT プロジェクトを調査した <b>CHAOS レポート</b>の初回（1994年）では、
+  「成功（期限・予算・機能を満たして完了）」はわずか <strong>16.2%</strong>。そして計画超過に陥ったプロジェクトの要因の上位には
+  <strong>「不完全な要求」（13.1%）</strong>と<strong>「ユーザの巻き込み不足」（12.4%）</strong>が並びました。
+  約30年後の CHAOS 2020 でも成功は <strong>31%</strong>（挑戦的=一部未達 50%・失敗 19%）にとどまります。
+  近年の同レポートは成功要因を「良いスポンサー・良いチーム・良い場」という人と組織の言葉で説明し直していますが、
+  その中核にあるのは今も<strong>「ユーザを巻き込み、本当のニーズを理解すること」</strong>：まさに要求工学の仕事です。
+  コードの誤りは直せますが、<strong>「作るものを間違えた」ことはテストでは直せません</strong>。
+</div>
+
+<h4>利用者要求とシステム要求 ： 同じ要求を、2つの抽象度で書く</h4>
+<p>要求には<strong>抽象的な記述と具体的な記述</strong>があり、読み手と記述のタイミングによって使い分けます。
+<b>利用者要求（user requirements）</b>は「顧客が欲しい機能・サービス」を自然言語で書いた抽象的な記述（日本の実務では「要求」、文書は要求仕様書）。
+<b>システム要求（system requirements）</b>は「機能・制約を実装できるレベルまで明確化した」具体的な記述（日本の実務では「要件」、文書は要件定義書）です。
+1つの利用者要求は、複数のシステム要求へ<strong>展開</strong>されます。</p>
+<div class="diagram-wrap">
+<svg viewBox="0 0 760 320" role="img" aria-label="利用者要求からシステム要求への展開">
+  <text x="165" y="30" class="dg-lbl">利用者要求（抽象的・契約前）</text>
+  <text x="165" y="48" class="dg-st">User requirement</text>
+  <rect x="20" y="62" width="290" height="122" rx="14" class="dg-box dg-if"/>
+  <text x="165" y="92" class="dg-el">「システムは、各診療所が当月に処方した</text>
+  <text x="165" y="110" class="dg-el">薬のコストを示す月次管理レポートを</text>
+  <text x="165" y="128" class="dg-el">生成できなければならない」</text>
+  <text x="165" y="160" class="dg-note">読み手：顧客の管理者・エンドユーザ</text>
+  <text x="560" y="30" class="dg-lbl">システム要求（具体的・契約後）</text>
+  <text x="560" y="48" class="dg-st">System requirements</text>
+  <rect x="400" y="62" width="330" height="56" rx="12" class="dg-box"/>
+  <text x="565" y="85" class="dg-el">1.1 レポートは毎月末の最終営業日の営業時間後に</text>
+  <text x="565" y="102" class="dg-el">　　自動生成されなければならない</text>
+  <rect x="400" y="132" width="330" height="56" rx="12" class="dg-box"/>
+  <text x="565" y="155" class="dg-el">1.2 レポートには診療所ごとに、処方薬の名称・</text>
+  <text x="565" y="172" class="dg-el">　　処方回数・総コストを列挙しなければならない</text>
+  <rect x="400" y="202" width="330" height="56" rx="12" class="dg-box"/>
+  <text x="565" y="225" class="dg-el">1.3 コストは錠数などの単位数量と、単位あたり</text>
+  <text x="565" y="242" class="dg-el">　　コストに基づいて算出されなければならない</text>
+  <text x="565" y="285" class="dg-note">読み手：開発者・システムエンジニア・テスト担当</text>
+  <path d="M310 105 L396 90" class="dg-line" marker-end="url(#rah1)"/>
+  <path d="M310 123 L396 160" class="dg-line" marker-end="url(#rah1)"/>
+  <path d="M310 141 L396 226" class="dg-line" marker-end="url(#rah1)"/>
+  <text x="352" y="72" class="dg-el">展開</text>
+  <defs><marker id="rah1" markerWidth="9" markerHeight="9" refX="8" refY="4.5" orient="auto">
+    <path d="M0,0 L9,4.5 L0,9 z" fill="#6B746F"/></marker></defs>
+</svg>
+<div class="dg-legend">Sommerville の Mentcare（メンタルヘルスケア支援システム）の例。1つの抽象的な利用者要求が、実装・テストの基準になる複数の具体的なシステム要求へ展開される。</div>
+</div>
+
+<h4>機能要求と非機能要求</h4>
+<div class="principles">
+  <div class="p"><b>機能要求（Functional requirements）</b><br>
+    <span>システムが<strong>「何をするのか」</strong>：提供すべきサービス・入力への反応・振る舞いの記述。例：「利用者はすべての診療所の予約一覧を検索できなければならない」。</span></div>
+  <div class="p"><b>非機能要求（Non-functional requirements）</b><br>
+    <span>サービスそのものではなく<strong>システムの特性や制約</strong>：性能・信頼性・可用性・セキュリティ・実装上の制約など。個々の機能ではなく<strong>システム全体</strong>に課されることが多い。</span></div>
+</div>
+<p>非機能要求は、ときに機能要求より重要です。機能の不足は回避策で凌げることがありますが、
+<strong>非機能要求の未達成はシステム全体を使用不能にし得る</strong>からです
+（信頼性が未達なら航空機ソフトウェアは認証されず、性能が未達なら制御システムは正しく動作しません）。</p>
+
+<div class="callout tip">
+  <h4>非機能要求は「目標」ではなく「測定可能」に書く</h4>
+  「使いやすいこと」「応答が速いこと」は<strong>検証しようがない目標</strong>です。メトリクスを使って書き直します：
+  <b>速度</b>：処理トランザクション数/秒、応答時間、画面更新時間　
+  <b>使用性</b>：トレーニング時間、ヘルプ参照回数　
+  <b>信頼性</b>：平均故障間隔（MTBF）、障害発生率　
+  <b>可用性</b>：稼働率（例：99.9%）、障害後の再起動時間　
+  <b>サイズ</b>：メガバイト数、ROM チップ数。
+  例：「アクセス要求へのレスポンスは3秒以内」「熟練利用者の操作誤りは1時間あたり2件以下」。
+  ただし保守性のように単純な指標が存在しない特性や、測定可能でも検証コストが高すぎるケースがあることには注意（詳しくは下の<a href="#nfr-writing">非機能要求の書き方</a>のカードへ）。
+</div>
+
+<h4>要求工学のプロセス ： 4つの活動と、それを支える管理</h4>
+<p>要求工学は<b>要求抽出／分析 → 仕様化 → 妥当性確認</b>という活動から構成されますが、
+実際には各活動が独立して順番に進むのではなく、<strong>反復的・相互依存的なスパイラル</strong>として入り組みながら進みます。
+初期の反復では高レベルのビジネス要求・利用者要求の理解に、後期の反復では詳細なシステム要求の抽出に重点が移り、
+成果物として<b>システム要求仕様書（SRS）</b>が出力されます。そして要求はほぼ必ず<strong>変化する</strong>ため、
+全体を下支えする<b>要求管理</b>が不可欠です。</p>
+<div class="diagram-wrap">
+<svg viewBox="0 0 760 305" role="img" aria-label="要求工学プロセスのループ">
+  <rect x="20" y="50" width="165" height="82" rx="14" class="dg-box dg-if"/>
+  <text x="102" y="80" class="dg-lbl">① 要求抽出</text>
+  <text x="102" y="97" class="dg-st">Elicitation</text>
+  <text x="102" y="116" class="dg-el">対話・観察で要求を発見</text>
+  <rect x="207" y="50" width="165" height="82" rx="14" class="dg-box dg-if"/>
+  <text x="289" y="80" class="dg-lbl">② 要求分析</text>
+  <text x="289" y="97" class="dg-st">Analysis &amp; negotiation</text>
+  <text x="289" y="116" class="dg-el">分類・優先順位付け・交渉</text>
+  <rect x="394" y="50" width="165" height="82" rx="14" class="dg-box dg-if"/>
+  <text x="476" y="80" class="dg-lbl">③ 要求仕様化</text>
+  <text x="476" y="97" class="dg-st">Specification</text>
+  <text x="476" y="116" class="dg-el">SRS として文書化</text>
+  <rect x="581" y="50" width="160" height="82" rx="14" class="dg-box dg-if"/>
+  <text x="661" y="80" class="dg-lbl">④ 妥当性確認</text>
+  <text x="661" y="97" class="dg-st">Validation</text>
+  <text x="661" y="116" class="dg-el">レビュー・プロトタイプ</text>
+  <path d="M185 91 L203 91" class="dg-line" marker-end="url(#rah2)"/>
+  <path d="M372 91 L390 91" class="dg-line" marker-end="url(#rah2)"/>
+  <path d="M559 91 L577 91" class="dg-line" marker-end="url(#rah2)"/>
+  <path d="M661 132 L661 168 L102 168 L102 136" class="dg-line dg-dash" marker-end="url(#rah2)"/>
+  <text x="380" y="160" class="dg-el">問題が見つかれば前の活動へ戻る ： 反復のスパイラル</text>
+  <rect x="20" y="200" width="721" height="58" rx="14" class="dg-box"/>
+  <text x="380" y="225" class="dg-lbl">要求管理（Requirements management）</text>
+  <text x="380" y="245" class="dg-el">要求の識別（一意のID）・変更管理・トレーサビリティで、変化し続ける要求を追跡し全活動を支える</text>
+  <path d="M102 168 L102 196" class="dg-line dg-dash"/>
+  <path d="M476 168 L476 196" class="dg-line dg-dash"/>
+  <text x="380" y="290" class="dg-note">反復のたびに要求は詳細化され、SRS が成長していく。要求は「一度決めたら終わり」ではない。</text>
+  <defs><marker id="rah2" markerWidth="9" markerHeight="9" refX="8" refY="4.5" orient="auto">
+    <path d="M0,0 L9,4.5 L0,9 z" fill="#6B746F"/></marker></defs>
+</svg>
+<div class="dg-legend">要求工学の活動配分は状況（プロセスの段階・システムの種類・予算）で変わる。アジャイル開発では、この反復を短いサイクルで回し、要求と実装を並行して発展させる。</div>
+</div>
+
+<div class="callout">
+  <h4>ステークホルダの多様性と実現可能性</h4>
+  <b>ステークホルダ</b>とは、開発するシステムの影響を受ける利害関係者のこと。医療情報システムなら、患者・医師・看護師・受付・IT部門・経営者・規制当局：
+  それぞれが異なる（ときに衝突する）要求を持ちます。また要求工学は開発の最初期に行われるため、概念レベルの要求を整理して
+  <strong>実現可能性を評価する（フィジビリティ・スタディ）</strong>ことも重要な仕事です：市場（需要と競合）・技術（必要な技術とインフラ）・財務（投資額と利益）・運用と法律（体制・法的リスク）。
+</div>
+
+<p style="font-size:13px;color:var(--muted)">各カード末尾の「習得チェック」を付けると、絞り込みバー右側に習得の進捗が表示されます（保存はされず、ページを開いている間だけ保持されます）。
+一通り読んだら<a href="#quiz">理解度チェッククイズ</a>で定着を確認しましょう。</p>
+`;
+</script>
+<script>
+const TECH_HTML = `
+<p>要求記述に最も使われてきた道具は、1950年代からずっと<strong>自然言語</strong>です。表現力が高く、誰でも読めて、特別な訓練が要らない：
+しかし自然言語は<strong>曖昧</strong>で、解釈が読み手の背景に依存します。「予約検索機能が欲しい」という一文を、
+ある開発者は「全診療所を対象に検索」、別の開発者は「診療所を選んでから検索」と解釈するかもしれません。
+そして開発者は<strong>実装しやすい解釈を選ぶ傾向</strong>があり、それが顧客の意図と食い違えば、手戻り・納期遅延・コスト増につながります。</p>
+<div class="principles">
+  <div class="p"><b>誤解を最小化する記述の指針</b><br>
+    <span>①標準的な書式を定めて全要求をそれに従わせる（1〜2文で）　②必須要求は「〜しなければならない（shall）」、望ましい要求は「〜すべきである（should）」と<strong>言語で区別</strong>する　③重要部分は強調する　④専門用語・略語を避け、各要求に<strong>根拠と出所</strong>を関連付ける。</span></div>
+  <div class="p"><b>構造化自然言語</b><br>
+    <span>テンプレート（機能・入力・出力・動作・事前条件・事後条件・副作用）を使って書く中間的な形式。書き手によるばらつきを防ぎ、<strong>項目が埋まらないことで記述漏れに気づける</strong>。詳しくは<a href="#srs-specification">要求仕様化のカード</a>へ。</span></div>
+</div>
+<p>下のデモは、要求レビューの最初の一歩：<strong>曖昧語探し</strong>を体験するものです。
+「高速に」「使いやすく」「適切に」といった語は、書いた本人には自明でも、読み手ごとに別の値を思い浮かべさせます。
+見つけたら、<strong>誰が・いつ・どれだけ</strong>を数値と条件で書き直しましょう（それが難しい要求こそ、ステークホルダと会話すべき要求です）。</p>
+`;
+
+const CLOSING_HTML = `
+<p>最後に、個々の技法の知識を「使える判断力」に変えるための視点をまとめます。</p>
+<div class="callout warn">
+  <h4>要求の誤りは、下流に行くほど高くつく</h4>
+  要求の誤りが設計・実装・テストを経て運用まで生き延びると、修正には
+  「要求変更 → 設計・実装の変更 → 再テスト」という連鎖が必要になります。NASA の調査では、要求段階で直せば「1」のコストが、
+  運用段階では数十倍〜百倍以上に膨らむと報告されています（膨張率には諸説ありますが、「早いほど安い」という傾向自体は繰り返し確認されています）。
+  だからこそ要求の<strong>妥当性確認</strong>：レビュー・プロトタイピング・テストケース作成可能性の検討：に早期投資する価値があるのです。
+</div>
+<div class="callout tip">
+  <h4>顧客の「言葉」ではなく「仕事」を理解する</h4>
+  ステークホルダは自分の要求を明確に言語化できません。それは怠慢ではなく、<strong>暗黙知は言語化できない</strong>からです。
+  インタビューで聞き、エスノグラフィで観察し、ストーリーとシナリオで具体化し、プロトタイプで確かめる：
+  複数の道具を組み合わせて「本当の要求」に迫るのが要求工学の実践です。
+  「ドリルが欲しい」という言葉の奥にある「穴を開けたい」というジョブを見つけましょう。
+</div>
+<div class="callout">
+  <h4>要求は「凍結」できない ： 変化を前提に設計する</h4>
+  ビジネス環境は変わり、理解は深まり、ステークホルダは入れ替わる。要求の変化は<strong>失敗ではなく前提</strong>です。
+  だから一意のID・トレーサビリティ・変更管理プロセスを最初から用意する（要求管理）、
+  あるいは反復のたびに要求を見直す（アジャイル）：どちらの道でも、「変化にどう向き合うか」の設計が要求工学の一部です。
+  ただし無秩序な膨張（<strong>要求クリープ</strong>）は別物。変更は歓迎しつつ、影響とコストを評価して意思決定する規律が要ります。
+</div>
+
+<h4 style="margin-top:26px">混同しやすい用語の見分け方</h4>
+<p>似ている用語は、<strong>「誰のための記述か」「何を確かめるのか」</strong>で見分けます。試験でも実務でも問われるポイントです。</p>
+<table class="cmp-table">
+  <tr><th>似ている用語</th><th>見分けるポイント</th></tr>
+  <tr><td><b>利用者要求</b> と <b>システム要求</b></td>
+    <td>抽象度と読み手が違う。利用者要求は<b>顧客・管理者向け</b>の抽象的な自然言語（契約前・日本では「要求」）。システム要求は<b>開発者向け</b>に入出力・例外まで明確化した具体的記述（契約後・日本では「要件」）。</td></tr>
+  <tr><td><b>機能要求</b> と <b>非機能要求</b></td>
+    <td>機能要求は「<b>何をするか</b>」（サービス・振る舞い）。非機能要求は「<b>どんな特性・制約か</b>」（性能・信頼性・可用性など）。非機能はシステム全体に分散し、アーキテクチャを左右する。</td></tr>
+  <tr><td><b>ストーリー</b> と <b>シナリオ</b></td>
+    <td>どちらも具体例で要求を引き出す道具。ストーリーは<b>高水準の物語</b>（全体像・議論のきっかけ）、シナリオは<b>構造化された詳細記述</b>（入出力・正常の流れ・例外・終了状態）。ストーリーの一部が詳細化されてシナリオになる。</td></tr>
+  <tr><td><b>ユースケース</b> と <b>ユーザーストーリー</b></td>
+    <td>ユースケースは UML の記法で<b>システムとアクタの相互作用を網羅的に</b>記述する仕様の道具。ユーザーストーリーは「As a / I want / So that」1〜2文で<b>会話の約束（今後の対話のリマインダ）</b>を書くアジャイルの道具。前者は文書として完結を目指し、後者は会話で補完する前提。</td></tr>
+  <tr><td><b>検証（要求）</b> と <b>妥当性確認（要求）</b></td>
+    <td>要求文書の<b>検証</b>は「要求が正しく書けているか」（一貫・完全・検証可能か）。<b>妥当性確認</b>は「その要求はユーザの<b>本当のニーズ</b>を定義しているか」。書式が完璧でも、作るものが間違っていれば妥当ではない。</td></tr>
+  <tr><td><b>MVP</b> と <b>プロトタイプ</b></td>
+    <td>プロトタイプは要求の妥当性確認のための<b>実験用モデル</b>で、確認が済んだら捨てられることも多い。MVP は<b>実際に市場へ出す最小の製品</b>で、「この製品は買われるか」というビジネス仮説を検証する。前者は「正しく理解したか」、後者は「作る価値があるか」を確かめる。</td></tr>
+  <tr><td><b>要求クリープ</b> と <b>要求の変更</b></td>
+    <td>変更は評価と合意を経た<b>管理されたプロセス</b>。要求クリープ（スコープクリープ）は影響評価なしに要求が<b>なし崩しに膨張</b>していく状態。違いは変化の有無ではなく「管理されているか」。</td></tr>
+  <tr><td><b>SRS</b> と <b>プロダクトバックログ</b></td>
+    <td>どちらも「作るものの一覧」。SRS は合意済み要求の<b>公式文書</b>（外注・分担開発・規制対応で必須）。バックログは<b>優先順位付きの生きたリスト</b>で、反復のたびに追加・削除・並べ替えされる。</td></tr>
+</table>
+
+<h4 style="margin-top:26px">研究者の視点：要求工学はいま、研究の最前線でもある</h4>
+<div class="callout">
+  <h4>自然言語処理と要求工学</h4>
+  要求のほとんどは自然言語で書かれるため、<strong>NLP（自然言語処理）による要求の品質チェック</strong>：曖昧語の検出、矛盾の発見、
+  要求とテストのトレーサビリティリンクの自動回復：は要求工学研究（RE 国際会議など）の定番テーマです。
+  近年は大規模言語モデル（LLM）でユーザーストーリーの生成・受入れ基準の下書き・要求文書の一貫性チェックを支援する研究と製品が急増しています。
+  このページの「あいまい要求チェッカー」は、その最も素朴な形（辞書ベースの検出）を体験するものです。
+</div>
+
+<h4 style="margin-top:26px">さらに学ぶための文献・資料</h4>
+<ul>
+  <li>I. Sommerville『Software Engineering (10th ed.)』Pearson, 2016年, 第4章：本教材の底本</li>
+  <li>K. Wiegers・J. Beatty『ソフトウェア要求 第3版』日経BP, 2014年：要求工学の実務の定番書（曖昧語のチェックリストも充実）</li>
+  <li>ISO/IEC/IEEE 29148:2018（Systems and software engineering - Life cycle processes - Requirements engineering）：SRS の構成と要求の品質特性を定める現行国際規格（IEEE 830 の後継）</li>
+  <li>Marty Cagan『INSPIRED 熱狂させる製品を生み出すプロダクトマネジメント』日本能率協会マネジメントセンター, 2019年：プロダクトマネジメント視点の要求論</li>
+  <li>Eric Ries『リーン・スタートアップ』日経BP, 2012年：MVP と仮説検証の原典</li>
+  <li>Mike Cohn『User Stories Applied』Addison-Wesley, 2004年：ユーザーストーリーと INVEST の定番解説</li>
+  <li>IPA『非機能要求グレード』：非機能要求を6分類・段階値で整理した日本語の実務資料（無料公開）</li>
+  <li><a href="https://jstqb.jp/" target="_blank" rel="noopener">JSTQB（ソフトウェアテスト技術者資格認定）</a>：「要求のテスト可能性」「受入れテスト」関連の用語整理に有用</li>
+</ul>
+`;
+</script>
+<script>
+/* ============== 要求カタログデータ（カテゴリ別） ============== */
+const CAT_ORDER = ['elicit','spec','agile'];
+const CAT_META = {
+  elicit:{ label:'要求の抽出と分析', en:'Elicitation & analysis', color:'var(--elicit)',
+    desc:'ステークホルダの業務と本当のニーズを理解し、要求を発見・整理・交渉する活動。要求工学の入口であり、もっとも「人間相手」のスキルが問われる段階。顧客は本当の要求をうまく言語化できない：という前提から出発する。'},
+  spec:{ label:'仕様化と品質', en:'Specification & quality', color:'var(--spec)',
+    desc:'発見した要求を、誤解なく読める形に文書化（SRS）し、その品質（検証可能・一貫・完全・現実的）を確認し、変化を管理する活動。「書いて終わり」ではなく、要求文書を生きた合意として維持する。'},
+  agile:{ label:'アジャイルな要求', en:'Agile requirements', color:'var(--agile)',
+    desc:'重厚な文書の代わりに、ユーザーストーリーと会話、優先順位付きバックログ、小さくリリースして学ぶ MVP で要求を発展させる現代的アプローチ。要求と実装を同時に育てる：Sommerville のいう「プロトタイピングの代替としてのアジャイル」の実践形。'}
+};
+const BADGE_CLS = {'抽出の技法':'imp3','分析・交渉':'imp2','ユーザ理解':'imp1','文書化':'imp3','品質チェック':'imp2','変更管理':'imp1','アジャイル実践':'imp2'};
+
+const TESTS = [
+/* ---------- 要求の抽出と分析 ---------- */
+{
+  id:'elicitation', name:'Requirements Elicitation', jp:'要求抽出（エリシテーション）', cat:'elicit',
+  badge:'抽出の技法', tags:['インタビュー','エスノグラフィ','ワークショップ'],
+  summary:'ステークホルダとの対話・観察・資料分析を通じて、業務と<strong>本当のニーズ</strong>を発見する活動。要求は「聞けば出てくる」ものではなく、「掘り出す（elicit）」もの。',
+  analogy:'医師の問診。患者（顧客）は「お腹が痛い」（症状＝困りごと）は言えるが、「病名と処方」（システム要求）は言えない。優れた医師は質問と検査（観察）を重ねて、本人も気づいていない原因にたどり着く。',
+  purpose:'アプリケーションドメイン・業務活動・望まれるサービス・必要な性能・ハードウェア制約など、要求の材料となる情報を多面的に明らかにする。ステークホルダの業務を理解し、新システムがそれをどう支援できるかを見つける。',
+  who:'要求アナリスト・システムエンジニアが、プロジェクトの最初期から。アジャイルではプロダクトオーナーとチームが反復のたびに継続的に行う。',
+  steps:[
+    '<b>ステークホルダを特定する</b>：利用者は1種類ではない（医療システムなら患者・医師・看護師・受付・IT部門・経営・規制当局）。すべての要求源を洗い出す',
+    '<b>既存システム・業務文書を分析</b>し、ドメイン要求と現状の問題を把握する',
+    '<b>インタビュー</b>を行う：定義済みの質問に答えてもらう<b>クローズド</b>と、議題を決めず幅広く探る<b>オープン</b>を組み合わせる（実際は混合が普通）',
+    '<b>エスノグラフィ（現場観察）</b>で、インタビューでは出てこない暗黙知・実際の働き方を見る',
+    '<b>ワークショップ・グループ討議</b>でステークホルダ間の共通点と対立点を発見する',
+    '発見した要求を<b>分類・整理し、文書化</b>する（→ 分析と交渉へ。要求仕様書が完成するまで繰り返す）'
+  ],
+  points:[
+    'インタビューは業務全体の理解に適するが、<b>具体的・詳細な要求は期待しすぎない</b>：人は将来のシステムをうまく想像できない',
+    '<b>エスノグラフィは暗黙的な要求の発見に強い</b>：現場の人にとって「当たり前」のことは、聞かれても答えに出てこない。実際の作業・協調・他者への配慮を観察して初めて見える',
+    '専門用語と暗黙知の壁を自覚する：顧客ドメインの経験がないアナリストは、言葉は聞き取れても意味を取り違える',
+    '政治的要因にもアンテナを張る：影響力拡大のために特定の要求を求める管理者もいる'
+  ],
+  cautions:[
+    '<b>ステークホルダ自身が要求を明確に理解していない</b>のが普通：一般的な願望しか言えない、実現可能性を知らずに非現実的な要求をする、はどちらも日常',
+    '分析の最中にも経済・ビジネス環境は変化し、要求の重要性が変わり、新しいステークホルダが現れる',
+    'エスノグラフィは既存業務の理解には有効だが、<b>イノベーションには必ずしも有効でない</b>：Apple は既存の携帯電話の使われ方の延長ではなく、現状を無視して iPhone を生んだ',
+    'エンドユーザの観察だけでは、広範な組織的要求・ドメイン要求は見つからない'
+  ],
+  examples:[
+    '医療情報システムで、医師へのインタビューに加えて外来受付に半日座って観察したところ、「電話を受けながら片手でカルテを検索する」という誰も言語化しなかった制約が見つかる',
+    'Sommerville が挙げる航空管制システムの事例：管制官同士が互いの作業を横目で把握し合うことが安全に効いていた：ワークフロー図には決して現れない要求',
+    '銀行の窓口業務の帳票を全種類集めて分析し、情報要求（どのデータが誰に必要か）を整理する'
+  ],
+  related:'<b>要求分析</b>との違い：抽出は「材料を集める」活動、分析は「集めた材料を整理し矛盾を解消する」活動。実際にはスパイラルの中で一体的に繰り返される。',
+  modern:'Miro・FigJam でのリモート要求ワークショップ、ユーザーインタビューの録画・文字起こし分析（Dovetail 等）、イベントストーミング（業務イベントを付箋で洗い出す設計ワークショップ）が現場の定番。プロダクトディスカバリーという名前で継続的な抽出活動が制度化されつつある。',
+  hasCode:false
+},
+{
+  id:'scenarios-use-cases', name:'Scenarios & Use Cases', jp:'シナリオとユースケース', cat:'elicit',
+  badge:'抽出の技法', tags:['具体例で引き出す','UML','正常系と例外系'],
+  summary:'人は抽象的な説明より<strong>実生活の具体例</strong>のほうが理解しやすい：という性質を利用し、システム利用の物語（ストーリー→シナリオ）と相互作用の図（ユースケース）で要求を引き出し・整理する技法。',
+  analogy:'家の間取り図（抽象的な仕様）だけを見せられてもピンとこないが、「朝起きて、顔を洗って、朝食を作って…」と生活の一日を歩いてみると「洗面所が寝室から遠い」と気づける。物語が要求を引き出す。',
+  purpose:'利用者はシステム要求を直接説明するのは苦手でも、特定の状況で自分がどう行動するかは想像できる。その想像を素材に、ステークホルダ間の議論を促進し、具体的なシステム要求へ発展させる。',
+  who:'要求アナリストがステークホルダとの対話・グループインタビューの中で作成する。ユースケース図はシステムエンジニアが仕様化の道具としても使う。',
+  steps:[
+    '<b>ストーリー</b>を書く：システム利用の全体像を高水準の物語（叙述的テキスト）として記述する。詳細には踏み込まない',
+    'ストーリーをウィキ等で共有し、幅広い関係者からコメントを集める（インタビューできる範囲を超えた情報収集）',
+    '重要な部分を<b>シナリオ</b>に詳細化する：開始時の期待・<b>通常の出来事の流れ（正常系）</b>・<b>問題発生時の対処（例外系）</b>・同時進行の活動・終了時の状態を構造化して書く',
+    '<b>ユースケース図</b>に整理する：アクタ（棒人間）・ユースケース（楕円）・関連（線）・システム境界（枠）で、システムと外部の相互作用を一望する',
+    '各ユースケースに記述形式（基本フロー・代替フロー・事前/事後条件）を付け、システム要求の導出につなげる'
+  ],
+  points:[
+    '<b>正常系だけで満足しない</b>：「保存前に通信が切れたら？」「入力を間違えたら？」という例外系の記述にこそ、見落とされていた要求が眠っている',
+    'ストーリーとシナリオの違いは<b>構造と詳細度</b>：ストーリーは全体像、シナリオは入出力を含む対話セッションの詳細',
+    'ユースケース図は「機能の一覧を絵にしたもの」ではなく<b>アクタとの相互作用</b>の整理：誰のための機能かが一目で分かる',
+    'シーケンス図と組み合わせると、後工程（システムテストのテストケース導出）まで再利用できる'
+  ],
+  cautions:[
+    'ユースケース図だけでは詳細が伝わらない：<b>図は目次、記述が本体</b>。図を描いて満足しない',
+    '「ありそうもないシナリオ」をいくら書いても要求の裏付けにはならない：実際の業務調査に基づかせる',
+    'すべてをユースケースで書こうとすると、UI の細部や非機能要求が漏れる（ユースケースは万能の記法ではない）',
+    'アクタの粒度を混ぜない（「医師」と「病院」を同列に並べる等）：図が意味不明になる'
+  ],
+  examples:[
+    'ATM のユースケース：アクタ「顧客」に対して「現金を引き出す」「残高を照会する」「振り込む」、アクタ「保守員」に対して「現金を補充する」：正常系に加えて「残高不足」「カード忘れ」の例外フローを記述',
+    'Mentcare の看護師シナリオ：出発前に患者記録をダウンロード → 圏外の訪問先で診察記録を入力 → 帰院後に同期：例外系「同期前に端末を紛失したら？」からセキュリティ要求が導かれる'
+  ],
+  related:'<b>ユーザーストーリー</b>（アジャイル）との違い：ユースケースは相互作用を網羅する仕様の道具、ユーザーストーリーは会話を約束する付箋。詳しくは比較表とユーザーストーリーのカードへ。',
+  modern:'PlantUML・Mermaid でユースケース図をテキストから生成し Git で管理するのが定番。ユーザージャーニーマップ・サービスブループリントは、シナリオ技法を UX デザインの文脈で発展させたもの。',
+  hasCode:false
+},
+{
+  id:'analysis-negotiation', name:'Analysis, Negotiation & Prioritization', jp:'要求の分析と交渉（MoSCoW）', cat:'elicit',
+  badge:'分析・交渉', tags:['要求の衝突','MoSCoW法','優先順位付け'],
+  summary:'集めた要求を分類・整理し、ステークホルダ間の<strong>衝突を交渉で解決</strong>し、<strong>優先順位</strong>を付ける活動。全員の要求をすべて叶えることは（予算的にも論理的にも）不可能：だから交渉が要る。',
+  analogy:'家族旅行の行き先決め。父は温泉、母は買い物、子どもは遊園地：全部は回れない。予算と日程の制約の中で「今回は絶対（Must）」「できれば（Should）」「余裕があれば（Could）」「次回に（Won\'t）」を話し合って決める。',
+  purpose:'要求間の矛盾・重複・不整合を発見して解消し、限られた予算・期間の中で「何から作るか」の合意を形成する。多様なステークホルダの背景と期待の違いを、対立ではなく妥協案に変換する。',
+  who:'要求アナリスト・プロジェクトマネージャがファシリテータとなり、主要ステークホルダを集めた会議・ワークショップで行う。',
+  steps:[
+    '関連する要求を<b>グループ化</b>し、一貫性のあるまとまりに整理する（分類と組織化）',
+    '要求間の<b>衝突・矛盾を特定</b>する：機能同士だけでなく、非機能要求間の衝突（例：セキュリティのためのカード認証 ⇔ スマホからの利用）も含む',
+    '各要求の<b>根拠と出所</b>を確認する：誰が・なぜ求めているのかが交渉の材料になる',
+    '<b>MoSCoW 法</b>などで優先順位を付ける：<b>Must</b>（必須：ないとリリース不可）／<b>Should</b>(重要だが代替手段でしのげる）／<b>Could</b>（あれば嬉しい）／<b>Won\'t (this time)</b>（今回は見送ると明示的に合意）',
+    '会議・交渉を通じて<b>妥協案に合意</b>し、決定と理由を記録する'
+  ],
+  points:[
+    '<b>Won\'t を明文化することが最大の価値</b>：「やらないと決めたこと」が書いてあると、後の「言った・言わない」を防げる',
+    '衝突は悪ではなく<b>情報</b>：異なるステークホルダの世界観の違いが表面化した貴重な瞬間。早く見つかるほど安く解決できる',
+    '優先順位は「声の大きさ」ではなく<b>ビジネス価値とコスト・リスク</b>で判断する',
+    '実現可能性（フィジビリティ）の観点：市場・技術・財務・運用/法律：を交渉の共通の物差しにする'
+  ],
+  cautions:[
+    'Must が全体の6割を超えたら黄信号：<b>「全部 Must」は優先順位を付けていないのと同じ</b>（DSDM では Must は工数の60%以下が目安とされる）',
+    '交渉の合意は<b>その時点の</b>合意：環境が変われば優先順位も見直す（要求管理とセット）',
+    '発注者（お金を出す人）とユーザ（使う人）の利害は食い違う：予算で決めた要求が現場のニーズとずれるのは典型パターン',
+    '政治的に強いステークホルダの要求が無条件に Must 化する現象に注意：根拠を問う'
+  ],
+  examples:[
+    '医療情報システム：経営層は「コスト削減レポート」、医師は「入力の速さ」、規制当局は「監査ログ」を要求：ワークショップで Must/Should を仕分けし、初回リリースは診療業務＋監査ログに絞る',
+    'MoSCoW 法は DSDM（英国発のアジャイル手法）で体系化され、現在は英政府のプロジェクト標準（GDS）などでも使われている'
+  ],
+  related:'<b>要求抽出</b>が「集める」、分析と交渉は「選んで並べる」。アジャイルでは<b>プロダクトバックログの優先順位付け</b>として毎スプリント繰り返される（バックログのカード参照）。',
+  modern:'MoSCoW のほか、価値×工数で並べる RICE スコア（Reach/Impact/Confidence/Effort）、当たり前品質と魅力品質を区別する狩野モデル（Kano model）が実務の定番。Jira・Productboard などのツールで優先順位を可視化する。',
+  hasCode:false
+},
+{
+  id:'persona-jtbd', name:'Personas & Jobs-to-be-Done', jp:'ペルソナとジョブ理論', cat:'elicit',
+  badge:'ユーザ理解', tags:['ドリルではなく穴','JTBD','ユーザ像の共有'],
+  summary:'「ユーザ」という曖昧な言葉を、具体的な人物像（<strong>ペルソナ</strong>）と、その人が片付けたい用事（<strong>ジョブ</strong>）に置き換えて、要求の議論の解像度を上げる道具。',
+  analogy:'「ドリルを買う人が欲しいのはドリルではなく穴である」（T. レビット）。顧客が口にする要求（ドリル＝手段）の奥には、達成したい用事（穴＝目的）がある。手段への要望に付き合い続けると、より良い解決策（画鋲で足りるかも）を見逃す。',
+  purpose:'開発チーム全員が同じユーザ像を思い浮かべて議論できるようにする（ペルソナ）。要求を「機能の要望」ではなく「片付けたい用事（Job to be Done）」として捉え直し、真の要求を発見する（ジョブ理論）。',
+  who:'プロダクトマネージャ・UXリサーチャー・要求アナリストが、インタビュー・観察・利用データに基づいて作成し、チーム全体で共有する。',
+  steps:[
+    'インタビュー・エスノグラフィ・利用データから、<b>実在ユーザの共通パターン</b>を見つける',
+    '代表的なユーザ像を<b>ペルソナ</b>として記述する：名前・役割・スキル・目標・不満・利用環境（「28歳・外来看護師・夜勤明けでも操作を間違えない UI が必要」）',
+    '各ペルソナが<b>片付けたい用事（ジョブ）</b>を「状況＋動機＋期待する結果」で書く：「患者の急変時に（状況）、直近の投薬履歴を（動機）、30秒以内に把握したい（結果）」',
+    'ペルソナとジョブを<b>要求・ユーザーストーリーの主語</b>として使う（「As a 夜勤明けの看護師…」）',
+    '新しい調査結果でペルソナを<b>更新し続ける</b>（作りっぱなしにしない）'
+  ],
+  points:[
+    'ペルソナの価値は<b>議論の主語が揃う</b>こと：「ユーザは喜ぶはず」ではなく「佐藤さん（ペルソナ）はこの画面で迷うか？」と問える',
+    'ジョブは<b>解決手段から独立</b>に書く：「Excel 出力機能が欲しい」ではなく「集計結果を上司に報告したい」。手段を固定しなければ、より良い解決策を探索できる',
+    'クリステンセンの<b>ミルクシェイク調査</b>が有名：朝のドライブ通勤の「退屈しのぎ＋片手で朝食」というジョブを発見し、競合は他のシェイクではなくバナナやベーグルだと分かった',
+    'ステークホルダの多様性（Sommerville）を具体化する道具として使える：「利用者」を3〜5体のペルソナに分解する'
+  ],
+  cautions:[
+    '<b>調査に基づかない「想像ペルソナ」は害</b>：チームの思い込みに人格と名前を与えて強化してしまう',
+    'ペルソナを増やしすぎない（3〜5体が目安）：全員に最適化すると誰にも最適でなくなる',
+    'ペルソナは平均像ではなく<b>典型像</b>：「平均年齢38.2歳」のような統計の擬人化は行動を予測しない',
+    'ジョブ理論は万能ではない：安全規制・法的制約など、ユーザの用事とは無関係に課される要求（外部要求）は別途扱う'
+  ],
+  examples:[
+    'Alan Cooper『About Face』が起源のペルソナ手法。Microsoft や政府系サービス（英 GOV.UK）がデザイン標準として採用',
+    'クリステンセン（ハーバード・ビジネス・スクール）のミルクシェイクの事例（『ジョブ理論』2017年）',
+    '大学の履修登録システムで「1年生（初回で不安）」「4年生（卒業要件の確認が最優先）」「教務職員（一括処理）」の3ペルソナを立て、それぞれのジョブから要求を導く'
+  ],
+  related:'<b>ユーザーストーリー</b>の「As a ～」を具体化する土台。<b>エスノグラフィ・インタビュー</b>（抽出の技法）の成果を、チームで使える形に凝縮したものと考えるとつながる。',
+  modern:'アナリティクスと組み合わせた「データドリブンペルソナ」、調査前の仮説として作る「プロトペルソナ」、JTBD インタビュー（スイッチインタビュー）など。プロダクトマネジメント（Cagan『INSPIRED』）では、ユーザ理解を欠いた要求定義を「幻想の合意」と呼んで戒める。',
+  hasCode:false
+},
+/* ---------- 仕様化と品質 ---------- */
+{
+  id:'srs-specification', name:'Requirements Specification (SRS)', jp:'要求仕様化とSRS', cat:'spec',
+  badge:'文書化', tags:['shall / should','構造化自然言語','ISO/IEC/IEEE 29148'],
+  summary:'利用者要求とシステム要求を<strong>ソフトウェア要求仕様書（SRS）</strong>として文書化する活動。自然言語の曖昧さと戦いながら、「誰が読んでも同じ意味になる」記述を目指す。',
+  analogy:'建築の設計図書。施主（顧客）向けの完成予想図（利用者要求）と、施工者向けの詳細図面・仕様書（システム要求）を、誤解の余地なく整合させて綴じたもの。図面が曖昧なら、現場は「作りやすいように」解釈して建ててしまう。',
+  purpose:'開発者が実装すべき内容の公式な合意を形成する。特に、システムを外部に発注（アウトソーシング）する場合・複数チームで分担開発する場合・要求の詳細分析が義務付けられている場合に必須となる。',
+  who:'要求アナリスト・システムエンジニアが執筆し、顧客・開発者・テスト担当・保守担当という<b>立場の異なる読者</b>のレビューを受ける。',
+  steps:[
+    '<b>読者を決める</b>：利用者要求は技術知識のない顧客にも読める自然言語＋図表で、システム要求は開発者が実装・テストできる詳細度で書く',
+    '<b>標準的な書式</b>を定め、全要求をそれに従わせる（可能なら1〜2文で）。必須要求は<b>「〜しなければならない（shall）」</b>、望ましい要求は<b>「〜すべきである（should）」</b>と一貫して区別する',
+    '曖昧になりやすい要求は<b>構造化自然言語</b>のテンプレートで書く：機能・入力（出所）・出力（送り先）・動作・<b>事前条件・事後条件</b>・副作用',
+    '各要求に<b>一意のIDと根拠（なぜ必要か・誰が求めたか）</b>を付ける',
+    '文書全体を標準的な構成（ISO/IEC/IEEE 29148 が提供する SRS の章立て等）に整理する',
+    'レビュー（妥当性確認）を受けて改訂する'
+  ],
+  points:[
+    '<b>要求は「何を（what）」、設計は「どう（how）」</b>：SRS は原則、設計や実装方法を指定しない。ただし完全な分離は不可能で、サブシステム構造・既存システムとの相互運用・認証済みアーキテクチャの指定などの設計情報が混ざることは正常',
+    '構造化自然言語の強み：全員が同じテンプレートで書くので表現がばらつかず、<b>項目が埋まらないことで記述漏れに気づける</b>。入出力・事前/事後条件が明確なのでテストケース設計もしやすい',
+    '技術用語を読者が理解すると仮定しない：「アーキテクチャ」「モジュール」ですら誤解される',
+    '既製品（市販ソフト）の導入で済む場合は、機能要求よりも<b>情報要求</b>（どのデータが・誰に・どう流れるか）の詳細化に注力する'
+  ],
+  cautions:[
+    '理想（明確・完全・一貫）は<b>実際にはほぼ達成不可能</b>：ステークホルダは要求を異なる方法で解釈するし、本質的な対立も残る。だからこそ妥当性確認とのセットで考える',
+    '曖昧な記述は開発者ごとの解釈差を生み、<b>開発者は実装しやすい解釈を選ぶ</b>：顧客の意図とずれれば手戻り・遅延・コスト増',
+    '重厚な SRS を書くこと自体が目的化する官僚主義に注意：文書の価値は「合意と誤解防止」にある',
+    'アジャイルプロジェクトでも「SRS を書かない」＝「仕様化しない」ではない：ストーリー＋受入れ基準＋テストが仕様の役割を担う'
+  ],
+  examples:[
+    'インスリンポンプ制御システムの構造化仕様：機能=血糖値に基づく投与量計算／入力=直近3回の血糖値（センサ）／出力=投与量（ポンプへ）／事前条件=センサ正常・最新値取得済み／事後条件=投与量は最大安全量（MaxDose）以下／副作用=計算結果をログに記録',
+    'IEEE 830-1998 の SRS 標準は現在では置き換えられ、現行は <b>ISO/IEC/IEEE 29148:2018</b>：SRS・StRS（ステークホルダ要求）・SyRS（システム要求）の文書構成と、要求文の品質特性を定義している'
+  ],
+  related:'<b>要求の妥当性確認</b>とペア：仕様化した文書をレビュー・プロトタイプ・テスト設計で検査する。<b>ユーザーストーリー</b>は SRS の代替ではなく、会話ベースの軽量な仕様化スタイル。',
+  modern:'要求管理ツール（IBM DOORS・Jama Connect・ReqView）での構造化管理、Markdown＋Git で要求をコードと同じレポジトリに置く「Docs as Code」、EARS（Easy Approach to Requirements Syntax：Rolls-Royce 発祥の要求文テンプレート）が広まりつつある。',
+  hasCode:false
+},
+{
+  id:'nfr-writing', name:'Writing Non-functional Requirements', jp:'非機能要求の書き方', cat:'spec',
+  badge:'文書化', tags:['ISO/IEC 25010','計量可能','アーキテクチャに直結'],
+  summary:'性能・信頼性・可用性・セキュリティなどの非機能要求を、<strong>検証可能なメトリクス付き</strong>で書く技術。「使いやすく」「高速に」のままでは、達成したかどうか誰にも判定できない。',
+  analogy:'健康診断の基準値。「健康であること」という目標は測れないが、「血圧 130/85 未満」「BMI 18.5〜25」なら誰が測っても合否が判定できる。非機能要求も同じで、特性ごとの「基準値」に翻訳して初めて検査できる。',
+  purpose:'システム全体の品質特性を、後から「言った・言わない」にならない客観的な受入れ条件として合意する。アーキテクチャ設計（性能のための構成・セキュリティのための認証機構）の入力を与える。',
+  who:'要求アナリスト＋アーキテクト。性能・可用性は運用チーム、セキュリティは専門家を交えて定義するのが望ましい。',
+  steps:[
+    '対象の<b>品質特性を分類</b>する：国際規格 <b>ISO/IEC 25010</b> の製品品質モデル（機能適合性・性能効率性・互換性・使用性・信頼性・セキュリティ・保守性・移植性）が地図になる',
+    '特性ごとに<b>メトリクス</b>を選ぶ：速度=トランザクション数/秒・応答時間／使用性=トレーニング時間・操作誤り率／信頼性=MTBF・障害発生率／可用性=稼働率・再起動時間／サイズ=MB 数',
+    '<b>条件と負荷を明記</b>して数値目標を書く：「ピーク時1,000件/分の負荷で、検索要求の95%に2秒以内に応答しなければならない」',
+    '要求間の<b>衝突を確認</b>する：非機能要求同士はぶつかる（例：カード認証必須 ⇔ カードリーダのないスマホからの利用）',
+    '<b>検証方法とコスト</b>を確認する：測定可能でも検証コストが高すぎて実施できない要求は再考する',
+    'SRS では専用セクションに分離して明示する：特に信頼性・安全性・機密性などクリティカルな特性の見落としを防ぐ'
+  ],
+  points:[
+    '非機能要求は<b>個別コンポーネントではなくシステム全体に分散</b>する：性能のために通信を最小化する設計など、アーキテクチャ全体を左右する',
+    '非機能要求が<b>新たな機能要求を生む</b>ことがある（セキュリティ要求 → 認証機能）し、既存要求を制約することもある（情報アクセス制限）',
+    '出所は利用者のニーズだけではない：予算制約・組織方針・相互運用性・安全規制・プライバシー法制（<b>製品要求／組織要求／外部要求</b>という分類で漏れを防ぐ）',
+    '「95%タイル」のような<b>分布で書く</b>のが実務の定石：「平均2秒」は最悪ケースを隠す'
+  ],
+  cautions:[
+    '<b>保守性のように単純な指標が存在しない特性もある</b>：無理に1つの数字に潰さず、代理指標（変更のリードタイム等）や設計原則で補う',
+    '数値はどこかから写すのではなく<b>ビジネス上の根拠</b>から導く：「可用性99.999%」は本当に必要か？（そのコストは 99.9% の何倍にもなる）',
+    '機能要求と非機能要求の境界は実際には曖昧：分類論争より「検証可能に書けているか」を優先する',
+    '測って終わりにしない：性能要求は負荷テスト、可用性要求は運用監視と、<b>検証手段とセットで</b>合意する'
+  ],
+  examples:[
+    '「2時間のチュートリアル後、システムの全機能の使い方が分かること」「熟練利用者の操作誤りは1時間あたり2件以下」（Sommerville の使用性の例）',
+    '可用性99.9%＝年間停止約8.8時間以内、99.99%＝約53分以内：数字の「9の数」1つでコストが跳ね上がる',
+    'IPA『非機能要求グレード』：可用性・性能/拡張性・運用/保守性・移行性・セキュリティ・環境/エコロジーの6大項目を段階値で選べる日本語の実務ツール'
+  ],
+  related:'<b>機能要求</b>との違いは比較表へ。<b>要求の妥当性確認</b>の「検証可能性チェック」がまさに非機能要求の書き方を検査する。',
+  modern:'SRE（サイト信頼性エンジニアリング）の <b>SLI/SLO</b>（サービスレベル指標/目標）は、可用性・性能の非機能要求を運用の現場で継続測定する現代的な形。「エラーバジェット」は非機能要求とリリース速度のトレードオフを管理する仕組みとして Google が広めた。',
+  hasCode:false
+},
+{
+  id:'req-validation', name:'Requirements Validation', jp:'要求の妥当性確認', cat:'spec',
+  badge:'品質チェック', tags:['レビュー','プロトタイピング','テストケース生成'],
+  summary:'書かれた要求が<strong>ユーザの本当のニーズを正しく定義しているか</strong>を、実装が始まる前に検査する活動。要求の誤りは、後で見つかるほど修正コストが膨らむ。',
+  analogy:'注文住宅の着工前の図面確認。施主が図面を読み、モデルルーム（プロトタイプ）を歩き、「完成後の検査項目リスト（テストケース）が作れるか」を確かめる。基礎を打った後の間取り変更は、紙の上の修正の何十倍も高くつく。',
+  purpose:'要求の問題（誤り・矛盾・漏れ・非現実性・検証不能性）を早期に発見する。要求の欠陥が設計・実装まで生き延びると「要求変更→設計・実装の変更→再テスト」の連鎖が必要になるため。',
+  who:'発注者・エンドユーザ・要求アナリスト・開発者・テスト担当が参加するレビューチーム。プロトタイプの評価はエンドユーザが主役。',
+  steps:[
+    '<b>5種類のチェック</b>の観点を確認する：<b>妥当性</b>（実際のニーズを反映？）・<b>一貫性</b>（矛盾がない？）・<b>完全性</b>（必要な機能・制約が全部ある？）・<b>実現可能性</b>（予算・期間・技術で可能？）・<b>検証可能性</b>（テストで確認できる形？）',
+    '<b>要求レビュー</b>：レビューアチームが要求文書を体系的に精査し、エラー・矛盾・曖昧さを記録する（その場で直さず、発注者と開発者が協議して解決）',
+    '<b>プロトタイピング</b>：実行可能なモデルを作ってエンドユーザ・顧客に使ってもらい、「これが欲しかったものか」のフィードバックを得る',
+    '<b>テストケース生成</b>：要求からテストを先に設計してみる：<b>テストが設計できない要求は、実装も困難</b>なサイン。要求の書き直しに差し戻す',
+    '発見された問題を記録し、要求文書を改訂して再確認する'
+  ],
+  points:[
+    '妥当性確認は「文書がきれいか」ではなく<b>「正しいシステムを定義しているか」</b>を問う：書式が完璧でも、作るものが間違っていれば不合格',
+    'テストケース生成は<b>受入れ基準の前倒し</b>：アジャイルの Given-When-Then（BDD）はこの考え方の直系',
+    'プロトタイプは<b>言葉の限界を超える</b>：ユーザは仕様書は読めなくても、動く画面には正確に文句を言える',
+    'レビューには<b>立場の異なる読者</b>を入れる：顧客は妥当性を、開発者は実現可能性を、テスト担当は検証可能性を見る'
+  ],
+  cautions:[
+    '完全な妥当性確認は不可能：それでも「早期に見つけた分だけ得」という<b>費用対効果</b>で考える（NASA の調査では要求段階の修正コスト1に対し、運用段階では数十〜百倍超）',
+    'プロトタイプの見た目に引きずられて「本題（要求の確認）」を忘れる会議になりがち：確認したい仮説を先に決めておく',
+    'レビューが「てにをは指摘大会」に堕ちない：曖昧語・矛盾・漏れ・検証不能という観点リストを使う',
+    '妥当性確認済みでも要求は変わる：「確認した＝凍結できる」ではない（要求管理へ続く）'
+  ],
+  examples:[
+    '「システムは使いやすいこと」という要求はテストケースが書けない → 「初見ユーザの80%が講習なしで予約タスクを完了できる」に書き直してユーザビリティテストの計画が立つ',
+    'Figma のクリック可能なモックアップを来週の顧客レビューに持ち込み、画面遷移の要求の誤解を実装前に3件発見する',
+    '要求レビューで「4.2節は全診療所の予約を検索、6.1節は自診療所のみ」という一貫性違反を発見する'
+  ],
+  related:'ソフトウェアの<b>V&V</b>（検証と妥当性確認）と相似形：「要求を正しく書けているか（検証）」と「正しい要求を書いているか（妥当性確認）」。比較表も参照。',
+  modern:'BDD（振る舞い駆動開発）は「要求からテストを先に書く」を Gherkin で実行可能にした形。Figma などの高忠実度プロトタイプによる事前検証、LLM を使った要求文書の矛盾・曖昧箇所の自動指摘も実用化が進む。',
+  hasCode:false
+},
+{
+  id:'req-management', name:'Requirements Management & Change', jp:'要求管理と変更（トレーサビリティ）', cat:'spec',
+  badge:'変更管理', tags:['トレーサビリティ','変更管理プロセス','要求クリープ'],
+  summary:'要求は必ず変化する：その変化を<strong>追跡・評価・制御</strong>する活動。各要求に一意のIDを付け、要求↔設計↔テストの<strong>トレーサビリティ（追跡可能性）</strong>を維持し、変更の影響とコストを評価してから実施する。',
+  analogy:'図書館の蔵書管理。本（要求）に背番号を付け、貸出記録（どの設計・テストがどの要求に依存するか）を残すから、「この本を廃棄したら誰が困るか」が即座に分かる。記録のない図書館では、1冊抜くたびに全棚を調べ直すことになる。',
+  purpose:'変更の影響範囲（他の要求・設計・実装・テスト・コスト）を理解した上で、変更を受け入れるか判断できるようにする。「なし崩しの変更」による品質崩壊とコスト超過を防ぐ。',
+  who:'要求エンジニア・構成管理担当。変更の可否は変更管理委員会（CCB）やプロダクトオーナーが判断する。要求文書のドラフト完成時点から開始する。',
+  steps:[
+    '<b>要求管理計画</b>を立てる：要求の識別方法（一意のID）・変更管理プロセス・トレーサビリティポリシー（どの関係をどこまで記録するか）・ツールサポート',
+    '要求↔要求、要求↔設計、要求↔テストの<b>トレーサビリティリンク</b>を記録・維持する',
+    '変更要求が来たら<b>①問題分析と変更仕様化</b>：提案の妥当性を分析し、具体的な変更提案に絞り込む',
+    '<b>②変更分析とコスト見積</b>：トレーサビリティ情報で影響範囲を特定し、コストを見積もって実施可否を判断する',
+    '<b>③変更実装</b>：要求文書・設計・実装を修正する。<b>緊急変更でも、事後に必ず要求文書を更新</b>する（文書と実装の乖離を残さない）'
+  ],
+  points:[
+    '要求が変わる3大要因を知っておく：<b>ビジネス・技術環境の変化</b>（法改正・新ハード）／<b>発注者とユーザの利害の違い</b>（予算で決めた要求と現場ニーズのずれ）／<b>多様なステークホルダ</b>（優先順位の見直し）',
+    'トレーサビリティは<b>変更影響分析の生命線</b>：「要求 R-12 を変えたら、設計 D-05 と テスト T-31〜33 に影響」と機械的にたどれる',
+    '規制産業（医療機器・航空・自動車）ではトレーサビリティが<b>認証の必須要件</b>（例：自動車の ISO 26262）',
+    '大規模システムの要求は本質的に完全定義できない（wicked problem）：変化を前提にプロセスを設計する'
+  ],
+  cautions:[
+    '<b>要求クリープ（スコープクリープ）</b>に注意：影響評価を経ない「ちょっとした追加」が積み重なり、気づけば納期も予算も崩壊している状態。変更を拒むのではなく、<b>必ず評価のゲートを通す</b>のが対策',
+    'トレーサビリティの記録は「維持されて」価値になる：作って放置されたリンク表は嘘の地図より悪い',
+    'すべてをトレースしようとするとコストが爆発する：ポリシーで「どこまで記録するか」を決める（クリティカルな要求は密に、周辺は粗く）',
+    '変更管理が重すぎると、現場は非公式な変更で回避し始める：プロセスの重さはプロジェクトのリスクに比例させる'
+  ],
+  examples:[
+    '要求管理ツールの代表格 IBM DOORS は要求のID管理とリンク追跡のデファクト。小規模なら共有スプレッドシートでも「ID＋リンク＋状態」は実現できる',
+    'デンバー国際空港の手荷物システム（1990年代）：度重なる要求変更と影響評価の甘さで開通が16か月遅れ、1日あたり百万ドル規模の損失を出した要求管理の古典的失敗例',
+    'アジャイルでは「バックログの並べ替え＋スプリント中は変更凍結」という形で、変更の受け入れと安定の両立を図る'
+  ],
+  related:'<b>要求の妥当性確認</b>が「作る前の検査」なら、要求管理は「作っている間・作った後の追跡」。アジャイルの<b>バックログリファインメント</b>は要求管理の軽量版と見なせる。',
+  modern:'Jira・Azure DevOps で要求（ストーリー）とプルリクエスト・テストを自動リンクするのが現代の実務。規制産業向けには Jama Connect・Polarion が要求トレーサビリティマトリクスを自動生成する。',
+  hasCode:false
+},
+/* ---------- アジャイルな要求 ---------- */
+{
+  id:'user-stories', name:'User Stories & Acceptance Criteria', jp:'ユーザーストーリーと受入れ基準', cat:'agile',
+  badge:'アジャイル実践', tags:['As a / I want / So that','INVEST','Given-When-Then'],
+  summary:'「<strong>〈誰〉として〈何〉がしたい、なぜなら〈価値〉</strong>」の1〜2文で要求を表す、アジャイル開発の標準的な要求の単位。詳細は文書ではなく<strong>会話</strong>で補い、合意した完成条件を<strong>受入れ基準</strong>として書き残す。',
+  analogy:'ストーリーは「あとで詳しく話そう」という約束のメモ（付箋）。レストランの注文で「魚料理を、軽めで」（ストーリー）と伝えて、火加減や付け合わせはシェフとの会話で決め、「生焼けでないこと・30分以内に提供」（受入れ基準）だけは伝票に書いておく、というイメージ。',
+  purpose:'重厚な仕様書の代わりに、価値の単位で要求を小さく分割し、優先順位を付け替えながら反復的に開発できるようにする。「誰のための・何のための機能か」を常に要求に貼り付けておく。',
+  who:'プロダクトオーナーが中心となって書くが、チーム全員が書いてよい。受入れ基準はプロダクトオーナーと開発者・テスターの3者の会話（Three Amigos）で固める。',
+  steps:[
+    '<b>As a / I want / So that</b> の形式で書く：「外来の看護師<b>として</b>、患者の投薬履歴を検索<b>したい</b>。<b>なぜなら</b>処方の重複を防ぎたいから」（Connextra 形式、2001年頃に英 Connextra 社で生まれた）',
+    '<b>3C</b> を意識する（Ron Jeffries）：<b>Card</b>（カードに収まる簡潔さ）・<b>Conversation</b>（詳細は会話で）・<b>Confirmation</b>（確認方法＝受入れ基準）',
+    '<b>INVEST</b> でストーリーの品質を検査する：<b>I</b>ndependent（独立して開発可能）・<b>N</b>egotiable（交渉可能）・<b>V</b>aluable（ユーザ価値がある）・<b>E</b>stimable（見積可能）・<b>S</b>mall（小さい）・<b>T</b>estable（テスト可能）',
+    '受入れ基準を <b>Given-When-Then</b>（前提・操作・期待結果）で書く：BDD（振る舞い駆動開発）の Gherkin 記法なら、そのまま自動テストにできる',
+    '大きすぎるストーリー（エピック）は<b>縦に分割</b>する：「画面だけ」「DBだけ」の水平分割ではなく、薄くても端から端まで価値が通る単位で'
+  ],
+  points:[
+    'ストーリーは<b>仕様書ではなく会話の約束</b>：書いた瞬間に完成する文書ではなく、実装直前の会話で詳細化される「生もの」',
+    '<b>So that（価値）を省略しない</b>：価値が書けないストーリーは、そもそも作る理由がないかもしれない（優先順位付けの材料にもなる）',
+    'Given-When-Then は要求の<b>テストケース作成可能性</b>（妥当性確認の観点）を最初から作り込む仕掛け：Sommerville の「テストケース生成による妥当性確認」の現代形',
+    '非機能要求は個々のストーリーに書ききれない：チーム共通の<b>「完成の定義（Definition of Done）」</b>や専用の制約カードで扱う'
+  ],
+  cautions:[
+    '形式だけ真似ても意味がない：「開発者として、DBを移行したい」のような<b>ユーザ価値のないストーリー</b>が量産されがち',
+    '<b>会話を省略したストーリーはただの曖昧な要求</b>：「カードに書いてあるから」と会話を飛ばすと、SRS 以下の精度で実装が始まる',
+    '受入れ基準の書きすぎに注意：基準が30行あるストーリーは、たぶん分割すべきエピック',
+    'ストーリーだけでシステム全体の構造は見えない：ストーリーマッピングやドメインモデルで全体像を補う'
+  ],
+  examples:[
+    '「プレミアム会員として、広告なしで動画を再生したい。なぜなら中断なく視聴したいから」＋受入れ基準「Given プレミアム会員でログイン済み When 動画を再生する Then 広告が表示されない」',
+    'Gherkin（Cucumber・SpecFlow）で受入れ基準をそのまま自動受入れテストとして実行する（下のコード例）',
+    'JIRA・GitHub Issues のテンプレートに As a / I want / So that と受入れ基準の欄を用意しているチームは多い'
+  ],
+  related:'<b>ユースケース</b>との違いは比較表へ。<b>シナリオとストーリー</b>（Sommerville の抽出技法）とは同名だが別物：ユーザーストーリーはより小さく、バックログの管理単位。',
+  modern:'BDD ツール（Cucumber・Gherkin）は2020年代も受入れ基準の共通言語として現役。近年は LLM にストーリーの下書きや Given-When-Then 化を支援させる実務も広がるが、「価値の判断と会話」は人間の仕事のまま。INVEST の提唱者 Bill Wake の原文（2003）も短く読みやすい。',
+  hasCode:true
+},
+{
+  id:'backlog-mvp', name:'Product Backlog & MVP', jp:'プロダクトバックログとMVP', cat:'agile',
+  badge:'アジャイル実践', tags:['リーンスタートアップ','仮説検証','作らない価値'],
+  summary:'要求を凍結した文書ではなく<strong>優先順位付きの生きたリスト（バックログ）</strong>として管理し、<strong>実用最小限の製品（MVP）</strong>を早く出して「本当に求められているか」という仮説を市場で検証する考え方。',
+  analogy:'フルコースを全部作ってから初めて客に出すのではなく、まず一皿目を出して反応を見る料理人。「おいしい」と言われてから次を仕込めば、誰も食べない料理に材料を使い切る失敗がない。',
+  purpose:'「要求が正しいかどうかは、作って使われるまで分からない」という不確実性に対処する。最小のコストで学びを最大化し、価値のないものを作り込む無駄（＝最大の無駄）を避ける。',
+  who:'プロダクトオーナー／プロダクトマネージャがバックログの並び順に責任を持つ。MVP の仮説設計は事業側とチームの共同作業。',
+  steps:[
+    '要求・アイデアをすべて<b>プロダクトバックログ</b>に集める（ストーリー・バグ・技術課題も1本のリストに）',
+    '<b>価値・コスト・リスク・学び</b>を基準に並べ替える（上ほど詳細に、下ほど粗く：氷山型に保つ）',
+    '定期的な<b>バックログリファインメント</b>で上位項目を分割・詳細化・見積りする',
+    '検証したい<b>仮説</b>を明確にする：「〈誰〉は〈課題〉を持ち、〈解決策〉にお金/時間を払うはずだ」',
+    '仮説を検証できる<b>最小の製品（MVP）</b>を定義して早期にリリースし、実ユーザの行動データとフィードバックで学ぶ',
+    '学びに基づいてバックログを並べ替える：<b>続行・方向転換（ピボット）・中止</b>を判断する'
+  ],
+  points:[
+    'MVP の M は「最小」だが V は「<b>実用（Viable）</b>」：動かない見せかけではなく、対象ユーザの課題を一応解決できる最小限。「小さくても端から端まで使える」が条件',
+    '<b>「作らない」ことの価値</b>を数えられるようになる：バックログの下位80%は永遠に作られないかもしれないし、それでよい。使われない機能の実装・保守・複雑性のコストはゼロにならない',
+    'MVP は製品とは限らない：Dropbox は<b>デモ動画だけ</b>で需要を検証し、Zappos は創業者が靴屋で買って発送する<b>手作業</b>で「ネットで靴が売れるか」を検証した',
+    'バックログは要求管理の軽量版：順位の変更＝優先順位の再交渉が、儀式なしに毎週できる'
+  ],
+  cautions:[
+    'MVP を「未完成品を出す言い訳」にしない：検証したい<b>仮説がない MVP はただの低品質リリース</b>',
+    '「最小」の解釈がチームで割れる：「この一皿で何を学ぶのか」を先に文書化して合意する',
+    'バックログは放置すると<b>ゴミ屋敷化</b>する：数百件の古い項目は定期的にアーカイブする（正直な「作らない」宣言）',
+    'B2B・規制産業では「小さく出して直す」が許されない場合がある：MVP の適用範囲を見極める（社内βや限定顧客で代替する）'
+  ],
+  examples:[
+    'Dropbox（2008年）：同期技術の実装前に3分のデモ動画を公開し、ベータ待機リストが一晩で7万人超→需要仮説を検証してから本格開発',
+    'Zappos（1999年）：在庫を持たず、注文が入ったら創業者が近所の靴屋で買って発送：「ネットで靴を買う人はいる」を最小コストで実証',
+    'Eric Ries『リーン・スタートアップ』（2011年）が「構築-計測-学習」ループと MVP を体系化した原典'
+  ],
+  related:'<b>MVP とプロトタイプ</b>の違いは比較表へ。<b>MoSCoW・優先順位付け</b>（分析と交渉）の考え方を、一回きりの合意ではなく継続的な運用にしたものがバックログ。',
+  modern:'プロダクトマネジメント（Cagan『INSPIRED』）では、要求を「開発項目の仕様」ではなく「検証すべき仮説」と捉え直す。フィーチャーフラグと A/B テストで「リリース＝実験」にする運用、Productboard・Linear などのバックログ管理ツールが現代の道具立て。',
+  hasCode:false
+}
+];
+</script>
+<script>
+/* ============== コード例（ユーザーストーリー / Gherkin） ============== */
+const CODE = {
+'user-stories':{
+story:`# ユーザーストーリー（カードの表面）
+プレミアム会員として、
+広告なしで動画を再生したい。
+なぜなら、中断なく作品に集中したいから。
+
+# INVEST チェック（カードの裏面のメモ）
+Independent : 決済機能とは独立して実装できる … OK
+Negotiable  : 「広告なし」の範囲（プレロールのみ？）は会話で決める
+Valuable    : プレミアム解約率の低下につながる … OK
+Estimable   : 既存の会員判定APIを使えば見積れる … OK
+Small       : 1スプリントに収まる … OK
+Testable    : 下の受入れ基準でテスト可能 … OK
+
+# 受入れ基準（Confirmation：完成の確認方法）
+1. プレミアム会員には動画の前後・途中で広告を表示しない
+2. 無料会員にはこれまでどおり広告を表示する
+3. 再生中に会員資格が切れた場合、次の動画から広告を表示する`,
+gherkin:`# language: ja
+機能: プレミアム会員の広告なし再生
+  プレミアム会員として、広告なしで動画を再生したい。
+  なぜなら、中断なく作品に集中したいから。
+
+  シナリオ: プレミアム会員には広告が表示されない
+    前提 "プレミアム会員" としてログインしている
+    もし 動画 "夏の教室" を再生する
+    ならば 広告は表示されない
+    かつ 動画が0秒地点から再生される
+
+  シナリオ: 無料会員には広告が表示される
+    前提 "無料会員" としてログインしている
+    もし 動画 "夏の教室" を再生する
+    ならば 再生前に広告が1本表示される
+
+  シナリオ: 再生中に会員資格が失効した場合
+    前提 "プレミアム会員" としてログインしている
+    かつ 会員資格の有効期限が今日である
+    もし 日付が変わってから次の動画を再生する
+    ならば 再生前に広告が1本表示される`
+}
+};
+
+/* ============== カード内ダイアグラム ============== */
+const DIAGRAMS = {
+'scenarios-use-cases': `
+<svg viewBox="0 0 720 300" role="img" aria-label="ユースケース図の例（診療予約システム）">
+  <rect x="200" y="20" width="330" height="262" rx="14" class="dg-box"/>
+  <text x="365" y="44" class="dg-lbl">診療予約システム</text>
+  <text x="365" y="60" class="dg-st">システム境界（Subject）</text>
+  <ellipse cx="365" cy="105" rx="105" ry="26" class="dg-box dg-if"/>
+  <text x="365" y="110" class="dg-el">予約を登録する</text>
+  <ellipse cx="365" cy="170" rx="105" ry="26" class="dg-box dg-if"/>
+  <text x="365" y="175" class="dg-el">予約を検索する</text>
+  <ellipse cx="365" cy="235" rx="105" ry="26" class="dg-box dg-if"/>
+  <text x="365" y="240" class="dg-el">診察記録を閲覧する</text>
+  <circle cx="80" cy="115" r="13" fill="none" stroke="#3C4340" stroke-width="1.6"/>
+  <path d="M80 128 L80 165 M55 140 L105 140 M80 165 L60 195 M80 165 L100 195" fill="none" stroke="#3C4340" stroke-width="1.6"/>
+  <text x="80" y="218" class="dg-lbl">患者</text>
+  <text x="80" y="234" class="dg-st">アクタ（Actor）</text>
+  <circle cx="640" cy="115" r="13" fill="none" stroke="#3C4340" stroke-width="1.6"/>
+  <path d="M640 128 L640 165 M615 140 L665 140 M640 165 L620 195 M640 165 L660 195" fill="none" stroke="#3C4340" stroke-width="1.6"/>
+  <text x="640" y="218" class="dg-lbl">医療従事者</text>
+  <text x="80" y="256" class="dg-note">関連（線）がアクタと</text>
+  <text x="80" y="272" class="dg-note">ユースケースを結ぶ</text>
+  <path d="M95 125 L262 112" class="dg-line"/>
+  <path d="M95 135 L262 165" class="dg-line"/>
+  <path d="M625 125 L468 112" class="dg-line"/>
+  <path d="M625 135 L468 168" class="dg-line"/>
+  <path d="M625 145 L468 228" class="dg-line"/>
+</svg>`,
+'req-management': `
+<svg viewBox="0 0 720 250" role="img" aria-label="トレーサビリティの図（要求・設計・実装・テスト）">
+  <rect x="20" y="55" width="150" height="72" rx="12" class="dg-box dg-if"/>
+  <text x="95" y="82" class="dg-lbl">要求</text>
+  <text x="95" y="99" class="dg-st">R-12</text>
+  <text x="95" y="116" class="dg-el">95%を2秒以内に応答</text>
+  <rect x="207" y="55" width="150" height="72" rx="12" class="dg-box"/>
+  <text x="282" y="82" class="dg-lbl">設計</text>
+  <text x="282" y="99" class="dg-st">D-05</text>
+  <text x="282" y="116" class="dg-el">検索結果キャッシュ</text>
+  <rect x="394" y="55" width="150" height="72" rx="12" class="dg-box"/>
+  <text x="469" y="82" class="dg-lbl">実装</text>
+  <text x="469" y="99" class="dg-st">PR #481</text>
+  <text x="469" y="116" class="dg-el">cache/search.py</text>
+  <rect x="581" y="55" width="120" height="72" rx="12" class="dg-box"/>
+  <text x="641" y="82" class="dg-lbl">テスト</text>
+  <text x="641" y="99" class="dg-st">T-31〜33</text>
+  <text x="641" y="116" class="dg-el">負荷テスト</text>
+  <path d="M170 84 L203 84" class="dg-line" marker-end="url(#rah6)"/>
+  <path d="M203 104 L170 104" class="dg-line" marker-end="url(#rah6)"/>
+  <path d="M357 84 L390 84" class="dg-line" marker-end="url(#rah6)"/>
+  <path d="M390 104 L357 104" class="dg-line" marker-end="url(#rah6)"/>
+  <path d="M544 84 L577 84" class="dg-line" marker-end="url(#rah6)"/>
+  <path d="M577 104 L544 104" class="dg-line" marker-end="url(#rah6)"/>
+  <path d="M641 127 L641 170 L95 170 L95 131" class="dg-line dg-dash" marker-end="url(#rah6)"/>
+  <text x="368" y="162" class="dg-el">テストは要求の検証可能性の証拠：リンクは双方向にたどれるように保つ</text>
+  <text x="360" y="205" class="dg-note">要求 R-12 が「1秒以内」に変更されたら？：リンクをたどれば、見直すべき設計・実装・テストが即座に特定できる。</text>
+  <text x="360" y="225" class="dg-note">この双方向の追跡可能性をトレーサビリティと呼び、変更影響分析（変更分析とコスト見積）の土台になる。</text>
+  <defs><marker id="rah6" markerWidth="9" markerHeight="9" refX="8" refY="4.5" orient="auto">
+    <path d="M0,0 L9,4.5 L0,9 z" fill="#6B746F"/></marker></defs>
+</svg>`,
+};
+
+/* ============== 理解度クイズ ============== */
+const QUIZ = [
+{ q:'「システムは、ピーク時のすべての検索要求の95%に2秒以内に応答しなければならない」：この要求の分類は？',
+  opts:['非機能要求','機能要求','ドメイン要求','情報要求'], a:0,
+  why:'性能（応答時間）はサービスそのものではなく<b>システムの特性</b>なので非機能要求。機能要求は「何をするか」（例：予約を検索できる）を記述する。非機能要求は計量可能なメトリクスで書くのが鉄則。'},
+{ q:'「顧客が欲しい機能・サービスを、契約前に、技術知識のない読者にも分かる自然言語で抽象的に書いたもの」はどちら？',
+  opts:['利用者要求','システム要求'], a:0,
+  why:'利用者要求（日本の実務では「要求」）は顧客・管理者向けの抽象的な記述。システム要求（「要件」）は入出力・例外処理まで明確化した開発者向けの具体的な記述で、契約後に書かれる。'},
+{ q:'アナリストが現場に身を置いて日常業務を観察し、インタビューでは語られない「暗黙の働き方」から要求を発見する手法は？',
+  opts:['エスノグラフィ','クローズドインタビュー','フィジビリティ・スタディ','プロトタイピング'], a:0,
+  why:'エスノグラフィは社会的・組織的要因を理解する質的調査手法。現場の人にとって「当たり前」のことは質問しても出てこない：観察でしか見つからない。ただし既存業務の理解に強い一方、イノベーションには必ずしも有効でない。'},
+{ q:'MoSCoW 法で「今回のリリースでは実装しないことに明示的に合意した要求」を表すのは？',
+  opts:['Won\'t (this time)','Must','Should','Could'], a:0,
+  why:'Won\'t の明文化が MoSCoW の隠れた主役。「やらないと決めたこと」が記録されているから、後から「言った・言わない」の紛争を防げる。Must ばかりに目が行きがちだが要注意。'},
+{ q:'「要求 R-12 を変更したら、どの設計・実装・テストに影響するか」を即座にたどれるようにする、要求管理の仕組みは？',
+  opts:['トレーサビリティ','バックログリファインメント','ペルソナ','エスノグラフィ'], a:0,
+  why:'トレーサビリティ（追跡可能性）は要求↔設計↔テスト間のリンクを維持する仕組み。変更分析とコスト見積の土台であり、医療機器・自動車など規制産業では認証の必須要件でもある。'},
+{ q:'ユーザーストーリーの品質基準 INVEST の「I」が表すのは？',
+  opts:['Independent（独立して開発できる）','Important（重要である）','Immediate（すぐ着手できる）','Integrated（統合されている）'], a:0,
+  why:'INVEST = Independent / Negotiable / Valuable / Estimable / Small / Testable（Bill Wake, 2003）。他のストーリーと依存し合ったストーリーは、順番の入れ替え（優先順位の変更）ができなくなる。'},
+{ q:'受入れ基準の Given-When-Then 形式で、「Given（前提）」に書くべき内容は？',
+  opts:['テスト開始時点のシステムとユーザの状態','ユーザが行う操作','期待される結果','開発者の実装方針'], a:0,
+  why:'Given=前提となる状態（例：プレミアム会員でログイン済み）、When=操作（動画を再生する）、Then=期待結果（広告が表示されない）。構造化仕様の「事前条件・動作・事後条件」と対応する。'},
+{ q:'影響評価や合意のプロセスを通さない「ちょっとした追加」が積み重なり、要求がなし崩しに膨張していく現象を何と呼ぶ？',
+  opts:['要求クリープ（スコープクリープ）','リファクタリング','ピボット','デグレード'], a:0,
+  why:'要求クリープ。対策は変更を拒むことではなく、すべての変更に「問題分析→影響・コスト評価→実装」という管理されたゲートを通すこと。変化そのものは要求の前提である。'},
+{ q:'SRS（ソフトウェア要求仕様書）の標準として、IEEE 830 を置き換えた現行の国際規格は？',
+  opts:['ISO/IEC/IEEE 29148','ISO/IEC 25010','ISO 26262','IEEE 754'], a:0,
+  why:'ISO/IEC/IEEE 29148:2018 が要求工学プロセスと SRS の構成を定める現行規格。ISO/IEC 25010 は品質特性モデル（非機能要求の分類に使う）、ISO 26262 は自動車の機能安全、IEEE 754 は浮動小数点数の規格。'},
+{ q:'要求の妥当性確認で行う5種類のチェックのうち、「要求間に矛盾がないか」を確かめるのは？',
+  opts:['一貫性チェック','妥当性チェック','完全性チェック','実現可能性チェック'], a:0,
+  why:'5つのチェックは、妥当性（実際のニーズを反映？）・一貫性（矛盾がない？）・完全性（漏れがない？）・実現可能性（予算・技術で可能？）・検証可能性（テストで確認できる？）。矛盾の検査は一貫性チェック。'},
+{ q:'「システムは使いやすくなければならない」という非機能要求への正しい対処は？',
+  opts:['トレーニング時間や操作誤り率などのメトリクスで測定可能に書き直す','開発者の判断に任せる','機能要求に分類し直す','そのまま SRS に載せる'], a:0,
+  why:'「使いやすい」は人によって基準が変わる検証不能な目標。「2時間の講習後に全機能を使える」「熟練者の操作誤りは1時間あたり2件以下」のように定量的に書き直して初めて、達成の判定とテストが可能になる。'},
+{ q:'実行可能なモデルを作ってエンドユーザに実際に使ってもらい、「これが欲しかったものか」を確かめる要求の妥当性確認の方法は？',
+  opts:['プロトタイピング','要求レビュー','エスノグラフィ','回帰テスト'], a:0,
+  why:'プロトタイピング。ユーザは仕様書を正確に読めなくても、動く画面には正確にフィードバックできる。要求レビュー（文書の精査）・テストケース生成と並ぶ妥当性確認の3大手法のひとつ。'}
+];
+</script>
+<script>
+/* ============== レンダリング ============== */
+const learned = new Set();
+let currentCat = 'all';
+
+function esc(s){return s.replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;");}
+
+function highlight(code, lang){
+  const cmMark = '#';
+  return code.split('\n').map(line=>{
+    const idx = line.indexOf(cmMark);
+    let codePart = (idx>=0) ? line.slice(0,idx) : line;
+    const cmPart = (idx>=0) ? line.slice(idx) : '';
+    const strs = [];
+    codePart = codePart.replace(/"[^"]*"/g, m=>{ strs.push(m); return '@@S'+(strs.length-1)+'@@'; });
+    let h = esc(codePart);
+    if(lang==='gherkin'){
+      h = h.replace(/^(\s*)(機能|シナリオアウトライン|シナリオ|前提|もし|ならば|かつ|しかし|背景|例|Feature|Scenario Outline|Scenario|Given|When|Then|And|But|Background|Examples)(?=[:：\s]|$)/,
+        '$1<span class="kw">$2</span>');
+    } else {
+      h = h.replace(/^(\s*)(Independent|Negotiable|Valuable|Estimable|Small|Testable)\b/,
+        '$1<span class="kw">$2</span>');
+    }
+    h = h.replace(/@@S(\d+)@@/g,(m,i)=>'<span class="st">'+esc(strs[+i])+'</span>');
+    return h + (cmPart ? '<span class="cm">'+esc(cmPart)+'</span>' : '');
+  }).join('\n');
+}
+
+function togglePattern(id){
+  const card = document.getElementById(id);
+  if(!card) return;
+  const open = card.classList.toggle('open');
+  const head = card.querySelector('.pcard-head');
+  if(head) head.setAttribute('aria-expanded', open ? 'true' : 'false');
+}
+function toggleLearned(id, cb){
+  if(cb.checked) learned.add(id); else learned.delete(id);
+  const card = document.getElementById(id);
+  if(card) card.classList.toggle('done-card', cb.checked);
+  updateLearnUI();
+}
+function updateLearnUI(){
+  const el = document.getElementById('learnNote');
+  if(el) el.textContent = '習得 ' + learned.size + ' / ' + TESTS.length;
+}
+function switchCode(id, lang, btn){
+  document.getElementById(id+'-story').classList.toggle('hidden', lang!=='story');
+  document.getElementById(id+'-gherkin').classList.toggle('hidden', lang!=='gherkin');
+  btn.parentElement.querySelectorAll('button.tab').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+}
+
+function renderTest(t, idx){
+  const pointsLi = t.points.map(v=>`<li>${v}</li>`).join('');
+  const cautionsLi = t.cautions.map(v=>`<li>${v}</li>`).join('');
+  const exLi = t.examples.map(v=>`<li>${v}</li>`).join('');
+  const stepsLi = t.steps.map(v=>`<li>${v}</li>`).join('');
+  const tagsH = (t.tags||[]).map(x=>`<span class="tag">${x}</span>`).join('');
+  const badgeH = `<span class="badge-imp ${BADGE_CLS[t.badge]||'imp1'}">${t.badge}</span>`;
+  const analogyH = t.analogy ? `<div class="analogy"><span><b>たとえるなら</b> ${t.analogy}</span></div>` : '';
+  const dg = DIAGRAMS[t.id];
+  const diagramH = dg ? `<div class="diagram-wrap"><h5>図解イメージ</h5>${dg}</div>` : '';
+  let codeH = '';
+  if(t.hasCode && CODE[t.id]){
+    codeH = `
+      <div class="code-wrap">
+        <div class="code-tabs">
+          <span class="lbl">記述例</span>
+          <button class="tab active" onclick="switchCode('${t.id}','story',this)">ユーザーストーリー</button>
+          <button class="tab" onclick="switchCode('${t.id}','gherkin',this)">Gherkin (Cucumber)</button>
+        </div>
+        <pre id="${t.id}-story"><code>${highlight(CODE[t.id].story,'story')}</code></pre>
+        <pre id="${t.id}-gherkin" class="hidden"><code>${highlight(CODE[t.id].gherkin,'gherkin')}</code></pre>
+      </div>`;
+  }
+  const searchText = (t.name+' '+t.jp+' '+t.summary+' '+(t.analogy||'')+' '+t.badge+' '+(t.tags||[]).join(' ')).toLowerCase();
+  const catColor = CAT_META[t.cat].color;
+  return `
+  <article class="pcard" id="${t.id}" data-cat="${t.cat}" data-search="${esc(searchText)}">
+    <button class="pcard-head" aria-expanded="false" onclick="togglePattern('${t.id}')">
+      <span class="pnum" style="color:${catColor}">${idx}</span>
+      <span class="ptitle">${t.name}<small>${t.jp}</small></span>
+      <span class="pbadges">${badgeH}</span>
+      <span class="ptags">${tagsH}</span>
+      <span class="pchev" aria-hidden="true">&rsaquo;</span>
+    </button>
+    <p class="summary">${t.summary}</p>
+    <div class="pdetail">
+      ${analogyH}
+      <div class="meta-row">
+        <div class="meta"><h5>実施の目的</h5><p>${t.purpose}</p></div>
+        <div class="meta"><h5>誰が・いつ実施するか</h5><p>${t.who}</p></div>
+      </div>
+      <div class="steps"><h5>実施の仕方（進め方）</h5><ol>${stepsLi}</ol></div>
+      ${diagramH}
+      <div class="grid2">
+        <div class="box pros"><h5>✓ 意識するポイント</h5><ul>${pointsLi}</ul></div>
+        <div class="box cons"><h5>！ 注意点・落とし穴</h5><ul>${cautionsLi}</ul></div>
+      </div>
+      <div class="meta-row">
+        <div class="meta"><h5>具体例</h5><ul>${exLi}</ul></div>
+        <div class="meta"><h5>混同しやすいものとの違い</h5><p>${t.related}</p></div>
+      </div>
+      <div class="meta" style="margin:16px 0"><h5>現場では（ツール・現代的な実践）</h5><p>${t.modern}</p></div>
+      ${codeH}
+      <label class="learn"><input type="checkbox" onchange="toggleLearned('${t.id}',this)">
+        この活動を理解した（習得チェック）</label>
+    </div>
+  </article>`;
+}
+
+function build(){
+  document.getElementById('introProse').innerHTML = INTRO_HTML;
+  document.getElementById('techProse').innerHTML = TECH_HTML;
+  document.getElementById('closingProse').innerHTML = CLOSING_HTML;
+  const container = document.getElementById('tests-list');
+  let html='', n=0;
+  CAT_ORDER.forEach(cat=>{
+    const list = TESTS.filter(t=>t.cat===cat);
+    const meta = CAT_META[cat];
+    html += `<div class="cat-group" data-cat="${cat}">
+      <div class="cat-head" style="--cc:${meta.color}">
+        <span class="cat-dot"></span>
+        <h3>${meta.label}</h3>
+        <span class="cat-badge">${meta.en} · ${list.length}種</span>
+      </div>
+      <p class="cat-desc">${meta.desc}</p>`;
+    list.forEach(t=>{ n++; html += renderTest(t, n); });
+    html += `</div>`;
+  });
+  container.innerHTML = html;
+  updateLearnUI();
+  buildQuiz();
+}
+
+function filterCat(cat, btn){
+  currentCat = cat;
+  document.querySelectorAll('.pill').forEach(b=>b.classList.remove('active'));
+  if(btn) btn.classList.add('active');
+  applyFilter();
+}
+function applyFilter(){
+  const si = document.getElementById('search');
+  const q = (si && si.value ? si.value : '').trim().toLowerCase();
+  document.querySelectorAll('.cat-group').forEach(g=>{
+    const catOk = (currentCat==='all' || currentCat===g.dataset.cat);
+    let shown = 0;
+    g.querySelectorAll('.pcard').forEach(c=>{
+      const hit = catOk && (!q || c.dataset.search.includes(q));
+      c.classList.toggle('hidden', !hit);
+      if(hit) shown++;
+    });
+    g.classList.toggle('hidden', shown===0);
+  });
+}
+
+/* ============== あいまい要求チェッカー ============== */
+const AMB_SAMPLES = [
+  'システムは大量のアクセスに対しても高速に応答し、誰にでも使いやすい画面を提供すること。',
+  'ユーザ情報などの重要なデータは、必要に応じて適切にバックアップし、障害時にはできるだけ早く復旧すること。',
+  'システムは、ピーク時1,000件/分の検索要求の95%に2秒以内に応答しなければならない。障害発生時は、30分以内にサービスを復旧しなければならない。'
+];
+const AMB_DICT = [
+  { label:'高速に・速く', re:'高速|速く|素早く|すばやく',
+    hint:'割合＋時間の上限で書く。例：「95%のリクエストに2秒以内に応答しなければならない」' },
+  { label:'使いやすい', re:'使いやすい|使い勝手|操作しやすい',
+    hint:'測定可能な使用性メトリクスに。例：「初見ユーザの80%が講習なしで予約タスクを完了できる」「2時間の講習後に全機能を使える」' },
+  { label:'適切に・適宜', re:'適切に|適切な|適宜|適正に',
+    hint:'誰が・いつ・何を基準に行うのかを明記する。例：「毎日午前2時に」「管理者の承認を得て」' },
+  { label:'〜など・等', re:'など|等々|その他|等(?=[、。をのがと\\s）]|$)',
+    hint:'列挙は完全に書き切る。「等」に隠れた要求は見積もられず、実装もされない' },
+  { label:'柔軟に', re:'柔軟に|柔軟な',
+    hint:'想定する変更・拡張のシナリオを列挙する。例：「税率の変更に、プログラム修正なしで対応できる」' },
+  { label:'十分な', re:'十分な|十分に|充分な|充分に',
+    hint:'数値で上限・下限を。例：「同時接続1,000ユーザまで性能要求を満たす」' },
+  { label:'できるだけ・極力', re:'できるだけ|できる限り|可能な限り|なるべく|極力',
+    hint:'必須（shall）か努力目標（should）かを区別する。必須なら数値を：「30分以内に復旧しなければならない」' },
+  { label:'必要に応じて', re:'必要に応じて|随時',
+    hint:'発動条件を明記する。例：「管理者が要求した場合」「残容量が10%を下回った場合」' },
+  { label:'リアルタイム', re:'リアルタイム',
+    hint:'許容遅延を数値で。例:「センサ値の更新から1秒以内に画面へ反映する」' },
+  { label:'大量・多くの', re:'大量|多数の|多くの|たくさんの',
+    hint:'上限の件数・データ量を数値で。例：「最大100万件の顧客レコード」「1日あたり10GBのログ」' },
+  { label:'直感的・わかりやすい', re:'直感的|わかりやすい|わかりやすく|分かりやすい|分かりやすく',
+    hint:'タスク成功率・初回完了時間などの代理指標で。例：「初回利用者の90%がマニュアルなしで登録を完了できる」' },
+  { label:'安全に・セキュア', re:'セキュア|安全に|安全な',
+    hint:'準拠する規格・脅威モデルを特定する。例：「OWASP ASVS レベル2に準拠」「通信は TLS 1.3 以上」' },
+  { label:'最適な', re:'最適な|最適化|最善の',
+    hint:'何を・どこまで最小化/最大化するのか目標値を書く。例：「配送コストを現行比10%削減する経路を提示」' },
+  { label:'信頼性が高い・安定', re:'信頼性が高い|高い信頼性|信頼性の高い|安定して|安定的',
+    hint:'MTBF・稼働率などのメトリクスで。例：「稼働率99.9%以上（年間停止8.8時間以内）」' },
+  { label:'原則として', re:'原則として|基本的に',
+    hint:'例外の条件をすべて列挙する。例外が書けないなら「原則」は外す' },
+  { label:'簡単に・容易に', re:'簡単に|容易に|手軽に',
+    hint:'手順数・所要時間で。例：「3ステップ・30秒以内で完了できる」' }
+];
+function ambTry(i){ const t=document.getElementById('ambInput'); t.value=AMB_SAMPLES[i]; ambCheck(); }
+function ambCheck(){
+  const raw = document.getElementById('ambInput').value;
+  const out = document.getElementById('ambOut');
+  if(!raw.trim()){
+    out.className='demo-out';
+    out.innerHTML='要求文を入力するか、上のボタンでサンプル文を試してください。曖昧語が検出されると、その語を<b>測定可能な記述</b>に直すヒントが表示されます。';
+    return;
+  }
+  let text = esc(raw);
+  const hits = [];
+  AMB_DICT.forEach(d=>{
+    if(new RegExp(d.re).test(text)){
+      hits.push(d);
+      text = text.replace(new RegExp(d.re,'g'), m=>'<span class="amb-hl">'+m+'</span>');
+    }
+  });
+  if(hits.length){
+    out.className='demo-out ng';
+    out.innerHTML = '<span class="pl">曖昧語 '+hits.length+'種を検出</span>この要求文は、読み手によって解釈が分かれるおそれがあります。'
+      + '<div class="amb-text" style="margin-top:12px">'+text+'</div>'
+      + '<b>計量化のヒント</b><ul class="amb-hints">'
+      + hits.map(h=>'<li><b>「'+h.label+'」</b>→ '+h.hint+'</li>').join('')
+      + '</ul><p style="margin:12px 0 0; font-size:.85rem; color:var(--muted)">数値に直せない場合は、それこそがステークホルダと会話すべきポイントです（いくつが「十分」なのかを決められるのは顧客だけ）。</p>';
+  } else {
+    out.className='demo-out ok';
+    out.innerHTML = '<span class="pl">曖昧語なし</span>この辞書にある曖昧語は見つかりませんでした。'
+      + '<div class="amb-text" style="margin-top:12px">'+text+'</div>'
+      + '<p style="margin:12px 0 0; font-size:.85rem; color:var(--muted)">ただし曖昧語ゼロ＝良い要求とは限りません。検証可能性（テストケースが書けるか）・一貫性（他の要求と矛盾しないか）・完全性（漏れがないか）は、人間のレビューで確かめましょう。辞書ベースの検出は最初の網にすぎません。</p>';
+  }
+}
+
+/* ============== クイズ（in-memory） ============== */
+let quizState = {answered:0, correct:0};
+let quizOrder = [];
+function buildQuiz(){
+  quizState = {answered:0, correct:0};
+  quizOrder = QUIZ.map(q=>{
+    const idx = q.opts.map((_,k)=>k);
+    for(let i=idx.length-1;i>0;i--){ const j=Math.floor(Math.random()*(i+1)); const t=idx[i]; idx[i]=idx[j]; idx[j]=t; }
+    return idx;
+  });
+  const body = document.getElementById('quizBody');
+  if(!body) return;
+  body.innerHTML = QUIZ.map((q,i)=>`
+    <div class="quiz-q" id="qq${i}">
+      <p class="qtext">Q${i+1}. ${q.q}</p>
+      <div class="qopts">${quizOrder[i].map((oi,j)=>`<button onclick="answerQuiz(${i},${j},this)">${q.opts[oi]}</button>`).join('')}</div>
+      <p class="qwhy" hidden></p>
+    </div>`).join('');
+  updateQuizScore();
+}
+function answerQuiz(i, j, btn){
+  const q = QUIZ[i], box = document.getElementById('qq'+i);
+  if(box.classList.contains('answered')) return;
+  box.classList.add('answered');
+  box.querySelectorAll('.qopts button').forEach((b,k)=>{
+    b.disabled = true;
+    if(quizOrder[i][k]===q.a) b.classList.add('right');
+  });
+  const ok = (quizOrder[i][j]===q.a);
+  if(!ok) btn.classList.add('wrong');
+  quizState.answered++; if(ok) quizState.correct++;
+  const why = box.querySelector('.qwhy');
+  why.hidden = false;
+  why.innerHTML = (ok ? '<b>正解。</b> ' : `<b>不正解。</b>正解は <b>${q.opts[q.a]}</b>。 `) + q.why;
+  updateQuizScore();
+}
+function updateQuizScore(){
+  const el = document.getElementById('quizScore');
+  if(el) el.textContent = quizState.answered
+    ? `（${quizState.answered}問中 ${quizState.correct}問正解）` : `全${QUIZ.length}問。`;
+}
+
+/* ============== 言語切替（サイト共通・localStorage は site-lang のみ） ============== */
+function setLang(l){document.body.classList.remove('lang-ja','lang-en');document.body.classList.add('lang-'+l);document.documentElement.lang=l;
+ try{localStorage.setItem('site-lang',l)}catch(e){}
+ try{var q=new URLSearchParams(location.search);q.set('lang',l);history.replaceState(null,'',location.pathname+'?'+q+location.hash)}catch(e){}}
+function toggleLang(){setLang(document.body.classList.contains('lang-ja')?'en':'ja')}
+(function(){var u=null;try{u=new URLSearchParams(location.search).get('lang')}catch(e){}
+ var s=null;try{s=localStorage.getItem('site-lang')}catch(e){}
+ var l=(u==='en'||u==='ja')?u:((s==='en'||s==='ja')?s:'ja');if(l!=='ja')setLang(l);})();
+
+/* ページ内アンカー（本文中のリンク）でカードへ飛ぶとき、
+   絞り込みを解除して対象カードを開いてから移動する */
+document.addEventListener('click', function(e){
+  var a = e.target.closest('a[href^="#"]');
+  if(!a) return;
+  var id = a.getAttribute('href').slice(1);
+  var card = document.getElementById(id);
+  if(card && card.classList.contains('pcard')){
+    if(currentCat!=='all'){ filterCat('all', document.querySelector('.pill')); }
+    var si = document.getElementById('search');
+    if(si && si.value){ si.value=''; }
+    applyFilter();
+    card.classList.add('open');
+    var head = card.querySelector('.pcard-head');
+    if(head) head.setAttribute('aria-expanded','true');
+  }
+});
+
+window.addEventListener('DOMContentLoaded', function(){
+  build();
+  var si = document.getElementById('search');
+  if(si) si.addEventListener('input', applyFilter);
+  if('IntersectionObserver' in window){
+    var io = new IntersectionObserver(function(es){ es.forEach(function(e){ if(e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target); } }); },{threshold:0.12, rootMargin:"0px 0px -6% 0px"});
+    document.querySelectorAll('.reveal').forEach(function(el){ io.observe(el); });
+  } else { document.querySelectorAll('.reveal').forEach(function(el){ el.classList.add('in'); }); }
+});
+</script>
+<script>
+/* ==================== NAV SYSTEM v4 controllers (self-contained) ==================== */
+(function(){
+  function syncLangUI(l){
+    var ja = l==='ja';
+    var lists=document.querySelectorAll('.lswitch');
+    for(var i=0;i<lists.length;i++){
+      var a=lists[i].querySelector('.ls-ja'), e=lists[i].querySelector('.ls-en');
+      if(a) a.setAttribute('aria-pressed', ja?'true':'false');
+      if(e) e.setAttribute('aria-pressed', ja?'false':'true');
+    }
+  }
+  window.syncLangUI=syncLangUI;
+  if(typeof window.setLang==='function'){
+    var _setLang=window.setLang;
+    window.setLang=function(l){ _setLang(l); syncLangUI(l); };
+  }
+  syncLangUI(document.body.classList.contains('lang-en')?'en':'ja');
+
+  var groups=document.querySelectorAll('.navlinks .navgroup');
+  for(var g=0; g<groups.length; g++){ (function(grp){
+    var top=grp.querySelector('.navtop'), panel=grp.querySelector('.navpanel');
+    if(!panel||!top) return;
+    function set(x){ top.setAttribute('aria-expanded', x?'true':'false'); }
+    grp.addEventListener('mouseenter', function(){ grp.classList.remove('collapsed'); set(true); });
+    grp.addEventListener('mouseleave', function(){ set(false); });
+    grp.addEventListener('focusin', function(){ if(!grp.classList.contains('collapsed')) set(true); });
+    grp.addEventListener('focusout', function(e){ if(!grp.contains(e.relatedTarget)){ grp.classList.remove('collapsed'); set(false); } });
+    grp.addEventListener('keydown', function(e){ if(e.key==='Escape'){ grp.classList.add('collapsed'); set(false); top.focus(); } });
+  })(groups[g]); }
+
+  var tog=document.getElementById('navToggle'), ov=document.getElementById('mobnav');
+  if(tog && ov){
+    function openNav(){ document.body.classList.add('navopen'); tog.setAttribute('aria-expanded','true'); ov.setAttribute('aria-hidden','false');
+      var f=ov.querySelector('a,button'); if(f){ requestAnimationFrame(function(){ f.focus(); }); } }
+    function closeNav(){ document.body.classList.remove('navopen'); tog.setAttribute('aria-expanded','false'); ov.setAttribute('aria-hidden','true'); tog.focus(); }
+    tog.addEventListener('click', function(){ document.body.classList.contains('navopen')?closeNav():openNav(); });
+    ov.addEventListener('click', function(e){ if(e.target.closest('a')) closeNav(); });
+    document.addEventListener('keydown', function(e){ if(e.key==='Escape' && document.body.classList.contains('navopen')) closeNav(); });
+  }
+
+  /* F. TOC scroll-spy (IntersectionObserver, no scroll listeners) */
+  var bar=document.querySelector('.tocbar');
+  if(bar){
+    var pills=Array.prototype.slice.call(bar.querySelectorAll('.tocpill'));
+    var map={};
+    pills.forEach(function(p){ map[p.getAttribute('href').slice(1)]=p; });
+    if('IntersectionObserver' in window){
+      var spy=new IntersectionObserver(function(es){
+        es.forEach(function(e){
+          if(e.isIntersecting){
+            pills.forEach(function(p){ p.classList.remove('on'); });
+            var m=map[e.target.id]; if(m) m.classList.add('on');
+          }
+        });
+      },{rootMargin:'-45% 0px -50% 0px', threshold:0});
+      pills.forEach(function(p){ var s=document.getElementById(p.getAttribute('href').slice(1)); if(s) spy.observe(s); });
+    }
+  }
+
+  /* F. back to top */
+  var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var bt=document.querySelector('.totop'), sen=document.getElementById('toTopSentinel');
+  if(bt && sen && 'IntersectionObserver' in window){
+    new IntersectionObserver(function(es){
+      es.forEach(function(e){ if(e.isIntersecting) bt.classList.remove('show'); else bt.classList.add('show'); });
+    },{threshold:0}).observe(sen);
+  }
+  if(bt){ bt.addEventListener('click', function(){ window.scrollTo({top:0, behavior:reduce?'auto':'smooth'}); }); }
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,1922 @@
+<!DOCTYPE html>
+<html lang="ja" class="no-js">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>アジャイル開発とスクラム学習ガイド - 変化に応えるソフトウェア開発 / Agile &amp; Scrum</title>
+<meta name="description" content="A study guide to agile software development and Scrum: the Agile Manifesto, XP practices, user stories, sprints, product backlog, velocity, retrospectives, Kanban, and scaling agile, with purposes, procedures, key points, and a comprehension quiz. Part of Yuta Kimura's software engineering course materials.">
+<link rel="canonical" href="https://ykimu.github.io/course/agile-scrum.html">
+<link rel="icon" href="../favicon.svg" type="image/svg+xml">
+<meta property="og:site_name" content="Yuta Kimura / 木村祐太">
+<meta property="og:type" content="article">
+<meta property="og:title" content="アジャイル開発とスクラム学習ガイド - 変化に応えるソフトウェア開発 / Agile &amp; Scrum">
+<meta property="og:description" content="A study guide to agile development and Scrum: the Agile Manifesto, XP, user stories, sprints, backlogs, velocity, retrospectives, Kanban, and scaling, with a burndown-chart simulator and a comprehension quiz.">
+<meta property="og:url" content="https://ykimu.github.io/course/agile-scrum.html">
+<meta property="og:image" content="https://ykimu.github.io/assets/og.png">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="color-scheme" content="light">
+<script>document.documentElement.className="js";</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&family=Noto+Sans+JP:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#FBFCFB; --bg-2:#F3F6F4; --bg-3:#EBEFED; --card:#FFFFFF;
+    --ink:#101312; --ink-2:#3C4340; --muted:#6B746F; --faint:#B7C0BB;
+    --line:#E7ECE9; --hair:rgba(16,19,18,.08); --shell:rgba(16,19,18,.035);
+    --accent:#0E6F5C; --accent-2:#0A5748; --accent-soft:rgba(14,111,92,.08);
+    --soft:0 1px 2px rgba(16,19,18,.04), 0 24px 60px -28px rgba(16,19,18,.16);
+    --inhi:inset 0 1px 0 rgba(255,255,255,.85);
+    --ease:cubic-bezier(.32,.72,0,1);
+    --sans:"Plus Jakarta Sans","Noto Sans JP",-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+    --disp:"Space Grotesk","Plus Jakarta Sans","Noto Sans JP",sans-serif;
+    --mono:ui-monospace,SFMono-Regular,Menlo,Consolas,"Liberation Mono",monospace;
+    --maxw:1440px; --readw:clamp(680px, 62vw, 1060px);
+    /* category accents (kept within the brand green + neutral family) */
+    --xp:#0E6F5C; --scrum:#3E5C50; --beyond:#8A6D3B; --neutral:#5B655F;
+    /* compatibility aliases used by reused content/diagram/quiz markup */
+    --panel:var(--card); --panel2:var(--bg-2); --chip:var(--bg-3);
+    --code-bg:var(--shell); --code-ink:#2F3A33;
+    --good:#0E6F5C; --bad:#B04A3E; --warn:#8A6D3B; --accent2:var(--accent-2);
+    --kw:#0A5748; --ty:#3C4340; --st:#7A5C34; --cm:#87918C;
+  }
+  html{color-scheme:light}
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth; -webkit-text-size-adjust:100%}
+  body{margin:0; background:var(--bg); color:var(--ink); font-family:var(--sans);
+    font-size:17px; line-height:1.75; font-weight:400; -webkit-font-smoothing:antialiased; text-rendering:optimizeLegibility}
+  body.lang-ja [lang=en]{display:none}
+  body.lang-en [lang=ja]{display:none}
+  ::selection{background:rgba(14,111,92,.16)}
+  h1,h2,h3{margin:0; color:var(--ink); font-weight:500; line-height:1.16; letter-spacing:-.02em; font-family:var(--disp); text-wrap:balance}
+  body.lang-ja h1,body.lang-ja h2,body.lang-ja h3{letter-spacing:0; font-family:var(--sans)}
+  p,.lead,.cite,.muted-s{text-wrap:pretty}
+  [lang="en"]{line-break:auto}
+  [lang="ja"]{line-break:strict; word-break:normal}
+  h1 [lang="ja"],h2 [lang="ja"],h3 [lang="ja"]{word-break:auto-phrase}
+  p{margin:0 0 1em}
+  a{color:var(--accent-2); text-decoration:none; transition:color .3s var(--ease)}
+  a:hover{color:var(--accent)}
+  a:focus-visible,button:focus-visible,.btn:focus-visible,[tabindex]:focus-visible{outline:2px solid var(--accent); outline-offset:3px; border-radius:8px}
+  .wrap{max-width:var(--maxw); margin:0 auto; padding:0 40px}
+  [id]{scroll-margin-top:96px}
+  section{padding:100px 0}
+
+  .skip{position:fixed; top:10px; left:10px; padding:10px 16px; background:var(--ink); color:#fff; border-radius:999px; transform:translateY(-200%); transition:none; z-index:100}
+  .skip:focus{transform:none}
+
+  /* film grain overlay */
+  body::after{content:""; position:fixed; inset:0; z-index:1; pointer-events:none; opacity:.02;
+    background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='g'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23g)'/%3E%3C/svg%3E")}
+
+  h2.big{font-size:clamp(1.9rem,3.2vw,2.7rem); font-weight:500; letter-spacing:-.025em; max-width:26ch}
+  body.lang-ja h2.big{letter-spacing:-.01em; max-width:none}
+  .eyebrow,.kick{display:inline-flex; align-items:center; gap:8px; width:max-content; max-width:100%;
+    padding:5px 13px 5px 11px; border-radius:999px; border:1px solid var(--hair); background:#fff;
+    font:600 .66rem/1 var(--disp); letter-spacing:.14em; text-transform:uppercase; color:var(--ink-2); margin:0 0 18px}
+  .eyebrow::before,.kick::before{content:""; flex:0 0 auto; width:6px; height:6px; border-radius:50%; background:var(--accent)}
+  .lead{font-size:1.12rem; color:var(--ink-2); line-height:1.78; font-weight:400}
+
+  /* motion */
+  .js .reveal{opacity:0; transform:translateY(18px); filter:blur(6px); transition:opacity .9s var(--ease), transform .9s var(--ease), filter .9s var(--ease)}
+  .js .reveal.in{opacity:1; transform:none; filter:none}
+  @media (prefers-reduced-motion:reduce){
+    .js .reveal{opacity:1!important; transform:none!important; filter:none!important}
+    .btn:active,.btn.ink:hover .ic,.pcard:hover,.pill:hover{transform:none!important}
+    html{scroll-behavior:auto}
+  }
+
+  /* floating island nav */
+  header.bar{position:sticky; top:18px; z-index:60; background:transparent; border-bottom:none}
+  .bar .wrap{display:flex; align-items:center; justify-content:space-between;
+    width:max-content; max-width:calc(100% - 32px); margin:0 auto; height:auto;
+    padding:9px 12px 9px 20px; gap:20px; border-radius:999px;
+    background:rgba(255,255,255,.72); -webkit-backdrop-filter:saturate(1.4) blur(18px); backdrop-filter:saturate(1.4) blur(18px);
+    border:1px solid var(--hair); box-shadow:var(--soft)}
+  .brand{font-weight:600; font-size:.92rem; letter-spacing:-.01em; color:var(--ink); display:inline-flex; align-items:center; gap:8px}
+  .brand span.sep{color:var(--muted); font-weight:400; margin:0 2px}
+  .navlinks{display:flex; gap:22px; align-items:center}
+  .navlinks a{font-size:.86rem; font-weight:500; color:var(--ink-2); transition:color .3s var(--ease)}
+  .navlinks a:hover{color:var(--ink)}
+  @media(max-width:860px){.navlinks{display:none}}
+  .bar-right{display:flex; align-items:center; gap:8px}
+
+  /* buttons */
+  .btn{display:inline-flex; align-items:center; gap:10px; font:500 .85rem/1 var(--sans); padding:10px 18px;
+    border-radius:999px; border:1px solid var(--hair); background:#fff; color:var(--ink); cursor:pointer;
+    transition:transform .4s var(--ease), box-shadow .4s var(--ease), border-color .3s var(--ease), background .3s var(--ease), color .3s var(--ease)}
+  .btn:hover{border-color:var(--ink); transform:translateY(-1px); color:var(--ink)}
+  .btn:active{transform:scale(.98)}
+  .btn.ink{background:var(--ink); border-color:var(--ink); color:#fff; padding:10px 10px 10px 22px;
+    box-shadow:0 12px 26px -14px rgba(16,19,18,.5)}
+  .btn.ink:not(:has(.ic)){padding:10px 22px}
+  .btn.ink:hover{box-shadow:0 16px 32px -14px rgba(16,19,18,.55); color:#fff}
+  .btn .ic{width:32px; height:32px; border-radius:999px; background:rgba(255,255,255,.18); display:grid; place-items:center;
+    transition:transform .45s var(--ease); flex:0 0 auto}
+  .btn.ink:hover .ic{transform:translate(3px,-1px)}
+  .tlink{display:inline-flex; align-items:center; gap:8px; font-weight:500; font-size:.95rem; color:var(--ink)}
+  .tlink .ar{transition:transform .4s var(--ease)}
+  .tlink:hover .ar{transform:translateX(4px)}
+
+  /* hero */
+  .hero{position:relative; overflow:hidden}
+  .hero > .wrap{position:relative; z-index:1}
+  .hero::before{content:""; position:absolute; z-index:0; width:640px; height:640px; right:-150px; top:-240px;
+    border-radius:50%; pointer-events:none; opacity:.55;
+    background:radial-gradient(circle, var(--accent-soft), transparent 62%); filter:blur(20px)}
+  .hero .wrap{padding-top:72px; padding-bottom:70px}
+  .hero h1{font-size:clamp(2.6rem,5vw,4.2rem); font-weight:500; letter-spacing:-.03em; line-height:1.08; color:var(--ink); max-width:none}
+  body.lang-ja .hero h1{font-size:clamp(2rem,4.2vw,3.1rem); font-weight:500; letter-spacing:0; line-height:1.24}
+  .hero h1 em{font-style:normal; color:var(--accent)}
+  .hero .lead{max-width:var(--readw); margin-top:24px}
+  .ja-note{display:inline-flex; align-items:center; gap:8px; margin-top:22px; padding:7px 15px; border-radius:999px;
+    border:1px solid var(--hair); background:var(--accent-soft); font-size:.8rem; font-weight:500; color:var(--accent-2)}
+  .ja-note::before{content:""; width:6px; height:6px; border-radius:50%; background:var(--accent); flex:0 0 auto}
+  .hero-cta{display:flex; gap:20px; align-items:center; flex-wrap:wrap; margin-top:28px}
+
+  .soft-sec{background:var(--bg-2); border-top:1px solid var(--line); border-bottom:1px solid var(--line)}
+
+  /* prose */
+  .prose{max-width:var(--readw)}
+  .prose p{margin:0 0 1em; color:var(--ink-2)}
+  .prose h4{font-family:var(--sans); font-size:1.12rem; font-weight:600; letter-spacing:0; color:var(--ink); margin:1.6em 0 .6em}
+  .prose ul{margin:0 0 1.2em; padding-left:0; list-style:none}
+  .prose ul li{position:relative; padding-left:22px; margin:12px 0; color:var(--ink-2)}
+  .prose ul li::before{content:""; position:absolute; left:0; top:13px; width:11px; height:1.5px; background:var(--accent)}
+  .prose ul li b{color:var(--ink); font-weight:600}
+  .prose b{color:var(--ink); font-weight:600}
+  .prose i{color:var(--ink-2)}
+  .prose code{font-family:var(--mono); font-size:.86em; background:var(--shell); border:1px solid var(--hair); border-radius:6px; padding:.08em .4em; color:var(--accent-2)}
+
+  .callout{border-radius:16px; padding:18px 22px; margin:18px 0; max-width:var(--readw);
+    background:var(--card); box-shadow:0 0 0 6px var(--shell),0 0 0 6.5px var(--hair),var(--soft)}
+  .callout h4{margin:0 0 6px; font-size:1rem; font-family:var(--sans); font-weight:600; letter-spacing:0; color:var(--ink)}
+  .callout.tip{background:var(--accent-soft)}
+  .callout.warn{background:rgba(138,109,59,.08)}
+  .callout a{font-weight:600}
+
+  .principles{display:grid; grid-template-columns:repeat(auto-fit,minmax(230px,1fr)); gap:14px; margin:18px 0; max-width:var(--readw)}
+  .principles .p{background:var(--card); border-radius:16px; padding:16px 18px;
+    box-shadow:0 0 0 6px var(--shell),0 0 0 6.5px var(--hair),var(--soft)}
+  .principles .p b{color:var(--accent-2)}
+  .principles .p span{font-size:.9rem; color:var(--muted)}
+
+  .cmp-table{border-collapse:separate; border-spacing:0; margin:16px 0; max-width:var(--readw); width:100%; font-size:.92rem;
+    border-radius:14px; overflow:hidden; box-shadow:0 0 0 6px var(--shell),0 0 0 6.5px var(--hair),var(--soft)}
+  .cmp-table th,.cmp-table td{border-bottom:1px solid var(--line); border-right:1px solid var(--line); padding:11px 14px; text-align:left; vertical-align:top; background:var(--card)}
+  .cmp-table tr:last-child th,.cmp-table tr:last-child td{border-bottom:none}
+  .cmp-table th{background:var(--bg-2); font-weight:600; color:var(--ink)}
+  .cmp-table td:last-child,.cmp-table th:last-child{border-right:none}
+  .cmp-table td b{color:var(--accent-2)}
+
+  /* controls: category pills + search */
+  .controls{display:flex; align-items:center; justify-content:space-between; gap:20px; flex-wrap:wrap; margin:0 0 12px}
+  .pills{display:flex; gap:8px; flex-wrap:wrap}
+  .pill{display:inline-flex; align-items:center; gap:8px; font:500 .9rem/1 var(--sans); padding:9px 16px;
+    border-radius:999px; border:1px solid var(--hair); background:#fff; color:var(--ink-2); cursor:pointer;
+    transition:transform .4s var(--ease), border-color .3s var(--ease), background .3s var(--ease), color .3s var(--ease)}
+  .pill:hover{border-color:var(--ink); transform:translateY(-1px)}
+  .pill span{font:600 .72rem/1 var(--disp); color:var(--muted)}
+  .pill.active{background:var(--ink); border-color:var(--ink); color:#fff}
+  .pill.active span{color:rgba(255,255,255,.7)}
+  .ctrl-right{display:flex; align-items:center; gap:14px}
+  .search{width:min(280px,60vw); padding:10px 16px; border-radius:999px; border:1px solid var(--hair);
+    background:#fff; color:var(--ink); font:400 .9rem/1 var(--sans); outline:none; transition:border-color .3s var(--ease)}
+  .search:focus{border-color:var(--accent)}
+  .learn-note{font:600 .78rem/1 var(--disp); color:var(--muted); white-space:nowrap}
+
+  /* category groups */
+  .cat-group{margin-top:34px}
+  .cat-group.hidden{display:none}
+  .cat-head{display:flex; align-items:center; gap:12px; margin:0 0 4px}
+  .cat-head .cat-dot{width:10px; height:10px; border-radius:50%; background:var(--cc); flex:0 0 auto}
+  .cat-head h3{font-family:var(--sans); font-size:1.4rem; font-weight:600; letter-spacing:0; color:var(--ink)}
+  .cat-badge{font:600 .66rem/1 var(--disp); letter-spacing:.08em; text-transform:uppercase; color:var(--muted);
+    border:1px solid var(--hair); background:#fff; padding:5px 11px; border-radius:999px}
+  .cat-desc{max-width:var(--readw); color:var(--muted); font-size:.96rem; margin:0 0 12px}
+
+  /* test card (double-bezel) */
+  .pcard{border-radius:21px; background:var(--card); margin:16px 0; scroll-margin-top:96px;
+    box-shadow:0 0 0 7px var(--shell),0 0 0 7.5px var(--hair),var(--soft);
+    transition:box-shadow .4s var(--ease)}
+  .pcard.hidden{display:none}
+  .pcard-head{display:flex; align-items:center; gap:14px; width:100%; text-align:left;
+    background:transparent; border:none; cursor:pointer; padding:22px 26px 8px; font-family:var(--sans)}
+  .pnum{font:600 .95rem/1 var(--disp); font-variant-numeric:tabular-nums; flex:0 0 auto; min-width:24px}
+  .ptitle{font-family:var(--disp); font-weight:500; font-size:1.18rem; color:var(--ink); letter-spacing:-.01em; flex:0 0 auto}
+  .ptitle small{display:block; font-family:var(--sans); font-size:.8rem; color:var(--muted); font-weight:400; margin-top:2px}
+  .pbadges{display:flex; gap:8px; align-items:center}
+  .ptags{display:flex; gap:6px; flex-wrap:wrap; margin-left:auto; justify-content:flex-end}
+  .pchev{flex:0 0 auto; font-size:1.5rem; color:var(--muted); transition:transform .4s var(--ease); margin-left:6px; line-height:1}
+  .pcard.open .pchev{transform:rotate(90deg); color:var(--accent-2)}
+  .summary{margin:0; padding:0 26px 22px; color:var(--ink-2); font-size:1rem}
+  .summary strong{color:var(--ink); font-weight:600}
+  .pdetail{display:none; padding:0 26px 26px}
+  .pcard.open .pdetail{display:block}
+  .pcard.done-card{box-shadow:0 0 0 7px var(--accent-soft),0 0 0 7.5px rgba(14,111,92,.24),var(--soft)}
+
+  .badge-imp{font:700 .68rem/1 var(--disp); letter-spacing:.06em; padding:4px 10px; border-radius:999px; white-space:nowrap}
+  .imp3{background:var(--accent); color:#fff}
+  .imp2{background:var(--accent-soft); color:var(--accent-2)}
+  .imp1{background:var(--bg-3); color:var(--muted)}
+  .tag{font:500 .72rem/1 var(--sans); padding:5px 10px; border-radius:999px; background:var(--bg-2); color:var(--muted); border:1px solid var(--hair)}
+
+  .analogy{display:flex; gap:10px; align-items:flex-start; background:var(--accent-soft);
+    border-radius:14px; padding:14px 18px; margin:16px 0; font-size:.94rem; color:var(--ink-2)}
+  .analogy b{color:var(--accent-2); font-weight:600}
+
+  .grid2{display:grid; grid-template-columns:1fr 1fr; gap:16px; margin:18px 0}
+  .box{border-radius:16px; padding:16px 18px; background:var(--card);
+    box-shadow:0 0 0 6px var(--shell),0 0 0 6.5px var(--hair),var(--soft)}
+  .box h5{margin:0 0 10px; font-size:.92rem; font-family:var(--sans); font-weight:600; letter-spacing:0; display:flex; align-items:center; gap:7px}
+  .box.pros h5{color:var(--accent-2)}
+  .box.cons h5{color:var(--bad)}
+  .box ul{margin:0; padding-left:18px}
+  .box li{margin:6px 0; font-size:.9rem; color:var(--ink-2)}
+
+  .meta-row{display:grid; grid-template-columns:1fr 1fr; gap:16px; margin:16px 0}
+  .meta h5{margin:0 0 8px; font-size:.92rem; font-family:var(--sans); font-weight:600; letter-spacing:0; color:var(--accent-2)}
+  .meta p,.meta li{font-size:.92rem; color:var(--ink-2)}
+  .meta ul{margin:0; padding-left:18px}
+  .meta p{margin:0}
+  .meta code,.box code,.analogy code,.steps code{font-family:var(--mono); font-size:.86em; background:var(--shell); border:1px solid var(--hair); border-radius:5px; padding:.05em .35em; color:var(--accent-2)}
+
+  /* numbered procedure steps */
+  .steps{border-radius:16px; padding:16px 18px; margin:16px 0; background:var(--card);
+    box-shadow:0 0 0 6px var(--shell),0 0 0 6.5px var(--hair),var(--soft)}
+  .steps h5{margin:0 0 10px; font-size:.92rem; font-family:var(--sans); font-weight:600; letter-spacing:0; color:var(--accent-2)}
+  .steps ol{margin:0; padding:0; list-style:none; counter-reset:st}
+  .steps ol li{counter-increment:st; position:relative; padding-left:36px; margin:9px 0; font-size:.92rem; color:var(--ink-2)}
+  .steps ol li::before{content:counter(st); position:absolute; left:0; top:3px; width:23px; height:23px; border-radius:50%;
+    background:var(--accent-soft); color:var(--accent-2); font:600 .74rem/23px var(--disp); text-align:center}
+  .steps ol li b{color:var(--ink); font-weight:600}
+
+  /* diagrams */
+  .diagram-wrap{margin:18px 0; max-width:var(--readw)}
+  .diagram-wrap h5{margin:0 0 8px; font-size:.92rem; font-family:var(--sans); font-weight:600; letter-spacing:0; color:var(--accent-2)}
+  .diagram-wrap svg{display:block; width:100%; height:auto; background:var(--shell);
+    border:1px solid var(--hair); border-radius:12px; padding:8px}
+  .dg-box{fill:var(--card); stroke:var(--line); stroke-width:1.2}
+  .dg-if{stroke:var(--accent)}
+  .dg-lbl{fill:var(--ink); font-size:12px; font-weight:600; text-anchor:middle; font-family:var(--sans)}
+  .dg-st{fill:var(--accent-2); font-size:10px; text-anchor:middle}
+  .dg-line{stroke:var(--muted); stroke-width:1.4; fill:none}
+  .dg-dash{stroke-dasharray:5 4}
+  .dg-el{fill:var(--ink-2); font-size:10.5px; text-anchor:middle}
+  .dg-note{fill:var(--muted); font-size:11px; font-style:italic; text-anchor:middle}
+  .dg-legend{font-size:.78rem; color:var(--muted); margin-top:8px}
+
+  /* code blocks */
+  .code-wrap{margin-top:16px; border:1px solid var(--hair); border-radius:14px; overflow:hidden; background:var(--shell)}
+  .code-tabs{display:flex; align-items:center; gap:0; background:var(--bg-2); border-bottom:1px solid var(--hair)}
+  .code-tabs .lbl{margin-right:auto; padding:10px 16px; font:500 .78rem/1 var(--sans); color:var(--muted)}
+  .code-tabs .tab{background:transparent; border:none; color:var(--muted); padding:10px 18px; font:600 .82rem/1 var(--sans);
+    cursor:pointer; border-bottom:2px solid transparent; transition:color .3s var(--ease), border-color .3s var(--ease)}
+  .code-tabs .tab:hover{color:var(--ink)}
+  .code-tabs .tab.active{color:var(--ink); border-bottom-color:var(--accent)}
+  pre{margin:0; background:var(--shell); padding:16px 18px; overflow-x:auto; font-size:.82rem; line-height:1.65}
+  pre code{font-family:var(--mono); color:var(--code-ink); white-space:pre}
+  pre.hidden{display:none}
+  .kw{color:var(--kw); font-weight:600} .ty{color:var(--ty)} .st{color:var(--st)} .cm{color:var(--cm); font-style:italic}
+
+  .learn{display:inline-flex; align-items:center; gap:10px; margin-top:20px; font-size:.9rem;
+    color:var(--muted); cursor:pointer; user-select:none}
+  .learn input{accent-color:var(--accent); width:16px; height:16px; cursor:pointer}
+
+  /* equivalence-partition demo */
+  .demo{border-radius:16px; padding:20px 22px; margin:22px 0; max-width:var(--readw); background:var(--card);
+    box-shadow:0 0 0 6px var(--shell),0 0 0 6.5px var(--hair),var(--soft)}
+  .demo h4{margin:0 0 6px; font-size:1rem; font-family:var(--sans); font-weight:600; color:var(--ink)}
+  .demo .spec{font-size:.9rem; color:var(--muted); margin:0 0 14px}
+  .demo-row{display:flex; gap:10px; flex-wrap:wrap; align-items:center}
+  .demo input[type=text]{width:min(220px,100%); padding:10px 16px; border-radius:999px; border:1px solid var(--hair);
+    background:#fff; color:var(--ink); font:500 .95rem/1 var(--mono); outline:none; transition:border-color .3s var(--ease)}
+  .demo input[type=text]:focus{border-color:var(--accent)}
+  .demo .try{display:flex; gap:6px; flex-wrap:wrap}
+  .demo .try button{background:#fff; border:1px solid var(--hair); color:var(--ink-2); border-radius:999px;
+    padding:7px 13px; font:500 .82rem/1 var(--mono); cursor:pointer; transition:border-color .3s var(--ease), transform .3s var(--ease)}
+  .demo .try button:hover{border-color:var(--ink); transform:translateY(-1px)}
+  .demo-out{margin-top:14px; border-radius:12px; padding:14px 16px; font-size:.92rem; background:var(--bg-2); color:var(--ink-2)}
+  .demo-out b{font-weight:600}
+  .demo-out.ok{background:var(--accent-soft); }
+  .demo-out.ng{background:rgba(176,74,62,.08)}
+  .demo-out .pl{display:inline-block; font:600 .72rem/1 var(--disp); letter-spacing:.05em; padding:4px 10px; border-radius:999px; margin-right:8px}
+  .demo-out.ok .pl{background:var(--accent); color:#fff}
+  .demo-out.ng .pl{background:var(--bad); color:#fff}
+  .demo-out .bd{display:inline-block; font:600 .72rem/1 var(--disp); letter-spacing:.05em; padding:4px 10px; border-radius:999px; margin-right:8px; background:rgba(138,109,59,.15); color:var(--warn)}
+
+  /* quiz */
+  .quiz-q{border-radius:16px; padding:18px 20px; margin:16px 0; max-width:var(--readw); background:var(--card);
+    box-shadow:0 0 0 6px var(--shell),0 0 0 6.5px var(--hair),var(--soft)}
+  .qtext{margin:0 0 12px; font-weight:600; color:var(--ink)}
+  .qopts{display:flex; flex-wrap:wrap; gap:8px}
+  .qopts button{background:#fff; border:1px solid var(--hair); color:var(--ink); border-radius:999px;
+    padding:9px 16px; font:500 .88rem/1 var(--sans); cursor:pointer; transition:border-color .3s var(--ease), transform .3s var(--ease)}
+  .qopts button:hover:not(:disabled){border-color:var(--ink); transform:translateY(-1px)}
+  .qopts button:disabled{cursor:default}
+  .qopts button.right{background:var(--accent-soft); color:var(--accent-2); border-color:var(--accent); font-weight:600}
+  .qopts button.wrong{background:rgba(176,74,62,.1); color:var(--bad); border-color:var(--bad)}
+  .qwhy{font-size:.9rem; color:var(--ink-2); margin:12px 0 0; padding-top:12px; border-top:1px solid var(--line)}
+  .qwhy b{color:var(--ink); font-weight:600}
+  .quiz-reset{margin-top:16px}
+  #quizScore{color:var(--muted); font-size:.92rem; font-weight:500}
+
+  /* footer */
+  footer{border-top:1px solid var(--line); padding:64px 0 46px; background:var(--bg)}
+  footer h3{font-size:.72rem; font-weight:600; letter-spacing:.12em; text-transform:uppercase; color:var(--muted); margin:0 0 1em; font-family:var(--disp)}
+  .foot-grid{display:grid; grid-template-columns:1.4fr 1fr 1fr; gap:44px}
+  .cite{font-size:.98rem; color:var(--ink-2); line-height:1.7; max-width:56ch; margin-bottom:36px}
+  .muted-s{color:var(--muted); font-size:.9rem; line-height:1.75}
+  .muted-s b{color:var(--ink); font-weight:600}
+  .foot-rule{height:1px; background:var(--line); margin:44px 0 20px}
+  .foot-note{color:var(--muted); font-size:.82rem}
+  @media(max-width:760px){.foot-grid{grid-template-columns:1fr 1fr}}
+  @media(max-width:560px){.foot-grid{grid-template-columns:1fr}}
+
+  @media(max-width:860px){
+    section{padding:72px 0}
+    .hero .wrap{padding-top:52px; padding-bottom:56px}
+    .wrap{padding:0 24px}
+    .grid2,.meta-row{grid-template-columns:1fr}
+    .ptags{flex-basis:100%; margin-left:0; justify-content:flex-start}
+    .pcard-head{flex-wrap:wrap}
+  }
+  @media(max-width:640px){
+    .bar-right .btn:not(.ink):not(.jp-toggle){display:none}
+    .brand{font-size:.82rem}
+    .controls{align-items:flex-start; flex-direction:column}
+    .qopts button{flex:1 1 44%}
+  }
+
+  /* JP-only teaching page: fill content width for body text & boxes */
+  .lead,
+  .prose,
+  .callout,
+  .principles,
+  .cmp-table,
+  .diagram-wrap,
+  .demo{max-width:none !important}
+  /* ==================== NAV SYSTEM v4 (NAV_SPEC A-F) ==================== */
+  .navlinks{display:flex; gap:4px; align-items:center}
+  .navlinks .navgroup{position:relative; display:flex}
+  .navlinks .navtop{display:inline-flex; align-items:center; gap:7px; font-size:.86rem; font-weight:500;
+    color:var(--ink-2); padding:8px 13px; border-radius:999px; white-space:nowrap;
+    transition:color .3s var(--ease), background .3s var(--ease)}
+  .navlinks .navtop:hover{color:var(--ink)}
+  .navlinks .navgroup:hover .navtop,.navlinks .navgroup:focus-within .navtop{color:var(--ink); background:var(--bg-2)}
+  .navlinks .navtop.on{color:var(--ink)}
+  .navlinks .navtop.on::before{content:""; flex:0 0 auto; width:6px; height:6px; border-radius:50%; background:var(--accent)}
+  .navlinks .navpanel{position:absolute; top:100%; left:50%; margin-top:9px; min-width:238px; padding:10px;
+    transform:translateX(-50%) translateY(6px); text-align:left;
+    background:var(--card); border:1px solid var(--hair); border-radius:16px; box-shadow:var(--soft);
+    opacity:0; visibility:hidden; pointer-events:none;
+    transition:opacity .25s var(--ease), transform .25s var(--ease), visibility 0s linear .25s; z-index:5}
+  .navlinks .navpanel::before{content:""; position:absolute; top:-13px; left:0; right:0; height:14px}
+  .navlinks .navgroup:hover .navpanel,.navlinks .navgroup:focus-within .navpanel{
+    opacity:1; visibility:visible; pointer-events:auto; transform:translateX(-50%) translateY(0);
+    transition:opacity .25s var(--ease), transform .25s var(--ease), visibility 0s linear 0s}
+  .navlinks .navgroup.collapsed .navpanel{opacity:0; visibility:hidden; pointer-events:none}
+  .navlinks .navpanel a{display:flex; align-items:center; gap:9px; padding:9px 12px; border-radius:11px;
+    font-size:.85rem; font-weight:500; color:var(--ink-2); white-space:nowrap;
+    transition:background .25s var(--ease), color .25s var(--ease)}
+  .navlinks .navpanel a:hover{background:var(--accent-soft); color:var(--ink)}
+  .navlinks .navpanel a.here{background:var(--accent-soft); color:var(--ink)}
+  .navlinks .navpanel a.here::before{content:""; flex:0 0 auto; width:6px; height:6px; border-radius:50%; background:var(--accent)}
+  .navlinks .navlabel{padding:8px 12px 3px; font:600 .6rem/1 var(--disp); letter-spacing:.13em;
+    text-transform:uppercase; color:var(--muted)}
+  .navlinks .navpanel hr.navdiv{border:0; border-top:1px solid var(--line); margin:8px 6px}
+
+  .lswitch{display:inline-flex; align-items:center; gap:2px; padding:3px; border-radius:999px;
+    border:1px solid var(--hair); background:#fff}
+  .lswitch button{appearance:none; -webkit-appearance:none; border:0; background:transparent; cursor:pointer;
+    font:600 .78rem/1 var(--disp); letter-spacing:.03em; color:var(--ink-2); padding:8px 13px; border-radius:999px;
+    transition:background .3s var(--ease), color .3s var(--ease)}
+  .lswitch button:hover{color:var(--ink)}
+  body.lang-ja .lswitch .ls-ja,body.lang-en .lswitch .ls-en{background:var(--ink); color:#fff}
+
+  .navtoggle{display:none; position:relative; width:42px; height:42px; flex:0 0 auto;
+    border-radius:999px; border:1px solid var(--hair); background:#fff; cursor:pointer; padding:0}
+  .navtoggle span{position:absolute; left:11px; right:11px; height:2px; background:var(--ink); border-radius:2px;
+    transition:transform .35s var(--ease), opacity .2s var(--ease)}
+  .navtoggle span:nth-child(1){top:15px}
+  .navtoggle span:nth-child(2){top:20px}
+  .navtoggle span:nth-child(3){top:25px}
+  body.navopen .navtoggle span:nth-child(1){transform:translateY(5px) rotate(45deg)}
+  body.navopen .navtoggle span:nth-child(2){opacity:0}
+  body.navopen .navtoggle span:nth-child(3){transform:translateY(-5px) rotate(-45deg)}
+
+  .mobnav{position:fixed; inset:0; z-index:80; display:flex; flex-direction:column; overflow-y:auto;
+    background:rgba(251,252,251,.9); -webkit-backdrop-filter:saturate(1.2) blur(24px); backdrop-filter:saturate(1.2) blur(24px);
+    opacity:0; visibility:hidden; pointer-events:none;
+    transition:opacity .35s var(--ease), visibility 0s linear .35s}
+  body.navopen .mobnav{opacity:1; visibility:visible; pointer-events:auto; transition:opacity .35s var(--ease), visibility 0s linear 0s}
+  body.navopen{overflow:hidden}
+  body.navopen header.bar{z-index:90}
+  .mobnav-inner{width:100%; max-width:600px; margin:0 auto; padding:104px 28px 64px;
+    display:flex; flex-direction:column; gap:24px}
+  .mobgroup{display:flex; flex-direction:column; gap:1px}
+  .moblabel{font:600 .64rem/1 var(--disp); letter-spacing:.14em; text-transform:uppercase; color:var(--muted); margin-bottom:9px}
+  .mobgroup a{font-size:1.28rem; font-weight:500; color:var(--ink); padding:7px 0; line-height:1.24}
+  .mobgroup a:hover{color:var(--accent-2)}
+  .mobgroup a.here{color:var(--accent-2)}
+  .mobgroup a.here::before{content:""; display:inline-block; width:6px; height:6px; border-radius:50%;
+    background:var(--accent); margin-right:9px; vertical-align:middle}
+  .mobfoot{display:flex; align-items:center; justify-content:space-between; gap:16px; flex-wrap:wrap;
+    margin-top:6px; padding-top:22px; border-top:1px solid var(--line)}
+  .mobext{font-size:1rem; font-weight:500; color:var(--ink-2)}
+  .mobext:hover{color:var(--ink)}
+  .js .mobnav-inner > *{opacity:0; transform:translateY(12px);
+    transition:opacity .4s var(--ease), transform .4s var(--ease)}
+  body.navopen .mobnav-inner > *{opacity:1; transform:none}
+  body.navopen .mobnav-inner > *:nth-child(1){transition-delay:.04s}
+  body.navopen .mobnav-inner > *:nth-child(2){transition-delay:.08s}
+  body.navopen .mobnav-inner > *:nth-child(3){transition-delay:.12s}
+  body.navopen .mobnav-inner > *:nth-child(4){transition-delay:.16s}
+  body.navopen .mobnav-inner > *:nth-child(5){transition-delay:.20s}
+  body.navopen .mobnav-inner > *:nth-child(6){transition-delay:.24s}
+
+  /* E. breadcrumb */
+  .crumbs{display:flex; flex-wrap:wrap; align-items:center; gap:7px; margin:0;
+    font-size:.8rem; font-weight:500; color:var(--muted)}
+  .crumbs a{color:var(--muted)}
+  .crumbs a:hover{color:var(--ink)}
+  .crumbs .csep{color:var(--faint)}
+  .crumbs .cur{color:var(--ink)}
+
+  /* F. sticky TOC bar */
+  .tocbar{position:sticky; top:84px; z-index:40; margin:8px 0 0;
+    background:rgba(255,255,255,.82); -webkit-backdrop-filter:saturate(1.4) blur(14px); backdrop-filter:saturate(1.4) blur(14px);
+    border-top:1px solid var(--hair); border-bottom:1px solid var(--hair)}
+  .tocbar-inner{max-width:var(--maxw); margin:0 auto; padding:9px 40px; display:flex; gap:8px;
+    overflow-x:auto; scrollbar-width:none; -ms-overflow-style:none}
+  .tocbar-inner::-webkit-scrollbar{display:none}
+  .tocpill{flex:0 0 auto; display:inline-flex; align-items:center; gap:7px; padding:7px 14px; border-radius:999px;
+    font-size:.8rem; font-weight:500; color:var(--ink-2); border:1px solid transparent; white-space:nowrap;
+    transition:background .25s var(--ease), color .25s var(--ease), border-color .25s var(--ease)}
+  .tocpill:hover{color:var(--ink); border-color:var(--hair)}
+  .tocpill.on{background:var(--accent-soft); color:var(--ink)}
+  .tocpill.on::before{content:""; flex:0 0 auto; width:6px; height:6px; border-radius:50%; background:var(--accent)}
+  section[id]{scroll-margin-top:150px}
+
+  /* F. back to top */
+  .totop{position:fixed; right:22px; bottom:22px; z-index:55; width:46px; height:46px; border-radius:999px;
+    display:grid; place-items:center; background:#fff; border:1px solid var(--hair); box-shadow:var(--soft);
+    color:var(--ink); cursor:pointer; font-size:1.15rem; line-height:1;
+    opacity:0; transform:translateY(10px) scale(.9); pointer-events:none;
+    transition:opacity .35s var(--ease), transform .35s var(--ease)}
+  .totop.show{opacity:1; transform:none; pointer-events:auto}
+  .totop:hover{transform:translateY(-2px)}
+
+  @media(max-width:860px){
+    .navtoggle{display:block}
+    .navlinks{display:none}
+    .bar-right .btn{display:none}
+    .tocbar{top:76px}
+  }
+  @media(max-width:430px){
+    .bar-right .lswitch{display:none}
+  }
+  @media (prefers-reduced-motion:reduce){
+    .navlinks .navpanel,.navtoggle span,.mobnav,.js .mobnav-inner > *,.navtop,.lswitch button,.totop,.tocpill{transition-duration:.001ms !important}
+    .js .mobnav-inner > *{transition-delay:0s !important}
+    .navtoggle:hover,.totop:hover{transform:none !important}
+  }
+</style>
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[
+{"@type":"ListItem","position":1,"name":"ホーム","item":"https://ykimu.github.io/"},
+{"@type":"ListItem","position":2,"name":"教育","item":"https://ykimu.github.io/teaching.html"},
+{"@type":"ListItem","position":3,"name":"ソフトウェア工学","item":"https://ykimu.github.io/course/index.html"},
+{"@type":"ListItem","position":4,"name":"アジャイル開発とスクラム学習ガイド","item":"https://ykimu.github.io/course/agile-scrum.html"}
+]}
+</script>
+</head>
+<body class="lang-ja">
+
+<a class="skip" href="#main"><span lang="ja">本文へスキップ</span><span lang="en">Skip to content</span></a>
+
+<header class="bar">
+  <div class="wrap">
+    <a class="brand" href="../index.html">
+      <span aria-hidden="true">&lsaquo;</span>
+      <span lang="ja">Yuta Kimura</span><span lang="en">Yuta Kimura</span>
+      <span class="sep">·</span><span lang="ja">木村祐太</span><span lang="en">Kimura</span>
+    </a>
+    <nav class="navlinks" aria-label="メイン">
+      <div class="navgroup">
+        <a class="navtop" href="../publications.html" aria-haspopup="true" aria-expanded="false"><span lang="ja">研究</span><span lang="en">Research</span></a>
+        <div class="navpanel">
+          <a href="../publications.html"><span lang="ja">業績・研究活動</span><span lang="en">Publications &amp; activity</span></a>
+          <a href="../research/technical-debt-metrics.html"><span lang="ja">技術的負債とメトリクス</span><span lang="en">Technical debt &amp; metrics</span></a>
+          <a href="../research/apr-coding-standards.html"><span lang="ja">自動生成パッチと規約</span><span lang="en">Auto-generated patches &amp; standards</span></a>
+          <a href="../research/td-repayment-refactoring.html"><span lang="ja">負債返済とリファクタリング</span><span lang="en">Debt repayment &amp; refactoring</span></a>
+          <a href="../research/satd-issue-classification.html"><span lang="ja">課題票の負債分類</span><span lang="en">Issue-ticket debt classification</span></a>
+        </div>
+      </div>
+      <div class="navgroup">
+        <a class="navtop on" href="../teaching.html" aria-haspopup="true" aria-expanded="false"><span lang="ja">教育</span><span lang="en">Teaching</span></a>
+        <div class="navpanel">
+          <div class="navlabel"><span lang="ja">科目</span><span lang="en">Courses</span></div>
+          <a href="../teaching.html"><span lang="ja">教育・担当授業</span><span lang="en">Teaching &amp; courses</span></a>
+          <a href="index.html"><span lang="ja">ソフトウェア工学</span><span lang="en">Software Engineering</span></a>
+          <a href="logic-circuits.html"><span lang="ja">論理回路1</span><span lang="en">Logic Circuits I</span></a>
+          <a href="intelligent-informatics-1.html"><span lang="ja">知能情報実験実習1</span><span lang="en">Intelligent Informatics Lab I</span></a>
+          <hr class="navdiv">
+          <div class="navlabel"><span lang="ja">教材</span><span lang="en">Materials</span></div>
+          <a href="design-patterns.html"><span lang="ja">デザインパターン学習ガイド</span><span lang="en">Design Patterns Guide</span></a>
+          <a href="software-architecture.html"><span lang="ja">アーキテクチャパターン大全</span><span lang="en">Software Architecture</span></a>
+          <a href="uml-guide.html"><span lang="ja">クラス図/シーケンス図ガイド</span><span lang="en">UML Diagram Guide</span></a>
+          <a href="software-testing.html"><span lang="ja">ソフトウェアテスト学習ガイド</span><span lang="en">Software Testing Guide</span></a>
+          <a class="here" href="agile-scrum.html" aria-current="page"><span lang="ja">アジャイル開発とスクラム</span><span lang="en">Agile &amp; Scrum</span></a>
+          <a href="requirements-engineering.html"><span lang="ja">要求工学</span><span lang="en">Requirements Engineering</span></a>
+          <a href="software-evolution.html"><span lang="ja">ソフトウェア進化と技術的負債</span><span lang="en">Software Evolution</span></a>
+          <a href="software-reuse-oss.html"><span lang="ja">ソフトウェア再利用とOSS</span><span lang="en">Software Reuse &amp; OSS</span></a>
+          <a href="project-management.html"><span lang="ja">プロジェクト管理と見積もり</span><span lang="en">Project Management</span></a>
+          <a href="version-control-cicd.html"><span lang="ja">バージョン管理とCI/CD</span><span lang="en">Version Control &amp; CI/CD</span></a>
+        </div>
+      </div>
+      <div class="navgroup">
+        <a class="navtop" href="../software-engineering.html" aria-haspopup="true" aria-expanded="false"><span lang="ja">ガイド</span><span lang="en">Guides</span></a>
+        <div class="navpanel">
+          <a href="../software-engineering.html"><span lang="ja">ソフトウェア工学とは</span><span lang="en">What is software engineering</span></a>
+          <a href="../technical-debt.html"><span lang="ja">技術的負債とは</span><span lang="en">What is technical debt</span></a>
+          <a href="../glossary.html"><span lang="ja">研究用語ミニ辞典</span><span lang="en">Research glossary</span></a>
+        </div>
+      </div>
+      <div class="navgroup">
+        <a class="navtop" href="../students.html"><span lang="ja">学生の皆さんへ</span><span lang="en">For Students</span></a>
+      </div>
+    </nav>
+    <div class="bar-right">
+      <a class="btn" href="https://researchmap.jp/kimura_yuta" target="_blank" rel="noopener">researchmap</a>
+      <div class="lswitch" role="group" aria-label="言語 / Language">
+        <button type="button" class="ls-ja" onclick="setLang('ja')" aria-pressed="true">JA</button>
+        <button type="button" class="ls-en" onclick="setLang('en')" aria-pressed="false">EN</button>
+      </div>
+      <button class="navtoggle" id="navToggle" type="button" aria-label="メニュー" aria-expanded="false" aria-controls="mobnav">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </div>
+</header>
+
+<div class="mobnav" id="mobnav" aria-hidden="true">
+  <div class="mobnav-inner">
+    <div class="mobgroup">
+      <div class="moblabel"><span lang="ja">研究</span><span lang="en">Research</span></div>
+      <a href="../publications.html"><span lang="ja">業績・研究活動</span><span lang="en">Publications &amp; activity</span></a>
+      <a href="../research/technical-debt-metrics.html"><span lang="ja">技術的負債とメトリクス</span><span lang="en">Technical debt &amp; metrics</span></a>
+      <a href="../research/apr-coding-standards.html"><span lang="ja">自動生成パッチと規約</span><span lang="en">Auto-generated patches &amp; standards</span></a>
+      <a href="../research/td-repayment-refactoring.html"><span lang="ja">負債返済とリファクタリング</span><span lang="en">Debt repayment &amp; refactoring</span></a>
+      <a href="../research/satd-issue-classification.html"><span lang="ja">課題票の負債分類</span><span lang="en">Issue-ticket debt classification</span></a>
+    </div>
+    <div class="mobgroup">
+      <div class="moblabel"><span lang="ja">教育</span><span lang="en">Teaching</span></div>
+      <a href="../teaching.html"><span lang="ja">教育・担当授業</span><span lang="en">Teaching &amp; courses</span></a>
+      <a href="index.html"><span lang="ja">ソフトウェア工学</span><span lang="en">Software Engineering</span></a>
+      <a href="logic-circuits.html"><span lang="ja">論理回路1</span><span lang="en">Logic Circuits I</span></a>
+      <a href="intelligent-informatics-1.html"><span lang="ja">知能情報実験実習1</span><span lang="en">Intelligent Informatics Lab I</span></a>
+      <a href="design-patterns.html"><span lang="ja">デザインパターン学習ガイド</span><span lang="en">Design Patterns Guide</span></a>
+      <a href="software-architecture.html"><span lang="ja">アーキテクチャパターン大全</span><span lang="en">Software Architecture</span></a>
+      <a href="uml-guide.html"><span lang="ja">クラス図/シーケンス図ガイド</span><span lang="en">UML Diagram Guide</span></a>
+      <a href="software-testing.html"><span lang="ja">ソフトウェアテスト学習ガイド</span><span lang="en">Software Testing Guide</span></a>
+      <a class="here" href="agile-scrum.html" aria-current="page"><span lang="ja">アジャイル開発とスクラム</span><span lang="en">Agile &amp; Scrum</span></a>
+      <a href="requirements-engineering.html"><span lang="ja">要求工学</span><span lang="en">Requirements Engineering</span></a>
+      <a href="software-evolution.html"><span lang="ja">ソフトウェア進化と技術的負債</span><span lang="en">Software Evolution</span></a>
+      <a href="software-reuse-oss.html"><span lang="ja">ソフトウェア再利用とOSS</span><span lang="en">Software Reuse &amp; OSS</span></a>
+      <a href="project-management.html"><span lang="ja">プロジェクト管理と見積もり</span><span lang="en">Project Management</span></a>
+      <a href="version-control-cicd.html"><span lang="ja">バージョン管理とCI/CD</span><span lang="en">Version Control &amp; CI/CD</span></a>
+    </div>
+    <div class="mobgroup">
+      <div class="moblabel"><span lang="ja">ガイド</span><span lang="en">Guides</span></div>
+      <a href="../software-engineering.html"><span lang="ja">ソフトウェア工学とは</span><span lang="en">What is software engineering</span></a>
+      <a href="../technical-debt.html"><span lang="ja">技術的負債とは</span><span lang="en">What is technical debt</span></a>
+      <a href="../glossary.html"><span lang="ja">研究用語ミニ辞典</span><span lang="en">Research glossary</span></a>
+    </div>
+    <div class="mobgroup">
+      <div class="moblabel"><span lang="ja">学生の皆さんへ</span><span lang="en">For Students</span></div>
+      <a href="../students.html"><span lang="ja">学生の皆さんへ</span><span lang="en">For Students</span></a>
+    </div>
+    <div class="mobfoot">
+      <a class="mobext" href="https://researchmap.jp/kimura_yuta" target="_blank" rel="noopener">researchmap</a>
+      <div class="lswitch" role="group" aria-label="言語 / Language">
+        <button type="button" class="ls-ja" onclick="setLang('ja')" aria-pressed="true">JA</button>
+        <button type="button" class="ls-en" onclick="setLang('en')" aria-pressed="false">EN</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<main id="main">
+
+<button class="totop" type="button" aria-label="上へ戻る" title="上へ戻る">&uarr;</button>
+
+<div class="wrap" style="padding-top:24px">
+  <nav class="crumbs" aria-label="パンくず">
+    <a href="../index.html"><span lang="ja">ホーム</span><span lang="en">Home</span></a>
+    <span class="csep" aria-hidden="true">&rsaquo;</span>
+    <a href="../teaching.html"><span lang="ja">教育</span><span lang="en">Teaching</span></a>
+    <span class="csep" aria-hidden="true">&rsaquo;</span>
+    <a href="index.html"><span lang="ja">ソフトウェア工学</span><span lang="en">Software Engineering</span></a>
+    <span class="csep" aria-hidden="true">&rsaquo;</span>
+    <span class="cur" aria-current="page"><span lang="ja">アジャイル開発とスクラム学習ガイド</span><span lang="en">Agile &amp; Scrum Guide</span></span>
+  </nav>
+</div>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="wrap">
+    <p class="kick">Agile &amp; Scrum</p>
+    <h1>アジャイル開発とスクラム：変化に<em>「応える」</em>ソフトウェア開発</h1>
+    <p class="lead">要求は必ず変わります。アジャイル開発は、その変化を「敵」ではなく「前提」として受け入れ、短い反復で動くソフトウェアを届け続けるための考え方です。この教材では、アジャイルマニフェスト（4つの価値と12の原則）とプラン駆動型開発との使い分けから出発し、XP（エクストリームプログラミング）のプラクティス、ユーザーストーリー、そしてスクラム（スプリント・プロダクトバックログ・見積もりとベロシティ・ふりかえり）を<strong>ねらい・進め方・意識するポイント・注意点</strong>つきで整理しました。カンバン、大規模化（SAFe・LeSS）、「名ばかりアジャイル」への批判といった現代の論点まで収録。バーンダウンチャート・シミュレーターと理解度クイズ付きです。</p>
+    <p class="ja-note"><span lang="ja">この教材は日本語のみで提供しています</span><span lang="en">This learning material is available in Japanese only.</span></p>
+    <div class="hero-cta">
+      <a class="btn ink" href="#practices" style="padding:12px 22px">
+        <span lang="ja">プラクティスカタログへ</span><span lang="en">Jump to the practice catalog</span>
+      </a>
+      <a class="tlink" href="#quiz">
+        <span lang="ja">理解度クイズへ</span><span lang="en">Comprehension quiz</span>
+        <span class="ar" aria-hidden="true">&rsaquo;</span>
+      </a>
+    </div>
+  </div>
+</div>
+
+<div id="toTopSentinel" aria-hidden="true"></div>
+
+<div class="tocbar">
+  <nav class="tocbar-inner" aria-label="ページ内目次">
+    <a class="tocpill" href="#intro"><span lang="ja">はじめに</span><span lang="en">Intro</span></a>
+    <a class="tocpill" href="#practices"><span lang="ja">手法カタログ</span><span lang="en">Practices</span></a>
+    <a class="tocpill" href="#techniques"><span lang="ja">進捗の見える化</span><span lang="en">Progress</span></a>
+    <a class="tocpill" href="#quiz"><span lang="ja">理解度クイズ</span><span lang="en">Quiz</span></a>
+    <a class="tocpill" href="#closing"><span lang="ja">心構え</span><span lang="en">Wrap-up</span></a>
+  </nav>
+</div>
+
+<!-- INTRO -->
+<section id="intro" style="padding-top:20px">
+  <div class="wrap reveal">
+    <p class="eyebrow"><span lang="ja">はじめに</span><span lang="en">Introduction</span></p>
+    <h2 class="big"><span lang="ja">アジャイル開発とは何か</span><span lang="en">What is agile development?</span></h2>
+    <div class="prose" id="introProse" style="margin-top:22px"></div>
+  </div>
+</section>
+
+<!-- PRACTICE CATALOG -->
+<section class="soft-sec" id="practices" style="padding-top:80px">
+  <div class="wrap">
+    <p class="eyebrow reveal"><span lang="ja">プラクティスカタログ</span><span lang="en">Practice catalog</span></p>
+    <h2 class="big reveal"><span lang="ja">10の手法・プラクティスカタログ</span><span lang="en">Ten agile methods and practices</span></h2>
+    <p class="lead reveal" style="max-width:var(--readw); margin-top:18px">XPが生んだ開発技法（講義3.2）、スクラムというプロジェクトマネジメントの枠組み（講義3.3）、そしてカンバン・大規模化・現実の批判（講義3.4＋現代の議論）：3つのカテゴリに分けて整理しました。カテゴリで絞り込み、各カードをクリックすると、ねらい・進め方・意識するポイント・注意点・具体例が開きます。</p>
+    <div class="controls reveal" style="margin-top:26px">
+      <div class="pills" role="tablist" aria-label="カテゴリ切替">
+        <button class="pill active" onclick="filterCat('all',this)">すべて<span>10</span></button>
+        <button class="pill" onclick="filterCat('xp',this)">アジャイル開発技法<span>2</span></button>
+        <button class="pill" onclick="filterCat('scrum',this)">スクラム<span>5</span></button>
+        <button class="pill" onclick="filterCat('beyond',this)">その先・現実<span>3</span></button>
+      </div>
+      <div class="ctrl-right">
+        <input id="search" class="search" type="text" placeholder="名前・キーワードで絞り込み" aria-label="プラクティスを絞り込み">
+        <span class="learn-note" id="learnNote"></span>
+      </div>
+    </div>
+    <div id="practices-list"></div>
+  </div>
+</section>
+
+<!-- AGILE PROJECT MANAGEMENT / BURNDOWN DEMO -->
+<section id="techniques">
+  <div class="wrap">
+    <p class="eyebrow reveal"><span lang="ja">アジャイルプロジェクトマネジメント</span><span lang="en">Agile project management</span></p>
+    <h2 class="big reveal"><span lang="ja">進捗をどう「見える化」するか</span><span lang="en">Making progress visible</span></h2>
+    <div class="prose reveal" id="techProse" style="margin-top:22px"></div>
+    <div class="demo reveal" id="bdDemo">
+      <h4>体験デモ：バーンダウンチャート・シミュレーター</h4>
+      <p class="spec">設定：スプリントは <b>10営業日</b>、スプリントバックログの合計は <b>40ストーリーポイント</b>（変更できます）。「1日の終わりに完成したポイント」をボタンで入力していくと、<b>実績線</b>が描かれ、<b>理想線</b>と比べた完了予測コメントが表示されます。順調な日・停滞する日を混ぜて、チャートの形がどう変わるか試してみてください。</p>
+      <div class="demo-row">
+        <label for="bdTotal" style="font:500 .85rem/1 var(--sans); color:var(--muted)">合計ポイント</label>
+        <input type="text" id="bdTotal" inputmode="numeric" value="40" aria-label="合計ストーリーポイント" onchange="bdSetTotal()" style="width:90px">
+        <div class="try" aria-label="1日の完了ポイントを入力">
+          <button onclick="bdAdd(4)">順調 +4</button>
+          <button onclick="bdAdd(7)">巻き返し +7</button>
+          <button onclick="bdAdd(1)">遅れ +1</button>
+          <button onclick="bdAdd(0)">停滞 0</button>
+          <button onclick="bdReset()">最初から</button>
+        </div>
+      </div>
+      <div class="diagram-wrap" id="bdChartWrap" style="margin:16px 0 0"></div>
+      <div class="demo-out" id="bdOut"></div>
+    </div>
+  </div>
+</section>
+
+<!-- QUIZ -->
+<section class="soft-sec" id="quiz" style="padding-top:80px">
+  <div class="wrap">
+    <p class="eyebrow reveal"><span lang="ja">理解度チェック</span><span lang="en">Check your understanding</span></p>
+    <h2 class="big reveal"><span lang="ja">理解度チェッククイズ</span><span lang="en">Comprehension quiz</span></h2>
+    <p class="lead reveal" style="max-width:var(--readw); margin-top:18px">それぞれの状況に<strong>もっとも適した用語・考え方</strong>を選んでください。<span id="quizScore"></span></p>
+    <div id="quizBody" class="reveal"></div>
+    <button class="btn ink quiz-reset" onclick="buildQuiz()" style="padding:11px 22px">
+      <span lang="ja">もう一度挑戦する</span><span lang="en">Try again</span>
+    </button>
+  </div>
+</section>
+
+<!-- CLOSING -->
+<section id="closing">
+  <div class="wrap reveal">
+    <p class="eyebrow"><span lang="ja">おわりに</span><span lang="en">In closing</span></p>
+    <h2 class="big"><span lang="ja">アジャイルに向き合う心構えと、さらに学ぶために</span><span lang="en">How to think about agile, and where to learn more</span></h2>
+    <div class="prose" id="closingProse" style="margin-top:22px"></div>
+  </div>
+</section>
+
+</main>
+
+<!-- FOOTER -->
+<footer>
+  <div class="wrap">
+    <div class="cite">
+      <span lang="ja">アジャイル開発の全体像（アジャイルマニフェスト・XP・ユーザーストーリー・スクラム・カンバン・スケーリング）を、これから学ぶ方向けにまとめた学習ガイドです。木村祐太のソフトウェア工学の授業教材の一部としてご覧いただけます。授業の詳細（評価方法・日程等）は最新のシラバスを確認してください。</span>
+      <span lang="en">A study guide to agile software development (the Agile Manifesto, XP, user stories, Scrum, Kanban, and scaling agile), for those new to it. Part of Yuta Kimura's software engineering course materials. For course details such as assessment and schedule, please refer to the latest syllabus.</span>
+    </div>
+    <div class="foot-grid">
+      <div>
+        <h3><span lang="ja">連絡先</span><span lang="en">Contact</span></h3>
+        <p class="muted-s">
+          <b>木村 祐太 / Yuta Kimura</b><br>
+          <span lang="ja">大阪公立大学工業高等専門学校</span><span lang="en">Osaka Metropolitan University College of Technology</span><br>
+          <a href="mailto:y.kimura@omu.ac.jp">y.kimura [at] omu.ac.jp</a>
+        </p>
+      </div>
+      <div>
+        <h3><span lang="ja">サイト</span><span lang="en">Site</span></h3>
+        <p class="muted-s">
+          <a href="../index.html"><span lang="ja">ホーム</span><span lang="en">Home</span></a><br>
+          <a href="../publications.html"><span lang="ja">業績・研究活動</span><span lang="en">Publications &amp; research activities</span></a><br>
+          <a href="../teaching.html"><span lang="ja">教育</span><span lang="en">Teaching</span></a><br>
+          <a href="../software-engineering.html"><span lang="ja">ソフトウェア工学とは</span><span lang="en">What is software engineering?</span></a><br>
+          <a href="../technical-debt.html"><span lang="ja">技術的負債とは</span><span lang="en">What is technical debt?</span></a><br>
+          <a href="../students.html"><span lang="ja">学生の皆さんへ</span><span lang="en">For students</span></a><br>
+          <a href="../glossary.html"><span lang="ja">用語集</span><span lang="en">Glossary</span></a>
+        </p>
+      </div>
+      <div>
+        <h3><span lang="ja">研究</span><span lang="en">Research</span></h3>
+        <p class="muted-s">
+          <a href="../research/technical-debt-metrics.html"><span lang="ja">メトリクスによる分類・特徴づけ</span><span lang="en">Classifying debt with metrics</span></a><br>
+          <a href="../research/apr-coding-standards.html"><span lang="ja">自動生成パッチと品質</span><span lang="en">Auto-generated patches and quality</span></a><br>
+          <a href="../research/td-repayment-refactoring.html"><span lang="ja">返済とリファクタリング</span><span lang="en">Repayment and refactoring</span></a><br>
+          <a href="../research/satd-issue-classification.html"><span lang="ja">TD-Issue の自動分類</span><span lang="en">Automatic TD-Issue classification</span></a><br>
+          <a href="https://researchmap.jp/kimura_yuta" target="_blank" rel="noopener">researchmap</a>
+        </p>
+      </div>
+    </div>
+    <div class="foot-rule"></div>
+    <p class="foot-note">
+      <span lang="ja">© 2026 Yuta Kimura. アジャイル開発の解説は Ian Sommerville『Software Engineering (10th ed.)』第3章（および第2章）に基づく概説です。スクラムの用語はスクラムガイド2020（K. Schwaber &amp; J. Sutherland）に、現代の動向（State of Agile 調査・アジャイル批判等）は各分野の公開資料に基づきます。</span>
+      <span lang="en">© 2026 Yuta Kimura. This overview of agile development follows Chapters 3 and 2 of Ian Sommerville, <i>Software Engineering</i> (10th ed.). Scrum terminology follows the 2020 Scrum Guide (K. Schwaber &amp; J. Sutherland); sections on modern trends draw on publicly available industry sources.</span>
+    </p>
+  </div>
+</footer>
+<script>
+/* ============== コンテンツデータ ============== */
+const INTRO_HTML = `
+<p><b>アジャイル開発（agile software development）</b>とは、完全な計画と仕様を最初に固めるのではなく、
+<strong>短い反復（イテレーション）で動くソフトウェアを届けながら、要求の変化に適応していく</strong>開発の考え方の総称です。
+背景には、現代のビジネス環境の事情があります：グローバル化と技術の急速な変化のなかで、企業には
+<strong>迅速なソフトウェア開発</strong>が不可欠になり、新市場・競争・経済変動へ即応するためには、
+品質や要求を一部妥協してでも迅速性を優先する場合すらあります。
+しかも、<strong>完全で安定した要求定義はそもそも困難</strong>です。顧客は、システムが業務にどう影響するか、
+他システムとどう相互作用するか、どこまで自動化すべきかを事前に正確には予測できず、
+<strong>本当の要求は、導入後に使ってみて初めて明確になる</strong>からです。</p>
+
+<h4>復習：プロセスモデルとその限界（第2回より）</h4>
+<p>第2回で学んだとおり、ソフトウェアプロセスモデルには大きく<strong>計画駆動型</strong>と<strong>反復型</strong>の系譜があります。</p>
+<div class="principles">
+  <div class="p"><b>ウォーターフォールモデル（計画駆動型）</b><br>
+    <span>要求分析 → 設計 → 実装 → テスト → 運用と、工程を1つずつ完了させて進む。<strong>手戻りを許容しない</strong>ため、開発途中の要求変化に対応できない。要求が明確で安定しているとき、また大規模・分散開発でスケジュールを同期させたいときに向く。</span></div>
+  <div class="p"><b>インクリメンタルモデル（反復型）</b><br>
+    <span>機能を小さな単位に分割し、<strong>複数のバージョン（インクリメント）</strong>として段階的に追加する。要件変更のコストが低く、早期に価値を提供できる：アジャイル開発の基礎。一方で、プロセスが可視化されにくく、構造が劣化しやすいという欠点も。</span></div>
+</div>
+<p>計画駆動型は1980〜90年代初頭の主流でした。航空宇宙・政府系のような大規模長期システムには合理的でしたが、
+インターネットの普及でソフトウェアの利用者層が一気に広がると、計画・設計・文書化の<strong>大きなオーバーヘッド</strong>が
+中小規模の業務システムでは割に合わなくなります。要求変更のたびに仕様・設計の大幅な手戻りが起き、
+<strong>完成した頃には当初の目的自体が変わっている</strong>：この問題意識から、1990年代後半にアジャイル開発が生まれました。</p>
+<div class="diagram-wrap">
+<svg viewBox="0 0 760 300" role="img" aria-label="計画駆動型とアジャイルの進み方の違い">
+  <text x="190" y="28" class="dg-lbl">計画駆動型（ウォーターフォール）</text>
+  <rect x="30" y="48" width="120" height="36" rx="9" class="dg-box"/>
+  <text x="90" y="70" class="dg-lbl" font-size="11">要求定義</text>
+  <rect x="80" y="98" width="120" height="36" rx="9" class="dg-box"/>
+  <text x="140" y="120" class="dg-lbl" font-size="11">設計</text>
+  <rect x="130" y="148" width="120" height="36" rx="9" class="dg-box"/>
+  <text x="190" y="170" class="dg-lbl" font-size="11">実装</text>
+  <rect x="180" y="198" width="120" height="36" rx="9" class="dg-box"/>
+  <text x="240" y="220" class="dg-lbl" font-size="11">テスト → 運用</text>
+  <path d="M115 84 L115 94" class="dg-line" marker-end="url(#ahW)"/>
+  <path d="M165 134 L165 144" class="dg-line" marker-end="url(#ahW)"/>
+  <path d="M215 184 L215 194" class="dg-line" marker-end="url(#ahW)"/>
+  <path d="M300 216 L330 216 L330 66 L154 66" class="dg-line dg-dash" stroke="#B04A3E" marker-end="url(#ahR)"/>
+  <text x="342" y="140" class="dg-el" fill="#B04A3E" text-anchor="start">手戻りは原則なし</text>
+  <text x="342" y="156" class="dg-el" fill="#B04A3E" text-anchor="start">（要求変化に弱い）</text>
+  <text x="190" y="272" class="dg-note">工程を1つずつ完了させ、後戻りしない</text>
+
+  <text x="580" y="28" class="dg-lbl">アジャイル（反復・インクリメンタル）</text>
+  <circle cx="560" cy="150" r="66" fill="none" stroke="#E7ECE9" stroke-width="1.2"/>
+  <path d="M560 84 A66 66 0 0 1 626 150" class="dg-line" stroke="#0E6F5C" stroke-width="1.8" marker-end="url(#ahG)"/>
+  <path d="M626 150 A66 66 0 0 1 560 216" class="dg-line" stroke="#0E6F5C" stroke-width="1.8" marker-end="url(#ahG)"/>
+  <path d="M560 216 A66 66 0 0 1 494 150" class="dg-line" stroke="#0E6F5C" stroke-width="1.8" marker-end="url(#ahG)"/>
+  <path d="M494 150 A66 66 0 0 1 560 84" class="dg-line" stroke="#0E6F5C" stroke-width="1.8" marker-end="url(#ahG)"/>
+  <text x="560" y="146" class="dg-lbl" font-size="11">反復</text>
+  <text x="560" y="162" class="dg-el">1〜4週間</text>
+  <text x="560" y="70" class="dg-el">計画・優先順位付け</text>
+  <text x="668" y="154" class="dg-el">設計・実装</text>
+  <text x="560" y="236" class="dg-el">テスト・統合</text>
+  <text x="452" y="154" class="dg-el">レビューと適応</text>
+  <text x="565" y="272" class="dg-note">反復ごとに「動くソフトウェア」を届け、次に活かす</text>
+  <defs>
+    <marker id="ahW" markerWidth="9" markerHeight="9" refX="8" refY="4.5" orient="auto"><path d="M0,0 L9,4.5 L0,9 z" fill="#6B746F"/></marker>
+    <marker id="ahR" markerWidth="9" markerHeight="9" refX="8" refY="4.5" orient="auto"><path d="M0,0 L9,4.5 L0,9 z" fill="#B04A3E"/></marker>
+    <marker id="ahG" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto"><path d="M0,0 L8,4 L0,8 z" fill="#0E6F5C"/></marker>
+  </defs>
+</svg>
+<div class="dg-legend">左：工程を直列に進める計画駆動型。右：仕様・設計・実装を分離せず並行的に進め、複数のインクリメントに分けて段階的に開発するアジャイル。</div>
+</div>
+
+<h4>アジャイルマニフェスト（2001年）： 4つの価値</h4>
+<p>2001年、Kent Beck・Martin Fowler・Ken Schwaber・Jeff Sutherland ら17名の技術者が米ユタ州スノーバードに集まり、
+<b>「アジャイルソフトウェア開発宣言（アジャイルマニフェスト）」</b>を発表しました。
+アジャイルの哲学を明文化したもので、<strong>4つの価値</strong>が「AよりもBを」という対比の形で書かれています。
+重要なのは末尾の一文：「左記のことがらに価値があることを認めながらも、私たちは<strong>右記のことがらにより価値をおく</strong>」。
+つまり<strong>左側（プロセス・文書・契約・計画）を否定しているわけではありません</strong>。</p>
+<div class="principles">
+  <div class="p"><b>プロセスやツールよりも、個人と対話を</b><br>
+    <span>Individuals and interactions <i>over</i> processes and tools：優れた道具や手順より、人どうしの協力とコミュニケーションが成果を決める。</span></div>
+  <div class="p"><b>包括的なドキュメントよりも、動くソフトウェアを</b><br>
+    <span>Working software <i>over</i> comprehensive documentation：分厚い仕様書より、実際に動くものが進捗と価値の証拠になる。</span></div>
+  <div class="p"><b>契約交渉よりも、顧客との協調を</b><br>
+    <span>Customer collaboration <i>over</i> contract negotiation：「言った・言わない」の交渉より、顧客と一緒に作り上げる関係を築く。</span></div>
+  <div class="p"><b>計画に従うことよりも、変化への対応を</b><br>
+    <span>Responding to change <i>over</i> following a plan：計画は大切だが、計画を守ること自体が目的化してはいけない。</span></div>
+</div>
+<div class="callout">
+  <h4>4つの価値の背後には「12の原則」がある</h4>
+  マニフェストには価値を具体化した<strong>12の原則</strong>が付属しています。たとえば
+  「顧客満足を最優先し、価値のあるソフトウェアを<strong>早く継続的に</strong>提供します」
+  「<strong>動くソフトウェアこそが進捗の最も重要な尺度</strong>です」
+  「チームがもっと効率を高めることができるかを<strong>定期的に振り返り</strong>、それに基づいて自分たちのやり方を最適に調整します」など。
+  原文と日本語訳は<a href="https://agilemanifesto.org/iso/ja/manifesto.html" target="_blank" rel="noopener">agilemanifesto.org</a>で無料で読めます（教科書 Sommerville はこの価値観を5つの原則：顧客の関与・インクリメンタルな提供・人がプロセスに優先・変化の受容・シンプルさの維持：に整理しています）。
+</div>
+
+<h4>プラン駆動とアジャイル ： どちらに寄せるかを決める要因（Boehm の問い）</h4>
+<p>アジャイルは万能ではありません。Barry Boehm らは、<strong>プラン駆動（計画駆動）とアジャイルは二者択一ではなく連続的なスペクトラム</strong>であり、
+プロジェクトの性質に応じてバランスを決めるべきだと論じました。判断材料となる問いは、大きく3つのグループに分かれます。</p>
+<ul>
+  <li><b>技術的要因</b>：システムは<b>どの程度の規模</b>か？　実装前に多くの分析を要する<b>種類</b>（リアルタイム制御など）か？　<b>期待寿命</b>は長いか（長寿命ほど保守のための文書が要る）？　<b>外部規制</b>（航空機ソフトウェアの認証など）の対象か？</li>
+  <li><b>人的要因</b>：チームの<b>設計スキル</b>は高いか（アジャイルは高い技能を要すると言われる）？　チームは<b>分散</b>しているか、外部委託があるか（あるなら設計文書での伝達が必要）？　開発を支援する<b>ツール環境</b>は十分か？</li>
+  <li><b>組織的要因</b>：契約上、実装前に<b>詳細な仕様と設計</b>が必要か？　顧客代表は<b>開発チームに参加</b>できるか？　伝統的な<b>計画駆動の文化</b>を持つ組織か？</li>
+</ul>
+<div class="diagram-wrap">
+<svg viewBox="0 0 760 250" role="img" aria-label="プラン駆動とアジャイルのスペクトラム">
+  <text x="380" y="26" class="dg-lbl">プラン駆動 ⇔ アジャイル は連続的なスペクトラム（Boehm）</text>
+  <rect x="60" y="105" width="320" height="42" rx="10" fill="rgba(138,109,59,.10)" stroke="#8A6D3B" stroke-width="1.3"/>
+  <rect x="380" y="105" width="320" height="42" rx="10" fill="rgba(14,111,92,.10)" stroke="#0E6F5C" stroke-width="1.3"/>
+  <text x="220" y="131" class="dg-lbl" fill="#7A5C34">プラン駆動寄り</text>
+  <text x="540" y="131" class="dg-lbl" fill="#0A5748">アジャイル寄り</text>
+  <path d="M370 126 L390 126" class="dg-line dg-dash"/>
+  <text x="220" y="62" class="dg-el">大規模・長寿命・分散チーム</text>
+  <text x="220" y="80" class="dg-el">安全性重視・外部規制・契約上の仕様が必要</text>
+  <path d="M220 88 L220 101" class="dg-line" marker-end="url(#ahS)"/>
+  <text x="540" y="62" class="dg-el">小〜中規模・要求が不安定</text>
+  <text x="540" y="80" class="dg-el">顧客が継続参加できる・同一場所の高技能チーム</text>
+  <path d="M540 88 L540 101" class="dg-line" marker-end="url(#ahS)"/>
+  <text x="380" y="180" class="dg-el">実務の多くは中間のどこか：「要求工学はプラン駆動＋実装はアジャイル」という混合も</text>
+  <text x="380" y="210" class="dg-note">安全性が重要な制御システムや完全な事前分析が不可欠な場合は、いまも計画駆動型が適する</text>
+  <defs><marker id="ahS" markerWidth="9" markerHeight="9" refX="8" refY="4.5" orient="auto"><path d="M0,0 L9,4.5 L0,9 z" fill="#6B746F"/></marker></defs>
+</svg>
+</div>
+<div class="callout tip">
+  <h4>アジャイルが有効に機能しやすい条件（Sommerville）</h4>
+  ①顧客と開発チームの<strong>継続的なコミュニケーション</strong>が可能　②システムが比較的<strong>独立</strong>している（他システムとの複雑な連携が少ない）
+  ③<strong>小〜中規模で同一場所のチーム</strong>による開発が可能：この3条件がそろう「小・中規模の製品開発」や「組織内カスタム製品」で、アジャイルは最も力を発揮します。
+  逆に条件が崩れる大規模開発では、<a href="#scaling">スケーリング</a>の工夫と計画駆動型との統合が必要になります。
+</div>
+
+<p style="font-size:13px;color:var(--muted)">各カード末尾の「習得チェック」を付けると、絞り込みバー右側に習得の進捗が表示されます（保存はされず、ページを開いている間だけ保持されます）。
+一通り読んだら<a href="#quiz">理解度チェッククイズ</a>で定着を確認しましょう。</p>
+`;
+</script>
+<script>
+const TECH_HTML = `
+<p>初期のアジャイル開発には、管理者にとって困った性質がありました。チームは自己組織化され、文書をほとんど作らず、
+非常に短いサイクルで計画を立て直すため、<strong>外から「いま何が起こっているのか」が見えにくい</strong>のです。
+しかしビジネスの現場では、プロジェクトが目標を達成し、<strong>提案された予算と期限で納品できる見込みがあるのか</strong>を
+管理者が把握できなければなりません。スクラムが提供するのは、まさにこの<strong>可視性</strong>です：
+作業はプロダクトバックログとして一覧化され、デイリースクラムで毎日情報が共有され、
+2〜4週間ごとにインクリメントという「動く証拠」が届き、顧客との信頼関係が築かれていきます。</p>
+
+<h4>ベロシティ ： チームの「実測された速度」</h4>
+<p>可視化の鍵になる数字が<b>ベロシティ（velocity）</b>です。チームが1スプリントで完成させられるバックログ作業量の見積りで、
+実績から測定します。単位には<a href="#velocity">ストーリーポイント</a>（相対見積り）を使うのが一般的です。
+ベロシティが分かると、「残り120ポイント ÷ ベロシティ20ポイント＝あと6スプリント」という
+<strong>実績にもとづく予測</strong>ができるようになります。</p>
+
+<h4>バーンダウンチャートの読み方</h4>
+<p><b>バーンダウンチャート（burndown chart）</b>は、縦軸に<strong>残り作業量（ポイント）</strong>、横軸に<strong>経過日数</strong>を取り、
+残作業が「燃え尽きて」いく様子を描くグラフです。読み方のポイントは3つ。</p>
+<ul>
+  <li><b>理想線（ideal line）</b>：初日の総量から最終日の0まで、毎日一定ペースで減ると仮定した直線。<strong>比較のための基準</strong>であって、目標ノルマではありません。</li>
+  <li><b>実績線が理想線より上</b>＝残作業が想定より多い（遅れ気味）。<b>下</b>＝先行。乖離が大きくなってきたら、デイリースクラムで<strong>スコープ調整や障害物の除去</strong>を話し合うきっかけになります。</li>
+  <li><b>横ばい</b>は完了ゼロの日（詰まっているか、大きな項目の途中）。<b>線が上がる</b>のは作業の追加（スコープ増）を意味します。</li>
+</ul>
+<p>グラフの形は「チームを責める材料」ではなく、<strong>会話を始めるための情報</strong>です。
+下のシミュレーターで、いろいろな進み方のチャートを描いてみましょう。</p>
+`;
+
+const CLOSING_HTML = `
+<p>最後に、個々の手法の知識を「使える判断力」に変えるための視点をまとめます。</p>
+<div class="callout warn">
+  <h4>アジャイルは「速く雑に作る」ことではない</h4>
+  「アジャイル＝文書を書かない・計画しない・とにかく速い」は典型的な誤解です。
+  アジャイルが速くするのは<strong>学びのループ</strong>：「作って、見せて、フィードバックを得て、直す」の一周です。
+  それを支えるのは自動テスト・継続的インテグレーション・リファクタリングといった<strong>技術的な規律</strong>であり、
+  規律を省いた「速いだけ」の開発は、コードの劣化（技術的負債）でむしろ遅くなっていきます。
+</div>
+<div class="callout tip">
+  <h4>手法の名前ではなく、価値と原則で判断する</h4>
+  スクラムのイベントを全部やっていても、変化への対応が許されず、チームに自己管理がなければ、それはアジャイルではありません。
+  逆にスクラムという名前を使っていなくても、短いフィードバックループと改善のサイクルが回っていれば、それは十分アジャイルです。
+  迷ったら<strong>マニフェストの4つの価値と12の原則</strong>という「原典」に戻って判断しましょう。「アジャイルを<b>やる</b>（do agile）」ではなく「アジャイルで<b>ある</b>（be agile）」。
+</div>
+<div class="callout">
+  <h4>プラン駆動かアジャイルかは、二者択一ではない</h4>
+  Boehm が示したとおり、両者は連続的なスペクトラムです。安全性が重要なシステムや外部規制のある開発では計画駆動が今も合理的であり、
+  実務の多くは「要求工学・契約はプラン駆動寄り、実装はアジャイル」といった<strong>混合（ハイブリッド）</strong>で動いています。
+  大切なのは、流行や号令ではなく、<strong>システムの種類・チーム・組織文化という要因から意図的に選ぶ</strong>ことです。
+</div>
+
+<h4 style="margin-top:26px">混同しやすい用語の見分け方</h4>
+<p>似ている用語は、<strong>「何を対象に」「誰が」「何のために」</strong>で見分けます。試験でも実務でも問われるポイントです。</p>
+<table class="cmp-table">
+  <tr><th>似ている用語</th><th>見分けるポイント</th></tr>
+  <tr><td><b>アジャイル</b> と <b>ウォーターフォール</b></td>
+    <td>変化への向き合い方が逆。ウォーターフォールは<b>変化を抑えて計画どおり</b>に進め、アジャイルは<b>変化を前提に短い反復</b>で適応する。どちらが優れているかではなく、要求の安定性・規模・規制で使い分ける。</td></tr>
+  <tr><td><b>スクラム</b> と <b>XP</b></td>
+    <td>スクラムは<b>組織化・管理の枠組み</b>（ロール・イベント・作成物）で、開発技法を規定しない。XPは<b>開発技法のセット</b>（TDD・ペアプロ・CI・リファクタリング）。相補的で、併用が定番。</td></tr>
+  <tr><td><b>スクラム</b> と <b>カンバン</b></td>
+    <td>スクラムは<b>固定タイムボックス（スプリント）とロール・イベント</b>で回す。カンバンは<b>連続フロー＋WIP制限</b>で、スプリントも追加ロールもない。混ぜた「スクラムバン」もある。</td></tr>
+  <tr><td><b>スプリントレビュー</b> と <b>レトロスペクティブ</b></td>
+    <td>検査する対象が違う。レビューは<b>プロダクト（インクリメント）</b>をステークホルダーと検査し、レトロは<b>プロセス（仕事のやり方）</b>をチーム内で検査する。</td></tr>
+  <tr><td><b>プロダクトオーナー</b> と <b>スクラムマスター</b></td>
+    <td>POは<b>「何を作るか」の価値最大化</b>に責任を持ち、バックログの並び順を最終決定する。SMは<b>スクラムが機能すること</b>に責任を持つ奉仕型の「真のリーダー」。どちらも作業を割り当てる管理職ではない。</td></tr>
+  <tr><td><b>プロダクトバックログ</b> と <b>スプリントバックログ</b></td>
+    <td>前者はプロダクト全体の「やること」リスト（POが並び順に責任）。後者は<b>今スプリントの計画</b>（スプリントゴール＋選んだ項目＋実行計画。開発者のもの）。</td></tr>
+  <tr><td><b>ストーリーポイント</b> と <b>人時間</b></td>
+    <td>人時間は<b>絶対量</b>の見積りで個人差・不確実性に弱い。ポイントは<b>相対的な大きさ</b>で、チームの実測ベロシティと組み合わせて初めて期間予測になる。</td></tr>
+  <tr><td><b>ベロシティ</b> と <b>生産性</b></td>
+    <td>ベロシティは<b>そのチーム固有の物差し</b>による計画用の数値。チーム間比較や人事評価に使った瞬間、見積りインフレで数値の意味が壊れる（グッドハートの法則）。</td></tr>
+  <tr><td><b>ユーザーストーリー</b> と <b>ユースケース</b></td>
+    <td>ストーリーは<b>会話を約束する軽量なカード</b>（詳細は受入れ基準と対話で補う）。ユースケースは相互作用を<b>網羅的・構造的に文書化</b>する要求記述。</td></tr>
+  <tr><td><b>スケールアップ</b> と <b>スケールアウト</b></td>
+    <td>どちらもアジャイルのスケーリング。アップは<b>大規模システム</b>（複数チーム体制）への適用、アウトは<b>組織全体</b>（長年の文化を持つ大企業）への普及。</td></tr>
+</table>
+
+<h4 style="margin-top:26px">研究と実務の現在地</h4>
+<div class="callout">
+  <h4>データで見るアジャイルのいま</h4>
+  業界調査「State of Agile」（Digital.ai、年次）によれば、アジャイルは主流になった一方で、
+  第18版（2025年）では<strong>「アジャイルが組織に深く根付いている」と答えたのは13%</strong>にとどまり、
+  スケーリングでは<strong>74%が特定フレームワークをそのまま使わずハイブリッド・自組織流</strong>を選んでいます（フレームワークではSAFeが最多）。
+  さらに84%がAIツールを使用中または導入予定と回答し、見積り・ふりかえり・バックログ管理など
+  アジャイルの実践そのものが生成AIによって再形成されつつあります。「手法を導入すれば終わり」ではなく、
+  <strong>自分たちの文脈に合わせて検査と適応を続けること</strong>：それ自体がアジャイルの原則です。
+</div>
+
+<h4 style="margin-top:26px">さらに学ぶための文献・資料</h4>
+<ul>
+  <li>I. Sommerville『Software Engineering (10th ed.)』Pearson, 2016年, 第3章（アジャイルソフトウェア開発）・第2章（ソフトウェアプロセス）：本教材の底本</li>
+  <li><a href="https://scrumguides.org/docs/scrumguide/v2020/2020-Scrum-Guide-Japanese.pdf" target="_blank" rel="noopener">スクラムガイド（2020年版・日本語）</a>：K. Schwaber &amp; J. Sutherland。約13ページ・無料。スクラムの一次情報はまずこれ</li>
+  <li><a href="https://agilemanifesto.org/iso/ja/manifesto.html" target="_blank" rel="noopener">アジャイルソフトウェア開発宣言（日本語）</a>：4つの価値と<a href="https://agilemanifesto.org/iso/ja/principles.html" target="_blank" rel="noopener">12の原則</a>。5分で読める原典</li>
+  <li>Jonathan Rasmusson『アジャイルサムライ：達人開発者への道』オーム社, 2011年：インセプションデッキなど実践の定番入門書</li>
+  <li>西村直人・永瀬美穂・吉羽龍太郎『SCRUM BOOT CAMP THE BOOK【増補改訂版】』翔泳社, 2020年：マンガでスクラムの1周目を体験できる日本語の定番</li>
+  <li>Kent Beck『エクストリームプログラミング』オーム社, 2015年（旧訳『XPエクストリーム・プログラミング入門』）：XPの原典（原著第2版）</li>
+  <li><a href="https://digital.ai/resource-center/analyst-reports/state-of-agile-report/" target="_blank" rel="noopener">State of Agile Report</a>（Digital.ai）：アジャイル導入状況の年次業界調査</li>
+</ul>
+`;
+</script>
+<script>
+/* ============== プラクティスデータ（カテゴリ別） ============== */
+const CAT_ORDER = ['xp','scrum','beyond'];
+const CAT_META = {
+  xp:{ label:'アジャイル開発技法', en:'Agile development techniques', color:'var(--xp)',
+    desc:'XP（エクストリームプログラミング）が導入し、いまや現代開発の標準装備になった技法群。「どう作るか」の側面。講義3.2（ユーザーストーリー・リファクタリング・テストファースト・ペアプログラミング）に対応。'},
+  scrum:{ label:'スクラム', en:'Scrum', color:'var(--scrum)',
+    desc:'アジャイルプロジェクトマネジメントの事実上の標準。特定の開発技法を義務付けず、プロジェクトを組織化して外部からの可視性を確保する枠組み。用語はスクラムガイド2020に準拠して整理する。講義3.3に対応。'},
+  beyond:{ label:'スクラムの外へ：現実世界のアジャイル', en:'Beyond Scrum', color:'var(--beyond)',
+    desc:'カンバンという別のアプローチ、大規模組織へのスケーリング、そして「名ばかりアジャイル」への批判。教科書（講義3.4）と現代の議論をつなぐ。'}
+};
+const BADGE_CLS = {'技法の原点':'imp3','枠組み':'imp3','要求の技法':'imp2','イベント':'imp2','作成物':'imp2','計画の技法':'imp2','改善の技法':'imp2','別のアプローチ':'imp1','大規模化':'imp1','批判的視点':'imp1'};
+
+const CARDS = [
+/* ---------- アジャイル開発技法（XP系） ---------- */
+{
+  id:'xp', name:'Extreme Programming (XP)', jp:'エクストリームプログラミング', cat:'xp',
+  badge:'技法の原点', tags:['Kent Beck','1990年代後半','プラクティス群'],
+  summary:'反復開発を<strong>「極限（extreme）」まで推し進めた</strong>、最も影響力のあるアジャイル手法。テスト・統合・リリースなど「良いと分かっている実践」の頻度を極限まで上げる。',
+  analogy:'「体に良いと分かっている習慣は、たまにではなく毎日やる」という発想。リリースは数か月に1回ではなく2週間ごと、統合は月末にまとめてではなく1日に何度も：良い実践ほど頻度を上げるから「エクストリーム」。',
+  purpose:'変化する要求に対応しながら、短いサイクルで動くソフトウェアを提供し続ける。仕様・設計・実装を分離せず並行的に進め、品質は自動テストと継続的なリファクタリングで守る。',
+  who:'開発チーム全員＋フルタイムで対応する顧客担当者（オンサイト顧客）。テスト駆動開発の提唱者であり JUnit の共同開発者でもある Kent Beck が、1990年代後半に体系化した。',
+  steps:[
+    '<b>インクリメンタル計画</b>：ストーリーカードで要件を記録し、開発者が時間と優先度に基づいてタスクに分割する（計画ゲーム）',
+    '<b>テストファースト開発</b>：新機能を実装する前に、自動化されたユニットテストを先に書く',
+    '<b>ペアプログラミング</b>：2人1組で実装し、互いの作業を常時確認する',
+    '<b>リファクタリング</b>：改善の機会を見つけしだい、コードを継続的に整理する',
+    '<b>継続的インテグレーション（CI）</b>：完了したタスクは即システムに統合し、すべてのユニットテストに合格させる',
+    '<b>小さなリリース</b>：最小限の機能からはじめ、2週間ごとのリリースで顧客に届けてフィードバックを次の計画へ'
+  ],
+  points:[
+    '主要プラクティスは他に：<b>シンプル設計</b>（現在の要件を満たすのに十分な設計だけを行う）・<b>集団的所有</b>（コードはチームの所有物）・<b>オンサイト顧客</b>・<b>持続可能なペース</b>',
+    '<b>持続可能なペース</b>：過度な残業はコード品質と生産性に悪影響があるため推奨されない：「頑張り」ではなく仕組みで品質を守る',
+    '<b>YAGNI</b>（You Aren&#39;t Gonna Need It）：将来の変更を予測して作り込まない。予測はたいてい外れ、事前設計が無駄になるから',
+    '集団的所有は<b>エゴレス・プログラミング</b>の考え方：個人がコードを抱え込まないことで属人化を防ぐ'
+  ],
+  cautions:[
+    '<b>すべてのプラクティスをそのまま導入するのは困難</b>：企業文化・管理手法と統合しづらく、多くの企業は一部のみ採用し、スクラムなどの管理重視手法と併用している',
+    'オンサイト顧客（フルタイムの顧客担当者）の確保は現実には難しい：時間的制約や多様なステークホルダーの存在が壁になる',
+    'TDD・リファクタリングなどの技術プラクティスを省いて「反復だけ」真似ると、コードの劣化が速く進む',
+    'ペアは単純計算では生産量が半分に見える：実際は欠陥の早期発見・知識共有・オンボーディング効果で補う（ベテランと新人のペアは企業の定番教育法）'
+  ],
+  examples:[
+    'XP発祥のプロジェクト：Chrysler の給与計算システム C3（1990年代後半、Kent Beck が参画）',
+    'JUnit・pytest などの自動テストフレームワークは、XPのテストファースト開発を支える道具として普及した',
+    'リファクタリング技法のカタログ：<code>refactoring.guru</code>（講義でも紹介）'
+  ],
+  related:'<b>スクラム</b>との違い：XPは「どう作るか」の開発技法のセット、スクラムは「どう組織化・管理するか」の枠組み。XPの実践（ユーザーストーリー・リファクタリング・テストファースト・ペアプロ）は、手法の枠を超えてアジャイル開発の基盤になった。',
+  modern:'XPを名乗るチームは減ったが、中身は現代開発の標準になった：TDD、CI/CD（GitHub Actions・Jenkins）、リファクタリング支援（IDE内蔵）、ペアプロの発展形のモブプログラミングやリモートペア（VS Code Live Share）。AIコーディング支援を「常時レビューしてくれるペア」と捉える見方もある。',
+  hasCode:false
+},
+{
+  id:'user-stories', name:'User Stories', jp:'ユーザーストーリー', cat:'xp',
+  badge:'要求の技法', tags:['〜として〜したい','INVEST','受入れ基準'],
+  summary:'顧客がシステムを使う場面を<strong>短い物語</strong>として記述する要求表現。「<strong>〜として、〜したい。なぜなら〜だから</strong>」の定型文で、誰が・何を・なぜを1枚のカードに収める。',
+  analogy:'分厚い取扱説明書ではなく「お客様の声」カード。「毎朝急いでいる通勤客として、ICカードで改札を通りたい。切符を買う時間がもったいないから」：この1枚で、機能・利用者・価値がまとめて伝わる。',
+  purpose:'抽象的な仕様書より理解しやすい形で顧客のニーズを表し、実装単位・見積り単位・リリース計画の基礎にする。顧客と開発者が共同で作成することで、ニーズの誤解を減らし、初期段階の要求抽出でも利用者の提案を引き出しやすくする。',
+  who:'顧客と開発者が共同で作成する。スクラムではプロダクトオーナーがバックログ項目として管理する。XPではストーリーカードが計画（計画ゲーム）の基本単位。',
+  steps:[
+    '「<b>&lt;役割&gt;として、&lt;機能&gt;したい。なぜなら&lt;価値&gt;だから</b>」の形式でシナリオを書く',
+    '<b>受入れ基準</b>（どうなったら完成か）をカードに添える：Given-When-Then 形式（Gherkin）も定番',
+    '<b>INVEST</b> を満たすか点検し、大きすぎるストーリーは分割する',
+    'ストーリーポイントで見積もり、顧客（PO）が優先順位を付ける',
+    '実装スケジュールの基準とし、顧客が次のリリースに含めるストーリーを選択する',
+    '要件が変化したら、ストーリーの変更・破棄・新カード作成で対応し、再度優先順位付けする'
+  ],
+  points:[
+    '<b>INVEST</b>（Bill Wake）：Independent（独立）・Negotiable（交渉可能）・Valuable（価値がある）・Estimable（見積り可能）・Small（小さい）・Testable（テスト可能）：良いストーリーのチェックリスト',
+    '<b>3つのC</b>（Ron Jeffries）：Card（カード）・Conversation（会話）・Confirmation（確認）：カードは仕様書ではなく「会話の約束」',
+    '受入れ基準はそのまま受入れテストの元になる（テスト開発へのユーザ参加という XP の原則）'
+  ],
+  cautions:[
+    '<b>必須要件が網羅されているかの判断が難しい</b>：ストーリーの集合が要求全体を表す保証はない',
+    '熟練ユーザは説明を省略する傾向があり、<b>業務活動の全体を表せない</b>可能性がある',
+    '「〜として」を形式的に埋めるだけの儀式化（全部「ユーザーとして」で始まる等）：役割と価値が具体的でなければ意味がない'
+  ],
+  examples:[
+    'Sommerville の Mentcare（メンタルヘルスケア支援システム）では、患者情報システムの利用シナリオからストーリーカードを作成する例が示される',
+    'Jira・GitHub Projects・Azure DevOps では、バックログ項目の記述テンプレートとしてこの形式が組み込まれている',
+    'Gherkin（Cucumber）：「Given 在庫が1個 When 2個注文する Then エラーを表示」のように受入れ基準を実行可能な形で書く'
+  ],
+  related:'<b>ユースケース</b>との違い：ユースケースはアクターとシステムの相互作用を網羅的・構造的に文書化する。ストーリーは詳細を「会話」に委ねる軽量な約束で、変化への対応が容易。要求文書と比べ物語形式で理解しやすいのが利点。',
+  modern:'ユーザーストーリーマッピング（Jeff Patton）で、ストーリーを利用者の行動の流れに沿って2次元に並べ、リリースを「体験のスライス」として切る手法が定番。BDD（振る舞い駆動開発）は受入れ基準を自動テスト化する発展形。',
+  hasCode:false
+},
+/* ---------- スクラム ---------- */
+{
+  id:'scrum-framework', name:'Scrum', jp:'スクラムの全体像（3・5・3）', cat:'scrum',
+  badge:'枠組み', tags:['スクラムガイド2020','3ロール・5イベント・3作成物','経験主義'],
+  summary:'アジャイルプロジェクトを組織化する<strong>軽量な枠組み</strong>。3つの責任（ロール）・5つのイベント・3つの作成物だけを定義し、ペアプロやテストファーストのような<strong>特定の開発技法は義務付けない</strong>。',
+  analogy:'ラグビーで全員がスクラムを組んでボールを前へ運ぶ姿が語源（新製品開発の名論文「The New New Product Development Game」（1986）に由来）。監督が一手ずつ指示するのではなく、フィールドの選手たち自身が状況を見て判断する：それを支えるルール（枠組み）だけを決めておく。',
+  purpose:'自己管理チームが複雑な問題に適応しながら価値を届けられるようにしつつ、バックログ・デイリースクラム・定期的なインクリメントによって<strong>外部からの可視性</strong>を確保する。組織の在り方に焦点があるため、XPより企業文化と統合しやすい。',
+  who:'スクラムチーム（10人以下が目安）＝<b>プロダクトオーナー1名</b>（価値の最大化とバックログの並び順に責任）＋<b>スクラムマスター1名</b>（スクラムが機能することに責任）＋<b>複数の開発者</b>（毎スプリント、利用可能なインクリメントを作ることに責任）。',
+  steps:[
+    'プロダクトオーナーが<b>プロダクトゴール</b>を定め、<b>プロダクトバックログ</b>を管理する',
+    '<b>スプリントプランニング</b>でスプリントゴールを決め、バックログ上位から項目を選んで計画する',
+    'スプリント中、開発者は毎日<b>デイリースクラム</b>（15分）で進捗を検査し、当日の計画を適応させる',
+    '<b>スプリントレビュー</b>でインクリメントをステークホルダーと検査し、バックログを適応させる',
+    '<b>スプリントレトロスペクティブ</b>で仕事のやり方を検査・改善し、間を置かず次のスプリントへ'
+  ],
+  points:[
+    '土台は<b>経験主義</b>（empiricism）：<b>透明性・検査・適応</b>の3本柱。「やってみて、見て、直す」を制度化したもの',
+    '<b>スクラムマスター≠管理職</b>：進捗管理や作業割り当てはしない。スクラムガイド2020では「スクラムチームと組織に奉仕する<b>真のリーダー（true leader）</b>」と定義される（講義スライドの「≒プロジェクトマネージャ？」は、PMの権限：人事・予算・指示：を持たない点で別物）',
+    '<b>スクラムガイド2020の要点</b>：「自己組織化」→「<b>自己管理</b>」へ、「開発チーム」というチーム内チームを廃止して<b>1つのスクラムチーム</b>に、<b>プロダクトゴール</b>を新設、3つの作成物それぞれに「確約」（プロダクトゴール／スプリントゴール／完成の定義）を対応付け',
+    '作成物は3つ：<b>プロダクトバックログ・スプリントバックログ・インクリメント</b>（スプリントに対応した、追加作業の必要ない完成状態のソフトウェア）'
+  ],
+  cautions:[
+    'スクラムは「何を作るか」「どう実装するか」を教えてくれない：<b>枠組みであって銀の弾丸ではない</b>。技術プラクティス（テスト自動化・CI）は別途必要',
+    '<b>イベントの形骸化</b>が最頻の失敗：デイリーが上司への報告会になる、レビューが一方的なプレゼンになる（2020版は「ワーキングセッションであってプレゼンの場ではない」と明記）',
+    '一部だけ導入した「なんちゃってスクラム」による失敗が多発したことが、スクラムガイド2020が簡潔化・明確化された背景でもある'
+  ],
+  examples:[
+    '一次情報は<b>スクラムガイド</b>（Schwaber &amp; Sutherland、約13ページ・無料・日本語版あり）',
+    '認定制度：Scrum Alliance の CSM、Scrum.org の PSM',
+    '分散スクラム：OSS開発や国際チームで、タイムゾーンを活用した24時間開発に応用（講義3.3）'
+  ],
+  related:'<b>XP</b>との違い：スクラムは管理の枠組み、XPは技術プラクティス。<b>カンバン</b>との違いは<a href="#kanban">カンバン</a>のカードへ。5つのイベントの中身は<a href="#sprint">スプリント</a>のカードで詳しく。',
+  modern:'現行版はスクラムガイド2020。State of Agile 調査ではチームレベルの手法としてスクラム系が最多派を占め続ける一方、形骸化への反省から「イベントの形ではなく経験主義という中身に戻ろう」という議論が活発。ソフトウェア以外（マーケティング・教育）への適用も広がる。',
+  hasCode:false
+},
+{
+  id:'sprint', name:'Sprint', jp:'スプリント', cat:'scrum',
+  badge:'イベント', tags:['タイムボックス','1〜4週間','スプリントゴール'],
+  summary:'長さ固定の<strong>タイムボックス</strong>（1か月以内、通常は2週間）。アイデアを価値に変える「スクラムの心臓」であり、他の4つのイベントはすべてスプリントの中で行われる。',
+  analogy:'「本番日が動かせない文化祭」を毎月開催するようなもの。締切（期間）は絶対に延ばさず、間に合わないなら出し物の数（スコープ）を調整する。短い本番を何度も繰り返すうちに、チームの段取りはどんどん上手くなる。',
+  purpose:'一定のリズムで検査と適応を繰り返して予測可能性を高め、スプリントごとに「利用可能なインクリメント」を生み出す。期間を固定することで、見積り・ベロシティ測定・関係者との約束が安定する。',
+  who:'スクラムチーム全体。スプリントの長さはチームが決めて固定する（2〜4週間が典型。短いほど学びのサイクルが速い）。',
+  steps:[
+    '<b>スプリントプランニング</b>（1か月スプリントで最大8時間）：「なぜやるのか（スプリントゴール）」「何ができるか（項目の選択）」「どうやるか（作業分解）」を決める',
+    '開発者は毎日<b>デイリースクラム</b>（15分固定）でゴールへの進捗を検査し、その日の計画を適応させる',
+    '選んだ項目を<b>完成の定義（Definition of Done）</b>を満たすまで仕上げ、インクリメントに統合する',
+    '<b>スプリントレビュー</b>（最大4時間）：ステークホルダーと成果を検査し、フィードバックでバックログを適応させる',
+    '<b>スプリントレトロスペクティブ</b>（最大3時間）：プロセスを検査し、改善アクションを決める',
+    '間を置かず、次のスプリントを開始する'
+  ],
+  points:[
+    '<b>期間は固定・延長しない</b>。品質（完成の定義）も落とさない。調整するのは<b>スコープ</b>：この優先順位がタイムボックスの本質',
+    '<b>スプリントゴール</b>が「なぜこのスプリントをやるのか」の一貫性を守る。個々の項目はゴールを危うくしない範囲でPOと交渉・入れ替え可能',
+    '未完了項目は<b>バックログへ戻して再評価</b>する：不安定な要求が進捗を止めない、というスクラムの利点（講義3.3）はこの仕組みから生まれる',
+    '2〜4週間ごとの定期的なインクリメント納品が、顧客が実物を確認する機会と信頼関係をつくる'
+  ],
+  cautions:[
+    '<b>ミニウォーターフォール化</b>：スプリント内を「設計週→実装週→テスト週」と直列に区切ると、最終日にテストが集中して破綻する：毎日「完成」まで持っていくのが理想',
+    'スプリントゴールなしの「タスク消化スプリント」は、忙しいのに方向性がない状態を生む',
+    'デイリースクラムが管理者への進捗報告会になると、自己管理が壊れる（デイリーは開発者の、開発者による、開発者のためのイベント）',
+    'レビュー（プロダクトの検査）とレトロ（プロセスの検査）を混同・省略しない：省略した瞬間に「検査と適応」が止まる'
+  ],
+  examples:[
+    '2週間スプリント：隔週金曜にレビュー＋レトロ、月曜にプランニングというリズムが定番',
+    'スプリントの成果物例：ECサイトの「カート機能が使える状態のインクリメント」：動かないモックや設計書はインクリメントではない',
+    '授業のチーム演習を1週間スプリントで回し、毎週金曜に動くものをデモする、という教育適用も多い'
+  ],
+  related:'<b>イテレーション</b>は反復一般を指す言葉で、スプリントはスクラムでの呼び名。XPのイテレーション（1〜2週間）とほぼ同じ発想。<b>スプリントレビューとレトロスペクティブの違い</b>は closing の比較表も参照。',
+  modern:'実務では2週間スプリントが最多派。継続的デリバリーの普及で「リリースはスプリント末」という縛りは薄れ、リリースは随時行い、スプリントは「検査と適応のリズム」として保つ運用が主流になっている。',
+  hasCode:false
+},
+{
+  id:'product-backlog', name:'Product Backlog & Refinement', jp:'プロダクトバックログとリファインメント', cat:'scrum',
+  badge:'作成物', tags:['優先順位付け','DEEP','プロダクトオーナー'],
+  summary:'プロダクトの改善に必要なものをすべて集め、<strong>優先順位順に一列に並べた</strong>創発的なリスト。スクラムチームが行う作業の<strong>唯一の源泉</strong>で、プロダクトオーナーが並び順に責任を持つ。',
+  analogy:'人気店の「順番待ちリスト」。ただの「やることメモ」と違い、順番に意味がある：先頭の客（項目）ほど席に案内される直前で、名前も人数も確認済み（詳細化済み）。後ろの方はまだ「3人くらい・たぶん来る」程度の粗さでよい。',
+  purpose:'要求を1本のリストに透明化し、価値・リスク・依存関係を考えた順序で開発を導く。要求変更は「項目の追加と並べ替え」として自然に扱えるため、変化に強い（講義：チームが取り組む「to do」のリストであり、機能定義や要件、補足タスクの説明を含む）。',
+  who:'並び順の最終決定は<b>プロダクトオーナー（1名）</b>。リファインメント（分割・詳細化・見積り）は開発者を含むチーム全体の継続的な活動。',
+  steps:[
+    'あらゆる要望・アイデア・修正・技術課題を<b>バックログ項目</b>として1本のリストに集める',
+    'POが<b>価値・緊急度・リスク・学習効果・依存関係</b>を考えて並べ替える（単純な「価値の高い順」だけではない）',
+    '<b>リファインメント</b>：上位項目を分割・詳細化・見積りする。スプリントの継続的な活動として、チームで定期的に行う',
+    '上位項目は「<b>Ready</b>」な状態（1スプリントで完成できる粒度・受入れ基準つき）に保つ',
+    'スプリントプランニングで、上位から項目を選んでスプリントバックログへ'
+  ],
+  points:[
+    '良いバックログの条件 <b>DEEP</b>（Roman Pichler / Mike Cohn）：<b>D</b>etailed appropriately（上位ほど詳細・下位は粗く）・<b>E</b>mergent（常に変化し成長する）・<b>E</b>stimated（見積り済み）・<b>P</b>rioritized（優先順位付き）',
+    'POの責務は「御用聞き」ではなく<b>価値の最大化</b>：ステークホルダーの要望を聞いた上で、断る・後回しにする判断も仕事',
+    'POは<b>1名</b>：委員会にしない（船頭多くして船山に上る）。ただし決定は独断ではなく、開発者・ステークホルダーとの対話に基づく',
+    'スクラムガイド2020では、バックログの「確約」として<b>プロダクトゴール</b>が導入された：リストの並びに長期的な方向性を与える'
+  ],
+  cautions:[
+    '<b>バックログのブラックホール化</b>：何百件も溜め込んで誰も読まない状態。古い項目は定期的に捨てる勇気を持つ',
+    '全項目を最初から詳細化するのは<b>ウォーターフォールへの逆戻り</b>：詳細な完全仕様を作らないのがアジャイルの特徴（講義3.0）',
+    'POが多忙で並べ替えや質問対応が滞ると、チーム全体が待ち状態になる：POの時間確保は組織の責任',
+    'リファインメント不足のまま Planning に臨むと、見積りも計画も当てずっぽうになる'
+  ],
+  examples:[
+    'Jira・GitHub Projects のバックログビュー：ドラッグで並べ替え、上位にだけ受入れ基準と見積りが付いている状態が健全',
+    '優先順位付けの道具：MoSCoW（Must/Should/Could/Won&#39;t）、狩野モデル（当たり前品質・魅力品質）、RICE スコア',
+    '「ユーザー登録」という巨大項目を「メール登録／SNS連携／パスワード再設定」に分割して上位だけ詳細化する'
+  ],
+  related:'<b>スプリントバックログ</b>との違い：プロダクトバックログはプロダクト全体の「何を」のリスト（POのもの）。スプリントバックログは今スプリントの「なぜ＋何を＋どうやって」の計画（開発者のもの）。',
+  modern:'プロダクトマネジメント実務では OKR やユーザーストーリーマッピングと組み合わせ、「アウトプット（機能）」ではなく「アウトカム（成果）」で並べる考え方が主流に。AIによるバックログ整理・重複検出の支援も実用化されつつある。',
+  hasCode:false
+},
+{
+  id:'velocity', name:'Estimation & Velocity', jp:'見積もりとベロシティ', cat:'scrum',
+  badge:'計画の技法', tags:['ストーリーポイント','プランニングポーカー','バーンダウン'],
+  summary:'作業量を<strong>相対値（ストーリーポイント）</strong>で見積り、チームが1スプリントで完成できる量＝<strong>ベロシティ</strong>を実績から測って、先の計画と予測に使う技法。',
+  analogy:'引っ越しの荷物を「重さ何kg」ではなく「みかん箱いくつ分」で数えるイメージ。絶対値は分からなくても「あの部屋は箱10個分、この部屋は5個分」という相対比較なら素早く合意でき、「1日に運べる箱数」（ベロシティ）さえ実測すれば完了日を予測できる。',
+  purpose:'不確実性の高い作業を素早く相対見積りし、実測値にもとづいてスプリント計画・リリース計画の予測可能性を高める。ベロシティは「チームが1スプリントでどれだけのバックログ作業をカバーできるかの見積り」（講義3.3）。',
+  who:'見積りは<b>実際に作業する開発者全員</b>で行う（POは項目の価値と内容を説明する役）。ベロシティの測定と利用はチーム自身のため：管理者の監視のためではない。',
+  steps:[
+    '基準になるストーリーを決める（「これを2ポイントとする」）',
+    '<b>プランニングポーカー</b>：項目の説明を聞き、全員が同時に見積りカード（1, 2, 3, 5, 8, 13…のフィボナッチ数列）を出す',
+    '見積りが大きく割れたら、最大と最小の人が理由を説明して議論し、再投票する：<b>数字合わせより「認識のズレの発見」が主目的</b>',
+    'スプリント終了時、<b>完成（Done）した項目のポイント合計＝ベロシティ</b>を記録する',
+    '直近数スプリントの平均ベロシティで、次に積める量やリリース時期を予測する',
+    '<b>バーンダウンチャート</b>で残作業を毎日可視化する（下の体験デモへ）'
+  ],
+  points:[
+    'ストーリーポイントは時間ではなく、<b>量・複雑さ・不確実性を混ぜた相対的な大きさ</b>：「8ポイント＝何時間」という換算表を作らない',
+    'カードを<b>同時に</b>出すのは、声の大きい人や先輩の数字に引きずられる<b>アンカリング</b>を防ぐため',
+    'ベロシティは<b>チーム固有の物差し</b>：チームAの20ポイントとチームBの20ポイントは比較不能',
+    '<b>完成の定義を満たした項目だけ</b>数える。「90%できた」は0ポイント：これが見積りの規律を保つ'
+  ],
+  cautions:[
+    'ベロシティを<b>目標・ノルマ・評価指標にした瞬間に壊れる</b>：見積りを膨らませれば数字は簡単に上がる（グッドハートの法則「測定が目標になると、良い測定でなくなる」）',
+    'ポイントを人日に換算して管理し始めたら本末転倒：それなら最初から時間で見積もればよい',
+    'バーンダウンが理想線からずれること自体は「悪」ではない：ずれは<b>会話のきっかけ</b>であって、チームを責める材料ではない',
+    '見積りは予言ではない：外れたら見積りを責めるのではなく、計画を適応させる'
+  ],
+  examples:[
+    'プランニングポーカー：James Grenning が考案（2002）し、Mike Cohn の著書『アジャイルな見積りと計画づくり』で広く普及',
+    'Jira のベロシティチャート・バーンダウンチャートは標準機能',
+    'Tシャツサイズ見積り（S/M/L/XL）：ポーカーより粗い代替。初期の大まかなリリース計画に使う'
+  ],
+  related:'<b>人時間との違い</b>：絶対時間の見積りは個人差と不確実性で外れやすい。相対ポイント×実測ベロシティは「外れ方も込み」で較正されていく。<b>ベロシティと生産性の違い</b>は closing の比較表へ。',
+  modern:'カンバン系では、見積りをやめてフローメトリクス（サイクルタイム・スループット）とモンテカルロシミュレーションで確率的に予測する流れも有力。「#NoEstimates」論争：見積りに時間をかけるより項目を小さく切って早く出すことに投資せよという主張：も知っておきたい。',
+  hasCode:false
+},
+{
+  id:'retrospective', name:'Retrospective', jp:'ふりかえり（レトロスペクティブ）', cat:'scrum',
+  badge:'改善の技法', tags:['KPT','心理的安全性','改善アクション'],
+  summary:'スプリントの最後に、プロダクトではなく<strong>「仕事のやり方そのもの」</strong>をチームで検査し、次のスプリントの改善アクションを決めるイベント。スクラムを自分たちで進化させるエンジン。',
+  analogy:'部活の試合後ミーティング。試合結果（プロダクト）の話ではなく、「練習方法・連携・声かけ」を見直す時間。犯人捜しの反省会ではなく、次の試合をどう良くするかの作戦会議。',
+  purpose:'個人・相互作用・プロセス・ツール・完成の定義を検査し、効果を高める変更を特定する。品質と効果を高める最も影響の大きい改善は、できるだけ早く（次のスプリントで）取り組む。継続的なプロセス改善（カイゼン）をリズムに組み込む。',
+  who:'スクラムチーム全員。ファシリテーションはスクラムマスターが担うことが多いが、固定ではない（持ち回りにするチームも多い）。',
+  steps:[
+    '<b>場を設定する</b>：ゴールを確認し、全員が最初に一言話す（発言のハードルを下げる）',
+    '<b>データを集める</b>：良かったこと・問題・出来事・メトリクス（ベロシティ、バグ数など）を出し合う',
+    '<b>アイデアを出す</b>：なぜ起きたか（原因）と、どうすればよいか（対策）を広げる',
+    '<b>アクションを決める</b>：やることを<b>1〜2個に絞り</b>、担当者と「いつ・どうなったら完了か」を付ける',
+    '次のスプリントで実行し、<b>次回のレトロで効果を確認</b>する（言いっぱなしにしない）'
+  ],
+  points:[
+    '定番の手法：<b>KPT</b>（Keep：続けること／Problem：問題／Try：次に試すこと）、<b>Fun/Done/Learn</b>（楽しかった・完了した・学んだ）、<b>YWT</b>（やったこと・わかったこと・次やること）、4Ls、タイムライン：マンネリ防止に使い分ける',
+    '前提は<b>心理的安全性</b>：「これを言っても罰されない」という確信。Google の Project Aristotle は、効果的なチームの第1因子として心理的安全性を報告した',
+    '<b>最優先指令</b>（Norm Kerth）：「誰もが、その時点で分かっていたこと・スキル・状況の中で<b>最善を尽くした</b>と信じる」：この宣言から始めると犯人捜しを防げる',
+    '改善アクションはスプリントバックログに入れる：「業務」として扱わないと実行されない'
+  ],
+  cautions:[
+    '犯人捜し・人格批判になった瞬間、本音が消えて形式だけの会になる（問題は「人」ではなく「仕組み」に向ける）',
+    'アクションが毎回10個出て1つも実行されない：<b>絞る勇気</b>が改善の速度を決める',
+    '問題が全く出ないレトロは「うまくいっている」ではなく<b>「言えない」サイン</b>かもしれない',
+    'レビュー（プロダクトの話）とごちゃ混ぜにすると、プロセスの話が毎回後回しになる'
+  ],
+  examples:[
+    'ホワイトボードや Miro・FigJam に KPT の3領域を書き、付箋を貼って dot voting で絞る：最も普及した型',
+    '『アジャイルレトロスペクティブズ』（Derby &amp; Larsen）の5段階構成（上の「進め方」はこれに基づく）',
+    '日本語の実践書：森一樹『ふりかえりガイドブック』（翔泳社）：手法カタログとして便利'
+  ],
+  related:'<b>スプリントレビュー</b>との違い：レビューは「プロダクト」をステークホルダーと検査する。レトロは「プロセス」をチーム内で検査する。対象も参加者も違う、別のイベント。',
+  modern:'リモートチームでは Miro・FigJam・Parabol などのオンラインボードが定番。「ふりかえり」はトヨタ由来のカイゼン文化と親和性が高く、日本発の手法（YWT・Fun/Done/Learn）や書籍が豊富な、日本のコミュニティが強い領域でもある。',
+  hasCode:false
+},
+/* ---------- スクラムの外へ ---------- */
+{
+  id:'kanban', name:'Kanban', jp:'カンバン', cat:'beyond',
+  badge:'別のアプローチ', tags:['WIP制限','フロー','プル型'],
+  summary:'作業の流れを見える化し、<strong>仕掛かり中の作業数（WIP）を制限</strong>して「流れ（フロー）」を最適化する手法。トヨタ生産方式の「かんばん」に由来し、スプリントのような固定タイムボックスを<strong>持たない</strong>。',
+  analogy:'ラーメン店のカウンター。注文票が何枚並んでいても、コンロは4口（＝WIP制限）だから同時に作るのは4杯まで。1杯できあがったら（＝完了）次の注文に取りかかる（＝プル）。全部を同時に作り始めると、全部がぬるく・遅くなる。',
+  purpose:'マルチタスクと仕掛かりの滞留をなくし、着手から完了までの時間（リードタイム／サイクルタイム）を短く・安定させる。「終わらせること」に集中する文化をつくる。',
+  who:'ソフトウェア開発への適用は David J. Anderson が体系化（2010年、Microsoft・Corbis での実践から）。運用・保守・サポートのような<b>割り込みが多く、項目の粒度がバラバラな仕事</b>に特に合う。',
+  steps:[
+    'ワークフローを列で<b>見える化</b>する（例：ToDo → 実装中 → レビュー中 → 完了）',
+    '各列に<b>WIP制限</b>を設定する（例：「実装中」は3枚まで）',
+    '<b>プル型</b>で流す：右（完了側）の列に空きができたら、左から引き取る：押し込まない',
+    '<b>流れを測る</b>：サイクルタイム・スループット・累積フロー図で滞留を観察する',
+    'ボトルネックを見つけ、プロセスを漸進的に改善する（明示的なポリシーとして合意する）'
+  ],
+  points:[
+    '合言葉は「<b>Stop starting, start finishing</b>（始めるのをやめて、終わらせることを始めよう）」',
+    'WIP制限は不便にするためではなく<b>会話を生む</b>ためにある：列が詰まったら新しい作業を始めず、全員で詰まりを解消する（swarming）',
+    'スクラムと違い、新しいロール・イベント・タイムボックスを<b>追加しない</b>：「今のやり方から始めて漸進的に変える」低摩擦の導入が特徴',
+    'スクラムの中でWIP制限とフロー計測だけ借りる<b>スクラムバン</b>という折衷も広く使われる'
+  ],
+  cautions:[
+    '<b>WIP制限のないカンバンは「ただの付箋ボード」</b>：見える化だけで満足すると、いちばん大事な規律が抜ける',
+    'タイムボックス（締切のリズム）がないぶん、レビューやふりかえりの機会を<b>意識的に設けないと改善が止まる</b>',
+    '巨大な項目が1枚あると流れ全体が詰まる：項目のサイズをある程度そろえる工夫が要る',
+    'ベロシティの代わりにフローメトリクスを使う：2つの手法の数字を混ぜて比較しない'
+  ],
+  examples:[
+    'GitHub Projects・Trello・Jira のボード機能はカンバンの見える化をそのまま製品化したもの',
+    '障害対応チーム：「調査中は2件まで」というWIP制限で、対応の掛け持ちによる長期化を防ぐ',
+    '累積フロー図（CFD）：帯の幅＝WIP、横の長さ＝リードタイムが一目で分かる定番チャート'
+  ],
+  related:'<b>スクラムとの違い</b>：固定リズム（スプリント）＋ロール＋イベントで回すスクラムに対し、カンバンは連続フロー＋WIP制限。要求が定期計画に馴染む開発はスクラム、割り込み中心の仕事はカンバン、という使い分けが目安。',
+  modern:'「Kanban Guide for Scrum Teams」（Scrum.org、2018〜）がスクラムとの併用を体系化。見積りの代わりにサイクルタイムの実績分布からモンテカルロで「85%の確率でn日以内に完了」と予測する手法が、#NoEstimates 派の実務的な受け皿になっている。',
+  hasCode:false
+},
+{
+  id:'scaling', name:'Scaling Agile', jp:'アジャイルのスケーリング', cat:'beyond',
+  badge:'大規模化', tags:['SAFe / LeSS','Scrum of Scrums','Spotifyモデル'],
+  summary:'同じ部屋の小規模チーム向けに生まれたアジャイルを、<strong>複数チーム・大規模システム・大企業</strong>に広げる試み。計画駆動型の実践との統合が避けられなくなる。',
+  analogy:'行列のできる屋台がチェーン展開するようなもの。1店舗の「あうんの呼吸」は100店舗には通用せず、マニュアル・研修・本部（＝事前の要求定義・設計文書・チーム間調整）が必要になる。ただしマニュアルだけを増やすと、屋台の良さ（自律性と速さ）が死ぬ。',
+  purpose:'多数のチームが1つの大きなシステムを開発するときの、要求の事前定義・アーキテクチャの整合・チーム間コミュニケーション・リリースの同期という課題に応える。スケーリングには<b>スケールアップ</b>（大規模システムへの適用）と<b>スケールアウト</b>（組織全体への普及）の2側面がある（Sommerville）。',
+  who:'複数チームで大規模製品を開発する組織。大企業への導入では、未経験の管理者のリスク懸念・既存の品質標準との衝突・技能のばらつき・文化的抵抗が壁になる（講義3.4）。',
+  steps:[
+    '<b>ロールの複製</b>：各チームにPOとスクラムマスターを置き、全体にはチーフPO・チーフスクラムマスターを置くことがある',
+    '<b>プロダクトアーキテクト</b>：各チームから選出し、協力してシステム全体のアーキテクチャを設計・発展させる',
+    '<b>リリースの整合</b>：各チームの製品リリース日程を揃え、実演可能で完全なシステムを生成する',
+    '<b>Scrum of Scrums</b>：毎日、各チームの代表が集まり、進捗の議論・問題の特定・当日作業の計画を行う',
+    '事前の要求定義・設計文書・共通ツールなど、<b>計画駆動型の実践を必要な分だけ統合</b>する'
+  ],
+  points:[
+    '大規模システムの複雑性の6要因（Sommerville）：<b>システムのシステム（SoS）</b>・規制と文書制約・既存環境との統合・長期プロジェクト・設定中心の作業・多様な利害関係者',
+    '完全なインクリメンタル要求定義は不可能：チーム分割の特定や契約のために<b>事前要件が必要</b>になる。単一のプロダクトオーナーも不可能になり、責任は分散する',
+    '代表的フレームワーク：<b>SAFe</b>（Scaled Agile Framework：役割と階層を包括的に定義）、<b>LeSS</b>（Large-Scale Scrum：スクラムを最小限の追加で複数チームへ）、Scrum@Scale、<b>Spotifyモデル</b>（Squad／Tribe／Chapter／Guild という組織構造）'
+  ],
+  cautions:[
+    '<b>SAFe への批判</b>は根強い：階層と役割が多く官僚的で、「アジャイルの語彙をまとったウォーターフォール」になりがちだという指摘。フレームワーク導入＝アジャイル化ではない',
+    '<b>Spotifyモデルの罠</b>：2012年の紹介資料が「モデル」として輸入されがちだが、Spotify 自身が「当時のスナップショットであり、うちも今はこの通りではない」と述べている。構造だけコピーしても文化は移植できない',
+    'フレームワーク導入が目的化すると、現場の自律性（アジャイルの核）が失われる本末転倒が起きる',
+    '大企業の変更管理・独立テストプロセスは、アジャイルの自由なリファクタリングや開発者主導のテストと衝突する（講義3.4）：調整には経営層の理解が必要'
+  ],
+  examples:[
+    'SAFe：Scaled Agile 社が提供。ART（Agile Release Train）という複数チームの同期リズムが中核',
+    'LeSS：Craig Larman &amp; Bas Vodde。「スクラムをそのまま大きくする」思想で、役割の追加を最小限に抑える',
+    '分散スクラム：OSS開発や多国籍チームで、タイムゾーンを活かした24時間開発（講義3.3）'
+  ],
+  related:'<b>単一チームのスクラム</b>との違い：調整・文書・事前設計という「計画駆動のコスト」を意図的に払う点。プラン駆動とアジャイルの混合が前提になる（Boehm の問い・講義3.4.2）。',
+  modern:'18th State of Agile（2025）では、スケーリングの<b>74%がハイブリッド・自組織流</b>のアプローチで、特定フレームワークの教科書どおりの導入は少数派。フレームワークでは SAFe が最多（44%）だが、LeSS・Scrum@Scale は減少傾向。「フレームワークを買う」から「自分たちで設計する」への移行が進む。',
+  hasCode:false
+},
+{
+  id:'agile-reality', name:'Agile in the Real World', jp:'アジャイルの現実と批判', cat:'beyond',
+  badge:'批判的視点', tags:['名ばかりアジャイル','ハイブリッド','State of Agile'],
+  summary:'宣言から四半世紀、アジャイルは主流になった：同時に、形だけ真似た<strong>「名ばかりアジャイル」「アジャイル劇場」への批判</strong>も高まっている。何が起きているのかを冷静に見る。',
+  analogy:'健康食品ブームに似ている。考え方自体は間違っていなくても、看板だけ真似た商品があふれると「全然効かないじゃないか」という反動が来る。効かない原因の多くは、中身（運動と食事＝技術的規律と文化）が伴っていないこと。',
+  purpose:'（このカードで学ぶこと）手法の名前やイベントの形ではなく、<b>アジャイルの価値と原則が実際に機能しているか</b>を見分ける目を持つ。批判を知ることは、正しく使うための最短ルート。',
+  who:'すべての開発者と管理者。「アジャイルを<b>やる</b>（do agile）」と「アジャイルで<b>ある</b>（be agile）」の差を意識できるかが分かれ目。',
+  steps:[
+    '<b>形骸化のサインを点検する</b>：デイリーが上司への報告会／レトロが省略される／「スプリント」が単なる2週間締切：これらは「アジャイル劇場」の典型症状',
+    '<b>変化への対応が本当に許されているか</b>を見る：計画変更に何段階の承認が要るか、バックログの並び替えは誰の一存でできるか',
+    '<b>技術プラクティスが伴っているか</b>を見る：自動テスト・CI・リファクタリングなしの「管理だけアジャイル」はコード劣化で失速する（Martin Fowler はこれを flaccid Scrum：「腰砕けのスクラム」と呼んだ）',
+    'プラン駆動と混ぜること自体は<b>正しい</b>と知る（Boehm・Sommerville）：問題は「なし崩しの混合」であって、意図的なハイブリッドではない',
+    '判断に迷ったら一次情報（マニフェスト・スクラムガイド）と調査データに戻る'
+  ],
+  points:[
+    'マニフェスト起草者の一人 <b>Ron Jeffries</b> は2018年、「開発者は（商業化された）&#39;Agile&#39; という名前を捨て、価値と原則に基づく開発に戻るべきだ」と主張した（いわゆる dark agile / faux agile 批判）',
+    '<b>Martin Fowler</b> は、認定資格やコンサルティングで肥大化した業界を「<b>アジャイル産業複合体（Agile Industrial Complex）</b>」と呼び、「チームへのプロセスの押し付けは、アジャイルの根本的な否定だ」と批判した（2018年の講演）',
+    '実務の多数派は<b>ハイブリッド</b>：契約・規制・全体計画はプラン駆動、実装はアジャイル。揶揄を込めて「water-scrum-fall」と呼ばれる形態も現実には多い',
+    '<b>18th State of Agile</b>（2025）：「アジャイルが組織に深く根付いた」は<b>13%</b>にとどまり、<b>63%</b>が高品質なソフトウェアの安定的な提供に苦労していると回答：導入の「その先」が課題の時代'
+  ],
+  cautions:[
+    '「アジャイルは失敗した」系の記事は<b>根拠を確認する</b>：たとえば「アジャイルの失敗率は268%高い」という2024年の調査は、書籍販促を目的とした営利企業の非査読調査で、方法論への批判が強い：数字だけが独り歩きしている',
+    '逆に「アジャイルなら成功する」も同じくらい根拠がない：手法の効果は文脈（規模・規制・チーム・文化）に依存する',
+    '批判の多くは「アジャイルの名を借りたマイクロマネジメント」への批判であり、短いフィードバックループや自律チームという<b>中身への反証ではない</b>ことを区別する'
+  ],
+  examples:[
+    'Steve Yegge「いいアジャイルと悪いアジャイル」（2006）：Google の開発文化と「悪いアジャイル」を対比した古典的エッセイ',
+    'Ron Jeffries “Developers Should Abandon Agile”（2018、InfoQ でも紹介）',
+    'State of Agile Report（Digital.ai・年次）：導入状況・課題・AI活用の定点観測'
+  ],
+  related:'<b>ポストアジャイル</b>の議論：名前としての「Agile」は色あせても、短いフィードバックループ・自律チーム・技術的卓越・継続的デリバリーという中身は、現代開発の「当たり前の前提」として定着した：という見方が有力。',
+  modern:'生成AIの普及が新しい論点を生んでいる：AIエージェントとの高速な反復は「スプリントより速いループ」を可能にし、見積りやふりかえりのあり方を変えつつある。18th State of Agile では<b>84%がAIツールを使用中または導入予定</b>。アジャイルの実践そのものが、いま再設計の途中にある。',
+  hasCode:false
+}
+];
+</script>
+<script>
+/* ============== コード例（このページでは未使用） ============== */
+const CODE = {};
+
+/* ============== カード内ダイアグラム ============== */
+const DIAGRAMS = {
+'scrum-framework': `
+<svg viewBox="0 0 760 330" role="img" aria-label="スクラムのループ：プロダクトバックログからスプリント、インクリメントまで">
+  <text x="85" y="96" class="dg-el" fill="#7A5C34">確約：プロダクトゴール</text>
+  <rect x="20" y="108" width="130" height="66" rx="12" class="dg-box dg-if"/>
+  <text x="85" y="135" class="dg-lbl">プロダクト</text>
+  <text x="85" y="151" class="dg-lbl">バックログ</text>
+  <text x="85" y="166" class="dg-st">POが並び順に責任</text>
+  <path d="M150 141 L186 141" class="dg-line" marker-end="url(#ahL)"/>
+  <text x="262" y="96" class="dg-el" fill="#7A5C34">確約：スプリントゴール</text>
+  <rect x="190" y="108" width="145" height="66" rx="12" class="dg-box"/>
+  <text x="262" y="135" class="dg-lbl">スプリント</text>
+  <text x="262" y="151" class="dg-lbl">プランニング</text>
+  <text x="262" y="166" class="dg-st">スプリントバックログへ</text>
+  <path d="M335 141 L372 141" class="dg-line" marker-end="url(#ahL)"/>
+  <circle cx="452" cy="141" r="64" fill="rgba(14,111,92,.06)" stroke="#0E6F5C" stroke-width="1.4"/>
+  <text x="452" y="137" class="dg-lbl" fill="#0A5748">スプリント</text>
+  <text x="452" y="155" class="dg-el">1〜4週間・固定</text>
+  <circle cx="452" cy="40" r="26" fill="#FFFFFF" stroke="#3E5C50" stroke-width="1.3"/>
+  <text x="452" y="37" class="dg-el" fill="#3E5C50">デイリー</text>
+  <text x="452" y="50" class="dg-el" fill="#3E5C50">24h</text>
+  <path d="M452 77 L452 66" class="dg-line" marker-end="url(#ahL)"/>
+  <path d="M516 141 L556 141" class="dg-line" marker-end="url(#ahL)"/>
+  <text x="648" y="96" class="dg-el" fill="#7A5C34">確約：完成の定義</text>
+  <rect x="560" y="108" width="180" height="66" rx="12" class="dg-box dg-if"/>
+  <text x="650" y="135" class="dg-lbl">インクリメント</text>
+  <text x="650" y="151" class="dg-st">利用可能な成果物</text>
+  <text x="650" y="166" class="dg-el">追加作業なしの完成状態</text>
+  <path d="M650 174 L650 226" class="dg-line" marker-end="url(#ahL)"/>
+  <rect x="560" y="230" width="180" height="52" rx="12" class="dg-box"/>
+  <text x="650" y="252" class="dg-lbl">スプリントレビュー</text>
+  <text x="650" y="268" class="dg-el">プロダクトを検査（〜4h）</text>
+  <path d="M560 256 L510 256" class="dg-line" marker-end="url(#ahL)"/>
+  <rect x="320" y="230" width="190" height="52" rx="12" class="dg-box"/>
+  <text x="415" y="252" class="dg-lbl">レトロスペクティブ</text>
+  <text x="415" y="268" class="dg-el">プロセスを検査（〜3h）</text>
+  <path d="M320 256 L85 256 L85 178" class="dg-line dg-dash" marker-end="url(#ahL)"/>
+  <text x="196" y="246" class="dg-el">フィードバックと改善を次のスプリントへ</text>
+  <text x="380" y="318" class="dg-note">3ロール（PO・スクラムマスター・開発者）が、5イベント（枠内）で3作成物を育てるループ。スクラムガイド2020 準拠。</text>
+  <defs><marker id="ahL" markerWidth="9" markerHeight="9" refX="8" refY="4.5" orient="auto"><path d="M0,0 L9,4.5 L0,9 z" fill="#6B746F"/></marker></defs>
+</svg>`,
+'velocity': `
+<svg viewBox="0 0 760 300" role="img" aria-label="バーンダウンチャートの読み方">
+  <text x="390" y="24" class="dg-lbl">バーンダウンチャートの読み方（例：40pt・10日スプリント）</text>
+  <path d="M70 40 L70 250 L700 250" class="dg-line"/>
+  <text x="52" y="46" class="dg-el">残り</text>
+  <text x="52" y="60" class="dg-el">40pt</text>
+  <text x="60" y="254" class="dg-el">0</text>
+  <text x="700" y="268" class="dg-el">10日</text>
+  <text x="385" y="286" class="dg-note">横軸：経過日数　縦軸：残りストーリーポイント</text>
+  <path d="M70 45 L700 250" class="dg-line dg-dash" stroke="#8A6D3B"/>
+  <text x="340" y="210" class="dg-el" fill="#8A6D3B">理想線（毎日一定に減る仮定）</text>
+  <polyline points="70,45 133,45 196,60 259,60 322,90 385,70 448,100 511,140" fill="none" stroke="#0E6F5C" stroke-width="2.4"/>
+  <circle cx="133" cy="45" r="4" fill="#0E6F5C"/>
+  <circle cx="259" cy="60" r="4" fill="#0E6F5C"/>
+  <circle cx="385" cy="70" r="4" fill="#0E6F5C"/>
+  <circle cx="511" cy="140" r="4" fill="#0E6F5C"/>
+  <path d="M133 45 L110 84" class="dg-line dg-dash" stroke="#B04A3E"/>
+  <text x="120" y="100" class="dg-el" fill="#B04A3E">横ばい＝完了ゼロの日</text>
+  <path d="M370 72 L340 116" class="dg-line dg-dash" stroke="#B04A3E"/>
+  <text x="330" y="132" class="dg-el" fill="#B04A3E">線が上がる＝スコープ追加</text>
+  <path d="M480 122 L520 96" class="dg-line dg-dash"/>
+  <text x="565" y="88" class="dg-el">実績線が理想線より上＝遅れ気味</text>
+  <text x="565" y="104" class="dg-el">（会話を始めるシグナル）</text>
+</svg>`
+};
+
+/* ============== 理解度クイズ ============== */
+const QUIZ = [
+{ q:'アジャイルマニフェストの4つの価値。「プロセスやツールよりも、◯◯を」：◯◯に入るのは？',
+  opts:['個人と対話','包括的なドキュメント','契約交渉','計画に従うこと'], a:0,
+  why:'4つの価値は「個人と対話」「動くソフトウェア」「顧客との協調」「変化への対応」。残りの3択はいずれも「〜よりも」の左側（価値を認めつつ、より価値を置かない側）に登場する言葉。'},
+{ q:'XPのプラクティスで、「新機能を実装する前に、自動化されたユニットテストを先に書く」ものは？',
+  opts:['テストファースト開発','リファクタリング','集団的所有','小さなリリース'], a:0,
+  why:'テストファースト開発。テストを書くことは「機能のインタフェースと振る舞いの仕様を定義する」ことと同義であり、仕様の曖昧さや漏れが明確化される。のちにテスト駆動開発（TDD）へ発展した。'},
+{ q:'機能的な振る舞いを変えずに、コードの構造や可読性を改善し続けるXPのプラクティスは？',
+  opts:['リファクタリング','デバッグ','コードクローン','ワークアラウンド'], a:0,
+  why:'リファクタリング。問題に直面していなくても改善を実施し、構造劣化を未然に防ぐ。局所的変更による構造の崩れ・その場しのぎの回避策（workaround）の蓄積という、アジャイルで起こりがちな問題への対抗策。'},
+{ q:'良いユーザーストーリーの条件「INVEST」。最後の T が表すのは？',
+  opts:['Testable（テスト可能）','Traceable（追跡可能）','Technical（技術的）','Timeboxed（時間制限つき）'], a:0,
+  why:'INVEST = Independent・Negotiable・Valuable・Estimable・Small・Testable。テスト可能＝受入れ基準が書ける粒度と明確さを持つ、ということ。'},
+{ q:'スクラムチームの3つの責任（ロール）に<b>含まれない</b>のは？',
+  opts:['プロジェクトマネージャ','プロダクトオーナー','スクラムマスター','開発者'], a:0,
+  why:'スクラムの3ロールはPO・スクラムマスター・開発者。作業を割り当てるプロジェクトマネージャという役割は存在せず、チームは自己管理する。だからこそ可視性を確保する仕組み（バックログ・デイリー・インクリメント）が組み込まれている。'},
+{ q:'スプリントレビューとスプリントレトロスペクティブの違いとして正しいのは？',
+  opts:['レビューはプロダクトを、レトロはプロセス（仕事のやり方）を検査する','レトロはプロダクトを、レビューはプロセスを検査する','どちらも同じ内容で、呼び名が違うだけ','レビューは開発者だけで行う'], a:0,
+  why:'レビューはインクリメントをステークホルダーと検査してバックログを適応させる。レトロはチーム内で仕事のやり方を検査して改善アクションを決める。対象も参加者も違う別イベント。'},
+{ q:'プロダクトバックログの並び順（優先順位）に最終的な責任を持つのは？',
+  opts:['プロダクトオーナー','スクラムマスター','開発者の多数決','ステークホルダー全員の合意'], a:0,
+  why:'POが1名で責任を持つ（委員会にしない）。ただし独断ではなく、開発者やステークホルダーとの対話に基づいて決める。要件の特定や優先順位付けはPOの中心的な責務。'},
+{ q:'ベロシティの正しい使い方は？',
+  opts:['自チームの次スプリントの計画と完了予測に使う','複数チームの生産性をランキングして比較する','個人の人事評価の指標にする','高いほど良いので毎スプリントのノルマにする'], a:0,
+  why:'ベロシティは「そのチームが1スプリントでカバーできる作業量」のチーム固有の実測値。比較・評価・ノルマに使うと見積りインフレが起きて、数字の意味そのものが壊れる（グッドハートの法則）。'},
+{ q:'「仕掛かり中の作業数（WIP）の制限」を中核の規律とする手法は？',
+  opts:['カンバン','スクラム','XP','ウォーターフォール'], a:0,
+  why:'カンバン。作業を見える化し、WIP制限とプル型で「流れ」を最適化する。スプリントのような固定タイムボックスは持たず、割り込みの多い運用・保守系の仕事と相性がよい。'},
+{ q:'プラン駆動型アプローチの方が適している可能性が高いのは？（Boehm の問い）',
+  opts:['航空機ソフトウェアのように外部規制機関の認証が必要なシステム','要求が頻繁に変わる小規模なWebアプリ','顧客担当者がチームに常駐できる社内ツール','2週間で検証したいプロトタイプ'], a:0,
+  why:'外部規制の対象システムは、安全性確保のために詳細な文書の作成が求められるためプラン駆動が適する可能性が高い。規模・システムの種類・寿命・規制・チーム・文化などの要因でバランスを決める。'},
+{ q:'スクラムマスターの説明として適切なのは？',
+  opts:['スクラムの理解と実践を助ける、チームと組織に奉仕する「真のリーダー」','チームの進捗を管理し、メンバーに作業を割り当てる管理職','プロダクトの要件と優先順位を最終決定する責任者','コードレビューを最終承認する技術リーダー'], a:0,
+  why:'スクラムガイド2020では「スクラムチームと組織に奉仕する真のリーダー（true leader）」。進捗管理や作業割り当てはしない（作業の進め方は開発者が自己管理）。要件の優先順位はPOの責務。'},
+{ q:'バーンダウンチャートで、実績線が理想線より<b>上</b>にある状態が意味するのは？',
+  opts:['残作業が想定より多い（遅れ気味）','計画より進んでいる（先行）','品質が高い','ベロシティが上がった'], a:0,
+  why:'縦軸は「残り作業量」なので、理想線より上＝残りが多い＝遅れ気味。責める材料ではなく、スコープ調整や障害物の除去を話し合う「会話のきっかけ」として使う。'}
+];
+</script>
+<script>
+/* ============== レンダリング ============== */
+const learned = new Set();
+let currentCat = 'all';
+
+function esc(s){return s.replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;");}
+
+function highlight(code, lang){
+  const cmMark = (lang==='python') ? '#' : '//';
+  const kws = (lang==='python')
+    ? ['def','return','import','from','if','elif','else','assert','class','True','False','None','pytest']
+    : ['public','class','void','int','return','new','static','import','if','else','true','false','String'];
+  const kwRe = new RegExp('\\b('+kws.join('|')+')\\b','g');
+  return code.split('\n').map(line=>{
+    const idx = line.indexOf(cmMark);
+    let codePart = (idx>=0) ? line.slice(0,idx) : line;
+    const cmPart = (idx>=0) ? line.slice(idx) : '';
+    const strs = [];
+    codePart = codePart.replace(/"[^"]*"/g, m=>{ strs.push(m); return '@@S'+(strs.length-1)+'@@'; });
+    let h = esc(codePart).replace(kwRe,'<span class="kw">$1</span>');
+    h = h.replace(/@@S(\d+)@@/g,(m,i)=>'<span class="st">'+esc(strs[+i])+'</span>');
+    return h + (cmPart ? '<span class="cm">'+esc(cmPart)+'</span>' : '');
+  }).join('\n');
+}
+
+function togglePattern(id){
+  const card = document.getElementById(id);
+  if(!card) return;
+  const open = card.classList.toggle('open');
+  const head = card.querySelector('.pcard-head');
+  if(head) head.setAttribute('aria-expanded', open ? 'true' : 'false');
+}
+function toggleLearned(id, cb){
+  if(cb.checked) learned.add(id); else learned.delete(id);
+  const card = document.getElementById(id);
+  if(card) card.classList.toggle('done-card', cb.checked);
+  updateLearnUI();
+}
+function updateLearnUI(){
+  const el = document.getElementById('learnNote');
+  if(el) el.textContent = '習得 ' + learned.size + ' / ' + CARDS.length;
+}
+function switchCode(id, lang, btn){
+  document.getElementById(id+'-java').classList.toggle('hidden', lang!=='java');
+  document.getElementById(id+'-python').classList.toggle('hidden', lang!=='python');
+  btn.parentElement.querySelectorAll('button.tab').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+}
+
+function renderCard(t, idx){
+  const pointsLi = t.points.map(v=>`<li>${v}</li>`).join('');
+  const cautionsLi = t.cautions.map(v=>`<li>${v}</li>`).join('');
+  const exLi = t.examples.map(v=>`<li>${v}</li>`).join('');
+  const stepsLi = t.steps.map(v=>`<li>${v}</li>`).join('');
+  const tagsH = (t.tags||[]).map(x=>`<span class="tag">${x}</span>`).join('');
+  const badgeH = `<span class="badge-imp ${BADGE_CLS[t.badge]||'imp1'}">${t.badge}</span>`;
+  const analogyH = t.analogy ? `<div class="analogy"><span><b>たとえるなら</b> ${t.analogy}</span></div>` : '';
+  const dg = DIAGRAMS[t.id];
+  const diagramH = dg ? `<div class="diagram-wrap"><h5>進め方のイメージ</h5>${dg}</div>` : '';
+  let codeH = '';
+  if(t.hasCode && CODE[t.id]){
+    codeH = `
+      <div class="code-wrap">
+        <div class="code-tabs">
+          <span class="lbl">サンプルコード</span>
+          <button class="tab active" onclick="switchCode('${t.id}','java',this)">Java (JUnit 5)</button>
+          <button class="tab" onclick="switchCode('${t.id}','python',this)">Python (pytest)</button>
+        </div>
+        <pre id="${t.id}-java"><code>${highlight(CODE[t.id].java,'java')}</code></pre>
+        <pre id="${t.id}-python" class="hidden"><code>${highlight(CODE[t.id].python,'python')}</code></pre>
+      </div>`;
+  }
+  const searchText = (t.name+' '+t.jp+' '+t.summary+' '+(t.analogy||'')+' '+t.badge+' '+(t.tags||[]).join(' ')).toLowerCase();
+  const catColor = CAT_META[t.cat].color;
+  return `
+  <article class="pcard" id="${t.id}" data-cat="${t.cat}" data-search="${esc(searchText)}">
+    <button class="pcard-head" aria-expanded="false" onclick="togglePattern('${t.id}')">
+      <span class="pnum" style="color:${catColor}">${idx}</span>
+      <span class="ptitle">${t.name}<small>${t.jp}</small></span>
+      <span class="pbadges">${badgeH}</span>
+      <span class="ptags">${tagsH}</span>
+      <span class="pchev" aria-hidden="true">&rsaquo;</span>
+    </button>
+    <p class="summary">${t.summary}</p>
+    <div class="pdetail">
+      ${analogyH}
+      <div class="meta-row">
+        <div class="meta"><h5>ねらい・位置づけ</h5><p>${t.purpose}</p></div>
+        <div class="meta"><h5>誰が・どんな場面で</h5><p>${t.who}</p></div>
+      </div>
+      <div class="steps"><h5>実施の仕方（進め方）</h5><ol>${stepsLi}</ol></div>
+      ${diagramH}
+      <div class="grid2">
+        <div class="box pros"><h5>✓ 意識するポイント</h5><ul>${pointsLi}</ul></div>
+        <div class="box cons"><h5>！ 注意点・落とし穴</h5><ul>${cautionsLi}</ul></div>
+      </div>
+      <div class="meta-row">
+        <div class="meta"><h5>具体例</h5><ul>${exLi}</ul></div>
+        <div class="meta"><h5>混同しやすいものとの違い</h5><p>${t.related}</p></div>
+      </div>
+      <div class="meta" style="margin:16px 0"><h5>現場では（ツール・現代的な実践）</h5><p>${t.modern}</p></div>
+      ${codeH}
+      <label class="learn"><input type="checkbox" onchange="toggleLearned('${t.id}',this)">
+        この項目を理解した（習得チェック）</label>
+    </div>
+  </article>`;
+}
+
+function build(){
+  document.getElementById('introProse').innerHTML = INTRO_HTML;
+  document.getElementById('techProse').innerHTML = TECH_HTML;
+  document.getElementById('closingProse').innerHTML = CLOSING_HTML;
+  const container = document.getElementById('practices-list');
+  let html='', n=0;
+  CAT_ORDER.forEach(cat=>{
+    const list = CARDS.filter(t=>t.cat===cat);
+    const meta = CAT_META[cat];
+    html += `<div class="cat-group" data-cat="${cat}">
+      <div class="cat-head" style="--cc:${meta.color}">
+        <span class="cat-dot"></span>
+        <h3>${meta.label}</h3>
+        <span class="cat-badge">${meta.en} · ${list.length}種</span>
+      </div>
+      <p class="cat-desc">${meta.desc}</p>`;
+    list.forEach(t=>{ n++; html += renderCard(t, n); });
+    html += `</div>`;
+  });
+  container.innerHTML = html;
+  updateLearnUI();
+  buildQuiz();
+}
+
+function filterCat(cat, btn){
+  currentCat = cat;
+  document.querySelectorAll('.pill').forEach(b=>b.classList.remove('active'));
+  if(btn) btn.classList.add('active');
+  applyFilter();
+}
+function applyFilter(){
+  const si = document.getElementById('search');
+  const q = (si && si.value ? si.value : '').trim().toLowerCase();
+  document.querySelectorAll('.cat-group').forEach(g=>{
+    const catOk = (currentCat==='all' || currentCat===g.dataset.cat);
+    let shown = 0;
+    g.querySelectorAll('.pcard').forEach(c=>{
+      const hit = catOk && (!q || c.dataset.search.includes(q));
+      c.classList.toggle('hidden', !hit);
+      if(hit) shown++;
+    });
+    g.classList.toggle('hidden', shown===0);
+  });
+}
+
+/* ============== バーンダウンチャート・シミュレーター ============== */
+const BD_DAYS = 10;
+let bdTotalPts = 40;
+let bdLog = [];
+
+function bdSetTotal(){
+  const el = document.getElementById('bdTotal');
+  const v = parseInt((el.value||'').trim(), 10);
+  if(!isFinite(v) || v < 5 || v > 500){
+    el.value = String(bdTotalPts);
+    bdRender('<b>5〜500</b> の整数で入力してください（合計ポイントを変えると最初からやり直しになります）。');
+    return;
+  }
+  bdTotalPts = v;
+  bdLog = [];
+  bdRender();
+}
+function bdReset(){ bdLog = []; bdRender(); }
+function bdDoneSum(){ return bdLog.reduce((a,b)=>a+b,0); }
+function bdAdd(p){
+  if(bdDoneSum() >= bdTotalPts){
+    bdRender('すでに全ポイント完了しています。「最初から」で新しいスプリントを始めるか、合計ポイントを変えて試してみてください。');
+    return;
+  }
+  if(bdLog.length >= BD_DAYS){
+    bdRender('スプリントの10日間が終了しています。「最初から」で新しいスプリントを始めましょう。タイムボックスは延長しないのがスクラムの規律です。');
+    return;
+  }
+  bdLog.push(p);
+  bdRender();
+}
+
+function bdChartSVG(){
+  const x0=70, x1=720, yTop=36, yBot=264;
+  const xs = d => x0 + (x1-x0)*d/BD_DAYS;
+  const ys = v => yBot - (yBot-yTop)*Math.max(v,0)/bdTotalPts;
+  let s = `<svg viewBox="0 0 760 320" role="img" aria-label="バーンダウンチャート：残りポイントの推移">`;
+  /* grid + y labels */
+  for(let i=0;i<=4;i++){
+    const v = bdTotalPts*i/4;
+    const y = ys(v);
+    s += `<line x1="${x0}" y1="${y}" x2="${x1}" y2="${y}" stroke="#E7ECE9" stroke-width="1"/>`;
+    s += `<text x="${x0-8}" y="${y+4}" text-anchor="end" font-size="10.5" fill="#6B746F">${Math.round(v)}</text>`;
+  }
+  /* axes */
+  s += `<line x1="${x0}" y1="${yTop-8}" x2="${x0}" y2="${yBot}" stroke="#6B746F" stroke-width="1.3"/>`;
+  s += `<line x1="${x0}" y1="${yBot}" x2="${x1}" y2="${yBot}" stroke="#6B746F" stroke-width="1.3"/>`;
+  for(let d=0; d<=BD_DAYS; d++){
+    s += `<line x1="${xs(d)}" y1="${yBot}" x2="${xs(d)}" y2="${yBot+5}" stroke="#6B746F" stroke-width="1"/>`;
+    s += `<text x="${xs(d)}" y="${yBot+20}" text-anchor="middle" font-size="10.5" fill="#6B746F">${d}</text>`;
+  }
+  s += `<text x="${(x0+x1)/2}" y="${yBot+40}" text-anchor="middle" font-size="11" fill="#6B746F">経過日数（日）</text>`;
+  s += `<text x="20" y="${yTop-14}" font-size="11" fill="#6B746F">残りポイント</text>`;
+  /* ideal line */
+  s += `<line x1="${xs(0)}" y1="${ys(bdTotalPts)}" x2="${xs(BD_DAYS)}" y2="${ys(0)}" stroke="#8A6D3B" stroke-width="1.6" stroke-dasharray="6 5"/>`;
+  s += `<text x="${xs(6)+8}" y="${ys(bdTotalPts*0.4)-8}" font-size="10.5" fill="#8A6D3B">理想線</text>`;
+  /* actual line */
+  let rem = bdTotalPts;
+  const pts = [[0,rem]];
+  bdLog.forEach((p,i)=>{ rem -= p; pts.push([i+1, rem]); });
+  const poly = pts.map(([d,v])=>`${xs(d)},${ys(v)}`).join(' ');
+  s += `<polyline points="${poly}" fill="none" stroke="#0E6F5C" stroke-width="2.6"/>`;
+  pts.forEach(([d,v],i)=>{
+    s += `<circle cx="${xs(d)}" cy="${ys(v)}" r="4.5" fill="${i===pts.length-1?'#0A5748':'#0E6F5C'}"/>`;
+  });
+  const last = pts[pts.length-1];
+  if(bdLog.length>0){
+    s += `<text x="${xs(last[0])}" y="${ys(last[1])-12}" text-anchor="middle" font-size="11" font-weight="600" fill="#0A5748">残り ${Math.max(last[1],0)}pt</text>`;
+  }
+  s += `</svg>`;
+  return s;
+}
+
+function bdRender(msgOverride){
+  const wrap = document.getElementById('bdChartWrap');
+  const out = document.getElementById('bdOut');
+  if(!wrap || !out) return;
+  wrap.innerHTML = bdChartSVG();
+  const d = bdLog.length;
+  const done = bdDoneSum();
+  const rem = bdTotalPts - done;
+  const daysLog = bdLog.map((p,i)=>`${i+1}日目 +${p}`).join(' ／ ');
+  if(msgOverride){
+    out.className = 'demo-out';
+    out.innerHTML = msgOverride;
+    return;
+  }
+  if(d===0){
+    out.className = 'demo-out';
+    out.innerHTML = `スプリント開始前です。合計 <b>${bdTotalPts}ポイント</b> を10日で燃やし尽くせるでしょうか。上のボタンで「1日の終わりに完成したポイント」を入力していってください。`;
+    return;
+  }
+  if(rem<=0){
+    out.className = 'demo-out ok';
+    out.innerHTML = `<span class="pl">完了</span><b>${d}日目で全${bdTotalPts}ポイントが完成しました</b>（実績：${daysLog}）。実際のスクラムなら、残りの${BD_DAYS-d}日で「プロダクトバックログの次の項目」をPOと相談してプルします：スプリント自体は短縮も延長もしません。`;
+    return;
+  }
+  if(d>=BD_DAYS){
+    out.className = 'demo-out ng';
+    out.innerHTML = `<span class="pl">スプリント終了</span><b>${rem}ポイントが未完了</b>のままタイムボックスが終わりました（完成：${done}pt）。未完了項目は<b>プロダクトバックログへ戻して再見積り・再優先順位付け</b>します。これは「失敗」ではなく、次の計画に使える<b>実測ベロシティ ${done}pt/スプリント</b> という学習データです：次はこの実力値に合わせて計画しましょう。`;
+    return;
+  }
+  const avg = done/d;
+  const idealRem = bdTotalPts*(1 - d/BD_DAYS);
+  const diff = rem - idealRem;
+  const daysLeft = BD_DAYS - d;
+  let cls, pill, msg;
+  if(avg<=0){
+    cls='ng'; pill='停滞中';
+    msg = `${d}日経過で完成が<b>0ポイント</b>。このままでは永遠に終わりません。デイリースクラムの出番です：何かが詰まっている（障害物・待ち・大きすぎる項目）はず。原因をチームで特定し、取り除きましょう。`;
+  } else {
+    const projDays = d + Math.ceil(rem/avg);
+    if(diff > bdTotalPts*0.08){
+      cls='ng'; pill='遅れ気味';
+      msg = `実績線が理想線より <b>${diff.toFixed(1)}pt 上</b>にあります。平均 <b>${avg.toFixed(1)}pt/日</b> のペースだと完了は<b>約${projDays}日目</b>：タイムボックス内に収まりません。残り${daysLeft}日で必要なペースは <b>${(rem/daysLeft).toFixed(1)}pt/日</b>。頑張りに賭けるのではなく、<b>POとスコープ調整</b>（優先度の低い項目をバックログへ戻す）を話し合うタイミングです。`;
+    } else if(diff < -bdTotalPts*0.08){
+      cls='ok'; pill='先行';
+      msg = `実績線が理想線より <b>${(-diff).toFixed(1)}pt 下</b>：計画より進んでいます。平均 <b>${avg.toFixed(1)}pt/日</b> のペースなら<b>約${projDays}日目</b>に完了する見込み。この調子なら、バックログの次の項目を前倒しでプルする相談ができそうです。`;
+    } else {
+      cls='ok'; pill='順調';
+      msg = `理想線とほぼ同じペースです（平均 <b>${avg.toFixed(1)}pt/日</b>、完了見込みは<b>約${projDays}日目</b>）。このまま毎日「完成」まで持っていくことを意識しましょう：90%できた項目はバーンダウンでは1ポイントも減りません。`;
+    }
+  }
+  out.className = 'demo-out ' + cls;
+  out.innerHTML = `<span class="pl">${pill}</span>${msg}<br><span style="font-size:.85em;color:var(--muted)">実績：${daysLog}（完成 ${done}pt ／ 残り ${rem}pt）</span>`;
+}
+
+/* ============== クイズ（in-memory） ============== */
+let quizState = {answered:0, correct:0};
+let quizOrder = [];
+function buildQuiz(){
+  quizState = {answered:0, correct:0};
+  quizOrder = QUIZ.map(q=>{
+    const idx = q.opts.map((_,k)=>k);
+    for(let i=idx.length-1;i>0;i--){ const j=Math.floor(Math.random()*(i+1)); const t=idx[i]; idx[i]=idx[j]; idx[j]=t; }
+    return idx;
+  });
+  const body = document.getElementById('quizBody');
+  if(!body) return;
+  body.innerHTML = QUIZ.map((q,i)=>`
+    <div class="quiz-q" id="qq${i}">
+      <p class="qtext">Q${i+1}. ${q.q}</p>
+      <div class="qopts">${quizOrder[i].map((oi,j)=>`<button onclick="answerQuiz(${i},${j},this)">${q.opts[oi]}</button>`).join('')}</div>
+      <p class="qwhy" hidden></p>
+    </div>`).join('');
+  updateQuizScore();
+}
+function answerQuiz(i, j, btn){
+  const q = QUIZ[i], box = document.getElementById('qq'+i);
+  if(box.classList.contains('answered')) return;
+  box.classList.add('answered');
+  box.querySelectorAll('.qopts button').forEach((b,k)=>{
+    b.disabled = true;
+    if(quizOrder[i][k]===q.a) b.classList.add('right');
+  });
+  const ok = (quizOrder[i][j]===q.a);
+  if(!ok) btn.classList.add('wrong');
+  quizState.answered++; if(ok) quizState.correct++;
+  const why = box.querySelector('.qwhy');
+  why.hidden = false;
+  why.innerHTML = (ok ? '<b>正解。</b> ' : `<b>不正解。</b>正解は <b>${q.opts[q.a]}</b>。 `) + q.why;
+  updateQuizScore();
+}
+function updateQuizScore(){
+  const el = document.getElementById('quizScore');
+  if(el) el.textContent = quizState.answered
+    ? `（${quizState.answered}問中 ${quizState.correct}問正解）` : `全${QUIZ.length}問。`;
+}
+
+/* ============== 言語切替（サイト共通・localStorage は site-lang のみ） ============== */
+function setLang(l){document.body.classList.remove('lang-ja','lang-en');document.body.classList.add('lang-'+l);document.documentElement.lang=l;
+ try{localStorage.setItem('site-lang',l)}catch(e){}
+ try{var q=new URLSearchParams(location.search);q.set('lang',l);history.replaceState(null,'',location.pathname+'?'+q+location.hash)}catch(e){}}
+function toggleLang(){setLang(document.body.classList.contains('lang-ja')?'en':'ja')}
+(function(){var u=null;try{u=new URLSearchParams(location.search).get('lang')}catch(e){}
+ var s=null;try{s=localStorage.getItem('site-lang')}catch(e){}
+ var l=(u==='en'||u==='ja')?u:((s==='en'||s==='ja')?s:'ja');if(l!=='ja')setLang(l);})();
+
+/* ページ内アンカー（本文中のリンク）でカードへ飛ぶとき、
+   絞り込みを解除して対象カードを開いてから移動する */
+document.addEventListener('click', function(e){
+  var a = e.target.closest('a[href^="#"]');
+  if(!a) return;
+  var id = a.getAttribute('href').slice(1);
+  var card = document.getElementById(id);
+  if(card && card.classList.contains('pcard')){
+    if(currentCat!=='all'){ filterCat('all', document.querySelector('.pill')); }
+    var si = document.getElementById('search');
+    if(si && si.value){ si.value=''; }
+    applyFilter();
+    card.classList.add('open');
+    var head = card.querySelector('.pcard-head');
+    if(head) head.setAttribute('aria-expanded','true');
+  }
+});
+
+window.addEventListener('DOMContentLoaded', function(){
+  build();
+  bdRender();
+  var si = document.getElementById('search');
+  if(si) si.addEventListener('input', applyFilter);
+  if('IntersectionObserver' in window){
+    var io = new IntersectionObserver(function(es){ es.forEach(function(e){ if(e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target); } }); },{threshold:0.12, rootMargin:"0px 0px -6% 0px"});
+    document.querySelectorAll('.reveal').forEach(function(el){ io.observe(el); });
+  } else { document.querySelectorAll('.reveal').forEach(function(el){ el.classList.add('in'); }); }
+});
+</script>
+<script>
+/* ==================== NAV SYSTEM v4 controllers (self-contained) ==================== */
+(function(){
+  function syncLangUI(l){
+    var ja = l==='ja';
+    var lists=document.querySelectorAll('.lswitch');
+    for(var i=0;i<lists.length;i++){
+      var a=lists[i].querySelector('.ls-ja'), e=lists[i].querySelector('.ls-en');
+      if(a) a.setAttribute('aria-pressed', ja?'true':'false');
+      if(e) e.setAttribute('aria-pressed', ja?'false':'true');
+    }
+  }
+  window.syncLangUI=syncLangUI;
+  if(typeof window.setLang==='function'){
+    var _setLang=window.setLang;
+    window.setLang=function(l){ _setLang(l); syncLangUI(l); };
+  }
+  syncLangUI(document.body.classList.contains('lang-en')?'en':'ja');
+
+  var groups=document.querySelectorAll('.navlinks .navgroup');
+  for(var g=0; g<groups.length; g++){ (function(grp){
+    var top=grp.querySelector('.navtop'), panel=grp.querySelector('.navpanel');
+    if(!panel||!top) return;
+    function set(x){ top.setAttribute('aria-expanded', x?'true':'false'); }
+    grp.addEventListener('mouseenter', function(){ grp.classList.remove('collapsed'); set(true); });
+    grp.addEventListener('mouseleave', function(){ set(false); });
+    grp.addEventListener('focusin', function(){ if(!grp.classList.contains('collapsed')) set(true); });
+    grp.addEventListener('focusout', function(e){ if(!grp.contains(e.relatedTarget)){ grp.classList.remove('collapsed'); set(false); } });
+    grp.addEventListener('keydown', function(e){ if(e.key==='Escape'){ grp.classList.add('collapsed'); set(false); top.focus(); } });
+  })(groups[g]); }
+
+  var tog=document.getElementById('navToggle'), ov=document.getElementById('mobnav');
+  if(tog && ov){
+    function openNav(){ document.body.classList.add('navopen'); tog.setAttribute('aria-expanded','true'); ov.setAttribute('aria-hidden','false');
+      var f=ov.querySelector('a,button'); if(f){ requestAnimationFrame(function(){ f.focus(); }); } }
+    function closeNav(){ document.body.classList.remove('navopen'); tog.setAttribute('aria-expanded','false'); ov.setAttribute('aria-hidden','true'); tog.focus(); }
+    tog.addEventListener('click', function(){ document.body.classList.contains('navopen')?closeNav():openNav(); });
+    ov.addEventListener('click', function(e){ if(e.target.closest('a')) closeNav(); });
+    document.addEventListener('keydown', function(e){ if(e.key==='Escape' && document.body.classList.contains('navopen')) closeNav(); });
+  }
+
+  /* F. TOC scroll-spy (IntersectionObserver, no scroll listeners) */
+  var bar=document.querySelector('.tocbar');
+  if(bar){
+    var pills=Array.prototype.slice.call(bar.querySelectorAll('.tocpill'));
+    var map={};
+    pills.forEach(function(p){ map[p.getAttribute('href').slice(1)]=p; });
+    if('IntersectionObserver' in window){
+      var spy=new IntersectionObserver(function(es){
+        es.forEach(function(e){
+          if(e.isIntersecting){
+            pills.forEach(function(p){ p.classList.remove('on'); });
+            var m=map[e.target.id]; if(m) m.classList.add('on');
+          }
+        });
+      },{rootMargin:'-45% 0px -50% 0px', threshold:0});
+      pills.forEach(function(p){ var s=document.getElementById(p.getAttribute('href').slice(1)); if(s) spy.observe(s); });
+    }
+  }
+
+  /* F. back to top */
+  var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var bt=document.querySelector('.totop'), sen=document.getElementById('toTopSentinel');
+  if(bt && sen && 'IntersectionObserver' in window){
+    new IntersectionObserver(function(es){
+      es.forEach(function(e){ if(e.isIntersecting) bt.classList.remove('show'); else bt.classList.add('show'); });
+    },{threshold:0}).observe(sen);
+  }
+  if(bt){ bt.addEventListener('click', function(){ window.scrollTo({top:0, behavior:reduce?'auto':'smooth'}); }); }
+})();
+</script>
+</body>
+</html>
