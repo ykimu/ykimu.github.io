@@ -4,13 +4,13 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>アーキテクチャパターン大全 - ソフトウェア工学 / Architecture Patterns</title>
-<meta name="description" content="44 software architecture patterns across six families, with diagrams, trade-offs, characteristic scores, and a radar-chart comparison. A learning companion for Yuta Kimura's software engineering course.">
+<meta name="description" content="38 software architecture patterns across six families, with diagrams, trade-offs, characteristic scores, and a radar-chart comparison. A learning companion for Yuta Kimura's software engineering course.">
 <link rel="canonical" href="https://ykimu.github.io/course/software-architecture.html">
 <link rel="icon" href="../favicon.svg" type="image/svg+xml">
 <meta property="og:site_name" content="Yuta Kimura / 木村祐太">
 <meta property="og:type" content="article">
 <meta property="og:title" content="アーキテクチャパターン大全 - ソフトウェア工学 / Architecture Patterns">
-<meta property="og:description" content="44 software architecture patterns across six families, with diagrams, trade-offs, characteristic scores, and a radar-chart comparison. Part of Yuta Kimura's course.">
+<meta property="og:description" content="38 software architecture patterns across six families, with diagrams, trade-offs, characteristic scores, and a radar-chart comparison. Part of Yuta Kimura's course.">
 <meta property="og:url" content="https://ykimu.github.io/course/software-architecture.html">
 <meta property="og:image" content="https://ykimu.github.io/assets/og.png">
 <meta name="twitter:card" content="summary_large_image">
@@ -425,6 +425,82 @@
   .mobgroup .mobsublabel{font:600 .6rem/1 var(--disp); letter-spacing:.12em; text-transform:uppercase;
     color:var(--faint); margin:15px 0 5px}
   .mobgroup .mobsublabel:first-of-type{margin-top:2px}
+
+  /* ==================== 5-PART TEACHING LAYOUT (intro / quiz / closing) ==================== */
+  /* ja-note (same style as other course materials) */
+  .ja-note{display:inline-flex; align-items:center; gap:8px; margin-top:22px; padding:7px 15px; border-radius:999px;
+    border:1px solid var(--hair); background:var(--accent-soft); font-size:.8rem; font-weight:500; color:var(--accent-2)}
+  .ja-note::before{content:""; width:6px; height:6px; border-radius:50%; background:var(--accent); flex:0 0 auto}
+
+  /* filter pill count badge */
+  .pill .pc{font:600 .72rem/1 var(--disp); color:var(--muted); font-variant-numeric:tabular-nums}
+  .pill[aria-pressed="true"] .pc{color:rgba(255,255,255,.7)}
+
+  /* prose (intro + closing) */
+  .prose{max-width:var(--readw)}
+  .prose p{margin:0 0 1em; color:var(--ink-2)}
+  .prose h4{font-family:var(--sans); font-size:1.12rem; font-weight:600; letter-spacing:0; color:var(--ink); margin:1.6em 0 .6em}
+  .prose ul{margin:0 0 1.2em; padding-left:0; list-style:none}
+  .prose ul li{position:relative; padding-left:22px; margin:12px 0; color:var(--ink-2)}
+  .prose ul li::before{content:""; position:absolute; left:0; top:13px; width:11px; height:1.5px; background:var(--accent)}
+  .prose ul li b{color:var(--ink); font-weight:600}
+  .prose b{color:var(--ink); font-weight:600}
+  .prose i{color:var(--ink-2)}
+  .prose code{font-family:var(--mono); font-size:.86em; background:var(--shell); border:1px solid var(--hair); border-radius:6px; padding:.08em .4em; color:var(--accent-2)}
+
+  .callout{border-radius:16px; padding:18px 22px; margin:18px 0; max-width:var(--readw);
+    background:var(--card); box-shadow:0 0 0 6px var(--shell),0 0 0 6.5px var(--hair),var(--soft)}
+  .callout h4{margin:0 0 6px; font-size:1rem; font-family:var(--sans); font-weight:600; letter-spacing:0; color:var(--ink)}
+  .callout.tip{background:var(--accent-soft)}
+  .callout.warn{background:rgba(138,109,59,.08)}
+  .callout a{font-weight:600}
+
+  .principles{display:grid; grid-template-columns:repeat(auto-fit,minmax(230px,1fr)); gap:14px; margin:18px 0; max-width:var(--readw)}
+  .principles .p{background:var(--card); border-radius:16px; padding:16px 18px;
+    box-shadow:0 0 0 6px var(--shell),0 0 0 6.5px var(--hair),var(--soft)}
+  .principles .p b{color:var(--accent-2)}
+  .principles .p span{font-size:.9rem; color:var(--muted)}
+
+  .cmp-table{border-collapse:separate; border-spacing:0; margin:16px 0; max-width:var(--readw); width:100%; font-size:.92rem;
+    border-radius:14px; overflow:hidden; box-shadow:0 0 0 6px var(--shell),0 0 0 6.5px var(--hair),var(--soft)}
+  .cmp-table th,.cmp-table td{border-bottom:1px solid var(--line); border-right:1px solid var(--line); padding:11px 14px; text-align:left; vertical-align:top; background:var(--card)}
+  .cmp-table tr:last-child th,.cmp-table tr:last-child td{border-bottom:none}
+  .cmp-table th{background:var(--bg-2); font-weight:600; color:var(--ink)}
+  .cmp-table td:last-child,.cmp-table th:last-child{border-right:none}
+  .cmp-table td b{color:var(--accent-2)}
+
+  /* intro diagram */
+  .diagram-wrap{margin:18px 0; max-width:var(--readw)}
+  .diagram-wrap h5{margin:0 0 8px; font-size:.92rem; font-family:var(--sans); font-weight:600; letter-spacing:0; color:var(--accent-2)}
+  .diagram-wrap svg{display:block; width:100%; height:auto; background:var(--shell);
+    border:1px solid var(--hair); border-radius:12px; padding:8px}
+  .dg-box{fill:var(--card); stroke:var(--line); stroke-width:1.2}
+  .dg-if{stroke:var(--accent)}
+  .dg-lbl{fill:var(--ink); font-size:12px; font-weight:600; text-anchor:middle; font-family:var(--sans)}
+  .dg-el{fill:var(--ink-2); font-size:10.5px; text-anchor:middle}
+  .dg-legend{font-size:.78rem; color:var(--muted); margin-top:8px}
+
+  /* quiz */
+  .quiz-q{border-radius:16px; padding:18px 20px; margin:16px 0; max-width:var(--readw); background:var(--card);
+    box-shadow:0 0 0 6px var(--shell),0 0 0 6.5px var(--hair),var(--soft)}
+  .qtext{margin:0 0 12px; font-weight:600; color:var(--ink)}
+  .qopts{display:flex; flex-wrap:wrap; gap:8px}
+  .qopts button{background:#fff; border:1px solid var(--hair); color:var(--ink); border-radius:999px;
+    padding:9px 16px; font:500 .88rem/1 var(--sans); cursor:pointer; transition:border-color .3s var(--ease), transform .3s var(--ease)}
+  .qopts button:hover:not(:disabled){border-color:var(--ink); transform:translateY(-1px)}
+  .qopts button:disabled{cursor:default}
+  .qopts button.right{background:var(--accent-soft); color:var(--accent-2); border-color:var(--accent); font-weight:600}
+  .qopts button.wrong{background:rgba(180,84,74,.1); color:var(--rose); border-color:var(--rose)}
+  .qwhy{font-size:.9rem; color:var(--ink-2); margin:12px 0 0; padding-top:12px; border-top:1px solid var(--line)}
+  .qwhy b{color:var(--ink); font-weight:600}
+  .quiz-reset{margin-top:16px}
+  #quizScore{color:var(--muted); font-size:.92rem; font-weight:500}
+
+  /* teaching prose fills content width on this JP-only page */
+  .prose,.callout,.principles,.cmp-table,.diagram-wrap{max-width:none !important}
+  @media(prefers-reduced-motion:reduce){
+    .qopts button:hover{transform:none !important}
+  }
 </style>
 <script type="application/ld+json">
 {"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[
@@ -598,16 +674,16 @@
   <div class="wrap">
     <p class="kick">Architecture Patterns</p>
     <h1>アーキテクチャパターン大全</h1>
-    <p class="lead">ソフトウェアアーキテクチャの代表的な44パターンを、6つの系統（構造系・分散系・データ管理系・UI系・統合系・信頼性系）に整理した学習リファレンスです。各パターンの概要・構成図・長所と短所・特性スコア・代表的な実装例をカードから確認でき、気になるパターンを選んでレーダーチャートで比較できます。</p>
-    <p class="note"><span lang="ja">この教材は日本語のみで提供しています</span><span lang="en">This learning material is available in Japanese only.</span></p>
+    <p class="lead">ソフトウェアアーキテクチャの確立された38パターンを、6つの系統（構造系・分散系・統合系・データ管理系・UI系・信頼性/横断系）に整理した学習リファレンスです。各パターンの概要・構成図・長所と短所・特性スコア・代表的な実装例をカードから確認できます。まず「アーキテクチャパターンとは何か」を押さえ、カタログで個々を学び、レーダーチャートで特性を見比べ、理解度クイズで確認する流れで学べます。</p>
+    <p class="ja-note"><span lang="ja">この教材は日本語のみで提供しています</span><span lang="en">This learning material is available in Japanese only.</span></p>
     <div class="stats">
-      <div class="stat"><div class="n num">44</div><div class="l">パターン</div></div>
+      <div class="stat"><div class="n num">38</div><div class="l">パターン</div></div>
       <div class="stat"><div class="n num">6</div><div class="l">系統カテゴリ</div></div>
       <div class="stat"><div class="n num">5</div><div class="l">特性スコア軸</div></div>
     </div>
     <div class="hero-cta">
       <a class="btn ink" href="#patterns" style="padding:12px 22px">パターン一覧へ</a>
-      <a class="tlink" href="index.html#learning">科目の学習コンテンツ<span class="ar" aria-hidden="true">&rsaquo;</span></a>
+      <a class="tlink" href="#quiz">理解度クイズへ<span class="ar" aria-hidden="true">&rsaquo;</span></a>
     </div>
   </div>
 </div>
@@ -616,17 +692,29 @@
 
 <div class="tocbar">
   <nav class="tocbar-inner" aria-label="ページ内目次">
+    <a class="tocpill" href="#intro"><span lang="ja">はじめに</span><span lang="en">Intro</span></a>
     <a class="tocpill" href="#patterns"><span lang="ja">パターン一覧</span><span lang="en">Catalogue</span></a>
-    <a class="tocpill" href="#compare"><span lang="ja">比較・傾向分析</span><span lang="en">Compare</span></a>
+    <a class="tocpill" href="#compare"><span lang="ja">手を動かす</span><span lang="en">Hands-on</span></a>
+    <a class="tocpill" href="#quiz"><span lang="ja">理解度クイズ</span><span lang="en">Quiz</span></a>
+    <a class="tocpill" href="#closing"><span lang="ja">おわりに</span><span lang="en">Closing</span></a>
   </nav>
 </div>
+
+<!-- INTRO -->
+<section id="intro" style="padding-top:20px">
+  <div class="wrap reveal">
+    <p class="eyebrow"><span lang="ja">はじめに</span><span lang="en">Introduction</span></p>
+    <h2 class="big"><span lang="ja">アーキテクチャパターンとは何か</span><span lang="en">What is an architecture pattern?</span></h2>
+    <div class="prose" id="introProse" style="margin-top:22px"></div>
+  </div>
+</section>
 
 <!-- PATTERNS -->
 <section id="patterns" style="padding-top:0">
   <div class="wrap">
     <p class="eyebrow reveal"><span lang="ja">パターン一覧</span><span lang="en">Pattern catalogue</span></p>
-    <h2 class="big reveal">系統でしぼり込み、カードから詳細を開く</h2>
-    <p class="lead reveal" style="max-width:var(--readw); margin-top:18px">系統を選ぶか、キーワードで検索してパターンを絞り込めます。カードをクリックすると、構成図・特性スコア・長所と短所・実装例を含む詳細が開きます。★を押すと下部の比較トレイに追加され、複数パターンをレーダーチャートで比較できます。</p>
+    <h2 class="big reveal">38のパターンを、系統でしぼり込む</h2>
+    <p class="lead reveal" style="max-width:var(--readw); margin-top:18px">6つの系統から選ぶか、キーワードで検索してパターンを絞り込めます。カードをクリックすると、構成図・特性スコア・長所と短所・実装例を含む詳細が開きます。★を押すと下部の比較トレイに追加され、複数パターンをレーダーチャートで比較できます。</p>
     <div class="reveal" style="margin-top:32px">
       <div class="toolbar">
         <div class="pills" id="filterbar" role="group" aria-label="カテゴリで絞り込み"></div>
@@ -646,8 +734,8 @@
   <div class="wrap">
     <div class="cmp-head">
       <div class="reveal">
-        <p class="eyebrow"><span lang="ja">比較・傾向分析</span><span lang="en">Compare and analyse</span></p>
-        <h2 class="big">選んだパターンをレーダーチャートで比較</h2>
+        <p class="eyebrow"><span lang="ja">手を動かす</span><span lang="en">Hands-on</span></p>
+        <h2 class="big">手を動かす：パターンを選んでレーダーで比較する</h2>
       </div>
       <button class="btn sm reveal" id="cmp-clear" onclick="clearCompare()" style="display:none">比較をクリア</button>
     </div>
@@ -666,6 +754,28 @@
         </div>
       </div>
     </div>
+  </div>
+</section>
+
+<!-- QUIZ -->
+<section id="quiz" style="padding-top:80px">
+  <div class="wrap">
+    <p class="eyebrow reveal"><span lang="ja">理解度チェック</span><span lang="en">Check your understanding</span></p>
+    <h2 class="big reveal"><span lang="ja">理解度チェッククイズ</span><span lang="en">Comprehension quiz</span></h2>
+    <p class="lead reveal" style="max-width:var(--readw); margin-top:18px">それぞれの状況に<strong>もっとも適したアーキテクチャパターン・用語</strong>を選んでください。確立されたパターンの目的・長所短所・使いどころを問います。<span id="quizScore"></span></p>
+    <div id="quizBody" class="reveal"></div>
+    <button class="btn ink quiz-reset" onclick="buildQuiz()" style="padding:11px 22px">
+      <span lang="ja">もう一度挑戦する</span><span lang="en">Try again</span>
+    </button>
+  </div>
+</section>
+
+<!-- CLOSING -->
+<section id="closing" class="soft-sec">
+  <div class="wrap reveal">
+    <p class="eyebrow"><span lang="ja">おわりに</span><span lang="en">In closing</span></p>
+    <h2 class="big"><span lang="ja">アーキテクチャに向き合う心構えと、さらに学ぶために</span><span lang="en">How to think about architecture, and where to learn more</span></h2>
+    <div class="prose" id="closingProse" style="margin-top:22px"></div>
   </div>
 </section>
 
@@ -1021,23 +1131,13 @@ const PATTERNS = [
     examples:["JPA / Hibernate Session","EF Core DbContext","SQLAlchemy Session"],
     scores:[3,4,2,4,3] },
 
-  { cat:"data", name:"データレイク / データウェアハウス分離", short:"生データとBI用データを分けて管理",
-    desc:"生データをそのまま保持するデータレイクと、分析用に変換・集約したデータウェアハウスを分離するアーキテクチャ。ETL/ELTパイプラインで接続する。",
-    detail:"ETLとELTの大きな違いは変換タイミング。ETLは投入前に変換（スキーマ固定）、ELTはレイク投入後に変換（スキーマオンリード）。Amazon S3+Redshift・Azure Data Lake+Synapse・Databricks Delta Lakeが代表スタック。Delta Lake/Apache Icebergによりレイクにトランザクションを加えた「データレイクハウス」が最新形態。",
-    pros:["柔軟な分析基盤","原データ保持で再処理可能","スケーラブル"],
-    cons:["ETLパイプラインの管理","データ品質の維持","コスト高"],
-    uses:["ビッグデータ分析","機械学習基盤","BI/DWH","経営ダッシュボード"],
-    related:["ポリグロット永続化 (Polyglot Persistence)","パイプ＆フィルター (Pipe & Filter)","イベントソーシング (Event Sourcing)"],
-    examples:["Databricks Delta Lake","AWS S3 + Redshift","Apache Iceberg"],
-    scores:[5,3,2,4,4] },
-
   { cat:"data", name:"ポリグロット永続化 (Polyglot Persistence)", short:"ユースケースごとに最適なDBを選択",
     desc:"RDBMS・DocumentDB・GraphDB・キャッシュ・検索エンジン等を用途別に使い分けるアーキテクチャ。マイクロサービスとの親和性が高い。",
     detail:"Amazon.com は商品カタログにDynamoDB、カート・セッションにElastiCache、レコメンドにNeptune、全文検索にOpenSearchを使い分ける典型例。各DBの最適ユースケースを把握した上で選定し、サービス境界内でのDB選択自由を保つマイクロサービスとの相性が特に高い。運用チームのスキルセット分散と整合性管理の複雑化が最大のコスト。",
     pros:["ユースケース最適なDB選択","各DBの強みを活用","スケール戦略を個別に"],
     cons:["運用ツールの多様化","整合性管理が複雑","スキルセットの分散"],
     uses:["大規模マイクロサービス","SNSシステム","ECシステム","レコメンド・検索機能"],
-    related:["マイクロサービス (Microservices)","データレイク / データウェアハウス分離","イベント駆動アーキテクチャ (EDA)"],
+    related:["マイクロサービス (Microservices)","アクティブレコード (Active Record)","イベント駆動アーキテクチャ (EDA)"],
     examples:["PostgreSQL + Redis + Elasticsearch","MongoDB Atlas","DynamoDB + Neptune"],
     scores:[5,3,2,4,4] },
 
@@ -1123,7 +1223,7 @@ const PATTERNS = [
     examples:["Adapter Pattern実装","Anti-Corruption Layer in DDD","OpenAPI変換ミドルウェア"],
     scores:[3,4,3,3,3] },
 
-  { cat:"integration", name:"サーキットブレーカー (Circuit Breaker)", short:"障害連鎖を防ぐ自動遮断機構",
+  { cat:"reliability", name:"サーキットブレーカー (Circuit Breaker)", short:"障害連鎖を防ぐ自動遮断機構",
     desc:"依存サービスへの呼び出し失敗が閾値を超えると「開放」状態になり、しばらく呼び出しを遮断。システム全体の連鎖障害（カスケード障害）を防ぐ。",
     detail:"Michael Nygard が「Release It!」（2007年）で提唱し、Netflixの Hystrix ライブラリで広く普及。Closed（通常）→Open（遮断中）→Half-Open（試験的呼び出し）の3状態マシンで動作し、Half-Openで成功ならClosedへ復帰。Resilience4j（Java）・Polly（.NET）が現代的実装。タイムアウト・バルクヘッドとの組み合わせが定石。",
     pros:["カスケード障害防止","障害サービスの回復時間を確保","フォールバック処理が可能"],
@@ -1133,17 +1233,17 @@ const PATTERNS = [
     examples:["Resilience4j","Polly (.NET)","Istio Circuit Breaker"],
     scores:[3,3,3,3,5] },
 
-  { cat:"integration", name:"バルクヘッドパターン (Bulkhead)", short:"リソースをプール分離して障害を隔壁",
+  { cat:"reliability", name:"バルクヘッドパターン (Bulkhead)", short:"リソースをプール分離して障害を隔壁",
     desc:"スレッドプールや接続プールをサービス・機能ごとに隔離し、一部の過負荷が全体に波及しないようにする。船の防水区画（バルクヘッド）に由来する名称。",
     detail:"Michael Nygard が「Release It!」で提唱した障害隔離パターン。スレッドプールを分離することで重いレガシーAPIへの呼び出しが増加しても重要なAPIのスレッドが枯渇しない。マルチテナントSaaSで重要顧客の処理品質を保護する使い方も有効。Circuit BreakerとBulkheadは障害対策の二本柱としてセットで検討する。",
     pros:["障害の局所化","重要機能のリソース保護","システム全体の安定性向上"],
     cons:["リソース分割によるオーバーヘッド","プール設計の難しさ","設定調整が必要"],
     uses:["重要度の異なるAPI群","マルチテナント","クリティカルパス保護","SaaSのテナント分離"],
-    related:["サーキットブレーカー (Circuit Breaker)","リトライ＆タイムアウト (Retry & Timeout)","冗長化・フォールオーバー (HA)"],
+    related:["サーキットブレーカー (Circuit Breaker)","リトライ＆タイムアウト (Retry & Timeout)","ゼロトラストアーキテクチャ"],
     examples:["Resilience4j Bulkhead","Polly Bulkhead","Thread Pool Isolation"],
     scores:[3,3,3,3,5] },
 
-  { cat:"integration", name:"リトライ＆タイムアウト (Retry & Timeout)", short:"一時障害を自動リトライで乗り越える",
+  { cat:"reliability", name:"リトライ＆タイムアウト (Retry & Timeout)", short:"一時障害を自動リトライで乗り越える",
     desc:"ネットワーク一時エラー等に対し指数バックオフ付きリトライを適用する。タイムアウト設定と組み合わせてリソースを守る。サーキットブレーカーと組み合わせが定石。",
     detail:"Exponential Backoff（指数バックオフ）＋ Jitter（ランダムな揺らぎ）がリトライストーム防止のベストプラクティス。AWS SDK・gRPCクライアントは自動リトライをデフォルトで内蔵。べき等でない操作（送金・注文作成）では重複実行を防ぐ冪等キー（Idempotency Key）設計が必須。Circuit Breakerと組み合わせ、サービス復帰後にリトライが殺到しないよう制御する。",
     pros:["一時障害への自動回復","実装がシンプル","可用性向上"],
@@ -1173,70 +1273,20 @@ const PATTERNS = [
     examples:["Debezium (CDC)","Eventuate Tram","MassTransit Outbox"],
     scores:[3,3,3,3,4] },
 
-  // ── セキュリティ・信頼性系 ──
-  { cat:"security", name:"ゼロトラストアーキテクチャ", short:"「信頼しない、検証し続ける」の原則",
+  // ── 信頼性・横断系（サーキットブレーカー等は統合系ブロックに記載） ──
+  { cat:"reliability", name:"ゼロトラストアーキテクチャ", short:"「信頼しない、検証し続ける」の原則",
     desc:"ネットワーク境界を信頼せず、全リクエストをアイデンティティ・コンテキストで継続検証する。VPNに依存しないクラウド時代のセキュリティ基盤。",
     detail:"John Kindervag（Forrester）が2010年に提唱。NIST SP 800-207 がゼロトラストアーキテクチャの公式ガイドライン。Googleの「BeyondCorp」がゼロトラストを世界初で大規模実装した事例として有名で、VPNなしでリモートワークを実現した。IAM・デバイス管理・マイクロセグメンテーション・継続的モニタリングが4本柱。",
     pros:["内部脅威への対応","境界依存からの脱却","クラウドネイティブ環境に適合"],
     cons:["導入・運用コスト高","レイテンシ増加の可能性","全端末管理が必要"],
     uses:["リモートワーク環境","クラウド基盤","金融・医療","社内システムへの安全アクセス"],
-    related:["最小権限の原則 (PoLP)","多層防御 (Defense in Depth)","サービスメッシュ (Service Mesh)"],
+    related:["サーキットブレーカー (Circuit Breaker)","バルクヘッドパターン (Bulkhead)","サービスメッシュ (Service Mesh)"],
     examples:["Google BeyondCorp","Okta / Azure AD","Cloudflare Zero Trust"],
-    scores:[4,4,2,3,5] },
-
-  { cat:"security", name:"最小権限の原則 (PoLP)", short:"必要最小限の権限のみを付与する設計",
-    desc:"コンポーネント・ユーザー・プロセスに必要最小限のアクセス権のみを付与する。IAM設計・マイクロサービス間認証・DBアクセス制御の根本原則。",
-    detail:"「最小権限の原則」はIAMポリシー設計の根幹。AWS IAMではCondition句で時間・IPアドレス・MFAの有無まで制約を細分化できる。マイクロサービスでは各サービスに個別のサービスアカウントを付与し、KubernetesのRBACで権限をコンテナ単位まで絞る。定期的な権限レビューと未使用権限の自動失効が運用ベストプラクティス。",
-    pros:["侵害時の被害最小化","意図しない操作の防止","コンプライアンス対応"],
-    cons:["権限設計の複雑さ","過不足なく設計するのが難しい","定期的な権限レビューが必要"],
-    uses:["IAM設計","マイクロサービス認証","DB権限管理","クラウド権限管理"],
-    related:["ゼロトラストアーキテクチャ","信頼境界パターン (Trust Boundary)","多層防御 (Defense in Depth)"],
-    examples:["AWS IAM","Kubernetes RBAC","HashiCorp Vault"],
-    scores:[3,4,3,3,4] },
-
-  { cat:"security", name:"多層防御 (Defense in Depth)", short:"複数セキュリティ層で縦深防御を構築",
-    desc:"ファイアウォール・WAF・認証・暗号化・モニタリング等を多層に配置し、一層が突破されても次の層で防ぐ。単一障害点を排除するセキュリティ設計の基本。",
-    detail:"「深層防御」とも称し、ペリメータ防御（WAF）→認証・認可→暗号化→データマスキング→監査ログ→異常検知の多層で構成する。単一対策の失敗をカバーするだけでなく、攻撃者のコスト・時間を引き上げる抑止効果も重要な意義。OSIモデル各層に対応するセキュリティ対策を整理するフレームワークとして活用できる。",
-    pros:["単一対策の失敗をカバー","攻撃者のコストを高める","コンプライアンス対応"],
-    cons:["コスト・運用負荷増大","層の管理が複雑","過剰設計のリスク"],
-    uses:["エンタープライズセキュリティ","クラウドインフラ","金融・医療","公共・重要インフラ"],
-    related:["ゼロトラストアーキテクチャ","最小権限の原則 (PoLP)","信頼境界パターン (Trust Boundary)"],
-    examples:["WAF + IDS/IPS","AWS Security Hub","Azure Defender"],
-    scores:[3,4,2,3,5] },
-
-  { cat:"security", name:"信頼境界パターン (Trust Boundary)", short:"信頼レベルで境界を明示的に設計",
-    desc:"システムをいくつかの「信頼ゾーン」に分け、ゾーン間で明示的な検証・認証・暗号化を行う。DFD（データフロー図）での脅威分析の基本概念。",
-    detail:"STRIDE脅威モデリング（Spoofing/Tampering/Repudiation/Info Disclosure/DoS/Elevation of Privilege）でデータフロー図（DFD）上の信頼境界を発見し、各境界で必要な対策を列挙する。Microsoftが社内全製品のセキュリティ設計プロセスとして採用・推進しているSD3（Secure by Design, Default, Deployment）の中核概念。",
-    pros:["脅威モデリングが体系的に","セキュリティ設計の可視化","境界を意識した設計"],
-    cons:["信頼ゾーンの定義が難しい","境界が曖昧になりやすい","常に最新化が必要"],
-    uses:["セキュリティ設計","STRIDE脅威分析","規制対応システム","個人情報・決済を扱うシステム"],
-    related:["ゼロトラストアーキテクチャ","多層防御 (Defense in Depth)","最小権限の原則 (PoLP)"],
-    examples:["Microsoft Threat Modeling Tool","OWASP Threat Dragon","STRIDE分析"],
-    scores:[3,4,3,3,4] },
-
-  { cat:"security", name:"冗長化・フォールオーバー (HA)", short:"冗長構成で高可用性を担保する設計",
-    desc:"アクティブ-スタンバイ、アクティブ-アクティブ等の冗長構成でSPOF（単一障害点）を排除。ロードバランサー・DBレプリケーション・マルチAZ配置が典型実装。",
-    detail:"RTO（Recovery Time Objective：復旧時間目標）とRPO（Recovery Point Objective：データ損失許容時間）を定め、SLAを逆算して冗長構成を設計する。Active-Activeは常時フル性能かつ即時フェイルオーバー、Active-Standbyは低コストだが切り替えにタイムラグ。マルチAZ配置・グローバルトラフィックルーティング（Route53/CloudFront）が現代のHAスタック。",
-    pros:["高可用性・SLA達成","計画停止の影響最小化","地理的冗長も可能"],
-    cons:["コスト倍増","フォールオーバー時の整合性","構成管理の複雑さ"],
-    uses:["ミッションクリティカルシステム","金融・医療","クラウド基盤","決済・予約システム"],
-    related:["混沌工学 (Chaos Engineering)","バルクヘッドパターン (Bulkhead)","スペースベースアーキテクチャ (Space-Based)"],
-    examples:["AWS Multi-AZ RDS","Route53 Failover","Patroni (PostgreSQL HA)"],
-    scores:[4,3,2,4,5] },
-
-  { cat:"security", name:"混沌工学 (Chaos Engineering)", short:"意図的に障害を起こして耐性を高める",
-    desc:"本番環境に意図的に障害・遅延・リソース不足を注入し、システムの耐性を事前に確認するアプローチ。NetflixのChaos Monkeyが起源。",
-    detail:"Netflix のChaos Monkey（2011年公開。2010年のAWS全面移行が背景）が発端。GameDay（計画的な障害演習）→自動化ツール（Chaos Monkey/LitmusChaos/Toxiproxy）→本番への継続注入の段階で成熟度を高める。「定常状態の仮説を立て→実験→観測→分析」のサイクルが科学的アプローチの核心。SREチームが主導しエンジニア全員が障害に慣れる組織文化醸成がツール以上に重要。",
-    pros:["隠れた弱点の発見","運用チームの障害対応訓練","耐性設計の継続的改善"],
-    cons:["本番への影響リスク","組織的合意形成が必要","監視・ガードレール整備が前提"],
-    uses:["大規模分散システム","SRE実践","マイクロサービス環境","大規模クラウドサービス"],
-    related:["冗長化・フォールオーバー (HA)","サーキットブレーカー (Circuit Breaker)","バルクヘッドパターン (Bulkhead)"],
-    examples:["Chaos Monkey (Netflix)","LitmusChaos","Gremlin"],
-    scores:[4,4,3,4,5] }
+    scores:[4,4,2,3,5] }
 ];
 
 const VB_W = 480, VB_H = 240;
-const DIAG_ACCENT = { structural:"#0E6F5C", distributed:"#0E6F5C", data:"#0E6F5C", ui:"#0E6F5C", integration:"#0E6F5C", security:"#0E6F5C" };
+const DIAG_ACCENT = { structural:"#0E6F5C", distributed:"#0E6F5C", data:"#0E6F5C", ui:"#0E6F5C", integration:"#0E6F5C", reliability:"#0E6F5C" };
 const DIAG_TYPE_LABEL = {
   stack:"層構造", concentric:"同心円", hexagon:"ポート&アダプタ", hub:"ハブ&スポーク",
   pipeline:"パイプライン", bus:"バス型", columns:"列分割", triad:"三者構成", flow:"データフロー",
@@ -1387,7 +1437,7 @@ function dCols(s,ac){
     it.forEach((v,j)=>{ const iy=top+10+j*(ih+10); out+=_box(x+10,iy,cw-20,ih,v,{fs:10.5,tc:"#101312",fill:_tint(ac,0.10),stroke:"#B7C0BB"}); });
     if(s.arrowsBetween&&i<n-1){ const ax=x+cw,ay=top+colH/2; if(s.reverse) out+=_arrow(ax+gap,ay,ax,ay,{accent:true}); else out+=_arrow(ax,ay,ax+gap,ay,{accent:true}); }
   });
-  if(s.boundary){ const bx=m+cw+gap/2; out+=_line(bx,top-2,bx,top+colH+2,{color:ac,dash:"6 4",sw:1.6}); out+=_t(bx,top+colH+12,s.boundaryLabel||"信頼境界 (検証/認証)",{fs:9.5,color:ac}); }
+  if(s.boundary){ const bx=m+cw+gap/2; out+=_line(bx,top-2,bx,top+colH+2,{color:ac,dash:"6 4",sw:1.6}); out+=_t(bx,top+colH+12,s.boundaryLabel||"ゾーン境界 (検証/認証)",{fs:9.5,color:ac}); }
   if(s.bottom){ const by=top+colH+14; out+=_box(m,by,VB_W-2*m,bottomH,s.bottom,{fs:11,tc:"#101312",fill:_tint(ac,0.13),stroke:ac}); cols.forEach((c,i)=>{ const x=m+i*(cw+gap)+cw/2; out+=_line(x,top+colH,x,by,{}); }); }
   return out;
 }
@@ -1539,8 +1589,6 @@ const DIAGRAMS = {
     cols:[{title:"ドメイン",items:["ドメイン\nオブジェクト"]},{title:"マッパー",items:["Data\nMapper"]},{title:"DB",items:["データベース"]}] },
   "ユニットオブワーク (Unit of Work)": { type:"pipeline", tail:"データベース",
     stages:["変更を追跡\n(new/dirty/removed)","コミット","最小化したSQL"], note:"変更をまとめて反映" },
-  "データレイク / データウェアハウス分離": { type:"pipeline", tail:"BI / ML",
-    stages:["データソース","データレイク\n(生データ)","ETL / ELT","DWH"] },
   "ポリグロット永続化 (Polyglot Persistence)": { type:"hub", center:"アプリ /\nサービス群", dbStyle:true,
     nodes:["RDBMS","Redis\n(キャッシュ)","検索\n(ES)","GraphDB"], note:"用途別に最適なDB" },
 
@@ -1576,19 +1624,9 @@ const DIAGRAMS = {
   "アウトボックスパターン (Outbox)": { type:"pipeline", tail:"メッセージ\nブローカー",
     stages:["サービス","DB\n業務+Outbox\n(同一Tx)","リレー / CDC"], note:"At-least-once配信" },
 
-  // ── セキュリティ・信頼性系 ──
+  // ── 信頼性・横断系 ──
   "ゼロトラストアーキテクチャ": { type:"flow", edgeLabels:["検証","許可"],
-    nodes:["ユーザ /\nデバイス","ポリシー実施点\n(継続検証)","リソース"], note:"暗黙の信頼ゼロ・常に検証" },
-  "最小権限の原則 (PoLP)": { type:"tiers", note:"デフォルト拒否",
-    rows:[["サブジェクト\n(ユーザ/サービス)"],["許可された操作\n(最小限のみ)"],["リソース"]] },
-  "多層防御 (Defense in Depth)": { type:"concentric", note:"多層で防御",
-    rings:["境界防御 (WAF/FW)","認証・認可","暗号化","監査 / 監視","データ"] },
-  "信頼境界パターン (Trust Boundary)": { type:"columns", boundary:true,
-    cols:[{title:"低信頼ゾーン",items:["外部 / DMZ"]},{title:"高信頼ゾーン",items:["内部システム","データベース"]}] },
-  "冗長化・フォールオーバー (HA)": { type:"tiers", siblingLink:1, siblingLabel:"レプリケーション", note:"SPOF排除",
-    rows:[["ロードバランサー"],["ノード Active","ノード Standby"]] },
-  "混沌工学 (Chaos Engineering)": { type:"grid", rows:2, cols:3, fault:[2],
-    cell:"サービス", monitor:"観測 → 弱点発見", note:"意図的に障害注入" }
+    nodes:["ユーザ /\nデバイス","ポリシー実施点\n(継続検証)","リソース"], note:"暗黙の信頼ゼロ・常に検証" }
 };
 
 function buildDiagram(name,cat){
@@ -1600,10 +1638,10 @@ function buildDiagram(name,cat){
 /* ===== UI CONFIG ===== */
 const CATEGORIES = {
   all:{label:"すべて"}, structural:{label:"構造系"}, distributed:{label:"分散・通信系"},
-  data:{label:"データ管理系"}, ui:{label:"UI・フロント系"}, integration:{label:"統合・連携系"}, security:{label:"信頼性・保安系"}
+  integration:{label:"統合・連携系"}, data:{label:"データ管理系"}, ui:{label:"UI・フロント系"}, reliability:{label:"信頼性・横断系"}
 };
 const SCORE_LABELS = ["スケーラビリティ","テスト容易性","初期単純さ","パフォーマンス","障害耐久性"];
-const CAT_COLORS = { structural:"#0E6F5C", distributed:"#3F8F7A", data:"#6B5B95", ui:"#A85A6B", integration:"#B78A3C", security:"#B4544A" };
+const CAT_COLORS = { structural:"#0E6F5C", distributed:"#3F8F7A", integration:"#B78A3C", data:"#6B5B95", ui:"#A85A6B", reliability:"#B4544A" };
 const CHART_COLORS = [
   { border:"#0E6F5C", bg:"rgba(14,111,92,0.14)" },
   { border:"#3C6E9C", bg:"rgba(60,110,156,0.14)" },
@@ -1643,7 +1681,8 @@ function renderFilters(){
   fb.innerHTML = Object.entries(CATEGORIES).map(([k,v])=>{
     const on = k===currentCategory;
     const dot = k==="all" ? "" : `<span class="dot" style="background:${CAT_COLORS[k]}"></span>`;
-    return `<button class="pill" role="button" aria-pressed="${on}" onclick="setCategory('${k}')">${dot}${v.label}</button>`;
+    const cnt = k==="all" ? PATTERNS.length : PATTERNS.filter(p=>p.cat===k).length;
+    return `<button class="pill" role="button" aria-pressed="${on}" onclick="setCategory('${k}')">${dot}${v.label}<span class="pc">${cnt}</span></button>`;
   }).join("");
 }
 function setCategory(k){ currentCategory=k; renderFilters(); renderGrid(); }
@@ -1844,12 +1883,222 @@ if('IntersectionObserver' in window){
   document.querySelectorAll('.reveal').forEach(function(el){ io.observe(el); });
 } else { document.querySelectorAll('.reveal').forEach(function(el){ el.classList.add('in'); }); }
 
+/* ===== INTRO / CLOSING CONTENT (field-standard knowledge) ===== */
+const INTRO_HTML = `
+<p><b>ソフトウェアアーキテクチャ</b>とは、システムを構成する主要な要素（コンポーネント・モジュール・サービス）と、
+それらの関係、そして「後から変えにくい重要な設計判断」の集合です。
+<b>アーキテクチャパターン</b>は、こうした構造レベルの設計で<strong>繰り返し現れる問題</strong>に対する、
+実績のある<strong>解の型</strong>に名前を与えたものです。</p>
+
+<p>ひとつのパターンは、単なる「良い構造」ではなく、<strong>ある文脈（コンテキスト）</strong>における
+<strong>問題</strong>と、その<strong>解決構造</strong>、そして採用によって生じる<strong>結果（長所とトレードオフ）</strong>までを
+セットで記述します。デザインパターン（クラス・オブジェクト単位の設計）よりも粒度が大きく、
+システム全体の骨格に関わる点が特徴です。</p>
+
+<div class="diagram-wrap">
+<svg viewBox="0 0 720 150" role="img" aria-label="アーキテクチャパターンの構成要素">
+  <defs><marker id="iah" markerWidth="9" markerHeight="9" refX="8" refY="4.5" orient="auto"><path d="M0,0 L9,4.5 L0,9 z" fill="#87918C"/></marker></defs>
+  <rect x="8" y="46" width="150" height="58" rx="12" class="dg-box"/>
+  <text x="83" y="72" class="dg-lbl">コンテキスト</text>
+  <text x="83" y="90" class="dg-el">どんな状況か</text>
+  <rect x="196" y="46" width="150" height="58" rx="12" class="dg-box"/>
+  <text x="271" y="72" class="dg-lbl">問題</text>
+  <text x="271" y="90" class="dg-el">繰り返し現れる課題</text>
+  <rect x="384" y="46" width="150" height="58" rx="12" class="dg-box dg-if"/>
+  <text x="459" y="72" class="dg-lbl">解決（構造）</text>
+  <text x="459" y="90" class="dg-el">要素と関係の型</text>
+  <rect x="562" y="46" width="150" height="58" rx="12" class="dg-box"/>
+  <text x="637" y="72" class="dg-lbl">結果</text>
+  <text x="637" y="90" class="dg-el">長所とトレードオフ</text>
+  <line x1="160" y1="75" x2="192" y2="75" stroke="#B7C0BB" stroke-width="1.6" marker-end="url(#iah)"/>
+  <line x1="348" y1="75" x2="380" y2="75" stroke="#B7C0BB" stroke-width="1.6" marker-end="url(#iah)"/>
+  <line x1="536" y1="75" x2="558" y2="75" stroke="#B7C0BB" stroke-width="1.6" marker-end="url(#iah)"/>
+</svg>
+<div class="dg-legend">パターンは「ある文脈での繰り返し問題」に対する「実績ある構造の解」を、結果（トレードオフ）まで含めて名前付きで記述したもの。</div>
+</div>
+
+<h4>なぜパターンで学ぶのか</h4>
+<div class="principles">
+  <div class="p"><b>共通言語になる</b><br>
+    <span>「ここはヘキサゴナルで」「サーキットブレーカーを入れよう」の一言で、構造と意図がチームに伝わる。設計の会話が速くなる。</span></div>
+  <div class="p"><b>経験が凝縮されている</b><br>
+    <span>各パターンには先人が踏んだ落とし穴と対処が織り込まれている。ゼロから考えるより、既知の解から出発できる。</span></div>
+  <div class="p"><b>トレードオフを比較できる</b><br>
+    <span>候補を並べ、スケーラビリティや単純さといった観点で長所短所を対比すると、文脈に合う選択が見えてくる。</span></div>
+</div>
+
+<h4>トレードオフの見方：万能薬は無い</h4>
+<p>アーキテクチャに「常に正しい正解」はありません。ある品質（例：スケーラビリティ）を上げれば、
+別の品質（例：初期の単純さ）が下がる、というのが普通です。マイクロサービスは独立スケールを得る代わりに
+分散システムの複雑さを抱え込み、モノリスは運用が単純な代わりに全体を一括でしかスケールできません。
+<strong>重要なのは「どの品質を優先するか」を文脈から決め、その代償を自覚して選ぶこと</strong>です。</p>
+
+<div class="callout tip">
+  <h4>このカタログの読み方</h4>
+  各カードでは次の情報を確認できます。
+  <ul style="margin:.6em 0 0">
+    <li><b>構成図</b>: 要素と関係を図式化した「型」のイメージ。</li>
+    <li><b>特性スコア（5段階）</b>: <code>スケーラビリティ / テスト容易性 / 初期単純さ / パフォーマンス / 障害耐久性</code> の5軸での相対的な傾向。絶対値ではなく<strong>比較の目安</strong>として読む。</li>
+    <li><b>長所と短所</b>: 採用で得られるものと、引き受ける代償。</li>
+    <li><b>用途・実装例・関連パターン</b>: 使いどころと、実際に使われる技術、近い発想のパターン。</li>
+  </ul>
+  下の「手を動かす」節では、気になるパターンを2つ以上選んで、5軸の特性をレーダーチャートで重ね合わせて比較できます。
+</div>
+`;
+
+const CLOSING_HTML = `
+<p>最後に、個々のパターンの知識を「使える設計判断」に変えるための心構えをまとめます。</p>
+
+<div class="callout warn">
+  <h4>パターンは銀の弾丸ではない</h4>
+  同じパターンでも、文脈が違えば「最適解」にも「過剰設計」にもなります。
+  マイクロサービスやCQRS、イベントソーシングは強力ですが、小さなアプリに持ち込めば、
+  得られる利点より運用と認知の負荷が上回ります。<strong>「有名だから」「新しいから」ではなく、
+  いま抱えている問題がそのパターンの解く問題と一致しているか</strong>で選びます。
+</div>
+<div class="callout tip">
+  <h4>小さく始め、必要になってから分割する</h4>
+  多くの現場では、まず<strong>モジュラーモノリス</strong>のように境界を意識した単純な構造で始め、
+  スケールやチーム分割の必要が<strong>実際に生じてから</strong>マイクロサービスへ切り出すほうが健全です。
+  ストラングラーフィグパターンのように、段階的に置き換える道具立ても揃っています。
+</div>
+<div class="callout">
+  <h4>トレードオフを言葉にする</h4>
+  「この構造を選ぶと何を得て、何を諦めるのか」を明示できることが、パターンを学ぶ本当の価値です。
+  パターン名は設計判断を記録・共有するための語彙として使い、決定の理由（Architecture Decision Record など）を残しましょう。
+</div>
+
+<h4 style="margin-top:26px">混同しやすいパターン・見分け方</h4>
+<p>似たパターンは、<strong>「何を分離するのか」「誰が制御するのか」</strong>で見分けると整理できます。</p>
+<table class="cmp-table">
+  <tr><th>似ているパターン</th><th>見分けるポイント</th></tr>
+  <tr><td><b>レイヤード</b> と <b>クリーン / ヘキサゴナル</b></td>
+    <td>いずれも関心を分離するが、後者は<b>依存の向きを内側（ドメイン）へ固定</b>し、フレームワークやDBを外側の交換可能な部品として扱う。</td></tr>
+  <tr><td><b>マイクロサービス</b> と <b>モジュラーモノリス</b></td>
+    <td>境界を持つ点は同じ。前者は<b>独立デプロイ・独立スケール</b>を得る代わりに分散の複雑さを負い、後者は<b>単一デプロイ</b>の単純さを保つ。</td></tr>
+  <tr><td><b>オーケストレーション</b> と <b>コレオグラフィ</b></td>
+    <td>中央の指揮者がフローを制御するのがオーケストレーション、中央制御なしに各サービスがイベントで自律協調するのがコレオグラフィ。</td></tr>
+  <tr><td><b>CQRS</b> と <b>イベントソーシング</b></td>
+    <td>CQRSは<b>読取と書込のモデルを分離</b>する。イベントソーシングは<b>状態ではなくイベント列を永続化</b>する。よく併用されるが別物。</td></tr>
+  <tr><td><b>サーキットブレーカー</b> / <b>バルクヘッド</b> / <b>リトライ</b></td>
+    <td>いずれも障害対策。遮断で連鎖障害を止めるのがブレーカー、リソースを隔壁分離するのがバルクヘッド、一時障害を再試行で越えるのがリトライ。</td></tr>
+  <tr><td><b>APIゲートウェイ</b> と <b>BFF</b></td>
+    <td>単一入口・横断的関心（認証/レート制限）を担うのがゲートウェイ。<b>クライアント種別ごと</b>に最適化した専用バックエンドを置くのがBFF。</td></tr>
+  <tr><td><b>アンチコラプションレイヤー</b> と <b>ストラングラーフィグ</b></td>
+    <td>ACLは外部/レガシーのモデルの<b>汚染を防ぐ変換層</b>。ストラングラーフィグは<b>段階的な置き換え</b>の移行戦略。移行中に併用されることが多い。</td></tr>
+</table>
+
+<h4 style="margin-top:26px">さらに学ぶために（参考文献）</h4>
+<p>本教材は分野で広く知られた設計知識に基づく概説です。より深く学ぶには、次の定番書・公的文書が役立ちます（書名は正式表記）。</p>
+<ul>
+  <li><b>Frank Buschmann ほか</b> 『Pattern-Oriented Software Architecture, Volume 1: A System of Patterns』(POSA) - パターン記述の古典。レイヤーやパイプ＆フィルター等の原典。</li>
+  <li><b>Martin Fowler</b> 『Patterns of Enterprise Application Architecture』 - レイヤード・リポジトリ・データマッパー・アクティブレコード等の出典。</li>
+  <li><b>Chris Richardson</b> 『Microservices Patterns』 - マイクロサービス・Saga・API Gateway・アウトボックス等を体系化。</li>
+  <li><b>Mark Richards &amp; Neal Ford</b> 『Fundamentals of Software Architecture』 - アーキテクチャ特性とトレードオフ思考の入門。</li>
+  <li><b>Michael T. Nygard</b> 『Release It!: Design and Deploy Production-Ready Software』 - サーキットブレーカー・バルクヘッド等の安定性パターンの出典。</li>
+  <li><b>Eric Evans</b> 『Domain-Driven Design: Tackling Complexity in the Heart of Software』 - アンチコラプションレイヤー・境界づけられたコンテキストの出典。</li>
+  <li><b>NIST</b> 『Special Publication 800-207: Zero Trust Architecture』 - ゼロトラストの公的ガイドライン。</li>
+</ul>
+`;
+
+/* ===== QUIZ (in-memory only; established pattern properties) ===== */
+const QUIZ = [
+{ q:'レイヤードアーキテクチャの基本原則は？',
+  opts:['各層は原則として隣接する下位層のみに依存する','すべての層が互いを自由に呼び出す','UIが直接データベースを操作する','依存方向を定めない'], a:0,
+  why:'責務を層に分け、依存を上から下への一方向に保つのが基本。だから理解しやすく差し替えやすい反面、変更が上下に波及しやすい。'},
+{ q:'クリーンアーキテクチャ／ヘキサゴナルで、依存の向きはどう保つ？',
+  opts:['常に内側（ドメイン）へ向ける','常に外側（フレームワーク）へ向ける','層ごとに自由に決める','双方向にして密結合にする'], a:0,
+  why:'依存性逆転により、フレームワークやDBを外側の交換可能な部品として扱い、ドメインを技術非依存に保つ。'},
+{ q:'ヘキサゴナル（ポート＆アダプター）の主な狙いは？',
+  opts:['コアを外部技術から隔離し、アダプタ差し替えでテスト可能にする','データベースを高速化する','UIを自動生成する','通信を暗号化する'], a:0,
+  why:'ポートでコアを定義し、DBや外部APIをアダプタで接続する。テスト時はアダプタをインメモリ実装に差し替えられる。'},
+{ q:'マイクロサービスを採用すると、代償として主に増えるものは？',
+  opts:['分散システムの複雑さと、運用・可観測性の難しさ','ドメインロジックの単純さ','単一DBの強い一貫性','デプロイ頻度の低下'], a:0,
+  why:'独立デプロイ・独立スケールと引き換えに、サービス間通信・分散トレーシング・障害の連鎖などの複雑さを引き受ける。'},
+{ q:'モジュラーモノリスの特徴は？',
+  opts:['単一プロセスでデプロイしつつ、内部を明確なモジュール境界で分割する','各モジュールを必ず個別にデプロイする','必ずDBを全モジュールで共有する','UIだけを分割する'], a:0,
+  why:'モノリスの運用の単純さを保ちながら、公開API経由でのみ連携する内部境界を持つ。マイクロサービス移行の健全な前段にもなる。'},
+{ q:'CQRSが分離するのは何と何？',
+  opts:['コマンド（書き込み）とクエリ（読み取り）のモデル','フロントエンドとバックエンド','開発環境と本番環境','同期処理と非同期処理だけ'], a:0,
+  why:'読み取りと書き込みでモデルを分けることで、それぞれを独立に最適化できる。読み負荷の高い系で有効。'},
+{ q:'イベントソーシングが永続化するものは？',
+  opts:['状態変更を表すイベントの列（追記ログ）','現在状態のスナップショットのみ','UIの操作ログのみ','何も永続化しない'], a:0,
+  why:'現在状態ではなくイベント列を保存し、リプレイで任意時点の状態を復元できる。CQRSと併用されることが多い。'},
+{ q:'Sagaパターンは、分散トランザクションの整合性をどう保つ？',
+  opts:['各ステップが失敗したら補償トランザクションで巻き戻す','グローバルロックで全体を止める','2フェーズコミットを必ず強制する','一貫性をあきらめる'], a:0,
+  why:'サービスをまたぐ長いトランザクションを、ローカルトランザクションと補償処理の連なりとして実現する。'},
+{ q:'サーキットブレーカーの目的は？',
+  opts:['失敗が閾値を超えたら呼び出しを遮断し、カスケード障害を防ぐ','通信を暗号化する','負荷を均等分散する','結果をキャッシュする'], a:0,
+  why:'Closed→Open→Half-Openの状態遷移で、障害中のサービスへの呼び出しを止め、回復の時間を与える。'},
+{ q:'バルクヘッドパターンがすることは？',
+  opts:['リソースプールを分離し、一部の過負荷が全体へ波及しないようにする','リトライ回数を制御する','DBのレプリカを増やす','複数APIを集約する'], a:0,
+  why:'船の防水区画に由来。スレッドプール等を機能ごとに隔離し、重要機能のリソースを守る。'},
+{ q:'リトライ＆タイムアウトで特に注意すべき点は？',
+  opts:['冪等でない操作は重複実行の危険があり、指数バックオフとジッタでリトライストームを防ぐ','何度でも即座にリトライしてよい','タイムアウトは設定しない','常に安全なので注意は不要'], a:0,
+  why:'再試行は一時障害に強い一方、送金など冪等でない操作では冪等キーが必要。復帰直後の再試行集中も避ける。'},
+{ q:'バックエンド・フォー・フロントエンド（BFF）の狙いは？',
+  opts:['クライアント種別（モバイル/Web等）ごとに最適化した専用バックエンドを用意する','データベースを分割する','全クライアントでUIを共通化する','サービスを1つに統合する'], a:0,
+  why:'クライアントごとの事情に合わせて集約や整形を担うことで、汎用APIの無理な共通化を避ける。'},
+{ q:'ストラングラーフィグパターンは、レガシー刷新をどう進める？',
+  opts:['プロキシで振り分けながら、機能単位で段階的に新システムへ置き換える','一括で全面的に作り直す','レガシーを凍結して放置する','データベースだけを移行する'], a:0,
+  why:'新旧を同時稼働させ、少しずつ新側へ寄せていく。リスクを抑えつつロールバックもしやすい。'},
+{ q:'ゼロトラストアーキテクチャの基本原則は？',
+  opts:['ネットワーク境界を信頼せず、全リクエストを継続的に検証する','社内ネットワークは全面的に信頼する','VPNの内側なら検証は不要','一度認証すれば以後は無検証でよい'], a:0,
+  why:'「決して信頼せず、常に検証する」。アイデンティティとコンテキストに基づき最小限の権限で継続検証する。NIST SP 800-207が公的指針。'},
+{ q:'アンチコラプションレイヤー（ACL）の役割は？',
+  opts:['外部やレガシーのモデルが自ドメインを汚染しないよう変換する層','認証を代行する層','結果をキャッシュする層','ログを収集する層'], a:0,
+  why:'DDDの統合パターン。外部の概念モデルを自ドメインの言葉へ翻訳し、境界を守る。ストラングラーフィグと併用されやすい。'}
+];
+let quizState = {answered:0, correct:0};
+let quizOrder = [];
+function buildQuiz(){
+  quizState = {answered:0, correct:0};
+  quizOrder = QUIZ.map(q=>{
+    const idx = q.opts.map((_,k)=>k);
+    for(let i=idx.length-1;i>0;i--){ const j=Math.floor(Math.random()*(i+1)); const t=idx[i]; idx[i]=idx[j]; idx[j]=t; }
+    return idx;
+  });
+  const body = document.getElementById('quizBody');
+  if(!body) return;
+  body.innerHTML = QUIZ.map((q,i)=>`
+    <div class="quiz-q" id="qq${i}">
+      <p class="qtext">Q${i+1}. ${q.q}</p>
+      <div class="qopts">${quizOrder[i].map((oi,j)=>`<button onclick="answerQuiz(${i},${j},this)">${esc(q.opts[oi])}</button>`).join('')}</div>
+      <p class="qwhy" hidden></p>
+    </div>`).join('');
+  updateQuizScore();
+}
+function answerQuiz(i, j, btn){
+  const q = QUIZ[i], box = document.getElementById('qq'+i);
+  if(box.classList.contains('answered')) return;
+  box.classList.add('answered');
+  box.querySelectorAll('.qopts button').forEach((b,k)=>{
+    b.disabled = true;
+    if(quizOrder[i][k]===q.a) b.classList.add('right');
+  });
+  const ok = (quizOrder[i][j]===q.a);
+  if(!ok) btn.classList.add('wrong');
+  quizState.answered++; if(ok) quizState.correct++;
+  const why = box.querySelector('.qwhy');
+  why.hidden = false;
+  why.innerHTML = (ok ? '<b>正解。</b> ' : `<b>不正解。</b>正解は <b>${esc(q.opts[q.a])}</b>。 `) + q.why;
+  updateQuizScore();
+}
+function updateQuizScore(){
+  const el = document.getElementById('quizScore');
+  if(el) el.textContent = quizState.answered
+    ? `（${quizState.answered}問中 ${quizState.correct}問正解）` : `全${QUIZ.length}問。`;
+}
+
 /* ===== INIT ===== */
 window.addEventListener("load", function(){
   renderFilters();
   renderGrid();
   updateCompareBar();
   renderCompare();
+  var ip=document.getElementById('introProse'); if(ip) ip.innerHTML = INTRO_HTML;
+  var cp=document.getElementById('closingProse'); if(cp) cp.innerHTML = CLOSING_HTML;
+  buildQuiz();
 });
 </script>
 <script>
