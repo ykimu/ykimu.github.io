@@ -1,0 +1,2387 @@
+<!DOCTYPE html>
+<html lang="ja" class="no-js">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ディペンダブルシステム学習ガイド - 信頼性・セーフティ・セキュリティ・レジリエンス / Dependable Systems</title>
+<meta name="description" content="A study guide to dependable systems: the five dimensions of dependability (availability, reliability, safety, security, resilience), reliability metrics (POFOD, ROCOF, MTTF, availability), fault tolerance, hazard analysis and safety cases, secure design, and resilience. With interactive calculators, a fault-error-failure visualizer, and a comprehension quiz. Part of Yuta Kimura's software engineering course materials.">
+<link rel="canonical" href="https://ykimu.github.io/course/dependable-systems.html">
+<link rel="icon" href="../favicon.svg" type="image/svg+xml">
+<meta property="og:site_name" content="Yuta Kimura / 木村祐太">
+<meta property="og:type" content="article">
+<meta property="og:title" content="ディペンダブルシステム学習ガイド - 信頼性・セーフティ・セキュリティ・レジリエンス / Dependable Systems">
+<meta property="og:description" content="A study guide to dependable systems: dependability dimensions, reliability engineering, safety engineering, security engineering, and resilience, with interactive calculators, a fault-error-failure visualizer, and a comprehension quiz.">
+<meta property="og:url" content="https://ykimu.github.io/course/dependable-systems.html">
+<meta property="og:image" content="https://ykimu.github.io/assets/og.png">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="color-scheme" content="light">
+<script>document.documentElement.className="js";</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&family=Noto+Sans+JP:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#FBFCFB; --bg-2:#F3F6F4; --bg-3:#EBEFED; --card:#FFFFFF;
+    --ink:#101312; --ink-2:#3C4340; --muted:#6B746F; --faint:#B7C0BB;
+    --line:#E7ECE9; --hair:rgba(16,19,18,.08); --shell:rgba(16,19,18,.035);
+    --accent:#0E6F5C; --accent-2:#0A5748; --accent-soft:rgba(14,111,92,.08);
+    --soft:0 1px 2px rgba(16,19,18,.04), 0 24px 60px -28px rgba(16,19,18,.16);
+    --inhi:inset 0 1px 0 rgba(255,255,255,.85);
+    --ease:cubic-bezier(.32,.72,0,1);
+    --sans:"Plus Jakarta Sans","Noto Sans JP",-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+    --disp:"Space Grotesk","Plus Jakarta Sans","Noto Sans JP",sans-serif;
+    --mono:ui-monospace,SFMono-Regular,Menlo,Consolas,"Liberation Mono",monospace;
+    --maxw:1440px; --readw:clamp(680px, 62vw, 1060px);
+    /* category accents (five dependability dimensions, kept within the brand green + neutral family) */
+    --overview:#0E6F5C; --reliability:#0A5748; --safety:#8A6D3B; --security:#3E5C50; --resilience:#5B655F;
+    /* compatibility aliases used by reused content/diagram/quiz markup */
+    --panel:var(--card); --panel2:var(--bg-2); --chip:var(--bg-3);
+    --code-bg:var(--shell); --code-ink:#2F3A33;
+    --good:#0E6F5C; --bad:#B04A3E; --warn:#8A6D3B; --accent2:var(--accent-2);
+    --kw:#0A5748; --ty:#3C4340; --st:#7A5C34; --cm:#87918C;
+  }
+  html{color-scheme:light}
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth; -webkit-text-size-adjust:100%}
+  body{margin:0; background:var(--bg); color:var(--ink); font-family:var(--sans);
+    font-size:17px; line-height:1.75; font-weight:400; -webkit-font-smoothing:antialiased; text-rendering:optimizeLegibility}
+  body.lang-ja [lang=en]{display:none}
+  body.lang-en [lang=ja]{display:none}
+  ::selection{background:rgba(14,111,92,.16)}
+  h1,h2,h3{margin:0; color:var(--ink); font-weight:500; line-height:1.16; letter-spacing:-.02em; font-family:var(--disp); text-wrap:balance}
+  body.lang-ja h1,body.lang-ja h2,body.lang-ja h3{letter-spacing:0; font-family:var(--sans)}
+  p,.lead,.cite,.muted-s{text-wrap:pretty}
+  [lang="en"]{line-break:auto}
+  [lang="ja"]{line-break:strict; word-break:normal}
+  h1 [lang="ja"],h2 [lang="ja"],h3 [lang="ja"]{word-break:auto-phrase}
+  p{margin:0 0 1em}
+  a{color:var(--accent-2); text-decoration:none; transition:color .3s var(--ease)}
+  a:hover{color:var(--accent)}
+  a:focus-visible,button:focus-visible,.btn:focus-visible,[tabindex]:focus-visible{outline:2px solid var(--accent); outline-offset:3px; border-radius:8px}
+  .wrap{max-width:var(--maxw); margin:0 auto; padding:0 40px}
+  [id]{scroll-margin-top:96px}
+  section{padding:100px 0}
+
+  .skip{position:fixed; top:10px; left:10px; padding:10px 16px; background:var(--ink); color:#fff; border-radius:999px; transform:translateY(-200%); transition:none; z-index:100}
+  .skip:focus{transform:none}
+
+  /* film grain overlay */
+  body::after{content:""; position:fixed; inset:0; z-index:1; pointer-events:none; opacity:.02;
+    background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='g'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23g)'/%3E%3C/svg%3E")}
+
+  h2.big{font-size:clamp(1.9rem,3.2vw,2.7rem); font-weight:500; letter-spacing:-.025em; max-width:26ch}
+  body.lang-ja h2.big{letter-spacing:-.01em; max-width:none}
+  .eyebrow,.kick{display:inline-flex; align-items:center; gap:8px; width:max-content; max-width:100%;
+    padding:5px 13px 5px 11px; border-radius:999px; border:1px solid var(--hair); background:#fff;
+    font:600 .66rem/1 var(--disp); letter-spacing:.14em; text-transform:uppercase; color:var(--ink-2); margin:0 0 18px}
+  .eyebrow::before,.kick::before{content:""; flex:0 0 auto; width:6px; height:6px; border-radius:50%; background:var(--accent)}
+  .lead{font-size:1.12rem; color:var(--ink-2); line-height:1.78; font-weight:400}
+
+  /* motion */
+  .js .reveal{opacity:0; transform:translateY(18px); filter:blur(6px); transition:opacity .9s var(--ease), transform .9s var(--ease), filter .9s var(--ease)}
+  .js .reveal.in{opacity:1; transform:none; filter:none}
+  @media (prefers-reduced-motion:reduce){
+    .js .reveal{opacity:1!important; transform:none!important; filter:none!important}
+    .btn:active,.btn.ink:hover .ic,.pcard:hover,.pill:hover{transform:none!important}
+    html{scroll-behavior:auto}
+  }
+
+  /* floating island nav */
+  header.bar{position:sticky; top:18px; z-index:60; background:transparent; border-bottom:none}
+  .bar .wrap{display:flex; align-items:center; justify-content:space-between;
+    width:max-content; max-width:calc(100% - 32px); margin:0 auto; height:auto;
+    padding:9px 12px 9px 20px; gap:20px; border-radius:999px;
+    background:rgba(255,255,255,.72); -webkit-backdrop-filter:saturate(1.4) blur(18px); backdrop-filter:saturate(1.4) blur(18px);
+    border:1px solid var(--hair); box-shadow:var(--soft)}
+  .brand{font-weight:600; font-size:.92rem; letter-spacing:-.01em; color:var(--ink); display:inline-flex; align-items:center; gap:8px}
+  .brand span.sep{color:var(--muted); font-weight:400; margin:0 2px}
+  .navlinks{display:flex; gap:22px; align-items:center}
+  .navlinks a{font-size:.86rem; font-weight:500; color:var(--ink-2); transition:color .3s var(--ease)}
+  .navlinks a:hover{color:var(--ink)}
+  @media(max-width:860px){.navlinks{display:none}}
+  .bar-right{display:flex; align-items:center; gap:8px}
+
+  /* buttons */
+  .btn{display:inline-flex; align-items:center; gap:10px; font:500 .85rem/1 var(--sans); padding:10px 18px;
+    border-radius:999px; border:1px solid var(--hair); background:#fff; color:var(--ink); cursor:pointer;
+    transition:transform .4s var(--ease), box-shadow .4s var(--ease), border-color .3s var(--ease), background .3s var(--ease), color .3s var(--ease)}
+  .btn:hover{border-color:var(--ink); transform:translateY(-1px); color:var(--ink)}
+  .btn:active{transform:scale(.98)}
+  .btn.ink{background:var(--ink); border-color:var(--ink); color:#fff; padding:10px 10px 10px 22px;
+    box-shadow:0 12px 26px -14px rgba(16,19,18,.5)}
+  .btn.ink:not(:has(.ic)){padding:10px 22px}
+  .btn.ink:hover{box-shadow:0 16px 32px -14px rgba(16,19,18,.55); color:#fff}
+  .btn .ic{width:32px; height:32px; border-radius:999px; background:rgba(255,255,255,.18); display:grid; place-items:center;
+    transition:transform .45s var(--ease); flex:0 0 auto}
+  .btn.ink:hover .ic{transform:translate(3px,-1px)}
+  .tlink{display:inline-flex; align-items:center; gap:8px; font-weight:500; font-size:.95rem; color:var(--ink)}
+  .tlink .ar{transition:transform .4s var(--ease)}
+  .tlink:hover .ar{transform:translateX(4px)}
+
+  /* hero */
+  .hero{position:relative; overflow:hidden}
+  .hero > .wrap{position:relative; z-index:1}
+  .hero::before{content:""; position:absolute; z-index:0; width:640px; height:640px; right:-150px; top:-240px;
+    border-radius:50%; pointer-events:none; opacity:.55;
+    background:radial-gradient(circle, var(--accent-soft), transparent 62%); filter:blur(20px)}
+  .hero .wrap{padding-top:72px; padding-bottom:70px}
+  .hero h1{font-size:clamp(2.6rem,5vw,4.2rem); font-weight:500; letter-spacing:-.03em; line-height:1.08; color:var(--ink); max-width:none}
+  body.lang-ja .hero h1{font-size:clamp(2rem,4.2vw,3.1rem); font-weight:500; letter-spacing:0; line-height:1.24}
+  .hero h1 em{font-style:normal; color:var(--accent)}
+  .hero .lead{max-width:var(--readw); margin-top:24px}
+  .ja-note{display:inline-flex; align-items:center; gap:8px; margin-top:22px; padding:7px 15px; border-radius:999px;
+    border:1px solid var(--hair); background:var(--accent-soft); font-size:.8rem; font-weight:500; color:var(--accent-2)}
+  .ja-note::before{content:""; width:6px; height:6px; border-radius:50%; background:var(--accent); flex:0 0 auto}
+  .hero-cta{display:flex; gap:20px; align-items:center; flex-wrap:wrap; margin-top:28px}
+
+  .soft-sec{background:var(--bg-2); border-top:1px solid var(--line); border-bottom:1px solid var(--line)}
+
+  /* prose */
+  .prose{max-width:var(--readw)}
+  .prose p{margin:0 0 1em; color:var(--ink-2)}
+  .prose h4{font-family:var(--sans); font-size:1.12rem; font-weight:600; letter-spacing:0; color:var(--ink); margin:1.6em 0 .6em}
+  .prose ul{margin:0 0 1.2em; padding-left:0; list-style:none}
+  .prose ul li{position:relative; padding-left:22px; margin:12px 0; color:var(--ink-2)}
+  .prose ul li::before{content:""; position:absolute; left:0; top:13px; width:11px; height:1.5px; background:var(--accent)}
+  .prose ul li b{color:var(--ink); font-weight:600}
+  .prose b{color:var(--ink); font-weight:600}
+  .prose i{color:var(--ink-2)}
+  .prose code{font-family:var(--mono); font-size:.86em; background:var(--shell); border:1px solid var(--hair); border-radius:6px; padding:.08em .4em; color:var(--accent-2)}
+
+  .callout{border-radius:16px; padding:18px 22px; margin:18px 0; max-width:var(--readw);
+    background:var(--card); box-shadow:0 0 0 6px var(--shell),0 0 0 6.5px var(--hair),var(--soft)}
+  .callout h4{margin:0 0 6px; font-size:1rem; font-family:var(--sans); font-weight:600; letter-spacing:0; color:var(--ink)}
+  .callout.tip{background:var(--accent-soft)}
+  .callout.warn{background:rgba(138,109,59,.08)}
+  .callout a{font-weight:600}
+
+  .principles{display:grid; grid-template-columns:repeat(auto-fit,minmax(230px,1fr)); gap:14px; margin:18px 0; max-width:var(--readw)}
+  .principles .p{background:var(--card); border-radius:16px; padding:16px 18px;
+    box-shadow:0 0 0 6px var(--shell),0 0 0 6.5px var(--hair),var(--soft)}
+  .principles .p b{color:var(--accent-2)}
+  .principles .p span{font-size:.9rem; color:var(--muted)}
+
+  .cmp-table{border-collapse:separate; border-spacing:0; margin:16px 0; max-width:var(--readw); width:100%; font-size:.92rem;
+    border-radius:14px; overflow:hidden; box-shadow:0 0 0 6px var(--shell),0 0 0 6.5px var(--hair),var(--soft)}
+  .cmp-table th,.cmp-table td{border-bottom:1px solid var(--line); border-right:1px solid var(--line); padding:11px 14px; text-align:left; vertical-align:top; background:var(--card)}
+  .cmp-table tr:last-child th,.cmp-table tr:last-child td{border-bottom:none}
+  .cmp-table th{background:var(--bg-2); font-weight:600; color:var(--ink)}
+  .cmp-table td:last-child,.cmp-table th:last-child{border-right:none}
+  .cmp-table td b{color:var(--accent-2)}
+
+  /* controls: category pills + search */
+  .controls{display:flex; align-items:center; justify-content:space-between; gap:20px; flex-wrap:wrap; margin:0 0 12px}
+  .pills{display:flex; gap:8px; flex-wrap:wrap}
+  .pill{display:inline-flex; align-items:center; gap:8px; font:500 .9rem/1 var(--sans); padding:9px 16px;
+    border-radius:999px; border:1px solid var(--hair); background:#fff; color:var(--ink-2); cursor:pointer;
+    transition:transform .4s var(--ease), border-color .3s var(--ease), background .3s var(--ease), color .3s var(--ease)}
+  .pill:hover{border-color:var(--ink); transform:translateY(-1px)}
+  .pill span{font:600 .72rem/1 var(--disp); color:var(--muted)}
+  .pill.active{background:var(--ink); border-color:var(--ink); color:#fff}
+  .pill.active span{color:rgba(255,255,255,.7)}
+  .ctrl-right{display:flex; align-items:center; gap:14px}
+  .search{width:min(280px,60vw); padding:10px 16px; border-radius:999px; border:1px solid var(--hair);
+    background:#fff; color:var(--ink); font:400 .9rem/1 var(--sans); outline:none; transition:border-color .3s var(--ease)}
+  .search:focus{border-color:var(--accent)}
+  .learn-note{font:600 .78rem/1 var(--disp); color:var(--muted); white-space:nowrap}
+
+  /* category groups */
+  .cat-group{margin-top:34px}
+  .cat-group.hidden{display:none}
+  .cat-head{display:flex; align-items:center; gap:12px; margin:0 0 4px}
+  .cat-head .cat-dot{width:10px; height:10px; border-radius:50%; background:var(--cc); flex:0 0 auto}
+  .cat-head h3{font-family:var(--sans); font-size:1.4rem; font-weight:600; letter-spacing:0; color:var(--ink)}
+  .cat-badge{font:600 .66rem/1 var(--disp); letter-spacing:.08em; text-transform:uppercase; color:var(--muted);
+    border:1px solid var(--hair); background:#fff; padding:5px 11px; border-radius:999px}
+  .cat-desc{max-width:var(--readw); color:var(--muted); font-size:.96rem; margin:0 0 12px}
+
+  /* concept card (double-bezel) */
+  .pcard{border-radius:21px; background:var(--card); margin:16px 0; scroll-margin-top:96px;
+    box-shadow:0 0 0 7px var(--shell),0 0 0 7.5px var(--hair),var(--soft);
+    transition:box-shadow .4s var(--ease)}
+  .pcard.hidden{display:none}
+  .pcard-head{display:flex; align-items:center; gap:14px; width:100%; text-align:left;
+    background:transparent; border:none; cursor:pointer; padding:22px 26px 8px; font-family:var(--sans)}
+  .pnum{font:600 .95rem/1 var(--disp); font-variant-numeric:tabular-nums; flex:0 0 auto; min-width:24px}
+  .ptitle{font-family:var(--disp); font-weight:500; font-size:1.18rem; color:var(--ink); letter-spacing:-.01em; flex:0 0 auto}
+  .ptitle small{display:block; font-family:var(--sans); font-size:.8rem; color:var(--muted); font-weight:400; margin-top:2px}
+  .pbadges{display:flex; gap:8px; align-items:center}
+  .ptags{display:flex; gap:6px; flex-wrap:wrap; margin-left:auto; justify-content:flex-end}
+  .pchev{flex:0 0 auto; font-size:1.5rem; color:var(--muted); transition:transform .4s var(--ease); margin-left:6px; line-height:1}
+  .pcard.open .pchev{transform:rotate(90deg); color:var(--accent-2)}
+  .summary{margin:0; padding:0 26px 22px; color:var(--ink-2); font-size:1rem}
+  .summary strong{color:var(--ink); font-weight:600}
+  .pdetail{display:none; padding:0 26px 26px}
+  .pcard.open .pdetail{display:block}
+  .pcard.done-card{box-shadow:0 0 0 7px var(--accent-soft),0 0 0 7.5px rgba(14,111,92,.24),var(--soft)}
+
+  .badge-imp{font:700 .68rem/1 var(--disp); letter-spacing:.06em; padding:4px 10px; border-radius:999px; white-space:nowrap}
+  .imp3{background:var(--accent); color:#fff}
+  .imp2{background:var(--accent-soft); color:var(--accent-2)}
+  .imp1{background:var(--bg-3); color:var(--muted)}
+  .tag{font:500 .72rem/1 var(--sans); padding:5px 10px; border-radius:999px; background:var(--bg-2); color:var(--muted); border:1px solid var(--hair)}
+
+  .analogy{display:flex; gap:10px; align-items:flex-start; background:var(--accent-soft);
+    border-radius:14px; padding:14px 18px; margin:16px 0; font-size:.94rem; color:var(--ink-2)}
+  .analogy b{color:var(--accent-2); font-weight:600}
+
+  .grid2{display:grid; grid-template-columns:1fr 1fr; gap:16px; margin:18px 0}
+  .box{border-radius:16px; padding:16px 18px; background:var(--card);
+    box-shadow:0 0 0 6px var(--shell),0 0 0 6.5px var(--hair),var(--soft)}
+  .box h5{margin:0 0 10px; font-size:.92rem; font-family:var(--sans); font-weight:600; letter-spacing:0; display:flex; align-items:center; gap:7px}
+  .box.pros h5{color:var(--accent-2)}
+  .box.cons h5{color:var(--bad)}
+  .box ul{margin:0; padding-left:18px}
+  .box li{margin:6px 0; font-size:.9rem; color:var(--ink-2)}
+
+  .meta-row{display:grid; grid-template-columns:1fr 1fr; gap:16px; margin:16px 0}
+  .meta h5{margin:0 0 8px; font-size:.92rem; font-family:var(--sans); font-weight:600; letter-spacing:0; color:var(--accent-2)}
+  .meta p,.meta li{font-size:.92rem; color:var(--ink-2)}
+  .meta ul{margin:0; padding-left:18px}
+  .meta p{margin:0}
+  .meta code,.box code,.analogy code,.steps code{font-family:var(--mono); font-size:.86em; background:var(--shell); border:1px solid var(--hair); border-radius:5px; padding:.05em .35em; color:var(--accent-2)}
+
+  /* numbered procedure steps */
+  .steps{border-radius:16px; padding:16px 18px; margin:16px 0; background:var(--card);
+    box-shadow:0 0 0 6px var(--shell),0 0 0 6.5px var(--hair),var(--soft)}
+  .steps h5{margin:0 0 10px; font-size:.92rem; font-family:var(--sans); font-weight:600; letter-spacing:0; color:var(--accent-2)}
+  .steps ol{margin:0; padding:0; list-style:none; counter-reset:st}
+  .steps ol li{counter-increment:st; position:relative; padding-left:36px; margin:9px 0; font-size:.92rem; color:var(--ink-2)}
+  .steps ol li::before{content:counter(st); position:absolute; left:0; top:3px; width:23px; height:23px; border-radius:50%;
+    background:var(--accent-soft); color:var(--accent-2); font:600 .74rem/23px var(--disp); text-align:center}
+  .steps ol li b{color:var(--ink); font-weight:600}
+
+  /* diagrams */
+  .diagram-wrap{margin:18px 0; max-width:var(--readw)}
+  .diagram-wrap h5{margin:0 0 8px; font-size:.92rem; font-family:var(--sans); font-weight:600; letter-spacing:0; color:var(--accent-2)}
+  .diagram-wrap svg{display:block; width:100%; height:auto; background:var(--shell);
+    border:1px solid var(--hair); border-radius:12px; padding:8px}
+  .dg-box{fill:var(--card); stroke:var(--line); stroke-width:1.2}
+  .dg-if{stroke:var(--accent)}
+  .dg-lbl{fill:var(--ink); font-size:12px; font-weight:600; text-anchor:middle; font-family:var(--sans)}
+  .dg-st{fill:var(--accent-2); font-size:10px; text-anchor:middle}
+  .dg-line{stroke:var(--muted); stroke-width:1.4; fill:none}
+  .dg-dash{stroke-dasharray:5 4}
+  .dg-el{fill:var(--ink-2); font-size:10.5px; text-anchor:middle}
+  .dg-note{fill:var(--muted); font-size:11px; font-style:italic; text-anchor:middle}
+  .dg-legend{font-size:.78rem; color:var(--muted); margin-top:8px}
+
+  /* code blocks */
+  .code-wrap{margin-top:16px; border:1px solid var(--hair); border-radius:14px; overflow:hidden; background:var(--shell)}
+  .code-tabs{display:flex; align-items:center; gap:0; background:var(--bg-2); border-bottom:1px solid var(--hair)}
+  .code-tabs .lbl{margin-right:auto; padding:10px 16px; font:500 .78rem/1 var(--sans); color:var(--muted)}
+  .code-tabs .tab{background:transparent; border:none; color:var(--muted); padding:10px 18px; font:600 .82rem/1 var(--sans);
+    cursor:pointer; border-bottom:2px solid transparent; transition:color .3s var(--ease), border-color .3s var(--ease)}
+  .code-tabs .tab:hover{color:var(--ink)}
+  .code-tabs .tab.active{color:var(--ink); border-bottom-color:var(--accent)}
+  pre{margin:0; background:var(--shell); padding:16px 18px; overflow-x:auto; font-size:.82rem; line-height:1.65}
+  pre code{font-family:var(--mono); color:var(--code-ink); white-space:pre}
+  pre.hidden{display:none}
+  .kw{color:var(--kw); font-weight:600} .ty{color:var(--ty)} .st{color:var(--st)} .cm{color:var(--cm); font-style:italic}
+
+  .learn{display:inline-flex; align-items:center; gap:10px; margin-top:20px; font-size:.9rem;
+    color:var(--muted); cursor:pointer; user-select:none}
+  .learn input{accent-color:var(--accent); width:16px; height:16px; cursor:pointer}
+
+  /* interactive widgets (calculator / visualizer) */
+  .demo{border-radius:16px; padding:20px 22px; margin:22px 0; max-width:var(--readw); background:var(--card);
+    box-shadow:0 0 0 6px var(--shell),0 0 0 6.5px var(--hair),var(--soft)}
+  .demo h4{margin:0 0 6px; font-size:1rem; font-family:var(--sans); font-weight:600; color:var(--ink)}
+  .demo .spec{font-size:.9rem; color:var(--muted); margin:0 0 14px}
+  .demo-row{display:flex; gap:10px; flex-wrap:wrap; align-items:center}
+  .demo input[type=text]{width:min(220px,100%); padding:10px 16px; border-radius:999px; border:1px solid var(--hair);
+    background:#fff; color:var(--ink); font:500 .95rem/1 var(--mono); outline:none; transition:border-color .3s var(--ease)}
+  .demo input[type=text]:focus{border-color:var(--accent)}
+  .demo .try{display:flex; gap:6px; flex-wrap:wrap}
+  .demo .try button{background:#fff; border:1px solid var(--hair); color:var(--ink-2); border-radius:999px;
+    padding:7px 13px; font:500 .82rem/1 var(--mono); cursor:pointer; transition:border-color .3s var(--ease), transform .3s var(--ease)}
+  .demo .try button:hover{border-color:var(--ink); transform:translateY(-1px)}
+  .demo-out{margin-top:14px; border-radius:12px; padding:14px 16px; font-size:.92rem; background:var(--bg-2); color:var(--ink-2)}
+  .demo-out b{font-weight:600}
+  .demo-out.ok{background:var(--accent-soft); }
+  .demo-out.ng{background:rgba(176,74,62,.08)}
+  .demo-out .pl{display:inline-block; font:600 .72rem/1 var(--disp); letter-spacing:.05em; padding:4px 10px; border-radius:999px; margin-right:8px}
+  .demo-out.ok .pl{background:var(--accent); color:#fff}
+  .demo-out.ng .pl{background:var(--bad); color:#fff}
+  .demo-out .bd{display:inline-block; font:600 .72rem/1 var(--disp); letter-spacing:.05em; padding:4px 10px; border-radius:999px; margin-right:8px; background:rgba(138,109,59,.15); color:var(--warn)}
+
+  /* metrics calculator */
+  .calc-grid{display:grid; grid-template-columns:repeat(auto-fit,minmax(250px,1fr)); gap:16px; margin-top:8px}
+  .calc{border-radius:16px; padding:18px 18px; background:var(--card); box-shadow:0 0 0 6px var(--shell),0 0 0 6.5px var(--hair),var(--soft)}
+  .calc h5{margin:0 0 4px; font-size:.98rem; font-family:var(--sans); font-weight:600; color:var(--ink)}
+  .calc .formula{font:.82rem/1.5 var(--mono); color:var(--accent-2); background:var(--shell); border:1px solid var(--hair); border-radius:8px; padding:8px 10px; margin:8px 0 14px; display:block}
+  .calc label{display:block; font-size:.82rem; color:var(--muted); margin:10px 0 4px}
+  .calc input[type=number]{width:100%; padding:9px 13px; border-radius:10px; border:1px solid var(--hair);
+    background:#fff; color:var(--ink); font:500 .95rem/1 var(--mono); outline:none; transition:border-color .3s var(--ease)}
+  .calc input[type=number]:focus{border-color:var(--accent)}
+  .calc .res{margin-top:14px; border-radius:12px; padding:12px 14px; background:var(--accent-soft); color:var(--ink-2); font-size:.9rem}
+  .calc .res b{color:var(--accent-2)}
+  .calc .res .big-num{font:600 1.5rem/1 var(--disp); color:var(--accent-2); font-variant-numeric:tabular-nums; display:block; margin-bottom:4px}
+
+  /* fault-chain visualizer */
+  .fc-wrap{margin-top:8px}
+  .fc-wrap svg{display:block; width:100%; height:auto; background:var(--shell); border:1px solid var(--hair); border-radius:12px; padding:8px}
+  .fc-node{cursor:pointer; transition:opacity .3s var(--ease)}
+  .fc-node rect{transition:fill .3s var(--ease), stroke-width .3s var(--ease)}
+  .fc-node.active rect{stroke-width:2.6}
+  .fc-out{margin-top:14px; border-radius:12px; padding:14px 16px; font-size:.92rem; background:var(--bg-2); color:var(--ink-2); min-height:60px}
+  .fc-out b{color:var(--ink); font-weight:600}
+
+  /* mini matching quiz */
+  .match{border-radius:16px; padding:18px 20px; margin:16px 0; max-width:var(--readw); background:var(--card);
+    box-shadow:0 0 0 6px var(--shell),0 0 0 6.5px var(--hair),var(--soft)}
+  .match .m-q{margin:0 0 8px; font-size:.95rem; color:var(--ink); font-weight:500}
+  .match .m-opts{display:flex; flex-wrap:wrap; gap:7px}
+  .match .m-opts button{background:#fff; border:1px solid var(--hair); color:var(--ink-2); border-radius:999px;
+    padding:8px 14px; font:500 .84rem/1 var(--sans); cursor:pointer; transition:border-color .3s var(--ease), transform .3s var(--ease)}
+  .match .m-opts button:hover:not(:disabled){border-color:var(--ink); transform:translateY(-1px)}
+  .match .m-opts button:disabled{cursor:default}
+  .match .m-opts button.right{background:var(--accent-soft); color:var(--accent-2); border-color:var(--accent); font-weight:600}
+  .match .m-opts button.wrong{background:rgba(176,74,62,.1); color:var(--bad); border-color:var(--bad)}
+  .match .m-why{font-size:.86rem; color:var(--muted); margin:10px 0 0; padding-top:10px; border-top:1px solid var(--line)}
+
+  /* quiz */
+  .quiz-q{border-radius:16px; padding:18px 20px; margin:16px 0; max-width:var(--readw); background:var(--card);
+    box-shadow:0 0 0 6px var(--shell),0 0 0 6.5px var(--hair),var(--soft)}
+  .qtext{margin:0 0 12px; font-weight:600; color:var(--ink)}
+  .qopts{display:flex; flex-wrap:wrap; gap:8px}
+  .qopts button{background:#fff; border:1px solid var(--hair); color:var(--ink); border-radius:999px;
+    padding:9px 16px; font:500 .88rem/1 var(--sans); cursor:pointer; transition:border-color .3s var(--ease), transform .3s var(--ease)}
+  .qopts button:hover:not(:disabled){border-color:var(--ink); transform:translateY(-1px)}
+  .qopts button:disabled{cursor:default}
+  .qopts button.right{background:var(--accent-soft); color:var(--accent-2); border-color:var(--accent); font-weight:600}
+  .qopts button.wrong{background:rgba(176,74,62,.1); color:var(--bad); border-color:var(--bad)}
+  .qwhy{font-size:.9rem; color:var(--ink-2); margin:12px 0 0; padding-top:12px; border-top:1px solid var(--line)}
+  .qwhy b{color:var(--ink); font-weight:600}
+  .quiz-reset{margin-top:16px}
+  #quizScore{color:var(--muted); font-size:.92rem; font-weight:500}
+
+  /* footer */
+  footer{border-top:1px solid var(--line); padding:64px 0 46px; background:var(--bg)}
+  footer h3{font-size:.72rem; font-weight:600; letter-spacing:.12em; text-transform:uppercase; color:var(--muted); margin:0 0 1em; font-family:var(--disp)}
+  .foot-grid{display:grid; grid-template-columns:1.4fr 1fr 1fr; gap:44px}
+  .cite{font-size:.98rem; color:var(--ink-2); line-height:1.7; max-width:56ch; margin-bottom:36px}
+  .muted-s{color:var(--muted); font-size:.9rem; line-height:1.75}
+  .muted-s b{color:var(--ink); font-weight:600}
+  .foot-rule{height:1px; background:var(--line); margin:44px 0 20px}
+  .foot-note{color:var(--muted); font-size:.82rem}
+  @media(max-width:760px){.foot-grid{grid-template-columns:1fr 1fr}}
+  @media(max-width:560px){.foot-grid{grid-template-columns:1fr}}
+
+  @media(max-width:860px){
+    section{padding:72px 0}
+    .hero .wrap{padding-top:52px; padding-bottom:56px}
+    .wrap{padding:0 24px}
+    .grid2,.meta-row{grid-template-columns:1fr}
+    .ptags{flex-basis:100%; margin-left:0; justify-content:flex-start}
+    .pcard-head{flex-wrap:wrap}
+  }
+  @media(max-width:640px){
+    .bar-right .btn:not(.ink):not(.jp-toggle){display:none}
+    .brand{font-size:.82rem}
+    .controls{align-items:flex-start; flex-direction:column}
+    .qopts button{flex:1 1 44%}
+  }
+
+  /* JP-only teaching page: fill content width for body text & boxes */
+  .lead,
+  .prose,
+  .callout,
+  .principles,
+  .cmp-table,
+  .diagram-wrap,
+  .demo{max-width:none !important}
+  /* ==================== NAV SYSTEM v4 (NAV_SPEC A-F) ==================== */
+  .navlinks{display:flex; gap:4px; align-items:center}
+  .navlinks .navgroup{position:relative; display:flex}
+  .navlinks .navtop{display:inline-flex; align-items:center; gap:7px; font-size:.86rem; font-weight:500;
+    color:var(--ink-2); padding:8px 13px; border-radius:999px; white-space:nowrap;
+    transition:color .3s var(--ease), background .3s var(--ease)}
+  .navlinks .navtop:hover{color:var(--ink)}
+  .navlinks .navgroup:hover .navtop,.navlinks .navgroup:focus-within .navtop{color:var(--ink); background:var(--bg-2)}
+  .navlinks .navtop.on{color:var(--ink)}
+  .navlinks .navtop.on::before{content:""; flex:0 0 auto; width:6px; height:6px; border-radius:50%; background:var(--accent)}
+  .navlinks .navpanel{position:absolute; top:100%; left:50%; margin-top:9px; min-width:238px; padding:10px;
+    transform:translateX(-50%) translateY(6px); text-align:left;
+    background:var(--card); border:1px solid var(--hair); border-radius:16px; box-shadow:var(--soft);
+    opacity:0; visibility:hidden; pointer-events:none;
+    transition:opacity .25s var(--ease), transform .25s var(--ease), visibility 0s linear .25s; z-index:5}
+  .navlinks .navpanel::before{content:""; position:absolute; top:-13px; left:0; right:0; height:14px}
+  .navlinks .navgroup:hover .navpanel,.navlinks .navgroup:focus-within .navpanel{
+    opacity:1; visibility:visible; pointer-events:auto; transform:translateX(-50%) translateY(0);
+    transition:opacity .25s var(--ease), transform .25s var(--ease), visibility 0s linear 0s}
+  .navlinks .navgroup.collapsed .navpanel{opacity:0; visibility:hidden; pointer-events:none}
+  .navlinks .navpanel a{display:flex; align-items:center; gap:9px; padding:9px 12px; border-radius:11px;
+    font-size:.85rem; font-weight:500; color:var(--ink-2); white-space:nowrap;
+    transition:background .25s var(--ease), color .25s var(--ease)}
+  .navlinks .navpanel a:hover{background:var(--accent-soft); color:var(--ink)}
+  .navlinks .navpanel a.here{background:var(--accent-soft); color:var(--ink)}
+  .navlinks .navpanel a.here::before{content:""; flex:0 0 auto; width:6px; height:6px; border-radius:50%; background:var(--accent)}
+  .navlinks .navlabel{padding:8px 12px 3px; font:600 .6rem/1 var(--disp); letter-spacing:.13em;
+    text-transform:uppercase; color:var(--muted)}
+  .navlinks .navpanel hr.navdiv{border:0; border-top:1px solid var(--line); margin:8px 6px}
+
+  .lswitch{display:inline-flex; align-items:center; gap:2px; padding:3px; border-radius:999px;
+    border:1px solid var(--hair); background:#fff}
+  .lswitch button{appearance:none; -webkit-appearance:none; border:0; background:transparent; cursor:pointer;
+    font:600 .78rem/1 var(--disp); letter-spacing:.03em; color:var(--ink-2); padding:8px 13px; border-radius:999px;
+    transition:background .3s var(--ease), color .3s var(--ease)}
+  .lswitch button:hover{color:var(--ink)}
+  body.lang-ja .lswitch .ls-ja,body.lang-en .lswitch .ls-en{background:var(--ink); color:#fff}
+
+  .navtoggle{display:none; position:relative; width:42px; height:42px; flex:0 0 auto;
+    border-radius:999px; border:1px solid var(--hair); background:#fff; cursor:pointer; padding:0}
+  .navtoggle span{position:absolute; left:11px; right:11px; height:2px; background:var(--ink); border-radius:2px;
+    transition:transform .35s var(--ease), opacity .2s var(--ease)}
+  .navtoggle span:nth-child(1){top:15px}
+  .navtoggle span:nth-child(2){top:20px}
+  .navtoggle span:nth-child(3){top:25px}
+  body.navopen .navtoggle span:nth-child(1){transform:translateY(5px) rotate(45deg)}
+  body.navopen .navtoggle span:nth-child(2){opacity:0}
+  body.navopen .navtoggle span:nth-child(3){transform:translateY(-5px) rotate(-45deg)}
+
+  .mobnav{position:fixed; inset:0; z-index:80; display:flex; flex-direction:column; overflow-y:auto;
+    background:rgba(251,252,251,.9); -webkit-backdrop-filter:saturate(1.2) blur(24px); backdrop-filter:saturate(1.2) blur(24px);
+    opacity:0; visibility:hidden; pointer-events:none;
+    transition:opacity .35s var(--ease), visibility 0s linear .35s}
+  body.navopen .mobnav{opacity:1; visibility:visible; pointer-events:auto; transition:opacity .35s var(--ease), visibility 0s linear 0s}
+  body.navopen{overflow:hidden}
+  body.navopen header.bar{z-index:90}
+  .mobnav-inner{width:100%; max-width:600px; margin:0 auto; padding:104px 28px 64px;
+    display:flex; flex-direction:column; gap:24px}
+  .mobgroup{display:flex; flex-direction:column; gap:1px}
+  .moblabel{font:600 .64rem/1 var(--disp); letter-spacing:.14em; text-transform:uppercase; color:var(--muted); margin-bottom:9px}
+  .mobgroup a{font-size:1.28rem; font-weight:500; color:var(--ink); padding:7px 0; line-height:1.24}
+  .mobgroup a:hover{color:var(--accent-2)}
+  .mobgroup a.here{color:var(--accent-2)}
+  .mobgroup a.here::before{content:""; display:inline-block; width:6px; height:6px; border-radius:50%;
+    background:var(--accent); margin-right:9px; vertical-align:middle}
+  .mobfoot{display:flex; align-items:center; justify-content:space-between; gap:16px; flex-wrap:wrap;
+    margin-top:6px; padding-top:22px; border-top:1px solid var(--line)}
+  .mobext{font-size:1rem; font-weight:500; color:var(--ink-2)}
+  .mobext:hover{color:var(--ink)}
+  .js .mobnav-inner > *{opacity:0; transform:translateY(12px);
+    transition:opacity .4s var(--ease), transform .4s var(--ease)}
+  body.navopen .mobnav-inner > *{opacity:1; transform:none}
+  body.navopen .mobnav-inner > *:nth-child(1){transition-delay:.04s}
+  body.navopen .mobnav-inner > *:nth-child(2){transition-delay:.08s}
+  body.navopen .mobnav-inner > *:nth-child(3){transition-delay:.12s}
+  body.navopen .mobnav-inner > *:nth-child(4){transition-delay:.16s}
+  body.navopen .mobnav-inner > *:nth-child(5){transition-delay:.20s}
+  body.navopen .mobnav-inner > *:nth-child(6){transition-delay:.24s}
+
+  /* E. breadcrumb */
+  .crumbs{display:flex; flex-wrap:wrap; align-items:center; gap:7px; margin:0;
+    font-size:.8rem; font-weight:500; color:var(--muted)}
+  .crumbs a{color:var(--muted)}
+  .crumbs a:hover{color:var(--ink)}
+  .crumbs .csep{color:var(--faint)}
+  .crumbs .cur{color:var(--ink)}
+
+  /* F. sticky TOC bar */
+  .tocbar{position:sticky; top:84px; z-index:40; margin:8px 0 0;
+    background:rgba(255,255,255,.82); -webkit-backdrop-filter:saturate(1.4) blur(14px); backdrop-filter:saturate(1.4) blur(14px);
+    border-top:1px solid var(--hair); border-bottom:1px solid var(--hair)}
+  .tocbar-inner{max-width:var(--maxw); margin:0 auto; padding:9px 40px; display:flex; gap:8px;
+    overflow-x:auto; scrollbar-width:none; -ms-overflow-style:none}
+  .tocbar-inner::-webkit-scrollbar{display:none}
+  .tocpill{flex:0 0 auto; display:inline-flex; align-items:center; gap:7px; padding:7px 14px; border-radius:999px;
+    font-size:.8rem; font-weight:500; color:var(--ink-2); border:1px solid transparent; white-space:nowrap;
+    transition:background .25s var(--ease), color .25s var(--ease), border-color .25s var(--ease)}
+  .tocpill:hover{color:var(--ink); border-color:var(--hair)}
+  .tocpill.on{background:var(--accent-soft); color:var(--ink)}
+  .tocpill.on::before{content:""; flex:0 0 auto; width:6px; height:6px; border-radius:50%; background:var(--accent)}
+  section[id]{scroll-margin-top:150px}
+
+  /* F. back to top */
+  .totop{position:fixed; right:22px; bottom:22px; z-index:55; width:46px; height:46px; border-radius:999px;
+    display:grid; place-items:center; background:#fff; border:1px solid var(--hair); box-shadow:var(--soft);
+    color:var(--ink); cursor:pointer; font-size:1.15rem; line-height:1;
+    opacity:0; transform:translateY(10px) scale(.9); pointer-events:none;
+    transition:opacity .35s var(--ease), transform .35s var(--ease)}
+  .totop.show{opacity:1; transform:none; pointer-events:auto}
+  .totop:hover{transform:translateY(-2px)}
+
+  @media(max-width:860px){
+    .navtoggle{display:block}
+    .navlinks{display:none}
+    .bar-right .btn{display:none}
+    .tocbar{top:76px}
+  }
+  @media(max-width:430px){
+    .bar-right .lswitch{display:none}
+  }
+  @media (prefers-reduced-motion:reduce){
+    .navlinks .navpanel,.navtoggle span,.mobnav,.js .mobnav-inner > *,.navtop,.lswitch button,.totop,.tocpill{transition-duration:.001ms !important}
+    .js .mobnav-inner > *{transition-delay:0s !important}
+    .navtoggle:hover,.totop:hover{transform:none !important}
+  }
+</style>
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[
+{"@type":"ListItem","position":1,"name":"ホーム","item":"https://ykimu.github.io/"},
+{"@type":"ListItem","position":2,"name":"教育","item":"https://ykimu.github.io/teaching.html"},
+{"@type":"ListItem","position":3,"name":"ソフトウェア工学","item":"https://ykimu.github.io/course/index.html"},
+{"@type":"ListItem","position":4,"name":"ディペンダブルシステム学習ガイド","item":"https://ykimu.github.io/course/dependable-systems.html"}
+]}
+</script>
+</head>
+<body class="lang-ja">
+
+<a class="skip" href="#main"><span lang="ja">本文へスキップ</span><span lang="en">Skip to content</span></a>
+
+<header class="bar">
+  <div class="wrap">
+    <a class="brand" href="../index.html">
+      <span aria-hidden="true">&lsaquo;</span>
+      <span lang="ja">Yuta Kimura</span><span lang="en">Yuta Kimura</span>
+      <span class="sep">·</span><span lang="ja">木村祐太</span><span lang="en">Kimura</span>
+    </a>
+    <nav class="navlinks" aria-label="メイン">
+      <div class="navgroup">
+        <a class="navtop" href="../publications.html" aria-haspopup="true" aria-expanded="false"><span lang="ja">研究</span><span lang="en">Research</span></a>
+        <div class="navpanel">
+          <a href="../publications.html"><span lang="ja">業績・研究活動</span><span lang="en">Publications &amp; activity</span></a>
+          <a href="../research/technical-debt-metrics.html"><span lang="ja">技術的負債とメトリクス</span><span lang="en">Technical debt &amp; metrics</span></a>
+          <a href="../research/apr-coding-standards.html"><span lang="ja">自動生成パッチと規約</span><span lang="en">Auto-generated patches &amp; standards</span></a>
+          <a href="../research/td-repayment-refactoring.html"><span lang="ja">負債返済とリファクタリング</span><span lang="en">Debt repayment &amp; refactoring</span></a>
+          <a href="../research/satd-issue-classification.html"><span lang="ja">課題票の負債分類</span><span lang="en">Issue-ticket debt classification</span></a>
+        </div>
+      </div>
+      <div class="navgroup">
+        <a class="navtop on" href="../teaching.html" aria-haspopup="true" aria-expanded="false"><span lang="ja">教育</span><span lang="en">Teaching</span></a>
+        <div class="navpanel">
+          <div class="navlabel"><span lang="ja">科目</span><span lang="en">Courses</span></div>
+          <a href="../teaching.html"><span lang="ja">教育・担当授業</span><span lang="en">Teaching &amp; courses</span></a>
+          <a href="index.html"><span lang="ja">ソフトウェア工学</span><span lang="en">Software Engineering</span></a>
+          <a href="logic-circuits.html"><span lang="ja">論理回路1</span><span lang="en">Logic Circuits I</span></a>
+          <a href="intelligent-informatics-1.html"><span lang="ja">知能情報実験実習1</span><span lang="en">Intelligent Informatics Lab I</span></a>
+          <hr class="navdiv">
+          <div class="navlabel"><span lang="ja">教材</span><span lang="en">Materials</span></div>
+          <a href="design-patterns.html"><span lang="ja">デザインパターン学習ガイド</span><span lang="en">Design Patterns Guide</span></a>
+          <a href="software-architecture.html"><span lang="ja">アーキテクチャパターン大全</span><span lang="en">Software Architecture</span></a>
+          <a href="uml-guide.html"><span lang="ja">クラス図/シーケンス図ガイド</span><span lang="en">UML Diagram Guide</span></a>
+          <a href="software-testing.html"><span lang="ja">ソフトウェアテスト学習ガイド</span><span lang="en">Software Testing Guide</span></a>
+          <a href="agile-scrum.html"><span lang="ja">アジャイル開発とスクラム</span><span lang="en">Agile &amp; Scrum</span></a>
+          <a href="requirements-engineering.html"><span lang="ja">要求工学</span><span lang="en">Requirements Engineering</span></a>
+          <a href="software-evolution.html"><span lang="ja">ソフトウェア進化と技術的負債</span><span lang="en">Software Evolution</span></a>
+          <a href="software-reuse-oss.html"><span lang="ja">ソフトウェア再利用とOSS</span><span lang="en">Software Reuse &amp; OSS</span></a>
+          <a href="project-management.html"><span lang="ja">プロジェクト管理と見積もり</span><span lang="en">Project Management</span></a>
+          <a href="version-control-cicd.html"><span lang="ja">バージョン管理とCI/CD</span><span lang="en">Version Control &amp; CI/CD</span></a>
+          <a href="system-modeling-uml.html"><span lang="ja">システムモデリング(UML)</span><span lang="en">System Modeling</span></a>
+          <a class="here" href="dependable-systems.html" aria-current="page"><span lang="ja">ディペンダブルシステム</span><span lang="en">Dependable Systems</span></a>
+          <a href="project-estimation-planning.html"><span lang="ja">プロジェクト計画・見積り</span><span lang="en">Project Planning &amp; Estimation</span></a>
+        </div>
+      </div>
+      <div class="navgroup">
+        <a class="navtop" href="../software-engineering.html" aria-haspopup="true" aria-expanded="false"><span lang="ja">ガイド</span><span lang="en">Guides</span></a>
+        <div class="navpanel">
+          <a href="../software-engineering.html"><span lang="ja">ソフトウェア工学とは</span><span lang="en">What is software engineering</span></a>
+          <a href="../technical-debt.html"><span lang="ja">技術的負債とは</span><span lang="en">What is technical debt</span></a>
+          <a href="../glossary.html"><span lang="ja">研究用語ミニ辞典</span><span lang="en">Research glossary</span></a>
+        </div>
+      </div>
+      <div class="navgroup">
+        <a class="navtop" href="../students.html"><span lang="ja">学生の皆さんへ</span><span lang="en">For Students</span></a>
+      </div>
+    </nav>
+    <div class="bar-right">
+      <a class="btn" href="https://researchmap.jp/kimura_yuta" target="_blank" rel="noopener">researchmap</a>
+      <div class="lswitch" role="group" aria-label="言語 / Language">
+        <button type="button" class="ls-ja" onclick="setLang('ja')" aria-pressed="true">JA</button>
+        <button type="button" class="ls-en" onclick="setLang('en')" aria-pressed="false">EN</button>
+      </div>
+      <button class="navtoggle" id="navToggle" type="button" aria-label="メニュー" aria-expanded="false" aria-controls="mobnav">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </div>
+</header>
+
+<div class="mobnav" id="mobnav" aria-hidden="true">
+  <div class="mobnav-inner">
+    <div class="mobgroup">
+      <div class="moblabel"><span lang="ja">研究</span><span lang="en">Research</span></div>
+      <a href="../publications.html"><span lang="ja">業績・研究活動</span><span lang="en">Publications &amp; activity</span></a>
+      <a href="../research/technical-debt-metrics.html"><span lang="ja">技術的負債とメトリクス</span><span lang="en">Technical debt &amp; metrics</span></a>
+      <a href="../research/apr-coding-standards.html"><span lang="ja">自動生成パッチと規約</span><span lang="en">Auto-generated patches &amp; standards</span></a>
+      <a href="../research/td-repayment-refactoring.html"><span lang="ja">負債返済とリファクタリング</span><span lang="en">Debt repayment &amp; refactoring</span></a>
+      <a href="../research/satd-issue-classification.html"><span lang="ja">課題票の負債分類</span><span lang="en">Issue-ticket debt classification</span></a>
+    </div>
+    <div class="mobgroup">
+      <div class="moblabel"><span lang="ja">教育</span><span lang="en">Teaching</span></div>
+      <a href="../teaching.html"><span lang="ja">教育・担当授業</span><span lang="en">Teaching &amp; courses</span></a>
+      <a href="index.html"><span lang="ja">ソフトウェア工学</span><span lang="en">Software Engineering</span></a>
+      <a href="logic-circuits.html"><span lang="ja">論理回路1</span><span lang="en">Logic Circuits I</span></a>
+      <a href="intelligent-informatics-1.html"><span lang="ja">知能情報実験実習1</span><span lang="en">Intelligent Informatics Lab I</span></a>
+      <a href="design-patterns.html"><span lang="ja">デザインパターン学習ガイド</span><span lang="en">Design Patterns Guide</span></a>
+      <a href="software-architecture.html"><span lang="ja">アーキテクチャパターン大全</span><span lang="en">Software Architecture</span></a>
+      <a href="uml-guide.html"><span lang="ja">クラス図/シーケンス図ガイド</span><span lang="en">UML Diagram Guide</span></a>
+      <a href="software-testing.html"><span lang="ja">ソフトウェアテスト学習ガイド</span><span lang="en">Software Testing Guide</span></a>
+      <a href="agile-scrum.html"><span lang="ja">アジャイル開発とスクラム</span><span lang="en">Agile &amp; Scrum</span></a>
+      <a href="requirements-engineering.html"><span lang="ja">要求工学</span><span lang="en">Requirements Engineering</span></a>
+      <a href="software-evolution.html"><span lang="ja">ソフトウェア進化と技術的負債</span><span lang="en">Software Evolution</span></a>
+      <a href="software-reuse-oss.html"><span lang="ja">ソフトウェア再利用とOSS</span><span lang="en">Software Reuse &amp; OSS</span></a>
+      <a href="project-management.html"><span lang="ja">プロジェクト管理と見積もり</span><span lang="en">Project Management</span></a>
+      <a href="version-control-cicd.html"><span lang="ja">バージョン管理とCI/CD</span><span lang="en">Version Control &amp; CI/CD</span></a>
+      <a href="system-modeling-uml.html"><span lang="ja">システムモデリング(UML)</span><span lang="en">System Modeling</span></a>
+      <a class="here" href="dependable-systems.html" aria-current="page"><span lang="ja">ディペンダブルシステム</span><span lang="en">Dependable Systems</span></a>
+      <a href="project-estimation-planning.html"><span lang="ja">プロジェクト計画・見積り</span><span lang="en">Project Planning &amp; Estimation</span></a>
+    </div>
+    <div class="mobgroup">
+      <div class="moblabel"><span lang="ja">ガイド</span><span lang="en">Guides</span></div>
+      <a href="../software-engineering.html"><span lang="ja">ソフトウェア工学とは</span><span lang="en">What is software engineering</span></a>
+      <a href="../technical-debt.html"><span lang="ja">技術的負債とは</span><span lang="en">What is technical debt</span></a>
+      <a href="../glossary.html"><span lang="ja">研究用語ミニ辞典</span><span lang="en">Research glossary</span></a>
+    </div>
+    <div class="mobgroup">
+      <div class="moblabel"><span lang="ja">学生の皆さんへ</span><span lang="en">For Students</span></div>
+      <a href="../students.html"><span lang="ja">学生の皆さんへ</span><span lang="en">For Students</span></a>
+    </div>
+    <div class="mobfoot">
+      <a class="mobext" href="https://researchmap.jp/kimura_yuta" target="_blank" rel="noopener">researchmap</a>
+      <div class="lswitch" role="group" aria-label="言語 / Language">
+        <button type="button" class="ls-ja" onclick="setLang('ja')" aria-pressed="true">JA</button>
+        <button type="button" class="ls-en" onclick="setLang('en')" aria-pressed="false">EN</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<main id="main">
+
+<button class="totop" type="button" aria-label="上へ戻る" title="上へ戻る">&uarr;</button>
+
+<div class="wrap" style="padding-top:24px">
+  <nav class="crumbs" aria-label="パンくず">
+    <a href="../index.html"><span lang="ja">ホーム</span><span lang="en">Home</span></a>
+    <span class="csep" aria-hidden="true">&rsaquo;</span>
+    <a href="../teaching.html"><span lang="ja">教育</span><span lang="en">Teaching</span></a>
+    <span class="csep" aria-hidden="true">&rsaquo;</span>
+    <a href="index.html"><span lang="ja">ソフトウェア工学</span><span lang="en">Software Engineering</span></a>
+    <span class="csep" aria-hidden="true">&rsaquo;</span>
+    <span class="cur" aria-current="page"><span lang="ja">ディペンダブルシステム学習ガイド</span><span lang="en">Dependable Systems</span></span>
+  </nav>
+</div>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="wrap">
+    <p class="kick">Dependable Systems</p>
+    <h1>ディペンダブルシステム：<em>「信頼できる」</em>を工学する</h1>
+    <p class="lead">重要なシステムの障害は、大きな経済損失や情報漏えい、時には人命に関わります。<strong>ディペンダビリティ（信頼できる度合い）</strong>は、可用性・信頼性・安全性・セキュリティ・レジリエンスという<strong>5つの次元</strong>からなる概念です。この教材では、第10〜14回の内容：ディペンダビリティ総論、信頼性工学（フォールト→エラー→障害、POFOD・MTTF、フォールトトレランス）、セーフティ工学（ハザード分析・FTA・セーフティケース）、セキュリティ工学（資産・脅威・脆弱性・統制）、レジリエンス工学（生存性の4戦略）を、<strong>ねらい・仕組み・意識するポイント・注意点</strong>つきで整理しました。信頼性メトリクス計算機、フォールト連鎖の可視化、理解度クイズ付きです。</p>
+    <p class="ja-note"><span lang="ja">この教材は日本語のみで提供しています</span><span lang="en">This learning material is available in Japanese only.</span></p>
+    <div class="hero-cta">
+      <a class="btn ink" href="#concepts" style="padding:12px 22px">
+        <span lang="ja">概念カタログへ</span><span lang="en">Jump to the concept catalog</span>
+      </a>
+      <a class="tlink" href="#tools">
+        <span lang="ja">計算・可視化ツールへ</span><span lang="en">Interactive tools</span>
+        <span class="ar" aria-hidden="true">&rsaquo;</span>
+      </a>
+    </div>
+  </div>
+</div>
+
+<div id="toTopSentinel" aria-hidden="true"></div>
+
+<div class="tocbar">
+  <nav class="tocbar-inner" aria-label="ページ内目次">
+    <a class="tocpill" href="#intro"><span lang="ja">はじめに</span><span lang="en">Intro</span></a>
+    <a class="tocpill" href="#concepts"><span lang="ja">概念カタログ</span><span lang="en">Concepts</span></a>
+    <a class="tocpill" href="#tools"><span lang="ja">体験デモ</span><span lang="en">Demos</span></a>
+    <a class="tocpill" href="#quiz"><span lang="ja">理解度クイズ</span><span lang="en">Quiz</span></a>
+    <a class="tocpill" href="#closing"><span lang="ja">おわりに</span><span lang="en">Closing</span></a>
+  </nav>
+</div>
+
+<!-- INTRO -->
+<section id="intro" style="padding-top:20px">
+  <div class="wrap reveal">
+    <p class="eyebrow"><span lang="ja">はじめに</span><span lang="en">Introduction</span></p>
+    <h2 class="big"><span lang="ja">ディペンダブルシステムとは何か</span><span lang="en">What is a dependable system?</span></h2>
+    <div class="prose" id="introProse" style="margin-top:22px"></div>
+  </div>
+</section>
+
+<!-- CONCEPT CATALOG -->
+<section class="soft-sec" id="concepts" style="padding-top:80px">
+  <div class="wrap">
+    <p class="eyebrow reveal"><span lang="ja">概念カタログ</span><span lang="en">Concept catalog</span></p>
+    <h2 class="big reveal"><span lang="ja">5次元・21の重要概念カタログ</span><span lang="en">Twenty-one key concepts across five dimensions</span></h2>
+    <p class="lead reveal" style="max-width:var(--readw); margin-top:18px">ディペンダビリティの5次元（総論・信頼性・セーフティ・セキュリティ・レジリエンス）ごとに、試験でも実務でも問われる重要概念を整理しました。カテゴリで絞り込み、各カードをクリックすると、ねらい・仕組み・意識するポイント・注意点・具体例が開きます。</p>
+    <div class="controls reveal" style="margin-top:26px">
+      <div class="pills" role="tablist" aria-label="カテゴリ切替">
+        <button class="pill active" onclick="filterCat('all',this)">すべて<span>21</span></button>
+        <button class="pill" onclick="filterCat('overview',this)">総論<span>5</span></button>
+        <button class="pill" onclick="filterCat('reliability',this)">信頼性<span>5</span></button>
+        <button class="pill" onclick="filterCat('safety',this)">セーフティ<span>4</span></button>
+        <button class="pill" onclick="filterCat('security',this)">セキュリティ<span>4</span></button>
+        <button class="pill" onclick="filterCat('resilience',this)">レジリエンス<span>3</span></button>
+      </div>
+      <div class="ctrl-right">
+        <input id="search" class="search" type="text" placeholder="名前・キーワードで絞り込み" aria-label="概念を絞り込み">
+        <span class="learn-note" id="learnNote"></span>
+      </div>
+    </div>
+    <div id="tests-list"></div>
+  </div>
+</section>
+
+<!-- INTERACTIVE TOOLS -->
+<section id="tools">
+  <div class="wrap">
+    <p class="eyebrow reveal"><span lang="ja">計算・可視化</span><span lang="en">Calculate &amp; visualize</span></p>
+    <h2 class="big reveal"><span lang="ja">手を動かして体感する</span><span lang="en">Learn by doing</span></h2>
+    <div class="prose reveal" id="toolsProse" style="margin-top:22px"></div>
+
+    <!-- Reliability metrics calculator -->
+    <div class="demo reveal" id="relCalc" style="margin-top:26px">
+      <h4>① 信頼性メトリクス計算機</h4>
+      <p class="spec">値を変えると即座に <b>POFOD</b>・<b>可用性(AVAIL)</b>・<b>MTBF から求める可用性</b>が計算されます。式も併記しています。信頼性は「ユーザが経験する値」であることを思い出しながら、数字が現実にどう効くかを体感してください。</p>
+      <div class="calc-grid">
+        <div class="calc">
+          <h5>POFOD（要求あたり故障確率）</h5>
+          <code class="formula">POFOD = 失敗した要求数 / 総要求数</code>
+          <label for="pofodN">総要求数（demands）</label>
+          <input type="number" id="pofodN" min="1" step="1" value="10000" oninput="relCalc()">
+          <label for="pofodF">うち失敗した要求数</label>
+          <input type="number" id="pofodF" min="0" step="1" value="2" oninput="relCalc()">
+          <div class="res" id="pofodRes"></div>
+        </div>
+        <div class="calc">
+          <h5>可用性（稼働時間から）</h5>
+          <code class="formula">AVAIL = 稼働 / (稼働 + 停止)</code>
+          <label for="avUp">稼働時間（時間）</label>
+          <input type="number" id="avUp" min="0" step="1" value="8759" oninput="relCalc()">
+          <label for="avDown">停止時間（時間）</label>
+          <input type="number" id="avDown" min="0" step="0.1" value="1" oninput="relCalc()">
+          <div class="res" id="avRes"></div>
+        </div>
+        <div class="calc">
+          <h5>MTBF / MTTR から可用性</h5>
+          <code class="formula">AVAIL = MTBF / (MTBF + MTTR)</code>
+          <label for="mtbf">MTBF＝平均故障間隔（時間）</label>
+          <input type="number" id="mtbf" min="0" step="1" value="1000" oninput="relCalc()">
+          <label for="mttr">MTTR＝平均修復時間（時間）</label>
+          <input type="number" id="mttr" min="0" step="0.1" value="2" oninput="relCalc()">
+          <div class="res" id="mtbfRes"></div>
+        </div>
+      </div>
+      <div class="demo-out" id="relNote">POFOD は「1回の要求で失敗する確率」、可用性は「ある時点で使える確率」。同じシステムでも、修復に時間がかかる（MTTR が大きい）と可用性は下がります。数字を動かして、<b>「9 の数（ナイン）」</b>が1つ増えるごとに許容ダウンタイムが桁違いに厳しくなることを確かめましょう。</div>
+    </div>
+
+    <!-- Fault -> Error -> Failure visualizer -->
+    <div class="demo reveal" id="faultViz">
+      <h4>② フォールト → エラー → 障害 連鎖ビジュアライザ</h4>
+      <p class="spec">信頼性工学の出発点は、この3語を区別することです。各段を<b>クリック</b>すると定義と、なぜ「フォールトがあっても必ずしも障害にならない」のかが表示されます。</p>
+      <div class="fc-wrap">
+        <svg viewBox="0 0 760 210" role="img" aria-label="フォールト・エラー・障害の連鎖">
+          <g class="fc-node" id="fc-fault" tabindex="0" role="button" aria-label="フォールトの説明" onclick="faultInfo('fault')">
+            <rect x="24" y="60" width="200" height="76" rx="14" fill="rgba(138,109,59,.10)" stroke="#8A6D3B" stroke-width="1.4"/>
+            <text x="124" y="92" class="dg-lbl" fill="#8A6D3B">① フォールト</text>
+            <text x="124" y="112" class="dg-st">Fault（欠陥）</text>
+            <text x="124" y="128" class="dg-el">コードに潜む間違い</text>
+          </g>
+          <g class="fc-node" id="fc-error" tabindex="0" role="button" aria-label="エラーの説明" onclick="faultInfo('error')">
+            <rect x="280" y="60" width="200" height="76" rx="14" fill="rgba(14,111,92,.10)" stroke="#0E6F5C" stroke-width="1.4"/>
+            <text x="380" y="92" class="dg-lbl" fill="#0A5748">② エラー</text>
+            <text x="380" y="112" class="dg-st">Error（誤った状態）</text>
+            <text x="380" y="128" class="dg-el">実行時の不正な状態</text>
+          </g>
+          <g class="fc-node" id="fc-failure" tabindex="0" role="button" aria-label="障害の説明" onclick="faultInfo('failure')">
+            <rect x="536" y="60" width="200" height="76" rx="14" fill="rgba(176,74,62,.10)" stroke="#B04A3E" stroke-width="1.4"/>
+            <text x="636" y="92" class="dg-lbl" fill="#B04A3E">③ 障害</text>
+            <text x="636" y="112" class="dg-st">Failure（サービスの失敗）</text>
+            <text x="636" y="128" class="dg-el">ユーザから見える失敗</text>
+          </g>
+          <path d="M226 98 L276 98" class="dg-line" marker-end="url(#fah)"/>
+          <path d="M482 98 L532 98" class="dg-line" marker-end="url(#fah)"/>
+          <text x="251" y="86" class="dg-el">実行される</text>
+          <text x="507" y="86" class="dg-el">外部に波及</text>
+          <text x="380" y="40" class="dg-note">人間の過ち（human error）がフォールトを作り込む</text>
+          <text x="380" y="176" class="dg-note">各リンクは「必ず起きる」わけではない：どこかで断ち切れれば障害は防げる</text>
+          <defs><marker id="fah" markerWidth="9" markerHeight="9" refX="8" refY="4.5" orient="auto">
+            <path d="M0,0 L9,4.5 L0,9 z" fill="#6B746F"/></marker></defs>
+        </svg>
+      </div>
+      <div class="fc-out" id="fcOut">上の3つの段のいずれかをクリックすると、定義と「連鎖が必ずしも成立しない」理由が表示されます。</div>
+    </div>
+
+    <!-- Mini matching: 5 dimensions -->
+    <h4 class="prose" style="margin-top:34px; font-family:var(--sans); font-size:1.12rem; font-weight:600; color:var(--ink)">③ 5次元あてクイズ：定義から次元を選ぶ</h4>
+    <p class="prose" style="color:var(--ink-2); max-width:var(--readw)">それぞれの説明が、ディペンダビリティの<b>どの次元</b>を指すかを選んでください。</p>
+    <div id="dimMatch"></div>
+
+    <!-- Mini matching: threat classification -->
+    <h4 class="prose" style="margin-top:30px; font-family:var(--sans); font-size:1.12rem; font-weight:600; color:var(--ink)">④ 脅威4分類あてクイズ：どのセキュリティ目標への脅威か</h4>
+    <p class="prose" style="color:var(--ink-2); max-width:var(--readw)">4種類の攻撃が、<b>機密性・完全性・可用性</b>のどれを脅かすかを選んでください。</p>
+    <div id="threatMatch"></div>
+  </div>
+</section>
+
+<!-- QUIZ -->
+<section class="soft-sec" id="quiz" style="padding-top:80px">
+  <div class="wrap">
+    <p class="eyebrow reveal"><span lang="ja">理解度チェック</span><span lang="en">Check your understanding</span></p>
+    <h2 class="big reveal"><span lang="ja">理解度チェッククイズ</span><span lang="en">Comprehension quiz</span></h2>
+    <p class="lead reveal" style="max-width:var(--readw); margin-top:18px">それぞれの状況に<strong>もっとも適した用語・概念</strong>を選んでください。<span id="quizScore"></span></p>
+    <div id="quizBody" class="reveal"></div>
+    <button class="btn ink quiz-reset" onclick="buildQuiz()" style="padding:11px 22px">
+      <span lang="ja">もう一度挑戦する</span><span lang="en">Try again</span>
+    </button>
+  </div>
+</section>
+
+<!-- CLOSING -->
+<section id="closing">
+  <div class="wrap reveal">
+    <p class="eyebrow"><span lang="ja">おわりに</span><span lang="en">In closing</span></p>
+    <h2 class="big"><span lang="ja">ディペンダビリティに向き合う心構えと、さらに学ぶために</span><span lang="en">How to think about dependability, and where to learn more</span></h2>
+    <div class="prose" id="closingProse" style="margin-top:22px"></div>
+  </div>
+</section>
+
+</main>
+
+<!-- FOOTER -->
+<footer>
+  <div class="wrap">
+    <div class="cite">
+      <span lang="ja">ディペンダブルシステムの全体像（信頼性・セーフティ・セキュリティ・レジリエンス）を、これから学ぶ方向けにまとめた学習ガイドです。木村祐太のソフトウェア工学の授業教材（第10〜14回）の一部としてご覧いただけます。授業の詳細（評価方法・日程等）は最新のシラバスを確認してください。</span>
+      <span lang="en">A study guide to dependable systems (reliability, safety, security, and resilience), for those new to it. Part of Yuta Kimura's software engineering course materials (Lectures 10-14). For course details such as assessment and schedule, please refer to the latest syllabus.</span>
+    </div>
+    <div class="foot-grid">
+      <div>
+        <h3><span lang="ja">連絡先</span><span lang="en">Contact</span></h3>
+        <p class="muted-s">
+          <b>木村 祐太 / Yuta Kimura</b><br>
+          <span lang="ja">大阪公立大学工業高等専門学校</span><span lang="en">Osaka Metropolitan University College of Technology</span><br>
+          <a href="mailto:y.kimura@omu.ac.jp">y.kimura [at] omu.ac.jp</a>
+        </p>
+      </div>
+      <div>
+        <h3><span lang="ja">サイト</span><span lang="en">Site</span></h3>
+        <p class="muted-s">
+          <a href="../index.html"><span lang="ja">ホーム</span><span lang="en">Home</span></a><br>
+          <a href="../publications.html"><span lang="ja">業績・研究活動</span><span lang="en">Publications &amp; research activities</span></a><br>
+          <a href="../teaching.html"><span lang="ja">教育</span><span lang="en">Teaching</span></a><br>
+          <a href="../software-engineering.html"><span lang="ja">ソフトウェア工学とは</span><span lang="en">What is software engineering?</span></a><br>
+          <a href="../technical-debt.html"><span lang="ja">技術的負債とは</span><span lang="en">What is technical debt?</span></a><br>
+          <a href="../students.html"><span lang="ja">学生の皆さんへ</span><span lang="en">For students</span></a><br>
+          <a href="../glossary.html"><span lang="ja">用語集</span><span lang="en">Glossary</span></a>
+        </p>
+      </div>
+      <div>
+        <h3><span lang="ja">研究</span><span lang="en">Research</span></h3>
+        <p class="muted-s">
+          <a href="../research/technical-debt-metrics.html"><span lang="ja">メトリクスによる分類・特徴づけ</span><span lang="en">Classifying debt with metrics</span></a><br>
+          <a href="../research/apr-coding-standards.html"><span lang="ja">自動生成パッチと品質</span><span lang="en">Auto-generated patches and quality</span></a><br>
+          <a href="../research/td-repayment-refactoring.html"><span lang="ja">返済とリファクタリング</span><span lang="en">Repayment and refactoring</span></a><br>
+          <a href="../research/satd-issue-classification.html"><span lang="ja">TD-Issue の自動分類</span><span lang="en">Automatic TD-Issue classification</span></a><br>
+          <a href="https://researchmap.jp/kimura_yuta" target="_blank" rel="noopener">researchmap</a>
+        </p>
+      </div>
+    </div>
+    <div class="foot-rule"></div>
+    <p class="foot-note">
+      <span lang="ja">© 2026 Yuta Kimura. ディペンダブルシステムの解説は Ian Sommerville『Software Engineering (10th ed.)』第10〜14章（Dependable systems / Reliability engineering / Safety engineering / Security engineering / Resilience engineering）に基づく概説です。</span>
+      <span lang="en">© 2026 Yuta Kimura. This overview of dependable systems follows Chapters 10-14 of Ian Sommerville, <i>Software Engineering</i> (10th ed.): Dependable systems, Reliability, Safety, Security, and Resilience engineering.</span>
+    </p>
+  </div>
+</footer>
+<script>
+/* ============== 総論プロース ============== */
+const INTRO_HTML = `
+<p><b>ディペンダビリティ（dependability）</b>とは、システムの「<strong>信頼できる度合い</strong>」（利用者がそのシステムを安心して使える程度）を表す性質です。
+コンピュータがあらゆる社会基盤に浸透した結果、システム障害の影響は拡大し続けています。サーバの障害は大きな経済損失を生み、
+制御システムの障害は人命に関わることさえあります。だからこそ、システムが「ちゃんと動く」だけでなく「<strong>信頼できる</strong>」ことを、
+工学的に設計・検証する必要があります。</p>
+
+<h4>ディペンダビリティの5つの次元</h4>
+<p>ディペンダビリティは単一の特性ではなく、次の<strong>5つの次元</strong>を包含する概念です。この教材のカタログも、この5次元に沿って構成されています。</p>
+<div class="principles">
+  <div class="p"><b>① 可用性（Availability）</b><br>
+    <span>要求されたときに、<strong>サービスを提供できる</strong>こと。修復や再起動にかかる時間も可用性に影響する。</span></div>
+  <div class="p"><b>② 信頼性（Reliability）</b><br>
+    <span>要求されたときに、<strong>仕様どおりのサービスを正しく提供する</strong>こと。期待した結果を返せるか。</span></div>
+  <div class="p"><b>③ 安全性（Safety）</b><br>
+    <span>人や環境に<strong>危害を与えずに</strong>動作すること。信頼性が高くても安全とは限らない。</span></div>
+  <div class="p"><b>④ セキュリティ（Security）</b><br>
+    <span>偶発的・意図的な<strong>侵入や攻撃に抵抗する</strong>こと。これなしでは他の次元も保証できない。</span></div>
+  <div class="p"><b>⑤ レジリエンス（Resilience）</b><br>
+    <span>破壊的な事象が起きても、重要な<strong>サービスを維持・回復する</strong>こと。障害は必ず起きるという前提に立つ。</span></div>
+</div>
+<div class="diagram-wrap">
+<svg viewBox="0 0 760 250" role="img" aria-label="ディペンダビリティの5次元">
+  <circle cx="380" cy="125" r="52" fill="rgba(14,111,92,.10)" stroke="#0E6F5C" stroke-width="1.5"/>
+  <text x="380" y="120" class="dg-lbl" fill="#0A5748">ディペンダ</text>
+  <text x="380" y="137" class="dg-lbl" fill="#0A5748">ビリティ</text>
+  <g>
+    <rect x="300" y="14" width="160" height="40" rx="10" class="dg-box dg-if"/>
+    <text x="380" y="39" class="dg-lbl">可用性 Availability</text>
+    <rect x="560" y="70" width="180" height="40" rx="10" class="dg-box dg-if"/>
+    <text x="650" y="95" class="dg-lbl">信頼性 Reliability</text>
+    <rect x="560" y="150" width="180" height="40" rx="10" class="dg-box" stroke="#8A6D3B" stroke-width="1.4"/>
+    <text x="650" y="175" class="dg-lbl" fill="#8A6D3B">安全性 Safety</text>
+    <rect x="20" y="150" width="180" height="40" rx="10" class="dg-box" stroke="#3E5C50" stroke-width="1.4"/>
+    <text x="110" y="175" class="dg-lbl" fill="#3E5C50">セキュリティ Security</text>
+    <rect x="20" y="70" width="180" height="40" rx="10" class="dg-box" stroke="#5B655F" stroke-width="1.4"/>
+    <text x="110" y="95" class="dg-lbl" fill="#5B655F">レジリエンス Resilience</text>
+  </g>
+  <path d="M380 54 L380 71" class="dg-line"/>
+  <path d="M432 108 L558 92" class="dg-line"/>
+  <path d="M432 142 L558 168" class="dg-line"/>
+  <path d="M328 142 L202 168" class="dg-line"/>
+  <path d="M328 108 L202 92" class="dg-line"/>
+</svg>
+<div class="dg-legend">5次元は独立ではなく相互に関係する。ほかにも修理性・保守性・誤り許容性など多くの特性がディペンダビリティに寄与する。</div>
+</div>
+
+<h4>なぜ重要か：そして「100%」は目指せない</h4>
+<p>信頼できないシステムは利用者に拒否・回避され、システム障害のコストは開発コストを上回ることさえあります（損失・訴訟・評判の低下）。
+一方で、ディペンダビリティの向上は<strong>コストを急激に増大させ</strong>、しかも<strong>100%の達成は不可能</strong>です。高いレベルほど検証コストが跳ね上がるため、
+「どの次元を、どこまで」高めるべきかを<strong>見極める</strong>こと（コストと利便性のトレードオフ判断）が工学の要になります。</p>
+<div class="callout warn">
+  <h4>信頼性は「必要条件」だが「十分条件」ではない</h4>
+  仕様に完全に適合していても事故は起こり得ます（有名な例：ワルシャワ空港の着陸事故では、仕様どおりに動いた逆噴射ロジックが悲劇につながりました）。
+  <strong>信頼性の高さは安全性の必要条件ですが、それだけでは安全を保証しません。</strong>だからこそ、安全性・セキュリティ・レジリエンスは、信頼性とは別の次元として個別に工学する必要があります。
+</div>
+
+<h4>すべての土台となる2つの基本戦略：冗長性と多様性</h4>
+<p>5次元のいずれを高めるにも、根っこにあるのは次の2つの戦略です。カタログの多くのカードが、この2語の応用になっています。</p>
+<div class="principles">
+  <div class="p"><b>冗長性（Redundancy）</b><br>
+    <span>予備の能力を持たせる。予備コンポーネント・データのバックアップ・複数サーバなど。1つが倒れても代わりが働く。</span></div>
+  <div class="p"><b>多様性（Diversity）</b><br>
+    <span>冗長な要素を<strong>異なる方式</strong>で実現し、同じ誤りを共有しないようにする。別チーム・別OS・別アルゴリズムでの実装など。</span></div>
+</div>
+<p>ただし冗長性・多様性はシステムを<strong>複雑にし、新たな誤りの原因にもなり得ます</strong>。また、良い成果物は良いプロセスから生まれるため、
+<strong>ディペンダブルなプロセス</strong>（明示的・反復可能・監査可能・文書化された、検証活動を全段階に含むプロセス）への投資も欠かせません。</p>
+
+<div class="callout tip">
+  <h4>この教材の歩き方</h4>
+  下の<a href="#concepts">概念カタログ</a>は5次元＝5カテゴリで構成されています。まず<b>総論</b>で全体像をつかみ、
+  <b>信頼性 → セーフティ → セキュリティ → レジリエンス</b>と読み進めるのがおすすめです。
+  途中の<a href="#tools">計算・可視化ツール</a>で信頼性メトリクスとフォールト連鎖を手で動かし、最後に<a href="#quiz">理解度クイズ</a>で定着を確認しましょう。
+  各カード末尾の「習得チェック」を付けると、絞り込みバー右側に進捗が表示されます（保存はされず、ページを開いている間だけ保持されます）。
+</div>
+`;
+
+const TOOLS_HTML = `
+<p>ディペンダビリティは、最終的には<strong>数字とアーキテクチャ</strong>で語られます。ここでは、信頼性工学の中核である
+<b>信頼性メトリクスの計算</b>と、あらゆる信頼性の議論の出発点になる<b>フォールト→エラー→障害の連鎖</b>を、実際に手を動かして体感します。
+さらに、5次元の識別とセキュリティ脅威の分類を、その場で答え合わせできるミニクイズも用意しました。</p>
+`;
+
+const CLOSING_HTML = `
+<p>最後に、5次元の知識を「使える判断力」に変えるための視点をまとめます。</p>
+<div class="callout warn">
+  <h4>ディペンダビリティは「作り込む」もの、「後付け」はできない</h4>
+  安全性やセキュリティは、実装が終わってから足し算で付けられるものではありません。設計の選択そのものがリスクを決めるため、
+  <strong>設計とリスク評価を反復しながら</strong>作り込む必要があります。テストで「起きないこと」を確認するのは本質的に難しく
+  （攻撃者は賢く、時間もこちらより潤沢かもしれません）、だからこそ上流の要求・設計・プロセスが決定的に重要です。
+</div>
+<div class="callout tip">
+  <h4>「障害は必ず起きる」を出発点にする</h4>
+  完全な防御は不可能です。信頼性・安全性で障害の<strong>発生確率を下げる</strong>と同時に、レジリエンスの発想で
+  「起きたあとにどう<strong>認識・抵抗・回復・復旧</strong>するか」を設計しておく：この二段構えが、現代のディペンダブルシステムの基本姿勢です。
+  重要サービスを識別し、それを守り・素早く復旧できるようにしておきましょう。
+</div>
+<div class="callout">
+  <h4>技術だけでなく「社会技術システム」として考える</h4>
+  障害の多くは技術ではなく、人間・組織・プロセスに起因します。過度な自動化や硬直した手順は、想定外の事態への対応力（レジリエンス）を奪います。
+  運用者を「問題の原因」ではなく「回復の担い手」と捉え、人がシステムの障害に対処できる余地を残すことが大切です。
+</div>
+
+<h4 style="margin-top:26px">混同しやすい用語・概念の見分け方</h4>
+<p>ディペンダビリティの語彙は似たものが多く、試験でも実務でも取り違えが起こります。<strong>「何を守るのか」「誰の視点か」</strong>で見分けます。</p>
+<table class="cmp-table">
+  <tr><th>似ている用語</th><th>見分けるポイント</th></tr>
+  <tr><td><b>可用性</b> と <b>信頼性</b></td>
+    <td>可用性は「<b>ある時点で使えるか</b>」（修復時間も影響）。信頼性は「<b>ある期間、障害なく正しく動くか</b>」。修復が速ければ信頼性が低くても可用性は高くなり得る。</td></tr>
+  <tr><td><b>フォールト</b> / <b>エラー</b> / <b>障害</b></td>
+    <td>フォールト＝コード中の<b>間違い</b>、エラー＝実行時の<b>誤った状態</b>、障害（failure）＝ユーザから見える<b>サービスの失敗</b>。フォールトがあっても障害になるとは限らない。</td></tr>
+  <tr><td><b>信頼性</b> と <b>安全性</b></td>
+    <td>信頼性は「仕様どおり動くか」、安全性は「<b>危害を与えないか</b>」。仕様どおりでも危険な出力はあり得る。信頼性は安全の必要条件だが十分条件ではない。</td></tr>
+  <tr><td><b>安全性</b> と <b>セキュリティ</b></td>
+    <td>安全性は<b>偶発的な</b>危害からの保護、セキュリティは<b>悪意ある攻撃</b>からの保護。攻撃を受ければ安全性も崩れるため両者は連動する。</td></tr>
+  <tr><td><b>冗長性</b> と <b>多様性</b></td>
+    <td>冗長性は「<b>予備を持つ</b>」、多様性は「予備を<b>異なる方式で</b>作る」。多様性がないと、同じフォールトで全予備が同時に倒れる。</td></tr>
+  <tr><td><b>ハザード</b> と <b>事故</b></td>
+    <td>ハザードは事故につながり<b>得る状態</b>、事故は実際に<b>危害が生じた事象</b>。安全工学はハザードの段階で連鎖を断つ。</td></tr>
+  <tr><td><b>脅威</b> と <b>脆弱性</b></td>
+    <td>脅威は「起こり得る<b>悪い出来事</b>」、脆弱性は攻撃者に利用され得る<b>弱点</b>。脅威×脆弱性が現実の攻撃を成立させる。</td></tr>
+  <tr><td><b>検証</b> と <b>妥当性確認</b></td>
+    <td>検証は「<b>正しく作っているか</b>」（仕様への適合）、妥当性確認は「<b>正しいものを作っているか</b>」（本当のニーズへの適合）。形式検証も証明の相手は仕様。</td></tr>
+  <tr><td><b>形式検証</b> と <b>モデル検査</b></td>
+    <td>形式検証は仕様への適合を<b>数学的に証明</b>。モデル検査は到達可能な<b>全状態を網羅探索</b>して性質を確認し、反例を返す。</td></tr>
+  <tr><td><b>フォールトトレランス</b> と <b>フォールト回避</b></td>
+    <td>回避は「フォールトを<b>作り込まない</b>」、トレランスは「フォールトがあっても<b>動き続ける</b>」。両者は補完し合う。</td></tr>
+</table>
+
+<h4 style="margin-top:26px">研究者の視点：ディペンダビリティは研究の最前線でもある</h4>
+<div class="callout">
+  <h4>形式手法・サイバーレジリエンス・自動化</h4>
+  安全クリティカル分野では、形式仕様・形式検証・モデル検査が実務でも使われ始めています。一方でネットワーク化が進み、
+  「攻撃は必ず成功する」前提での<strong>サイバーレジリエンス</strong>設計、重要サービスを守る<strong>生存可能性分析</strong>、
+  人的要因を織り込んだ<strong>社会技術的レジリエンス</strong>の研究が活発です。「完全な防御は不可能」という現実の中で、
+  いかに賢く守り、素早く立て直すか：ソフトウェア工学の重要な研究テーマの1つです。
+</div>
+
+<h4 style="margin-top:26px">さらに学ぶための文献・資料</h4>
+<ul>
+  <li>I. Sommerville『Software Engineering (10th ed.)』Pearson, 2016年, 第10〜14章：本教材の底本（Dependable systems / Reliability / Safety / Security / Resilience）</li>
+  <li>N. G. Leveson『Engineering a Safer World』MIT Press, 2011年：システム安全（STAMP/STPA）の重要文献</li>
+  <li>R. Anderson『Security Engineering (3rd ed.)』Wiley, 2020年：セキュリティ工学の定番（著者サイトで無料公開）</li>
+  <li>J. Reason『Human Error』Cambridge University Press, 1990年：スイスチーズモデルの原典</li>
+  <li>IPA『高信頼化ソフトウェアのための開発手法ガイドブック』：日本語で読める実務資料</li>
+</ul>
+`;
+</script>
+<script>
+/* ============== カテゴリ（5次元） ============== */
+const CAT_ORDER = ['overview','reliability','safety','security','resilience'];
+const CAT_META = {
+  overview:{ label:'ディペンダビリティ総論', en:'Dependability overview', color:'var(--overview)',
+    desc:'5次元を貫く土台となる考え方。ディペンダビリティとは何か、なぜ重要か、そしてすべての次元を支える冗長性・多様性・ディペンダブルプロセス・社会技術システムという基本概念を扱う。'},
+  reliability:{ label:'信頼性（Reliability）', en:'Reliability engineering', color:'var(--reliability)',
+    desc:'仕様どおりのサービスを正しく提供する能力を、どう仕様化・実現・測定するか。フォールト連鎖、可用性との違い、定量メトリクス、フォールトトレラントアーキテクチャ、統計的テストを扱う。'},
+  safety:{ label:'セーフティ（Safety）', en:'Safety engineering', color:'var(--safety)',
+    desc:'人や環境に危害を与えないための工学。ハザード駆動の要求仕様、フォールトツリーなどのハザード分析、安全性保証プロセス、そして規制当局に安全性を示すセーフティケースを扱う。'},
+  security:{ label:'セキュリティ（Security）', en:'Security engineering', color:'var(--security)',
+    desc:'悪意ある攻撃に抵抗する能力。資産・脅威・脆弱性・統制という基本語彙、機密性・完全性・可用性への脅威とその対策、セキュアな設計原則、リスクアセスメントとテストを扱う。'},
+  resilience:{ label:'レジリエンス（Resilience）', en:'Resilience engineering', color:'var(--resilience)',
+    desc:'障害や攻撃が「必ず起きる」前提で、重要サービスを維持・回復する能力。生存性の4戦略（認識・抵抗・回復・復旧）、重要資産の識別、社会技術的レジリエンスを扱う。'}
+};
+const BADGE_CLS = {'最重要':'imp3','5次元の核':'imp3','重要':'imp2','基礎概念':'imp2','発展':'imp1','用語整理':'imp1','プロセス':'imp1'};
+
+const TESTS = [
+/* ---------- 総論 ---------- */
+{
+  id:'ds-dimensions', name:'The Five Dimensions', jp:'ディペンダビリティの5次元', cat:'overview',
+  badge:'5次元の核', tags:['可用性','信頼性','安全性','セキュリティ','レジリエンス'],
+  summary:'ディペンダビリティ＝システムの<strong>「信頼できる度合い」</strong>。単一の特性ではなく、<strong>可用性・信頼性・安全性・セキュリティ・レジリエンス</strong>の5次元を包含する概念。',
+  analogy:'健康診断のようなもの。体温だけ、血圧だけを見ても「健康」とは言えない。複数の指標を総合して初めて「信頼できる状態」と判断できるのと同じで、ディペンダビリティも複数の次元で測る。',
+  purpose:'システムに求められる「信頼できること」を、測定・設計できる具体的な性質に分解すること。次元ごとに要求を立て、検証の基準を持てるようにする。',
+  who:'すべての次元の出発点。以降の信頼性・セーフティ・セキュリティ・レジリエンスの各カテゴリは、この5次元の各項目を掘り下げたもの。',
+  steps:[
+    '<b>可用性</b>：要求されたときにサービスを提供できるか（稼働している確率）を考える',
+    '<b>信頼性</b>：仕様どおりのサービスを正しく提供できるか（正しい結果を返す確率）を考える',
+    '<b>安全性</b>：人や環境に危害を与えずに動作するかを考える',
+    '<b>セキュリティ</b>：偶発的・意図的な侵入や攻撃に抵抗できるかを考える',
+    '<b>レジリエンス</b>：破壊的事象が起きてもサービスを維持・回復できるかを考える'
+  ],
+  points:[
+    '5次元は<b>独立ではなく相互に関係</b>する（セキュリティが破れれば可用性も安全性も崩れる）',
+    'ほかにも<b>修理性・保守性・誤り許容性</b>など多くの特性がディペンダビリティに寄与する',
+    'どの次元をどこまで重視するかは、システムの<b>目的とリスク</b>で決まる（医療機器と社内ツールでは違う）'
+  ],
+  cautions:[
+    '「信頼性が高い＝ディペンダブル」ではない。<b>信頼性は5次元の1つにすぎない</b>',
+    '次元を1つでも見落とすと、そこが弱点になる（セキュリティを忘れた高信頼システムなど）',
+    '5次元すべてを最高レベルにするのは非現実的：<b>優先順位づけ</b>が本質'
+  ],
+  examples:[
+    '航空管制システム：可用性・安全性・セキュリティすべてが極めて高いレベルで要求される',
+    'ワープロソフト：可用性はそこそこでよいが、データを壊さない信頼性は重要',
+    '医療記録システム：機密性（セキュリティ）と、誤った情報を出さない信頼性が特に重要'
+  ],
+  related:'<b>安全性</b>と<b>セキュリティ</b>の違い：安全性は「偶発的な危害」からの保護、セキュリティは「悪意ある攻撃」からの保護。<b>可用性</b>と<b>信頼性</b>の違いは、時点で使えるか（可用性）と期間中正しく動くか（信頼性）。',
+  modern:'クラウドの SLA は可用性（99.9%＝スリーナイン等）で契約される。近年は5次元に加え、プライバシーや説明可能性（AIシステム）も新たなディペンダビリティ特性として議論される。',
+  hasCode:false
+},
+{
+  id:'ds-importance', name:'Why & Cost Trade-off', jp:'重要性とコストのトレードオフ', cat:'overview',
+  badge:'重要', tags:['コスト曲線','トレードオフ','見極め'],
+  summary:'信頼できないシステムは<strong>拒否・回避され</strong>、障害コストは開発コストを上回りうる。一方で<strong>100%は達成不能</strong>で、レベルを上げるほどコストは急増する。',
+  analogy:'防犯対策に似ている。鍵を1つ足すごとに安心は増すが、費用と手間は加速度的に増え、どこまでやっても「絶対」はない。だから「どこまで守るか」を費用対効果で決める。',
+  purpose:'限られた資源の中で、どの次元をどのレベルまで高めるべきかを判断すること。過剰なディペンダビリティ追求による非効率を避ける。',
+  who:'要求分析・アーキテクチャ設計の段階で、ビジネス上の意思決定として繰り返し問われる。',
+  steps:[
+    '障害が起きたときの<b>損失</b>（経済・情報・人命・評判）を見積もる',
+    '各次元について、達成したい<b>レベル</b>を仮に置く',
+    'そのレベルを<b>検証するコスト</b>（レビュー・テスト・冗長化）を見積もる',
+    'コストと損失を突き合わせ、<b>必要十分なレベル</b>を見極める',
+    '過剰・過少がないか、リスクの変化に応じて<b>継続的に見直す</b>'
+  ],
+  points:[
+    'ディペンダビリティが高いほど<b>検証コストは指数的に増大</b>する（残りわずかを詰めるのが一番高い）',
+    '<b>コストと利便性はトレードオフ</b>：過剰なセキュリティは使いにくさを生む',
+    '「守るべき資産の価値」を超える対策コストは合理的でない'
+  ],
+  cautions:[
+    '「とにかく最高レベルに」は多くの場合<b>非効率</b>で、予算を使い切って肝心な次元が疎かになる',
+    '逆に「あとで追加すればいい」も危険：ディペンダビリティは<b>後付けが困難</b>',
+    'コスト見積もりは楽観に傾きやすい（障害コストを過小評価しがち）'
+  ],
+  examples:[
+    '99.9%（年間ダウン約8.8時間）と 99.999%（年間約5分）では、後者の実現コストは桁違い',
+    '銀行の基幹系：障害コストが巨大なので高い信頼性投資が正当化される',
+    '個人ブログ：多少落ちても損失は小さいので、過剰な冗長化は不要'
+  ],
+  related:'<b>リスクアセスメント</b>（セキュリティ）や<b>ハザード評価</b>（セーフティ）は、このコスト判断を各次元で具体化したもの。ALARP（合理的に実行可能な限り低減）の考え方も同根。',
+  modern:'クラウドでは可用性の目標が「ナインの数」で価格帯として明示される。SRE のエラーバジェットは「100%を目指さない」を組織的に運用する仕組み。',
+  hasCode:false
+},
+{
+  id:'ds-redundancy', name:'Redundancy & Diversity', jp:'冗長性と多様性', cat:'overview',
+  badge:'最重要', tags:['予備を持つ','異なる方式','共通原因故障'],
+  summary:'5次元すべてを支える基本戦略。<strong>冗長性</strong>＝予備の能力を持たせる。<strong>多様性</strong>＝冗長な要素を<strong>異なる方式</strong>で実現し、同じ誤りを共有させない。',
+  analogy:'飛行機のエンジンが複数あるのが冗長性。さらに、それらを別メーカー・別設計にして「同じ欠陥で全部同時に止まる」のを防ぐのが多様性。予備の傘を持つだけでなく、種類の違う傘を持つ発想。',
+  purpose:'単一の故障や誤りがシステム全体の破局につながらないようにすること。信頼性・可用性・レジリエンスの実装上の土台。',
+  who:'ハードウェア・ソフトウェア・プロセスのあらゆる層で、アーキテクチャ設計時に検討する。',
+  steps:[
+    '単一障害点（single point of failure）を洗い出す',
+    '重要な要素に<b>予備（冗長性）</b>を用意する（予備サーバ・バックアップ・複製）',
+    '予備が本番と<b>同じ誤りを共有しない</b>よう、異なる方式で実現する（多様性）',
+    '切り替え（フェイルオーバー）の仕組みと、その正しさを検証する',
+    '冗長化で増した<b>複雑さ</b>が新たな誤りを生んでいないか点検する'
+  ],
+  points:[
+    '冗長性だけでは<b>共通原因故障</b>を防げない：同じバグを持つ複製は同時に倒れる。だから多様性が要る',
+    'プロセスの多様性（複数の検証活動）も、欠陥を取り逃さないための冗長性の一種',
+    'バックアップ・複数サーバ・別チーム開発・別OS：いずれもこの2語の応用'
+  ],
+  cautions:[
+    '冗長性・多様性は<b>システムを複雑にし、新たな誤りの原因</b>にもなる',
+    '多様性は<b>コストが非常に高い</b>（複数実装・複数運用）：本当に必要な超高信頼系に限る',
+    '「独立に開発した」つもりでも、同じ仕様の誤解から<b>同じ誤り</b>が生じうる（多様性の限界）'
+  ],
+  examples:[
+    'データベースのレプリケーション（冗長性）＋別データセンター配置（多様性）',
+    'RAID によるディスク冗長化',
+    '航空機の N-version programming：多様なハードとソフトで多数決（信頼性カテゴリで詳説）'
+  ],
+  related:'信頼性カテゴリの<b>フォールトトレラントアーキテクチャ</b>は、この2語を具体的なパターン（保護システム・自己監視・N-version）に落としたもの。',
+  modern:'クラウドの可用性ゾーン／リージョン分散、Kubernetes のレプリカとローリング更新、カオスエンジニアリング（意図的に壊して冗長性を検証）などが現代的な実践。',
+  hasCode:false
+},
+{
+  id:'ds-process', name:'Dependable Process', jp:'ディペンダブルプロセスと形式手法', cat:'overview',
+  badge:'プロセス', tags:['良いプロセス','V&V','形式手法'],
+  summary:'良いプロセスは欠陥の少ないソフトウェアをもたらす。<strong>明示的・反復可能・監査可能・文書化</strong>され、全段階に検証活動を含むプロセスがディペンダビリティの前提。',
+  analogy:'料理の衛生管理に似ている。誰が作っても安全な料理が出せるのは、手順が定義され、記録され、点検されているから。属人的な「勘」に頼るプロセスは、当たり外れが大きい。',
+  purpose:'成果物の欠陥を最小化すること。プロセスへの投資を通じて、結果としてディペンダブルなソフトウェアを再現性高く生み出す。',
+  who:'開発プロセス全体の設計・改善時に。特に安全クリティカル分野では認証された（certified）プロセスが要求される。',
+  steps:[
+    '要求レビュー・要求管理で、そもそもの仕様の質を高める',
+    '形式仕様・システムモデリングで曖昧さ・矛盾を減らす',
+    '設計・コードの<b>インスペクションと静的解析</b>を行う',
+    'テスト計画・管理と、構成管理・変更管理を徹底する',
+    '各段階の証拠を<b>文書化</b>し、監査・認証に備える'
+  ],
+  points:[
+    'ディペンダブルプロセスの特性：<b>明示的・反復可能・監査可能・多様（複数の検証活動）・文書化・堅牢・標準化</b>',
+    '<b>形式手法</b>（形式検証・モデル検査）は仕様の曖昧さ・矛盾を早期に発見し、実装の誤りを減らす',
+    'アジャイルとの両立には、文書化などの適応が必要'
+  ],
+  cautions:[
+    '形式手法は<b>普及が限定的</b>：顧客が形式仕様を理解できない／高い専門知識が要る／大規模化とGUI仕様化が難しい',
+    'プロセスの重厚化は<b>コスト</b>を生む：目的（安全クリティカルか）に見合うかを判断する',
+    '「文書化」が目的化すると、形骸化した記録の山になる'
+  ],
+  examples:[
+    '航空機ソフトウェアでの形式仕様・検証の適用実績',
+    'DO-178C（航空）・IEC 61508（機能安全）などの認証プロセス',
+    '重要システムの構成管理・トレーサビリティ（どの要求がどのコードに対応するか追跡）'
+  ],
+  related:'セーフティカテゴリの<b>安全性保証プロセス</b>や<b>形式検証・モデル検査</b>は、このディペンダブルプロセスを安全分野で具体化したもの。',
+  modern:'CI/CD パイプライン、Infrastructure as Code、自動テスト・静的解析のゲート化により、「反復可能で監査可能なプロセス」を現代的に実装できるようになった。',
+  hasCode:false
+},
+{
+  id:'ds-sociotechnical', name:'Sociotechnical Systems', jp:'社会技術システムと規制', cat:'overview',
+  badge:'発展', tags:['人・組織・プロセス','規制と遵守','全体で考える'],
+  summary:'ソフトウェアは<strong>社会技術システムの一部</strong>として動く。障害の多くは技術ではなく<strong>人間・組織・プロセス</strong>に起因するため、システムを全体として捉える必要がある。',
+  analogy:'病院の医療ミスに似ている。原因は「機器の不具合」だけでなく、手順・連携・組織文化にまたがる。機器だけ直しても、仕組み全体を見なければ再発する。',
+  purpose:'ディペンダビリティを技術だけの問題に矮小化せず、装置・OS・アプリ・業務プロセス・組織・社会までの階層全体で捉えること。',
+  who:'システムの要求分析・運用設計、および規制対応の段階で。',
+  steps:[
+    'システムを階層で捉える：<b>装置 → OS → アプリ → 業務プロセス → 組織 → 社会</b>',
+    '各層で起こりうる障害要因（技術・人・組織）を洗い出す',
+    '運用者のエラーや手順の不備が障害につながる経路を検討する',
+    '安全クリティカル分野では<b>規制当局</b>による認可を前提に設計する',
+    '安全性の証拠（<b>セーフティケース</b>）を用意する'
+  ],
+  points:[
+    '障害の多くは<b>技術ではなく人間・組織</b>に起因する（運用エラー・不適切な手順・組織文化）',
+    '規制と遵守（Regulation and compliance）：航空などでは<b>規制当局がシステムを認可</b>する',
+    '完全な自動化が困難な政府機能などは、社会技術システムとして人が関与し続ける'
+  ],
+  cautions:[
+    '技術だけを見て「直した」と思うと、人・組織起因の障害を見落とす',
+    '規制は保守的で<b>イノベーションを阻害する</b>という批判もある（トレードオフ）',
+    '組織文化は変えにくく、技術対策より時間がかかる'
+  ],
+  examples:[
+    '航空管制：技術・管制官・手順・規制が一体となったシステム',
+    '電子カルテ：入力手順や運用ルールを含めて初めて安全になる',
+    '規制当局への認可申請に用いるセーフティケース'
+  ],
+  related:'レジリエンスカテゴリの<b>社会技術的レジリエンス</b>（人的エラー・スイスチーズモデル）は、この視点を回復力の設計に応用したもの。',
+  modern:'STAMP/STPA など、システム全体を制御構造として捉える近代的な安全解析手法が、社会技術システムの視点を形式化しつつある。',
+  hasCode:false
+},
+/* ---------- 信頼性 ---------- */
+{
+  id:'rel-chain', name:'Fault to Failure', jp:'フォールト→エラー→障害の連鎖', cat:'reliability',
+  badge:'最重要', tags:['fault','error','failure','連鎖を断つ'],
+  summary:'信頼性工学の出発点。<strong>フォールト（欠陥）→ エラー（誤った状態）→ 障害（サービスの失敗）</strong>という連鎖を区別する。<strong>フォールトがあっても障害になるとは限らない</strong>。',
+  analogy:'道路の穴（フォールト）があっても、車が通らなければ何も起きない。車が穴にはまれば車体が傾き（エラー）、それが事故（障害）につながることもあれば、ゆっくり通れば無事なこともある。連鎖はどこでも断てる。',
+  purpose:'「バグがある＝必ず失敗する」という誤解を解き、連鎖のどこで断てば障害を防げるかを考える枠組みを持つこと。',
+  who:'信頼性を議論するすべての場面の基礎語彙。上の<a href="#tools">可視化ツール</a>で各段をクリックして体感できる。',
+  steps:[
+    '<b>人間の過ち（human error）</b>がコードに<b>フォールト</b>を作り込む',
+    'フォールトを含むコードが<b>実行</b>され、変数などが<b>エラー</b>（誤った状態）になる',
+    'エラーが外部に波及し、ユーザから見える<b>障害（failure）</b>になる',
+    '各リンクを断つ手を考える：フォールトを作らない／エラーを検出・訂正する／障害に至らせない',
+    '障害が起きても被害を最小化する（フォールトトレランス）'
+  ],
+  points:[
+    '<b>フォールト → エラー</b>は、そのコードが実行されなければ起きない（到達しない欠陥は障害を生まない）',
+    '<b>エラー → 障害</b>は、誤った状態が外部に影響しなければ起きない（内部で吸収されることもある）',
+    'だから信頼性は<b>ユーザが経験するもの</b>：使い方によって経験する信頼性が変わる'
+  ],
+  cautions:[
+    '「テストで見つからない＝フォールトが無い」ではない（実行されていないだけかもしれない）',
+    '誤った状態（エラー）が<b>見えないまま蓄積</b>し、後で大きな障害になることがある',
+    '日常語では fault/error/failure を混同しがちだが、<b>信頼性工学では厳密に区別</b>する'
+  ],
+  examples:[
+    '境界条件の <code>&lt;</code> と <code>&lt;=</code> の取り違え（フォールト）→ その分岐が実行され誤った値（エラー）→ 誤請求（障害）',
+    'めったに通らないエラー処理路のバグ：フォールトはあるが障害はまれ',
+    '入力チェックで異常値を弾く：エラーが障害に波及するのを断ち切る'
+  ],
+  related:'<b>可用性と信頼性の違い</b>：この連鎖で障害が起きても、素早く復旧すれば可用性は保てる。<b>フォールトトレランス</b>は障害後も動き続ける工夫。',
+  modern:'オブザーバビリティ（ログ・メトリクス・トレース）は、エラーが障害になる前に「誤った状態」を検知するための現代的な手段。',
+  hasCode:false
+},
+{
+  id:'rel-avail', name:'Availability vs Reliability', jp:'可用性と信頼性の違い', cat:'reliability',
+  badge:'重要', tags:['確率としての定義','修復時間','ユーザ経験'],
+  summary:'<strong>信頼性</strong>＝所与の期間・環境で障害なくサービスを提供する確率。<strong>可用性</strong>＝ある時点でシステムが稼働しサービスを提供できる確率。<strong>修復時間</strong>が可用性を左右する。',
+  analogy:'電車に例えると、信頼性は「遅れずに正しく目的地に着く割合」、可用性は「駅に行けばすぐ乗れる割合」。頻繁に止まっても復旧が一瞬なら可用性は高い。逆に滅多に止まらなくても一度止まると長いと可用性は下がる。',
+  purpose:'似て非なる2つの性質を区別し、システムの目的に応じて適切な方を（あるいは両方を）要求できるようにすること。',
+  who:'信頼性要求を定義する段階で。要求は測定可能なメトリクスで表す（次のカード）。',
+  steps:[
+    '対象システムにとって「障害」とは何かを定義する',
+    '<b>信頼性</b>を考える：一定期間、障害なく正しく動く確率はどれくらい必要か',
+    '<b>可用性</b>を考える：ある時点で使える確率はどれくらい必要か',
+    '<b>修復・再起動の時間</b>が可用性に与える影響を見積もる',
+    '数学的定義だけでなく、<b>ユーザの認識・経験</b>を基準に妥当性を確認する'
+  ],
+  points:[
+    '<b>可用性は修復時間に依存</b>する：故障頻度が同じでも、復旧が速いほど可用性は高い',
+    '信頼性はユーザごとに異なる：誤りを起こす入力集合 <code>Ie</code> は入力空間のごく一部で、使う入力が違えば経験する信頼性も違う',
+    'どちらも<b>数学的定義よりユーザの経験</b>が重要（仕様適合だけでは不十分）'
+  ],
+  cautions:[
+    '「信頼性が高い＝可用性も高い」とは限らない（復旧が遅ければ可用性は低い）',
+    '平均値だけ見ると、まれだが致命的な障害を見落とす',
+    'ベンチマークの信頼性が、実運用のユーザにそのまま当てはまるとは限らない'
+  ],
+  examples:[
+    '通信交換機：24/7 の高可用性が要る（安全クリティカルではない）→ 復旧の速さが鍵',
+    'バッチ処理：一時的に使えなくても、正しい結果を出す信頼性が重要',
+    'ATM：故障頻度が低く、かつ復旧も速いことの両方が求められる'
+  ],
+  related:'次の<b>信頼性メトリクス</b>で、この2つを POFOD・ROCOF・AVAIL として定量化する。<a href="#tools">計算機</a>で MTTR（修復時間）を動かすと可用性への効き方が分かる。',
+  modern:'クラウドの SLA は主に可用性で契約される。SRE では SLI（指標）/SLO（目標）/SLA（契約）を分けて運用する。',
+  hasCode:false
+},
+{
+  id:'rel-metrics', name:'Reliability Metrics', jp:'信頼性メトリクス（POFOD/ROCOF/MTTF/AVAIL）', cat:'reliability',
+  badge:'最重要', tags:['POFOD','ROCOF','MTTF','AVAIL','定量化'],
+  summary:'信頼性要求を<strong>定量的・検証可能</strong>にするための尺度。<strong>POFOD</strong>（要求あたり故障確率）・<strong>ROCOF</strong>（単位時間あたり故障率）・<strong>MTTF</strong>（平均故障時間）・<strong>AVAIL</strong>（可用性）。',
+  analogy:'健康の数値化に似ている。「なんとなく健康」ではなく、血圧や血糖値という数字にするから、基準と比較でき、改善を検証できる。信頼性も数字にして初めて要求・検証できる。',
+  purpose:'「信頼性が高いこと」という曖昧な要求を、測定・合否判定できる数値目標に変換すること（例：POFOD < 0.0001）。',
+  who:'非機能要求として要求仕様に記述し、統計的テストで検証する。障害の影響度に応じてレベルを変える。',
+  steps:[
+    '<b>POFOD</b>＝失敗した要求数 / 総要求数。1回の要求で失敗する確率（例：0.0001）',
+    '<b>ROCOF</b>＝単位時間・単位数あたりの故障回数（例：10,000件の処理で2回）',
+    '<b>MTTF/MTBF</b>＝故障までの平均時間（連続稼働系で有効）',
+    '<b>AVAIL</b>＝稼働 /（稼働＋停止）＝ MTBF /（MTBF＋MTTR）（例：0.9999）',
+    '障害の<b>影響度（コスト）</b>に応じて、機能ごとに異なるレベルを設定する'
+  ],
+  points:[
+    'システムの性質でメトリクスを選ぶ：要求駆動なら<b>POFOD</b>、連続稼働なら<b>ROCOF/MTTF</b>、24/7なら<b>AVAIL</b>',
+    '可用性の「<b>ナインの数</b>」：0.99＝年間3.65日ダウン、0.9999＝年間約1時間、0.99999＝年間約5分',
+    '定量化することで<b>コストとのトレードオフが明確</b>になり、検証の基準になる'
+  ],
+  cautions:[
+    '「システム全体の生涯で数回の故障」のような<b>極端に小さい値は実質的に検証不能</b>（テストで到達できない）',
+    'メトリクスは<b>運用プロファイル</b>（実際の使われ方）に依存する：想定がずれれば数字も意味を失う',
+    '平均（MTTF）は分布のばらつきを隠す'
+  ],
+  examples:[
+    '心臓ペースメーカー：POFOD を極小に（要求あたりの失敗が許されない）',
+    '電話交換システム：AVAIL を 0.9999 以上に',
+    '銀行の取引処理：ROCOF を「N件あたり1回未満」で規定'
+  ],
+  related:'前の<b>可用性と信頼性</b>を数値化したもの。<a href="#tools">信頼性メトリクス計算機</a>で POFOD・AVAIL・MTBF から可用性を実際に計算できる。',
+  modern:'SLO/エラーバジェット（許容できる失敗の予算）は POFOD/可用性の運用版。監視基盤が実測値を継続的に収集する。',
+  hasCode:false
+},
+{
+  id:'rel-fault-tolerance', name:'Fault-Tolerant Architectures', jp:'フォールトトレラントアーキテクチャ', cat:'reliability',
+  badge:'重要', tags:['保護システム','自己監視','N-version','TMR'],
+  summary:'障害が起きても<strong>動作を継続する</strong>能力を、アーキテクチャで実現する。冗長性・多様性を具体化した<strong>保護システム・自己監視・N-version programming</strong>などのパターン。',
+  analogy:'旅客機の設計思想。1つのエンジンが止まっても飛べるし、複数の独立した系統が互いを監視し、食い違えば安全側に倒す。単一の故障が墜落に直結しないよう、幾重にも備える。',
+  purpose:'クリティカルシステムで、単一の障害が破局につながらないようにすること。フォールトを取り除けなくても、障害の影響を封じ込める。',
+  who:'高信頼が要求されるシステムのアーキテクチャ設計時に。すべての故障を除去するより現実的な選択肢。',
+  steps:[
+    '<b>保護システム</b>：主システムと独立に危険な状態を監視。保護機能のみに特化するので単純で信頼しやすい',
+    '<b>自己監視アーキテクチャ</b>：複数チャネルで同じ計算を行い結果を比較。不一致なら障害とみなし安全側へ',
+    '<b>N-version programming</b>：独立開発した複数バージョンの出力を<b>多数決</b>（例：三重モジュール冗長 TMR）',
+    '多様性（別チーム・別ハード・別アルゴリズム）で共通原因故障を減らす',
+    '切り替え・多数決ロジック自体の正しさを検証する'
+  ],
+  points:[
+    'すべてのフォールトトレラントスタイルに共通するのは<b>冗長性と多様性</b>の利用',
+    'Airbus 340 の飛行制御は、多様なハードとソフトによる N-version の実例',
+    '保護システムは<b>単純さ</b>ゆえに高信頼：「監視だけ」に絞るのがコツ'
+  ],
+  cautions:[
+    'ソフトウェア多様性は<b>真の独立を保証できない</b>：同じ仕様の誤解から同じ誤りが生じる（共通原因故障）',
+    '<b>仕様の誤りは多様性では防げない</b>（全バージョンが同じ間違った仕様に従う）',
+    '多様性は<b>コストが非常に高い</b>：本当に必要な超高信頼系に限定する'
+  ],
+  examples:[
+    '航空機の三重化された飛行制御コンピュータ（多数決）',
+    '原子力プラントの独立した保護系（安全側に停止）',
+    'データベースの同期レプリカ＋自動フェイルオーバー'
+  ],
+  related:'総論の<b>冗長性と多様性</b>を具体パターンに落としたもの。<b>信頼できるプログラミング</b>（入力検査・例外処理）はコードレベルの補完。',
+  modern:'分散システムのコンセンサス（Raft/Paxos）、サーキットブレーカー、ヘルスチェックとオートスケールが、現代版のフォールトトレランス。',
+  hasCode:false
+},
+{
+  id:'rel-measurement', name:'Statistical Testing', jp:'統計的テストと運用プロファイル', cat:'reliability',
+  badge:'発展', tags:['運用プロファイル','統計的テスト','残存フォールト'],
+  summary:'信頼性は<strong>統計的テスト</strong>で測る。実際の使われ方（<strong>運用プロファイル</strong>）に沿ったテストデータで多数実行し、観測された障害から POFOD・ROCOF を推定する。',
+  analogy:'新薬の臨床試験に似ている。実際の患者集団に近い人々で大量に試し、副作用の発生率を統計的に推定する。想定と違う集団で試せば、現実の安全性は分からない。',
+  purpose:'開発したソフトウェアの信頼性を、実運用に近い条件で定量的に見積もること。要求（POFOD < 0.0001 等）を満たすかを検証する。',
+  who:'信頼性測定の段階で。運用プロファイルの作成が前提となる。',
+  steps:[
+    '<b>運用プロファイル</b>を作る：入力クラスごとの発生確率の分布（少数のクラスが大半を占めることが多い）',
+    'プロファイルに従ってテストデータを生成する',
+    '多数のテストを実行し、<b>観測された障害</b>を記録する',
+    '障害数から <b>POFOD・ROCOF</b> などを算出する',
+    '要求値と比較し、必要なら改善して再測定する'
+  ],
+  points:[
+    '<b>運用プロファイルに一致</b>したテストデータであることが、推定の妥当性の鍵',
+    '入力の分布は偏る：少数の入力クラスが利用の大半を占める',
+    '残存フォールト除去のコストは、残りわずかになるほど<b>急激に増大</b>する'
+  ],
+  cautions:[
+    '<b>運用プロファイルの作成は容易でない</b>（特に新システムでは実データがない）',
+    'プロファイルがずれると、推定した信頼性は現実と乖離する',
+    '<b>すべてのフォールト除去は費用対効果に合わない</b>：どこで止めるかの判断が要る'
+  ],
+  examples:[
+    '電話交換機を、実際の通話パターンの分布で大量テストして信頼性を推定',
+    'Web サービスを、本番アクセスログの分布を模した負荷で検証',
+    '新規システムでは、類似システムのプロファイルや専門家の見積もりで代替'
+  ],
+  related:'<b>信頼性メトリクス</b>の値を実際に得るための手段。統計的テストは、開発テストの<b>欠陥発見</b>とは目的が異なる（信頼性の<b>測定</b>）。',
+  modern:'本番トラフィックのシャドウ実行、A/Bテスト、カナリアリリースは、運用プロファイルそのもので信頼性を測る現代的な形。',
+  hasCode:false
+},
+/* ---------- セーフティ ---------- */
+{
+  id:'safe-hazard', name:'Hazard & 3 Strategies', jp:'ハザードと安全確保の3手段', cat:'safety',
+  badge:'最重要', tags:['ハザード回避','検出と除去','損害制限'],
+  summary:'安全クリティカルシステムは<strong>常に安全でなければならない</strong>。安全性は<strong>①ハザード回避 ②ハザードの検出と除去 ③損害制限</strong>の3手段で確保する。',
+  analogy:'火災対策の三段構え。そもそも燃えやすい物を置かない（回避）、煙を検知して初期消火する（検出と除去）、燃え広がっても防火扉で被害を抑える（損害制限）。どれか1つでなく重ねる。',
+  purpose:'人やシステムの環境に危害を与えないこと。信頼性だけでは防げない事故（仕様どおりでも危険な出力）を防ぐ。',
+  who:'安全クリティカルシステムの要求・設計の全段階で。ハザードを起点に安全要求を導く。',
+  steps:[
+    '対象システムの<b>ハザード</b>（事故につながり得る状態）を洗い出す',
+    '<b>① ハザード回避</b>：ハザードが生じないようにシステムを設計する',
+    '<b>② 検出と除去</b>：危害につながる前にハザードを検出して除去する',
+    '<b>③ 損害制限</b>：事故が起きても影響を最小化する機能を含める',
+    '各手段から具体的な<b>安全要求</b>を導く'
+  ],
+  points:[
+    '<b>信頼性は安全性の必要条件だが十分条件ではない</b>：仕様に適合していても事故は起きうる（ワルシャワ空港の事故）',
+    '2つのタイプ：<b>一次安全クリティカル</b>（誤動作が直接危害）／<b>二次安全クリティカル</b>（間接的に危害。例：医療記録）',
+    '3手段は排他ではなく<b>組み合わせて</b>用いる（多重防御）'
+  ],
+  cautions:[
+    '「信頼性を上げれば安全になる」という誤解：危険な出力を正確に出しても危険',
+    'ハザードの見落としは致命的：経験・チェックリスト・グループ討議で網羅性を高める',
+    '損害制限（フェイルセーフ）を後回しにすると、想定外事象で被害が拡大する'
+  ],
+  examples:[
+    'インスリンポンプ：過剰投与・過少投与・電源故障・感染などのハザード',
+    '列車保護：速度超過や赤信号進入を検出して自動でブレーキ（検出と除去）',
+    'エレベータ：異常時に最寄り階で安全に停止（損害制限）'
+  ],
+  related:'この3手段は、セキュリティの<b>脆弱性回避／攻撃の検出・無力化／暴露の制限と回復</b>と同じ構造。次の<b>ハザード分析</b>で根本原因を体系的にさかのぼる。',
+  modern:'STPA（システム理論に基づくハザード解析）は、構成要素の故障だけでなく<b>相互作用</b>から生じるハザードも扱う近代的手法。',
+  hasCode:false
+},
+{
+  id:'safe-analysis', name:'Hazard Analysis (FTA)', jp:'ハザード分析（FTA・リスク三角形）', cat:'safety',
+  badge:'重要', tags:['フォールトツリー','演繹的分析','ALARP'],
+  summary:'安全要求は<strong>ハザードの分析</strong>から導く。<strong>ハザード識別 → 評価 → 分析 → リスク低減</strong>の段階を経る。<strong>フォールトツリー解析（FTA）</strong>で根本原因を体系的にさかのぼる。',
+  analogy:'事故調査に似ている。「なぜ？」を繰り返して原因を分解し、どの要因を潰せば事故が防げたかを特定する。FTA はこれを AND/OR ゲートで図式化した「逆向きの因果マップ」。',
+  purpose:'ハザードの根本原因を突き止め、どこに手を打てば連鎖を断てるかを明らかにして、具体的な安全要求を導くこと。',
+  who:'安全要求仕様の段階で。ハザード駆動アプローチの中核。',
+  steps:[
+    '<b>ハザード識別</b>：起こりうるハザードを列挙（経験・チェックリスト・グループ討議）',
+    '<b>ハザード評価</b>：深刻度と確率からリスクを分類し、受容可能性を判断（リスク三角形）',
+    '<b>ハザード分析</b>：FTA でハザードの根本原因を演繹的にさかのぼる（AND/OR ゲートで分解）',
+    'ソフトウェア関連の原因を特定する',
+    '<b>リスク低減</b>：回避・検出除去・損害制限の方針から安全要求を導く'
+  ],
+  points:[
+    'リスク受容の3区分：<b>排除すべきリスク</b>／<b>ALARP</b>（合理的に実行可能な限り低減）／<b>受容可能</b>',
+    'FTA は<b>演繹的</b>（トップのハザードから原因へ）。ボトムアップの FMEA（故障モード影響解析）と補完関係',
+    'AND ゲート（両方揃うと発生）と OR ゲート（どれかで発生）で原因構造を表す'
+  ],
+  cautions:[
+    'ハザードの<b>識別漏れ</b>があると、以降の分析すべてが穴を持つ',
+    '確率の見積もりは不確実：保守的に扱う',
+    'ソフトウェアの故障は「摩耗」しないため、ハードウェア流の確率モデルがそのままは使えない'
+  ],
+  examples:[
+    'インスリンポンプの過剰投与を頂点に、FTA でセンサ誤り・計算バグ・アクチュエータ故障に分解',
+    'リスク三角形でインスリンポンプの各ハザードを分類',
+    'FMEA で各部品の故障モードが全体に及ぼす影響を表にする'
+  ],
+  related:'前の<b>3手段</b>のうち、どれを適用するかを FTA の結果から決める。信頼性の<b>フォールト連鎖</b>を安全の文脈で図式化したものとも言える。',
+  modern:'STPA、モデルベース安全解析（AltaRica 等）、形式手法との組み合わせで、複雑な相互作用起因のハザードも解析できるようになりつつある。',
+  hasCode:false
+},
+{
+  id:'safe-assurance', name:'Safety Assurance', jp:'安全性保証プロセス（形式検証・モデル検査・静的解析）', cat:'safety',
+  badge:'重要', tags:['ハザード登録簿','形式検証','モデル検査','静的解析'],
+  summary:'信頼性工学を基礎に、<strong>仕様と検証をさらに重視</strong>する。<strong>ハザード登録簿</strong>で対応を追跡し、<strong>形式検証・モデル検査・静的プログラム解析</strong>で安全性を保証する。',
+  analogy:'建築の耐震検査に似ている。設計図の計算チェック（形式検証）、あらゆる揺れ方のシミュレーション（モデル検査）、施工後の非破壊検査（静的解析）を重ね、記録を残して認可に備える。',
+  purpose:'安全クリティカルソフトウェアが安全要求を満たすことを、証拠を伴って保証すること。規制対応の基盤となる。',
+  who:'安全クリティカル開発プロセス全体で。プロジェクト安全技師の任命と安全レビューを伴う。',
+  steps:[
+    '詳細なシステム仕様を作成し、構成管理とトレーサビリティを徹底する',
+    '<b>ハザード登録簿（hazard register）</b>で、各ハザードへの対応・担当・証拠を記録し追跡する',
+    '<b>形式検証</b>：形式モデルからの数学的証明で仕様への適合を示す',
+    '<b>モデル検査</b>：到達可能な全状態を調べ、安全特性が常に成り立つか確認（反例を返す）',
+    '<b>静的プログラム解析</b>：実行せずにコードの異常（未初期化変数・到達不能コード・境界超過）を検出'
+  ],
+  points:[
+    'ハザード登録簿は、規制対応の<b>証拠</b>としても機能する',
+    'モデル検査は<b>反例が見つかればモデルの誤りを特定</b>できる（網羅的な静的解析の一種）',
+    '静的解析は<b>実行されない部分も含めて全体</b>を検査できる（テストの穴を補う）'
+  ],
+  cautions:[
+    '形式検証の<b>証明の相手は仕様</b>：仕様自体が間違っていれば意味がない（仕様の妥当性確認も必要）',
+    '形式手法は<b>コストが高く</b>、超高信頼が必要な場合に正当化される',
+    'モデル検査は<b>状態爆発</b>で大規模系にスケールしにくい'
+  ],
+  examples:[
+    '航空機ソフトウェアでの形式仕様・検証の適用実績',
+    'インスリンポンプのハザード登録簿（各ハザードの対応と証拠）',
+    '静的解析ツールによる未初期化変数・境界超過の自動検出'
+  ],
+  related:'総論の<b>ディペンダブルプロセス・形式手法</b>を安全分野で具体化したもの。得られた証拠は次の<b>セーフティケース</b>に集約される。',
+  modern:'CBMC・SPARK/Ada・TLA+ などの形式手法ツール、Coverity・Polyspace などの静的解析が、認証プロセスに組み込まれている。',
+  hasCode:false
+},
+{
+  id:'safe-case', name:'Safety Cases', jp:'セーフティケース（構造化論証）', cat:'safety',
+  badge:'重要', tags:['安全性の論証','主張-証拠-論証','規制認可'],
+  summary:'システムが<strong>安全であることを示す文書群</strong>。規制当局によるシステム認可の基礎となる。<strong>主張（claim）</strong>を<strong>証拠（evidence）</strong>と<strong>論証（argument）</strong>で支える。',
+  analogy:'裁判での立証に似ている。「このシステムは安全だ」という主張を、証拠（テスト・解析の記録）と論理（なぜその証拠が主張を支えるか）で組み立て、審査官（規制当局）を納得させる。',
+  purpose:'システムが安全であることを、構造化された論証と証拠で説得力をもって示し、規制当局の認可を得ること。',
+  who:'安全クリティカルシステムのリリース前、および変更のたびに。外部の規制当局が認可する場合に必須。',
+  steps:[
+    'システム記述・安全要求・ハザード分析・検証証拠などを収集する',
+    '最上位の<b>主張</b>（例：「システムは安全である」）を置く',
+    '主張を<b>サブ主張</b>に分解する（クレームの階層）',
+    '各サブ主張を<b>証拠</b>（テスト・解析・プロセス記録）と<b>論証</b>で支える',
+    'ソフトウェア安全性論証：危険な状態に到達しえないことを<b>事前・事後条件</b>から示す',
+    'システム変更時には<b>更新</b>する'
+  ],
+  points:[
+    '構造：<b>主張 ← 論証 ← 証拠</b> の階層で「システムは安全」に至る',
+    'ソフトウェア安全性論証の型：「<b>危険な出力に至る経路では必ず安全チェックを通る</b>」ことを示す',
+    'GSN（Goal Structuring Notation）などで論証を図式化する'
+  ],
+  cautions:[
+    'システムを変更したら<b>セーフティケースの更新</b>が必要（古い証拠は無効になりうる）',
+    '証拠が主張を<b>本当に支えているか</b>（論証の飛躍がないか）を厳しく点検する',
+    '文書量が膨大になりがち：要点の追跡可能性を保つ'
+  ],
+  examples:[
+    'インスリンポンプのクレーム階層（「投与量は安全範囲内」等に分解）',
+    '安全チェック付きインスリン投与量計算のコード論証（下のコード例）',
+    '航空・鉄道・原子力での規制当局向けセーフティケース'
+  ],
+  related:'前の<b>安全性保証プロセス</b>で得た証拠を集約する最終成果物。総論の<b>社会技術システムと規制</b>で触れた「安全性の証拠」の具体形。',
+  modern:'GSN や Assurance Cases のツール化、セキュリティを含む dependability case への拡張、モデルベースの論証自動生成が研究・実務で進む。',
+  hasCode:true
+},
+/* ---------- セキュリティ ---------- */
+{
+  id:'sec-basics', name:'Assets, Threats, Controls', jp:'資産・脅威・脆弱性・統制', cat:'security',
+  badge:'最重要', tags:['資産','脅威','脆弱性','統制','暴露'],
+  summary:'セキュリティ＝悪意ある内部・外部からの攻撃から自身を守る能力。基本語彙は<strong>資産・脅威・脆弱性・攻撃・統制（control）・暴露</strong>。<strong>資産を脅威から守る</strong>。',
+  analogy:'家の防犯に例えられる。資産＝貴重品、脅威＝泥棒、脆弱性＝壊れた鍵、攻撃＝実際の侵入、統制＝鍵や監視カメラ、暴露＝盗まれたときの損失。この語彙で守りを設計する。',
+  purpose:'セキュリティを共通の語彙で議論し、何を（資産）・何から（脅威）・どう守るか（統制）を体系的に設計できるようにすること。',
+  who:'セキュリティ要求分析の起点。すべてのシステムで重要（ネットワーク接続により外部攻撃が可能なため）。',
+  steps:[
+    '守るべき<b>資産</b>を洗い出し、価値と<b>暴露</b>（失った場合の損失）を評価する',
+    '各資産への<b>脅威</b>（起こり得る悪い出来事）を列挙する',
+    '攻撃に利用され得る<b>脆弱性</b>（弱点）を特定する',
+    '脅威に対する<b>統制（control）</b>を検討する',
+    '戦略を選ぶ：<b>脆弱性の回避／攻撃の検出と無力化／暴露の制限と回復</b>（バックアップ等）'
+  ],
+  points:[
+    'セキュリティ確保の戦略は<b>安全性の3手段と同じ構造</b>（回避・検出無力化・制限と回復）',
+    '<b>セキュリティなしでは可用性・信頼性・安全性も保証できない</b>：他の次元の前提',
+    'システムは<b>インフラ・アプリケーション・運用</b>の各層で侵害されうる'
+  ],
+  cautions:[
+    '資産の見落としは、そのまま無防備な穴になる',
+    '脆弱性は<b>技術だけでなく人・運用</b>にもある（弱いパスワード・手順の不備）',
+    '「脅威」と「脆弱性」を混同しない：脅威は外の出来事、脆弱性は内の弱点'
+  ],
+  examples:[
+    'Mentcare（医療）システム：患者情報＝資産、なりすまし＝脅威、弱い認証＝脆弱性、暗号化＝統制',
+    'EC サイト：クレジットカード情報という資産を、暗号化とアクセス制御で守る',
+    'バックアップによる「暴露の制限と回復」'
+  ],
+  related:'次の<b>4種の脅威</b>で、脅威を機密性・完全性・可用性の観点に整理する。安全性の<b>3手段</b>と発想が共通。',
+  modern:'STRIDE 脅威モデリング、CVE/CVSS による脆弱性管理、ゼロトラスト、SBOM（部品表）によるサプライチェーン防御が現代的な実践。',
+  hasCode:false
+},
+{
+  id:'sec-threats', name:'Four Threat Types', jp:'4種の脅威と対策', cat:'security',
+  badge:'重要', tags:['機密性','完全性','可用性','傍受/遮断/改ざん/捏造'],
+  summary:'脅威は守るべき目標で分類する。<strong>機密性への脅威（傍受）・完全性への脅威（改ざん・捏造）・可用性への脅威（遮断）</strong>。攻撃の型は<strong>Interception / Interruption / Modification / Fabrication</strong>。',
+  analogy:'郵便に例えると、盗み見（傍受＝機密性）、配達妨害（遮断＝可用性）、中身のすり替え（改ざん＝完全性）、偽の手紙の投函（捏造＝完全性・真正性）。守りたいものごとに対策が変わる。',
+  purpose:'脅威を「何を脅かすか」で分類し、それぞれに適した統制を選べるようにすること。上の<a href="#tools">脅威4分類クイズ</a>で答え合わせできる。',
+  who:'セキュリティ要求の導出（誤用ケース分析）で。攻撃者の視点で相互作用を記述する。',
+  steps:[
+    '<b>機密性への脅威（Interception／傍受）</b>：情報が権限のない者に漏れる → 対策：暗号化・アクセス制御',
+    '<b>可用性への脅威（Interruption／遮断）</b>：正当な利用者がアクセスできなくなる → 対策：冗長化・DoS対策',
+    '<b>完全性への脅威（Modification／改ざん）</b>：データやソフトが破損・改ざんされる → 対策：署名・ハッシュ・監査',
+    '<b>完全性・真正性への脅威（Fabrication／捏造）</b>：偽データやなりすましが挿入される → 対策：認証・認可',
+    '誤用ケース（なりすまし・改ざん・サービス妨害）としてシナリオ化し、要求を導く'
+  ],
+  points:[
+    '<b>認証（誰か）と認可（何をしてよいか）</b>を区別する：なりすまし・権限昇格への基本対策',
+    '3つの目標 <b>機密性・完全性・可用性（CIA）</b>のどれを守るかで対策が変わる',
+    'すべてのログオンを記録し、患者情報を暗号化し、認可された端末に制限する（Mentcare の例）'
+  ],
+  cautions:[
+    '完全性への脅威（改ざん・捏造）は、気づかれずに<b>誤った意思決定</b>を招くため見えにくく危険',
+    '1つの目標だけを守っても不十分：CIA を<b>バランスよく</b>守る',
+    '内部者（正規ユーザ）による脅威を見落としがち'
+  ],
+  examples:[
+    '傍受：通信の盗聴で患者情報が漏れる（機密性）',
+    '遮断：DoS 攻撃でサービスが停止（可用性）',
+    '捏造：偽の処方オーダーの挿入（完全性・真正性）'
+  ],
+  related:'前の<b>資産・脅威・脆弱性</b>を CIA の観点で整理したもの。対策の実装指針は次の<b>セキュア設計原則</b>へ。',
+  modern:'STRIDE（Spoofing/Tampering/Repudiation/Information disclosure/DoS/Elevation）は、この分類を6カテゴリに精緻化した脅威モデリング手法。',
+  hasCode:false
+},
+{
+  id:'sec-design', name:'Secure Design Guidelines', jp:'セキュア設計原則', cat:'security',
+  badge:'重要', tags:['多層防御','最小権限','フェイルセキュア','侵害の想定'],
+  summary:'設計の選択がセキュリティリスクを左右する。<strong>深層防御・フェイルセキュア・最小権限・侵害の想定</strong>など10項目の設計指針と、<strong>多層防御・資産の分散</strong>のアーキテクチャ。',
+  analogy:'城の守りに似ている。堀・城壁・天守と層を重ね（多層防御）、各兵に必要最小限の鍵しか渡さず（最小権限）、破られる前提で内郭にも備える（侵害の想定）。1枚の壁に頼らない。',
+  purpose:'攻撃されにくく、破られても被害が広がりにくいシステムを設計すること。設計とリスク評価を反復しながら作り込む。',
+  who:'セキュアシステムの設計段階で。実装後の追加は困難なため、設計時のリスク評価が重要。',
+  steps:[
+    '設計とリスク評価を<b>反復</b>する（設計の選択がリスクを変える）',
+    '技術選択に伴う<b>脆弱性を評価</b>する（例：パスワード認証が新たな脆弱性を生む）',
+    '<b>多層防御（layered protection）</b>：プラットフォーム層とアプリケーション層それぞれで認証・保護',
+    '<b>資産の分散</b>：単一の攻撃で全資産を失わないよう分散配置する',
+    '<b>最小権限・フェイルセキュア・侵害の想定</b>などの指針を設計に反映する',
+    'セキュアプログラミング：入力検査、既知の脆弱性パターン（バッファオーバフロー）の回避'
+  ],
+  points:[
+    '設計指針は「見落としに気づかせる」ためのもの：<b>セキュリティレビューのチェックリスト</b>の基礎になる',
+    '<b>配列境界の検査がない言語（C/C++）</b>ではバッファオーバフローに特に注意',
+    '信頼性のためのガイドライン（入力検査など）が<b>そのままセキュリティにも有効</b>'
+  ],
+  cautions:[
+    'セキュリティは<b>性能・使いやすさとトレードオフ</b>：過剰だと使われない',
+    '実装後にセキュリティを足すのは<b>困難でコスト高</b>（設計に織り込む）',
+    '「境界さえ固めれば安心」という単層防御は、内部侵入に無力'
+  ],
+  examples:[
+    'Mentcare の保護アーキテクチャ（プラットフォーム層＋アプリ層の多層防御）',
+    '入力検証で SQL インジェクション・バッファオーバフローを防ぐ（下のコード例）',
+    '権限を役割ごとに最小化（RBAC）'
+  ],
+  related:'前の<b>4種の脅威</b>への具体的な打ち手。総論の<b>冗長性・多様性</b>を防御の層として応用したのが多層防御。',
+  modern:'ゼロトラスト（「侵害の想定」の徹底）、Secure by Design、SAST/DAST、依存関係スキャン、シークレット管理が現代のセキュア開発の標準。',
+  hasCode:true
+},
+{
+  id:'sec-assurance', name:'Security Risk & Testing', jp:'セキュリティリスクアセスメントとテスト', cat:'security',
+  badge:'重要', tags:['リスク評価','誤用ケース','侵入テスト'],
+  summary:'セキュリティは<strong>ビジネス上の意思決定</strong>。リスク評価は開発の<strong>全段階</strong>で続く。検証は「起きないこと」の確認ゆえ難しく、<strong>経験ベースのテスト・侵入テスト</strong>で補う。',
+  analogy:'銀行の警備計画に似ている。何をどこまで守るかを費用対効果で決め（リスク評価）、覆面の専門家に実際に侵入を試させて弱点を洗い出す（侵入テスト）。「破られなかった」証明は難しいので、賢い攻撃者を雇って確かめる。',
+  purpose:'損失の見積もりからセキュリティ要求を導き、実装が本当に攻撃に耐えるかを検証すること。何をどこまで守るかを合理的に決める。',
+  who:'セキュリティ方針の策定からリリース前検証まで。予備的（導出前）・設計時・運用時の各段階でリスク評価を行う。',
+  steps:[
+    '<b>セキュリティ方針</b>で資産保護の方針を定める（何をどこまで守るか）',
+    '<b>予備的リスク評価</b>：資産の分析 → 脅威と統制の分析 → セキュリティ要求',
+    '資産ごとに価値と暴露を評価し、脅威に対する統制を検討する',
+    '<b>経験ベースのテスト</b>：既知の攻撃やチェックリストで検証する',
+    '<b>侵入テスト（penetration testing）</b>：攻撃者の視点でシステムを破ろうとする',
+    'ツールによる解析や形式検証も併用する'
+  ],
+  points:[
+    'リスク評価は一度きりでなく<b>全段階で継続</b>する（設計・運用で状況が変わる）',
+    'セキュリティ検証が難しい理由：<b>「起きるべきでないこと」を確認</b>する必要があり、攻撃者は賢く時間も潤沢',
+    '何を守るかは<b>費用対効果</b>で判断する（ビジネス上の意思決定）'
+  ],
+  cautions:[
+    '「テストで破れなかった＝安全」ではない（攻撃者はこちらより時間をかけられる）',
+    'リスク評価を初期の一度で止めると、後の設計変更で生じた穴を見逃す',
+    'チェックリストは既知の攻撃しかカバーしない：新種の攻撃には無力'
+  ],
+  examples:[
+    'Mentcare への攻撃シナリオを想定し、チェックリストを拡張',
+    '株式取引システムへの侵入テストで、想定外の攻撃経路を発見',
+    'パスワード保護機能の検証（ツールによる総当たり耐性の確認）'
+  ],
+  related:'総論の<b>コストとのトレードオフ</b>をセキュリティで具体化したもの。<b>誤用ケース</b>は前の<b>4種の脅威</b>をシナリオ化して要求を導く手法。',
+  modern:'レッドチーム演習、バグバウンティ、継続的なペネトレーションテスト、ファジング、脅威インテリジェンスの活用が現代的なセキュリティ保証。',
+  hasCode:false
+},
+/* ---------- レジリエンス ---------- */
+{
+  id:'res-survivability', name:'Four Rs of Survivability', jp:'生存性の4戦略（4つのR）', cat:'resilience',
+  badge:'最重要', tags:['認識','抵抗','回復','復旧'],
+  summary:'レジリエンス＝破壊的事象に耐え、重要サービスを<strong>維持・回復する能力</strong>。<strong>認識(Recognition)・抵抗(Resistance)・回復(Recovery)・復旧(Reinstatement)</strong>の4つのRに基づく。',
+  analogy:'災害対応に例えられる。地震を感知し（認識）、建物が耐え（抵抗）、非常用電源で最低限の機能を保ち（回復）、その後もとの状態に戻す（復旧）。「起きない」前提でなく「起きる」前提で備える。',
+  purpose:'攻撃や障害が必ず起きるという前提で、重要サービスの継続性を保つこと。完全な防御が不可能な中で、被害を認識し立て直す。',
+  who:'レジリエンス設計の中核。ビジネスのレジリエンス要求を起点にする。',
+  steps:[
+    '<b>認識（Recognition）</b>：攻撃・障害が起きていることを検知する',
+    '<b>抵抗（Resistance）</b>：攻撃・障害に耐え、被害の拡大を防ぐ',
+    '<b>回復（Recovery）</b>：重要サービスを維持し、機能を回復する',
+    '<b>復旧（Reinstatement）</b>：システムを通常の状態に戻す',
+    'これらを組み合わせて、重要サービスの継続性を確保する'
+  ],
+  points:[
+    'レジリエンス計画は「<b>ネットワーク化されたシステムは攻撃され、一部は成功する</b>」という前提に立つ',
+    '4つのRは<b>補完的</b>：1つでは不十分で、全体で継続性を実現する',
+    'サイバーレジリエンス計画：脅威の識別 → 資産の分類 → 抵抗・認識・回復の計画'
+  ],
+  cautions:[
+    '防御（抵抗）だけに投資すると、破られたときに立て直せない',
+    '認識が遅れると、被害が拡大してから対応することになる',
+    '復旧手順を用意しても、<b>実際に試していない</b>と本番で機能しない'
+  ],
+  examples:[
+    'アポロ13号：重大事故から人と技術の連携で帰還に成功したレジリエンスの象徴',
+    'Mentcare：ラップトップのローカルDBで一時的に業務を継続（回復）',
+    'ランサムウェア被害後、バックアップから復旧（Reinstatement）'
+  ],
+  related:'信頼性の<b>フォールトトレランス</b>が「障害後も動く」なら、レジリエンスは<b>攻撃・災害まで含めて</b>維持・回復する広い概念。セキュリティの3戦略とも呼応する。',
+  modern:'カオスエンジニアリング、災害復旧訓練（DR ドリル）、バックアップの復元テスト、インシデント対応（IR）演習が4Rの現代的な実践。',
+  hasCode:false
+},
+{
+  id:'res-critical', name:'Critical Services & Survivability', jp:'重要資産の識別と生存可能性分析', cat:'resilience',
+  badge:'重要', tags:['重要サービス','生存可能性分析','ソフトスポット'],
+  summary:'レジリエンス設計の出発点は<strong>重要サービス（critical services）の識別</strong>。<strong>生存可能性分析</strong>で、攻撃・障害があっても重要サービスを継続できるかを調べ、弱点を改善する。',
+  analogy:'船の防水区画に似ている。すべてを守るのは無理でも、「沈まないために絶対に守るべき区画（重要サービス）」を見極め、そこを重点的に補強する。全部を等しく守ろうとすると、肝心な部分が手薄になる。',
+  purpose:'限られた資源を、システムの主目的に不可欠なサービスの保護と迅速な回復に集中させること。',
+  who:'レジリエントシステム設計の段階で。「どの重要サービスを、誰のために維持すべきか」を問う。',
+  steps:[
+    '<b>システム理解</b>：構成と依存関係を把握する',
+    '<b>重要サービスの識別</b>：主目的に不可欠なサービスを見極める',
+    '<b>攻撃シミュレーション</b>：攻撃・障害のシナリオでシステムを試す',
+    '<b>ソフトスポット（弱点）の特定</b>と改善',
+    '重要サービスが保護され、障害時に素早く回復するよう設計する'
+  ],
+  points:[
+    'レジリエンス工学の2つの問い：<b>どの重要サービスを誰のために維持するか</b>／<b>認識・抵抗・回復・復旧をどう設計するか</b>',
+    '重要サービスは「主目的に不可欠なもの」：優先順位づけが本質',
+    'ビジネスのレジリエンス要求を<b>設計の出発点</b>にする'
+  ],
+  cautions:[
+    'すべてを等しく守ろうとすると、重要サービスの保護が手薄になる',
+    '重要サービスの<b>依存関係</b>を見落とすと、間接的な障害で止まる',
+    '「重要」の判断は関係者で異なる：誰のためのサービスかを明確にする'
+  ],
+  examples:[
+    'Mentcare：診療継続に不可欠な機能を重要サービスと定め、ローカルで継続可能に',
+    '銀行：入出金や決済を重要サービスとして最優先で保護',
+    '攻撃シミュレーションでソフトスポット（単一障害点）を発見・補強'
+  ],
+  related:'前の<b>4つのR</b>を「何に適用するか」を決める土台。総論の<b>重要性とコストのトレードオフ</b>を、守るサービスの選別として具体化。',
+  modern:'ビジネスインパクト分析（BIA）、RTO/RPO（目標復旧時間・時点）、依存関係マッピング、混沌工学による重要パスの検証が現代的な手法。',
+  hasCode:false
+},
+{
+  id:'res-sociotechnical', name:'Sociotechnical Resilience', jp:'社会技術的レジリエンス（スイスチーズモデル）', cat:'resilience',
+  badge:'発展', tags:['人的エラー','防御の層','スイスチーズモデル'],
+  summary:'レジリエンスは技術だけでなく<strong>社会技術的な活動</strong>。<strong>防御の層（barriers）</strong>で人的エラーがシステム障害になるのを防ぐ。<strong>スイスチーズモデル</strong>：各層の穴が一列に並ぶと障害。',
+  analogy:'まさにスイスチーズの薄切りを何枚も重ねるイメージ。1枚1枚には穴（各層の弱点）があるが、重ねれば光は通らない。たまたま全部の穴が一直線に並んだときだけ、事故が貫通する。',
+  purpose:'人的エラーを個人の責任に帰さず、複数の防御層で「エラーが障害に発展するのを防ぐ」システムとして設計すること。',
+  who:'レジリエンス設計と運用・管理プロセスの設計で。組織・プロセス・技術を入れ子として捉える。',
+  steps:[
+    'システムを<b>入れ子</b>で捉える：組織 → プロセス → 技術システムが影響し合う',
+    '人的エラーがシステム障害に至る経路を分析する（Reason のモデル）',
+    '<b>複数の異なる防御層</b>を設ける（技術的・手続き的・組織的）',
+    '各層の「穴」（弱点）を減らし、穴が一直線に並ばないようにする',
+    '運用者が障害に対処できる<b>柔軟性・余地</b>を残す'
+  ],
+  points:[
+    'レジリエントな組織の特性：<b>脅威への備え・障害からの学習・トップの関与</b>',
+    '運用者は「問題の原因」ではなく<b>「回復の担い手」</b>でもある',
+    '過度な自動化・厳格な手順は、想定外への対応力を奪う：<b>効率とレジリエンスはトレードオフ</b>'
+  ],
+  cautions:[
+    '人的エラーを<b>個人の責任</b>に帰すと、組織的な学習が止まり、かえって隠蔽を招く',
+    '防御層が<b>同種ばかり</b>だと、共通の穴で一斉に貫通される（多様性が要る）',
+    'プロセスの硬直化は、逆境からの回復力を損なう'
+  ],
+  examples:[
+    'スイスチーズモデル（Reason）：複数の防御層で人的エラーを捕捉',
+    '航空の CRM（乗員資源管理）：手順・訓練・文化の層でエラーを防ぐ',
+    'インシデントを罰さず学習に活かす「Just Culture」'
+  ],
+  related:'総論の<b>社会技術システム</b>を回復力の観点で発展させたもの。セーフティの<b>ハザードと3手段</b>の「損害制限」を、人・組織まで広げた考え方。',
+  modern:'ブレームレス・ポストモーテム、Just Culture、レジリエンス・エンジニアリング（Safety-II：うまくいく理由に注目）が現代的な潮流。',
+  hasCode:false
+}
+];
+
+/* ============== カード内サンプルコード ============== */
+const CODE = {
+'safe-case':{
+  java:`// 安全チェック付きの投与量計算（セーフティケースの論証対象）
+// 主張：computeDose は常に「安全な範囲」の値しか返さない
+public int computeDose(int rawDose) {
+    // 事前条件を満たさない入力は安全側（0）に倒す
+    if (rawDose < 0) {
+        return 0;                 // 異常入力 -> 投与しない
+    }
+    // 上限を超える危険な出力に至る経路には必ず安全チェックを通す
+    if (rawDose > MAX_SINGLE_DOSE) {
+        return MAX_SINGLE_DOSE;   // 上限でクランプ（過剰投与を防ぐ）
+    }
+    // 事後条件：0 <= dose <= MAX_SINGLE_DOSE が常に成り立つ
+    return rawDose;
+}`,
+  python:`# 安全チェック付きの投与量計算（セーフティケースの論証対象）
+# 主張：compute_dose は常に「安全な範囲」の値しか返さない
+def compute_dose(raw_dose):
+    # 事前条件を満たさない入力は安全側（0）に倒す
+    if raw_dose < 0:
+        return 0                  # 異常入力 -> 投与しない
+    # 危険な出力に至る経路には必ず安全チェックを通す
+    if raw_dose > MAX_SINGLE_DOSE:
+        return MAX_SINGLE_DOSE    # 上限でクランプ（過剰投与を防ぐ）
+    # 事後条件：0 <= dose <= MAX_SINGLE_DOSE が常に成り立つ
+    return raw_dose`
+},
+'sec-design':{
+  java:`// セキュアプログラミング：すべての入力を検証してから使う
+public boolean isValidUserId(String input) {
+    if (input == null) {
+        return false;             // null を早期に弾く
+    }
+    // 想定する形式（英数字4-16文字）だけを許可（許可リスト方式）
+    if (!input.matches("[A-Za-z0-9]{4,16}")) {
+        return false;             // 予期しない入力は拒否
+    }
+    return true;                  // 検査を通ったものだけを信頼する
+}
+// 危険：文字列連結でクエリを組むと SQL インジェクションの脆弱性になる
+// String q = "SELECT * FROM users WHERE id = '" + input + "'"; // NG`,
+  python:`# セキュアプログラミング：すべての入力を検証してから使う
+import re
+
+def is_valid_user_id(value):
+    if value is None:
+        return False              # None を早期に弾く
+    # 想定する形式（英数字4-16文字）だけを許可（許可リスト方式）
+    if not re.fullmatch(r"[A-Za-z0-9]{4,16}", value):
+        return False              # 予期しない入力は拒否
+    return True                   # 検査を通ったものだけを信頼する
+
+# 危険：f-string でクエリを組むと SQL インジェクションの脆弱性になる
+# query = f"SELECT * FROM users WHERE id = '{value}'"  # NG（パラメータ化を使う）`
+}
+};
+
+/* ============== カード内ダイアグラム ============== */
+const DIAGRAMS = {
+'safe-hazard': `
+<svg viewBox="0 0 720 210" role="img" aria-label="安全確保の3手段">
+  <rect x="30" y="40" width="200" height="60" rx="12" class="dg-box dg-if"/>
+  <text x="130" y="66" class="dg-lbl" fill="#0A5748">① ハザード回避</text>
+  <text x="130" y="86" class="dg-el">そもそも生じさせない</text>
+  <rect x="260" y="40" width="200" height="60" rx="12" class="dg-box" stroke="#8A6D3B" stroke-width="1.4"/>
+  <text x="360" y="66" class="dg-lbl" fill="#8A6D3B">② 検出と除去</text>
+  <text x="360" y="86" class="dg-el">危害の前に取り除く</text>
+  <rect x="490" y="40" width="200" height="60" rx="12" class="dg-box" stroke="#B04A3E" stroke-width="1.4"/>
+  <text x="590" y="66" class="dg-lbl" fill="#B04A3E">③ 損害制限</text>
+  <text x="590" y="86" class="dg-el">起きても被害を最小化</text>
+  <text x="360" y="140" class="dg-note">3手段は排他ではなく、重ねて用いる（多重防御）</text>
+  <text x="360" y="168" class="dg-note">信頼性は安全性の必要条件だが十分条件ではない</text>
+</svg>`,
+'res-survivability': `
+<svg viewBox="0 0 720 230" role="img" aria-label="レジリエンスの4つのR">
+  <rect x="30" y="30" width="150" height="56" rx="12" class="dg-box" stroke="#5B655F" stroke-width="1.4"/>
+  <text x="105" y="55" class="dg-lbl" fill="#5B655F">認識</text>
+  <text x="105" y="74" class="dg-el">Recognition</text>
+  <rect x="200" y="30" width="150" height="56" rx="12" class="dg-box" stroke="#5B655F" stroke-width="1.4"/>
+  <text x="275" y="55" class="dg-lbl" fill="#5B655F">抵抗</text>
+  <text x="275" y="74" class="dg-el">Resistance</text>
+  <rect x="370" y="30" width="150" height="56" rx="12" class="dg-box dg-if"/>
+  <text x="445" y="55" class="dg-lbl" fill="#0A5748">回復</text>
+  <text x="445" y="74" class="dg-el">Recovery</text>
+  <rect x="540" y="30" width="150" height="56" rx="12" class="dg-box" stroke="#5B655F" stroke-width="1.4"/>
+  <text x="615" y="55" class="dg-lbl" fill="#5B655F">復旧</text>
+  <text x="615" y="74" class="dg-el">Reinstatement</text>
+  <path d="M180 58 L198 58" class="dg-line" marker-end="url(#rah)"/>
+  <path d="M350 58 L368 58" class="dg-line" marker-end="url(#rah)"/>
+  <path d="M520 58 L538 58" class="dg-line" marker-end="url(#rah)"/>
+  <text x="360" y="130" class="dg-note">前提：ネットワーク化されたシステムは攻撃され、一部は成功する</text>
+  <text x="360" y="170" class="dg-note">「起きない」ではなく「起きたあとどうするか」を設計する</text>
+  <defs><marker id="rah" markerWidth="9" markerHeight="9" refX="8" refY="4.5" orient="auto">
+    <path d="M0,0 L9,4.5 L0,9 z" fill="#6B746F"/></marker></defs>
+</svg>`,
+'sec-threats': `
+<svg viewBox="0 0 720 220" role="img" aria-label="4種の脅威とCIA">
+  <rect x="40" y="30" width="300" height="46" rx="10" class="dg-box" stroke="#8A6D3B" stroke-width="1.3"/>
+  <text x="190" y="58" class="dg-lbl" fill="#8A6D3B">傍受 Interception → 機密性</text>
+  <rect x="380" y="30" width="300" height="46" rx="10" class="dg-box" stroke="#B04A3E" stroke-width="1.3"/>
+  <text x="530" y="58" class="dg-lbl" fill="#B04A3E">遮断 Interruption → 可用性</text>
+  <rect x="40" y="90" width="300" height="46" rx="10" class="dg-box dg-if"/>
+  <text x="190" y="118" class="dg-lbl" fill="#0A5748">改ざん Modification → 完全性</text>
+  <rect x="380" y="90" width="300" height="46" rx="10" class="dg-box dg-if"/>
+  <text x="530" y="118" class="dg-lbl" fill="#0A5748">捏造 Fabrication → 完全性/真正性</text>
+  <text x="360" y="172" class="dg-note">守るべき3目標＝機密性・完全性・可用性（CIA）。攻撃の型で分類する</text>
+</svg>`
+};
+
+/* ============== 理解度クイズ ============== */
+const QUIZ = [
+{ q:'ディペンダビリティの5次元に<b>含まれない</b>ものはどれ？',
+  opts:['保守容易性（Maintainability）','可用性（Availability）','安全性（Safety）','レジリエンス（Resilience）'], a:0,
+  why:'主要な5次元は可用性・信頼性・安全性・セキュリティ・レジリエンス。保守性・修理性・誤り許容性なども関係するが、いわゆる「5次元」には含まれない。'},
+{ q:'「ある時点でシステムが稼働しサービスを提供できる確率」を表すのはどちら？',
+  opts:['可用性（Availability）','信頼性（Reliability）'], a:0,
+  why:'可用性は「ある時点で使えるか」で、修復・再起動の時間に影響される。信頼性は「一定期間、障害なく正しく動くか」。'},
+{ q:'コードに潜む間違い（human error が作り込むもの）を、信頼性工学では何と呼ぶ？',
+  opts:['フォールト（fault）','エラー（error）','障害（failure）','ハザード（hazard）'], a:0,
+  why:'フォールト＝コード中の間違い、エラー＝実行時の誤った状態、障害（failure）＝ユーザから見えるサービスの失敗。連鎖は必ずしも成立しない。'},
+{ q:'「フォールトがあっても、必ずしも障害（failure）にはならない」：その主な理由は？',
+  opts:['そのコードが実行されない／誤った状態が外部に波及しないことがあるから','フォールトは自動で修復されるから','フォールトは障害とは無関係だから','テストで必ず消えるから'], a:0,
+  why:'到達しない欠陥はエラーを生まず、内部で吸収されたエラーは障害に波及しない。だから信頼性はユーザの使い方によっても変わる。'},
+{ q:'「総要求数に対する失敗した要求数の割合」で表す信頼性メトリクスは？',
+  opts:['POFOD','ROCOF','MTTF','AVAIL'], a:0,
+  why:'POFOD＝失敗要求数/総要求数（要求あたり故障確率）。連続稼働なら ROCOF/MTTF、24/7 系なら AVAIL を使う。'},
+{ q:'MTBF=1000時間、MTTR=1時間 のとき、可用性 AVAIL に最も近いのは？',
+  opts:['約0.999','約0.5','約0.9','約1000'], a:0,
+  why:'AVAIL = MTBF/(MTBF+MTTR) = 1000/1001 ≒ 0.999。修復時間（MTTR）が長いほど可用性は下がる。'},
+{ q:'独立に開発した複数バージョンの出力を多数決するフォールトトレランス手法は？',
+  opts:['N-version programming','負荷分散','ページング','ガベージコレクション'], a:0,
+  why:'N-version programming は多様性を使った手法（例：Airbus 340 の飛行制御）。ただし仕様の誤りは多様性では防げない（共通原因故障）。'},
+{ q:'冗長性だけでは防げず、多様性が必要になるのはどんな故障？',
+  opts:['共通原因故障（同じバグで全複製が同時に倒れる）','電源故障','ディスク故障','通信遅延'], a:0,
+  why:'同じフォールトを持つ複製は同時に倒れる。異なる方式で実現する多様性が、共通原因故障を減らす。'},
+{ q:'「信頼性は安全性の必要条件だが十分条件ではない」。これが意味するのは？',
+  opts:['仕様どおり正確に動いても、危険な出力はあり得る','信頼性が高ければ必ず安全','安全なら必ず信頼性が高い','両者は無関係'], a:0,
+  why:'ワルシャワ空港の事故のように、仕様に適合していても事故は起きる。安全性は信頼性とは別に工学する必要がある。'},
+{ q:'ハザードの根本原因を AND/OR ゲートで演繹的にさかのぼる分析手法は？',
+  opts:['フォールトツリー解析（FTA）','等価分割','ペネトレーションテスト','カナリアリリース'], a:0,
+  why:'FTA はトップのハザードから原因へ分解する演繹的手法。ボトムアップの FMEA と補完関係にある。'},
+{ q:'「システムが安全であることを、主張・証拠・論証で構造化して示す文書群」は？',
+  opts:['セーフティケース','ハザード登録簿','運用プロファイル','セキュリティ方針'], a:0,
+  why:'セーフティケースは規制当局の認可の基礎。主張を証拠と論証で支える構造化論証で構成し、変更時には更新が必要。'},
+{ q:'「情報が権限のない者に漏れる（傍受）」脅威が脅かすセキュリティ目標は？',
+  opts:['機密性（Confidentiality）','完全性（Integrity）','可用性（Availability）','保守性'], a:0,
+  why:'傍受（Interception）は機密性への脅威。遮断→可用性、改ざん/捏造→完全性。対策は暗号化・アクセス制御など。'},
+{ q:'「正当な利用者がアクセスできなくなる（遮断・DoS）」脅威が脅かす目標は？',
+  opts:['可用性（Availability）','機密性（Confidentiality）','完全性（Integrity）','真正性のみ'], a:0,
+  why:'遮断（Interruption）は可用性への脅威。冗長化や DoS 対策で守る。'},
+{ q:'セキュリティ設計で「保護の層を重ね、単一の突破で全資産を失わないようにする」原則は？',
+  opts:['多層防御（深層防御）','最短経路','単一障害点','平文保存'], a:0,
+  why:'多層防御はプラットフォーム層・アプリ層で認証・保護を重ねる。資産の分散と併せ、単一の攻撃による損失を最小化する。'},
+{ q:'「認証（authentication）」と「認可（authorization）」の違いとして正しいのは？',
+  opts:['認証は「誰か」の確認、認可は「何をしてよいか」の判断','認証は暗号化、認可はバックアップ','両者は同じ意味','認証は可用性、認可は完全性'], a:0,
+  why:'認証で本人性を確認し、認可で権限を判断する。なりすまし・権限昇格への基本対策として区別が重要。'},
+{ q:'レジリエンスの基礎となる「4つのR」に<b>含まれない</b>ものは？',
+  opts:['冗長化（Redundancy）','認識（Recognition）','抵抗（Resistance）','復旧（Reinstatement）'], a:0,
+  why:'4つのRは Recognition・Resistance・Recovery・Reinstatement。冗長化は手段であって4Rそのものではない。'},
+{ q:'レジリエンス計画が前提とする考え方は？',
+  opts:['攻撃・障害は必ず起き、一部は成功する','攻撃は完全に防げる','障害は起きない','冗長化すれば絶対安全'], a:0,
+  why:'完全な防御は不可能という前提に立ち、認識・抵抗・回復・復旧で重要サービスの継続性を確保するのがレジリエンス。'},
+{ q:'レジリエンス設計の出発点として、まず行うべきことは？',
+  opts:['重要サービス（critical services）の識別','全機能の均等な保護','すべてのコードの書き直し','ユーザ数の削減'], a:0,
+  why:'主目的に不可欠な重要サービスを見極め、そこを重点的に保護・迅速に回復できるよう設計する。生存可能性分析の中核。'},
+{ q:'「各防御層の穴が一列に並んだときにだけ障害が貫通する」という人的エラーのモデルは？',
+  opts:['スイスチーズモデル','テストピラミッド','リスク三角形','V字モデル'], a:0,
+  why:'Reason のスイスチーズモデル。複数の異なる防御層でエラーを捕捉する。人的エラーを個人の責任に帰さない考え方。'},
+{ q:'安全性・セキュリティ・レジリエンスに共通する「守り方の3戦略」に近いのは？',
+  opts:['回避／検出・除去（無力化）／被害の制限・回復','設計／実装／テスト','要求／設計／運用','入力／処理／出力'], a:0,
+  why:'安全（回避・検出除去・損害制限）とセキュリティ（脆弱性回避・攻撃の検出無力化・暴露の制限と回復）は同型。レジリエンスの抵抗・認識・回復とも呼応する。'}
+];
+
+/* ============== ミニクイズ（5次元・脅威分類） ============== */
+const DIMS = [
+  {k:'availability', l:'可用性'},
+  {k:'reliability', l:'信頼性'},
+  {k:'safety', l:'安全性'},
+  {k:'security', l:'セキュリティ'},
+  {k:'resilience', l:'レジリエンス'}
+];
+const DIMQ = [
+  {s:'要求されたときに、いつでもサービスを提供できる', a:'availability', why:'「ある時点で使えるか」は可用性。修復・再起動の時間にも影響される。'},
+  {s:'要求に対して、仕様どおりのサービスを正しく提供し、期待した結果を返す', a:'reliability', why:'「正しく動くか」は信頼性。可用性（使えるか）とは別の次元。'},
+  {s:'人や環境に危害を与えずに動作する', a:'safety', why:'危害を与えないのは安全性。信頼性が高くても安全とは限らない。'},
+  {s:'偶発的・意図的な侵入や攻撃に抵抗する', a:'security', why:'攻撃への抵抗はセキュリティ。これなしでは他の次元も保証できない。'},
+  {s:'破壊的な事象が起きても、重要サービスを維持・回復する', a:'resilience', why:'攻撃・災害を含め維持・回復するのはレジリエンス。「起きる前提」で備える。'}
+];
+const THREATS = [
+  {k:'confidentiality', l:'機密性への脅威'},
+  {k:'integrity', l:'完全性への脅威'},
+  {k:'availability', l:'可用性への脅威'}
+];
+const THREATQ = [
+  {s:'通信を盗聴し、権限のない者が情報を読み取る（Interception／傍受）', a:'confidentiality', why:'傍受は機密性への脅威。対策は暗号化・アクセス制御。'},
+  {s:'DoS 攻撃でサービスを停止させ、正当な利用者が使えなくする（Interruption／遮断）', a:'availability', why:'遮断は可用性への脅威。冗長化や DoS 対策で守る。'},
+  {s:'保存データやソフトウェアを不正に書き換える（Modification／改ざん）', a:'integrity', why:'改ざんは完全性への脅威。署名・ハッシュ・監査で検知する。'},
+  {s:'偽のデータやなりすましオーダーを挿入する（Fabrication／捏造）', a:'integrity', why:'捏造は完全性・真正性への脅威。認証・認可で防ぐ。'}
+];
+</script>
+<script>
+/* ============== レンダリング ============== */
+const learned = new Set();
+let currentCat = 'all';
+
+function esc(s){return s.replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;");}
+
+function highlight(code, lang){
+  const cmMark = (lang==='python') ? '#' : '//';
+  const kws = (lang==='python')
+    ? ['def','return','import','from','if','elif','else','assert','class','True','False','None','not','in','re']
+    : ['public','class','void','int','return','new','static','import','if','else','true','false','String','boolean','null'];
+  const kwRe = new RegExp('\\b('+kws.join('|')+')\\b','g');
+  return code.split('\n').map(line=>{
+    const idx = line.indexOf(cmMark);
+    let codePart = (idx>=0) ? line.slice(0,idx) : line;
+    const cmPart = (idx>=0) ? line.slice(idx) : '';
+    const strs = [];
+    codePart = codePart.replace(/"[^"]*"/g, m=>{ strs.push(m); return '@@S'+(strs.length-1)+'@@'; });
+    let h = esc(codePart).replace(kwRe,'<span class="kw">$1</span>');
+    h = h.replace(/@@S(\d+)@@/g,(m,i)=>'<span class="st">'+esc(strs[+i])+'</span>');
+    return h + (cmPart ? '<span class="cm">'+esc(cmPart)+'</span>' : '');
+  }).join('\n');
+}
+
+function togglePattern(id){
+  const card = document.getElementById(id);
+  if(!card) return;
+  const open = card.classList.toggle('open');
+  const head = card.querySelector('.pcard-head');
+  if(head) head.setAttribute('aria-expanded', open ? 'true' : 'false');
+}
+function toggleLearned(id, cb){
+  if(cb.checked) learned.add(id); else learned.delete(id);
+  const card = document.getElementById(id);
+  if(card) card.classList.toggle('done-card', cb.checked);
+  updateLearnUI();
+}
+function updateLearnUI(){
+  const el = document.getElementById('learnNote');
+  if(el) el.textContent = '習得 ' + learned.size + ' / ' + TESTS.length;
+}
+function switchCode(id, lang, btn){
+  document.getElementById(id+'-java').classList.toggle('hidden', lang!=='java');
+  document.getElementById(id+'-python').classList.toggle('hidden', lang!=='python');
+  btn.parentElement.querySelectorAll('button.tab').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+}
+
+function renderTest(t, idx){
+  const pointsLi = t.points.map(v=>`<li>${v}</li>`).join('');
+  const cautionsLi = t.cautions.map(v=>`<li>${v}</li>`).join('');
+  const exLi = t.examples.map(v=>`<li>${v}</li>`).join('');
+  const stepsLi = t.steps.map(v=>`<li>${v}</li>`).join('');
+  const tagsH = (t.tags||[]).map(x=>`<span class="tag">${x}</span>`).join('');
+  const badgeH = `<span class="badge-imp ${BADGE_CLS[t.badge]||'imp1'}">${t.badge}</span>`;
+  const analogyH = t.analogy ? `<div class="analogy"><span><b>たとえるなら</b> ${t.analogy}</span></div>` : '';
+  const dg = DIAGRAMS[t.id];
+  const diagramH = dg ? `<div class="diagram-wrap"><h5>イメージ図</h5>${dg}</div>` : '';
+  let codeH = '';
+  if(t.hasCode && CODE[t.id]){
+    codeH = `
+      <div class="code-wrap">
+        <div class="code-tabs">
+          <span class="lbl">サンプルコード</span>
+          <button class="tab active" onclick="switchCode('${t.id}','java',this)">Java</button>
+          <button class="tab" onclick="switchCode('${t.id}','python',this)">Python</button>
+        </div>
+        <pre id="${t.id}-java"><code>${highlight(CODE[t.id].java,'java')}</code></pre>
+        <pre id="${t.id}-python" class="hidden"><code>${highlight(CODE[t.id].python,'python')}</code></pre>
+      </div>`;
+  }
+  const searchText = (t.name+' '+t.jp+' '+t.summary+' '+(t.analogy||'')+' '+t.badge+' '+(t.tags||[]).join(' ')).toLowerCase();
+  const catColor = CAT_META[t.cat].color;
+  return `
+  <article class="pcard" id="${t.id}" data-cat="${t.cat}" data-search="${esc(searchText)}">
+    <button class="pcard-head" aria-expanded="false" onclick="togglePattern('${t.id}')">
+      <span class="pnum" style="color:${catColor}">${idx}</span>
+      <span class="ptitle">${t.name}<small>${t.jp}</small></span>
+      <span class="pbadges">${badgeH}</span>
+      <span class="ptags">${tagsH}</span>
+      <span class="pchev" aria-hidden="true">&rsaquo;</span>
+    </button>
+    <p class="summary">${t.summary}</p>
+    <div class="pdetail">
+      ${analogyH}
+      <div class="meta-row">
+        <div class="meta"><h5>ねらい・意義</h5><p>${t.purpose}</p></div>
+        <div class="meta"><h5>位置づけ（どこで効くか）</h5><p>${t.who}</p></div>
+      </div>
+      <div class="steps"><h5>仕組み・考え方の流れ</h5><ol>${stepsLi}</ol></div>
+      ${diagramH}
+      <div class="grid2">
+        <div class="box pros"><h5>✓ 意識するポイント</h5><ul>${pointsLi}</ul></div>
+        <div class="box cons"><h5>！ 注意点・落とし穴</h5><ul>${cautionsLi}</ul></div>
+      </div>
+      <div class="meta-row">
+        <div class="meta"><h5>具体例</h5><ul>${exLi}</ul></div>
+        <div class="meta"><h5>混同しやすいものとの違い</h5><p>${t.related}</p></div>
+      </div>
+      <div class="meta" style="margin:16px 0"><h5>補足・発展（実務・研究では）</h5><p>${t.modern}</p></div>
+      ${codeH}
+      <label class="learn"><input type="checkbox" onchange="toggleLearned('${t.id}',this)">
+        この概念を理解した（習得チェック）</label>
+    </div>
+  </article>`;
+}
+
+function build(){
+  document.getElementById('introProse').innerHTML = INTRO_HTML;
+  document.getElementById('toolsProse').innerHTML = TOOLS_HTML;
+  document.getElementById('closingProse').innerHTML = CLOSING_HTML;
+  const container = document.getElementById('tests-list');
+  let html='', n=0;
+  CAT_ORDER.forEach(cat=>{
+    const list = TESTS.filter(t=>t.cat===cat);
+    const meta = CAT_META[cat];
+    html += `<div class="cat-group" data-cat="${cat}">
+      <div class="cat-head" style="--cc:${meta.color}">
+        <span class="cat-dot"></span>
+        <h3>${meta.label}</h3>
+        <span class="cat-badge">${meta.en} · ${list.length}項目</span>
+      </div>
+      <p class="cat-desc">${meta.desc}</p>`;
+    list.forEach(t=>{ n++; html += renderTest(t, n); });
+    html += `</div>`;
+  });
+  container.innerHTML = html;
+  updateLearnUI();
+  relCalc();
+  buildDimMatch();
+  buildThreatMatch();
+  buildQuiz();
+}
+
+function filterCat(cat, btn){
+  currentCat = cat;
+  document.querySelectorAll('.pill').forEach(b=>b.classList.remove('active'));
+  if(btn) btn.classList.add('active');
+  applyFilter();
+}
+function applyFilter(){
+  const si = document.getElementById('search');
+  const q = (si && si.value ? si.value : '').trim().toLowerCase();
+  document.querySelectorAll('.cat-group').forEach(g=>{
+    const catOk = (currentCat==='all' || currentCat===g.dataset.cat);
+    let shown = 0;
+    g.querySelectorAll('.pcard').forEach(c=>{
+      const hit = catOk && (!q || c.dataset.search.includes(q));
+      c.classList.toggle('hidden', !hit);
+      if(hit) shown++;
+    });
+    g.classList.toggle('hidden', shown===0);
+  });
+}
+
+/* ============== 信頼性メトリクス計算機 ============== */
+function fmtPct(x){ return (x*100).toFixed(4).replace(/0+$/,'').replace(/\.$/,'') + '%'; }
+function nines(a){
+  // 可用性を「ナインの数」相当と年間ダウンタイムで説明
+  const downPerYear = (1-a)*365.25*24*60; // 分/年
+  let dt;
+  if(downPerYear >= 60) dt = (downPerYear/60).toFixed(1)+' 時間/年';
+  else if(downPerYear >= 1) dt = downPerYear.toFixed(1)+' 分/年';
+  else dt = (downPerYear*60).toFixed(1)+' 秒/年';
+  return dt;
+}
+function num(id){ const v = parseFloat(document.getElementById(id).value); return isNaN(v)?null:v; }
+function relCalc(){
+  // POFOD
+  const N = num('pofodN'), F = num('pofodF');
+  const pr = document.getElementById('pofodRes');
+  if(pr){
+    if(N===null || N<=0 || F===null || F<0){
+      pr.innerHTML = '総要求数は1以上、失敗数は0以上の数を入力してください。';
+    } else {
+      const p = Math.min(F, N)/N;
+      pr.innerHTML = `<span class="big-num">POFOD = ${p.toExponential(2)}</span>`
+        + `= ${F} / ${N}。<br>成功率 <b>${fmtPct(1-p)}</b>。要求 <b>${Math.round(1/ (p||1e-12)).toLocaleString()}</b> 回に約1回失敗する計算です。`;
+    }
+  }
+  // 稼働時間からの可用性
+  const up = num('avUp'), dn = num('avDown');
+  const ar = document.getElementById('avRes');
+  if(ar){
+    if(up===null || up<0 || dn===null || dn<0 || (up+dn)<=0){
+      ar.innerHTML = '稼働時間・停止時間を0以上で入力してください。';
+    } else {
+      const a = up/(up+dn);
+      ar.innerHTML = `<span class="big-num">AVAIL = ${fmtPct(a)}</span>`
+        + `= ${up} / (${up} + ${dn})。<br>この可用性は、およそ <b>${nines(a)}</b> の停止に相当します。`;
+    }
+  }
+  // MTBF/MTTR からの可用性
+  const mtbf = num('mtbf'), mttr = num('mttr');
+  const mr = document.getElementById('mtbfRes');
+  if(mr){
+    if(mtbf===null || mtbf<0 || mttr===null || mttr<0 || (mtbf+mttr)<=0){
+      mr.innerHTML = 'MTBF・MTTR を0以上で入力してください。';
+    } else {
+      const a = mtbf/(mtbf+mttr);
+      mr.innerHTML = `<span class="big-num">AVAIL = ${fmtPct(a)}</span>`
+        + `= ${mtbf} / (${mtbf} + ${mttr})。<br>MTTR（修復時間）が長いほど可用性は下がります（約 <b>${nines(a)}</b>）。`;
+    }
+  }
+}
+
+/* ============== フォールト連鎖ビジュアライザ ============== */
+const FC_INFO = {
+  fault:{ t:'① フォールト（Fault／欠陥）', c:'#8A6D3B',
+    b:'コードに潜む静的な間違い。<b>人間の過ち（human error）</b>がプログラムに作り込む。まだ実行されていなければ、それ自体は何も起こさない。',
+    n:'例：境界条件で <code>&lt;</code> と <code>&lt;=</code> を取り違える。<b>その分岐が一度も実行されなければ、フォールトがあっても障害にはならない。</b>' },
+  error:{ t:'② エラー（Error／誤った状態）', c:'#0A5748',
+    b:'フォールトを含むコードが<b>実行された結果</b>、変数やシステムの状態が本来あるべき値から外れた状態。実行時に初めて現れる。',
+    n:'エラーが起きても、<b>内部で検出・訂正されたり、外部に波及しなければ</b>、ユーザから見える障害にはならない。フォールトトレランスはここで連鎖を断つ。' },
+  failure:{ t:'③ 障害（Failure／サービスの失敗）', c:'#B04A3E',
+    b:'エラーが外部に波及し、システムが<b>要求されたサービスを提供できなくなった</b>状態。ユーザが実際に経験する失敗。',
+    n:'ここで初めて「信頼性が損なわれた」とユーザが認識する。だから信頼性は<b>使い方（運用プロファイル）によって変わる</b>：同じフォールトでも人により経験が異なる。' }
+};
+let fcCur = null;
+function faultInfo(k){
+  const info = FC_INFO[k];
+  const out = document.getElementById('fcOut');
+  if(!info || !out) return;
+  ['fault','error','failure'].forEach(x=>{
+    const g = document.getElementById('fc-'+x);
+    if(g) g.classList.toggle('active', x===k);
+  });
+  fcCur = k;
+  out.innerHTML = `<b style="color:${info.c}">${info.t}</b><br>${info.b}<br><span style="display:block;margin-top:8px;color:var(--muted)">${info.n}</span>`;
+}
+
+/* ============== ミニマッチングクイズ（汎用） ============== */
+function buildMatch(containerId, questions, options, prefix){
+  const el = document.getElementById(containerId);
+  if(!el) return;
+  el.innerHTML = questions.map((q,i)=>`
+    <div class="match" id="${prefix}${i}">
+      <p class="m-q">${q.s}</p>
+      <div class="m-opts">${options.map(o=>`<button onclick="answerMatch('${prefix}',${i},'${o.k}',this)">${o.l}</button>`).join('')}</div>
+      <p class="m-why" hidden></p>
+    </div>`).join('');
+}
+const MATCH_DATA = {};
+function answerMatch(prefix, i, key, btn){
+  const data = MATCH_DATA[prefix];
+  const box = document.getElementById(prefix+i);
+  if(!data || !box || box.classList.contains('answered')) return;
+  box.classList.add('answered');
+  const q = data.questions[i];
+  box.querySelectorAll('.m-opts button').forEach(b=>{ b.disabled = true; });
+  // mark
+  const ok = (key===q.a);
+  const optLabel = (data.options.find(o=>o.k===q.a)||{}).l || '';
+  box.querySelectorAll('.m-opts button').forEach(b=>{
+    if(b.textContent===optLabel) b.classList.add('right');
+  });
+  if(!ok) btn.classList.add('wrong');
+  const why = box.querySelector('.m-why');
+  why.hidden = false;
+  why.innerHTML = (ok?'<b>正解。</b> ':`<b>不正解。</b>正解は <b>${optLabel}</b>。 `) + (q.why||'');
+}
+function buildDimMatch(){
+  MATCH_DATA['dim'] = {questions:DIMQ, options:DIMS};
+  buildMatch('dimMatch', DIMQ, DIMS, 'dim');
+}
+function buildThreatMatch(){
+  MATCH_DATA['thr'] = {questions:THREATQ, options:THREATS};
+  buildMatch('threatMatch', THREATQ, THREATS, 'thr');
+}
+
+/* ============== 理解度クイズ（in-memory） ============== */
+let quizState = {answered:0, correct:0};
+let quizOrder = [];
+function buildQuiz(){
+  quizState = {answered:0, correct:0};
+  quizOrder = QUIZ.map(q=>{
+    const idx = q.opts.map((_,k)=>k);
+    for(let i=idx.length-1;i>0;i--){ const j=Math.floor(Math.random()*(i+1)); const t=idx[i]; idx[i]=idx[j]; idx[j]=t; }
+    return idx;
+  });
+  const body = document.getElementById('quizBody');
+  if(!body) return;
+  body.innerHTML = QUIZ.map((q,i)=>`
+    <div class="quiz-q" id="qq${i}">
+      <p class="qtext">Q${i+1}. ${q.q}</p>
+      <div class="qopts">${quizOrder[i].map((oi,j)=>`<button onclick="answerQuiz(${i},${j},this)">${q.opts[oi]}</button>`).join('')}</div>
+      <p class="qwhy" hidden></p>
+    </div>`).join('');
+  updateQuizScore();
+}
+function answerQuiz(i, j, btn){
+  const q = QUIZ[i], box = document.getElementById('qq'+i);
+  if(box.classList.contains('answered')) return;
+  box.classList.add('answered');
+  box.querySelectorAll('.qopts button').forEach((b,k)=>{
+    b.disabled = true;
+    if(quizOrder[i][k]===q.a) b.classList.add('right');
+  });
+  const ok = (quizOrder[i][j]===q.a);
+  if(!ok) btn.classList.add('wrong');
+  quizState.answered++; if(ok) quizState.correct++;
+  const why = box.querySelector('.qwhy');
+  why.hidden = false;
+  why.innerHTML = (ok ? '<b>正解。</b> ' : `<b>不正解。</b>正解は <b>${q.opts[q.a]}</b>。 `) + q.why;
+  updateQuizScore();
+}
+function updateQuizScore(){
+  const el = document.getElementById('quizScore');
+  if(el) el.textContent = quizState.answered
+    ? `（${quizState.answered}問中 ${quizState.correct}問正解）` : `全${QUIZ.length}問。`;
+}
+
+/* ============== 言語切替（サイト共通・localStorage は site-lang のみ） ============== */
+function setLang(l){document.body.classList.remove('lang-ja','lang-en');document.body.classList.add('lang-'+l);document.documentElement.lang=l;
+ try{localStorage.setItem('site-lang',l)}catch(e){}
+ try{var q=new URLSearchParams(location.search);q.set('lang',l);history.replaceState(null,'',location.pathname+'?'+q+location.hash)}catch(e){}}
+function toggleLang(){setLang(document.body.classList.contains('lang-ja')?'en':'ja')}
+(function(){var u=null;try{u=new URLSearchParams(location.search).get('lang')}catch(e){}
+ var s=null;try{s=localStorage.getItem('site-lang')}catch(e){}
+ var l=(u==='en'||u==='ja')?u:((s==='en'||s==='ja')?s:'ja');if(l!=='ja')setLang(l);})();
+
+/* ページ内アンカー（本文中のリンク）でカードへ飛ぶとき、
+   絞り込みを解除して対象カードを開いてから移動する */
+document.addEventListener('click', function(e){
+  var a = e.target.closest('a[href^="#"]');
+  if(!a) return;
+  var id = a.getAttribute('href').slice(1);
+  var card = document.getElementById(id);
+  if(card && card.classList.contains('pcard')){
+    if(currentCat!=='all'){ filterCat('all', document.querySelector('.pill')); }
+    var si = document.getElementById('search');
+    if(si && si.value){ si.value=''; }
+    applyFilter();
+    card.classList.add('open');
+    var head = card.querySelector('.pcard-head');
+    if(head) head.setAttribute('aria-expanded','true');
+  }
+});
+
+window.addEventListener('DOMContentLoaded', function(){
+  build();
+  var si = document.getElementById('search');
+  if(si) si.addEventListener('input', applyFilter);
+  if('IntersectionObserver' in window){
+    var io = new IntersectionObserver(function(es){ es.forEach(function(e){ if(e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target); } }); },{threshold:0.12, rootMargin:"0px 0px -6% 0px"});
+    document.querySelectorAll('.reveal').forEach(function(el){ io.observe(el); });
+  } else { document.querySelectorAll('.reveal').forEach(function(el){ el.classList.add('in'); }); }
+});
+</script>
+<script>
+/* ==================== NAV SYSTEM v4 controllers (self-contained) ==================== */
+(function(){
+  function syncLangUI(l){
+    var ja = l==='ja';
+    var lists=document.querySelectorAll('.lswitch');
+    for(var i=0;i<lists.length;i++){
+      var a=lists[i].querySelector('.ls-ja'), e=lists[i].querySelector('.ls-en');
+      if(a) a.setAttribute('aria-pressed', ja?'true':'false');
+      if(e) e.setAttribute('aria-pressed', ja?'false':'true');
+    }
+  }
+  window.syncLangUI=syncLangUI;
+  if(typeof window.setLang==='function'){
+    var _setLang=window.setLang;
+    window.setLang=function(l){ _setLang(l); syncLangUI(l); };
+  }
+  syncLangUI(document.body.classList.contains('lang-en')?'en':'ja');
+
+  var groups=document.querySelectorAll('.navlinks .navgroup');
+  for(var g=0; g<groups.length; g++){ (function(grp){
+    var top=grp.querySelector('.navtop'), panel=grp.querySelector('.navpanel');
+    if(!panel||!top) return;
+    function set(x){ top.setAttribute('aria-expanded', x?'true':'false'); }
+    grp.addEventListener('mouseenter', function(){ grp.classList.remove('collapsed'); set(true); });
+    grp.addEventListener('mouseleave', function(){ set(false); });
+    grp.addEventListener('focusin', function(){ if(!grp.classList.contains('collapsed')) set(true); });
+    grp.addEventListener('focusout', function(e){ if(!grp.contains(e.relatedTarget)){ grp.classList.remove('collapsed'); set(false); } });
+    grp.addEventListener('keydown', function(e){ if(e.key==='Escape'){ grp.classList.add('collapsed'); set(false); top.focus(); } });
+  })(groups[g]); }
+
+  var tog=document.getElementById('navToggle'), ov=document.getElementById('mobnav');
+  if(tog && ov){
+    function openNav(){ document.body.classList.add('navopen'); tog.setAttribute('aria-expanded','true'); ov.setAttribute('aria-hidden','false');
+      var f=ov.querySelector('a,button'); if(f){ requestAnimationFrame(function(){ f.focus(); }); } }
+    function closeNav(){ document.body.classList.remove('navopen'); tog.setAttribute('aria-expanded','false'); ov.setAttribute('aria-hidden','true'); tog.focus(); }
+    tog.addEventListener('click', function(){ document.body.classList.contains('navopen')?closeNav():openNav(); });
+    ov.addEventListener('click', function(e){ if(e.target.closest('a')) closeNav(); });
+    document.addEventListener('keydown', function(e){ if(e.key==='Escape' && document.body.classList.contains('navopen')) closeNav(); });
+  }
+
+  /* F. TOC scroll-spy (IntersectionObserver, no scroll listeners) */
+  var bar=document.querySelector('.tocbar');
+  if(bar){
+    var pills=Array.prototype.slice.call(bar.querySelectorAll('.tocpill'));
+    var map={};
+    pills.forEach(function(p){ map[p.getAttribute('href').slice(1)]=p; });
+    if('IntersectionObserver' in window){
+      var spy=new IntersectionObserver(function(es){
+        es.forEach(function(e){
+          if(e.isIntersecting){
+            pills.forEach(function(p){ p.classList.remove('on'); });
+            var m=map[e.target.id]; if(m) m.classList.add('on');
+          }
+        });
+      },{rootMargin:'-45% 0px -50% 0px', threshold:0});
+      pills.forEach(function(p){ var s=document.getElementById(p.getAttribute('href').slice(1)); if(s) spy.observe(s); });
+    }
+  }
+
+  /* F. back to top */
+  var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var bt=document.querySelector('.totop'), sen=document.getElementById('toTopSentinel');
+  if(bt && sen && 'IntersectionObserver' in window){
+    new IntersectionObserver(function(es){
+      es.forEach(function(e){ if(e.isIntersecting) bt.classList.remove('show'); else bt.classList.add('show'); });
+    },{threshold:0}).observe(sen);
+  }
+  if(bt){ bt.addEventListener('click', function(){ window.scrollTo({top:0, behavior:reduce?'auto':'smooth'}); }); }
+})();
+</script>
+</body>
+</html>

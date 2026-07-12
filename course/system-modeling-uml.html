@@ -1,0 +1,1907 @@
+<!DOCTYPE html>
+<html lang="ja" class="no-js">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>システムモデリング（UML）学習ガイド - UMLダイアグラム図鑑 / System Modeling</title>
+<meta name="description" content="A study guide to system modeling with UML: the four modeling perspectives, and a field guide to the five core UML diagrams (class, sequence, use case, activity, state) with notation, drawing steps, design tips, interactive notation explorers, and a comprehension quiz. Part of Yuta Kimura's software engineering course materials.">
+<link rel="canonical" href="https://ykimu.github.io/course/system-modeling-uml.html">
+<link rel="icon" href="../favicon.svg" type="image/svg+xml">
+<meta property="og:site_name" content="Yuta Kimura / 木村祐太">
+<meta property="og:type" content="article">
+<meta property="og:title" content="システムモデリング（UML）学習ガイド - UMLダイアグラム図鑑 / System Modeling">
+<meta property="og:description" content="A study guide to system modeling with UML: the four perspectives and the five core UML diagrams (class, sequence, use case, activity, state), with notation, drawing steps, interactive explorers, and a quiz.">
+<meta property="og:url" content="https://ykimu.github.io/course/system-modeling-uml.html">
+<meta property="og:image" content="https://ykimu.github.io/assets/og.png">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="color-scheme" content="light">
+<script>document.documentElement.className="js";</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&family=Noto+Sans+JP:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#FBFCFB; --bg-2:#F3F6F4; --bg-3:#EBEFED; --card:#FFFFFF;
+    --ink:#101312; --ink-2:#3C4340; --muted:#6B746F; --faint:#B7C0BB;
+    --line:#E7ECE9; --hair:rgba(16,19,18,.08); --shell:rgba(16,19,18,.035);
+    --accent:#0E6F5C; --accent-2:#0A5748; --accent-soft:rgba(14,111,92,.08);
+    --soft:0 1px 2px rgba(16,19,18,.04), 0 24px 60px -28px rgba(16,19,18,.16);
+    --inhi:inset 0 1px 0 rgba(255,255,255,.85);
+    --ease:cubic-bezier(.32,.72,0,1);
+    --sans:"Plus Jakarta Sans","Noto Sans JP",-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+    --disp:"Space Grotesk","Plus Jakarta Sans","Noto Sans JP",sans-serif;
+    --mono:ui-monospace,SFMono-Regular,Menlo,Consolas,"Liberation Mono",monospace;
+    --maxw:1440px; --readw:clamp(680px, 62vw, 1060px);
+    /* category accents (UML modeling - kept within the brand green + neutral family) */
+    --struct:#0E6F5C; --interact:#0A5748; --behavior:#3E5C50; --basics:#5B655F; --mda-accent:#8A6D3B;
+    /* compatibility aliases used by reused content/diagram/quiz markup */
+    --panel:var(--card); --panel2:var(--bg-2); --chip:var(--bg-3);
+    --code-bg:var(--shell); --code-ink:#2F3A33;
+    --good:#0E6F5C; --bad:#B04A3E; --warn:#8A6D3B; --accent2:var(--accent-2);
+    --kw:#0A5748; --ty:#3C4340; --st:#7A5C34; --cm:#87918C;
+  }
+  html{color-scheme:light}
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth; -webkit-text-size-adjust:100%}
+  body{margin:0; background:var(--bg); color:var(--ink); font-family:var(--sans);
+    font-size:17px; line-height:1.75; font-weight:400; -webkit-font-smoothing:antialiased; text-rendering:optimizeLegibility}
+  body.lang-ja [lang=en]{display:none}
+  body.lang-en [lang=ja]{display:none}
+  ::selection{background:rgba(14,111,92,.16)}
+  h1,h2,h3{margin:0; color:var(--ink); font-weight:500; line-height:1.16; letter-spacing:-.02em; font-family:var(--disp); text-wrap:balance}
+  body.lang-ja h1,body.lang-ja h2,body.lang-ja h3{letter-spacing:0; font-family:var(--sans)}
+  p,.lead,.cite,.muted-s{text-wrap:pretty}
+  [lang="en"]{line-break:auto}
+  [lang="ja"]{line-break:strict; word-break:normal}
+  h1 [lang="ja"],h2 [lang="ja"],h3 [lang="ja"]{word-break:auto-phrase}
+  p{margin:0 0 1em}
+  a{color:var(--accent-2); text-decoration:none; transition:color .3s var(--ease)}
+  a:hover{color:var(--accent)}
+  a:focus-visible,button:focus-visible,.btn:focus-visible,[tabindex]:focus-visible{outline:2px solid var(--accent); outline-offset:3px; border-radius:8px}
+  .wrap{max-width:var(--maxw); margin:0 auto; padding:0 40px}
+  [id]{scroll-margin-top:96px}
+  section{padding:100px 0}
+
+  .skip{position:fixed; top:10px; left:10px; padding:10px 16px; background:var(--ink); color:#fff; border-radius:999px; transform:translateY(-200%); transition:none; z-index:100}
+  .skip:focus{transform:none}
+
+  /* film grain overlay */
+  body::after{content:""; position:fixed; inset:0; z-index:1; pointer-events:none; opacity:.02;
+    background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='g'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23g)'/%3E%3C/svg%3E")}
+
+  h2.big{font-size:clamp(1.9rem,3.2vw,2.7rem); font-weight:500; letter-spacing:-.025em; max-width:26ch}
+  body.lang-ja h2.big{letter-spacing:-.01em; max-width:none}
+  .eyebrow,.kick{display:inline-flex; align-items:center; gap:8px; width:max-content; max-width:100%;
+    padding:5px 13px 5px 11px; border-radius:999px; border:1px solid var(--hair); background:#fff;
+    font:600 .66rem/1 var(--disp); letter-spacing:.14em; text-transform:uppercase; color:var(--ink-2); margin:0 0 18px}
+  .eyebrow::before,.kick::before{content:""; flex:0 0 auto; width:6px; height:6px; border-radius:50%; background:var(--accent)}
+  .lead{font-size:1.12rem; color:var(--ink-2); line-height:1.78; font-weight:400}
+
+  /* motion */
+  .js .reveal{opacity:0; transform:translateY(18px); filter:blur(6px); transition:opacity .9s var(--ease), transform .9s var(--ease), filter .9s var(--ease)}
+  .js .reveal.in{opacity:1; transform:none; filter:none}
+  @media (prefers-reduced-motion:reduce){
+    .js .reveal{opacity:1!important; transform:none!important; filter:none!important}
+    .btn:active,.btn.ink:hover .ic,.pcard:hover,.pill:hover{transform:none!important}
+    html{scroll-behavior:auto}
+  }
+
+  /* floating island nav */
+  header.bar{position:sticky; top:18px; z-index:60; background:transparent; border-bottom:none}
+  .bar .wrap{display:flex; align-items:center; justify-content:space-between;
+    width:max-content; max-width:calc(100% - 32px); margin:0 auto; height:auto;
+    padding:9px 12px 9px 20px; gap:20px; border-radius:999px;
+    background:rgba(255,255,255,.72); -webkit-backdrop-filter:saturate(1.4) blur(18px); backdrop-filter:saturate(1.4) blur(18px);
+    border:1px solid var(--hair); box-shadow:var(--soft)}
+  .brand{font-weight:600; font-size:.92rem; letter-spacing:-.01em; color:var(--ink); display:inline-flex; align-items:center; gap:8px}
+  .brand span.sep{color:var(--muted); font-weight:400; margin:0 2px}
+  .navlinks{display:flex; gap:22px; align-items:center}
+  .navlinks a{font-size:.86rem; font-weight:500; color:var(--ink-2); transition:color .3s var(--ease)}
+  .navlinks a:hover{color:var(--ink)}
+  @media(max-width:860px){.navlinks{display:none}}
+  .bar-right{display:flex; align-items:center; gap:8px}
+
+  /* buttons */
+  .btn{display:inline-flex; align-items:center; gap:10px; font:500 .85rem/1 var(--sans); padding:10px 18px;
+    border-radius:999px; border:1px solid var(--hair); background:#fff; color:var(--ink); cursor:pointer;
+    transition:transform .4s var(--ease), box-shadow .4s var(--ease), border-color .3s var(--ease), background .3s var(--ease), color .3s var(--ease)}
+  .btn:hover{border-color:var(--ink); transform:translateY(-1px); color:var(--ink)}
+  .btn:active{transform:scale(.98)}
+  .btn.ink{background:var(--ink); border-color:var(--ink); color:#fff; padding:10px 10px 10px 22px;
+    box-shadow:0 12px 26px -14px rgba(16,19,18,.5)}
+  .btn.ink:not(:has(.ic)){padding:10px 22px}
+  .btn.ink:hover{box-shadow:0 16px 32px -14px rgba(16,19,18,.55); color:#fff}
+  .btn .ic{width:32px; height:32px; border-radius:999px; background:rgba(255,255,255,.18); display:grid; place-items:center;
+    transition:transform .45s var(--ease); flex:0 0 auto}
+  .btn.ink:hover .ic{transform:translate(3px,-1px)}
+  .tlink{display:inline-flex; align-items:center; gap:8px; font-weight:500; font-size:.95rem; color:var(--ink)}
+  .tlink .ar{transition:transform .4s var(--ease)}
+  .tlink:hover .ar{transform:translateX(4px)}
+
+  /* hero */
+  .hero{position:relative; overflow:hidden}
+  .hero > .wrap{position:relative; z-index:1}
+  .hero::before{content:""; position:absolute; z-index:0; width:640px; height:640px; right:-150px; top:-240px;
+    border-radius:50%; pointer-events:none; opacity:.55;
+    background:radial-gradient(circle, var(--accent-soft), transparent 62%); filter:blur(20px)}
+  .hero .wrap{padding-top:72px; padding-bottom:70px}
+  .hero h1{font-size:clamp(2.6rem,5vw,4.2rem); font-weight:500; letter-spacing:-.03em; line-height:1.08; color:var(--ink); max-width:none}
+  body.lang-ja .hero h1{font-size:clamp(2rem,4.2vw,3.1rem); font-weight:500; letter-spacing:0; line-height:1.24}
+  .hero h1 em{font-style:normal; color:var(--accent)}
+  .hero .lead{max-width:var(--readw); margin-top:24px}
+  .ja-note{display:inline-flex; align-items:center; gap:8px; margin-top:22px; padding:7px 15px; border-radius:999px;
+    border:1px solid var(--hair); background:var(--accent-soft); font-size:.8rem; font-weight:500; color:var(--accent-2)}
+  .ja-note::before{content:""; width:6px; height:6px; border-radius:50%; background:var(--accent); flex:0 0 auto}
+  .hero-cta{display:flex; gap:20px; align-items:center; flex-wrap:wrap; margin-top:28px}
+
+  .soft-sec{background:var(--bg-2); border-top:1px solid var(--line); border-bottom:1px solid var(--line)}
+
+  /* prose */
+  .prose{max-width:var(--readw)}
+  .prose p{margin:0 0 1em; color:var(--ink-2)}
+  .prose h4{font-family:var(--sans); font-size:1.12rem; font-weight:600; letter-spacing:0; color:var(--ink); margin:1.6em 0 .6em}
+  .prose ul{margin:0 0 1.2em; padding-left:0; list-style:none}
+  .prose ul li{position:relative; padding-left:22px; margin:12px 0; color:var(--ink-2)}
+  .prose ul li::before{content:""; position:absolute; left:0; top:13px; width:11px; height:1.5px; background:var(--accent)}
+  .prose ul li b{color:var(--ink); font-weight:600}
+  .prose b{color:var(--ink); font-weight:600}
+  .prose i{color:var(--ink-2)}
+  .prose code{font-family:var(--mono); font-size:.86em; background:var(--shell); border:1px solid var(--hair); border-radius:6px; padding:.08em .4em; color:var(--accent-2)}
+
+  .callout{border-radius:16px; padding:18px 22px; margin:18px 0; max-width:var(--readw);
+    background:var(--card); box-shadow:0 0 0 6px var(--shell),0 0 0 6.5px var(--hair),var(--soft)}
+  .callout h4{margin:0 0 6px; font-size:1rem; font-family:var(--sans); font-weight:600; letter-spacing:0; color:var(--ink)}
+  .callout.tip{background:var(--accent-soft)}
+  .callout.warn{background:rgba(138,109,59,.08)}
+  .callout a{font-weight:600}
+
+  .principles{display:grid; grid-template-columns:repeat(auto-fit,minmax(230px,1fr)); gap:14px; margin:18px 0; max-width:var(--readw)}
+  .principles .p{background:var(--card); border-radius:16px; padding:16px 18px;
+    box-shadow:0 0 0 6px var(--shell),0 0 0 6.5px var(--hair),var(--soft)}
+  .principles .p b{color:var(--accent-2)}
+  .principles .p span{font-size:.9rem; color:var(--muted)}
+
+  .cmp-table{border-collapse:separate; border-spacing:0; margin:16px 0; max-width:var(--readw); width:100%; font-size:.92rem;
+    border-radius:14px; overflow:hidden; box-shadow:0 0 0 6px var(--shell),0 0 0 6.5px var(--hair),var(--soft)}
+  .cmp-table th,.cmp-table td{border-bottom:1px solid var(--line); border-right:1px solid var(--line); padding:11px 14px; text-align:left; vertical-align:top; background:var(--card)}
+  .cmp-table tr:last-child th,.cmp-table tr:last-child td{border-bottom:none}
+  .cmp-table th{background:var(--bg-2); font-weight:600; color:var(--ink)}
+  .cmp-table td:last-child,.cmp-table th:last-child{border-right:none}
+  .cmp-table td b{color:var(--accent-2)}
+
+  /* controls: category pills + search */
+  .controls{display:flex; align-items:center; justify-content:space-between; gap:20px; flex-wrap:wrap; margin:0 0 12px}
+  .pills{display:flex; gap:8px; flex-wrap:wrap}
+  .pill{display:inline-flex; align-items:center; gap:8px; font:500 .9rem/1 var(--sans); padding:9px 16px;
+    border-radius:999px; border:1px solid var(--hair); background:#fff; color:var(--ink-2); cursor:pointer;
+    transition:transform .4s var(--ease), border-color .3s var(--ease), background .3s var(--ease), color .3s var(--ease)}
+  .pill:hover{border-color:var(--ink); transform:translateY(-1px)}
+  .pill span{font:600 .72rem/1 var(--disp); color:var(--muted)}
+  .pill.active{background:var(--ink); border-color:var(--ink); color:#fff}
+  .pill.active span{color:rgba(255,255,255,.7)}
+  .ctrl-right{display:flex; align-items:center; gap:14px}
+  .search{width:min(280px,60vw); padding:10px 16px; border-radius:999px; border:1px solid var(--hair);
+    background:#fff; color:var(--ink); font:400 .9rem/1 var(--sans); outline:none; transition:border-color .3s var(--ease)}
+  .search:focus{border-color:var(--accent)}
+  .learn-note{font:600 .78rem/1 var(--disp); color:var(--muted); white-space:nowrap}
+
+  /* category groups */
+  .cat-group{margin-top:34px}
+  .cat-group.hidden{display:none}
+  .cat-head{display:flex; align-items:center; gap:12px; margin:0 0 4px}
+  .cat-head .cat-dot{width:10px; height:10px; border-radius:50%; background:var(--cc); flex:0 0 auto}
+  .cat-head h3{font-family:var(--sans); font-size:1.4rem; font-weight:600; letter-spacing:0; color:var(--ink)}
+  .cat-badge{font:600 .66rem/1 var(--disp); letter-spacing:.08em; text-transform:uppercase; color:var(--muted);
+    border:1px solid var(--hair); background:#fff; padding:5px 11px; border-radius:999px}
+  .cat-desc{max-width:var(--readw); color:var(--muted); font-size:.96rem; margin:0 0 12px}
+
+  /* card (double-bezel) */
+  .pcard{border-radius:21px; background:var(--card); margin:16px 0; scroll-margin-top:96px;
+    box-shadow:0 0 0 7px var(--shell),0 0 0 7.5px var(--hair),var(--soft);
+    transition:box-shadow .4s var(--ease)}
+  .pcard.hidden{display:none}
+  .pcard-head{display:flex; align-items:center; gap:14px; width:100%; text-align:left;
+    background:transparent; border:none; cursor:pointer; padding:22px 26px 8px; font-family:var(--sans)}
+  .pnum{font:600 .95rem/1 var(--disp); font-variant-numeric:tabular-nums; flex:0 0 auto; min-width:24px}
+  .ptitle{font-family:var(--disp); font-weight:500; font-size:1.18rem; color:var(--ink); letter-spacing:-.01em; flex:0 0 auto}
+  .ptitle small{display:block; font-family:var(--sans); font-size:.8rem; color:var(--muted); font-weight:400; margin-top:2px}
+  .pbadges{display:flex; gap:8px; align-items:center}
+  .ptags{display:flex; gap:6px; flex-wrap:wrap; margin-left:auto; justify-content:flex-end}
+  .pchev{flex:0 0 auto; font-size:1.5rem; color:var(--muted); transition:transform .4s var(--ease); margin-left:6px; line-height:1}
+  .pcard.open .pchev{transform:rotate(90deg); color:var(--accent-2)}
+  .summary{margin:0; padding:0 26px 22px; color:var(--ink-2); font-size:1rem}
+  .summary strong{color:var(--ink); font-weight:600}
+  .pdetail{display:none; padding:0 26px 26px}
+  .pcard.open .pdetail{display:block}
+  .pcard.done-card{box-shadow:0 0 0 7px var(--accent-soft),0 0 0 7.5px rgba(14,111,92,.24),var(--soft)}
+
+  .badge-imp{font:700 .68rem/1 var(--disp); letter-spacing:.06em; padding:4px 10px; border-radius:999px; white-space:nowrap}
+  .imp3{background:var(--accent); color:#fff}
+  .imp2{background:var(--accent-soft); color:var(--accent-2)}
+  .imp1{background:var(--bg-3); color:var(--muted)}
+  .tag{font:500 .72rem/1 var(--sans); padding:5px 10px; border-radius:999px; background:var(--bg-2); color:var(--muted); border:1px solid var(--hair)}
+
+  .analogy{display:flex; gap:10px; align-items:flex-start; background:var(--accent-soft);
+    border-radius:14px; padding:14px 18px; margin:16px 0; font-size:.94rem; color:var(--ink-2)}
+  .analogy b{color:var(--accent-2); font-weight:600}
+
+  .grid2{display:grid; grid-template-columns:1fr 1fr; gap:16px; margin:18px 0}
+  .box{border-radius:16px; padding:16px 18px; background:var(--card);
+    box-shadow:0 0 0 6px var(--shell),0 0 0 6.5px var(--hair),var(--soft)}
+  .box h5{margin:0 0 10px; font-size:.92rem; font-family:var(--sans); font-weight:600; letter-spacing:0; display:flex; align-items:center; gap:7px}
+  .box.pros h5{color:var(--accent-2)}
+  .box.cons h5{color:var(--bad)}
+  .box ul{margin:0; padding-left:18px}
+  .box li{margin:6px 0; font-size:.9rem; color:var(--ink-2)}
+
+  .meta-row{display:grid; grid-template-columns:1fr 1fr; gap:16px; margin:16px 0}
+  .meta h5{margin:0 0 8px; font-size:.92rem; font-family:var(--sans); font-weight:600; letter-spacing:0; color:var(--accent-2)}
+  .meta p,.meta li{font-size:.92rem; color:var(--ink-2)}
+  .meta ul{margin:0; padding-left:18px}
+  .meta p{margin:0}
+  .meta code,.box code,.analogy code,.steps code{font-family:var(--mono); font-size:.86em; background:var(--shell); border:1px solid var(--hair); border-radius:5px; padding:.05em .35em; color:var(--accent-2)}
+  .sec-h{margin:16px 0 6px; font-family:var(--sans); font-size:.92rem; font-weight:600; letter-spacing:0; color:var(--accent-2)}
+
+  /* numbered procedure steps */
+  .steps{border-radius:16px; padding:16px 18px; margin:16px 0; background:var(--card);
+    box-shadow:0 0 0 6px var(--shell),0 0 0 6.5px var(--hair),var(--soft)}
+  .steps h5{margin:0 0 10px; font-size:.92rem; font-family:var(--sans); font-weight:600; letter-spacing:0; color:var(--accent-2)}
+  .steps ol{margin:0; padding:0; list-style:none; counter-reset:st}
+  .steps ol li{counter-increment:st; position:relative; padding-left:36px; margin:9px 0; font-size:.92rem; color:var(--ink-2)}
+  .steps ol li::before{content:counter(st); position:absolute; left:0; top:3px; width:23px; height:23px; border-radius:50%;
+    background:var(--accent-soft); color:var(--accent-2); font:600 .74rem/23px var(--disp); text-align:center}
+  .steps ol li b{color:var(--ink); font-weight:600}
+
+  /* diagrams */
+  .diagram-wrap{margin:18px 0; max-width:var(--readw)}
+  .diagram-wrap h5{margin:0 0 8px; font-size:.92rem; font-family:var(--sans); font-weight:600; letter-spacing:0; color:var(--accent-2)}
+  .diagram-wrap svg{display:block; width:100%; height:auto; background:var(--shell);
+    border:1px solid var(--hair); border-radius:12px; padding:8px}
+  .dg-box{fill:var(--card); stroke:var(--line); stroke-width:1.2}
+  .dg-if{stroke:var(--accent)}
+  .dg-lbl{fill:var(--ink); font-size:12px; font-weight:600; text-anchor:middle; font-family:var(--sans)}
+  .dg-st{fill:var(--accent-2); font-size:10px; text-anchor:middle}
+  .dg-line{stroke:var(--muted); stroke-width:1.4; fill:none}
+  .dg-dash{stroke-dasharray:5 4}
+  .dg-el{fill:var(--ink-2); font-size:10.5px; text-anchor:middle}
+  .dg-note{fill:var(--muted); font-size:11px; font-style:italic; text-anchor:middle}
+  .dg-legend{font-size:.78rem; color:var(--muted); margin-top:8px}
+  /* diagram helper shapes (UML notation) */
+  .dg-hollow{fill:var(--card); stroke:var(--accent); stroke-width:1.6}
+  .dg-act{fill:var(--card); stroke:var(--muted); stroke-width:1.1}
+  .dg-alt{fill:none; stroke:var(--accent); stroke-width:1.2}
+  .dg-alttab{fill:var(--accent-soft); stroke:var(--accent); stroke-width:1}
+  .dg-dot{fill:var(--ink-2)}
+  .dg-ring{fill:none; stroke:var(--ink-2); stroke-width:1.4}
+
+  /* quiz */
+  .quiz-q{border-radius:16px; padding:18px 20px; margin:16px 0; max-width:var(--readw); background:var(--card);
+    box-shadow:0 0 0 6px var(--shell),0 0 0 6.5px var(--hair),var(--soft)}
+  .qtext{margin:0 0 12px; font-weight:600; color:var(--ink)}
+  .qopts{display:flex; flex-wrap:wrap; gap:8px}
+  .qopts button{background:#fff; border:1px solid var(--hair); color:var(--ink); border-radius:999px;
+    padding:9px 16px; font:500 .88rem/1 var(--sans); cursor:pointer; transition:border-color .3s var(--ease), transform .3s var(--ease)}
+  .qopts button:hover:not(:disabled){border-color:var(--ink); transform:translateY(-1px)}
+  .qopts button:disabled{cursor:default}
+  .qopts button.right{background:var(--accent-soft); color:var(--accent-2); border-color:var(--accent); font-weight:600}
+  .qopts button.wrong{background:rgba(176,74,62,.1); color:var(--bad); border-color:var(--bad)}
+  .qwhy{font-size:.9rem; color:var(--ink-2); margin:12px 0 0; padding-top:12px; border-top:1px solid var(--line)}
+  .qwhy b{color:var(--ink); font-weight:600}
+  .quiz-reset{margin-top:16px}
+  #quizScore,#whichScore{color:var(--muted); font-size:.92rem; font-weight:500}
+
+  /* notation explorer (interactive) */
+  .nx-wrap{display:grid; grid-template-columns:1fr; gap:18px; max-width:none; margin:20px 0}
+  @media(min-width:980px){.nx-wrap{grid-template-columns:1fr 1fr}}
+  .nx-card{background:var(--card); border-radius:18px; padding:18px 20px;
+    box-shadow:0 0 0 6px var(--shell),0 0 0 6.5px var(--hair),var(--soft)}
+  .nx-card h4{margin:0 0 4px; font-family:var(--sans); font-weight:600; font-size:1.05rem; color:var(--ink)}
+  .nx-card .nx-sub{margin:0 0 12px; font-size:.9rem; color:var(--muted)}
+  .nx svg{display:block; width:100%; height:auto; background:var(--shell);
+    border:1px solid var(--hair); border-radius:12px; padding:6px}
+  .nk{cursor:pointer}
+  .nk-hl{fill:transparent; stroke:var(--accent); stroke-width:2.4; opacity:0; transition:opacity .2s var(--ease)}
+  .nk:hover .nk-hl{opacity:.5}
+  .nk.sel .nk-hl{opacity:1}
+  .nx-panel{margin-top:12px; border-radius:12px; padding:14px 16px; background:var(--bg-2);
+    color:var(--ink-2); font-size:.93rem; min-height:70px}
+  .nx-panel code{font-family:var(--mono); font-size:.86em; background:var(--shell); border:1px solid var(--hair); border-radius:5px; padding:.05em .35em; color:var(--accent-2)}
+  .nx-tag{display:inline-block; font:600 .72rem/1 var(--disp); letter-spacing:.04em; padding:5px 11px;
+    border-radius:999px; margin-right:8px; background:var(--accent); color:#fff; vertical-align:middle}
+  .nx-hint{font-size:.82rem; color:var(--muted); margin-top:8px}
+
+  /* notation table inside cards */
+  .nota{border-collapse:separate; border-spacing:0; margin:14px 0; width:100%; font-size:.9rem;
+    border-radius:12px; overflow:hidden; box-shadow:0 0 0 6px var(--shell),0 0 0 6.5px var(--hair),var(--soft)}
+  .nota th,.nota td{border-bottom:1px solid var(--line); padding:9px 13px; text-align:left; vertical-align:top; background:var(--card)}
+  .nota tr:last-child td{border-bottom:none}
+  .nota thead th{background:var(--bg-2); font-weight:600; color:var(--ink)}
+  .nota td.sym{font-family:var(--mono); color:var(--accent-2); font-weight:600; width:36%; white-space:normal}
+  .nota td b{color:var(--accent-2)}
+
+  /* which-diagram quiz */
+  .which-q{border-radius:16px; padding:18px 20px; margin:16px 0; max-width:none; background:var(--card);
+    box-shadow:0 0 0 6px var(--shell),0 0 0 6.5px var(--hair),var(--soft)}
+  .which-q svg{display:block; width:100%; max-width:440px; height:auto; background:var(--shell);
+    border:1px solid var(--hair); border-radius:12px; padding:8px; margin:0 0 14px}
+
+  .learn{display:inline-flex; align-items:center; gap:10px; margin-top:20px; font-size:.9rem;
+    color:var(--muted); cursor:pointer; user-select:none}
+  .learn input{accent-color:var(--accent); width:16px; height:16px; cursor:pointer}
+
+  /* footer */
+  footer{border-top:1px solid var(--line); padding:64px 0 46px; background:var(--bg)}
+  footer h3{font-size:.72rem; font-weight:600; letter-spacing:.12em; text-transform:uppercase; color:var(--muted); margin:0 0 1em; font-family:var(--disp)}
+  .foot-grid{display:grid; grid-template-columns:1.4fr 1fr 1fr; gap:44px}
+  .cite{font-size:.98rem; color:var(--ink-2); line-height:1.7; max-width:56ch; margin-bottom:36px}
+  .muted-s{color:var(--muted); font-size:.9rem; line-height:1.75}
+  .muted-s b{color:var(--ink); font-weight:600}
+  .foot-rule{height:1px; background:var(--line); margin:44px 0 20px}
+  .foot-note{color:var(--muted); font-size:.82rem}
+  @media(max-width:760px){.foot-grid{grid-template-columns:1fr 1fr}}
+  @media(max-width:560px){.foot-grid{grid-template-columns:1fr}}
+
+  @media(max-width:860px){
+    section{padding:72px 0}
+    .hero .wrap{padding-top:52px; padding-bottom:56px}
+    .wrap{padding:0 24px}
+    .grid2,.meta-row{grid-template-columns:1fr}
+    .ptags{flex-basis:100%; margin-left:0; justify-content:flex-start}
+    .pcard-head{flex-wrap:wrap}
+  }
+  @media(max-width:640px){
+    .bar-right .btn:not(.ink):not(.jp-toggle){display:none}
+    .brand{font-size:.82rem}
+    .controls{align-items:flex-start; flex-direction:column}
+    .qopts button{flex:1 1 44%}
+  }
+
+  /* JP-only teaching page: fill content width for body text & boxes */
+  .lead,
+  .prose,
+  .callout,
+  .principles,
+  .cmp-table,
+  .diagram-wrap{max-width:none !important}
+  /* ==================== NAV SYSTEM v4 (NAV_SPEC A-F) ==================== */
+  .navlinks{display:flex; gap:4px; align-items:center}
+  .navlinks .navgroup{position:relative; display:flex}
+  .navlinks .navtop{display:inline-flex; align-items:center; gap:7px; font-size:.86rem; font-weight:500;
+    color:var(--ink-2); padding:8px 13px; border-radius:999px; white-space:nowrap;
+    transition:color .3s var(--ease), background .3s var(--ease)}
+  .navlinks .navtop:hover{color:var(--ink)}
+  .navlinks .navgroup:hover .navtop,.navlinks .navgroup:focus-within .navtop{color:var(--ink); background:var(--bg-2)}
+  .navlinks .navtop.on{color:var(--ink)}
+  .navlinks .navtop.on::before{content:""; flex:0 0 auto; width:6px; height:6px; border-radius:50%; background:var(--accent)}
+  .navlinks .navpanel{position:absolute; top:100%; left:50%; margin-top:9px; min-width:238px; padding:10px;
+    transform:translateX(-50%) translateY(6px); text-align:left;
+    background:var(--card); border:1px solid var(--hair); border-radius:16px; box-shadow:var(--soft);
+    opacity:0; visibility:hidden; pointer-events:none;
+    transition:opacity .25s var(--ease), transform .25s var(--ease), visibility 0s linear .25s; z-index:5}
+  .navlinks .navpanel::before{content:""; position:absolute; top:-13px; left:0; right:0; height:14px}
+  .navlinks .navgroup:hover .navpanel,.navlinks .navgroup:focus-within .navpanel{
+    opacity:1; visibility:visible; pointer-events:auto; transform:translateX(-50%) translateY(0);
+    transition:opacity .25s var(--ease), transform .25s var(--ease), visibility 0s linear 0s}
+  .navlinks .navgroup.collapsed .navpanel{opacity:0; visibility:hidden; pointer-events:none}
+  .navlinks .navpanel a{display:flex; align-items:center; gap:9px; padding:9px 12px; border-radius:11px;
+    font-size:.85rem; font-weight:500; color:var(--ink-2); white-space:nowrap;
+    transition:background .25s var(--ease), color .25s var(--ease)}
+  .navlinks .navpanel a:hover{background:var(--accent-soft); color:var(--ink)}
+  .navlinks .navpanel a.here{background:var(--accent-soft); color:var(--ink)}
+  .navlinks .navpanel a.here::before{content:""; flex:0 0 auto; width:6px; height:6px; border-radius:50%; background:var(--accent)}
+  .navlinks .navlabel{padding:8px 12px 3px; font:600 .6rem/1 var(--disp); letter-spacing:.13em;
+    text-transform:uppercase; color:var(--muted)}
+  .navlinks .navpanel hr.navdiv{border:0; border-top:1px solid var(--line); margin:8px 6px}
+
+  .lswitch{display:inline-flex; align-items:center; gap:2px; padding:3px; border-radius:999px;
+    border:1px solid var(--hair); background:#fff}
+  .lswitch button{appearance:none; -webkit-appearance:none; border:0; background:transparent; cursor:pointer;
+    font:600 .78rem/1 var(--disp); letter-spacing:.03em; color:var(--ink-2); padding:8px 13px; border-radius:999px;
+    transition:background .3s var(--ease), color .3s var(--ease)}
+  .lswitch button:hover{color:var(--ink)}
+  body.lang-ja .lswitch .ls-ja,body.lang-en .lswitch .ls-en{background:var(--ink); color:#fff}
+
+  .navtoggle{display:none; position:relative; width:42px; height:42px; flex:0 0 auto;
+    border-radius:999px; border:1px solid var(--hair); background:#fff; cursor:pointer; padding:0}
+  .navtoggle span{position:absolute; left:11px; right:11px; height:2px; background:var(--ink); border-radius:2px;
+    transition:transform .35s var(--ease), opacity .2s var(--ease)}
+  .navtoggle span:nth-child(1){top:15px}
+  .navtoggle span:nth-child(2){top:20px}
+  .navtoggle span:nth-child(3){top:25px}
+  body.navopen .navtoggle span:nth-child(1){transform:translateY(5px) rotate(45deg)}
+  body.navopen .navtoggle span:nth-child(2){opacity:0}
+  body.navopen .navtoggle span:nth-child(3){transform:translateY(-5px) rotate(-45deg)}
+
+  .mobnav{position:fixed; inset:0; z-index:80; display:flex; flex-direction:column; overflow-y:auto;
+    background:rgba(251,252,251,.9); -webkit-backdrop-filter:saturate(1.2) blur(24px); backdrop-filter:saturate(1.2) blur(24px);
+    opacity:0; visibility:hidden; pointer-events:none;
+    transition:opacity .35s var(--ease), visibility 0s linear .35s}
+  body.navopen .mobnav{opacity:1; visibility:visible; pointer-events:auto; transition:opacity .35s var(--ease), visibility 0s linear 0s}
+  body.navopen{overflow:hidden}
+  body.navopen header.bar{z-index:90}
+  .mobnav-inner{width:100%; max-width:600px; margin:0 auto; padding:104px 28px 64px;
+    display:flex; flex-direction:column; gap:24px}
+  .mobgroup{display:flex; flex-direction:column; gap:1px}
+  .moblabel{font:600 .64rem/1 var(--disp); letter-spacing:.14em; text-transform:uppercase; color:var(--muted); margin-bottom:9px}
+  .mobgroup a{font-size:1.28rem; font-weight:500; color:var(--ink); padding:7px 0; line-height:1.24}
+  .mobgroup a:hover{color:var(--accent-2)}
+  .mobgroup a.here{color:var(--accent-2)}
+  .mobgroup a.here::before{content:""; display:inline-block; width:6px; height:6px; border-radius:50%;
+    background:var(--accent); margin-right:9px; vertical-align:middle}
+  .mobfoot{display:flex; align-items:center; justify-content:space-between; gap:16px; flex-wrap:wrap;
+    margin-top:6px; padding-top:22px; border-top:1px solid var(--line)}
+  .mobext{font-size:1rem; font-weight:500; color:var(--ink-2)}
+  .mobext:hover{color:var(--ink)}
+  .js .mobnav-inner > *{opacity:0; transform:translateY(12px);
+    transition:opacity .4s var(--ease), transform .4s var(--ease)}
+  body.navopen .mobnav-inner > *{opacity:1; transform:none}
+  body.navopen .mobnav-inner > *:nth-child(1){transition-delay:.04s}
+  body.navopen .mobnav-inner > *:nth-child(2){transition-delay:.08s}
+  body.navopen .mobnav-inner > *:nth-child(3){transition-delay:.12s}
+  body.navopen .mobnav-inner > *:nth-child(4){transition-delay:.16s}
+  body.navopen .mobnav-inner > *:nth-child(5){transition-delay:.20s}
+  body.navopen .mobnav-inner > *:nth-child(6){transition-delay:.24s}
+
+  /* E. breadcrumb */
+  .crumbs{display:flex; flex-wrap:wrap; align-items:center; gap:7px; margin:0;
+    font-size:.8rem; font-weight:500; color:var(--muted)}
+  .crumbs a{color:var(--muted)}
+  .crumbs a:hover{color:var(--ink)}
+  .crumbs .csep{color:var(--faint)}
+  .crumbs .cur{color:var(--ink)}
+
+  /* F. sticky TOC bar */
+  .tocbar{position:sticky; top:84px; z-index:40; margin:8px 0 0;
+    background:rgba(255,255,255,.82); -webkit-backdrop-filter:saturate(1.4) blur(14px); backdrop-filter:saturate(1.4) blur(14px);
+    border-top:1px solid var(--hair); border-bottom:1px solid var(--hair)}
+  .tocbar-inner{max-width:var(--maxw); margin:0 auto; padding:9px 40px; display:flex; gap:8px;
+    overflow-x:auto; scrollbar-width:none; -ms-overflow-style:none}
+  .tocbar-inner::-webkit-scrollbar{display:none}
+  .tocpill{flex:0 0 auto; display:inline-flex; align-items:center; gap:7px; padding:7px 14px; border-radius:999px;
+    font-size:.8rem; font-weight:500; color:var(--ink-2); border:1px solid transparent; white-space:nowrap;
+    transition:background .25s var(--ease), color .25s var(--ease), border-color .25s var(--ease)}
+  .tocpill:hover{color:var(--ink); border-color:var(--hair)}
+  .tocpill.on{background:var(--accent-soft); color:var(--ink)}
+  .tocpill.on::before{content:""; flex:0 0 auto; width:6px; height:6px; border-radius:50%; background:var(--accent)}
+  section[id]{scroll-margin-top:150px}
+
+  /* F. back to top */
+  .totop{position:fixed; right:22px; bottom:22px; z-index:55; width:46px; height:46px; border-radius:999px;
+    display:grid; place-items:center; background:#fff; border:1px solid var(--hair); box-shadow:var(--soft);
+    color:var(--ink); cursor:pointer; font-size:1.15rem; line-height:1;
+    opacity:0; transform:translateY(10px) scale(.9); pointer-events:none;
+    transition:opacity .35s var(--ease), transform .35s var(--ease)}
+  .totop.show{opacity:1; transform:none; pointer-events:auto}
+  .totop:hover{transform:translateY(-2px)}
+
+  @media(max-width:860px){
+    .navtoggle{display:block}
+    .navlinks{display:none}
+    .bar-right .btn{display:none}
+    .tocbar{top:76px}
+  }
+  @media(max-width:430px){
+    .bar-right .lswitch{display:none}
+  }
+  @media (prefers-reduced-motion:reduce){
+    .navlinks .navpanel,.navtoggle span,.mobnav,.js .mobnav-inner > *,.navtop,.lswitch button,.totop,.tocpill{transition-duration:.001ms !important}
+    .js .mobnav-inner > *{transition-delay:0s !important}
+    .navtoggle:hover,.totop:hover{transform:none !important}
+  }
+</style>
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[
+{"@type":"ListItem","position":1,"name":"ホーム","item":"https://ykimu.github.io/"},
+{"@type":"ListItem","position":2,"name":"教育","item":"https://ykimu.github.io/teaching.html"},
+{"@type":"ListItem","position":3,"name":"ソフトウェア工学","item":"https://ykimu.github.io/course/index.html"},
+{"@type":"ListItem","position":4,"name":"システムモデリング（UML）学習ガイド","item":"https://ykimu.github.io/course/system-modeling-uml.html"}
+]}
+</script>
+</head>
+<body class="lang-ja">
+
+<a class="skip" href="#main"><span lang="ja">本文へスキップ</span><span lang="en">Skip to content</span></a>
+
+<header class="bar">
+  <div class="wrap">
+    <a class="brand" href="../index.html">
+      <span aria-hidden="true">&lsaquo;</span>
+      <span lang="ja">Yuta Kimura</span><span lang="en">Yuta Kimura</span>
+      <span class="sep">·</span><span lang="ja">木村祐太</span><span lang="en">Kimura</span>
+    </a>
+    <nav class="navlinks" aria-label="メイン">
+      <div class="navgroup">
+        <a class="navtop" href="../publications.html" aria-haspopup="true" aria-expanded="false"><span lang="ja">研究</span><span lang="en">Research</span></a>
+        <div class="navpanel">
+          <a href="../publications.html"><span lang="ja">業績・研究活動</span><span lang="en">Publications &amp; activity</span></a>
+          <a href="../research/technical-debt-metrics.html"><span lang="ja">技術的負債とメトリクス</span><span lang="en">Technical debt &amp; metrics</span></a>
+          <a href="../research/apr-coding-standards.html"><span lang="ja">自動生成パッチと規約</span><span lang="en">Auto-generated patches &amp; standards</span></a>
+          <a href="../research/td-repayment-refactoring.html"><span lang="ja">負債返済とリファクタリング</span><span lang="en">Debt repayment &amp; refactoring</span></a>
+          <a href="../research/satd-issue-classification.html"><span lang="ja">課題票の負債分類</span><span lang="en">Issue-ticket debt classification</span></a>
+        </div>
+      </div>
+      <div class="navgroup">
+        <a class="navtop on" href="../teaching.html" aria-haspopup="true" aria-expanded="false"><span lang="ja">教育</span><span lang="en">Teaching</span></a>
+        <div class="navpanel">
+          <div class="navlabel"><span lang="ja">科目</span><span lang="en">Courses</span></div>
+          <a href="../teaching.html"><span lang="ja">教育・担当授業</span><span lang="en">Teaching &amp; courses</span></a>
+          <a href="index.html"><span lang="ja">ソフトウェア工学</span><span lang="en">Software Engineering</span></a>
+          <a href="logic-circuits.html"><span lang="ja">論理回路1</span><span lang="en">Logic Circuits I</span></a>
+          <a href="intelligent-informatics-1.html"><span lang="ja">知能情報実験実習1</span><span lang="en">Intelligent Informatics Lab I</span></a>
+          <hr class="navdiv">
+          <div class="navlabel"><span lang="ja">教材</span><span lang="en">Materials</span></div>
+          <a href="design-patterns.html"><span lang="ja">デザインパターン学習ガイド</span><span lang="en">Design Patterns Guide</span></a>
+          <a href="software-architecture.html"><span lang="ja">アーキテクチャパターン大全</span><span lang="en">Software Architecture</span></a>
+          <a href="uml-guide.html"><span lang="ja">クラス図/シーケンス図ガイド</span><span lang="en">UML Diagram Guide</span></a>
+          <a href="software-testing.html"><span lang="ja">ソフトウェアテスト学習ガイド</span><span lang="en">Software Testing Guide</span></a>
+          <a href="agile-scrum.html"><span lang="ja">アジャイル開発とスクラム</span><span lang="en">Agile &amp; Scrum</span></a>
+          <a href="requirements-engineering.html"><span lang="ja">要求工学</span><span lang="en">Requirements Engineering</span></a>
+          <a href="software-evolution.html"><span lang="ja">ソフトウェア進化と技術的負債</span><span lang="en">Software Evolution</span></a>
+          <a href="software-reuse-oss.html"><span lang="ja">ソフトウェア再利用とOSS</span><span lang="en">Software Reuse &amp; OSS</span></a>
+          <a href="project-management.html"><span lang="ja">プロジェクト管理と見積もり</span><span lang="en">Project Management</span></a>
+          <a href="version-control-cicd.html"><span lang="ja">バージョン管理とCI/CD</span><span lang="en">Version Control &amp; CI/CD</span></a>
+          <a class="here" href="system-modeling-uml.html" aria-current="page"><span lang="ja">システムモデリング(UML)</span><span lang="en">System Modeling</span></a>
+          <a href="dependable-systems.html"><span lang="ja">ディペンダブルシステム</span><span lang="en">Dependable Systems</span></a>
+          <a href="project-estimation-planning.html"><span lang="ja">プロジェクト計画・見積り</span><span lang="en">Project Planning &amp; Estimation</span></a>
+        </div>
+      </div>
+      <div class="navgroup">
+        <a class="navtop" href="../software-engineering.html" aria-haspopup="true" aria-expanded="false"><span lang="ja">ガイド</span><span lang="en">Guides</span></a>
+        <div class="navpanel">
+          <a href="../software-engineering.html"><span lang="ja">ソフトウェア工学とは</span><span lang="en">What is software engineering</span></a>
+          <a href="../technical-debt.html"><span lang="ja">技術的負債とは</span><span lang="en">What is technical debt</span></a>
+          <a href="../glossary.html"><span lang="ja">研究用語ミニ辞典</span><span lang="en">Research glossary</span></a>
+        </div>
+      </div>
+      <div class="navgroup">
+        <a class="navtop" href="../students.html"><span lang="ja">学生の皆さんへ</span><span lang="en">For Students</span></a>
+      </div>
+    </nav>
+    <div class="bar-right">
+      <a class="btn" href="https://researchmap.jp/kimura_yuta" target="_blank" rel="noopener">researchmap</a>
+      <div class="lswitch" role="group" aria-label="言語 / Language">
+        <button type="button" class="ls-ja" onclick="setLang('ja')" aria-pressed="true">JA</button>
+        <button type="button" class="ls-en" onclick="setLang('en')" aria-pressed="false">EN</button>
+      </div>
+      <button class="navtoggle" id="navToggle" type="button" aria-label="メニュー" aria-expanded="false" aria-controls="mobnav">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </div>
+</header>
+
+<div class="mobnav" id="mobnav" aria-hidden="true">
+  <div class="mobnav-inner">
+    <div class="mobgroup">
+      <div class="moblabel"><span lang="ja">研究</span><span lang="en">Research</span></div>
+      <a href="../publications.html"><span lang="ja">業績・研究活動</span><span lang="en">Publications &amp; activity</span></a>
+      <a href="../research/technical-debt-metrics.html"><span lang="ja">技術的負債とメトリクス</span><span lang="en">Technical debt &amp; metrics</span></a>
+      <a href="../research/apr-coding-standards.html"><span lang="ja">自動生成パッチと規約</span><span lang="en">Auto-generated patches &amp; standards</span></a>
+      <a href="../research/td-repayment-refactoring.html"><span lang="ja">負債返済とリファクタリング</span><span lang="en">Debt repayment &amp; refactoring</span></a>
+      <a href="../research/satd-issue-classification.html"><span lang="ja">課題票の負債分類</span><span lang="en">Issue-ticket debt classification</span></a>
+    </div>
+    <div class="mobgroup">
+      <div class="moblabel"><span lang="ja">教育</span><span lang="en">Teaching</span></div>
+      <a href="../teaching.html"><span lang="ja">教育・担当授業</span><span lang="en">Teaching &amp; courses</span></a>
+      <a href="index.html"><span lang="ja">ソフトウェア工学</span><span lang="en">Software Engineering</span></a>
+      <a href="logic-circuits.html"><span lang="ja">論理回路1</span><span lang="en">Logic Circuits I</span></a>
+      <a href="intelligent-informatics-1.html"><span lang="ja">知能情報実験実習1</span><span lang="en">Intelligent Informatics Lab I</span></a>
+      <a href="design-patterns.html"><span lang="ja">デザインパターン学習ガイド</span><span lang="en">Design Patterns Guide</span></a>
+      <a href="software-architecture.html"><span lang="ja">アーキテクチャパターン大全</span><span lang="en">Software Architecture</span></a>
+      <a href="uml-guide.html"><span lang="ja">クラス図/シーケンス図ガイド</span><span lang="en">UML Diagram Guide</span></a>
+      <a href="software-testing.html"><span lang="ja">ソフトウェアテスト学習ガイド</span><span lang="en">Software Testing Guide</span></a>
+      <a href="agile-scrum.html"><span lang="ja">アジャイル開発とスクラム</span><span lang="en">Agile &amp; Scrum</span></a>
+      <a href="requirements-engineering.html"><span lang="ja">要求工学</span><span lang="en">Requirements Engineering</span></a>
+      <a href="software-evolution.html"><span lang="ja">ソフトウェア進化と技術的負債</span><span lang="en">Software Evolution</span></a>
+      <a href="software-reuse-oss.html"><span lang="ja">ソフトウェア再利用とOSS</span><span lang="en">Software Reuse &amp; OSS</span></a>
+      <a href="project-management.html"><span lang="ja">プロジェクト管理と見積もり</span><span lang="en">Project Management</span></a>
+      <a href="version-control-cicd.html"><span lang="ja">バージョン管理とCI/CD</span><span lang="en">Version Control &amp; CI/CD</span></a>
+      <a class="here" href="system-modeling-uml.html" aria-current="page"><span lang="ja">システムモデリング(UML)</span><span lang="en">System Modeling</span></a>
+      <a href="dependable-systems.html"><span lang="ja">ディペンダブルシステム</span><span lang="en">Dependable Systems</span></a>
+      <a href="project-estimation-planning.html"><span lang="ja">プロジェクト計画・見積り</span><span lang="en">Project Planning &amp; Estimation</span></a>
+    </div>
+    <div class="mobgroup">
+      <div class="moblabel"><span lang="ja">ガイド</span><span lang="en">Guides</span></div>
+      <a href="../software-engineering.html"><span lang="ja">ソフトウェア工学とは</span><span lang="en">What is software engineering</span></a>
+      <a href="../technical-debt.html"><span lang="ja">技術的負債とは</span><span lang="en">What is technical debt</span></a>
+      <a href="../glossary.html"><span lang="ja">研究用語ミニ辞典</span><span lang="en">Research glossary</span></a>
+    </div>
+    <div class="mobgroup">
+      <div class="moblabel"><span lang="ja">学生の皆さんへ</span><span lang="en">For Students</span></div>
+      <a href="../students.html"><span lang="ja">学生の皆さんへ</span><span lang="en">For Students</span></a>
+    </div>
+    <div class="mobfoot">
+      <a class="mobext" href="https://researchmap.jp/kimura_yuta" target="_blank" rel="noopener">researchmap</a>
+      <div class="lswitch" role="group" aria-label="言語 / Language">
+        <button type="button" class="ls-ja" onclick="setLang('ja')" aria-pressed="true">JA</button>
+        <button type="button" class="ls-en" onclick="setLang('en')" aria-pressed="false">EN</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<main id="main">
+
+<button class="totop" type="button" aria-label="上へ戻る" title="上へ戻る">&uarr;</button>
+
+<div class="wrap" style="padding-top:24px">
+  <nav class="crumbs" aria-label="パンくず">
+    <a href="../index.html"><span lang="ja">ホーム</span><span lang="en">Home</span></a>
+    <span class="csep" aria-hidden="true">&rsaquo;</span>
+    <a href="../teaching.html"><span lang="ja">教育</span><span lang="en">Teaching</span></a>
+    <span class="csep" aria-hidden="true">&rsaquo;</span>
+    <a href="index.html"><span lang="ja">ソフトウェア工学</span><span lang="en">Software Engineering</span></a>
+    <span class="csep" aria-hidden="true">&rsaquo;</span>
+    <span class="cur" aria-current="page"><span lang="ja">システムモデリング（UML）学習ガイド</span><span lang="en">System Modeling</span></span>
+  </nav>
+</div>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="wrap">
+    <p class="kick">System Modeling · UML</p>
+    <h1>システムモデリング：システムを<em>「図で考える」</em>技術</h1>
+    <p class="lead">システムモデリングは、システムの<strong>抽象モデル</strong>を作るプロセスです。1枚の図ですべては表せないため、<strong>コンテキスト・相互作用・構造・振る舞い</strong>という4つの視点から、それぞれ別のモデルで捉えます。この教材では、UMLでよく使う<strong>5つのダイアグラム（クラス図・シーケンス図・ユースケース図・アクティビティ図・状態遷移図）</strong>を1枚ずつ、記法・描き方・設計のコツ・ありがちな誤りつきで整理しました。SVGを<strong>クリックして記法を学べる記法エクスプローラ</strong>、<strong>「この図は何？」判定クイズ</strong>、理解度クイズ付き。別課題「クラス図・シーケンス図 作成ガイド」の<strong>予習・記法習得</strong>に使ってください。</p>
+    <p class="ja-note"><span lang="ja">この教材は日本語のみで提供しています</span><span lang="en">This learning material is available in Japanese only.</span></p>
+    <div class="hero-cta">
+      <a class="btn ink" href="#diagrams" style="padding:12px 22px">
+        <span lang="ja">UMLダイアグラム図鑑へ</span><span lang="en">Jump to the diagram field guide</span>
+      </a>
+      <a class="tlink" href="#explorer">
+        <span lang="ja">記法エクスプローラへ</span><span lang="en">Notation explorer</span>
+        <span class="ar" aria-hidden="true">&rsaquo;</span>
+      </a>
+    </div>
+  </div>
+</div>
+
+<div id="toTopSentinel" aria-hidden="true"></div>
+
+<div class="tocbar">
+  <nav class="tocbar-inner" aria-label="ページ内目次">
+    <a class="tocpill" href="#intro"><span lang="ja">はじめに</span><span lang="en">Intro</span></a>
+    <a class="tocpill" href="#explorer"><span lang="ja">記法エクスプローラ</span><span lang="en">Notation</span></a>
+    <a class="tocpill" href="#diagrams"><span lang="ja">ダイアグラム図鑑</span><span lang="en">Field guide</span></a>
+    <a class="tocpill" href="#which"><span lang="ja">判定クイズ</span><span lang="en">Which</span></a>
+    <a class="tocpill" href="#quiz"><span lang="ja">理解度クイズ</span><span lang="en">Quiz</span></a>
+    <a class="tocpill" href="#closing"><span lang="ja">おわりに</span><span lang="en">Closing</span></a>
+  </nav>
+</div>
+
+<!-- INTRO -->
+<section id="intro" style="padding-top:20px">
+  <div class="wrap reveal">
+    <p class="eyebrow"><span lang="ja">はじめに</span><span lang="en">Introduction</span></p>
+    <h2 class="big"><span lang="ja">システムモデリングとは何か</span><span lang="en">What is system modeling?</span></h2>
+    <div class="prose" id="introProse" style="margin-top:22px"></div>
+  </div>
+</section>
+
+<!-- NOTATION EXPLORER -->
+<section id="explorer" class="soft-sec" style="padding-top:80px">
+  <div class="wrap">
+    <p class="eyebrow reveal"><span lang="ja">記法エクスプローラ</span><span lang="en">Notation explorer</span></p>
+    <h2 class="big reveal"><span lang="ja">図の記号を、クリックで覚える</span><span lang="en">Learn the symbols by clicking</span></h2>
+    <p class="lead reveal" style="max-width:var(--readw); margin-top:18px">UMLの図は「記号の意味」がわかれば読み書きできます。下の<strong>クラス図</strong>と<strong>シーケンス図</strong>の各記号を<strong>クリック（またはホバー）</strong>すると、その名前と意味が下のパネルに表示されます。作図課題の前に、まずここで記号に慣れましょう。</p>
+    <div class="nx-wrap reveal">
+      <div class="nx-card nx" data-dg="class">
+        <h4>クラス図の記法</h4>
+        <p class="nx-sub">クラスの3区画・関連・多重度・汎化・集約。図の記号をクリック。</p>
+        <div id="nxSvg-class"></div>
+        <div class="nx-panel" id="nxPanel-class">記号をクリックすると、ここに名前と意味が表示されます。</div>
+        <p class="nx-hint">ヒント：白抜きの<strong>三角</strong>は汎化（is-a）、白抜きの<strong>ひし形</strong>は集約（has-a）。混同に注意。</p>
+      </div>
+      <div class="nx-card nx" data-dg="seq">
+        <h4>シーケンス図の記法</h4>
+        <p class="nx-sub">ライフライン・実行区間・同期メッセージ・返信・altフレーム。図の記号をクリック。</p>
+        <div id="nxSvg-seq"></div>
+        <div class="nx-panel" id="nxPanel-seq">記号をクリックすると、ここに名前と意味が表示されます。</div>
+        <p class="nx-hint">ヒント：<strong>実線＋塗り矢じり</strong>は呼び出し（同期メッセージ）、<strong>破線の矢印</strong>は戻り（return）。</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- DIAGRAM FIELD GUIDE (CARDS) -->
+<section id="diagrams" style="padding-top:80px">
+  <div class="wrap">
+    <p class="eyebrow reveal"><span lang="ja">ダイアグラム図鑑</span><span lang="en">Diagram field guide</span></p>
+    <h2 class="big reveal"><span lang="ja">UMLダイアグラム図鑑とモデリングの基礎</span><span lang="en">UML diagrams &amp; modeling foundations</span></h2>
+    <p class="lead reveal" style="max-width:var(--readw); margin-top:18px">よく使う5つのUMLダイアグラムを1枚ずつ、そして図の前に押さえる基礎（4つの視点・抽象化・UML・MDA）をカードにまとめました。カテゴリで絞り込み、各カードをクリックすると、何をモデル化するか・記法要素・描き方・設計のコツ・ありがちな誤り・使い分けが開きます。</p>
+    <div class="controls reveal" style="margin-top:26px">
+      <div class="pills" role="tablist" aria-label="カテゴリ切替">
+        <button class="pill active" onclick="filterCat('all',this)">すべて<span>9</span></button>
+        <button class="pill" onclick="filterCat('diagrams',this)">UMLダイアグラム図鑑<span>5</span></button>
+        <button class="pill" onclick="filterCat('basics',this)">モデリングの基礎<span>4</span></button>
+      </div>
+      <div class="ctrl-right">
+        <input id="search" class="search" type="text" placeholder="名前・キーワードで絞り込み" aria-label="ダイアグラムを絞り込み">
+        <span class="learn-note" id="learnNote"></span>
+      </div>
+    </div>
+    <div id="tests-list"></div>
+  </div>
+</section>
+
+<!-- WHICH DIAGRAM QUIZ -->
+<section id="which">
+  <div class="wrap">
+    <p class="eyebrow reveal"><span lang="ja">判定クイズ</span><span lang="en">Spot the diagram</span></p>
+    <h2 class="big reveal"><span lang="ja">「この図は何？」判定クイズ</span><span lang="en">Which diagram is this?</span></h2>
+    <p class="lead reveal" style="max-width:var(--readw); margin-top:18px">小さな図の断片を見て、5種のどのダイアグラムかを当ててください。<strong>特徴的な記号</strong>から見分けるのがコツです。<span id="whichScore"></span></p>
+    <div id="whichBody" class="reveal"></div>
+    <button class="btn ink quiz-reset" onclick="whichBuild()" style="padding:11px 22px">
+      <span lang="ja">もう一度挑戦する</span><span lang="en">Try again</span>
+    </button>
+  </div>
+</section>
+
+<!-- QUIZ -->
+<section class="soft-sec" id="quiz" style="padding-top:80px">
+  <div class="wrap">
+    <p class="eyebrow reveal"><span lang="ja">理解度チェック</span><span lang="en">Check your understanding</span></p>
+    <h2 class="big reveal"><span lang="ja">理解度チェッククイズ</span><span lang="en">Comprehension quiz</span></h2>
+    <p class="lead reveal" style="max-width:var(--readw); margin-top:18px">それぞれの状況に<strong>もっとも適した図・用語</strong>を選んでください。多重度や記号の問題も含みます。<span id="quizScore"></span></p>
+    <div id="quizBody" class="reveal"></div>
+    <button class="btn ink quiz-reset" onclick="buildQuiz()" style="padding:11px 22px">
+      <span lang="ja">もう一度挑戦する</span><span lang="en">Try again</span>
+    </button>
+  </div>
+</section>
+
+<!-- CLOSING -->
+<section id="closing">
+  <div class="wrap reveal">
+    <p class="eyebrow"><span lang="ja">おわりに</span><span lang="en">In closing</span></p>
+    <h2 class="big"><span lang="ja">図の使い分けと、作図課題に向けて</span><span lang="en">Choosing diagrams, and toward the drawing assignment</span></h2>
+    <div class="prose" id="closingProse" style="margin-top:22px"></div>
+  </div>
+</section>
+
+</main>
+
+<!-- FOOTER -->
+<footer>
+  <div class="wrap">
+    <div class="cite">
+      <span lang="ja">システムモデリングとUML（4つの視点、クラス図・シーケンス図・ユースケース図・アクティビティ図・状態遷移図、MDA）を、これから学ぶ方向けにまとめた学習ガイドです。木村祐太のソフトウェア工学の授業教材の一部で、別課題「クラス図・シーケンス図 作成ガイド」の予習にあたります。授業の詳細（評価方法・日程等）は最新のシラバスを確認してください。</span>
+      <span lang="en">A study guide to system modeling and UML (the four perspectives; class, sequence, use case, activity, and state diagrams; MDA), for those new to it. Part of Yuta Kimura's software engineering course materials, serving as preparation for the separate "class &amp; sequence diagram" drawing assignment. For course details such as assessment and schedule, please refer to the latest syllabus.</span>
+    </div>
+    <div class="foot-grid">
+      <div>
+        <h3><span lang="ja">連絡先</span><span lang="en">Contact</span></h3>
+        <p class="muted-s">
+          <b>木村 祐太 / Yuta Kimura</b><br>
+          <span lang="ja">大阪公立大学工業高等専門学校</span><span lang="en">Osaka Metropolitan University College of Technology</span><br>
+          <a href="mailto:y.kimura@omu.ac.jp">y.kimura [at] omu.ac.jp</a>
+        </p>
+      </div>
+      <div>
+        <h3><span lang="ja">サイト</span><span lang="en">Site</span></h3>
+        <p class="muted-s">
+          <a href="../index.html"><span lang="ja">ホーム</span><span lang="en">Home</span></a><br>
+          <a href="../publications.html"><span lang="ja">業績・研究活動</span><span lang="en">Publications &amp; research activities</span></a><br>
+          <a href="../teaching.html"><span lang="ja">教育</span><span lang="en">Teaching</span></a><br>
+          <a href="../software-engineering.html"><span lang="ja">ソフトウェア工学とは</span><span lang="en">What is software engineering?</span></a><br>
+          <a href="../technical-debt.html"><span lang="ja">技術的負債とは</span><span lang="en">What is technical debt?</span></a><br>
+          <a href="../students.html"><span lang="ja">学生の皆さんへ</span><span lang="en">For students</span></a><br>
+          <a href="../glossary.html"><span lang="ja">用語集</span><span lang="en">Glossary</span></a>
+        </p>
+      </div>
+      <div>
+        <h3><span lang="ja">研究</span><span lang="en">Research</span></h3>
+        <p class="muted-s">
+          <a href="../research/technical-debt-metrics.html"><span lang="ja">メトリクスによる分類・特徴づけ</span><span lang="en">Classifying debt with metrics</span></a><br>
+          <a href="../research/apr-coding-standards.html"><span lang="ja">自動生成パッチと品質</span><span lang="en">Auto-generated patches and quality</span></a><br>
+          <a href="../research/td-repayment-refactoring.html"><span lang="ja">返済とリファクタリング</span><span lang="en">Repayment and refactoring</span></a><br>
+          <a href="../research/satd-issue-classification.html"><span lang="ja">TD-Issue の自動分類</span><span lang="en">Automatic TD-Issue classification</span></a><br>
+          <a href="https://researchmap.jp/kimura_yuta" target="_blank" rel="noopener">researchmap</a>
+        </p>
+      </div>
+    </div>
+    <div class="foot-rule"></div>
+    <p class="foot-note">
+      <span lang="ja">© 2026 Yuta Kimura. システムモデリングとUMLの解説は Ian Sommerville『Software Engineering (10th ed.)』第5章に基づく概説です。記法の細部は OMG UML 仕様および一般的な作図慣行に従います。</span>
+      <span lang="en">© 2026 Yuta Kimura. This overview of system modeling and UML follows Chapter 5 of Ian Sommerville, <i>Software Engineering</i> (10th ed.). Notation details follow the OMG UML specification and common drawing conventions.</span>
+    </p>
+  </div>
+</footer>
+
+<script id="s-prose">
+const INTRO_HTML = `
+<p><b>システムモデリング</b>とは、開発対象のシステムの<strong>抽象モデル（abstract model）</strong>を作るプロセスです。
+モデルは<strong>詳細を意図的に省いた抽象</strong>であり、システムの完全な表現ではありません。
+だからこそ、1つのモデルでは1つの視点しか表せず、<strong>複数の相補的なモデルを組み合わせて</strong>初めてシステムの全体像が見えてきます。
+現在は主に <b>UML（Unified Modeling Language）</b> に基づくグラフィカル表記を用います。</p>
+
+<h4>モデルを作る3つのタイミング</h4>
+<div class="principles">
+  <div class="p"><b>① 要求工学の段階</b><br>
+    <span>既存システムの把握や、新システムの要求を説明するためにモデルを描く。関係者の合意形成に使う。</span></div>
+  <div class="p"><b>② 設計の段階</b><br>
+    <span>実装者に向けて設計を記述するために描く。何を作るかを図で共有する。</span></div>
+  <div class="p"><b>③ 実装後の段階</b><br>
+    <span>できあがったシステムの構造・動作をドキュメント化するために描く。保守の助けになる。</span></div>
+</div>
+
+<h4>システムモデリングにおける4つの視点</h4>
+<p>システムは複雑で1枚の図では表せません。次の<strong>4つの視点</strong>から、それぞれ別のモデル（UML図）で捉えます。
+本教材の図鑑カードは、この4視点にひもづいています。</p>
+<div class="diagram-wrap">
+<svg viewBox="0 0 760 300" role="img" aria-label="システムモデリングの4つの視点">
+  <rect x="315" y="118" width="130" height="64" rx="12" class="dg-box dg-if"/>
+  <text x="380" y="146" class="dg-lbl">System</text>
+  <text x="380" y="164" class="dg-st">モデル化の対象</text>
+  <rect x="60" y="30" width="230" height="62" rx="12" class="dg-box"/>
+  <text x="175" y="55" class="dg-lbl">① コンテキスト</text>
+  <text x="175" y="74" class="dg-el">システム境界（内側/外側）</text>
+  <rect x="470" y="30" width="230" height="62" rx="12" class="dg-box"/>
+  <text x="585" y="55" class="dg-lbl">② 相互作用</text>
+  <text x="585" y="74" class="dg-el">ユーザ・他システムとのやり取り</text>
+  <rect x="60" y="208" width="230" height="62" rx="12" class="dg-box"/>
+  <text x="175" y="233" class="dg-lbl">③ 構造</text>
+  <text x="175" y="252" class="dg-el">構成要素とその関係</text>
+  <rect x="470" y="208" width="230" height="62" rx="12" class="dg-box"/>
+  <text x="585" y="233" class="dg-lbl">④ 振る舞い</text>
+  <text x="585" y="252" class="dg-el">実行時の動的な挙動</text>
+  <path d="M290 61 L314 128" class="dg-line"/>
+  <path d="M470 61 L446 128" class="dg-line"/>
+  <path d="M290 239 L314 172" class="dg-line"/>
+  <path d="M470 239 L446 172" class="dg-line"/>
+  <text x="380" y="288" class="dg-note">4つの視点は競合ではなく相互補完：目的に応じて必要なモデルを選ぶ</text>
+</svg>
+<div class="dg-legend">対応するUML図：① コンテキスト＝アクティビティ図（業務フロー）／② 相互作用＝ユースケース図・シーケンス図／③ 構造＝クラス図／④ 振る舞い＝アクティビティ図（データ駆動）・状態遷移図（イベント駆動）。</div>
+</div>
+
+<h4>UML：よく使う5つのダイアグラム</h4>
+<p>UMLはオブジェクト指向モデリングの<strong>標準言語</strong>で、全部で<strong>13種類</strong>のダイアグラムがあります。
+そのうち実務・学習でよく使うのは、次の<strong>5つ</strong>です。本教材の「UMLダイアグラム図鑑」で1枚ずつ扱います。</p>
+<ul>
+  <li><b>アクティビティ図</b>（Activity diagram）：業務フローやデータの処理の流れ</li>
+  <li><b>ユースケース図</b>（Use case diagram）：システムと外部アクタの相互作用</li>
+  <li><b>シーケンス図</b>（Sequence diagram）：オブジェクト間のやり取りの時系列</li>
+  <li><b>クラス図</b>（Class diagram）：クラスとその関連（静的構造）</li>
+  <li><b>状態遷移図</b>（State diagram）：状態とイベントによる遷移</li>
+</ul>
+
+<div class="callout tip">
+  <h4>この教材の位置づけ：作図課題の予習</h4>
+  この科目には別途「<b>クラス図・シーケンス図 作成ガイド</b>」の課題があります。本教材は、その課題に取り組む前の
+  <strong>記法習得と予習</strong>を担います。まず<a href="#explorer">記法エクスプローラ</a>で記号に慣れ、
+  <a href="#diagrams">図鑑カード</a>で描き方とコツを押さえ、<a href="#which">判定クイズ</a>と<a href="#quiz">理解度クイズ</a>で定着を確認しましょう。
+</div>
+
+<p style="font-size:13px;color:var(--muted)">各カード末尾の「習得チェック」を付けると、絞り込みバー右側に進捗が表示されます（保存はされず、ページを開いている間だけ保持されます）。</p>
+`;
+
+const CLOSING_HTML = `
+<p>最後に、5つの図の使い分けと、作図課題に向けたポイントをまとめます。</p>
+
+<h4>4つの視点と図の対応（早見表）</h4>
+<table class="cmp-table">
+  <tr><th>視点</th><th>問い</th><th>主なUML図</th></tr>
+  <tr><td><b>コンテキスト</b></td><td>何がシステムの内側／外側か？（境界）</td><td>アクティビティ図（業務フロー）＋アーキテクチャ図</td></tr>
+  <tr><td><b>相互作用</b></td><td>誰が・何のためにシステムを使うか？どうやり取りするか？</td><td>ユースケース図（俯瞰）／シーケンス図（詳細な順序）</td></tr>
+  <tr><td><b>構造</b></td><td>どんな部品（クラス）が、どう関係するか？</td><td>クラス図（関連・多重度・汎化・集約）</td></tr>
+  <tr><td><b>振る舞い（データ駆動）</b></td><td>データはどう処理されて流れるか？</td><td>アクティビティ図（非専門家向け）／シーケンス図（専門家向け）</td></tr>
+  <tr><td><b>振る舞い（イベント駆動）</b></td><td>どんな状態があり、何が起きたら遷移するか？</td><td>状態遷移図（リアルタイム系に有効）</td></tr>
+</table>
+
+<div class="callout">
+  <h4>同じ振る舞いでも、相手に応じて図を選ぶ</h4>
+  データの流れを表すとき、<strong>専門家向け</strong>には詳細なオブジェクトや関数呼び出しがわかる<b>シーケンス図</b>、
+  <strong>非専門家向け</strong>には直感的に流れがわかる<b>アクティビティ図</b>を使う、という使い分けがあります。
+  同じシステムでも、<b>アクティビティ図とシーケンス図の両方</b>を描くことに意味があるのはこのためです。
+</div>
+
+<h4 style="margin-top:26px">モデル駆動：図からコードへ</h4>
+<div class="callout tip">
+  <h4>MDA / MDE：モデルを主役にする</h4>
+  <b>モデル駆動工学（MDE）</b>は、プログラムではなく<strong>モデルを開発の主要な成果物</strong>とし、
+  構造モデルと振る舞いモデルから<strong>実行可能コードを自動生成</strong>することを目指すアプローチです。
+  その中核が <b>MDA</b>（CIM → PIM → PSM）。ただし「議論に有用な抽象化」と「実装に適した抽象化」は必ずしも一致せず、
+  アジャイル手法（事前の大規模モデリングを嫌う）とは方向性が相反する面もあります。詳しくは図鑑の<a href="#mda">MDAカード</a>へ。
+</div>
+
+<h4 style="margin-top:26px">作図課題に向けた心構え</h4>
+<ul>
+  <li><b>記号の意味を正確に</b>：白抜き三角（汎化）とひし形（集約）、実線（呼び出し）と破線（戻り）など、記号の取り違えが一番多い減点ポイント。</li>
+  <li><b>多重度は各クラス側から見た数</b>を関連の端に書く（<code>1</code> / <code>1..*</code> / <code>*</code> / <code>1..4</code>）。</li>
+  <li><b>設計初期は描きすぎない</b>：実装段階で決められる詳細は省いてよい。まず全体の相互作用・構造を掴む。</li>
+  <li><b>図だけで足りなければ表で補う</b>：ユースケースや状態は、テーブル形式の詳細記述と併用する。</li>
+</ul>
+
+<h4 style="margin-top:26px">さらに学ぶための文献・資料</h4>
+<ul>
+  <li>I. Sommerville『Software Engineering (10th ed.)』Pearson, 2016年, 第5章：本教材の底本（System modeling）</li>
+  <li>OMG『Unified Modeling Language (UML) Specification』：記法の一次情報</li>
+  <li>M. Fowler『UML Distilled 第3版』：要点を絞ったUMLの定番入門書</li>
+  <li><a href="https://plantuml.com/" target="_blank" rel="noopener">PlantUML</a> ／ <a href="https://mermaid.js.org/" target="_blank" rel="noopener">Mermaid</a>：テキストからUML図を生成できるツール（作図課題の下書きに便利）</li>
+</ul>
+`;
+</script>
+<script id="s-explorer">
+/* ============== 記法エクスプローラ ============== */
+const NX_CLASS_SVG = `
+<svg viewBox="0 0 720 470" role="img" aria-label="クラス図の記法（クリックで各記号の説明）">
+  <g class="nk" data-k="comp-name" onclick="nx('class','comp-name',this)">
+    <rect x="270" y="24" width="180" height="30" class="dg-box"/>
+    <text x="360" y="44" class="dg-lbl">Person</text>
+    <rect class="nk-hl" x="270" y="24" width="180" height="30" rx="3"/>
+  </g>
+  <g class="nk" data-k="comp-attr" onclick="nx('class','comp-attr',this)">
+    <rect x="270" y="54" width="180" height="38" class="dg-box"/>
+    <text x="282" y="70" class="dg-el" text-anchor="start">- name</text>
+    <text x="282" y="86" class="dg-el" text-anchor="start">- dateOfBirth</text>
+    <rect class="nk-hl" x="270" y="54" width="180" height="38" rx="3"/>
+  </g>
+  <g class="nk" data-k="comp-op" onclick="nx('class','comp-op',this)">
+    <rect x="270" y="92" width="180" height="30" class="dg-box"/>
+    <text x="282" y="111" class="dg-el" text-anchor="start">+ register()</text>
+    <rect class="nk-hl" x="270" y="92" width="180" height="30" rx="3"/>
+  </g>
+  <g class="nk" data-k="generalization" onclick="nx('class','generalization',this)">
+    <path d="M360 122 L360 150" class="dg-line"/>
+    <polygon points="360,150 348,172 372,172" class="dg-hollow"/>
+    <rect class="nk-hl" x="342" y="146" width="36" height="30" rx="4"/>
+  </g>
+  <path d="M360 172 L360 196 M175 196 L555 196 M175 196 L175 230 M555 196 L555 230" class="dg-line"/>
+  <rect x="90" y="230" width="170" height="52" class="dg-box"/>
+  <line x1="90" y1="256" x2="260" y2="256" class="dg-line"/>
+  <text x="175" y="248" class="dg-lbl">Patient</text>
+  <text x="175" y="273" class="dg-el">- nhsNumber</text>
+  <rect x="470" y="230" width="170" height="52" class="dg-box"/>
+  <line x1="470" y1="256" x2="640" y2="256" class="dg-line"/>
+  <text x="555" y="248" class="dg-lbl">Doctor</text>
+  <text x="555" y="273" class="dg-el">- staffId</text>
+  <g class="nk" data-k="association" onclick="nx('class','association',this)">
+    <path d="M175 282 L175 350" class="dg-line"/>
+    <rect class="nk-hl" x="167" y="282" width="16" height="68" rx="4"/>
+  </g>
+  <g class="nk" data-k="multiplicity" onclick="nx('class','multiplicity',this)">
+    <text x="188" y="302" class="dg-st" text-anchor="start">1</text>
+    <text x="188" y="342" class="dg-st" text-anchor="start">1..*</text>
+    <rect class="nk-hl" x="182" y="290" width="48" height="58" rx="4"/>
+  </g>
+  <rect x="90" y="350" width="170" height="52" class="dg-box"/>
+  <line x1="90" y1="376" x2="260" y2="376" class="dg-line"/>
+  <text x="175" y="368" class="dg-lbl">PatientRecord</text>
+  <text x="175" y="393" class="dg-el">- notes</text>
+  <path d="M292 376 L470 376" class="dg-line"/>
+  <g class="nk" data-k="aggregation" onclick="nx('class','aggregation',this)">
+    <polygon points="260,376 276,368 292,376 276,384" class="dg-hollow"/>
+    <rect class="nk-hl" x="256" y="364" width="40" height="24" rx="4"/>
+  </g>
+  <rect x="470" y="350" width="170" height="52" class="dg-box"/>
+  <line x1="470" y1="376" x2="640" y2="376" class="dg-line"/>
+  <text x="555" y="368" class="dg-lbl">Consultation</text>
+  <text x="555" y="393" class="dg-el">- date</text>
+</svg>`;
+
+const NX_SEQ_SVG = `
+<svg viewBox="0 0 720 430" role="img" aria-label="シーケンス図の記法（クリックで各記号の説明）">
+  <g class="nk" data-k="object-head" onclick="nx('seq','object-head',this)">
+    <rect x="40" y="20" width="140" height="38" class="dg-box"/>
+    <text x="110" y="44" class="dg-lbl">:Receptionist</text>
+    <rect class="nk-hl" x="40" y="20" width="140" height="38" rx="4"/>
+  </g>
+  <rect x="290" y="20" width="140" height="38" class="dg-box"/>
+  <text x="360" y="44" class="dg-lbl">:PatientInfo</text>
+  <rect x="540" y="20" width="140" height="38" class="dg-box"/>
+  <text x="610" y="44" class="dg-lbl">:Database</text>
+  <path d="M110 58 L110 400" class="dg-line dg-dash"/>
+  <g class="nk" data-k="lifeline" onclick="nx('seq','lifeline',this)">
+    <path d="M360 58 L360 400" class="dg-line dg-dash"/>
+    <rect class="nk-hl" x="352" y="58" width="16" height="342" rx="4"/>
+  </g>
+  <path d="M610 58 L610 400" class="dg-line dg-dash"/>
+  <g class="nk" data-k="activation" onclick="nx('seq','activation',this)">
+    <rect x="353" y="120" width="14" height="210" class="dg-act"/>
+    <rect class="nk-hl" x="349" y="116" width="22" height="218" rx="4"/>
+  </g>
+  <rect x="603" y="170" width="14" height="90" class="dg-act"/>
+  <g class="nk" data-k="sync-msg" onclick="nx('seq','sync-msg',this)">
+    <path d="M117 120 L351 120" class="dg-line" marker-end="url(#sm)"/>
+    <text x="234" y="112" class="dg-el">1: ViewInfo(PID)</text>
+    <rect class="nk-hl" x="117" y="104" width="236" height="24" rx="5"/>
+  </g>
+  <path d="M367 170 L601 170" class="dg-line" marker-end="url(#sm)"/>
+  <text x="486" y="162" class="dg-el">2: report(UID)</text>
+  <g class="nk" data-k="return-msg" onclick="nx('seq','return-msg',this)">
+    <path d="M601 260 L369 260" class="dg-line dg-dash" marker-end="url(#sm)"/>
+    <text x="486" y="252" class="dg-el">patient info</text>
+    <rect class="nk-hl" x="367" y="244" width="236" height="24" rx="5"/>
+  </g>
+  <path d="M353 330 L117 330" class="dg-line dg-dash" marker-end="url(#sm)"/>
+  <text x="234" y="322" class="dg-el">result / error</text>
+  <g class="nk" data-k="alt-frame" onclick="nx('seq','alt-frame',this)">
+    <rect x="300" y="150" width="360" height="130" class="dg-alt"/>
+    <path d="M300 150 h44 v14 l-8 8 h-36 z" class="dg-alttab"/>
+    <text x="322" y="167" class="dg-st">alt</text>
+    <rect class="nk-hl" x="296" y="146" width="368" height="138" rx="6" style="fill:none"/>
+  </g>
+  <defs><marker id="sm" markerWidth="9" markerHeight="9" refX="8" refY="4.5" orient="auto">
+    <path d="M0,0 L9,4.5 L0,9 z" fill="#6B746F"/></marker></defs>
+</svg>`;
+
+const NOTA = {
+  class:{
+    'comp-name':{t:'クラス名（上段の区画）', d:'矩形の一番上の区画にクラス名を書く。クラスは「システムオブジェクトの一般的な定義」。この1区画だけでも簡易なクラス表現になる。'},
+    'comp-attr':{t:'属性（中段の区画）', d:'そのクラスが持つデータ（変数名やデータ型）を並べる。例：医者・日付・時間・処方薬など。UMLでは <code>- name: 型</code> のように書く。'},
+    'comp-op':{t:'操作 / メソッド（下段の区画）', d:'そのクラスに対して実行できる操作（メソッド）を並べる。例：<code>New()</code> 新規記録、<code>Prescribe()</code> 処方、<code>RecordNotes()</code> 記録。'},
+    'generalization':{t:'汎化（白抜き三角・is-a 関係）', d:'複数クラスの共通部分を上位クラスにまとめる関係。白抜きの三角が指す方が「親（一般）」。OOPの継承にあたり、変更があるとき継承元の上位クラスだけ直せばよくなる。'},
+    'association':{t:'関連（実線）', d:'クラス間に関係があることを示す線。名前を付けて「何の関係か」を表すこともできる。線の両端に多重度を書く。'},
+    'multiplicity':{t:'多重度（関連の端の数字）', d:'そのクラスから見た相手オブジェクトの数。<code>1</code>=ちょうど1つ、<code>1..*</code>=1つ以上、<code>*</code>=0以上（不定）、<code>1..4</code>=1〜4つ。各クラス側から見た数を端に書く。'},
+    'aggregation':{t:'集約（白抜きひし形・has-a 関係）', d:'あるオブジェクトが複数の別オブジェクトから構成される関係。ひし形が付く側が「全体」。パーツを組み合わせて全体を作るイメージで、疎結合になる。'}
+  },
+  seq:{
+    'object-head':{t:'オブジェクト / アクタ（上部の見出し）', d:'相互作用に参加するオブジェクトやアクタを図の上部に横に並べる。ここから下へライフラインが伸びる。アクタは人に限らず外部システムでもよい。'},
+    'lifeline':{t:'ライフライン（垂直の破線）', d:'各オブジェクトの「時間の流れ」を表す縦の破線。上が過去、下が未来。シーケンス図の時系列は必ず上から下へ進む。'},
+    'activation':{t:'実行区間 / 活性区間（破線上の細い矩形）', d:'そのオブジェクトが処理を実行している（アクティブな）期間を表す細長い矩形。メッセージを受けてから返すまでの間。'},
+    'sync-msg':{t:'同期メッセージ（実線の矢印）', d:'他オブジェクトの操作を呼び出すメッセージ。実線＋塗り矢じりで表し、注釈にメソッド名・引数を書く（例：ViewInfo(PID)）。'},
+    'return-msg':{t:'返信 / return（破線の矢印）', d:'呼び出しに対する戻り値や結果を返すメッセージ。破線の矢印で表す。設計初期では省略されることも多い。'},
+    'alt-frame':{t:'alt フレーム（条件分岐）', d:'相互作用の枠。alt は条件による分岐を表し、[条件] のガードで場合分けする（例：認証OK なら患者情報を表示、失敗ならエラーを表示）。'}
+  }
+};
+
+function nx(dg, key, el){
+  const root = document.querySelector('.nx[data-dg="'+dg+'"]');
+  if(root) root.querySelectorAll('.nk').forEach(g=>g.classList.remove('sel'));
+  if(el) el.classList.add('sel');
+  const info = NOTA[dg] && NOTA[dg][key];
+  const panel = document.getElementById('nxPanel-'+dg);
+  if(panel && info) panel.innerHTML = '<span class="nx-tag">'+info.t+'</span>'+info.d;
+}
+</script>
+<script id="s-data">
+/* ============== カテゴリ ============== */
+const CAT_ORDER = ['diagrams','basics'];
+const CAT_META = {
+  diagrams:{ label:'UMLダイアグラム図鑑', en:'UML diagram field guide', color:'var(--accent)',
+    desc:'よく使う5つのUMLダイアグラムを1枚ずつ。何をモデル化するか・記法要素・描き方・設計のコツ・ありがちな誤りまで、作図課題の予習として使えるように整理した。'},
+  basics:{ label:'モデリングの基礎', en:'Foundations', color:'var(--basics)',
+    desc:'図を描く前に押さえる考え方。なぜ複数のモデルが要るのか（4つの視点）、抽象化とは何か、UMLとは、そしてモデルからコードを生む発展トピック（MDA）。'}
+};
+const BADGE_CLS = {
+  '構造モデル':'imp3','相互作用モデル':'imp3','振る舞い / データ駆動':'imp3','振る舞い / イベント駆動':'imp3',
+  '基礎概念':'imp2','発展トピック':'imp1'
+};
+
+/* ============== カードデータ ============== */
+const TESTS = [
+/* ---------- UMLダイアグラム図鑑 ---------- */
+{
+  id:'class-diagram', name:'Class Diagram', jp:'クラス図', cat:'diagrams',
+  badge:'構造モデル', tags:['静的構造','関連・多重度','汎化・集約'],
+  summary:'システムを構成する<strong>クラス</strong>と、クラス間の<strong>関連</strong>を表す、構造モデルの代表格。オブジェクト指向設計の中心となる図。',
+  analogy:'製品の「部品表と組立図」。どんな種類の部品（クラス）があり、どれとどれが何個ずつつながるかを一枚で示す。',
+  purpose:'システムを構成するオブジェクトの種類（クラス）、その属性・操作、そしてクラス間の関係（関連・汎化・集約）という<b>静的構造</b>。実行時の動きではなく「設計の組織」を表す。',
+  who:'設計初期から実装まで。OO設計の骨格として最初に描くことが多い。',
+  notation:[
+    ['クラス（3区画の矩形）','上から クラス名 / 属性（変数・データ型）/ 操作（メソッド）。名前だけの1区画でもよい。'],
+    ['関連（実線）','クラス間に関係があることを示す線。名前を付けることもできる。'],
+    ['多重度（端の数字）','<code>1</code>=ちょうど1つ、<code>1..*</code>=1つ以上、<code>*</code>=0以上、<code>1..4</code>=1〜4つ。各クラス側から見た数を端に書く。'],
+    ['汎化（白抜き三角・is-a）','共通部分を上位クラスにまとめる継承の関係。三角が指す方が親。'],
+    ['集約（白抜きひし形・has-a）','あるオブジェクトが複数の別オブジェクトから構成される関係。ひし形側が全体。']
+  ],
+  steps:[
+    '仕様から<b>名詞</b>を拾ってクラス候補を挙げる',
+    '各クラスの<b>属性</b>（データ）と<b>操作</b>（メソッド）を区画に書き分ける',
+    'クラス間の関係を<b>関連（実線）</b>で結ぶ',
+    '関連の両端に<b>多重度</b>を書く（各クラスから見た相手の数）',
+    'is-a の関係は<b>汎化（三角）</b>、has-a の関係は<b>集約（ひし形）</b>で表す'
+  ],
+  points:[
+    '多重度は必ず<b>各クラス側から見た数</b>を書く（向きの取り違えに注意）',
+    '汎化で共通情報を上位にまとめると、<b>変更時は親だけ直せばよく</b>管理が楽になる',
+    '集約でパーツを別クラスにすると<b>特定クラスへの依存が下がる（疎結合）</b>',
+    '設計初期は属性・操作を<b>書きすぎない</b>：決められる詳細は実装段階で足す'
+  ],
+  cautions:[
+    '<b>汎化（is-a）と集約（has-a）の混同</b>が最頻出の誤り。「〜は〜の一種」なら汎化、「〜は〜を持つ／で構成される」なら集約',
+    '<b>白抜き三角（汎化）とひし形（集約）の記号の取り違え</b>',
+    '静的モデル（設計の組織）と動的モデル（実行時の組織）は<b>別物</b>：クラス図は静的',
+    '多重度の <code>*</code>（0以上）と <code>1..*</code>（1以上）を混同しない'
+  ],
+  examples:[
+    'Patient <code>1</code> - <code>1..*</code> Consultation：患者1人に対し1つ以上の診察',
+    'Doctor を親に、Hospital Doctor / General Practitioner が汎化（継承）で派生',
+    'PatientRecord は Patient と Consultation を集約して構成される'
+  ],
+  related:'<b>静的な構造</b>を表す。時間的な流れ（動的）はシーケンス図・アクティビティ図、状態の変化は状態遷移図が担う。',
+  modern:'PlantUML / Mermaid でテキストからクラス図を生成できる。この科目の「クラス図・シーケンス図 作成ガイド」課題で実際に作図する。'
+},
+{
+  id:'sequence-diagram', name:'Sequence Diagram', jp:'シーケンス図', cat:'diagrams',
+  badge:'相互作用モデル', tags:['時系列','オブジェクト間','ライフライン'],
+  summary:'特定のユースケースで発生する、オブジェクト・アクタ間の<strong>相互作用の順序</strong>を時系列（上→下）で表す。',
+  analogy:'登場人物のやり取りを時間順に並べた「台本のタイムライン」。誰が誰に、いつ、何を言った（呼んだ）かがわかる。',
+  purpose:'あるユースケース（またはそのインスタンス）で、オブジェクト間に<b>どんなメッセージが・どの順序で</b>やり取りされるか。相互作用を詳細な粒度でモデル化する。',
+  who:'ユースケースを詳細化する設計段階。専門家向けに動きを詳しく共有したいとき。',
+  notation:[
+    ['ライフライン','オブジェクト名＋垂直の破線。上が過去、下が未来。'],
+    ['実行区間（活性区間）','ライフライン上の細い矩形。処理を実行している期間。'],
+    ['同期メッセージ（実線の矢印）','他オブジェクトの呼び出し。注釈にメソッド名・引数を書く。'],
+    ['返信 / return（破線の矢印）','呼び出しへの戻り値・結果。'],
+    ['alt フレーム','[条件] のガードで場合分けする条件分岐の枠。']
+  ],
+  steps:[
+    'アクタ・オブジェクトを図の<b>上部に横並び</b>にする',
+    '各オブジェクトから<b>ライフライン</b>（破線）を下ろす',
+    '時系列（上から下）に<b>メッセージを矢印</b>で描く（実線＝呼び出し）',
+    '戻り値は<b>破線の矢印</b>で返す',
+    '条件による分岐は<b>alt フレーム</b>と <code>[条件]</code> で表す'
+  ],
+  points:[
+    '時間は必ず<b>上から下</b>へ流れる',
+    '設計初期は<b>すべての相互作用を描く必要はない</b>：実装で決まる詳細は省いてよい',
+    '複数の選択肢（認証OK／失敗など）は<b>alt ボックス</b>でまとめて表現する'
+  ],
+  cautions:[
+    '<b>実線（呼び出し）と破線（戻り）の混同</b>に注意',
+    'すべてを描き込もうとして<b>過剰に複雑</b>にしない',
+    'クラス図とは役割が違う：こちらは<b>動的（時間的な順序）</b>を表す'
+  ],
+  examples:[
+    'View patient info：受付が ViewInfo(PID) を呼ぶ→DBが認証システムに権限確認→OKなら表示／失敗ならエラー（alt）',
+    'Transfer data：ログイン→更新転送 または サマリ作成・転送→権限確認→ステータス返送→ログアウト'
+  ],
+  related:'<b>ユースケース図</b>で俯瞰した相互作用を、<b>詳細な順序</b>まで掘り下げたもの。非専門家にはアクティビティ図の方が伝わりやすい。',
+  modern:'PlantUML / Mermaid の sequenceDiagram 記法で作図可能。作図課題ではクラス図とセットで作成する。'
+},
+{
+  id:'usecase-diagram', name:'Use Case Diagram', jp:'ユースケース図', cat:'diagrams',
+  badge:'相互作用モデル', tags:['アクタ','外部視点','要求初期'],
+  summary:'システムと<strong>外部アクタ</strong>の相互作用を、ユーザ視点の<strong>1つの離散的なタスク</strong>（ユースケース）単位で表す。',
+  analogy:'「誰が」「何をしたいか」を並べた案内看板。システムが提供する機能の入口を俯瞰できる。',
+  purpose:'システム境界の外にいるアクタ（人・外部システム・ハードウェア）と、システムが提供する機能（ユースケース）の関係。設計初期の要求把握に特に有効。',
+  who:'設計・要求の初期段階。関係者と「何ができるべきか」を合意するとき。',
+  notation:[
+    ['アクタ（棒人間）','システムを使う外部の存在。人に限らず外部システム・ハードウェアも表す。'],
+    ['ユースケース（楕円）','ユーザが期待する1つの離散的なタスク。'],
+    ['関連（線）','アクタとユースケースの結びつき。'],
+    ['システム境界（枠）','どこまでがシステムの内側かを囲む枠。']
+  ],
+  steps:[
+    'システムに関わる<b>アクタ</b>を洗い出す（人・外部システム）',
+    '各アクタが期待する<b>タスク</b>を楕円（ユースケース）にする',
+    'アクタとユースケースを<b>関連（線）</b>で結ぶ',
+    'システムの内外を<b>境界枠</b>で囲う',
+    '情報が足りなければ<b>テーブル形式の詳細記述</b>で補う'
+  ],
+  points:[
+    'アクタは<b>人に限らない</b>（外部システム・ハードウェアも）',
+    '単一のユースケース図だけでなく、<b>複合ユースケース図</b>で関連するものをまとめられる',
+    '不足情報は表（Actors / Description / Data / Stimulus / Response / Comments）で補う'
+  ],
+  cautions:[
+    '楕円に<b>細かい処理手順を書きすぎない</b>：それはシーケンス図やアクティビティ図の役割',
+    '<b>図だけでは情報不足</b>になりがち。テーブルの詳細記述と併用する'
+  ],
+  examples:[
+    'Medical receptionist（アクタ）が Transfer data（ユースケース）を通じて PRS とやり取りする',
+    '詳細記述の例：Actors=受付・PRS、Data=患者情報・治療サマリ、Comments=適切なセキュリティ権限が必要'
+  ],
+  related:'相互作用を<b>俯瞰</b>する図。個々のユースケースの<b>詳細な順序</b>はシーケンス図で掘り下げる。',
+  modern:'要求定義の合意形成ツールとして今も広く使われる。作図課題の前段の全体把握に有用。'
+},
+{
+  id:'activity-diagram', name:'Activity Diagram', jp:'アクティビティ図', cat:'diagrams',
+  badge:'振る舞い / データ駆動', tags:['業務フロー','並行動作','データの流れ'],
+  summary:'入力から出力までの<strong>処理ステップの流れ</strong>を表す。フローチャートに似るが、<strong>並行動作やデータの流れ</strong>も表せる。',
+  analogy:'作業の段取り表。ただの手順だけでなく「ここは同時進行」「ここでデータが渡る」まで書ける拡張版フローチャート。',
+  purpose:'業務プロセス（業務フロー）や、データが処理されて流れる順序（<b>データ駆動</b>モデリング）。コンテキストモデルの業務フロー表現にも使う。',
+  who:'コンテキストの業務フローを示すとき、データ駆動の振る舞いを<b>非専門家</b>にもわかるよう表すとき。',
+  notation:[
+    ['開始','塗りつぶし円（●）。'],
+    ['終了','二重円（◎）。'],
+    ['活動','角丸矩形。1つの処理ステップを表す。'],
+    ['分岐条件','ガード <code>[条件]</code> 付きの矢印。'],
+    ['同期バー','黒い太線。並行動作の開始（分岐）／合流を表す。'],
+    ['オブジェクト','矩形。データの流れを表す。']
+  ],
+  steps:[
+    '<b>開始（●）</b>から描き始める',
+    '処理を<b>活動（角丸矩形）</b>で順につなぐ',
+    '条件分岐は<b>ガード <code>[条件]</code></b> 付きの矢印で表す',
+    '並行に進む処理は<b>同期バー（黒太線）</b>で分岐・合流させる',
+    'やり取りされるデータは<b>オブジェクト（矩形）</b>で示し、<b>終了（◎）</b>で閉じる'
+  ],
+  points:[
+    'フローチャートと違い<b>並行動作とデータの流れ</b>を表せる',
+    '対応関係：<b>活動＝処理ステップ、オブジェクト＝データ</b>',
+    '同じデータ駆動でも、<b>専門家にはシーケンス図</b>、<b>非専門家にはアクティビティ図</b>が向く'
+  ],
+  cautions:[
+    '<b>開始（●）と終了（◎）の記号</b>を取り違えない',
+    '<b>同期バー（並行）</b>と単なる条件分岐を混同しない'
+  ],
+  examples:[
+    'Mentcare のデータ処理フロー（受付→更新→確認）',
+    'ATMで現金を引き出すときのデータ処理（カード確認→残高照会→出金→記録）'
+  ],
+  related:'データ駆動＝アクティビティ図／シーケンス図。同じ振る舞いでも<b>イベント駆動は状態遷移図</b>で表す。',
+  modern:'業務分析（BPM）でも近縁の記法が使われる。データフロー図（DFD）の現代的な後継とも言える。'
+},
+{
+  id:'state-diagram', name:'State Diagram', jp:'状態遷移図（ステートマシーン図）', cat:'diagrams',
+  badge:'振る舞い / イベント駆動', tags:['有限状態','イベント','リアルタイム'],
+  summary:'システムが持つ<strong>有限個の状態</strong>と、状態を遷移させる<strong>イベント</strong>の関係を表す。<strong>イベント駆動</strong>モデリング。',
+  analogy:'信号機や自動販売機。「いま何モードか（状態）」と「何が起きたら次のモードへ移るか（イベント）」を図にしたもの。',
+  purpose:'実行時の<b>状態</b>と、それを変化させる<b>イベント</b>の関係。リアルタイムシステムの設計・ドキュメント化に特に有効。',
+  who:'イベントで動くシステム（組込み・リアルタイム系）の振る舞いを設計・記録するとき。',
+  notation:[
+    ['状態','角丸矩形。動作を含む場合もある。'],
+    ['開始状態','塗りつぶし円（●）。'],
+    ['終了状態','中心を塗りつぶした二重円（◉）。'],
+    ['遷移','イベント名のラベル付き矢印。'],
+    ['スーパーステート','複数の状態をまとめた上位状態。詳細を隠蔽する。']
+  ],
+  steps:[
+    'システムが取りうる<b>状態</b>を列挙する',
+    '<b>開始状態（●）</b>から描き始める',
+    '状態間を<b>イベント名付きの矢印</b>でつなぐ',
+    '状態が増えて複雑なら<b>スーパーステート</b>で詳細を隠蔽する',
+    '必要なら<b>終了状態（◉）</b>で閉じ、表で状態・イベントの意味を補う'
+  ],
+  points:[
+    '状態数が増えたら<b>スーパーステートで詳細を隠蔽</b>して見通しを保つ',
+    'テーブル（状態→説明、イベント→説明）で図を<b>補足</b>すると理解しやすい',
+    '「今どのモードか」を常に1つに保つ設計を意識する'
+  ],
+  cautions:[
+    '<b>状態（モード）とイベント（きっかけ）の混同</b>に注意',
+    '<b>終了状態（◉）と開始状態（●）の記号</b>を取り違えない'
+  ],
+  examples:[
+    '電子レンジ：Waiting → Half/Full power → Set time → Enabled → Operation → Waiting',
+    'ドアが開いている間は Disabled（安全上の理由で操作不可）'
+  ],
+  related:'イベント駆動の振る舞いを表す。データや処理の<b>流れ</b>はアクティビティ図・シーケンス図が担う。',
+  modern:'洗濯機・DVDプレーヤ・カメラの制御ソフトなど、身近な組込み機器の設計で今も定番。'
+},
+/* ---------- モデリングの基礎 ---------- */
+{
+  id:'four-perspectives', name:'Four Perspectives', jp:'システムモデリングの4つの視点', cat:'basics',
+  badge:'基礎概念', tags:['コンテキスト','相互作用','構造','振る舞い'],
+  summary:'1枚の図ではシステムを表せない。<strong>コンテキスト・相互作用・構造・振る舞い</strong>という4つの相補的な視点から、それぞれ別のモデルで捉える。',
+  analogy:'建築の図面。平面図・立面図・配線図・動線図：1枚ですべては表せず、目的別の図を束ねて初めて建物が伝わる。',
+  purpose:'なぜ複数のモデルが必要かという根本。システムは複雑で、1つのモデルは1つの視点しか表せないため、視点ごとに図を分ける。',
+  notation:[
+    ['① コンテキスト','システムの境界（何が内側／外側か）。主にアクティビティ図・アーキテクチャ図。'],
+    ['② 相互作用','ユーザや他システムとのやり取り。ユースケース図・シーケンス図。'],
+    ['③ 構造','構成要素とその関係。クラス図。'],
+    ['④ 振る舞い','実行時の動的な挙動。アクティビティ図（データ駆動）・状態遷移図（イベント駆動）。']
+  ],
+  points:[
+    '4つの視点は競合ではなく<b>相互補完</b>：目的に応じて必要なモデルを選ぶ',
+    '本教材の5つの図鑑カードは、この4視点にひもづく',
+    '完全な1枚の図を目指さず、<b>視点を分けて</b>考える'
+  ],
+  cautions:[
+    '1枚の図にすべてを詰め込もうとしない',
+    '構造（静的）と振る舞い（動的）を<b>同じ図で混ぜない</b>'
+  ],
+  examples:[
+    'コンテキスト＝システム境界の決定（何を作り、何を外部に任せるか）',
+    '構造＝クラス図、振る舞い＝状態遷移図、というように視点ごとに描き分ける'
+  ],
+  related:'この視点分けが、どのUML図をいつ使うかの<b>地図</b>になる。'
+},
+{
+  id:'abstraction', name:'Abstraction & Models', jp:'抽象化とモデル', cat:'basics',
+  badge:'基礎概念', tags:['抽象モデル','詳細の省略','1モデル1視点'],
+  summary:'モデルは<strong>詳細を意図的に省いた抽象</strong>であり、システムの完全な表現ではない。1つのモデルは1つの視点を表す。',
+  analogy:'地図。地形のすべてを写さず、目的（道路・路線・標高）に応じて情報を削るからこそ役に立つ。',
+  purpose:'モデリングの前提となる考え方。抽象化とは「重要でない詳細を捨てる」こと。だからモデルは目的ごとに複数になる。',
+  notation:[
+    ['抽象モデル','詳細を省いた、目的特化の表現。完全な複製ではない。'],
+    ['1モデル1視点','1枚の図は1つの視点だけを表す。'],
+    ['作るタイミング','要求工学（把握・説明）／設計（実装者への記述）／実装後（ドキュメント化）。']
+  ],
+  points:[
+    '「何を省くか」を決めることが抽象化の本質',
+    'モデルは<b>完全な表現ではない</b>：目的に足りればよい',
+    '同じシステムでも<b>目的が違えば別のモデル</b>を描く'
+  ],
+  cautions:[
+    'モデルを「完全な仕様」と誤解しない',
+    '抽象度を上げすぎて<b>意思決定に使えない</b>図にしない'
+  ],
+  examples:[
+    '要求工学：既存システムの把握、新システムの要求説明のために描く',
+    '実装後：構造・動作をドキュメント化して保守に役立てる'
+  ],
+  related:'抽象化の考え方が、<b>4つの視点</b>に図を分ける理由につながる。'
+},
+{
+  id:'uml', name:'What is UML', jp:'UMLとは', cat:'basics',
+  badge:'基礎概念', tags:['標準言語','13種類','よく使う5つ'],
+  summary:'UML（Unified Modeling Language）は、オブジェクト指向モデリングの<strong>標準言語</strong>。13種類の図があり、よく使うのは5つ。',
+  analogy:'図面の「共通言語」。方言をなくし、誰が読んでも同じ意味に取れる記号の取り決め。',
+  purpose:'モデルを描くための標準的な表記法。人によって記号の意味がばらつかないよう統一されている。',
+  notation:[
+    ['アクティビティ図','業務フロー・データの処理の流れ。'],
+    ['ユースケース図','システムと外部アクタの相互作用。'],
+    ['シーケンス図','オブジェクト間のやり取りの時系列。'],
+    ['クラス図','クラスと関連（静的構造）。'],
+    ['状態遷移図','状態とイベントによる遷移。']
+  ],
+  points:[
+    'UMLは<b>13種類</b>の図を持つが、実務でよく使うのは上の<b>5つ</b>',
+    '標準化されているので<b>他者と共有・レビュー</b>しやすい',
+    '目的（視点）に応じて図の種類を選ぶ'
+  ],
+  cautions:[
+    '13種すべてを覚える必要はない：<b>よく使う5つ</b>を確実に',
+    '記法を自己流にせず、<b>標準の記号</b>に従う（共有価値が下がる）'
+  ],
+  examples:[
+    'オブジェクト指向設計ではクラス図＋シーケンス図の組が定番',
+    'リアルタイム系では状態遷移図が主役になる'
+  ],
+  related:'この5つの図が「UMLダイアグラム図鑑」の中身。<b>記法エクスプローラ</b>で記号に慣れよう。'
+},
+{
+  id:'mda', name:'Model-Driven Architecture', jp:'MDA / モデル駆動アーキテクチャ', cat:'basics',
+  badge:'発展トピック', tags:['CIM / PIM / PSM','自動生成','MDE'],
+  summary:'モデルをプログラムの代わりに<strong>開発の主要成果物</strong>とし、モデルから<strong>実行可能コードを自動生成</strong>することを目指すアプローチ。',
+  analogy:'設計図から製品を自動で組み立てる工場。人はコードでなく「設計（モデル）」を書き、変換は機械に任せる発想。',
+  purpose:'抽象度を引き上げ、実装プラットフォームの詳細を意識せず設計する。構造モデルと振る舞いモデルからコードを生成する。',
+  notation:[
+    ['CIM','Computation Independent Model。ドメインの重要な抽象概念（ドメインモデル）。例：資産・ロール、患者・診察。'],
+    ['PIM','Platform Independent Model。実装プラットフォームに依存しないシステムの動作。UMLの静的・振る舞いモデルで記述。'],
+    ['PSM','Platform Specific Model。PIMをプラットフォームごとに変換したモデル。例：J2EE向け／.NET向けを同一PIMから生成。'],
+    ['MDA と MDE','MDA＝OMG提唱で設計・実装段階に焦点。MDE＝MDAを拡張し要求・テスト・プロセス全体を含む。']
+  ],
+  points:[
+    '同一の PIM から<b>複数プラットフォーム向けに自動生成</b>できるのが最大の利点',
+    'エラーの低減、設計・実装の高速化、再利用可能なプラットフォーム独立モデル',
+    'CIM → PIM → PSM → コード、と抽象度を段階的に下げていく'
+  ],
+  cautions:[
+    '<b>議論に有用な抽象化 ≠ 実装に適した抽象化</b>：既製品活用など別アプローチも多い',
+    'メリットが効くのは<b>大規模・長寿命システム</b>に限られがち',
+    '<b>アジャイル手法と方向性が相反</b>する（事前の大規模モデリングを嫌う）',
+    '完全自動の変換ツールの実現には、要求・セキュリティ・レガシー統合など課題が残る'
+  ],
+  examples:[
+    'セキュリティCIM（資産・ロール）、患者レコードCIM（患者・診察）',
+    '同一PIMから J2EE向けPSM と .NET向けPSM を自動生成'
+  ],
+  related:'クラス図（構造）と状態遷移図など（振る舞い）を<b>入力</b>として、コードを生成する発展形。'
+}
+];
+
+/* ============== カード内ダイアグラム（説明用・非対話） ============== */
+const DIAGRAMS = {
+'class-diagram': `
+<svg viewBox="0 0 720 200" role="img" aria-label="クラス図の例">
+  <rect x="60" y="30" width="180" height="34" class="dg-box"/><text x="150" y="52" class="dg-lbl">Patient</text>
+  <rect x="60" y="64" width="180" height="34" class="dg-box"/><text x="72" y="85" class="dg-el" text-anchor="start">- name / - dob</text>
+  <rect x="60" y="98" width="180" height="34" class="dg-box"/><text x="72" y="119" class="dg-el" text-anchor="start">+ register()</text>
+  <rect x="470" y="46" width="180" height="74" class="dg-box"/><text x="560" y="80" class="dg-lbl">Consultation</text><text x="560" y="100" class="dg-el">- date / - notes</text>
+  <path d="M240 83 L470 83" class="dg-line"/>
+  <text x="258" y="76" class="dg-st" text-anchor="start">1</text>
+  <text x="452" y="76" class="dg-st" text-anchor="end">1..*</text>
+  <text x="355" y="152" class="dg-note">患者1人に対して1つ以上の診察：関連の端に多重度</text>
+</svg>`,
+'sequence-diagram': `
+<svg viewBox="0 0 720 240" role="img" aria-label="シーケンス図の例">
+  <rect x="40" y="20" width="150" height="34" class="dg-box"/><text x="115" y="42" class="dg-lbl">:Receptionist</text>
+  <rect x="290" y="20" width="150" height="34" class="dg-box"/><text x="365" y="42" class="dg-lbl">:PatientInfo</text>
+  <rect x="540" y="20" width="150" height="34" class="dg-box"/><text x="615" y="42" class="dg-lbl">:Database</text>
+  <path d="M115 54 L115 220" class="dg-line dg-dash"/>
+  <path d="M365 54 L365 220" class="dg-line dg-dash"/>
+  <path d="M615 54 L615 220" class="dg-line dg-dash"/>
+  <rect x="358" y="90" width="14" height="110" class="dg-act"/>
+  <rect x="608" y="120" width="14" height="50" class="dg-act"/>
+  <path d="M122 90 L356 90" class="dg-line" marker-end="url(#dsm)"/>
+  <text x="238" y="82" class="dg-el">ViewInfo(PID)</text>
+  <path d="M372 120 L606 120" class="dg-line" marker-end="url(#dsm)"/>
+  <text x="490" y="112" class="dg-el">report(UID)</text>
+  <path d="M606 170 L374 170" class="dg-line dg-dash" marker-end="url(#dsm)"/>
+  <text x="490" y="162" class="dg-el">patient info</text>
+  <path d="M356 200 L122 200" class="dg-line dg-dash" marker-end="url(#dsm)"/>
+  <text x="238" y="192" class="dg-el">result</text>
+  <defs><marker id="dsm" markerWidth="9" markerHeight="9" refX="8" refY="4.5" orient="auto"><path d="M0,0 L9,4.5 L0,9 z" fill="#6B746F"/></marker></defs>
+</svg>`,
+'usecase-diagram': `
+<svg viewBox="0 0 720 220" role="img" aria-label="ユースケース図の例">
+  <circle cx="70" cy="70" r="12" class="dg-line"/>
+  <path d="M70 82 L70 118 M52 96 L88 96 M70 118 L54 146 M70 118 L86 146" class="dg-line"/>
+  <text x="70" y="168" class="dg-el">受付担当者</text>
+  <rect x="260" y="30" width="360" height="160" rx="10" class="dg-box"/>
+  <text x="440" y="52" class="dg-st">System</text>
+  <ellipse cx="440" cy="95" rx="110" ry="30" class="dg-box dg-if"/><text x="440" y="99" class="dg-lbl">情報照会</text>
+  <ellipse cx="440" cy="155" rx="110" ry="30" class="dg-box dg-if"/><text x="440" y="159" class="dg-lbl">データ転送</text>
+  <path d="M88 100 L330 95" class="dg-line"/>
+  <path d="M88 108 L330 152" class="dg-line"/>
+  <text x="355" y="205" class="dg-note">アクタ（棒人間）＋ユースケース（楕円）＋関連（線）＋境界枠</text>
+</svg>`,
+'activity-diagram': `
+<svg viewBox="0 0 720 200" role="img" aria-label="アクティビティ図の例">
+  <circle cx="60" cy="90" r="10" class="dg-dot"/>
+  <rect x="110" y="68" width="130" height="44" rx="12" class="dg-box"/><text x="175" y="94" class="dg-lbl">ログイン</text>
+  <polygon points="300,90 335,68 370,90 335,112" class="dg-box dg-if"/><text x="335" y="94" class="dg-st">有効?</text>
+  <rect x="430" y="42" width="140" height="40" rx="12" class="dg-box"/><text x="500" y="66" class="dg-lbl">更新転送</text>
+  <rect x="430" y="100" width="140" height="40" rx="12" class="dg-box"/><text x="500" y="124" class="dg-lbl">エラー表示</text>
+  <circle cx="650" cy="62" r="11" class="dg-ring"/><circle cx="650" cy="62" r="6" class="dg-dot"/>
+  <path d="M70 90 L108 90" class="dg-line" marker-end="url(#dam)"/>
+  <path d="M240 90 L298 90" class="dg-line" marker-end="url(#dam)"/>
+  <path d="M370 82 L428 64" class="dg-line" marker-end="url(#dam)"/><text x="392" y="66" class="dg-el">[yes]</text>
+  <path d="M370 98 L428 118" class="dg-line" marker-end="url(#dam)"/><text x="392" y="128" class="dg-el">[no]</text>
+  <path d="M570 62 L639 62" class="dg-line" marker-end="url(#dam)"/>
+  <text x="360" y="185" class="dg-note">開始(●)→活動(角丸)→分岐[条件]→終了(◎)</text>
+  <defs><marker id="dam" markerWidth="9" markerHeight="9" refX="8" refY="4.5" orient="auto"><path d="M0,0 L9,4.5 L0,9 z" fill="#6B746F"/></marker></defs>
+</svg>`,
+'state-diagram': `
+<svg viewBox="0 0 720 200" role="img" aria-label="状態遷移図の例">
+  <circle cx="50" cy="90" r="10" class="dg-dot"/>
+  <rect x="100" y="66" width="130" height="48" rx="16" class="dg-box"/><text x="165" y="94" class="dg-lbl">Waiting</text>
+  <rect x="300" y="66" width="130" height="48" rx="16" class="dg-box"/><text x="365" y="94" class="dg-lbl">Enabled</text>
+  <rect x="500" y="66" width="130" height="48" rx="16" class="dg-box"/><text x="565" y="94" class="dg-lbl">Operation</text>
+  <circle cx="690" cy="90" r="11" class="dg-ring"/><circle cx="690" cy="90" r="6" class="dg-dot"/>
+  <path d="M60 90 L98 90" class="dg-line" marker-end="url(#dsd)"/>
+  <path d="M230 90 L298 90" class="dg-line" marker-end="url(#dsd)"/><text x="264" y="82" class="dg-el">Set time</text>
+  <path d="M430 90 L498 90" class="dg-line" marker-end="url(#dsd)"/><text x="464" y="82" class="dg-el">Start</text>
+  <path d="M630 90 L679 90" class="dg-line" marker-end="url(#dsd)"/>
+  <path d="M565 114 Q565 170 165 170 Q120 170 120 116" class="dg-line" marker-end="url(#dsd)"/><text x="360" y="186" class="dg-el">終了後 Waiting へ戻る</text>
+  <text x="140" y="40" class="dg-note">状態(角丸)＋開始(●)＋イベント名付き矢印＋終了(◉)</text>
+  <defs><marker id="dsd" markerWidth="9" markerHeight="9" refX="8" refY="4.5" orient="auto"><path d="M0,0 L9,4.5 L0,9 z" fill="#6B746F"/></marker></defs>
+</svg>`,
+'four-perspectives': `
+<svg viewBox="0 0 720 260" role="img" aria-label="4つの視点">
+  <rect x="290" y="102" width="140" height="56" rx="12" class="dg-box dg-if"/><text x="360" y="135" class="dg-lbl">System</text>
+  <rect x="40" y="28" width="200" height="52" rx="10" class="dg-box"/><text x="140" y="52" class="dg-lbl">① コンテキスト</text><text x="140" y="70" class="dg-el">境界</text>
+  <rect x="480" y="28" width="200" height="52" rx="10" class="dg-box"/><text x="580" y="52" class="dg-lbl">② 相互作用</text><text x="580" y="70" class="dg-el">やり取り</text>
+  <rect x="40" y="180" width="200" height="52" rx="10" class="dg-box"/><text x="140" y="204" class="dg-lbl">③ 構造</text><text x="140" y="222" class="dg-el">構成と関係</text>
+  <rect x="480" y="180" width="200" height="52" rx="10" class="dg-box"/><text x="580" y="204" class="dg-lbl">④ 振る舞い</text><text x="580" y="222" class="dg-el">動的な挙動</text>
+  <path d="M240 54 L296 110" class="dg-line"/><path d="M480 54 L424 110" class="dg-line"/>
+  <path d="M240 206 L296 150" class="dg-line"/><path d="M480 206 L424 150" class="dg-line"/>
+</svg>`,
+'mda': `
+<svg viewBox="0 0 720 160" role="img" aria-label="MDAの3モデルとコード生成">
+  <rect x="20" y="50" width="150" height="60" rx="12" class="dg-box"/><text x="95" y="78" class="dg-lbl">CIM</text><text x="95" y="97" class="dg-el">ドメイン概念</text>
+  <rect x="210" y="50" width="150" height="60" rx="12" class="dg-box"/><text x="285" y="78" class="dg-lbl">PIM</text><text x="285" y="97" class="dg-el">PF非依存</text>
+  <rect x="400" y="50" width="150" height="60" rx="12" class="dg-box"/><text x="475" y="78" class="dg-lbl">PSM</text><text x="475" y="97" class="dg-el">PF固有</text>
+  <rect x="590" y="50" width="110" height="60" rx="12" class="dg-box dg-if"/><text x="645" y="78" class="dg-lbl">コード</text><text x="645" y="97" class="dg-el">自動生成</text>
+  <path d="M170 80 L208 80" class="dg-line" marker-end="url(#dmda)"/>
+  <path d="M360 80 L398 80" class="dg-line" marker-end="url(#dmda)"/>
+  <path d="M550 80 L588 80" class="dg-line" marker-end="url(#dmda)"/>
+  <text x="360" y="30" class="dg-note">抽象度を段階的に下げ、実行可能システムを自動生成</text>
+  <defs><marker id="dmda" markerWidth="9" markerHeight="9" refX="8" refY="4.5" orient="auto"><path d="M0,0 L9,4.5 L0,9 z" fill="#6B746F"/></marker></defs>
+</svg>`
+};
+
+/* ============== 理解度クイズ ============== */
+const QUIZ = [
+{ q:'システムモデルの説明としてもっとも適切なのは？',
+  opts:['詳細を意図的に省いた抽象で、完全な表現ではない','システムの完全で厳密な表現である','必ず1枚の図で全体を表す','実行可能なコードそのもの'], a:0,
+  why:'モデルは抽象であり、詳細を省いた不完全な表現。だからこそ複数の視点のモデルを組み合わせて全体を捉える。'},
+{ q:'「何がシステムの内側で、何が外側（環境）か」という<b>境界</b>を定めるモデルは？',
+  opts:['コンテキストモデル','構造モデル','振る舞いモデル','相互作用モデル'], a:0,
+  why:'コンテキストモデルは開発初期にシステム境界を決めるためのもの。境界は技術だけでなく社会的・組織的要因にも影響される。'},
+{ q:'クラスとクラス間の関連（静的構造）を表すUML図は？',
+  opts:['クラス図','シーケンス図','ユースケース図','状態遷移図'], a:0,
+  why:'クラス図は構造モデルの代表。関連・多重度・汎化・集約で静的構造を表す。'},
+{ q:'多重度 <b>1..*</b> の意味は？',
+  opts:['1つ以上','ちょうど1つ','0以上（不定）','1〜4つ'], a:0,
+  why:'1..* は「1つ以上」。* は0以上（不定）、1..4 は1〜4つ、1 はちょうど1つ。'},
+{ q:'多重度 <b>*</b> の意味は？',
+  opts:['0以上（不定）','ちょうど1つ','1つ以上','ちょうど0'], a:0,
+  why:'* は0以上（不定）。1つ以上を表したいときは 1..* を使う。'},
+{ q:'「動物←犬・猫」のように共通部分を上位にまとめる <b>is-a</b> 関係を表すのは？',
+  opts:['汎化（継承）','集約','関連','多重度'], a:0,
+  why:'汎化は is-a 関係で、OOPの継承にあたる。白抜き三角が親を指す。変更時は上位クラスだけ直せばよい。'},
+{ q:'「Team は複数の Player で構成される」という <b>has-a</b> 関係を表すのは？',
+  opts:['集約','汎化','状態遷移','ユースケース'], a:0,
+  why:'集約は has-a 関係。白抜きひし形が「全体」側に付く。パーツを別クラスにして疎結合にできる。'},
+{ q:'システムと外部アクタ（人・他システム）の相互作用を、ユーザ視点のタスク単位で表す図は？',
+  opts:['ユースケース図','クラス図','アクティビティ図','状態遷移図'], a:0,
+  why:'ユースケース図。アクタ（棒人間）＋ユースケース（楕円）＋関連（線）で、設計初期の要求把握に有効。'},
+{ q:'特定ユースケースでのオブジェクト間のやり取りを、時系列（上→下）で表す図は？',
+  opts:['シーケンス図','クラス図','ユースケース図','コンテキストモデル'], a:0,
+  why:'シーケンス図。ライフラインに沿って上から下へ、メッセージの順序を表す。'},
+{ q:'シーケンス図で「他オブジェクトの操作の呼び出し」を表す記号は？',
+  opts:['実線＋塗り矢じりの同期メッセージ','破線の矢印','角丸矩形','白抜き三角'], a:0,
+  why:'呼び出しは実線＋塗り矢じり（同期メッセージ）。戻り値は破線の矢印（return）で表す。'},
+{ q:'入力から出力までの処理ステップの流れを、非専門家にもわかるよう表すUML図は？',
+  opts:['アクティビティ図','状態遷移図','クラス図','ユースケース図'], a:0,
+  why:'データ駆動は、非専門家にはアクティビティ図、専門家にはシーケンス図で表す。活動＝処理ステップ、オブジェクト＝データ。'},
+{ q:'有限個の状態と、それを遷移させるイベントの関係（リアルタイム系に有効）を表す図は？',
+  opts:['状態遷移図','クラス図','ユースケース図','コンテキストモデル'], a:0,
+  why:'状態遷移図（ステートマシーン図）。イベント駆動モデリングで、状態は角丸矩形、遷移はイベント名付き矢印。'},
+{ q:'アクティビティ図で「並行動作の開始／合流」を表す記号は？',
+  opts:['同期バー（黒い太線）','塗りつぶし円','二重円','角丸矩形'], a:0,
+  why:'同期バー（黒太線）が並行の開始・合流を表す。塗り円は開始、二重円は終了、角丸矩形は活動。'},
+{ q:'状態遷移図の「開始状態」を表す記号は？',
+  opts:['塗りつぶし円（●）','中心塗りの二重円（◉）','角丸矩形','ひし形'], a:0,
+  why:'開始状態は塗りつぶし円（●）。終了状態は中心を塗った二重円（◉）。取り違えに注意。'},
+{ q:'MDA で「プラットフォームに依存しないシステムの動作」を表すモデルは？',
+  opts:['PIM（Platform Independent Model）','CIM（Computation Independent Model）','PSM（Platform Specific Model）','DFD'], a:0,
+  why:'PIM はプラットフォーム非依存の動作モデル。CIM はドメイン概念、PSM はプラットフォーム固有に変換したもの。'},
+{ q:'MDA で「ドメインの重要な抽象概念（ドメインモデル）」を表すのは？',
+  opts:['CIM','PIM','PSM','UML'], a:0,
+  why:'CIM（Computation Independent Model）。例：資産・ロール（セキュリティ）、患者・診察（患者レコード）。'},
+{ q:'システムの動的な振る舞いを誘発する2種類の要因は？',
+  opts:['データとイベント','構造とコンテキスト','静的と動的','人とシステム'], a:0,
+  why:'処理すべきデータが利用可能になる（データ駆動）か、特定のイベントが発生する（イベント駆動）かで振る舞いがトリガされる。'},
+{ q:'同じ振る舞いを、専門家向け／非専門家向けに表すとき、それぞれ適するのは？',
+  opts:['シーケンス図 / アクティビティ図','クラス図 / 状態遷移図','ユースケース図 / クラス図','状態遷移図 / シーケンス図'], a:0,
+  why:'専門家にはオブジェクトや関数呼び出しが詳しいシーケンス図、非専門家には直感的なアクティビティ図が向く。'}
+];
+
+/* ============== 「この図は何？」判定クイズ ============== */
+const WOPTS = ['クラス図','シーケンス図','ユースケース図','アクティビティ図','状態遷移図'];
+const WHICH = [
+{ a:'クラス図', why:'3つの区画（名前・属性・操作）を持つ矩形と、端に多重度の付いた関連線が特徴。静的構造を表す。',
+  svg:`<svg viewBox="0 0 420 150" role="img" aria-label="図の断片1">
+    <rect x="30" y="24" width="150" height="26" class="dg-box"/><text x="105" y="42" class="dg-lbl">Order</text>
+    <rect x="30" y="50" width="150" height="26" class="dg-box"/><text x="42" y="67" class="dg-el" text-anchor="start">- total</text>
+    <rect x="30" y="76" width="150" height="26" class="dg-box"/><text x="42" y="93" class="dg-el" text-anchor="start">+ submit()</text>
+    <rect x="270" y="50" width="120" height="52" class="dg-box"/><text x="330" y="80" class="dg-lbl">Item</text>
+    <path d="M180 76 L270 76" class="dg-line"/>
+    <text x="196" y="70" class="dg-st" text-anchor="start">1</text><text x="256" y="70" class="dg-st" text-anchor="end">1..*</text>
+  </svg>`},
+{ a:'状態遷移図', why:'角丸矩形の状態、塗りつぶし円の開始状態、イベント名付きの矢印が特徴。イベント駆動の振る舞い。',
+  svg:`<svg viewBox="0 0 420 140" role="img" aria-label="図の断片2">
+    <circle cx="34" cy="70" r="9" class="dg-dot"/>
+    <rect x="70" y="48" width="120" height="44" rx="16" class="dg-box"/><text x="130" y="75" class="dg-lbl">Idle</text>
+    <rect x="270" y="48" width="120" height="44" rx="16" class="dg-box"/><text x="330" y="75" class="dg-lbl">Running</text>
+    <path d="M43 70 L68 70" class="dg-line" marker-end="url(#w2)"/>
+    <path d="M190 70 L268 70" class="dg-line" marker-end="url(#w2)"/><text x="229" y="62" class="dg-el">start</text>
+    <defs><marker id="w2" markerWidth="9" markerHeight="9" refX="8" refY="4.5" orient="auto"><path d="M0,0 L9,4.5 L0,9 z" fill="#6B746F"/></marker></defs>
+  </svg>`},
+{ a:'シーケンス図', why:'上部のオブジェクト見出しから下りる垂直の破線（ライフライン）と、時系列の横向きメッセージ矢印が特徴。',
+  svg:`<svg viewBox="0 0 420 170" role="img" aria-label="図の断片3">
+    <rect x="40" y="16" width="110" height="30" class="dg-box"/><text x="95" y="36" class="dg-lbl">:User</text>
+    <rect x="270" y="16" width="110" height="30" class="dg-box"/><text x="325" y="36" class="dg-lbl">:Server</text>
+    <path d="M95 46 L95 150" class="dg-line dg-dash"/><path d="M325 46 L325 150" class="dg-line dg-dash"/>
+    <rect x="318" y="74" width="14" height="60" class="dg-act"/>
+    <path d="M102 74 L316 74" class="dg-line" marker-end="url(#w3)"/><text x="209" y="66" class="dg-el">request()</text>
+    <path d="M316 130 L104 130" class="dg-line dg-dash" marker-end="url(#w3)"/><text x="209" y="122" class="dg-el">response</text>
+    <defs><marker id="w3" markerWidth="9" markerHeight="9" refX="8" refY="4.5" orient="auto"><path d="M0,0 L9,4.5 L0,9 z" fill="#6B746F"/></marker></defs>
+  </svg>`},
+{ a:'ユースケース図', why:'棒人間（アクタ）と楕円（ユースケース）を線で結び、境界枠で囲むのが特徴。外部からの視点。',
+  svg:`<svg viewBox="0 0 420 150" role="img" aria-label="図の断片4">
+    <circle cx="40" cy="55" r="10" class="dg-line"/>
+    <path d="M40 65 L40 98 M24 78 L56 78 M40 98 L26 122 M40 98 L54 122" class="dg-line"/>
+    <text x="40" y="140" class="dg-el">ユーザ</text>
+    <rect x="150" y="24" width="240" height="104" rx="10" class="dg-box"/>
+    <ellipse cx="270" cy="60" rx="90" ry="24" class="dg-box dg-if"/><text x="270" y="64" class="dg-lbl">ログイン</text>
+    <ellipse cx="270" cy="104" rx="90" ry="24" class="dg-box dg-if"/><text x="270" y="108" class="dg-lbl">検索</text>
+    <path d="M56 62 L182 60" class="dg-line"/><path d="M56 70 L182 104" class="dg-line"/>
+  </svg>`},
+{ a:'アクティビティ図', why:'塗りつぶし円の開始、角丸矩形の活動、ひし形の分岐[条件]、二重円の終了が特徴。処理の流れ。',
+  svg:`<svg viewBox="0 0 420 150" role="img" aria-label="図の断片5">
+    <circle cx="30" cy="70" r="9" class="dg-dot"/>
+    <rect x="60" y="50" width="110" height="40" rx="12" class="dg-box"/><text x="115" y="74" class="dg-lbl">入力受付</text>
+    <polygon points="220,70 252,50 284,70 252,90" class="dg-box dg-if"/><text x="252" y="74" class="dg-st">有効?</text>
+    <circle cx="385" cy="45" r="10" class="dg-ring"/><circle cx="385" cy="45" r="5" class="dg-dot"/>
+    <path d="M39 70 L58 70" class="dg-line" marker-end="url(#w5)"/>
+    <path d="M170 70 L218 70" class="dg-line" marker-end="url(#w5)"/>
+    <path d="M284 62 L374 48" class="dg-line" marker-end="url(#w5)"/><text x="320" y="50" class="dg-el">[yes]</text>
+    <defs><marker id="w5" markerWidth="9" markerHeight="9" refX="8" refY="4.5" orient="auto"><path d="M0,0 L9,4.5 L0,9 z" fill="#6B746F"/></marker></defs>
+  </svg>`}
+];
+</script>
+<script id="s-render">
+/* ============== レンダリング ============== */
+const learned = new Set();
+let currentCat = 'all';
+
+function esc(s){return String(s).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;");}
+
+function togglePattern(id){
+  const card = document.getElementById(id);
+  if(!card) return;
+  const open = card.classList.toggle('open');
+  const head = card.querySelector('.pcard-head');
+  if(head) head.setAttribute('aria-expanded', open ? 'true' : 'false');
+}
+function toggleLearned(id, cb){
+  if(cb.checked) learned.add(id); else learned.delete(id);
+  const card = document.getElementById(id);
+  if(card) card.classList.toggle('done-card', cb.checked);
+  updateLearnUI();
+}
+function updateLearnUI(){
+  const el = document.getElementById('learnNote');
+  if(el) el.textContent = '習得 ' + learned.size + ' / ' + TESTS.length;
+}
+
+function renderTest(t, idx){
+  const has = v => v && v.length;
+  const li = arr => arr.map(v=>`<li>${v}</li>`).join('');
+  const tagsH = (t.tags||[]).map(x=>`<span class="tag">${x}</span>`).join('');
+  const badgeH = `<span class="badge-imp ${BADGE_CLS[t.badge]||'imp1'}">${t.badge}</span>`;
+  const analogyH = t.analogy ? `<div class="analogy"><span><b>たとえるなら</b> ${t.analogy}</span></div>` : '';
+  const dg = DIAGRAMS[t.id];
+  const diagramH = dg ? `<div class="diagram-wrap"><h5>図のイメージ</h5>${dg}</div>` : '';
+
+  let metaTop = `<div class="meta"><h5>何をモデル化するか</h5><p>${t.purpose}</p></div>`;
+  if(t.who) metaTop += `<div class="meta"><h5>いつ・どこで使うか</h5><p>${t.who}</p></div>`;
+  const metaTopH = `<div class="meta-row">${metaTop}</div>`;
+
+  const notaH = has(t.notation) ? `<h5 class="sec-h">記法要素（記号と意味）</h5>
+    <table class="nota"><thead><tr><th>記号 / 要素</th><th>意味</th></tr></thead><tbody>${
+      t.notation.map(r=>`<tr><td class="sym">${r[0]}</td><td>${r[1]}</td></tr>`).join('')}</tbody></table>` : '';
+
+  const stepsH = has(t.steps) ? `<div class="steps"><h5>描き方（手順）</h5><ol>${li(t.steps)}</ol></div>` : '';
+
+  const gridH = `<div class="grid2">
+      <div class="box pros"><h5>✓ 設計のコツ</h5><ul>${li(t.points)}</ul></div>
+      <div class="box cons"><h5>！ ありがちな誤り</h5><ul>${li(t.cautions)}</ul></div>
+    </div>`;
+
+  let metaBot = '';
+  if(has(t.examples)) metaBot += `<div class="meta"><h5>具体例</h5><ul>${li(t.examples)}</ul></div>`;
+  if(t.related) metaBot += `<div class="meta"><h5>他の図との使い分け</h5><p>${t.related}</p></div>`;
+  const metaBotH = metaBot ? `<div class="meta-row">${metaBot}</div>` : '';
+
+  const modernH = t.modern ? `<div class="meta" style="margin:16px 0"><h5>補足・現場では</h5><p>${t.modern}</p></div>` : '';
+
+  const searchText = (t.name+' '+t.jp+' '+t.summary+' '+(t.analogy||'')+' '+t.badge+' '+(t.tags||[]).join(' ')).toLowerCase();
+  const catColor = CAT_META[t.cat].color;
+  return `
+  <article class="pcard" id="${t.id}" data-cat="${t.cat}" data-search="${esc(searchText)}">
+    <button class="pcard-head" aria-expanded="false" onclick="togglePattern('${t.id}')">
+      <span class="pnum" style="color:${catColor}">${idx}</span>
+      <span class="ptitle">${t.name}<small>${t.jp}</small></span>
+      <span class="pbadges">${badgeH}</span>
+      <span class="ptags">${tagsH}</span>
+      <span class="pchev" aria-hidden="true">&rsaquo;</span>
+    </button>
+    <p class="summary">${t.summary}</p>
+    <div class="pdetail">
+      ${analogyH}
+      ${metaTopH}
+      ${notaH}
+      ${stepsH}
+      ${diagramH}
+      ${gridH}
+      ${metaBotH}
+      ${modernH}
+      <label class="learn"><input type="checkbox" onchange="toggleLearned('${t.id}',this)">
+        この図を理解した（習得チェック）</label>
+    </div>
+  </article>`;
+}
+
+function build(){
+  document.getElementById('introProse').innerHTML = INTRO_HTML;
+  document.getElementById('closingProse').innerHTML = CLOSING_HTML;
+  const cs = document.getElementById('nxSvg-class'); if(cs) cs.innerHTML = NX_CLASS_SVG;
+  const ss = document.getElementById('nxSvg-seq'); if(ss) ss.innerHTML = NX_SEQ_SVG;
+
+  const container = document.getElementById('tests-list');
+  let html='', n=0;
+  CAT_ORDER.forEach(cat=>{
+    const list = TESTS.filter(t=>t.cat===cat);
+    const meta = CAT_META[cat];
+    html += `<div class="cat-group" data-cat="${cat}">
+      <div class="cat-head" style="--cc:${meta.color}">
+        <span class="cat-dot"></span>
+        <h3>${meta.label}</h3>
+        <span class="cat-badge">${meta.en} · ${list.length}種</span>
+      </div>
+      <p class="cat-desc">${meta.desc}</p>`;
+    list.forEach(t=>{ n++; html += renderTest(t, n); });
+    html += `</div>`;
+  });
+  container.innerHTML = html;
+  updateLearnUI();
+  buildQuiz();
+  whichBuild();
+}
+
+function filterCat(cat, btn){
+  currentCat = cat;
+  document.querySelectorAll('.pill').forEach(b=>b.classList.remove('active'));
+  if(btn) btn.classList.add('active');
+  applyFilter();
+}
+function applyFilter(){
+  const si = document.getElementById('search');
+  const q = (si && si.value ? si.value : '').trim().toLowerCase();
+  document.querySelectorAll('.cat-group').forEach(g=>{
+    const catOk = (currentCat==='all' || currentCat===g.dataset.cat);
+    let shown = 0;
+    g.querySelectorAll('.pcard').forEach(c=>{
+      const hit = catOk && (!q || c.dataset.search.includes(q));
+      c.classList.toggle('hidden', !hit);
+      if(hit) shown++;
+    });
+    g.classList.toggle('hidden', shown===0);
+  });
+}
+
+/* ============== 理解度クイズ ============== */
+let quizState = {answered:0, correct:0};
+let quizOrder = [];
+function buildQuiz(){
+  quizState = {answered:0, correct:0};
+  quizOrder = QUIZ.map(q=>{
+    const idx = q.opts.map((_,k)=>k);
+    for(let i=idx.length-1;i>0;i--){ const j=Math.floor(Math.random()*(i+1)); const t=idx[i]; idx[i]=idx[j]; idx[j]=t; }
+    return idx;
+  });
+  const body = document.getElementById('quizBody');
+  if(!body) return;
+  body.innerHTML = QUIZ.map((q,i)=>`
+    <div class="quiz-q" id="qq${i}">
+      <p class="qtext">Q${i+1}. ${q.q}</p>
+      <div class="qopts">${quizOrder[i].map((oi,j)=>`<button onclick="answerQuiz(${i},${j},this)">${q.opts[oi]}</button>`).join('')}</div>
+      <p class="qwhy" hidden></p>
+    </div>`).join('');
+  updateQuizScore();
+}
+function answerQuiz(i, j, btn){
+  const q = QUIZ[i], box = document.getElementById('qq'+i);
+  if(box.classList.contains('answered')) return;
+  box.classList.add('answered');
+  box.querySelectorAll('.qopts button').forEach((b,k)=>{
+    b.disabled = true;
+    if(quizOrder[i][k]===q.a) b.classList.add('right');
+  });
+  const ok = (quizOrder[i][j]===q.a);
+  if(!ok) btn.classList.add('wrong');
+  quizState.answered++; if(ok) quizState.correct++;
+  const why = box.querySelector('.qwhy');
+  why.hidden = false;
+  why.innerHTML = (ok ? '<b>正解。</b> ' : `<b>不正解。</b>正解は <b>${q.opts[q.a]}</b>。 `) + q.why;
+  updateQuizScore();
+}
+function updateQuizScore(){
+  const el = document.getElementById('quizScore');
+  if(el) el.textContent = quizState.answered
+    ? `（${quizState.answered}問中 ${quizState.correct}問正解）` : `全${QUIZ.length}問。`;
+}
+
+/* ============== 「この図は何？」判定クイズ ============== */
+let whichState = {answered:0, correct:0};
+function whichBuild(){
+  whichState = {answered:0, correct:0};
+  const body = document.getElementById('whichBody');
+  if(!body) return;
+  body.innerHTML = WHICH.map((w,i)=>`
+    <div class="which-q" id="wq${i}">
+      <p class="qtext">Q${i+1}. この図はどのダイアグラム？</p>
+      ${w.svg}
+      <div class="qopts">${WOPTS.map(o=>`<button onclick="whichAnswer(${i},'${o}',this)">${o}</button>`).join('')}</div>
+      <p class="qwhy" hidden></p>
+    </div>`).join('');
+  updateWhichScore();
+}
+function whichAnswer(i, label, btn){
+  const w = WHICH[i], box = document.getElementById('wq'+i);
+  if(box.classList.contains('answered')) return;
+  box.classList.add('answered');
+  box.querySelectorAll('.qopts button').forEach(b=>{
+    b.disabled = true;
+    if(b.textContent===w.a) b.classList.add('right');
+  });
+  const ok = (label===w.a);
+  if(!ok) btn.classList.add('wrong');
+  whichState.answered++; if(ok) whichState.correct++;
+  const why = box.querySelector('.qwhy');
+  why.hidden = false;
+  why.innerHTML = (ok ? '<b>正解。</b> ' : `<b>不正解。</b>正解は <b>${w.a}</b>。 `) + w.why;
+  updateWhichScore();
+}
+function updateWhichScore(){
+  const el = document.getElementById('whichScore');
+  if(el) el.textContent = whichState.answered
+    ? `（${whichState.answered}問中 ${whichState.correct}問正解）` : `全${WHICH.length}問。`;
+}
+
+/* ============== 言語切替（サイト共通・localStorage は site-lang のみ） ============== */
+function setLang(l){document.body.classList.remove('lang-ja','lang-en');document.body.classList.add('lang-'+l);document.documentElement.lang=l;
+ try{localStorage.setItem('site-lang',l)}catch(e){}
+ try{var q=new URLSearchParams(location.search);q.set('lang',l);history.replaceState(null,'',location.pathname+'?'+q+location.hash)}catch(e){}}
+function toggleLang(){setLang(document.body.classList.contains('lang-ja')?'en':'ja')}
+(function(){var u=null;try{u=new URLSearchParams(location.search).get('lang')}catch(e){}
+ var s=null;try{s=localStorage.getItem('site-lang')}catch(e){}
+ var l=(u==='en'||u==='ja')?u:((s==='en'||s==='ja')?s:'ja');if(l!=='ja')setLang(l);})();
+
+/* ページ内アンカーでカードへ飛ぶとき、絞り込みを解除して対象カードを開く */
+document.addEventListener('click', function(e){
+  var a = e.target.closest('a[href^="#"]');
+  if(!a) return;
+  var id = a.getAttribute('href').slice(1);
+  var card = document.getElementById(id);
+  if(card && card.classList.contains('pcard')){
+    if(currentCat!=='all'){ filterCat('all', document.querySelector('.pill')); }
+    var si = document.getElementById('search');
+    if(si && si.value){ si.value=''; }
+    applyFilter();
+    card.classList.add('open');
+    var head = card.querySelector('.pcard-head');
+    if(head) head.setAttribute('aria-expanded','true');
+  }
+});
+
+window.addEventListener('DOMContentLoaded', function(){
+  build();
+  var si = document.getElementById('search');
+  if(si) si.addEventListener('input', applyFilter);
+  if('IntersectionObserver' in window){
+    var io = new IntersectionObserver(function(es){ es.forEach(function(e){ if(e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target); } }); },{threshold:0.12, rootMargin:"0px 0px -6% 0px"});
+    document.querySelectorAll('.reveal').forEach(function(el){ io.observe(el); });
+  } else { document.querySelectorAll('.reveal').forEach(function(el){ el.classList.add('in'); }); }
+});
+</script>
+<script>
+/* ==================== NAV SYSTEM v4 controllers (self-contained) ==================== */
+(function(){
+  function syncLangUI(l){
+    var ja = l==='ja';
+    var lists=document.querySelectorAll('.lswitch');
+    for(var i=0;i<lists.length;i++){
+      var a=lists[i].querySelector('.ls-ja'), e=lists[i].querySelector('.ls-en');
+      if(a) a.setAttribute('aria-pressed', ja?'true':'false');
+      if(e) e.setAttribute('aria-pressed', ja?'false':'true');
+    }
+  }
+  window.syncLangUI=syncLangUI;
+  if(typeof window.setLang==='function'){
+    var _setLang=window.setLang;
+    window.setLang=function(l){ _setLang(l); syncLangUI(l); };
+  }
+  syncLangUI(document.body.classList.contains('lang-en')?'en':'ja');
+
+  var groups=document.querySelectorAll('.navlinks .navgroup');
+  for(var g=0; g<groups.length; g++){ (function(grp){
+    var top=grp.querySelector('.navtop'), panel=grp.querySelector('.navpanel');
+    if(!panel||!top) return;
+    function set(x){ top.setAttribute('aria-expanded', x?'true':'false'); }
+    grp.addEventListener('mouseenter', function(){ grp.classList.remove('collapsed'); set(true); });
+    grp.addEventListener('mouseleave', function(){ set(false); });
+    grp.addEventListener('focusin', function(){ if(!grp.classList.contains('collapsed')) set(true); });
+    grp.addEventListener('focusout', function(e){ if(!grp.contains(e.relatedTarget)){ grp.classList.remove('collapsed'); set(false); } });
+    grp.addEventListener('keydown', function(e){ if(e.key==='Escape'){ grp.classList.add('collapsed'); set(false); top.focus(); } });
+  })(groups[g]); }
+
+  var tog=document.getElementById('navToggle'), ov=document.getElementById('mobnav');
+  if(tog && ov){
+    function openNav(){ document.body.classList.add('navopen'); tog.setAttribute('aria-expanded','true'); ov.setAttribute('aria-hidden','false');
+      var f=ov.querySelector('a,button'); if(f){ requestAnimationFrame(function(){ f.focus(); }); } }
+    function closeNav(){ document.body.classList.remove('navopen'); tog.setAttribute('aria-expanded','false'); ov.setAttribute('aria-hidden','true'); tog.focus(); }
+    tog.addEventListener('click', function(){ document.body.classList.contains('navopen')?closeNav():openNav(); });
+    ov.addEventListener('click', function(e){ if(e.target.closest('a')) closeNav(); });
+    document.addEventListener('keydown', function(e){ if(e.key==='Escape' && document.body.classList.contains('navopen')) closeNav(); });
+  }
+
+  /* F. TOC scroll-spy (IntersectionObserver, no scroll listeners) */
+  var bar=document.querySelector('.tocbar');
+  if(bar){
+    var pills=Array.prototype.slice.call(bar.querySelectorAll('.tocpill'));
+    var map={};
+    pills.forEach(function(p){ map[p.getAttribute('href').slice(1)]=p; });
+    if('IntersectionObserver' in window){
+      var spy=new IntersectionObserver(function(es){
+        es.forEach(function(e){
+          if(e.isIntersecting){
+            pills.forEach(function(p){ p.classList.remove('on'); });
+            var m=map[e.target.id]; if(m) m.classList.add('on');
+          }
+        });
+      },{rootMargin:'-45% 0px -50% 0px', threshold:0});
+      pills.forEach(function(p){ var s=document.getElementById(p.getAttribute('href').slice(1)); if(s) spy.observe(s); });
+    }
+  }
+
+  /* F. back to top */
+  var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var bt=document.querySelector('.totop'), sen=document.getElementById('toTopSentinel');
+  if(bt && sen && 'IntersectionObserver' in window){
+    new IntersectionObserver(function(es){
+      es.forEach(function(e){ if(e.isIntersecting) bt.classList.remove('show'); else bt.classList.add('show'); });
+    },{threshold:0}).observe(sen);
+  }
+  if(bt){ bt.addEventListener('click', function(){ window.scrollTo({top:0, behavior:reduce?'auto':'smooth'}); }); }
+})();
+</script>
+</body>
+</html>
