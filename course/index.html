@@ -338,6 +338,22 @@
     .js .mobnav-inner > *{transition-delay:0s !important}
     .navtoggle:hover{transform:none !important}
   }
+
+  /* ==================== NAV GROUP v5: education mega panel + mobile sub-groups ==================== */
+  /* desktop: only the Teaching panel is widened into a mega grid (2x2 of material sub-groups) */
+  .navlinks .navpanel.mega{min-width:568px; max-width:calc(100vw - 24px); padding:12px}
+  .navlinks .navpanel.mega .megacourses{display:grid; grid-template-columns:repeat(4,1fr); gap:1px 4px}
+  .navlinks .navpanel.mega .megagrid{display:grid; grid-template-columns:1fr 1fr; gap:2px 10px; align-items:start}
+  .navlinks .navpanel.mega .megacol{display:flex; flex-direction:column; min-width:0}
+  .navlinks .navpanel.mega a{white-space:normal; line-height:1.28}
+  .navlinks .navpanel.mega .navlabel{padding:8px 12px 4px}
+  /* mobile: education sub-group labels inside the single Teaching group */
+  .mobgroup .mobsublabel{font:600 .6rem/1 var(--disp); letter-spacing:.12em; text-transform:uppercase;
+    color:var(--faint); margin:15px 0 5px}
+  .mobgroup .mobsublabel:first-of-type{margin-top:2px}
+  /* learning materials: sub-sections by lifecycle theme (NAV_GROUP C) */
+  .msub{margin-top:44px}
+  .msub .mcards{margin-top:22px}
 </style>
 <script type="application/ld+json">
 {"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[
@@ -371,27 +387,42 @@
       </div>
       <div class="navgroup">
         <a class="navtop on" href="../teaching.html" aria-haspopup="true" aria-expanded="false"><span lang="ja">教育</span><span lang="en">Teaching</span></a>
-        <div class="navpanel">
+        <div class="navpanel mega">
           <div class="navlabel"><span lang="ja">科目</span><span lang="en">Courses</span></div>
-          <a href="../teaching.html"><span lang="ja">教育・担当授業</span><span lang="en">Teaching &amp; courses</span></a>
-          <a class="here" href="index.html" aria-current="page"><span lang="ja">ソフトウェア工学</span><span lang="en">Software Engineering</span></a>
-          <a href="logic-circuits.html"><span lang="ja">論理回路1</span><span lang="en">Logic Circuits I</span></a>
-          <a href="intelligent-informatics-1.html"><span lang="ja">知能情報実験実習1</span><span lang="en">Intelligent Informatics Lab I</span></a>
+          <div class="megacourses">
+            <a href="../teaching.html"><span lang="ja">教育・担当授業</span><span lang="en">Teaching &amp; courses</span></a>
+            <a class="here" href="index.html" aria-current="page"><span lang="ja">ソフトウェア工学</span><span lang="en">Software Engineering</span></a>
+            <a href="logic-circuits.html"><span lang="ja">論理回路1</span><span lang="en">Logic Circuits I</span></a>
+            <a href="intelligent-informatics-1.html"><span lang="ja">知能情報実験実習1</span><span lang="en">Intelligent Informatics Lab I</span></a>
+          </div>
           <hr class="navdiv">
-          <div class="navlabel"><span lang="ja">教材</span><span lang="en">Materials</span></div>
-          <a href="design-patterns.html"><span lang="ja">デザインパターン学習ガイド</span><span lang="en">Design Patterns Guide</span></a>
-          <a href="software-architecture.html"><span lang="ja">アーキテクチャパターン大全</span><span lang="en">Software Architecture</span></a>
-          <a href="uml-guide.html"><span lang="ja">クラス図/シーケンス図ガイド</span><span lang="en">UML Diagram Guide</span></a>
-          <a href="software-testing.html"><span lang="ja">ソフトウェアテスト学習ガイド</span><span lang="en">Software Testing Guide</span></a>
-          <a href="agile-scrum.html"><span lang="ja">アジャイル開発とスクラム</span><span lang="en">Agile &amp; Scrum</span></a>
-          <a href="requirements-engineering.html"><span lang="ja">要求工学</span><span lang="en">Requirements Engineering</span></a>
-          <a href="software-evolution.html"><span lang="ja">ソフトウェア進化と技術的負債</span><span lang="en">Software Evolution</span></a>
-          <a href="software-reuse-oss.html"><span lang="ja">ソフトウェア再利用とOSS</span><span lang="en">Software Reuse &amp; OSS</span></a>
-          <a href="project-management.html"><span lang="ja">プロジェクト管理と見積もり</span><span lang="en">Project Management</span></a>
-          <a href="version-control-cicd.html"><span lang="ja">バージョン管理とCI/CD</span><span lang="en">Version Control &amp; CI/CD</span></a>
-          <a href="system-modeling-uml.html"><span lang="ja">システムモデリング(UML)</span><span lang="en">System Modeling</span></a>
-          <a href="dependable-systems.html"><span lang="ja">ディペンダブルシステム</span><span lang="en">Dependable Systems</span></a>
-          <a href="project-estimation-planning.html"><span lang="ja">プロジェクト計画・見積り</span><span lang="en">Project Planning &amp; Estimation</span></a>
+          <div class="megagrid">
+            <div class="megacol">
+              <div class="navlabel"><span lang="ja">要求・モデリング</span><span lang="en">Requirements &amp; Modeling</span></div>
+              <a href="requirements-engineering.html"><span lang="ja">要求工学</span><span lang="en">Requirements Engineering</span></a>
+              <a href="system-modeling-uml.html"><span lang="ja">システムモデリング(UML)</span><span lang="en">System Modeling</span></a>
+              <a href="uml-guide.html"><span lang="ja">クラス図/シーケンス図ガイド</span><span lang="en">UML Diagram Guide</span></a>
+            </div>
+            <div class="megacol">
+              <div class="navlabel"><span lang="ja">設計・実装</span><span lang="en">Design &amp; Implementation</span></div>
+              <a href="software-architecture.html"><span lang="ja">アーキテクチャパターン大全</span><span lang="en">Software Architecture</span></a>
+              <a href="design-patterns.html"><span lang="ja">デザインパターン学習ガイド</span><span lang="en">Design Patterns Guide</span></a>
+              <a href="software-reuse-oss.html"><span lang="ja">ソフトウェア再利用とOSS</span><span lang="en">Software Reuse &amp; OSS</span></a>
+            </div>
+            <div class="megacol">
+              <div class="navlabel"><span lang="ja">計画・プロセス</span><span lang="en">Planning &amp; Process</span></div>
+              <a href="agile-scrum.html"><span lang="ja">アジャイル開発とスクラム</span><span lang="en">Agile &amp; Scrum</span></a>
+              <a href="project-management.html"><span lang="ja">プロジェクト管理と見積もり</span><span lang="en">Project Management</span></a>
+              <a href="project-estimation-planning.html"><span lang="ja">プロジェクト計画・見積り</span><span lang="en">Project Planning &amp; Estimation</span></a>
+            </div>
+            <div class="megacol">
+              <div class="navlabel"><span lang="ja">品質・運用</span><span lang="en">Quality &amp; Operations</span></div>
+              <a href="software-testing.html"><span lang="ja">ソフトウェアテスト学習ガイド</span><span lang="en">Software Testing Guide</span></a>
+              <a href="dependable-systems.html"><span lang="ja">ディペンダブルシステム</span><span lang="en">Dependable Systems</span></a>
+              <a href="software-evolution.html"><span lang="ja">ソフトウェア進化と技術的負債</span><span lang="en">Software Evolution</span></a>
+              <a href="version-control-cicd.html"><span lang="ja">バージョン管理とCI/CD</span><span lang="en">Version Control &amp; CI/CD</span></a>
+            </div>
+          </div>
         </div>
       </div>
       <div class="navgroup">
@@ -431,23 +462,28 @@
     </div>
     <div class="mobgroup">
       <div class="moblabel"><span lang="ja">教育</span><span lang="en">Teaching</span></div>
+      <div class="mobsublabel"><span lang="ja">科目</span><span lang="en">Courses</span></div>
       <a href="../teaching.html"><span lang="ja">教育・担当授業</span><span lang="en">Teaching &amp; courses</span></a>
       <a class="here" href="index.html" aria-current="page"><span lang="ja">ソフトウェア工学</span><span lang="en">Software Engineering</span></a>
       <a href="logic-circuits.html"><span lang="ja">論理回路1</span><span lang="en">Logic Circuits I</span></a>
       <a href="intelligent-informatics-1.html"><span lang="ja">知能情報実験実習1</span><span lang="en">Intelligent Informatics Lab I</span></a>
-      <a href="design-patterns.html"><span lang="ja">デザインパターン学習ガイド</span><span lang="en">Design Patterns Guide</span></a>
-      <a href="software-architecture.html"><span lang="ja">アーキテクチャパターン大全</span><span lang="en">Software Architecture</span></a>
-      <a href="uml-guide.html"><span lang="ja">クラス図/シーケンス図ガイド</span><span lang="en">UML Diagram Guide</span></a>
-      <a href="software-testing.html"><span lang="ja">ソフトウェアテスト学習ガイド</span><span lang="en">Software Testing Guide</span></a>
-      <a href="agile-scrum.html"><span lang="ja">アジャイル開発とスクラム</span><span lang="en">Agile &amp; Scrum</span></a>
+      <div class="mobsublabel"><span lang="ja">要求・モデリング</span><span lang="en">Requirements &amp; Modeling</span></div>
       <a href="requirements-engineering.html"><span lang="ja">要求工学</span><span lang="en">Requirements Engineering</span></a>
-      <a href="software-evolution.html"><span lang="ja">ソフトウェア進化と技術的負債</span><span lang="en">Software Evolution</span></a>
-      <a href="software-reuse-oss.html"><span lang="ja">ソフトウェア再利用とOSS</span><span lang="en">Software Reuse &amp; OSS</span></a>
-      <a href="project-management.html"><span lang="ja">プロジェクト管理と見積もり</span><span lang="en">Project Management</span></a>
-      <a href="version-control-cicd.html"><span lang="ja">バージョン管理とCI/CD</span><span lang="en">Version Control &amp; CI/CD</span></a>
       <a href="system-modeling-uml.html"><span lang="ja">システムモデリング(UML)</span><span lang="en">System Modeling</span></a>
-      <a href="dependable-systems.html"><span lang="ja">ディペンダブルシステム</span><span lang="en">Dependable Systems</span></a>
+      <a href="uml-guide.html"><span lang="ja">クラス図/シーケンス図ガイド</span><span lang="en">UML Diagram Guide</span></a>
+      <div class="mobsublabel"><span lang="ja">設計・実装</span><span lang="en">Design &amp; Implementation</span></div>
+      <a href="software-architecture.html"><span lang="ja">アーキテクチャパターン大全</span><span lang="en">Software Architecture</span></a>
+      <a href="design-patterns.html"><span lang="ja">デザインパターン学習ガイド</span><span lang="en">Design Patterns Guide</span></a>
+      <a href="software-reuse-oss.html"><span lang="ja">ソフトウェア再利用とOSS</span><span lang="en">Software Reuse &amp; OSS</span></a>
+      <div class="mobsublabel"><span lang="ja">計画・プロセス</span><span lang="en">Planning &amp; Process</span></div>
+      <a href="agile-scrum.html"><span lang="ja">アジャイル開発とスクラム</span><span lang="en">Agile &amp; Scrum</span></a>
+      <a href="project-management.html"><span lang="ja">プロジェクト管理と見積もり</span><span lang="en">Project Management</span></a>
       <a href="project-estimation-planning.html"><span lang="ja">プロジェクト計画・見積り</span><span lang="en">Project Planning &amp; Estimation</span></a>
+      <div class="mobsublabel"><span lang="ja">品質・運用</span><span lang="en">Quality &amp; Operations</span></div>
+      <a href="software-testing.html"><span lang="ja">ソフトウェアテスト学習ガイド</span><span lang="en">Software Testing Guide</span></a>
+      <a href="dependable-systems.html"><span lang="ja">ディペンダブルシステム</span><span lang="en">Dependable Systems</span></a>
+      <a href="software-evolution.html"><span lang="ja">ソフトウェア進化と技術的負債</span><span lang="en">Software Evolution</span></a>
+      <a href="version-control-cicd.html"><span lang="ja">バージョン管理とCI/CD</span><span lang="en">Version Control &amp; CI/CD</span></a>
     </div>
     <div class="mobgroup">
       <div class="moblabel"><span lang="ja">ガイド</span><span lang="en">Guides</span></div>
@@ -644,86 +680,13 @@
 <section id="materials" class="soft-sec">
   <div class="wrap">
     <p class="eyebrow reveal"><span lang="ja">学習コンテンツ</span><span lang="en">Learning materials</span></p>
-    <h2 class="big reveal" lang="ja">授業とあわせて使える、十三の教材</h2>
+    <h2 class="big reveal" lang="ja">授業とあわせて使える学習コンテンツ</h2>
     <p class="lead reveal" style="max-width:var(--readw); margin-top:20px">
-      設計と実装の回に関わる内容を、じっくり手を動かして学べる教材を用意しています。授業の予習・復習に、それぞれの入り口からどうぞ。
+      ソフトウェア開発の流れに沿って、4つのテーマに整理しています。じっくり手を動かして学べる教材を用意しました。授業の予習・復習に、それぞれの入り口からどうぞ。
     </p>
-    <div class="mcards reveal">
-      <div class="mcard">
-        <span class="mtag"><span lang="ja">設計と実装</span><span lang="en">Design and implementation</span></span>
-        <h3>デザインパターン学習ガイド</h3>
-        <div class="mmeta">
-          <span class="chip">GoF 23パターン</span>
-          <span class="chip">理解度クイズ 12問</span>
-        </div>
-        <p>生成・構造・振る舞いの三分類にわたるGoFの23パターンを、説明とコード例つきで学べます。最後には理解度を確かめる12問のクイズがあります。</p>
-        <div class="mgo">
-          <a class="tlink" href="design-patterns.html">
-            <span lang="ja">ガイドを開く</span><span lang="en">Open the guide</span>
-            <span class="ar" aria-hidden="true">&rsaquo;</span>
-          </a>
-        </div>
-      </div>
-      <div class="mcard">
-        <span class="mtag"><span lang="ja">アーキテクチャ設計</span><span lang="en">Architecture design</span></span>
-        <h3>アーキテクチャパターン大全</h3>
-        <div class="mmeta">
-          <span class="chip">44パターン</span>
-          <span class="chip">比較機能つき</span>
-        </div>
-        <p>44のアーキテクチャパターンを、カテゴリごとに整理して収録。気になるパターンを選んで、特性をレーダーチャートで比較しながら理解を深められます。</p>
-        <div class="mgo">
-          <a class="tlink" href="software-architecture.html">
-            <span lang="ja">大全を開く</span><span lang="en">Open the catalog</span>
-            <span class="ar" aria-hidden="true">&rsaquo;</span>
-          </a>
-        </div>
-      </div>
-      <div class="mcard">
-        <span class="mtag"><span lang="ja">モデリングと課題</span><span lang="en">Modeling and assignment</span></span>
-        <h3>クラス図・シーケンス図 作成ガイド</h3>
-        <div class="mmeta">
-          <span class="chip">記法と手順</span>
-          <span class="chip">Mermaid例</span>
-        </div>
-        <p>クラス図とシーケンス図の記法、作成の手順、よくある間違い、そしてMermaidでの作図例までをまとめました。作図の課題に直結する内容です。</p>
-        <div class="mgo">
-          <a class="tlink" href="uml-guide.html">
-            <span lang="ja">ガイドを開く</span><span lang="en">Open the guide</span>
-            <span class="ar" aria-hidden="true">&rsaquo;</span>
-          </a>
-        </div>
-      </div>
-      <div class="mcard">
-        <span class="mtag"><span lang="ja">ソフトウェアテスト</span><span lang="en">Software testing</span></span>
-        <h3>ソフトウェアテスト学習ガイド</h3>
-        <div class="mmeta">
-          <span class="chip">22のテスト・技法カタログ</span>
-          <span class="chip">理解度クイズ 19問</span>
-        </div>
-        <p>開発・リリース・ユーザテストから、テストケース設計の技法やTDD、現代的なテストまで、22のテスト・技法をカタログ形式で整理。体験デモと19問の理解度クイズで確かめられます。</p>
-        <div class="mgo">
-          <a class="tlink" href="software-testing.html">
-            <span lang="ja">ガイドを開く</span><span lang="en">Open the guide</span>
-            <span class="ar" aria-hidden="true">&rsaquo;</span>
-          </a>
-        </div>
-      </div>
-      <div class="mcard">
-        <span class="mtag"><span lang="ja">アジャイル開発</span><span lang="en">Agile development</span></span>
-        <h3>アジャイル開発とスクラム学習ガイド</h3>
-        <div class="mmeta">
-          <span class="chip">10の手法・プラクティスカタログ</span>
-          <span class="chip">理解度クイズ 12問</span>
-        </div>
-        <p>アジャイルマニフェストとプラン駆動型開発との違いから、XPのプラクティス、ユーザーストーリー、スクラムのスプリントとふりかえりまでを整理。バーンダウンチャートの体験デモつきです。</p>
-        <div class="mgo">
-          <a class="tlink" href="agile-scrum.html">
-            <span lang="ja">ガイドを開く</span><span lang="en">Open the guide</span>
-            <span class="ar" aria-hidden="true">&rsaquo;</span>
-          </a>
-        </div>
-      </div>
+    <div class="msub reveal">
+      <p class="eyebrow"><span lang="ja">要求・モデリング</span><span lang="en">Requirements &amp; Modeling</span></p>
+      <div class="mcards">
       <div class="mcard">
         <span class="mtag"><span lang="ja">要求工学</span><span lang="en">Requirements engineering</span></span>
         <h3>要求工学とユーザーストーリー学習ガイド</h3>
@@ -734,66 +697,6 @@
         <p>機能要求と非機能要求の区別から、インタビューやユースケースによる要求の抽出・仕様化・妥当性確認、アジャイルのユーザーストーリーまでを整理。曖昧な要求文を検出する体験デモつきです。</p>
         <div class="mgo">
           <a class="tlink" href="requirements-engineering.html">
-            <span lang="ja">ガイドを開く</span><span lang="en">Open the guide</span>
-            <span class="ar" aria-hidden="true">&rsaquo;</span>
-          </a>
-        </div>
-      </div>
-      <div class="mcard">
-        <span class="mtag"><span lang="ja">ソフトウェア進化</span><span lang="en">Software evolution</span></span>
-        <h3>ソフトウェア進化・保守と技術的負債 学習ガイド</h3>
-        <div class="mmeta">
-          <span class="chip">進化・保守・負債の10トピックカタログ</span>
-          <span class="chip">理解度クイズ 12問</span>
-        </div>
-        <p>保守の分類やレガシーシステムの評価に加え、リファクタリング・コードスメル・技術的負債・SATDまで、ソフトウェアが変更され続ける理由を整理しました。技術的負債の「利子」を体感するデモつきです。</p>
-        <div class="mgo">
-          <a class="tlink" href="software-evolution.html">
-            <span lang="ja">ガイドを開く</span><span lang="en">Open the guide</span>
-            <span class="ar" aria-hidden="true">&rsaquo;</span>
-          </a>
-        </div>
-      </div>
-      <div class="mcard">
-        <span class="mtag"><span lang="ja">ソフトウェア再利用</span><span lang="en">Software reuse</span></span>
-        <h3>ソフトウェア再利用とOSS学習ガイド</h3>
-        <div class="mmeta">
-          <span class="chip">10の再利用技法・OSSトピック</span>
-          <span class="chip">理解度クイズ 12問</span>
-        </div>
-        <p>ライブラリやフレームワーク、プロダクトライン、COTSといった再利用の技法をカタログ化し、OSSの仕組みやライセンス、貢献の作法まで整理しました。OSSライセンス選択の体験デモつきです。</p>
-        <div class="mgo">
-          <a class="tlink" href="software-reuse-oss.html">
-            <span lang="ja">ガイドを開く</span><span lang="en">Open the guide</span>
-            <span class="ar" aria-hidden="true">&rsaquo;</span>
-          </a>
-        </div>
-      </div>
-      <div class="mcard">
-        <span class="mtag"><span lang="ja">プロジェクト管理</span><span lang="en">Project management</span></span>
-        <h3>プロジェクト管理と見積もり学習ガイド</h3>
-        <div class="mmeta">
-          <span class="chip">10のトピック・技法カタログ</span>
-          <span class="chip">理解度クイズ 12問</span>
-        </div>
-        <p>リスクマネジメントやチームづくり、計画とスケジューリングから、三点見積もり・プランニングポーカー・COCOMO IIといった見積もり技法までを整理しました。PERT計算機の体験デモつきです。</p>
-        <div class="mgo">
-          <a class="tlink" href="project-management.html">
-            <span lang="ja">ガイドを開く</span><span lang="en">Open the guide</span>
-            <span class="ar" aria-hidden="true">&rsaquo;</span>
-          </a>
-        </div>
-      </div>
-      <div class="mcard">
-        <span class="mtag"><span lang="ja">構成管理</span><span lang="en">Configuration management</span></span>
-        <h3>バージョン管理とCI/CD学習ガイド</h3>
-        <div class="mmeta">
-          <span class="chip">10のプラクティス・技術カタログ</span>
-          <span class="chip">理解度クイズ 12問</span>
-        </div>
-        <p>構成管理の4つの活動を骨格に、Gitのブランチ戦略やプルリクエスト、CI/CD、セマンティックバージョニング、DevOpsとDORAメトリクスまでを整理しました。体験デモと理解度クイズつきです。</p>
-        <div class="mgo">
-          <a class="tlink" href="version-control-cicd.html">
             <span lang="ja">ガイドを開く</span><span lang="en">Open the guide</span>
             <span class="ar" aria-hidden="true">&rsaquo;</span>
           </a>
@@ -815,15 +718,100 @@
         </div>
       </div>
       <div class="mcard">
-        <span class="mtag"><span lang="ja">ディペンダビリティ</span><span lang="en">Dependability</span></span>
-        <h3>ディペンダブルシステム学習ガイド</h3>
+        <span class="mtag"><span lang="ja">モデリングと課題</span><span lang="en">Modeling and assignment</span></span>
+        <h3>クラス図・シーケンス図 作成ガイド</h3>
         <div class="mmeta">
-          <span class="chip">5次元・21の重要概念</span>
-          <span class="chip">理解度クイズ 20問</span>
+          <span class="chip">記法と手順</span>
+          <span class="chip">Mermaid例</span>
         </div>
-        <p>重要なシステムの障害は、大きな経済損失や情報漏えい、時には人命に関わります。ディペンダビリティ（信頼できる度合い）は、可用性・信頼性・安全性・セキュリティ・レジリエンスという5つの次元からなる概念です。信頼性メトリクス計算機、フォールト連鎖の可視化、理解度クイズ付きです。</p>
+        <p>クラス図とシーケンス図の記法、作成の手順、よくある間違い、そしてMermaidでの作図例までをまとめました。作図の課題に直結する内容です。</p>
         <div class="mgo">
-          <a class="tlink" href="dependable-systems.html">
+          <a class="tlink" href="uml-guide.html">
+            <span lang="ja">ガイドを開く</span><span lang="en">Open the guide</span>
+            <span class="ar" aria-hidden="true">&rsaquo;</span>
+          </a>
+        </div>
+      </div>
+      </div>
+    </div>
+    <div class="msub reveal">
+      <p class="eyebrow"><span lang="ja">設計・実装</span><span lang="en">Design &amp; Implementation</span></p>
+      <div class="mcards">
+      <div class="mcard">
+        <span class="mtag"><span lang="ja">アーキテクチャ設計</span><span lang="en">Architecture design</span></span>
+        <h3>アーキテクチャパターン大全</h3>
+        <div class="mmeta">
+          <span class="chip">44パターン</span>
+          <span class="chip">比較機能つき</span>
+        </div>
+        <p>44のアーキテクチャパターンを、カテゴリごとに整理して収録。気になるパターンを選んで、特性をレーダーチャートで比較しながら理解を深められます。</p>
+        <div class="mgo">
+          <a class="tlink" href="software-architecture.html">
+            <span lang="ja">大全を開く</span><span lang="en">Open the catalog</span>
+            <span class="ar" aria-hidden="true">&rsaquo;</span>
+          </a>
+        </div>
+      </div>
+      <div class="mcard">
+        <span class="mtag"><span lang="ja">設計と実装</span><span lang="en">Design and implementation</span></span>
+        <h3>デザインパターン学習ガイド</h3>
+        <div class="mmeta">
+          <span class="chip">GoF 23パターン</span>
+          <span class="chip">理解度クイズ 12問</span>
+        </div>
+        <p>生成・構造・振る舞いの三分類にわたるGoFの23パターンを、説明とコード例つきで学べます。最後には理解度を確かめる12問のクイズがあります。</p>
+        <div class="mgo">
+          <a class="tlink" href="design-patterns.html">
+            <span lang="ja">ガイドを開く</span><span lang="en">Open the guide</span>
+            <span class="ar" aria-hidden="true">&rsaquo;</span>
+          </a>
+        </div>
+      </div>
+      <div class="mcard">
+        <span class="mtag"><span lang="ja">ソフトウェア再利用</span><span lang="en">Software reuse</span></span>
+        <h3>ソフトウェア再利用とOSS学習ガイド</h3>
+        <div class="mmeta">
+          <span class="chip">10の再利用技法・OSSトピック</span>
+          <span class="chip">理解度クイズ 12問</span>
+        </div>
+        <p>ライブラリやフレームワーク、プロダクトライン、COTSといった再利用の技法をカタログ化し、OSSの仕組みやライセンス、貢献の作法まで整理しました。OSSライセンス選択の体験デモつきです。</p>
+        <div class="mgo">
+          <a class="tlink" href="software-reuse-oss.html">
+            <span lang="ja">ガイドを開く</span><span lang="en">Open the guide</span>
+            <span class="ar" aria-hidden="true">&rsaquo;</span>
+          </a>
+        </div>
+      </div>
+      </div>
+    </div>
+    <div class="msub reveal">
+      <p class="eyebrow"><span lang="ja">計画・プロセス</span><span lang="en">Planning &amp; Process</span></p>
+      <div class="mcards">
+      <div class="mcard">
+        <span class="mtag"><span lang="ja">アジャイル開発</span><span lang="en">Agile development</span></span>
+        <h3>アジャイル開発とスクラム学習ガイド</h3>
+        <div class="mmeta">
+          <span class="chip">10の手法・プラクティスカタログ</span>
+          <span class="chip">理解度クイズ 12問</span>
+        </div>
+        <p>アジャイルマニフェストとプラン駆動型開発との違いから、XPのプラクティス、ユーザーストーリー、スクラムのスプリントとふりかえりまでを整理。バーンダウンチャートの体験デモつきです。</p>
+        <div class="mgo">
+          <a class="tlink" href="agile-scrum.html">
+            <span lang="ja">ガイドを開く</span><span lang="en">Open the guide</span>
+            <span class="ar" aria-hidden="true">&rsaquo;</span>
+          </a>
+        </div>
+      </div>
+      <div class="mcard">
+        <span class="mtag"><span lang="ja">プロジェクト管理</span><span lang="en">Project management</span></span>
+        <h3>プロジェクト管理と見積もり学習ガイド</h3>
+        <div class="mmeta">
+          <span class="chip">10のトピック・技法カタログ</span>
+          <span class="chip">理解度クイズ 12問</span>
+        </div>
+        <p>リスクマネジメントやチームづくり、計画とスケジューリングから、三点見積もり・プランニングポーカー・COCOMO IIといった見積もり技法までを整理しました。PERT計算機の体験デモつきです。</p>
+        <div class="mgo">
+          <a class="tlink" href="project-management.html">
             <span lang="ja">ガイドを開く</span><span lang="en">Open the guide</span>
             <span class="ar" aria-hidden="true">&rsaquo;</span>
           </a>
@@ -843,6 +831,72 @@
             <span class="ar" aria-hidden="true">&rsaquo;</span>
           </a>
         </div>
+      </div>
+      </div>
+    </div>
+    <div class="msub reveal">
+      <p class="eyebrow"><span lang="ja">品質・運用</span><span lang="en">Quality &amp; Operations</span></p>
+      <div class="mcards">
+      <div class="mcard">
+        <span class="mtag"><span lang="ja">ソフトウェアテスト</span><span lang="en">Software testing</span></span>
+        <h3>ソフトウェアテスト学習ガイド</h3>
+        <div class="mmeta">
+          <span class="chip">22のテスト・技法カタログ</span>
+          <span class="chip">理解度クイズ 19問</span>
+        </div>
+        <p>開発・リリース・ユーザテストから、テストケース設計の技法やTDD、現代的なテストまで、22のテスト・技法をカタログ形式で整理。体験デモと19問の理解度クイズで確かめられます。</p>
+        <div class="mgo">
+          <a class="tlink" href="software-testing.html">
+            <span lang="ja">ガイドを開く</span><span lang="en">Open the guide</span>
+            <span class="ar" aria-hidden="true">&rsaquo;</span>
+          </a>
+        </div>
+      </div>
+      <div class="mcard">
+        <span class="mtag"><span lang="ja">ディペンダビリティ</span><span lang="en">Dependability</span></span>
+        <h3>ディペンダブルシステム学習ガイド</h3>
+        <div class="mmeta">
+          <span class="chip">5次元・21の重要概念</span>
+          <span class="chip">理解度クイズ 20問</span>
+        </div>
+        <p>重要なシステムの障害は、大きな経済損失や情報漏えい、時には人命に関わります。ディペンダビリティ（信頼できる度合い）は、可用性・信頼性・安全性・セキュリティ・レジリエンスという5つの次元からなる概念です。信頼性メトリクス計算機、フォールト連鎖の可視化、理解度クイズ付きです。</p>
+        <div class="mgo">
+          <a class="tlink" href="dependable-systems.html">
+            <span lang="ja">ガイドを開く</span><span lang="en">Open the guide</span>
+            <span class="ar" aria-hidden="true">&rsaquo;</span>
+          </a>
+        </div>
+      </div>
+      <div class="mcard">
+        <span class="mtag"><span lang="ja">ソフトウェア進化</span><span lang="en">Software evolution</span></span>
+        <h3>ソフトウェア進化・保守と技術的負債 学習ガイド</h3>
+        <div class="mmeta">
+          <span class="chip">進化・保守・負債の10トピックカタログ</span>
+          <span class="chip">理解度クイズ 12問</span>
+        </div>
+        <p>保守の分類やレガシーシステムの評価に加え、リファクタリング・コードスメル・技術的負債・SATDまで、ソフトウェアが変更され続ける理由を整理しました。技術的負債の「利子」を体感するデモつきです。</p>
+        <div class="mgo">
+          <a class="tlink" href="software-evolution.html">
+            <span lang="ja">ガイドを開く</span><span lang="en">Open the guide</span>
+            <span class="ar" aria-hidden="true">&rsaquo;</span>
+          </a>
+        </div>
+      </div>
+      <div class="mcard">
+        <span class="mtag"><span lang="ja">構成管理</span><span lang="en">Configuration management</span></span>
+        <h3>バージョン管理とCI/CD学習ガイド</h3>
+        <div class="mmeta">
+          <span class="chip">10のプラクティス・技術カタログ</span>
+          <span class="chip">理解度クイズ 12問</span>
+        </div>
+        <p>構成管理の4つの活動を骨格に、Gitのブランチ戦略やプルリクエスト、CI/CD、セマンティックバージョニング、DevOpsとDORAメトリクスまでを整理しました。体験デモと理解度クイズつきです。</p>
+        <div class="mgo">
+          <a class="tlink" href="version-control-cicd.html">
+            <span lang="ja">ガイドを開く</span><span lang="en">Open the guide</span>
+            <span class="ar" aria-hidden="true">&rsaquo;</span>
+          </a>
+        </div>
+      </div>
       </div>
     </div>
   </div>
