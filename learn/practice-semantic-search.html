@@ -3,15 +3,15 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>OSSプロジェクトの健康診断 - 実践編（総合演習）/ OSS Project Health Check</title>
-<meta name="description" content="A hands-on capstone exercise that mines a public OSS repository with PyDriller, engineers per-file features with pandas, measures co-change centrality with NetworkX, and predicts change hotspots with scikit-learn. With a runnable Colab notebook. Part of Yuta Kimura's learning course.">
-<link rel="canonical" href="https://ykimu.github.io/learn/practice-oss-health.html">
+<title>意味で検索する（TF-IDF vs 埋め込み）- 実践編（総合演習）/ Semantic Search: TF-IDF vs Embeddings</title>
+<meta name="description" content="A hands-on capstone exercise that builds two search engines over a document set: keyword search with scikit-learn TF-IDF and semantic search with sentence-transformers embeddings, then compares them on paraphrased queries using cosine similarity. With a runnable Colab notebook. Part of Yuta Kimura's learning course.">
+<link rel="canonical" href="https://ykimu.github.io/learn/practice-semantic-search.html">
 <link rel="icon" href="../favicon.svg" type="image/svg+xml">
 <meta property="og:site_name" content="Yuta Kimura / 木村祐太">
 <meta property="og:type" content="article">
-<meta property="og:title" content="OSSプロジェクトの健康診断 - 実践編（総合演習）/ OSS Project Health Check">
-<meta property="og:description" content="A capstone exercise: mine a public OSS repository, engineer per-file features, measure co-change centrality, and predict change hotspots, with a runnable Colab notebook.">
-<meta property="og:url" content="https://ykimu.github.io/learn/practice-oss-health.html">
+<meta property="og:title" content="意味で検索する（TF-IDF vs 埋め込み）- 実践編（総合演習）/ Semantic Search: TF-IDF vs Embeddings">
+<meta property="og:description" content="A capstone exercise: build keyword search with TF-IDF and semantic search with sentence embeddings over a document set, and compare them on paraphrased queries, with a runnable Colab notebook.">
+<meta property="og:url" content="https://ykimu.github.io/learn/practice-semantic-search.html">
 <meta property="og:image" content="https://ykimu.github.io/assets/og.png">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="color-scheme" content="light">
@@ -537,10 +537,10 @@
             </div>
             <div class="megacol">
               <div class="navlabel"><span lang="ja">実践編</span><span lang="en">Practice</span></div>
-              <a class="here" aria-current="page" href="../learn/practice-oss-health.html"><span lang="ja">OSSプロジェクトの健康診断</span><span lang="en">OSS health check</span></a>
+              <a href="../learn/practice-oss-health.html"><span lang="ja">OSSプロジェクトの健康診断</span><span lang="en">OSS health check</span></a>
               <a href="../learn/practice-text-classifier.html"><span lang="ja">テキスト分類器を作る</span><span lang="en">Text classifier</span></a>
               <a href="../learn/practice-code-metrics.html"><span lang="ja">ソースコードを測る</span><span lang="en">Code metrics</span></a>
-              <a href="../learn/practice-semantic-search.html"><span lang="ja">意味で検索</span><span lang="en">Semantic search</span></a>
+              <a class="here" aria-current="page" href="../learn/practice-semantic-search.html"><span lang="ja">意味で検索</span><span lang="en">Semantic search</span></a>
               <a href="../learn/practice-cnn-endtoend.html"><span lang="ja">深層学習の一気通貫</span><span lang="en">CNN end-to-end</span></a>
               <a href="../learn/practice-dev-timeseries.html"><span lang="ja">開発活動の時系列</span><span lang="en">Dev activity time series</span></a>
               <a href="../learn/practice-ab-test.html"><span lang="ja">A/Bテストで効果検証</span><span lang="en">A/B test analysis</span></a>
@@ -627,10 +627,10 @@
       <a href="../learn/causal-inference.html"><span lang="ja">因果推論</span><span lang="en">Causal inference</span></a>
       <a href="../learn/time-series.html"><span lang="ja">時系列分析</span><span lang="en">Time series analysis</span></a>
       <div class="mobsublabel"><span lang="ja">実践編</span><span lang="en">Practice</span></div>
-      <a class="here" aria-current="page" href="../learn/practice-oss-health.html"><span lang="ja">OSSプロジェクトの健康診断</span><span lang="en">OSS health check</span></a>
+      <a href="../learn/practice-oss-health.html"><span lang="ja">OSSプロジェクトの健康診断</span><span lang="en">OSS health check</span></a>
       <a href="../learn/practice-text-classifier.html"><span lang="ja">テキスト分類器を作る</span><span lang="en">Text classifier</span></a>
       <a href="../learn/practice-code-metrics.html"><span lang="ja">ソースコードを測る</span><span lang="en">Code metrics</span></a>
-      <a href="../learn/practice-semantic-search.html"><span lang="ja">意味で検索</span><span lang="en">Semantic search</span></a>
+      <a class="here" aria-current="page" href="../learn/practice-semantic-search.html"><span lang="ja">意味で検索</span><span lang="en">Semantic search</span></a>
       <a href="../learn/practice-cnn-endtoend.html"><span lang="ja">深層学習の一気通貫</span><span lang="en">CNN end-to-end</span></a>
       <a href="../learn/practice-dev-timeseries.html"><span lang="ja">開発活動の時系列</span><span lang="en">Dev activity time series</span></a>
       <a href="../learn/practice-ab-test.html"><span lang="ja">A/Bテストで効果検証</span><span lang="en">A/B test analysis</span></a>
@@ -662,7 +662,7 @@
     <span class="csep" aria-hidden="true">&rsaquo;</span>
     <a href="index.html"><span lang="ja">学習コース</span><span lang="en">Learn</span></a>
     <span class="csep" aria-hidden="true">&rsaquo;</span>
-    <span class="cur" aria-current="page"><span lang="ja">実践編：OSSプロジェクトの健康診断</span><span lang="en">Practice: OSS project health check</span></span>
+    <span class="cur" aria-current="page"><span lang="ja">実践編：意味で検索する</span><span lang="en">Practice: Semantic search</span></span>
   </nav>
 </div>
 
@@ -670,8 +670,8 @@
 <div class="hero">
   <div class="wrap">
     <p class="kick"><span lang="ja">実践編</span><span lang="en">Practice</span></p>
-    <h1>OSSプロジェクトの健康診断</h1>
-    <p class="lead">公開されている OSS リポジトリの開発履歴を掘り起こし、前処理・ネットワーク分析・機械学習を1本のパイプラインにつないで、変更が集中しやすいファイル（ホットスポット）を予測します。第1・第2段階で単体で学んだ技術を、現実的な課題を解くために組み合わせる総合演習です。手を動かせるノートブックつきで進めます。</p>
+    <h1>意味で検索する（TF-IDF vs 埋め込み）</h1>
+    <p class="lead">同じ文書集合に対して、キーワードの一致で探す検索（TF-IDF）と、意味の近さで探す検索（文埋め込み）を両方作り、同じ質問で結果を並べて比べます。自然言語処理の古典的な特徴量と、大規模言語モデルにつながる文埋め込みを、コサイン類似度という共通のものさしで結ぶ総合演習です。手を動かせるノートブックつきで進めます。</p>
     <p class="ja-note"><span lang="ja">この教材は日本語のみで提供しています</span><span lang="en">This learning material is available in Japanese only.</span></p>
     <div class="hero-cta">
       <a class="btn ink" href="#brief" style="padding:12px 22px">
@@ -694,9 +694,9 @@
     <a class="tocpill" href="#run"><span lang="ja">実行</span><span lang="en">Run</span></a>
     <a class="tocpill" href="#step1">Step 1 <span lang="ja">データ入手</span><span lang="en">Collect</span></a>
     <a class="tocpill" href="#step2">Step 2 <span lang="ja">前処理</span><span lang="en">Preprocess</span></a>
-    <a class="tocpill" href="#step3">Step 3 <span lang="ja">ネットワーク</span><span lang="en">Network</span></a>
-    <a class="tocpill" href="#step4">Step 4 <span lang="ja">機械学習</span><span lang="en">ML</span></a>
-    <a class="tocpill" href="#step5">Step 5 <span lang="ja">可視化</span><span lang="en">Visualize</span></a>
+    <a class="tocpill" href="#step3">Step 3 <span lang="ja">TF-IDF検索</span><span lang="en">TF-IDF</span></a>
+    <a class="tocpill" href="#step4">Step 4 <span lang="ja">意味検索</span><span lang="en">Embeddings</span></a>
+    <a class="tocpill" href="#step5">Step 5 <span lang="ja">比較</span><span lang="en">Compare</span></a>
     <a class="tocpill" href="#step6">Step 6 <span lang="ja">考察</span><span lang="en">Discussion</span></a>
     <a class="tocpill" href="#extend"><span lang="ja">発展課題</span><span lang="en">Try more</span></a>
     <a class="tocpill" href="#closing"><span lang="ja">まとめ</span><span lang="en">Wrap-up</span></a>
@@ -707,58 +707,64 @@
 <section id="brief" style="padding-top:26px">
   <div class="wrap reveal">
     <p class="eyebrow"><span lang="ja">課題設定</span><span lang="en">The task</span></p>
-    <h2 class="big">開発履歴から、壊れやすい場所を見つける</h2>
+    <h2 class="big">言葉の一致ではなく、意味で探す</h2>
     <div class="prose" style="margin-top:22px">
-      <p>あなたはある OSS プロジェクトの保守を引き継いだところだと想像してください。ソースは大量にあり、どこから手を付ければよいか分かりません。経験や勘に頼る前に、まず<b>データで</b>プロジェクトの状態を読み解きたい。とりわけ知りたいのは、<b>変更が集中しやすいファイル（ホットスポット）</b>です。何度も直され、多くの人が触るファイルは、不具合が生まれやすく、レビューやテストを厚くする価値が高いからです。</p>
-      <p>この演習では、公開リポジトリの開発履歴を素材に、次の一続きの流れを実際に組み立てます。</p>
+      <p>手元にたくさんの文書があり、その中から「知りたいこと」に近いものを取り出したい、という場面を考えます。素朴な方法は<b>キーワード検索</b>です。質問に含まれる語と、同じ語をたくさん含む文書を上位に出します。長く使われてきた確実な方法ですが、弱点があります。<b>言い換えや同義語に弱い</b>のです。「宇宙船」で検索したとき、本文が「ロケット」「探査機」と書いていれば、語が一致しないため取りこぼします。</p>
+      <p>もう一つの方法が<b>意味検索</b>です。文をそのまま意味を表すベクトル（文埋め込み）に変換し、ベクトルの近さで探します。語が違っても意味が近ければ近くに配置されるので、言い換えを拾えます。この演習では、同じ文書集合に対して二通りの検索を組み立て、同じ質問で結果を比べ、それぞれの強みと弱みを体で理解します。</p>
       <ul>
-        <li><b>データ入手</b>：リポジトリマイニングで、コミット履歴（誰がいつどのファイルを変えたか）を取り出す。</li>
-        <li><b>前処理</b>：コミットとファイルの表に整え、変更回数・コードチャーン・関与作者数といった特徴量にする。</li>
-        <li><b>ネットワーク分析</b>：同じコミットで一緒に変わったファイルを辺で結ぶ「共変更ネットワーク」を作り、結び目になっているファイルを中心性で測る。</li>
-        <li><b>機械学習</b>：これらの特徴量から、ホットスポットかどうかを分類する。</li>
+        <li><b>データ入手</b>：実在の公開コーパス（20 Newsgroups の一部）から文書を用意する。</li>
+        <li><b>前処理</b>：小文字化や記号の除去でテキストをそろえ、トークンに区切る。</li>
+        <li><b>TF-IDF 検索</b>：語の重要度で文書をベクトル化し、コサイン類似度で順位付けする。</li>
+        <li><b>意味検索</b>：文埋め込みモデルで文をベクトル化し、同じくコサイン類似度で検索する。</li>
+        <li><b>比較と考察</b>：言い換えクエリで両者の差を観察し、計算コストや用途の使い分けを整理する。</li>
       </ul>
-      <p>最終的に得られるのは、ファイルごとの特徴量表と、ホットスポットを当てる分類器、そして「何が言えて、何に注意すべきか」という読み解きです。ひとつの技術だけでは見えないものが、つなぐと見えてきます。</p>
+      <p>二つの検索は、最後は同じ「コサイン類似度で近いものを選ぶ」という形に落ち着きます。違うのは<b>文書を数値にする方法</b>だけです。そこに注目すると、古典的な特徴量と大規模言語モデル由来の埋め込みが、地続きであることが見えてきます。</p>
     </div>
 
     <div class="diagram-wrap reveal">
-      <p class="cap">この演習のパイプライン</p>
-      <svg viewBox="0 0 940 150" role="img" aria-label="パイプライン: リポジトリから前処理、ネットワーク分析、機械学習を経てホットスポット予測へ">
+      <p class="cap">この演習の流れ</p>
+      <svg viewBox="0 0 940 168" role="img" aria-label="流れ: 文書集合とクエリを、TF-IDF または 文埋め込みでベクトル化し、コサイン類似度で並べ替えて検索結果を得る">
         <g>
-          <rect class="dg-box" x="12" y="46" width="158" height="58" rx="12"/>
-          <text class="dg-lbl" x="91" y="72">リポジトリ</text>
-          <text class="dg-en" x="91" y="90">Commit history</text>
+          <rect class="dg-box" x="12" y="55" width="150" height="58" rx="12"/>
+          <text class="dg-lbl" x="87" y="81">文書集合</text>
+          <text class="dg-en" x="87" y="99">Documents</text>
         </g>
         <g>
-          <rect class="dg-box acc" x="212" y="46" width="150" height="58" rx="12"/>
-          <text class="dg-lbl" x="287" y="72">前処理</text>
-          <text class="dg-en" x="287" y="90">Preprocess</text>
+          <rect class="dg-box acc" x="212" y="16" width="180" height="52" rx="12"/>
+          <text class="dg-lbl" x="302" y="39">TF-IDF ベクトル</text>
+          <text class="dg-en" x="302" y="57">Keyword vectors</text>
         </g>
         <g>
-          <rect class="dg-box acc" x="404" y="46" width="150" height="58" rx="12"/>
-          <text class="dg-lbl" x="479" y="72">ネットワーク</text>
-          <text class="dg-en" x="479" y="90">Network</text>
+          <rect class="dg-box acc" x="212" y="100" width="180" height="52" rx="12"/>
+          <text class="dg-lbl" x="302" y="123">文埋め込み</text>
+          <text class="dg-en" x="302" y="141">Sentence embeddings</text>
         </g>
         <g>
-          <rect class="dg-box acc" x="596" y="46" width="150" height="58" rx="12"/>
-          <text class="dg-lbl" x="671" y="72">機械学習</text>
-          <text class="dg-en" x="671" y="90">Classifier</text>
+          <rect class="dg-box acc" x="440" y="55" width="180" height="58" rx="12"/>
+          <text class="dg-lbl" x="530" y="81">コサイン類似度</text>
+          <text class="dg-en" x="530" y="99">Cosine similarity</text>
         </g>
         <g>
-          <rect class="dg-box" x="788" y="46" width="140" height="58" rx="12"/>
-          <text class="dg-lbl" x="858" y="72">ホットスポット</text>
-          <text class="dg-en" x="858" y="90">Hotspots</text>
+          <rect class="dg-box" x="668" y="55" width="150" height="58" rx="12"/>
+          <text class="dg-lbl" x="743" y="81">並べ替え</text>
+          <text class="dg-en" x="743" y="99">Rank</text>
         </g>
+        <g>
+          <rect class="dg-box" x="838" y="55" width="90" height="58" rx="12"/>
+          <text class="dg-lbl" x="883" y="81">結果</text>
+          <text class="dg-en" x="883" y="99">Results</text>
+        </g>
+        <defs>
+          <marker id="ss-arrow" markerWidth="9" markerHeight="9" refX="6.5" refY="4.5" orient="auto" markerUnits="userSpaceOnUse">
+            <path d="M0,1 L8,4.5 L0,8 z" fill="var(--muted)"/>
+          </marker>
+        </defs>
         <g class="dg-line">
-          <line x1="170" y1="75" x2="204" y2="75"/><line x1="362" y1="75" x2="396" y2="75"/>
-          <line x1="554" y1="75" x2="588" y2="75"/><line x1="746" y1="75" x2="780" y2="75"/>
+          <line x1="162" y1="72" x2="211" y2="43" marker-end="url(#ss-arrow)"/><line x1="162" y1="96" x2="211" y2="125" marker-end="url(#ss-arrow)"/>
+          <line x1="392" y1="44" x2="439" y2="74" marker-end="url(#ss-arrow)"/><line x1="392" y1="124" x2="439" y2="94" marker-end="url(#ss-arrow)"/>
+          <line x1="620" y1="84" x2="667" y2="84" marker-end="url(#ss-arrow)"/><line x1="818" y1="84" x2="837" y2="84" marker-end="url(#ss-arrow)"/>
         </g>
-        <g class="dg-arrow">
-          <polygon points="204,75 196,71 196,79"/><polygon points="396,75 388,71 388,79"/>
-          <polygon points="588,75 580,71 580,79"/><polygon points="780,75 772,71 772,79"/>
-        </g>
-        <text class="dg-note" x="287" y="130">変更回数・チャーン</text>
-        <text class="dg-note" x="479" y="130">共変更・中心性</text>
-        <text class="dg-note" x="671" y="130">分類・評価</text>
+        <text class="dg-note" x="530" y="140">質問も同じ方法でベクトル化して比べる</text>
       </svg>
     </div>
   </div>
@@ -768,33 +774,27 @@
 <section id="stack">
   <div class="wrap reveal">
     <p class="eyebrow"><span lang="ja">使う技術</span><span lang="en">Techniques used</span></p>
-    <h2 class="big">組み合わせる4つのモジュール</h2>
+    <h2 class="big">つなぐモジュール</h2>
     <div class="prose" style="margin-top:22px">
-      <p>この演習は、第1・第2段階で単体で学んだ次の4モジュールを1本につなぎます。まだ学んでいない技術があれば、先にそのモジュールで基礎を押さえてから戻ってくると、各ステップの意味がはっきりします。</p>
+      <p>この演習は、これまで単体で学んだ次のモジュールを一本につなぎます。まだ学んでいない技術があれば、先にそのモジュールで基礎を押さえてから戻ってくると、各ステップの意味がはっきりします。</p>
     </div>
     <div class="res-grid reveal">
       <div class="res">
-        <h5><a href="repository-mining.html">リポジトリマイニング入門</a></h5>
+        <h5><a href="nlp.html">自然言語処理（NLP）</a></h5>
         <ul>
-          <li>PyDriller でコミット履歴を走査し、誰がいつどのファイルを変えたかを取り出す。<b>Step 1（データ入手）</b>の土台。</li>
+          <li>前処理・トークン化と、Bag-of-Words から TF-IDF への流れ。コサイン類似度の考え方も含め、<b>Step 2・Step 3</b>の土台になります。</li>
+        </ul>
+      </div>
+      <div class="res">
+        <h5><a href="llm.html">大規模言語モデル（LLM）</a></h5>
+        <ul>
+          <li>Transformer と文埋め込み。意味をベクトルで表す仕組みが、<b>Step 4</b>の意味検索の中心です。</li>
         </ul>
       </div>
       <div class="res">
         <h5><a href="data-preprocessing.html">開発データの前処理</a></h5>
         <ul>
-          <li>生の履歴を pandas でファイル単位の表に整え、欠損を除き、変更回数やチャーンを特徴量化する。<b>Step 2</b>で使う。</li>
-        </ul>
-      </div>
-      <div class="res">
-        <h5><a href="network-analysis.html">ネットワーク分析</a></h5>
-        <ul>
-          <li>共変更ネットワークを NetworkX で構築し、次数中心性・媒介中心性で結び目になるファイルを測る。<b>Step 3</b>で使う。</li>
-        </ul>
-      </div>
-      <div class="res">
-        <h5><a href="machine-learning.html">機械学習</a></h5>
-        <ul>
-          <li>特徴量からホットスポットを分類し、適合率・再現率・F値で評価する。<b>Step 4</b>で使う。</li>
+          <li>正規化や不要データの除去といった、テキストをそろえる基本作業。<b>Step 1・Step 2</b>で軽く使います。</li>
         </ul>
       </div>
     </div>
@@ -808,17 +808,17 @@
     <h2 class="big">このページのコードを、そのまま動かす</h2>
     <div class="demo reveal" style="margin-top:22px">
       <span class="dtag"><span lang="ja">Colab / Jupyter</span><span lang="en">Colab / Jupyter</span></span>
-      <h4>OSSプロジェクトの健康診断ノートブック</h4>
+      <h4>意味で検索するノートブック</h4>
       <p class="dnote">このページで読むコードと同じ内容を、上から順に実行できるノートブックにまとめてあります。Colab で開けば、インストール込みで環境構築なしにそのまま動かせます。手元の Jupyter で動かしたい場合は .ipynb をダウンロードしてください。</p>
       <div class="hero-cta" style="margin-top:6px">
-        <a class="btn ink" href="https://colab.research.google.com/github/ykimu/ykimu.github.io/blob/main/learn/notebooks/practice-oss-health.ipynb" target="_blank" rel="noopener" style="padding:12px 22px">
+        <a class="btn ink" href="https://colab.research.google.com/github/ykimu/ykimu.github.io/blob/main/learn/notebooks/practice-semantic-search.ipynb" target="_blank" rel="noopener" style="padding:12px 22px">
           <span lang="ja">Colabで開く</span><span lang="en">Open in Colab</span>
         </a>
-        <a class="btn" href="notebooks/practice-oss-health.ipynb" download>
+        <a class="btn" href="notebooks/practice-semantic-search.ipynb" download>
           <span lang="ja">ノートブックをダウンロード（.ipynb）</span><span lang="en">Download the notebook (.ipynb)</span>
         </a>
       </div>
-      <p class="dnote" style="margin:16px 0 0">最初のセルで <code>!pip install pydriller pandas networkx scikit-learn matplotlib</code> を実行します。リポジトリの履歴取得はネットワーク接続が必要で、リポジトリの規模により数分かかることがあります。</p>
+      <p class="dnote" style="margin:16px 0 0">最初のセルで <code>!pip install scikit-learn sentence-transformers</code> を実行します。埋め込みモデルは初回に自動でダウンロードされ、文書のベクトル化には少し時間がかかります（GPU があると速くなります）。</p>
     </div>
   </div>
 </section>
@@ -828,53 +828,39 @@
   <div class="wrap reveal">
     <div class="stephead">
       <span class="num">1</span>
-      <div class="tt"><h2>データ入手：コミット履歴を掘り起こす</h2><span class="st-en">Collect commit history</span></div>
+      <div class="tt"><h2>データ入手：文書集合を用意する</h2><span class="st-en">Collect the documents</span></div>
     </div>
     <div class="steprule"></div>
 
     <p class="layer first"><span lang="ja">何を・なぜ</span><span lang="en">What &amp; why</span></p>
     <div class="prose">
-      <p>まず素材となる開発履歴を集めます。<b>PyDriller</b> は Git リポジトリを Python から走査するライブラリで、URL を渡すだけで公開リポジトリを一時的に取得し、コミットを1件ずつたどれます。各コミットからは、ハッシュ・作者・日時に加えて、そのコミットで変更された各ファイルの追加行数・削除行数が得られます。これらを1行=「あるコミットでのあるファイルの変更」として集め、表にします。</p>
-      <p>題材には、小さめで実在する公開リポジトリを使います。ここでは PyDriller 自身のリポジトリ <code>ishepard/pydriller</code> を例にします。別のリポジトリで試すのも簡単です（発展課題を参照）。</p>
+      <p>検索の題材には、実在する公開コーパス <b>20 Newsgroups</b> を使います。1990年代のネットニュース投稿を約2万件集めたもので、話題ごとに20のカテゴリに分かれています。scikit-learn に取得用の関数があり、追加のダウンロード作業なしに読み込めます。ここでは話題の異なる4カテゴリ（宇宙・自動車・コンピュータグラフィックス・野球）に絞り、検索結果の当たり外れが分かりやすいようにします。</p>
+      <p>投稿にはヘッダや署名、引用が混ざっているため、<code>remove</code> で本文以外を落とします。まずは扱いやすいように先頭200件だけを使います。</p>
     </div>
     <div class="code-wrap attached">
-      <div class="code-head"><span class="lbl">Python</span><span class="lang-tag">collect_commits.py</span><button class="copy" type="button" onclick="copyCode(this)">copy</button></div>
-      <pre><code><span class="kw">from</span> pydriller <span class="kw">import</span> Repository
-<span class="kw">import</span> pandas <span class="kw">as</span> pd
+      <div class="code-head"><span class="lbl">Python</span><span class="lang-tag">load_data.py</span><button class="copy" type="button" onclick="copyCode(this)">copy</button></div>
+      <pre><code><span class="kw">from</span> sklearn.datasets <span class="kw">import</span> fetch_20newsgroups
 
-url = <span class="st">"https://github.com/ishepard/pydriller"</span>
+cats = [<span class="st">"sci.space"</span>, <span class="st">"rec.autos"</span>,
+        <span class="st">"comp.graphics"</span>, <span class="st">"rec.sport.baseball"</span>]
 
-<span class="cm"># コミットを1件ずつたどり、変更ファイルごとに1行を作る</span>
-rows = []
-<span class="kw">for</span> commit <span class="kw">in</span> Repository(url).traverse_commits():
-    <span class="kw">for</span> mod <span class="kw">in</span> commit.modified_files:
-        path = mod.new_path <span class="kw">or</span> mod.old_path
-        <span class="kw">if</span> path <span class="kw">is</span> <span class="kw">None</span>:
-            <span class="kw">continue</span>
-        rows.append({
-            <span class="st">"commit"</span>: commit.hash[:<span class="nu">8</span>],
-            <span class="st">"author"</span>: commit.author.email,
-            <span class="st">"date"</span>: commit.author_date,
-            <span class="st">"file"</span>: path,
-            <span class="st">"added"</span>: mod.added_lines,
-            <span class="st">"deleted"</span>: mod.deleted_lines,
-        })
+data = fetch_20newsgroups(
+    subset=<span class="st">"train"</span>, categories=cats,
+    remove=(<span class="st">"headers"</span>, <span class="st">"footers"</span>, <span class="st">"quotes"</span>),
+    random_state=<span class="nu">42</span>)
 
-df = pd.DataFrame(rows)
-<span class="kw">print</span>(df.shape)
-<span class="kw">print</span>(df.head())</code></pre>
+docs = data.data[:<span class="nu">200</span>]
+<span class="kw">print</span>(<span class="st">"documents:"</span>, len(docs))
+<span class="kw">print</span>(docs[<span class="nu">0</span>][:<span class="nu">160</span>])</code></pre>
     </div>
-    <div class="code-out"><span class="olbl">出力例 / Output</span><pre><code>(2118, 6)
-     commit                      author                       date                        file  added  deleted
-0  a1b2c3d4  davide.spadini@example.org  2018-02-15 14:22:31+01:00     pydriller/repository.py     58        0
-1  a1b2c3d4  davide.spadini@example.org  2018-02-15 14:22:31+01:00            pydriller/git.py     34        2
-2  1f4e9c07  davide.spadini@example.org  2018-02-16 09:05:12+01:00    tests/test_repository.py     41        1
-3  1f4e9c07  davide.spadini@example.org  2018-02-16 09:05:12+01:00     pydriller/repository.py      7        3
-4  9d2b7a55       contributor@example.org  2018-03-02 18:40:55+01:00  pydriller/domain/commit.py     22        4</code></pre></div>
+    <div class="code-out"><span class="olbl">出力例 / Output</span><pre><code>documents: 200
+I was wondering if anyone could tell me more about the orbit of the
+space shuttle and how long it takes to circle the earth once it has
+reached low earth orbit.</code></pre></div>
 
     <div class="callout tip">
       <h4>この Step のまとめ</h4>
-      <p><code>Repository(url).traverse_commits()</code> で履歴を走査し、変更ファイル単位の生データを表にしました。ここでは「1行 = あるコミットでの1ファイルの変更」という長い表になっています。次はこれをファイル単位に集計します。</p>
+      <p><code>fetch_20newsgroups</code> で実在のコーパスから文書を読み込みました。話題の異なる文書が混ざっているので、次の前処理でそろえたあと、検索が話題をきちんと当てられるかを確かめられます。</p>
     </div>
   </div>
 </section>
@@ -884,48 +870,38 @@ df = pd.DataFrame(rows)
   <div class="wrap reveal">
     <div class="stephead">
       <span class="num">2</span>
-      <div class="tt"><h2>前処理：ファイル単位の特徴量にする</h2><span class="st-en">Preprocess into per-file features</span></div>
+      <div class="tt"><h2>前処理：テキストをそろえる</h2><span class="st-en">Normalize the text</span></div>
     </div>
     <div class="steprule"></div>
 
     <p class="layer first"><span lang="ja">何を・なぜ</span><span lang="en">What &amp; why</span></p>
     <div class="prose">
-      <p>生の履歴のままでは分析しづらいので、pandas でファイル単位に集計します。ここでは学習しやすいように Python ファイル（<code>.py</code>）だけに絞り、パスが取れない変更（削除など）を除きます。そのうえで、各ファイルについて次の特徴量を作ります。</p>
-      <ul>
-        <li><b>changes</b>：そのファイルが変更されたコミット数（変更回数）。ホットスポットの目安になります。</li>
-        <li><b>churn</b>：コードチャーン。追加行と削除行の合計で、変更の量を表します。</li>
-        <li><b>authors</b>：そのファイルに関与した作者の数。多いほど所有が分散しています。</li>
-      </ul>
+      <p>生のテキストには大文字小文字の揺れや記号が混ざっています。TF-IDF は語の一致を見るので、<code>Orbit</code> と <code>orbit</code> が別語になると取りこぼしが増えます。そこで小文字化し、英字以外を空白に置き換えて語を切り出しやすくします。空になった文書や極端に短い文書は検索の役に立たないので落とします。</p>
+      <p>いっぽう Step 4 の文埋め込みモデルは、大文字小文字や句読点も手がかりにできるため、<b>強い正規化はしません</b>。前処理の程度は手法によって変えるのがふつうです。ここでは TF-IDF 用に軽くそろえたテキストを作ります。</p>
     </div>
     <div class="code-wrap attached">
-      <div class="code-head"><span class="lbl">Python</span><span class="lang-tag">build_features.py</span><button class="copy" type="button" onclick="copyCode(this)">copy</button></div>
-      <pre><code><span class="cm"># パスが取れない変更を除き、Pythonファイルに絞る</span>
-df = df[df[<span class="st">"file"</span>].notna()]
-df = df[df[<span class="st">"file"</span>].str.endswith(<span class="st">".py"</span>)]
+      <div class="code-head"><span class="lbl">Python</span><span class="lang-tag">preprocess.py</span><button class="copy" type="button" onclick="copyCode(this)">copy</button></div>
+      <pre><code><span class="kw">import</span> re
 
-<span class="cm"># コードチャーン = 追加行 + 削除行</span>
-df[<span class="st">"churn"</span>] = df[<span class="st">"added"</span>] + df[<span class="st">"deleted"</span>]
+<span class="kw">def</span> <span class="kw">normalize</span>(text):
+    text = text.lower()
+    text = re.sub(<span class="st">r"[^a-z0-9\s]"</span>, <span class="st">" "</span>, text)  <span class="cm"># 英数字以外を空白に</span>
+    text = re.sub(<span class="st">r"\s+"</span>, <span class="st">" "</span>, text).strip()  <span class="cm"># 連続する空白をまとめる</span>
+    <span class="kw">return</span> text
 
-<span class="cm"># ファイル単位に集計して特徴量表にする</span>
-feat = df.groupby(<span class="st">"file"</span>).agg(
-    changes=(<span class="st">"commit"</span>, <span class="st">"nunique"</span>),
-    churn=(<span class="st">"churn"</span>, <span class="st">"sum"</span>),
-    authors=(<span class="st">"author"</span>, <span class="st">"nunique"</span>),
-).reset_index()
+clean = [normalize(d) <span class="kw">for</span> d <span class="kw">in</span> docs]
+<span class="cm"># 短すぎる文書は検索の役に立たないので除く</span>
+clean = [d <span class="kw">for</span> d <span class="kw">in</span> clean <span class="kw">if</span> len(d.split()) &gt;= <span class="nu">5</span>]
 
-feat = feat.sort_values(<span class="st">"changes"</span>, ascending=<span class="kw">False</span>)
-<span class="kw">print</span>(feat.head())</code></pre>
+<span class="kw">print</span>(<span class="st">"kept:"</span>, len(clean))
+<span class="kw">print</span>(clean[<span class="nu">0</span>][:<span class="nu">120</span>])</code></pre>
     </div>
-    <div class="code-out"><span class="olbl">出力例 / Output</span><pre><code>                          file  changes  churn  authors
-0      pydriller/repository.py      146   4820       18
-1             pydriller/git.py       98   3110       15
-2   pydriller/domain/commit.py       74   2185       12
-3     tests/test_repository.py       61   1740        9
-4      pydriller/utils/conf.py       37    690        6</code></pre></div>
+    <div class="code-out"><span class="olbl">出力例 / Output</span><pre><code>kept: 194
+i was wondering if anyone could tell me more about the orbit of the space shuttle and how long it takes to circle</code></pre></div>
 
     <div class="callout tip">
       <h4>この Step のまとめ</h4>
-      <p>長い表を <code>groupby</code> でファイル単位に畳み込み、changes・churn・authors という3つの特徴量にしました。上位のファイルは変更回数もチャーンも大きく、直感とも合います。次に、ファイル同士の「つながり」を特徴量に加えます。</p>
+      <p>小文字化と記号の除去でテキストをそろえ、短すぎる文書を落としました。ここで整えた <code>clean</code> が TF-IDF 検索の入力になります。埋め込みには元の文をそのまま渡す点に注意してください。</p>
     </div>
   </div>
 </section>
@@ -935,53 +911,63 @@ feat = feat.sort_values(<span class="st">"changes"</span>, ascending=<span class
   <div class="wrap reveal">
     <div class="stephead">
       <span class="num">3</span>
-      <div class="tt"><h2>ネットワーク分析：共変更の結び目を測る</h2><span class="st-en">Co-change network</span></div>
+      <div class="tt"><h2>TF-IDF 検索：語の重みで探す</h2><span class="st-en">Keyword search with TF-IDF</span></div>
     </div>
     <div class="steprule"></div>
 
     <p class="layer first"><span lang="ja">何を・なぜ</span><span lang="en">What &amp; why</span></p>
     <div class="prose">
-      <p>ファイルは単独で変わるだけでなく、しばしば一緒に変わります。仕様変更で本体とテストが同時に直る、といった具合です。<b>同じコミットで一緒に変更されたファイル同士を辺で結ぶ</b>と、プロジェクトの構造を映すネットワークができます。これを<b>共変更ネットワーク（co-change network）</b>と呼びます。</p>
-      <p>NetworkX でこのグラフを作り、各ファイルの<b>次数中心性</b>（多くのファイルと共に変わるほど高い）と<b>媒介中心性</b>（異なる部分をつなぐ橋になっているほど高い）を測ります。中心性が高いファイルは、変更の影響が広がりやすい「結び目」です。</p>
+      <p>まずキーワード検索を作ります。<b>TF-IDF</b> は、文書中での語の頻度（TF）を、コーパス全体でのめずらしさ（IDF）で重み付けする古典的な特徴量です。ありふれた語の影響を抑え、その文書らしい語を強調します。各文書を語の重みベクトルにし、質問も同じ空間のベクトルに変換して、<b>コサイン類似度</b>が高い順に並べます。コサイン類似度はベクトルの向きの近さを測る指標で、値は0から1の範囲になります。</p>
+      <p>scikit-learn の <code>TfidfVectorizer</code> がベクトル化を、<code>cosine_similarity</code> が類似度計算を担います。英語のストップワードを除き、2文書未満にしか出ない語（<code>min_df=2</code>）を落として語彙を引き締めます。</p>
+    </div>
+    <div class="formula">
+      tf-idf(t, d) <span class="op">=</span> tf(t, d) <span class="op">&times;</span> log( (1+N) <span class="op">/</span> (1+df(t)) ) <span class="op">+</span> 1
+      <small>N: 全文書数　df(t): 語 t を含む文書数（scikit-learn 既定の平滑化つき idf）<br>ベクトルは L2 正規化され、コサイン類似度＝正規化ベクトルの内積になります。</small>
     </div>
     <div class="code-wrap attached">
-      <div class="code-head"><span class="lbl">Python</span><span class="lang-tag">cochange_network.py</span><button class="copy" type="button" onclick="copyCode(this)">copy</button></div>
-      <pre><code><span class="kw">import</span> networkx <span class="kw">as</span> nx
-<span class="kw">from</span> itertools <span class="kw">import</span> combinations
+      <div class="code-head"><span class="lbl">Python</span><span class="lang-tag">tfidf_search.py</span><button class="copy" type="button" onclick="copyCode(this)">copy</button></div>
+      <pre><code><span class="kw">from</span> sklearn.feature_extraction.text <span class="kw">import</span> TfidfVectorizer
+<span class="kw">from</span> sklearn.metrics.pairwise <span class="kw">import</span> cosine_similarity
+<span class="kw">import</span> numpy <span class="kw">as</span> np
 
-<span class="cm"># 同じコミットで一緒に変わったファイルを辺で結ぶ</span>
-G = nx.Graph()
-<span class="kw">for</span> commit, grp <span class="kw">in</span> df.groupby(<span class="st">"commit"</span>):
-    files = sorted(grp[<span class="st">"file"</span>].unique())
-    <span class="kw">for</span> a, b <span class="kw">in</span> combinations(files, <span class="nu">2</span>):
-        <span class="kw">if</span> G.has_edge(a, b):
-            G[a][b][<span class="st">"weight"</span>] += <span class="nu">1</span>
-        <span class="kw">else</span>:
-            G.add_edge(a, b, weight=<span class="nu">1</span>)
+vectorizer = TfidfVectorizer(stop_words=<span class="st">"english"</span>, min_df=<span class="nu">2</span>)
+doc_matrix = vectorizer.fit_transform(clean)
+<span class="kw">print</span>(<span class="st">"tf-idf matrix:"</span>, doc_matrix.shape)  <span class="cm"># (文書数, 語彙数)</span>
 
-<span class="cm"># 次数中心性と媒介中心性</span>
-degree = nx.degree_centrality(G)
-between = nx.betweenness_centrality(G)
+<span class="kw">def</span> <span class="kw">search_tfidf</span>(query, k=<span class="nu">3</span>):
+    q = vectorizer.transform([normalize(query)])
+    sims = cosine_similarity(q, doc_matrix).ravel()
+    top = np.argsort(sims)[::-<span class="nu">1</span>][:k]
+    <span class="kw">return</span> [(int(i), float(sims[i])) <span class="kw">for</span> i <span class="kw">in</span> top]
 
-cent = pd.DataFrame({
-    <span class="st">"file"</span>: list(degree.keys()),
-    <span class="st">"degree"</span>: list(degree.values()),
-    <span class="st">"betweenness"</span>: [between[f] <span class="kw">for</span> f <span class="kw">in</span> degree],
-})
-<span class="kw">print</span>(<span class="st">"nodes:"</span>, G.number_of_nodes(), <span class="st">"edges:"</span>, G.number_of_edges())
-<span class="kw">print</span>(cent.sort_values(<span class="st">"betweenness"</span>, ascending=<span class="kw">False</span>).head())</code></pre>
+<span class="kw">for</span> i, score <span class="kw">in</span> search_tfidf(<span class="st">"rocket launch into orbit"</span>):
+    <span class="kw">print</span>(<span class="st">f"{score:.3f}  {clean[i][:64]}"</span>)</code></pre>
     </div>
-    <div class="code-out"><span class="olbl">出力例 / Output</span><pre><code>nodes: 214 edges: 1180
-                          file    degree  betweenness
-0      pydriller/repository.py  0.375587     0.284120
-1             pydriller/git.py  0.286385     0.176433
-2   pydriller/domain/commit.py  0.234742     0.121876
-3     tests/test_repository.py  0.187793     0.058291
-4      pydriller/scm/commit.py  0.145540     0.041020</code></pre></div>
+    <div class="code-out"><span class="olbl">出力例 / Output</span><pre><code>tf-idf matrix: (194, 1893)
+0.361  the space shuttle uses solid rocket boosters at launch to reach
+0.284  a rocket has to reach orbit velocity before the engines cut off
+0.192  once in orbit the satellite fires small thrusters to adjust its</code></pre></div>
+
+    <!-- DEMO: TF-IDF mini search -->
+    <div class="demo reveal" id="demoSearch">
+      <span class="dtag"><span lang="ja">デモ</span><span lang="en">Demo</span></span>
+      <h4>TF-IDF ミニ検索</h4>
+      <p class="dnote">6つの短い英文を対象に、TF-IDF でクエリに近い文を順位付けします（scikit-learn と同じ平滑化つき idf・L2 正規化・コサイン類似度）。スコアの源は語の重なりなので、同義語や言い換えでは0点になりやすいことを体感できます。たとえば「space vehicle」は、宇宙の文ではなく "vehicle" を含む車の文を上位に出します。意味でのマッチはブラウザでは動かせないため、ここは TF-IDF 側だけを示します。</p>
+      <label class="fld" for="searchInput">クエリ / Query</label>
+      <input type="text" id="searchInput" value="rocket orbit" spellcheck="false">
+      <div class="try">
+        <span class="tlbl">例</span>
+        <button type="button" data-q="rocket orbit">rocket orbit</button>
+        <button type="button" data-q="space vehicle">space vehicle</button>
+        <button type="button" data-q="baseball game">baseball game</button>
+        <button type="button" data-q="fast engine car">fast engine car</button>
+      </div>
+      <div class="demo-out" id="searchOut" aria-live="polite"></div>
+    </div>
 
     <div class="callout tip">
       <h4>この Step のまとめ</h4>
-      <p>共変更ネットワークを作り、次数中心性と媒介中心性で「結び目」になるファイルを数値化しました。中心性が高いファイルは、変更回数の多いファイルと重なりがちですが、完全には一致しません。この差が、次の機械学習で効いてきます。</p>
+      <p>TF-IDF でベクトル化し、コサイン類似度で文書を並べる検索ができました。語がよく一致する文書を確実に、しかも高速に取り出せます。弱点は言い換えです。次は、その弱点を補う意味検索を作ります。</p>
     </div>
   </div>
 </section>
@@ -991,66 +977,45 @@ cent = pd.DataFrame({
   <div class="wrap reveal">
     <div class="stephead">
       <span class="num">4</span>
-      <div class="tt"><h2>機械学習：ホットスポットを予測する</h2><span class="st-en">Predict the hotspots</span></div>
+      <div class="tt"><h2>意味検索：文埋め込みで探す</h2><span class="st-en">Semantic search with embeddings</span></div>
     </div>
     <div class="steprule"></div>
 
     <p class="layer first"><span lang="ja">何を・なぜ</span><span lang="en">What &amp; why</span></p>
     <div class="prose">
-      <p>ここまでに作った特徴量（チャーン・作者数・次数中心性・媒介中心性）を1つの表にまとめ、機械学習でホットスポットを分類します。まず「ホットスポット」を定義します。ここでは<b>変更回数が上位25%のファイルを正例（1）</b>とします。</p>
-      <p>注意点が1つあります。ラベルの定義に使った<b>変更回数そのものは特徴量に入れません</b>。入れると答えを直接見せることになり、意味のある予測になりません。そこで残りの特徴量から予測できるかを試します。<code>train_test_split</code> で学習用と検証用に分け、<code>RandomForestClassifier</code> で分類し、<code>classification_report</code> で適合率・再現率・F値を確認します。</p>
+      <p>次に、意味の近さで探す検索を作ります。<b>文埋め込み</b>は、文全体を意味を表す固定長のベクトルに変換したものです。大量のテキストで学習した Transformer 系のモデルを使うと、語が違っても意味が近い文どうしは近くに、意味が遠い文どうしは離れて配置されます。だから「宇宙船」と「ロケット」のように表記が異なっても、意味が近ければ検索で拾えます。</p>
+      <p><code>sentence-transformers</code> ライブラリの <b>all-MiniLM-L6-v2</b> は、軽量で扱いやすい実在の文埋め込みモデルです。各文を384次元のベクトルに変換します。検索の仕組みは TF-IDF と同じで、質問も同じモデルでベクトル化し、<code>cosine_similarity</code> で近い文書を並べるだけです。<b>変わるのは文書を数値にする方法だけ</b>という点に注目してください。</p>
     </div>
     <div class="code-wrap attached">
-      <div class="code-head"><span class="lbl">Python</span><span class="lang-tag">predict_hotspots.py</span><button class="copy" type="button" onclick="copyCode(this)">copy</button></div>
-      <pre><code><span class="kw">from</span> sklearn.model_selection <span class="kw">import</span> train_test_split
-<span class="kw">from</span> sklearn.ensemble <span class="kw">import</span> RandomForestClassifier
-<span class="kw">from</span> sklearn.metrics <span class="kw">import</span> classification_report
+      <div class="code-head"><span class="lbl">Python</span><span class="lang-tag">embed_search.py</span><button class="copy" type="button" onclick="copyCode(this)">copy</button></div>
+      <pre><code><span class="cm"># !pip install sentence-transformers</span>
+<span class="kw">from</span> sentence_transformers <span class="kw">import</span> SentenceTransformer
+<span class="kw">from</span> sklearn.metrics.pairwise <span class="kw">import</span> cosine_similarity
+<span class="kw">import</span> numpy <span class="kw">as</span> np
 
-<span class="cm"># 中心性を特徴量表に結合（単独変更のファイルは中心性0で補完）</span>
-data = feat.merge(cent, on=<span class="st">"file"</span>, how=<span class="st">"left"</span>).fillna(<span class="nu">0</span>)
+model = SentenceTransformer(<span class="st">"all-MiniLM-L6-v2"</span>)
 
-<span class="cm"># ラベル: 変更回数が上位25%のファイルをホットスポット(1)</span>
-threshold = data[<span class="st">"changes"</span>].quantile(<span class="nu">0.75</span>)
-data[<span class="st">"hotspot"</span>] = (data[<span class="st">"changes"</span>] &gt;= threshold).astype(int)
+<span class="cm"># 埋め込みには整形前の元の文を渡す</span>
+doc_emb = model.encode(docs, batch_size=<span class="nu">32</span>, show_progress_bar=<span class="kw">True</span>)
+<span class="kw">print</span>(<span class="st">"embeddings:"</span>, doc_emb.shape)  <span class="cm"># (文書数, 384)</span>
 
-<span class="cm"># 変更回数そのものは特徴量に入れない（ラベルの定義に使ったため）</span>
-X = data[[<span class="st">"churn"</span>, <span class="st">"authors"</span>, <span class="st">"degree"</span>, <span class="st">"betweenness"</span>]]
-y = data[<span class="st">"hotspot"</span>]
+<span class="kw">def</span> <span class="kw">search_embed</span>(query, k=<span class="nu">3</span>):
+    q = model.encode([query])
+    sims = cosine_similarity(q, doc_emb).ravel()
+    top = np.argsort(sims)[::-<span class="nu">1</span>][:k]
+    <span class="kw">return</span> [(int(i), float(sims[i])) <span class="kw">for</span> i <span class="kw">in</span> top]
 
-X_train, X_test, y_train, y_test = train_test_split(
-    X, y, test_size=<span class="nu">0.3</span>, random_state=<span class="nu">42</span>, stratify=y)
-
-clf = RandomForestClassifier(n_estimators=<span class="nu">300</span>, random_state=<span class="nu">42</span>)
-clf.fit(X_train, y_train)
-pred = clf.predict(X_test)
-
-<span class="kw">print</span>(classification_report(y_test, pred))
-<span class="cm"># どの特徴量が効いたか</span>
-<span class="kw">for</span> name, imp <span class="kw">in</span> sorted(zip(X.columns, clf.feature_importances_),
-                        key=<span class="kw">lambda</span> t: t[<span class="nu">1</span>], reverse=<span class="kw">True</span>):
-    <span class="kw">print</span>(<span class="st">f"{name:12s} {imp:.3f}"</span>)</code></pre>
+<span class="kw">for</span> i, score <span class="kw">in</span> search_embed(<span class="st">"a spacecraft heading into orbit"</span>):
+    <span class="kw">print</span>(<span class="st">f"{score:.3f}  {docs[i][:64].strip()}"</span>)</code></pre>
     </div>
-    <div class="code-out"><span class="olbl">出力例 / Output</span><pre><code>              precision    recall  f1-score   support
-
-           0       0.90      0.94      0.92        48
-           1       0.79      0.69      0.73        16
-
-    accuracy                           0.88        64
-   macro avg       0.84      0.81      0.83        64
-weighted avg       0.87      0.88      0.87        64
-
-churn        0.462
-degree       0.281
-betweenness  0.171
-authors      0.086</code></pre></div>
-
-    <div class="prose">
-      <p>正例（ホットスポット）は少数派なので、多数派の負例より当てるのが難しく、再現率がやや低く出ています。特徴量の重要度を見ると、チャーンが最も効き、次いで共変更の次数中心性が効いています。つまり「よく書き換えられ、多くのファイルと一緒に変わる」ファイルほどホットスポットになりやすい、という素直な傾向が読み取れます。</p>
-    </div>
+    <div class="code-out"><span class="olbl">出力例 / Output</span><pre><code>embeddings: (200, 384)
+0.671  A rocket has to reach orbit velocity before the engines
+0.633  I was wondering about the orbit of the space shuttle and
+0.588  Once in orbit the satellite fires small thrusters to adjust</code></pre></div>
 
     <div class="callout tip">
       <h4>この Step のまとめ</h4>
-      <p>4つの特徴量からホットスポットを分類し、評価指標で性能を確かめました。ネットワーク由来の中心性が予測に寄与している点が、複数の技術をつないだ効果です。<code>LogisticRegression</code> に差し替えて比べるのも良い練習になります。</p>
+      <p>文埋め込みで文書と質問を同じ空間のベクトルにし、コサイン類似度で意味の近い文書を取り出しました。骨組みは TF-IDF 検索とそっくりで、違いはベクトル化の中身だけです。次は、両者が本当に違う結果を出す場面を作って比べます。</p>
     </div>
   </div>
 </section>
@@ -1060,41 +1025,51 @@ authors      0.086</code></pre></div>
   <div class="wrap reveal">
     <div class="stephead">
       <span class="num">5</span>
-      <div class="tt"><h2>可視化：分布とネットワークを眺める</h2><span class="st-en">Visualize</span></div>
+      <div class="tt"><h2>比較：言い換えで差が出る</h2><span class="st-en">Compare on paraphrases</span></div>
     </div>
     <div class="steprule"></div>
 
     <p class="layer first"><span lang="ja">何を・なぜ</span><span lang="en">What &amp; why</span></p>
     <div class="prose">
-      <p>数値だけでなく、図でも確かめます。変更回数の分布を見ると、少数のファイルに変更が集中する<b>ロングテール</b>になっているはずです。共変更ネットワークの中心部分を描くと、中心性の高いファイルが実際に多くの辺を集めている様子が見えます。matplotlib と NetworkX の描画関数で描きます。</p>
+      <p>両者の違いをはっきり見るために、小さくて読みやすい文集合を用意し、<b>本文の語と重ならない言い換えの質問</b>を投げます。質問は「a vehicle that travels through space（宇宙を移動する乗り物）」です。この文の語は、宇宙関連の文（rocket, orbit, spacecraft）とほとんど一致しません。TF-IDF はこうした場面で取りこぼし、埋め込みは意味で拾えるはずです。</p>
     </div>
     <div class="code-wrap attached">
-      <div class="code-head"><span class="lbl">Python</span><span class="lang-tag">visualize.py</span><button class="copy" type="button" onclick="copyCode(this)">copy</button></div>
-      <pre><code><span class="kw">import</span> matplotlib.pyplot <span class="kw">as</span> plt
+      <div class="code-head"><span class="lbl">Python</span><span class="lang-tag">compare.py</span><button class="copy" type="button" onclick="copyCode(this)">copy</button></div>
+      <pre><code>mini = [
+    <span class="st">"The rocket lifted off and reached orbit."</span>,
+    <span class="st">"Astronauts prepared the spacecraft for launch."</span>,
+    <span class="st">"A sports car with a powerful engine was unveiled."</span>,
+    <span class="st">"The team won the baseball championship last night."</span>,
+]
+query = <span class="st">"a vehicle that travels through space"</span>
 
-fig, ax = plt.subplots(<span class="nu">1</span>, <span class="nu">2</span>, figsize=(<span class="nu">11</span>, <span class="nu">4</span>))
+<span class="cm"># TF-IDF 側</span>
+tv = TfidfVectorizer(stop_words=<span class="st">"english"</span>)
+M = tv.fit_transform(mini)
+tfidf_sims = cosine_similarity(tv.transform([query]), M).ravel()
 
-<span class="cm"># 左: ファイルごとの変更回数の分布（ロングテール）</span>
-ax[<span class="nu">0</span>].hist(feat[<span class="st">"changes"</span>], bins=<span class="nu">30</span>, color=<span class="st">"#0E6F5C"</span>)
-ax[<span class="nu">0</span>].set_xlabel(<span class="st">"changes per file"</span>)
-ax[<span class="nu">0</span>].set_ylabel(<span class="st">"number of files"</span>)
-ax[<span class="nu">0</span>].set_title(<span class="st">"Change frequency"</span>)
+<span class="cm"># 埋め込み側</span>
+emb = model.encode(mini)
+embed_sims = cosine_similarity(model.encode([query]), emb).ravel()
 
-<span class="cm"># 右: 共変更ネットワークの中心部分（次数の高い上位30ノード）</span>
-top_nodes = [n <span class="kw">for</span> n, _ <span class="kw">in</span> sorted(G.degree,
-             key=<span class="kw">lambda</span> x: x[<span class="nu">1</span>], reverse=<span class="kw">True</span>)[:<span class="nu">30</span>]]
-H = G.subgraph(top_nodes)
-pos = nx.spring_layout(H, seed=<span class="nu">42</span>)
-nx.draw_networkx_nodes(H, pos, ax=ax[<span class="nu">1</span>], node_size=<span class="nu">120</span>, node_color=<span class="st">"#0E6F5C"</span>)
-nx.draw_networkx_edges(H, pos, ax=ax[<span class="nu">1</span>], edge_color=<span class="st">"#B7C0BB"</span>)
-ax[<span class="nu">1</span>].set_title(<span class="st">"Co-change network (top 30)"</span>)
-ax[<span class="nu">1</span>].axis(<span class="st">"off"</span>)
-
-plt.tight_layout()
-plt.show()</code></pre>
+<span class="kw">print</span>(<span class="st">"tfidf  embed  sentence"</span>)
+<span class="kw">for</span> i, s <span class="kw">in</span> enumerate(mini):
+    <span class="kw">print</span>(<span class="st">f"{tfidf_sims[i]:.3f}  {embed_sims[i]:.3f}  {s}"</span>)</code></pre>
     </div>
+    <div class="code-out"><span class="olbl">出力例 / Output</span><pre><code>tfidf  embed  sentence
+0.000  0.487  The rocket lifted off and reached orbit.
+0.000  0.502  Astronauts prepared the spacecraft for launch.
+0.000  0.264  A sports car with a powerful engine was unveiled.
+0.000  0.079  The team won the baseball championship last night.</code></pre></div>
+
     <div class="prose">
-      <p>左のヒストグラムは、大半のファイルが数回しか変更されない一方で、ごく少数のファイルが飛び抜けて多く変更される、右に長い裾を引いた形になります。右のグラフでは、中央に位置する数個のノード（Step 3 で中心性が高かったファイル）に辺が集まり、周辺のファイルがそれらを介してつながる様子が見えます。図の見た目はレイアウトの乱数（<code>seed</code>）で変わりますが、構造の傾向は保たれます。</p>
+      <p>TF-IDF はすべて0点です。質問の語（vehicle, travels, space）がどの文にも現れないため、語の一致では手がかりを得られません。いっぽう埋め込みは、宇宙の2文（ロケット・宇宙船）を高いスコアで、車の文をやや低く、野球の文をさらに低く並べています。<b>語が一致しなくても意味で近さを測れている</b>ことが読み取れます。</p>
+      <p>ただし逆の場面もあります。型番や固有名詞、コードの識別子のように<b>語の完全一致こそが重要</b>な検索では、TF-IDF のほうが素直で確実です。埋め込みは意味が近いだけの無関係な文を拾ってしまうことがあります。どちらが良いかは、探したいものの性質で決まります。</p>
+    </div>
+
+    <div class="callout tip">
+      <h4>この Step のまとめ</h4>
+      <p>言い換え質問では TF-IDF が取りこぼし、埋め込みが意味で拾いました。反対に完全一致が要る場面では TF-IDF が強い。両者は優劣ではなく、役割が違います。次はコストや使い分けを整理します。</p>
     </div>
   </div>
 </section>
@@ -1104,38 +1079,38 @@ plt.show()</code></pre>
   <div class="wrap reveal">
     <div class="stephead">
       <span class="num">6</span>
-      <div class="tt"><h2>考察：何が言えて、何に注意するか</h2><span class="st-en">Discussion &amp; caveats</span></div>
+      <div class="tt"><h2>考察：コストと使い分け</h2><span class="st-en">Cost &amp; trade-offs</span></div>
     </div>
     <div class="steprule"></div>
 
     <p class="layer first"><span lang="ja">読み解き</span><span lang="en">Reading the result</span></p>
     <div class="prose">
-      <p>一連の分析から、このプロジェクトでは少数のファイルに変更が集中し、それらが共変更ネットワークの結び目にもなっていることが分かりました。ホットスポットは、チャーンの大きさと共変更の次数中心性からある程度予測でき、レビューやテスト、リファクタリングの投資先を選ぶ手がかりになります。単体のメトリクスだけでなく、ネットワーク由来の指標を足すと予測が補強される、というのがこの演習の要点です。</p>
+      <p>二つの検索は、最後は同じコサイン類似度に行き着きます。違いは文書のベクトル化だけでした。TF-IDF は語の統計だけで作れて軽く、結果の理由も「どの語が効いたか」で説明しやすい。埋め込みは学習済みモデルが要り計算も重いぶん、言い換えや同義語に強い。実務では両者を組み合わせ、TF-IDF で候補をしぼってから埋め込みで並べ替える、といった使い方もよくされます。</p>
     </div>
 
-    <p class="layer"><span lang="ja">注意点</span><span lang="en">Caveats</span></p>
+    <p class="layer"><span lang="ja">それぞれの性質</span><span lang="en">Where each shines</span></p>
     <div class="grid2">
-      <div class="box lim">
-        <h5><span lang="ja">解釈の限界</span><span lang="en">Limits</span></h5>
+      <div class="box">
+        <h5><span lang="ja">TF-IDF が向く場面</span><span lang="en">TF-IDF</span></h5>
         <ul>
-          <li><b>相関であって因果ではない</b>：変更が多い＝悪いとは限らない。活発に育っている中心機能かもしれません。</li>
-          <li><b>tangled commit</b>：無関係な変更が1コミットに混ざると、共変更が過大に見えることがあります。</li>
-          <li><b>リネーム・移動</b>：ファイル名の変更で履歴が途切れ、変更回数を過小評価することがあります。</li>
+          <li>型番・固有名詞・識別子など、<b>完全一致</b>が効く検索。</li>
+          <li>学習済みモデルを持ち込めない軽量な環境。計算が速く安価。</li>
+          <li>スコアの根拠を語で説明したいとき。</li>
         </ul>
       </div>
-      <div class="box">
-        <h5><span lang="ja">妥当性を高めるには</span><span lang="en">Toward validity</span></h5>
+      <div class="box lim">
+        <h5><span lang="ja">埋め込みの注意</span><span lang="en">Embeddings</span></h5>
         <ul>
-          <li>期間を区切って、最近の傾向と過去を分ける。</li>
-          <li>リネーム追跡を有効にして履歴のつながりを保つ。</li>
-          <li>不具合修正コミットと結びつけ、実際の欠陥と対応するか確かめる。</li>
+          <li>ベクトル化にモデルが要り、<b>計算コストが高い</b>。件数が増えると事前計算と保存が必要。</li>
+          <li>意味が近いだけの無関係な文を拾うことがある。</li>
+          <li>学習データの言語や分野に性能が左右される（語彙外・専門語に注意）。</li>
         </ul>
       </div>
     </div>
 
     <div class="callout warn">
-      <h4>数字を鵜呑みにしない</h4>
-      <p>ここで得た予測やランキングは、あくまで「見るべき場所の候補」です。最終的な判断には、コードの中身やチームの文脈を合わせて読む必要があります。メトリクスは会話の出発点であって、結論ではありません。</p>
+      <h4>件数が増えると総当りは苦しい</h4>
+      <p>質問ごとに全文書とのコサイン類似度を計算する総当り方式は、文書数が増えると遅くなります。実運用では、次に紹介する近似最近傍（FAISS など）で、精度をほぼ保ったまま探索を高速化するのが定石です。</p>
     </div>
   </div>
 </section>
@@ -1146,31 +1121,31 @@ plt.show()</code></pre>
     <p class="eyebrow"><span lang="ja">発展課題</span><span lang="en">Try more</span></p>
     <h2 class="big">こう変えたら、どうなる？</h2>
     <div class="prose" style="margin-top:22px">
-      <p>パイプラインができたら、少しずつ条件を変えて挙動を確かめましょう。答えは用意しません。手を動かして、数字がどう動くかを観察するのが目的です。</p>
+      <p>検索の骨組みができたら、条件を少しずつ変えて挙動を確かめましょう。答えは用意しません。手を動かして、順位やスコアがどう動くかを観察するのが目的です。</p>
     </div>
     <div class="res-grid reveal">
       <div class="res">
-        <h5>別のリポジトリで試す</h5>
+        <h5>別のコーパスで試す</h5>
         <ul>
-          <li><code>url</code> を別の小さな公開リポジトリに変えて走らせる。プロジェクトによってホットスポットの偏り方がどう違うかを比べる。</li>
+          <li><code>categories</code> を増やしたり別の話題に変えたりして、検索の当たり方がどう変わるかを見る。件数を増やすとどうなるかも試す。</li>
         </ul>
       </div>
       <div class="res">
-        <h5>期間で区切る</h5>
+        <h5>別の埋め込みモデル</h5>
         <ul>
-          <li><code>Repository(url, since=..., to=...)</code> で期間を絞り、直近1年と全期間で結果を比べる。ホットスポットは時期によって移り変わります。</li>
+          <li><code>all-mpnet-base-v2</code> など、より大きな実在モデルに差し替えて、精度と速度のちがいを比べる。多言語モデルで日本語の検索も試せます。</li>
         </ul>
       </div>
       <div class="res">
-        <h5>特徴量を足す</h5>
+        <h5>近似最近傍（FAISS）</h5>
         <ul>
-          <li>ファイルの平均コミット間隔、直近の変更からの経過日数、コメント行の割合などを加えて、予測が変わるかを見る。</li>
+          <li>埋め込みを FAISS のインデックスに載せ、総当りではなく近似最近傍で検索する。件数を増やしたときの速度差を測る。</li>
         </ul>
       </div>
       <div class="res">
-        <h5>バグ修正を辿る</h5>
+        <h5>ハイブリッド検索</h5>
         <ul>
-          <li>コミットメッセージから <code>fix</code> や <code>bug</code> を含むものを拾い、修正が集中するファイルを調べる。SZZ 的にバグ混入コミットまで遡るとさらに踏み込めます。</li>
+          <li>TF-IDF のスコアと埋め込みのスコアを重み付けで足し合わせ、完全一致と意味の両取りを狙う。重みを変えて結果の変化を見る。</li>
         </ul>
       </div>
     </div>
@@ -1183,38 +1158,37 @@ plt.show()</code></pre>
     <p class="eyebrow"><span lang="ja">まとめ</span><span lang="en">Wrap-up</span></p>
     <h2 class="big">つないで見えたもの、次へ</h2>
     <div class="prose" style="margin-top:22px">
-      <p>この演習では、単体で学んだ4つの技術を1本のパイプラインにつなぎ、現実の OSS リポジトリからホットスポットを予測しました。振り返ると、それぞれのモジュールが次の役割を担っていました。</p>
+      <p>この演習では、同じ文書集合に二通りの検索を作り、同じ質問で比べました。振り返ると、それぞれが次の役割を担っていました。</p>
       <ul>
-        <li><b>リポジトリマイニング</b>：PyDriller で開発履歴という素材を手に入れた。</li>
-        <li><b>前処理</b>：pandas でファイル単位の特徴量表に整えた。</li>
-        <li><b>ネットワーク分析</b>：共変更の結び目を中心性で数値化した。</li>
-        <li><b>機械学習</b>：特徴量を統合してホットスポットを分類し、評価した。</li>
+        <li><b>前処理と TF-IDF</b>：語の統計だけで、軽く確実なキーワード検索を組んだ。</li>
+        <li><b>文埋め込み</b>：意味をベクトルにして、言い換えに強い意味検索を組んだ。</li>
+        <li><b>コサイン類似度</b>：二つの検索を同じものさしでつなぎ、違いを文書のベクトル化だけに絞り込んだ。</li>
       </ul>
-      <p>単体では見えなかった構造が、つなぐと見えてきました。各技術の詳しい理論やAPIは、下の各モジュールに戻ると確認できます。</p>
+      <p>古典的な特徴量と大規模言語モデル由来の埋め込みが、地続きであることが見えてきました。各技術の詳しい理論やAPIは、下の各モジュールに戻ると確認できます。</p>
     </div>
 
     <div class="res-grid reveal">
       <div class="res">
         <h5>使ったモジュール</h5>
         <ul>
-          <li><a href="repository-mining.html">リポジトリマイニング入門</a></li>
+          <li><a href="nlp.html">自然言語処理（NLP）</a></li>
+          <li><a href="llm.html">大規模言語モデル（LLM）</a></li>
           <li><a href="data-preprocessing.html">開発データの前処理</a></li>
-          <li><a href="network-analysis.html">ネットワーク分析</a></li>
-          <li><a href="machine-learning.html">機械学習</a></li>
         </ul>
       </div>
       <div class="res">
-        <h5>次の演習・段階へ</h5>
+        <h5>データ・ライブラリ・参考</h5>
         <ul>
-          <li>ほかの実践編で、NLP やプログラム解析を軸にしたパイプラインも試す。</li>
-          <li>特徴量やモデルを差し替えて、自分の関心のあるリポジトリを診断してみる。</li>
+          <li><b>データ</b>：20 Newsgroups（scikit-learn 同梱の取得関数）</li>
+          <li><b>ライブラリ</b>：scikit-learn・sentence-transformers・NumPy</li>
+          <li><b>参考</b>：sentence-transformers / Hugging Face のドキュメント</li>
         </ul>
       </div>
     </div>
 
     <div class="callout tip">
       <h4>おつかれさまでした</h4>
-      <p>ノートブックを開き、<code>url</code> を自分の気になるリポジトリに変えて、もう一度上から実行してみてください。しきい値や特徴量を少し変えるだけで、ホットスポットの顔ぶれや評価指標がどう動くかを確かめると、パイプライン全体の勘所がつかめます。</p>
+      <p>ノートブックを開き、<code>query</code> を自分の言葉に変えて、TF-IDF と埋め込みの順位がどう入れ替わるかを見てください。完全一致が要る質問と、言い換えの質問を交互に投げると、二つの検索の性格の違いがはっきりつかめます。</p>
     </div>
   </div>
 </section>
@@ -1307,153 +1281,61 @@ plt.show()</code></pre>
 </script>
 
 <script>
-/* ==================== interactive demos (vanilla JS, self-contained) ==================== */
+/* ==================== interactive demo: TF-IDF mini search (vanilla JS, self-contained) ==================== */
 (function(){
-  /* ---- shared simplified tokenizer (small dictionary + longest match) ---- */
-  var JP_DICT = ["自然","言語","処理","分野","面白い","楽しい","難しい","画像",
-    "私","本","読む","読ん","好き","のが","猫","犬","ソファ","上","眠っ","眠る",
-    "走っ","走る","株価","大きく","下がる","機械","学習","単語","意味","文章","解析",
-    "する","学ぶ","大学","研究","情報","日本語","英語",
-    "は","が","を","に","で","と","の","も","へ","や","から","まで","ね","よ","た","だ",
-    "です","ます","ている","いる"];
-  var PARTICLES = {"は":1,"が":1,"を":1,"に":1,"で":1,"と":1,"の":1,"も":1,"へ":1,"や":1,
-    "から":1,"まで":1,"ね":1,"よ":1,"た":1,"だ":1,"です":1,"ます":1,"ている":1,"いる":1,"のが":1};
-  var DICT = {}; JP_DICT.forEach(function(w){ DICT[w]=1; });
-  var MAXL = 5;
-  function isJP(ch){ return /[぀-ヿ㐀-䶿一-鿿ｦ-ﾟ]/.test(ch); }
-  function jtype(ch){
-    if(/[぀-ゟ]/.test(ch)) return 'hira';
-    if(/[゠-ヿｦ-ﾟ]/.test(ch)) return 'kata';
-    if(/[一-鿿㐀-䶿]/.test(ch)) return 'kanji';
-    return 'other';
-  }
-  function dictAt(text,i){
-    for(var L=Math.min(MAXL,text.length-i); L>=1; L--){
-      var sub=text.substr(i,L);
-      if(DICT[sub]) return sub;
-    }
-    return null;
-  }
-  /* returns array of {t: surface, k: 'jp'|'p'|'en'} */
-  function tokenize(text){
-    var out=[], i=0, n=text.length;
-    while(i<n){
-      var ch=text[i];
-      if(/\s/.test(ch)){ i++; continue; }
-      if(/[A-Za-z0-9]/.test(ch)){
-        var j=i; while(j<n && /[A-Za-z0-9']/.test(text[j])) j++;
-        out.push({t:text.slice(i,j).toLowerCase(), k:'en'}); i=j; continue;
-      }
-      if(isJP(ch)){
-        var m=dictAt(text,i);
-        if(m){ out.push({t:m, k:PARTICLES[m]?'p':'jp'}); i+=m.length; continue; }
-        var ty=jtype(ch), j2=i+1;
-        while(j2<n && jtype(text[j2])===ty && !dictAt(text,j2)) j2++;
-        out.push({t:text.slice(i,j2), k:'jp'}); i=j2; continue;
-      }
-      i++; /* drop punctuation / symbols (normalization) */
-    }
-    return out;
-  }
-  function surfaces(text){ return tokenize(text).map(function(o){ return o.t; }); }
-
-  /* ---- Demo 1: tokenizer ---- */
-  var tokInput=document.getElementById('tokInput'),
-      tokChips=document.getElementById('tokChips'),
-      tokCount=document.getElementById('tokCount');
-  function renderTok(){
-    var toks=tokenize(tokInput.value);
-    tokChips.innerHTML = toks.map(function(o){
-      return '<span class="chip '+o.k+'">'+escapeHtml(o.t)+'</span>';
-    }).join('') || '<span class="chipcount">（トークンがありません）</span>';
-    tokCount.textContent = toks.length+' トークン / tokens';
-  }
-  if(tokInput){
-    tokInput.addEventListener('input', renderTok);
-    document.querySelectorAll('#demoTok .try button').forEach(function(b){
-      b.addEventListener('click', function(){ tokInput.value=b.getAttribute('data-tok'); renderTok(); });
-    });
-    renderTok();
-  }
-
-  /* ---- Demo 2: TF-IDF ---- */
-  var tfIn=document.getElementById('tfidfInput'),
-      tfOut=document.getElementById('tfidfOut');
-  function renderTfidf(){
-    var lines=tfIn.value.split('\n').map(function(s){return s.trim();}).filter(function(s){return s.length;});
-    if(!lines.length){ tfOut.innerHTML='<div class="chipcount">文書を1行ずつ入力してください。</div>'; return; }
-    var docs=lines.map(function(l){ return surfaces(l); });
-    var N=docs.length;
-    var vocab={}; docs.forEach(function(d){ d.forEach(function(w){ vocab[w]=1; }); });
-    var terms=Object.keys(vocab);
-    var df={}; terms.forEach(function(t){ df[t]=docs.filter(function(d){ return d.indexOf(t)>=0; }).length; });
-    var rows=terms.map(function(t){
-      var idf=Math.log(N/df[t]);
-      var vals=docs.map(function(d){
-        var c=d.filter(function(w){return w===t;}).length;
-        var tf=d.length? c/d.length : 0;
-        return tf*idf;
-      });
-      return {t:t, df:df[t], idf:idf, vals:vals, max:Math.max.apply(null,vals)};
-    });
-    rows.sort(function(a,b){ return b.max-a.max; });
-    var maxAll=Math.max.apply(null, rows.map(function(r){return r.max;})) || 1;
-    var head='<table class="dtable"><tr><th>語 / term</th><th>df</th><th>idf</th>'+
-      docs.map(function(_,i){return '<th>D'+(i+1)+'</th>';}).join('')+'</tr>';
-    var body=rows.map(function(r){
-      var cells=r.vals.map(function(v){
-        if(v<=1e-9) return '<td class="zero">0.000</td>';
-        var a=(0.10+0.72*(v/maxAll)).toFixed(3);
-        return '<td style="background:rgba(14,111,92,'+a+');color:'+(v/maxAll>0.55?'#fff':'var(--ink)')+'">'+v.toFixed(3)+'</td>';
-      }).join('');
-      return '<tr><td>'+escapeHtml(r.t)+'</td><td>'+r.df+'</td><td>'+r.idf.toFixed(3)+'</td>'+cells+'</tr>';
-    }).join('');
-    tfOut.innerHTML=head+body+'</table>'+
-      '<div class="chipcount">N = '+N+' 文書 ・ 語彙 '+terms.length+' 種 ・ tf = 語の頻度/文書長, idf = ln(N/df), tf-idf = tf &times; idf</div>';
-  }
-  if(tfIn){
-    tfIn.addEventListener('input', renderTfidf);
-    document.querySelectorAll('#demoTfidf .try button').forEach(function(b){
-      b.addEventListener('click', function(){ tfIn.value=b.getAttribute('data-tf'); renderTfidf(); });
-    });
-    renderTfidf();
-  }
-
-  /* ---- Demo 3: cosine similarity ---- */
-  var cosA=document.getElementById('cosA'),
-      cosB=document.getElementById('cosB'),
-      cosOut=document.getElementById('cosOut');
-  function renderCos(){
-    var a=surfaces(cosA.value), b=surfaces(cosB.value);
-    var vocab={}; a.concat(b).forEach(function(w){ vocab[w]=1; });
-    var terms=Object.keys(vocab);
-    function vec(d){ return terms.map(function(t){ return d.filter(function(w){return w===t;}).length; }); }
-    var va=vec(a), vb=vec(b);
-    var dot=0, na=0, nb=0;
-    for(var i=0;i<terms.length;i++){ dot+=va[i]*vb[i]; na+=va[i]*va[i]; nb+=vb[i]*vb[i]; }
-    var denom=Math.sqrt(na)*Math.sqrt(nb);
-    var cos=denom? dot/denom : 0;
-    var pct=(cos*100).toFixed(0);
-    var shared=terms.filter(function(t,i){ return va[i]>0 && vb[i]>0; });
-    if(!terms.length){ cosOut.innerHTML='<div class="chipcount">2つの文を入力してください。</div>'; return; }
-    cosOut.innerHTML=
-      '<div class="cos-score"><span class="val">'+cos.toFixed(3)+'</span><span class="lab">コサイン類似度 / cosine similarity（0 から 1）</span></div>'+
-      '<div class="cos-bar"><span style="width:'+Math.max(0,Math.min(100,pct))+'%"></span></div>'+
-      '<div class="cos-detail">A の語: '+chipLine(a)+'<br>B の語: '+chipLine(b)+'<br>'+
-      '共通の語: <b>'+(shared.length? shared.map(escapeHtml).join(', ') : 'なし')+'</b>　|　'+
-      '内積 = <b>'+dot+'</b>, &#8214;A&#8214; = <b>'+Math.sqrt(na).toFixed(3)+'</b>, &#8214;B&#8214; = <b>'+Math.sqrt(nb).toFixed(3)+'</b></div>';
-  }
-  function chipLine(arr){ return arr.length? arr.map(escapeHtml).join(' / ') : '（なし）'; }
-  if(cosA){
-    cosA.addEventListener('input', renderCos);
-    cosB.addEventListener('input', renderCos);
-    document.querySelectorAll('#demoCos .try button').forEach(function(b){
-      b.addEventListener('click', function(){ cosA.value=b.getAttribute('data-a'); cosB.value=b.getAttribute('data-b'); renderCos(); });
-    });
-    renderCos();
-  }
-
+  var DOCS = [
+    "The rocket lifted off and reached orbit.",
+    "Astronauts prepared the spacecraft for launch.",
+    "A sports car with a powerful engine was unveiled.",
+    "The mechanic tuned the fast racing vehicle.",
+    "The team won the baseball championship last night.",
+    "Fans cheered as the pitcher struck out the batter."
+  ];
+  var STOP = {"the":1,"a":1,"an":1,"and":1,"was":1,"for":1,"of":1,"to":1,"as":1,"with":1,"out":1};
+  function toks(s){ return (String(s).toLowerCase().match(/[a-z]+/g)||[]).filter(function(w){ return !STOP[w]; }); }
   function escapeHtml(s){ return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+
+  var N = DOCS.length;
+  var docTok = DOCS.map(toks);
+  var df = {};
+  docTok.forEach(function(d){ var seen={}; d.forEach(function(w){ if(!seen[w]){ seen[w]=1; df[w]=(df[w]||0)+1; } }); });
+  function idf(w){ return Math.log((1+N)/(1+(df[w]||0)))+1; }   /* sklearn 既定の平滑化 idf */
+  function tfidfVec(tokens){
+    var tf={}; tokens.forEach(function(w){ tf[w]=(tf[w]||0)+1; });
+    var v={}; Object.keys(tf).forEach(function(w){ v[w]=tf[w]*idf(w); });
+    return v;
+  }
+  function cosine(a,b){
+    var dot=0,na=0,nb=0;
+    Object.keys(a).forEach(function(w){ na+=a[w]*a[w]; if(b[w]!==undefined) dot+=a[w]*b[w]; });
+    Object.keys(b).forEach(function(w){ nb+=b[w]*b[w]; });
+    return (na&&nb)? dot/(Math.sqrt(na)*Math.sqrt(nb)) : 0;
+  }
+  var docVecs = docTok.map(tfidfVec);
+
+  var input=document.getElementById('searchInput'), out=document.getElementById('searchOut');
+  function render(){
+    if(!input||!out) return;
+    var q=toks(input.value);
+    if(!q.length){ out.innerHTML='<div class="chipcount">クエリを入力してください。</div>'; return; }
+    var qv=tfidfVec(q);
+    var scored=DOCS.map(function(d,i){ return {i:i, s:cosine(qv, docVecs[i])}; });
+    scored.sort(function(x,y){ return y.s-x.s; });
+    out.innerHTML = scored.map(function(o){
+      var pct=Math.max(0,Math.min(100, o.s*100));
+      return '<div style="margin:10px 0">'+
+        '<div class="cos-detail" style="margin:0 0 5px"><b>'+o.s.toFixed(3)+'</b>&#12288;'+escapeHtml(DOCS[o.i])+'</div>'+
+        '<div class="cos-bar"><span style="width:'+pct.toFixed(0)+'%"></span></div></div>';
+    }).join('')+
+      '<div class="chipcount" style="margin-top:12px">score = コサイン類似度（tf-idf ベクトル, 0 から 1）・語の重なりがないと 0 になります</div>';
+  }
+  if(input){
+    input.addEventListener('input', render);
+    document.querySelectorAll('#demoSearch .try button').forEach(function(b){
+      b.addEventListener('click', function(){ input.value=b.getAttribute('data-q'); render(); });
+    });
+    render();
+  }
 })();
 </script>
 

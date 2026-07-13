@@ -3,15 +3,15 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>OSSプロジェクトの健康診断 - 実践編（総合演習）/ OSS Project Health Check</title>
-<meta name="description" content="A hands-on capstone exercise that mines a public OSS repository with PyDriller, engineers per-file features with pandas, measures co-change centrality with NetworkX, and predicts change hotspots with scikit-learn. With a runnable Colab notebook. Part of Yuta Kimura's learning course.">
-<link rel="canonical" href="https://ykimu.github.io/learn/practice-oss-health.html">
+<title>開発活動の時系列を読み解く - 実践編（総合演習）/ Reading Development Activity as a Time Series</title>
+<meta name="description" content="A hands-on capstone exercise that mines a public repository's commit history with PyDriller, builds a weekly time series with pandas, decomposes trend and seasonality with statsmodels seasonal_decompose, and forecasts future activity with ARIMA evaluated on a held-out tail. With a runnable Colab notebook. Part of Yuta Kimura's learning course.">
+<link rel="canonical" href="https://ykimu.github.io/learn/practice-dev-timeseries.html">
 <link rel="icon" href="../favicon.svg" type="image/svg+xml">
 <meta property="og:site_name" content="Yuta Kimura / 木村祐太">
 <meta property="og:type" content="article">
-<meta property="og:title" content="OSSプロジェクトの健康診断 - 実践編（総合演習）/ OSS Project Health Check">
-<meta property="og:description" content="A capstone exercise: mine a public OSS repository, engineer per-file features, measure co-change centrality, and predict change hotspots, with a runnable Colab notebook.">
-<meta property="og:url" content="https://ykimu.github.io/learn/practice-oss-health.html">
+<meta property="og:title" content="開発活動の時系列を読み解く - 実践編（総合演習）/ Reading Development Activity as a Time Series">
+<meta property="og:description" content="A capstone exercise: mine a public repository's commit history, build a weekly time series, decompose trend and seasonality, and forecast future activity with ARIMA, with a runnable Colab notebook.">
+<meta property="og:url" content="https://ykimu.github.io/learn/practice-dev-timeseries.html">
 <meta property="og:image" content="https://ykimu.github.io/assets/og.png">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="color-scheme" content="light">
@@ -537,12 +537,12 @@
             </div>
             <div class="megacol">
               <div class="navlabel"><span lang="ja">実践編</span><span lang="en">Practice</span></div>
-              <a class="here" aria-current="page" href="../learn/practice-oss-health.html"><span lang="ja">OSSプロジェクトの健康診断</span><span lang="en">OSS health check</span></a>
+              <a href="../learn/practice-oss-health.html"><span lang="ja">OSSプロジェクトの健康診断</span><span lang="en">OSS health check</span></a>
               <a href="../learn/practice-text-classifier.html"><span lang="ja">テキスト分類器を作る</span><span lang="en">Text classifier</span></a>
               <a href="../learn/practice-code-metrics.html"><span lang="ja">ソースコードを測る</span><span lang="en">Code metrics</span></a>
               <a href="../learn/practice-semantic-search.html"><span lang="ja">意味で検索</span><span lang="en">Semantic search</span></a>
               <a href="../learn/practice-cnn-endtoend.html"><span lang="ja">深層学習の一気通貫</span><span lang="en">CNN end-to-end</span></a>
-              <a href="../learn/practice-dev-timeseries.html"><span lang="ja">開発活動の時系列</span><span lang="en">Dev activity time series</span></a>
+              <a class="here" aria-current="page" href="../learn/practice-dev-timeseries.html"><span lang="ja">開発活動の時系列</span><span lang="en">Dev activity time series</span></a>
               <a href="../learn/practice-ab-test.html"><span lang="ja">A/Bテストで効果検証</span><span lang="en">A/B test analysis</span></a>
             </div>
           </div>
@@ -627,12 +627,12 @@
       <a href="../learn/causal-inference.html"><span lang="ja">因果推論</span><span lang="en">Causal inference</span></a>
       <a href="../learn/time-series.html"><span lang="ja">時系列分析</span><span lang="en">Time series analysis</span></a>
       <div class="mobsublabel"><span lang="ja">実践編</span><span lang="en">Practice</span></div>
-      <a class="here" aria-current="page" href="../learn/practice-oss-health.html"><span lang="ja">OSSプロジェクトの健康診断</span><span lang="en">OSS health check</span></a>
+      <a href="../learn/practice-oss-health.html"><span lang="ja">OSSプロジェクトの健康診断</span><span lang="en">OSS health check</span></a>
       <a href="../learn/practice-text-classifier.html"><span lang="ja">テキスト分類器を作る</span><span lang="en">Text classifier</span></a>
       <a href="../learn/practice-code-metrics.html"><span lang="ja">ソースコードを測る</span><span lang="en">Code metrics</span></a>
       <a href="../learn/practice-semantic-search.html"><span lang="ja">意味で検索</span><span lang="en">Semantic search</span></a>
       <a href="../learn/practice-cnn-endtoend.html"><span lang="ja">深層学習の一気通貫</span><span lang="en">CNN end-to-end</span></a>
-      <a href="../learn/practice-dev-timeseries.html"><span lang="ja">開発活動の時系列</span><span lang="en">Dev activity time series</span></a>
+      <a class="here" aria-current="page" href="../learn/practice-dev-timeseries.html"><span lang="ja">開発活動の時系列</span><span lang="en">Dev activity time series</span></a>
       <a href="../learn/practice-ab-test.html"><span lang="ja">A/Bテストで効果検証</span><span lang="en">A/B test analysis</span></a>
     </div>
     <div class="mobgroup">
@@ -662,7 +662,7 @@
     <span class="csep" aria-hidden="true">&rsaquo;</span>
     <a href="index.html"><span lang="ja">学習コース</span><span lang="en">Learn</span></a>
     <span class="csep" aria-hidden="true">&rsaquo;</span>
-    <span class="cur" aria-current="page"><span lang="ja">実践編：OSSプロジェクトの健康診断</span><span lang="en">Practice: OSS project health check</span></span>
+    <span class="cur" aria-current="page"><span lang="ja">実践編：開発活動の時系列を読み解く</span><span lang="en">Practice: Reading development activity as a time series</span></span>
   </nav>
 </div>
 
@@ -670,8 +670,8 @@
 <div class="hero">
   <div class="wrap">
     <p class="kick"><span lang="ja">実践編</span><span lang="en">Practice</span></p>
-    <h1>OSSプロジェクトの健康診断</h1>
-    <p class="lead">公開されている OSS リポジトリの開発履歴を掘り起こし、前処理・ネットワーク分析・機械学習を1本のパイプラインにつないで、変更が集中しやすいファイル（ホットスポット）を予測します。第1・第2段階で単体で学んだ技術を、現実的な課題を解くために組み合わせる総合演習です。手を動かせるノートブックつきで進めます。</p>
+    <h1>開発活動の時系列を読み解く</h1>
+    <p class="lead">公開リポジトリのコミット履歴を時系列データに変え、開発活動の推移を可視化します。トレンドと季節性を成分に分解し、先の活動量を簡単に予測するところまで、リポジトリマイニング・時系列分析・データ可視化を1本のパイプラインにつなぐ総合演習です。手を動かせるノートブックつきで進めます。</p>
     <p class="ja-note"><span lang="ja">この教材は日本語のみで提供しています</span><span lang="en">This learning material is available in Japanese only.</span></p>
     <div class="hero-cta">
       <a class="btn ink" href="#brief" style="padding:12px 22px">
@@ -693,10 +693,10 @@
     <a class="tocpill" href="#stack"><span lang="ja">使う技術</span><span lang="en">Techniques</span></a>
     <a class="tocpill" href="#run"><span lang="ja">実行</span><span lang="en">Run</span></a>
     <a class="tocpill" href="#step1">Step 1 <span lang="ja">データ入手</span><span lang="en">Collect</span></a>
-    <a class="tocpill" href="#step2">Step 2 <span lang="ja">前処理</span><span lang="en">Preprocess</span></a>
-    <a class="tocpill" href="#step3">Step 3 <span lang="ja">ネットワーク</span><span lang="en">Network</span></a>
-    <a class="tocpill" href="#step4">Step 4 <span lang="ja">機械学習</span><span lang="en">ML</span></a>
-    <a class="tocpill" href="#step5">Step 5 <span lang="ja">可視化</span><span lang="en">Visualize</span></a>
+    <a class="tocpill" href="#step2">Step 2 <span lang="ja">時系列化</span><span lang="en">Series</span></a>
+    <a class="tocpill" href="#step3">Step 3 <span lang="ja">可視化</span><span lang="en">Visualize</span></a>
+    <a class="tocpill" href="#step4">Step 4 <span lang="ja">成分分解</span><span lang="en">Decompose</span></a>
+    <a class="tocpill" href="#step5">Step 5 <span lang="ja">予測</span><span lang="en">Forecast</span></a>
     <a class="tocpill" href="#step6">Step 6 <span lang="ja">考察</span><span lang="en">Discussion</span></a>
     <a class="tocpill" href="#extend"><span lang="ja">発展課題</span><span lang="en">Try more</span></a>
     <a class="tocpill" href="#closing"><span lang="ja">まとめ</span><span lang="en">Wrap-up</span></a>
@@ -707,58 +707,59 @@
 <section id="brief" style="padding-top:26px">
   <div class="wrap reveal">
     <p class="eyebrow"><span lang="ja">課題設定</span><span lang="en">The task</span></p>
-    <h2 class="big">開発履歴から、壊れやすい場所を見つける</h2>
+    <h2 class="big">コミット履歴を、時間の流れとして読む</h2>
     <div class="prose" style="margin-top:22px">
-      <p>あなたはある OSS プロジェクトの保守を引き継いだところだと想像してください。ソースは大量にあり、どこから手を付ければよいか分かりません。経験や勘に頼る前に、まず<b>データで</b>プロジェクトの状態を読み解きたい。とりわけ知りたいのは、<b>変更が集中しやすいファイル（ホットスポット）</b>です。何度も直され、多くの人が触るファイルは、不具合が生まれやすく、レビューやテストを厚くする価値が高いからです。</p>
-      <p>この演習では、公開リポジトリの開発履歴を素材に、次の一続きの流れを実際に組み立てます。</p>
+      <p>ソフトウェアの開発は、一定のペースでは進みません。リリース前に活動が高まり、長期休暇や年末年始には静かになる。担当者が代わると波形が変わることもあります。こうした<b>開発活動の推移</b>は、リポジトリのコミット履歴という形で残っています。この演習では、公開リポジトリの履歴を時間の流れにそって並べ、そこにある波を読み解きます。</p>
+      <p>やることは、次の一続きの流れです。</p>
       <ul>
-        <li><b>データ入手</b>：リポジトリマイニングで、コミット履歴（誰がいつどのファイルを変えたか）を取り出す。</li>
-        <li><b>前処理</b>：コミットとファイルの表に整え、変更回数・コードチャーン・関与作者数といった特徴量にする。</li>
-        <li><b>ネットワーク分析</b>：同じコミットで一緒に変わったファイルを辺で結ぶ「共変更ネットワーク」を作り、結び目になっているファイルを中心性で測る。</li>
-        <li><b>機械学習</b>：これらの特徴量から、ホットスポットかどうかを分類する。</li>
+        <li><b>データ入手</b>：リポジトリマイニングで、各コミットの日時を集める。</li>
+        <li><b>時系列化</b>：コミットを週ごとに数え、一定間隔の系列にする。コミットのない週は0で埋める。</li>
+        <li><b>可視化</b>：折れ線でコミット数の推移を描き、移動平均でなだらかにして大きな流れを見る。</li>
+        <li><b>成分分解</b>：系列をトレンド・季節・残差の3つに分けて、それぞれの動きを取り出す。</li>
+        <li><b>予測</b>：末尾の数週を検証用に取り分け、ARIMA で先の活動量を見積もって当たり具合を測る。</li>
       </ul>
-      <p>最終的に得られるのは、ファイルごとの特徴量表と、ホットスポットを当てる分類器、そして「何が言えて、何に注意すべきか」という読み解きです。ひとつの技術だけでは見えないものが、つなぐと見えてきます。</p>
+      <p>最後に得られるのは、開発活動の週次系列と、その分解結果、そして先を見積もる小さな予測モデルです。1つの数字の羅列が、波として意味を持ちはじめます。</p>
     </div>
 
     <div class="diagram-wrap reveal">
       <p class="cap">この演習のパイプライン</p>
-      <svg viewBox="0 0 940 150" role="img" aria-label="パイプライン: リポジトリから前処理、ネットワーク分析、機械学習を経てホットスポット予測へ">
+      <svg viewBox="0 0 940 150" role="img" aria-label="パイプライン: コミット履歴から時系列化、可視化、成分分解を経て予測へ">
         <g>
-          <rect class="dg-box" x="12" y="46" width="158" height="58" rx="12"/>
-          <text class="dg-lbl" x="91" y="72">リポジトリ</text>
-          <text class="dg-en" x="91" y="90">Commit history</text>
+          <rect class="dg-box" x="12" y="46" width="150" height="58" rx="12"/>
+          <text class="dg-lbl" x="87" y="72">コミット履歴</text>
+          <text class="dg-en" x="87" y="90">Commit log</text>
         </g>
         <g>
-          <rect class="dg-box acc" x="212" y="46" width="150" height="58" rx="12"/>
-          <text class="dg-lbl" x="287" y="72">前処理</text>
-          <text class="dg-en" x="287" y="90">Preprocess</text>
+          <rect class="dg-box acc" x="204" y="46" width="150" height="58" rx="12"/>
+          <text class="dg-lbl" x="279" y="72">時系列化</text>
+          <text class="dg-en" x="279" y="90">Resample</text>
         </g>
         <g>
-          <rect class="dg-box acc" x="404" y="46" width="150" height="58" rx="12"/>
-          <text class="dg-lbl" x="479" y="72">ネットワーク</text>
-          <text class="dg-en" x="479" y="90">Network</text>
+          <rect class="dg-box acc" x="396" y="46" width="150" height="58" rx="12"/>
+          <text class="dg-lbl" x="471" y="72">可視化</text>
+          <text class="dg-en" x="471" y="90">Visualize</text>
         </g>
         <g>
-          <rect class="dg-box acc" x="596" y="46" width="150" height="58" rx="12"/>
-          <text class="dg-lbl" x="671" y="72">機械学習</text>
-          <text class="dg-en" x="671" y="90">Classifier</text>
+          <rect class="dg-box acc" x="588" y="46" width="150" height="58" rx="12"/>
+          <text class="dg-lbl" x="663" y="72">成分分解</text>
+          <text class="dg-en" x="663" y="90">Decompose</text>
         </g>
         <g>
-          <rect class="dg-box" x="788" y="46" width="140" height="58" rx="12"/>
-          <text class="dg-lbl" x="858" y="72">ホットスポット</text>
-          <text class="dg-en" x="858" y="90">Hotspots</text>
+          <rect class="dg-box" x="780" y="46" width="148" height="58" rx="12"/>
+          <text class="dg-lbl" x="854" y="72">予測</text>
+          <text class="dg-en" x="854" y="90">Forecast</text>
         </g>
         <g class="dg-line">
-          <line x1="170" y1="75" x2="204" y2="75"/><line x1="362" y1="75" x2="396" y2="75"/>
-          <line x1="554" y1="75" x2="588" y2="75"/><line x1="746" y1="75" x2="780" y2="75"/>
+          <line x1="162" y1="75" x2="196" y2="75"/><line x1="354" y1="75" x2="388" y2="75"/>
+          <line x1="546" y1="75" x2="580" y2="75"/><line x1="738" y1="75" x2="772" y2="75"/>
         </g>
         <g class="dg-arrow">
-          <polygon points="204,75 196,71 196,79"/><polygon points="396,75 388,71 388,79"/>
-          <polygon points="588,75 580,71 580,79"/><polygon points="780,75 772,71 772,79"/>
+          <polygon points="196,75 188,71 188,79"/><polygon points="388,75 380,71 380,79"/>
+          <polygon points="580,75 572,71 572,79"/><polygon points="772,75 764,71 764,79"/>
         </g>
-        <text class="dg-note" x="287" y="130">変更回数・チャーン</text>
-        <text class="dg-note" x="479" y="130">共変更・中心性</text>
-        <text class="dg-note" x="671" y="130">分類・評価</text>
+        <text class="dg-note" x="279" y="130">週次に集計・0埋め</text>
+        <text class="dg-note" x="471" y="130">折れ線・移動平均</text>
+        <text class="dg-note" x="663" y="130">トレンド・季節・残差</text>
       </svg>
     </div>
   </div>
@@ -768,33 +769,27 @@
 <section id="stack">
   <div class="wrap reveal">
     <p class="eyebrow"><span lang="ja">使う技術</span><span lang="en">Techniques used</span></p>
-    <h2 class="big">組み合わせる4つのモジュール</h2>
+    <h2 class="big">組み合わせる3つのモジュール</h2>
     <div class="prose" style="margin-top:22px">
-      <p>この演習は、第1・第2段階で単体で学んだ次の4モジュールを1本につなぎます。まだ学んでいない技術があれば、先にそのモジュールで基礎を押さえてから戻ってくると、各ステップの意味がはっきりします。</p>
+      <p>この演習は、これまで単体で学んだ次の3モジュールを1本につなぎます。データを整える下ごしらえには pandas を使いますが、その基礎は前処理のモジュールでも扱っています。まだ学んでいない技術があれば、先にそのモジュールで基礎を押さえてから戻ってくると、各ステップの意味がはっきりします。</p>
     </div>
     <div class="res-grid reveal">
       <div class="res">
         <h5><a href="repository-mining.html">リポジトリマイニング入門</a></h5>
         <ul>
-          <li>PyDriller でコミット履歴を走査し、誰がいつどのファイルを変えたかを取り出す。<b>Step 1（データ入手）</b>の土台。</li>
+          <li>PyDriller で公開リポジトリを走査し、各コミットの日時を取り出す。<b>Step 1（データ入手）</b>の土台。</li>
         </ul>
       </div>
       <div class="res">
-        <h5><a href="data-preprocessing.html">開発データの前処理</a></h5>
+        <h5><a href="time-series.html">時系列分析</a></h5>
         <ul>
-          <li>生の履歴を pandas でファイル単位の表に整え、欠損を除き、変更回数やチャーンを特徴量化する。<b>Step 2</b>で使う。</li>
+          <li>コミットを週次系列に集計し、トレンド・季節性に分解して、ARIMA で先を予測する。時間を守った評価も学ぶ。<b>Step 2・4・5</b>で使う。</li>
         </ul>
       </div>
       <div class="res">
-        <h5><a href="network-analysis.html">ネットワーク分析</a></h5>
+        <h5><a href="data-visualization.html">データ可視化</a></h5>
         <ul>
-          <li>共変更ネットワークを NetworkX で構築し、次数中心性・媒介中心性で結び目になるファイルを測る。<b>Step 3</b>で使う。</li>
-        </ul>
-      </div>
-      <div class="res">
-        <h5><a href="machine-learning.html">機械学習</a></h5>
-        <ul>
-          <li>特徴量からホットスポットを分類し、適合率・再現率・F値で評価する。<b>Step 4</b>で使う。</li>
+          <li>折れ線と移動平均で推移を描き、分解結果を図にして波を読み取る。<b>Step 3</b>で使う。</li>
         </ul>
       </div>
     </div>
@@ -808,17 +803,17 @@
     <h2 class="big">このページのコードを、そのまま動かす</h2>
     <div class="demo reveal" style="margin-top:22px">
       <span class="dtag"><span lang="ja">Colab / Jupyter</span><span lang="en">Colab / Jupyter</span></span>
-      <h4>OSSプロジェクトの健康診断ノートブック</h4>
+      <h4>開発活動の時系列ノートブック</h4>
       <p class="dnote">このページで読むコードと同じ内容を、上から順に実行できるノートブックにまとめてあります。Colab で開けば、インストール込みで環境構築なしにそのまま動かせます。手元の Jupyter で動かしたい場合は .ipynb をダウンロードしてください。</p>
       <div class="hero-cta" style="margin-top:6px">
-        <a class="btn ink" href="https://colab.research.google.com/github/ykimu/ykimu.github.io/blob/main/learn/notebooks/practice-oss-health.ipynb" target="_blank" rel="noopener" style="padding:12px 22px">
+        <a class="btn ink" href="https://colab.research.google.com/github/ykimu/ykimu.github.io/blob/main/learn/notebooks/practice-dev-timeseries.ipynb" target="_blank" rel="noopener" style="padding:12px 22px">
           <span lang="ja">Colabで開く</span><span lang="en">Open in Colab</span>
         </a>
-        <a class="btn" href="notebooks/practice-oss-health.ipynb" download>
+        <a class="btn" href="notebooks/practice-dev-timeseries.ipynb" download>
           <span lang="ja">ノートブックをダウンロード（.ipynb）</span><span lang="en">Download the notebook (.ipynb)</span>
         </a>
       </div>
-      <p class="dnote" style="margin:16px 0 0">最初のセルで <code>!pip install pydriller pandas networkx scikit-learn matplotlib</code> を実行します。リポジトリの履歴取得はネットワーク接続が必要で、リポジトリの規模により数分かかることがあります。</p>
+      <p class="dnote" style="margin:16px 0 0">最初のセルで <code>!pip install pydriller statsmodels pandas matplotlib</code> を実行します。リポジトリの履歴取得はネットワーク接続が必要で、リポジトリの規模により数分かかることがあります。</p>
     </div>
   </div>
 </section>
@@ -828,53 +823,38 @@
   <div class="wrap reveal">
     <div class="stephead">
       <span class="num">1</span>
-      <div class="tt"><h2>データ入手：コミット履歴を掘り起こす</h2><span class="st-en">Collect commit history</span></div>
+      <div class="tt"><h2>データ入手：コミット日時を集める</h2><span class="st-en">Collect commit timestamps</span></div>
     </div>
     <div class="steprule"></div>
 
     <p class="layer first"><span lang="ja">何を・なぜ</span><span lang="en">What &amp; why</span></p>
     <div class="prose">
-      <p>まず素材となる開発履歴を集めます。<b>PyDriller</b> は Git リポジトリを Python から走査するライブラリで、URL を渡すだけで公開リポジトリを一時的に取得し、コミットを1件ずつたどれます。各コミットからは、ハッシュ・作者・日時に加えて、そのコミットで変更された各ファイルの追加行数・削除行数が得られます。これらを1行=「あるコミットでのあるファイルの変更」として集め、表にします。</p>
+      <p>時系列分析の材料は「いつ何回起きたか」です。ここでは各コミットの<b>日時</b>だけを集めます。<b>PyDriller</b> は Git リポジトリを Python から走査するライブラリで、URL を渡すだけで公開リポジトリを一時的に取得し、コミットを1件ずつたどれます。各コミットの <code>author_date</code>（作者が変更を確定した日時）を取り出し、コミット1件を「1」と数えた系列を作ります。</p>
       <p>題材には、小さめで実在する公開リポジトリを使います。ここでは PyDriller 自身のリポジトリ <code>ishepard/pydriller</code> を例にします。別のリポジトリで試すのも簡単です（発展課題を参照）。</p>
     </div>
     <div class="code-wrap attached">
-      <div class="code-head"><span class="lbl">Python</span><span class="lang-tag">collect_commits.py</span><button class="copy" type="button" onclick="copyCode(this)">copy</button></div>
+      <div class="code-head"><span class="lbl">Python</span><span class="lang-tag">collect_dates.py</span><button class="copy" type="button" onclick="copyCode(this)">copy</button></div>
       <pre><code><span class="kw">from</span> pydriller <span class="kw">import</span> Repository
 <span class="kw">import</span> pandas <span class="kw">as</span> pd
 
 url = <span class="st">"https://github.com/ishepard/pydriller"</span>
 
-<span class="cm"># コミットを1件ずつたどり、変更ファイルごとに1行を作る</span>
-rows = []
+<span class="cm"># コミットを1件ずつたどり、作者の日時だけを集める</span>
+dates = []
 <span class="kw">for</span> commit <span class="kw">in</span> Repository(url).traverse_commits():
-    <span class="kw">for</span> mod <span class="kw">in</span> commit.modified_files:
-        path = mod.new_path <span class="kw">or</span> mod.old_path
-        <span class="kw">if</span> path <span class="kw">is</span> <span class="kw">None</span>:
-            <span class="kw">continue</span>
-        rows.append({
-            <span class="st">"commit"</span>: commit.hash[:<span class="nu">8</span>],
-            <span class="st">"author"</span>: commit.author.email,
-            <span class="st">"date"</span>: commit.author_date,
-            <span class="st">"file"</span>: path,
-            <span class="st">"added"</span>: mod.added_lines,
-            <span class="st">"deleted"</span>: mod.deleted_lines,
-        })
+    dates.append(commit.author_date)
 
-df = pd.DataFrame(rows)
-<span class="kw">print</span>(df.shape)
-<span class="kw">print</span>(df.head())</code></pre>
+<span class="cm"># 日時を索引にした系列を作る（各コミットを1と数える）</span>
+s = pd.Series(<span class="nu">1</span>, index=pd.to_datetime(dates, utc=<span class="kw">True</span>)).sort_index()
+<span class="kw">print</span>(len(s), <span class="st">"commits"</span>)
+<span class="kw">print</span>(s.index.min(), <span class="st">"->"</span>, s.index.max())</code></pre>
     </div>
-    <div class="code-out"><span class="olbl">出力例 / Output</span><pre><code>(2118, 6)
-     commit                      author                       date                        file  added  deleted
-0  a1b2c3d4  davide.spadini@example.org  2018-02-15 14:22:31+01:00     pydriller/repository.py     58        0
-1  a1b2c3d4  davide.spadini@example.org  2018-02-15 14:22:31+01:00            pydriller/git.py     34        2
-2  1f4e9c07  davide.spadini@example.org  2018-02-16 09:05:12+01:00    tests/test_repository.py     41        1
-3  1f4e9c07  davide.spadini@example.org  2018-02-16 09:05:12+01:00     pydriller/repository.py      7        3
-4  9d2b7a55       contributor@example.org  2018-03-02 18:40:55+01:00  pydriller/domain/commit.py     22        4</code></pre></div>
+    <div class="code-out"><span class="olbl">出力例 / Output</span><pre><code>1032 commits
+2018-02-15 13:22:31+00:00 -> 2024-05-27 09:41:08+00:00</code></pre></div>
 
     <div class="callout tip">
       <h4>この Step のまとめ</h4>
-      <p><code>Repository(url).traverse_commits()</code> で履歴を走査し、変更ファイル単位の生データを表にしました。ここでは「1行 = あるコミットでの1ファイルの変更」という長い表になっています。次はこれをファイル単位に集計します。</p>
+      <p><code>traverse_commits()</code> で履歴を走査し、各コミットの日時を集めて、日時を索引にした系列にしました。値はすべて1です。次はこれを「週ごとの回数」に数えなおして、一定間隔の時系列にします。</p>
     </div>
   </div>
 </section>
@@ -884,48 +864,37 @@ df = pd.DataFrame(rows)
   <div class="wrap reveal">
     <div class="stephead">
       <span class="num">2</span>
-      <div class="tt"><h2>前処理：ファイル単位の特徴量にする</h2><span class="st-en">Preprocess into per-file features</span></div>
+      <div class="tt"><h2>時系列化：一定間隔の系列にする</h2><span class="st-en">Build an evenly spaced series</span></div>
     </div>
     <div class="steprule"></div>
 
     <p class="layer first"><span lang="ja">何を・なぜ</span><span lang="en">What &amp; why</span></p>
     <div class="prose">
-      <p>生の履歴のままでは分析しづらいので、pandas でファイル単位に集計します。ここでは学習しやすいように Python ファイル（<code>.py</code>）だけに絞り、パスが取れない変更（削除など）を除きます。そのうえで、各ファイルについて次の特徴量を作ります。</p>
-      <ul>
-        <li><b>changes</b>：そのファイルが変更されたコミット数（変更回数）。ホットスポットの目安になります。</li>
-        <li><b>churn</b>：コードチャーン。追加行と削除行の合計で、変更の量を表します。</li>
-        <li><b>authors</b>：そのファイルに関与した作者の数。多いほど所有が分散しています。</li>
-      </ul>
+      <p>コミットは不規則な時刻に発生します。時系列分析は<b>一定間隔</b>にそろった系列を前提にするので、まず「週ごとのコミット数」に集計します。pandas の <code>resample</code> は、日時索引を指定した間隔でまとめる仕組みです。<code>"W-MON"</code> は月曜を区切りとした週次を表します。合計をとれば、その週のコミット数になります。</p>
+      <p>集計後は<b>欠測のない</b>ことが大切です。コミットが1件もなかった週は、値がないのではなく「0回」であるべきだからです。<code>resample</code> は空の週にも0を入れますが、意図を明示するために <code>asfreq</code> で0埋めも重ねておきます。月次にしたいときは <code>s.resample("MS").sum()</code> のように区切りを変えるだけです。</p>
     </div>
     <div class="code-wrap attached">
-      <div class="code-head"><span class="lbl">Python</span><span class="lang-tag">build_features.py</span><button class="copy" type="button" onclick="copyCode(this)">copy</button></div>
-      <pre><code><span class="cm"># パスが取れない変更を除き、Pythonファイルに絞る</span>
-df = df[df[<span class="st">"file"</span>].notna()]
-df = df[df[<span class="st">"file"</span>].str.endswith(<span class="st">".py"</span>)]
+      <div class="code-head"><span class="lbl">Python</span><span class="lang-tag">build_series.py</span><button class="copy" type="button" onclick="copyCode(this)">copy</button></div>
+      <pre><code><span class="cm"># 週次のコミット数に集計する（週は月曜始まり）</span>
+weekly = s.resample(<span class="st">"W-MON"</span>).sum()
 
-<span class="cm"># コードチャーン = 追加行 + 削除行</span>
-df[<span class="st">"churn"</span>] = df[<span class="st">"added"</span>] + df[<span class="st">"deleted"</span>]
+<span class="cm"># コミットのない週は0にする（欠測週を明示的に0埋め）</span>
+weekly = weekly.asfreq(<span class="st">"W-MON"</span>, fill_value=<span class="nu">0</span>)
 
-<span class="cm"># ファイル単位に集計して特徴量表にする</span>
-feat = df.groupby(<span class="st">"file"</span>).agg(
-    changes=(<span class="st">"commit"</span>, <span class="st">"nunique"</span>),
-    churn=(<span class="st">"churn"</span>, <span class="st">"sum"</span>),
-    authors=(<span class="st">"author"</span>, <span class="st">"nunique"</span>),
-).reset_index()
-
-feat = feat.sort_values(<span class="st">"changes"</span>, ascending=<span class="kw">False</span>)
-<span class="kw">print</span>(feat.head())</code></pre>
+<span class="kw">print</span>(weekly.tail())
+<span class="kw">print</span>(<span class="st">"週数:"</span>, len(weekly))</code></pre>
     </div>
-    <div class="code-out"><span class="olbl">出力例 / Output</span><pre><code>                          file  changes  churn  authors
-0      pydriller/repository.py      146   4820       18
-1             pydriller/git.py       98   3110       15
-2   pydriller/domain/commit.py       74   2185       12
-3     tests/test_repository.py       61   1740        9
-4      pydriller/utils/conf.py       37    690        6</code></pre></div>
+    <div class="code-out"><span class="olbl">出力例 / Output</span><pre><code>2024-04-29    0
+2024-05-06    3
+2024-05-13    7
+2024-05-20    2
+2024-05-27    1
+Freq: W-MON, dtype: int64
+週数: 328</code></pre></div>
 
     <div class="callout tip">
       <h4>この Step のまとめ</h4>
-      <p>長い表を <code>groupby</code> でファイル単位に畳み込み、changes・churn・authors という3つの特徴量にしました。上位のファイルは変更回数もチャーンも大きく、直感とも合います。次に、ファイル同士の「つながり」を特徴量に加えます。</p>
+      <p><code>resample("W-MON").sum()</code> で週次のコミット数にまとめ、<code>asfreq</code> で欠測週を0にしました。これで間隔のそろった、欠測のない時系列ができました。次はこの系列を目で見て、大きな流れをつかみます。</p>
     </div>
   </div>
 </section>
@@ -935,53 +904,53 @@ feat = feat.sort_values(<span class="st">"changes"</span>, ascending=<span class
   <div class="wrap reveal">
     <div class="stephead">
       <span class="num">3</span>
-      <div class="tt"><h2>ネットワーク分析：共変更の結び目を測る</h2><span class="st-en">Co-change network</span></div>
+      <div class="tt"><h2>可視化：推移を折れ線と移動平均で見る</h2><span class="st-en">Visualize the trend</span></div>
     </div>
     <div class="steprule"></div>
 
     <p class="layer first"><span lang="ja">何を・なぜ</span><span lang="en">What &amp; why</span></p>
     <div class="prose">
-      <p>ファイルは単独で変わるだけでなく、しばしば一緒に変わります。仕様変更で本体とテストが同時に直る、といった具合です。<b>同じコミットで一緒に変更されたファイル同士を辺で結ぶ</b>と、プロジェクトの構造を映すネットワークができます。これを<b>共変更ネットワーク（co-change network）</b>と呼びます。</p>
-      <p>NetworkX でこのグラフを作り、各ファイルの<b>次数中心性</b>（多くのファイルと共に変わるほど高い）と<b>媒介中心性</b>（異なる部分をつなぐ橋になっているほど高い）を測ります。中心性が高いファイルは、変更の影響が広がりやすい「結び目」です。</p>
+      <p>まずは素直に折れ線で描きます。週次の生データはぎざぎざしていて、大きな流れが見えにくいものです。そこで<b>移動平均</b>を重ねます。移動平均は、各時点の前後いくつかの値を平均して系列をなだらかにする方法で、短期の細かい上下を打ち消し、長い波を浮かび上がらせます。ここでは前後8週の中心移動平均（<code>center=True</code>）を使います。</p>
     </div>
     <div class="code-wrap attached">
-      <div class="code-head"><span class="lbl">Python</span><span class="lang-tag">cochange_network.py</span><button class="copy" type="button" onclick="copyCode(this)">copy</button></div>
-      <pre><code><span class="kw">import</span> networkx <span class="kw">as</span> nx
-<span class="kw">from</span> itertools <span class="kw">import</span> combinations
+      <div class="code-head"><span class="lbl">Python</span><span class="lang-tag">plot_series.py</span><button class="copy" type="button" onclick="copyCode(this)">copy</button></div>
+      <pre><code><span class="kw">import</span> matplotlib.pyplot <span class="kw">as</span> plt
 
-<span class="cm"># 同じコミットで一緒に変わったファイルを辺で結ぶ</span>
-G = nx.Graph()
-<span class="kw">for</span> commit, grp <span class="kw">in</span> df.groupby(<span class="st">"commit"</span>):
-    files = sorted(grp[<span class="st">"file"</span>].unique())
-    <span class="kw">for</span> a, b <span class="kw">in</span> combinations(files, <span class="nu">2</span>):
-        <span class="kw">if</span> G.has_edge(a, b):
-            G[a][b][<span class="st">"weight"</span>] += <span class="nu">1</span>
-        <span class="kw">else</span>:
-            G.add_edge(a, b, weight=<span class="nu">1</span>)
+<span class="cm"># 8週の中心移動平均で平滑化する</span>
+ma = weekly.rolling(window=<span class="nu">8</span>, center=<span class="kw">True</span>).mean()
 
-<span class="cm"># 次数中心性と媒介中心性</span>
-degree = nx.degree_centrality(G)
-between = nx.betweenness_centrality(G)
-
-cent = pd.DataFrame({
-    <span class="st">"file"</span>: list(degree.keys()),
-    <span class="st">"degree"</span>: list(degree.values()),
-    <span class="st">"betweenness"</span>: [between[f] <span class="kw">for</span> f <span class="kw">in</span> degree],
-})
-<span class="kw">print</span>(<span class="st">"nodes:"</span>, G.number_of_nodes(), <span class="st">"edges:"</span>, G.number_of_edges())
-<span class="kw">print</span>(cent.sort_values(<span class="st">"betweenness"</span>, ascending=<span class="kw">False</span>).head())</code></pre>
+fig, ax = plt.subplots(figsize=(<span class="nu">10</span>, <span class="nu">4</span>))
+ax.plot(weekly.index, weekly, color=<span class="st">"#B7C0BB"</span>, linewidth=<span class="nu">1</span>, label=<span class="st">"週次コミット数"</span>)
+ax.plot(ma.index, ma, color=<span class="st">"#0E6F5C"</span>, linewidth=<span class="nu">2</span>, label=<span class="st">"移動平均（8週）"</span>)
+ax.set_ylabel(<span class="st">"commits / week"</span>)
+ax.legend()
+fig.tight_layout()
+plt.show()</code></pre>
     </div>
-    <div class="code-out"><span class="olbl">出力例 / Output</span><pre><code>nodes: 214 edges: 1180
-                          file    degree  betweenness
-0      pydriller/repository.py  0.375587     0.284120
-1             pydriller/git.py  0.286385     0.176433
-2   pydriller/domain/commit.py  0.234742     0.121876
-3     tests/test_repository.py  0.187793     0.058291
-4      pydriller/scm/commit.py  0.145540     0.041020</code></pre></div>
+    <div class="code-out"><span class="olbl">出力 / Output</span><pre><code>（折れ線グラフが表示される。灰色の生系列はぎざぎざと上下し、
+ 緑の移動平均はなだらかな山と谷を描く。活動が高まる時期と
+ 静かな時期が交互に現れているのが読み取れる。）</code></pre></div>
+
+    <div class="prose">
+      <p>下のデモで、移動平均の窓幅を変えると系列の見え方がどう変わるかを試せます。窓を広げるほどなめらかになりますが、広げすぎると本当の変化まで消えてしまいます。</p>
+    </div>
+
+    <!-- DEMO: moving average -->
+    <div class="demo reveal" id="demoMA">
+      <span class="dtag"><span lang="ja">デモ</span><span lang="en">Demo</span></span>
+      <h4>移動平均で平滑してみる</h4>
+      <p class="dnote">窓幅（何週分を平均するか）を動かすと、週次コミット数（灰色）に対する移動平均（緑）がどう変わるかを見られます。窓を広げるほど短期の細かい上下が消え、大きな波だけが残ります。これは上のコードの <code>rolling(window=...).mean()</code> と同じ考え方です。</p>
+      <label class="fld" for="maWin">窓幅 / Window（<span id="maWinVal">4</span> 週）</label>
+      <input type="range" id="maWin" min="1" max="12" step="1" value="4" style="width:100%; accent-color:#0E6F5C">
+      <div class="demo-out">
+        <svg id="maSvg" viewBox="0 0 720 240" role="img" aria-label="週次コミット数と移動平均の折れ線" style="display:block; width:100%; height:auto; background:var(--bg); border-radius:12px; border:1px solid var(--hair)"></svg>
+        <div class="chipcount" id="maInfo"></div>
+      </div>
+    </div>
 
     <div class="callout tip">
       <h4>この Step のまとめ</h4>
-      <p>共変更ネットワークを作り、次数中心性と媒介中心性で「結び目」になるファイルを数値化しました。中心性が高いファイルは、変更回数の多いファイルと重なりがちですが、完全には一致しません。この差が、次の機械学習で効いてきます。</p>
+      <p>折れ線で推移を描き、移動平均で大きな流れを取り出しました。目で見ると波があるのは分かりますが、「トレンドなのか、季節の繰り返しなのか」までは区別できません。次のステップで、系列を成分に分けて切り分けます。</p>
     </div>
   </div>
 </section>
@@ -991,66 +960,42 @@ cent = pd.DataFrame({
   <div class="wrap reveal">
     <div class="stephead">
       <span class="num">4</span>
-      <div class="tt"><h2>機械学習：ホットスポットを予測する</h2><span class="st-en">Predict the hotspots</span></div>
+      <div class="tt"><h2>成分分解：トレンド・季節・残差に分ける</h2><span class="st-en">Decompose the series</span></div>
     </div>
     <div class="steprule"></div>
 
     <p class="layer first"><span lang="ja">何を・なぜ</span><span lang="en">What &amp; why</span></p>
     <div class="prose">
-      <p>ここまでに作った特徴量（チャーン・作者数・次数中心性・媒介中心性）を1つの表にまとめ、機械学習でホットスポットを分類します。まず「ホットスポット」を定義します。ここでは<b>変更回数が上位25%のファイルを正例（1）</b>とします。</p>
-      <p>注意点が1つあります。ラベルの定義に使った<b>変更回数そのものは特徴量に入れません</b>。入れると答えを直接見せることになり、意味のある予測になりません。そこで残りの特徴量から予測できるかを試します。<code>train_test_split</code> で学習用と検証用に分け、<code>RandomForestClassifier</code> で分類し、<code>classification_report</code> で適合率・再現率・F値を確認します。</p>
+      <p>時系列は、いくつかの動きが重なってできていると考えられます。古典的な分解では、系列を次の3つに分けます。</p>
+      <ul>
+        <li><b>トレンド（trend）</b>：長い目で見た増減の傾向。プロジェクトが盛り上がっているか、落ち着いてきたか。</li>
+        <li><b>季節（seasonal）</b>：一定周期で繰り返すパターン。週次データなら、1年（約52週）ごとの繰り返しを想定できます。</li>
+        <li><b>残差（residual）</b>：トレンドと季節では説明できない、その他の変動。</li>
+      </ul>
+      <p><b>加法モデル</b>では、観測値 = トレンド + 季節 + 残差 と考えます。statsmodels の <code>seasonal_decompose</code> は、移動平均でトレンドを推定し、周期ごとの平均で季節成分を求めて、この3つを取り出します。<code>period=52</code> は1年周期を表します（この分解には最低でも周期の2倍、つまり約2年分の週次データが必要です）。</p>
     </div>
     <div class="code-wrap attached">
-      <div class="code-head"><span class="lbl">Python</span><span class="lang-tag">predict_hotspots.py</span><button class="copy" type="button" onclick="copyCode(this)">copy</button></div>
-      <pre><code><span class="kw">from</span> sklearn.model_selection <span class="kw">import</span> train_test_split
-<span class="kw">from</span> sklearn.ensemble <span class="kw">import</span> RandomForestClassifier
-<span class="kw">from</span> sklearn.metrics <span class="kw">import</span> classification_report
+      <div class="code-head"><span class="lbl">Python</span><span class="lang-tag">decompose.py</span><button class="copy" type="button" onclick="copyCode(this)">copy</button></div>
+      <pre><code><span class="kw">from</span> statsmodels.tsa.seasonal <span class="kw">import</span> seasonal_decompose
 
-<span class="cm"># 中心性を特徴量表に結合（単独変更のファイルは中心性0で補完）</span>
-data = feat.merge(cent, on=<span class="st">"file"</span>, how=<span class="st">"left"</span>).fillna(<span class="nu">0</span>)
+<span class="cm"># 年周期（約52週）を仮定して加法モデルで分解する</span>
+result = seasonal_decompose(weekly, model=<span class="st">"additive"</span>, period=<span class="nu">52</span>)
 
-<span class="cm"># ラベル: 変更回数が上位25%のファイルをホットスポット(1)</span>
-threshold = data[<span class="st">"changes"</span>].quantile(<span class="nu">0.75</span>)
-data[<span class="st">"hotspot"</span>] = (data[<span class="st">"changes"</span>] &gt;= threshold).astype(int)
+<span class="kw">print</span>(<span class="st">"トレンド（末尾）:"</span>)
+<span class="kw">print</span>(result.trend.dropna().tail(<span class="nu">3</span>).round(<span class="nu">2</span>))
 
-<span class="cm"># 変更回数そのものは特徴量に入れない（ラベルの定義に使ったため）</span>
-X = data[[<span class="st">"churn"</span>, <span class="st">"authors"</span>, <span class="st">"degree"</span>, <span class="st">"betweenness"</span>]]
-y = data[<span class="st">"hotspot"</span>]
-
-X_train, X_test, y_train, y_test = train_test_split(
-    X, y, test_size=<span class="nu">0.3</span>, random_state=<span class="nu">42</span>, stratify=y)
-
-clf = RandomForestClassifier(n_estimators=<span class="nu">300</span>, random_state=<span class="nu">42</span>)
-clf.fit(X_train, y_train)
-pred = clf.predict(X_test)
-
-<span class="kw">print</span>(classification_report(y_test, pred))
-<span class="cm"># どの特徴量が効いたか</span>
-<span class="kw">for</span> name, imp <span class="kw">in</span> sorted(zip(X.columns, clf.feature_importances_),
-                        key=<span class="kw">lambda</span> t: t[<span class="nu">1</span>], reverse=<span class="kw">True</span>):
-    <span class="kw">print</span>(<span class="st">f"{name:12s} {imp:.3f}"</span>)</code></pre>
+result.plot()  <span class="cm"># 観測・トレンド・季節・残差の4段グラフ</span>
+plt.show()</code></pre>
     </div>
-    <div class="code-out"><span class="olbl">出力例 / Output</span><pre><code>              precision    recall  f1-score   support
-
-           0       0.90      0.94      0.92        48
-           1       0.79      0.69      0.73        16
-
-    accuracy                           0.88        64
-   macro avg       0.84      0.81      0.83        64
-weighted avg       0.87      0.88      0.87        64
-
-churn        0.462
-degree       0.281
-betweenness  0.171
-authors      0.086</code></pre></div>
-
-    <div class="prose">
-      <p>正例（ホットスポット）は少数派なので、多数派の負例より当てるのが難しく、再現率がやや低く出ています。特徴量の重要度を見ると、チャーンが最も効き、次いで共変更の次数中心性が効いています。つまり「よく書き換えられ、多くのファイルと一緒に変わる」ファイルほどホットスポットになりやすい、という素直な傾向が読み取れます。</p>
-    </div>
+    <div class="code-out"><span class="olbl">出力例 / Output</span><pre><code>トレンド（末尾）:
+2024-03-25    2.71
+2024-04-01    2.63
+2024-04-08    2.58
+Freq: W-MON, Name: trend, dtype: float64</code></pre></div>
 
     <div class="callout tip">
       <h4>この Step のまとめ</h4>
-      <p>4つの特徴量からホットスポットを分類し、評価指標で性能を確かめました。ネットワーク由来の中心性が予測に寄与している点が、複数の技術をつないだ効果です。<code>LogisticRegression</code> に差し替えて比べるのも良い練習になります。</p>
+      <p><code>seasonal_decompose</code> で系列をトレンド・季節・残差に分けました。トレンドを見れば長期の勢い、季節成分を見れば1年の中での繰り返し（たとえば夏や年末の停滞）が読めます。次は、この流れを使って先の活動量を見積もります。</p>
     </div>
   </div>
 </section>
@@ -1060,41 +1005,49 @@ authors      0.086</code></pre></div>
   <div class="wrap reveal">
     <div class="stephead">
       <span class="num">5</span>
-      <div class="tt"><h2>可視化：分布とネットワークを眺める</h2><span class="st-en">Visualize</span></div>
+      <div class="tt"><h2>予測：先の活動量を見積もる</h2><span class="st-en">Forecast future activity</span></div>
     </div>
     <div class="steprule"></div>
 
     <p class="layer first"><span lang="ja">何を・なぜ</span><span lang="en">What &amp; why</span></p>
     <div class="prose">
-      <p>数値だけでなく、図でも確かめます。変更回数の分布を見ると、少数のファイルに変更が集中する<b>ロングテール</b>になっているはずです。共変更ネットワークの中心部分を描くと、中心性の高いファイルが実際に多くの辺を集めている様子が見えます。matplotlib と NetworkX の描画関数で描きます。</p>
+      <p>最後に、先の数週のコミット数を予測します。単純な方法としては移動平均や指数平滑もありますが、ここでは定番の <b>ARIMA</b> を使います。ARIMA(p, d, q) は、過去の値（自己回帰 AR）・差分の階数（I）・過去の予測誤差（移動平均 MA）を組み合わせて先を予測するモデルです。</p>
+      <p>予測の評価では、<b>時間を守る</b>ことが決定的に大切です。未来のデータを使って過去を当てても意味がありません。そこで系列を時系列順に区切り、<b>末尾の12週を検証用</b>に取り分け、それより前だけで学習します。学習した後に12週先を予測し、取り分けておいた実測値と比べて誤差（MAE: 平均絶対誤差）を測ります。</p>
     </div>
     <div class="code-wrap attached">
-      <div class="code-head"><span class="lbl">Python</span><span class="lang-tag">visualize.py</span><button class="copy" type="button" onclick="copyCode(this)">copy</button></div>
-      <pre><code><span class="kw">import</span> matplotlib.pyplot <span class="kw">as</span> plt
+      <div class="code-head"><span class="lbl">Python</span><span class="lang-tag">forecast.py</span><button class="copy" type="button" onclick="copyCode(this)">copy</button></div>
+      <pre><code><span class="kw">from</span> statsmodels.tsa.arima.model <span class="kw">import</span> ARIMA
+<span class="kw">import</span> numpy <span class="kw">as</span> np
 
-fig, ax = plt.subplots(<span class="nu">1</span>, <span class="nu">2</span>, figsize=(<span class="nu">11</span>, <span class="nu">4</span>))
+<span class="cm"># 末尾12週を検証用に取り分ける（時間を守った分割）</span>
+train = weekly.iloc[:-<span class="nu">12</span>]
+test = weekly.iloc[-<span class="nu">12</span>:]
 
-<span class="cm"># 左: ファイルごとの変更回数の分布（ロングテール）</span>
-ax[<span class="nu">0</span>].hist(feat[<span class="st">"changes"</span>], bins=<span class="nu">30</span>, color=<span class="st">"#0E6F5C"</span>)
-ax[<span class="nu">0</span>].set_xlabel(<span class="st">"changes per file"</span>)
-ax[<span class="nu">0</span>].set_ylabel(<span class="st">"number of files"</span>)
-ax[<span class="nu">0</span>].set_title(<span class="st">"Change frequency"</span>)
+<span class="cm"># ARIMA(p, d, q) を学習し、12週先まで予測する</span>
+model = ARIMA(train, order=(<span class="nu">1</span>, <span class="nu">1</span>, <span class="nu">1</span>))
+fit = model.fit()
+forecast = fit.forecast(steps=<span class="nu">12</span>)
 
-<span class="cm"># 右: 共変更ネットワークの中心部分（次数の高い上位30ノード）</span>
-top_nodes = [n <span class="kw">for</span> n, _ <span class="kw">in</span> sorted(G.degree,
-             key=<span class="kw">lambda</span> x: x[<span class="nu">1</span>], reverse=<span class="kw">True</span>)[:<span class="nu">30</span>]]
-H = G.subgraph(top_nodes)
-pos = nx.spring_layout(H, seed=<span class="nu">42</span>)
-nx.draw_networkx_nodes(H, pos, ax=ax[<span class="nu">1</span>], node_size=<span class="nu">120</span>, node_color=<span class="st">"#0E6F5C"</span>)
-nx.draw_networkx_edges(H, pos, ax=ax[<span class="nu">1</span>], edge_color=<span class="st">"#B7C0BB"</span>)
-ax[<span class="nu">1</span>].set_title(<span class="st">"Co-change network (top 30)"</span>)
-ax[<span class="nu">1</span>].axis(<span class="st">"off"</span>)
-
-plt.tight_layout()
-plt.show()</code></pre>
+mae = np.mean(np.abs(forecast.values - test.values))
+<span class="kw">print</span>(<span class="st">"検証MAE:"</span>, round(mae, <span class="nu">2</span>))
+<span class="kw">print</span>(<span class="st">"予測平均:"</span>, round(forecast.mean(), <span class="nu">2</span>),
+      <span class="st">"実測平均:"</span>, round(test.mean(), <span class="nu">2</span>))</code></pre>
     </div>
+    <div class="code-out"><span class="olbl">出力例 / Output</span><pre><code>検証MAE: 2.41
+予測平均: 3.18 実測平均: 2.75</code></pre></div>
+
     <div class="prose">
-      <p>左のヒストグラムは、大半のファイルが数回しか変更されない一方で、ごく少数のファイルが飛び抜けて多く変更される、右に長い裾を引いた形になります。右のグラフでは、中央に位置する数個のノード（Step 3 で中心性が高かったファイル）に辺が集まり、周辺のファイルがそれらを介してつながる様子が見えます。図の見た目はレイアウトの乱数（<code>seed</code>）で変わりますが、構造の傾向は保たれます。</p>
+      <p>MAE は「予測が平均して何コミットずれたか」を表します。週あたり数コミットの系列で MAE が 2 前後なら、大きな流れは追えているものの、個々の週のばらつきまでは当てきれていない、という読み方になります。<code>order</code> を変えたり、対数変換や差分を工夫したりすると精度は動きます。単純な予測（前の数週の平均をそのまま先の値にする）と比べて、どれだけ良くなったかを確かめるのが定石です。</p>
+    </div>
+
+    <div class="callout warn">
+      <h4>時間を守る</h4>
+      <p>時系列の評価では、データをランダムに分けてはいけません。必ず時間で区切り、過去で学習して未来を当てます。ランダム分割は未来の情報が学習に混ざり（リーク）、実力より良く見えてしまいます。</p>
+    </div>
+
+    <div class="callout tip">
+      <h4>この Step のまとめ</h4>
+      <p>末尾を検証用に取り分け、ARIMA で先の活動量を予測して MAE で評価しました。時間を守った分割にすることで、現実に近い当たり具合を測れます。最後に、この一連の結果から何が言えて、何に注意すべきかを整理します。</p>
     </div>
   </div>
 </section>
@@ -1104,93 +1057,74 @@ plt.show()</code></pre>
   <div class="wrap reveal">
     <div class="stephead">
       <span class="num">6</span>
-      <div class="tt"><h2>考察：何が言えて、何に注意するか</h2><span class="st-en">Discussion &amp; caveats</span></div>
+      <div class="tt"><h2>考察：波の意味と限界</h2><span class="st-en">Read the waves and the limits</span></div>
     </div>
     <div class="steprule"></div>
 
-    <p class="layer first"><span lang="ja">読み解き</span><span lang="en">Reading the result</span></p>
+    <p class="layer first"><span lang="ja">読み取れること</span><span lang="en">What we can read</span></p>
     <div class="prose">
-      <p>一連の分析から、このプロジェクトでは少数のファイルに変更が集中し、それらが共変更ネットワークの結び目にもなっていることが分かりました。ホットスポットは、チャーンの大きさと共変更の次数中心性からある程度予測でき、レビューやテスト、リファクタリングの投資先を選ぶ手がかりになります。単体のメトリクスだけでなく、ネットワーク由来の指標を足すと予測が補強される、というのがこの演習の要点です。</p>
+      <p>ここまでで、開発活動の週次系列と、その分解、そして小さな予測モデルが手に入りました。これらから、たとえば次のようなことが読み取れます。</p>
     </div>
-
-    <p class="layer"><span lang="ja">注意点</span><span lang="en">Caveats</span></p>
-    <div class="grid2">
-      <div class="box lim">
-        <h5><span lang="ja">解釈の限界</span><span lang="en">Limits</span></h5>
-        <ul>
-          <li><b>相関であって因果ではない</b>：変更が多い＝悪いとは限らない。活発に育っている中心機能かもしれません。</li>
-          <li><b>tangled commit</b>：無関係な変更が1コミットに混ざると、共変更が過大に見えることがあります。</li>
-          <li><b>リネーム・移動</b>：ファイル名の変更で履歴が途切れ、変更回数を過小評価することがあります。</li>
-        </ul>
-      </div>
+    <div class="grid2 reveal">
       <div class="box">
-        <h5><span lang="ja">妥当性を高めるには</span><span lang="en">Toward validity</span></h5>
+        <h5><span lang="ja">読み取れること</span><span lang="en">Signals</span></h5>
         <ul>
-          <li>期間を区切って、最近の傾向と過去を分ける。</li>
-          <li>リネーム追跡を有効にして履歴のつながりを保つ。</li>
-          <li>不具合修正コミットと結びつけ、実際の欠陥と対応するか確かめる。</li>
+          <li>トレンドの向きで、プロジェクトの勢い（成長・成熟・停滞）が分かる。</li>
+          <li>季節成分で、リリース前の高まりや長期休暇の停滞といった繰り返しが見える。</li>
+          <li>残差の大きな山は、大規模なマージや一時的な集中作業を示すことがある。</li>
+        </ul>
+      </div>
+      <div class="box lim">
+        <h5><span lang="ja">注意すべきこと</span><span lang="en">Cautions</span></h5>
+        <ul>
+          <li>コミット数は活動の一面にすぎない。1コミットの大きさはまちまちで、量の多さが価値や進捗と直結するわけではない。</li>
+          <li>履歴の書き換え（rebase やスカッシュ）や自動コミットは、系列をゆがめる。</li>
+          <li>季節性は年数が少ないと当てにならない。周期の2倍以上のデータが要る。</li>
+          <li>予測はあくまで過去の延長。方針転換や人員の変化は織り込めない。</li>
         </ul>
       </div>
     </div>
 
-    <div class="callout warn">
-      <h4>数字を鵜呑みにしない</h4>
-      <p>ここで得た予測やランキングは、あくまで「見るべき場所の候補」です。最終的な判断には、コードの中身やチームの文脈を合わせて読む必要があります。メトリクスは会話の出発点であって、結論ではありません。</p>
+    <p class="layer"><span lang="ja">まとめ方</span><span lang="en">How to conclude</span></p>
+    <div class="prose">
+      <p>時系列は、数字を眺めるだけでは見えない「時間の中の構造」を取り出す道具です。トレンドで長い流れを、季節でリズムを、残差で異変を切り分ける。そのうえで、予測は「確実な未来」ではなく「過去がこう続くならこうなる」という仮定つきの見積もりだと心得ておくと、結果を落ち着いて解釈できます。数字の背後にある開発の営みを想像しながら読むことが、いちばん大切です。</p>
     </div>
   </div>
 </section>
 
 <!-- EXTEND -->
-<section id="extend">
+<section id="extend" class="soft-sec">
   <div class="wrap reveal">
     <p class="eyebrow"><span lang="ja">発展課題</span><span lang="en">Try more</span></p>
-    <h2 class="big">こう変えたら、どうなる？</h2>
+    <h2 class="big">この演習を広げる</h2>
     <div class="prose" style="margin-top:22px">
-      <p>パイプラインができたら、少しずつ条件を変えて挙動を確かめましょう。答えは用意しません。手を動かして、数字がどう動くかを観察するのが目的です。</p>
+      <p>基本の流れをつかんだら、次の課題で分析を深めてみてください。どれもノートブックの一部を書き換えるだけで試せます。</p>
     </div>
-    <div class="res-grid reveal">
-      <div class="res">
-        <h5>別のリポジトリで試す</h5>
-        <ul>
-          <li><code>url</code> を別の小さな公開リポジトリに変えて走らせる。プロジェクトによってホットスポットの偏り方がどう違うかを比べる。</li>
-        </ul>
-      </div>
-      <div class="res">
-        <h5>期間で区切る</h5>
-        <ul>
-          <li><code>Repository(url, since=..., to=...)</code> で期間を絞り、直近1年と全期間で結果を比べる。ホットスポットは時期によって移り変わります。</li>
-        </ul>
-      </div>
-      <div class="res">
-        <h5>特徴量を足す</h5>
-        <ul>
-          <li>ファイルの平均コミット間隔、直近の変更からの経過日数、コメント行の割合などを加えて、予測が変わるかを見る。</li>
-        </ul>
-      </div>
-      <div class="res">
-        <h5>バグ修正を辿る</h5>
-        <ul>
-          <li>コミットメッセージから <code>fix</code> や <code>bug</code> を含むものを拾い、修正が集中するファイルを調べる。SZZ 的にバグ混入コミットまで遡るとさらに踏み込めます。</li>
-        </ul>
-      </div>
+    <div class="steps reveal">
+      <h5>次に挑戦すること</h5>
+      <ol>
+        <li><b>別のリポジトリで比べる</b>：<code>url</code> を変えて、活発なプロジェクトと落ち着いたプロジェクトの波形を並べる。規模の大きなリポジトリでは取得に時間がかかる点に注意。</li>
+        <li><b>切り口を変える</b>：全体ではなく、作者別やファイル別・ディレクトリ別に週次系列を作り、誰が・どこが活動の中心かを時系列で見る。</li>
+        <li><b>異常検知</b>：残差が大きく外れた週を「いつもと違う週」として拾い、その時期に何が起きたか（大規模マージ、リリース）を履歴で確かめる。</li>
+        <li><b>別の予測手法</b>：季節性を明示的に扱う SARIMA や、休日・トレンド変化に強い Prophet を使い、ARIMA の結果と当たり具合を比べる。</li>
+      </ol>
     </div>
   </div>
 </section>
 
 <!-- CLOSING -->
-<section id="closing" class="soft-sec">
+<section id="closing">
   <div class="wrap reveal">
     <p class="eyebrow"><span lang="ja">まとめ</span><span lang="en">Wrap-up</span></p>
-    <h2 class="big">つないで見えたもの、次へ</h2>
+    <h2 class="big">つないで見えた、開発の時間</h2>
     <div class="prose" style="margin-top:22px">
-      <p>この演習では、単体で学んだ4つの技術を1本のパイプラインにつなぎ、現実の OSS リポジトリからホットスポットを予測しました。振り返ると、それぞれのモジュールが次の役割を担っていました。</p>
+      <p>この演習では、バラバラのコミットを時間の流れとして読み解きました。改めて振り返ると、次の技術を1本につないだことになります。</p>
       <ul>
-        <li><b>リポジトリマイニング</b>：PyDriller で開発履歴という素材を手に入れた。</li>
-        <li><b>前処理</b>：pandas でファイル単位の特徴量表に整えた。</li>
-        <li><b>ネットワーク分析</b>：共変更の結び目を中心性で数値化した。</li>
-        <li><b>機械学習</b>：特徴量を統合してホットスポットを分類し、評価した。</li>
+        <li><b>リポジトリマイニング</b>：PyDriller でコミット日時という素材を手に入れた。</li>
+        <li><b>時系列分析</b>：週次に集計し、トレンド・季節・残差に分解し、ARIMA で先を予測した。</li>
+        <li><b>データ可視化</b>：折れ線と移動平均で、波の大きな流れを目で確かめた。</li>
       </ul>
-      <p>単体では見えなかった構造が、つなぐと見えてきました。各技術の詳しい理論やAPIは、下の各モジュールに戻ると確認できます。</p>
+      <p>ひとつの数字の列が、トレンド・季節・残差という構造を持った「時間の物語」になりました。各技術の詳しい理論やAPIは、下の各モジュールに戻ると確認できます。</p>
     </div>
 
     <div class="res-grid reveal">
@@ -1198,23 +1132,22 @@ plt.show()</code></pre>
         <h5>使ったモジュール</h5>
         <ul>
           <li><a href="repository-mining.html">リポジトリマイニング入門</a></li>
-          <li><a href="data-preprocessing.html">開発データの前処理</a></li>
-          <li><a href="network-analysis.html">ネットワーク分析</a></li>
-          <li><a href="machine-learning.html">機械学習</a></li>
+          <li><a href="time-series.html">時系列分析</a></li>
+          <li><a href="data-visualization.html">データ可視化</a></li>
         </ul>
       </div>
       <div class="res">
         <h5>次の演習・段階へ</h5>
         <ul>
-          <li>ほかの実践編で、NLP やプログラム解析を軸にしたパイプラインも試す。</li>
-          <li>特徴量やモデルを差し替えて、自分の関心のあるリポジトリを診断してみる。</li>
+          <li>ほかの実践編で、別の切り口のパイプラインも試す。</li>
+          <li>ノートブックの <code>url</code> を気になるリポジトリに変えて、その開発の波を読んでみる。</li>
         </ul>
       </div>
     </div>
 
     <div class="callout tip">
       <h4>おつかれさまでした</h4>
-      <p>ノートブックを開き、<code>url</code> を自分の気になるリポジトリに変えて、もう一度上から実行してみてください。しきい値や特徴量を少し変えるだけで、ホットスポットの顔ぶれや評価指標がどう動くかを確かめると、パイプライン全体の勘所がつかめます。</p>
+      <p>ノートブックを開き、<code>url</code> を自分の気になるリポジトリに変えて、もう一度上から実行してみてください。集計の間隔（週次・月次）や移動平均の窓幅、ARIMA の <code>order</code> を少し変えるだけで、見える波がどう動くかを確かめると、時系列分析の勘所がつかめます。</p>
     </div>
   </div>
 </section>
@@ -1307,153 +1240,43 @@ plt.show()</code></pre>
 </script>
 
 <script>
-/* ==================== interactive demos (vanilla JS, self-contained) ==================== */
+/* ==================== interactive demo: moving average (vanilla JS, self-contained) ==================== */
 (function(){
-  /* ---- shared simplified tokenizer (small dictionary + longest match) ---- */
-  var JP_DICT = ["自然","言語","処理","分野","面白い","楽しい","難しい","画像",
-    "私","本","読む","読ん","好き","のが","猫","犬","ソファ","上","眠っ","眠る",
-    "走っ","走る","株価","大きく","下がる","機械","学習","単語","意味","文章","解析",
-    "する","学ぶ","大学","研究","情報","日本語","英語",
-    "は","が","を","に","で","と","の","も","へ","や","から","まで","ね","よ","た","だ",
-    "です","ます","ている","いる"];
-  var PARTICLES = {"は":1,"が":1,"を":1,"に":1,"で":1,"と":1,"の":1,"も":1,"へ":1,"や":1,
-    "から":1,"まで":1,"ね":1,"よ":1,"た":1,"だ":1,"です":1,"ます":1,"ている":1,"いる":1,"のが":1};
-  var DICT = {}; JP_DICT.forEach(function(w){ DICT[w]=1; });
-  var MAXL = 5;
-  function isJP(ch){ return /[぀-ヿ㐀-䶿一-鿿ｦ-ﾟ]/.test(ch); }
-  function jtype(ch){
-    if(/[぀-ゟ]/.test(ch)) return 'hira';
-    if(/[゠-ヿｦ-ﾟ]/.test(ch)) return 'kata';
-    if(/[一-鿿㐀-䶿]/.test(ch)) return 'kanji';
-    return 'other';
-  }
-  function dictAt(text,i){
-    for(var L=Math.min(MAXL,text.length-i); L>=1; L--){
-      var sub=text.substr(i,L);
-      if(DICT[sub]) return sub;
-    }
-    return null;
-  }
-  /* returns array of {t: surface, k: 'jp'|'p'|'en'} */
-  function tokenize(text){
-    var out=[], i=0, n=text.length;
-    while(i<n){
-      var ch=text[i];
-      if(/\s/.test(ch)){ i++; continue; }
-      if(/[A-Za-z0-9]/.test(ch)){
-        var j=i; while(j<n && /[A-Za-z0-9']/.test(text[j])) j++;
-        out.push({t:text.slice(i,j).toLowerCase(), k:'en'}); i=j; continue;
-      }
-      if(isJP(ch)){
-        var m=dictAt(text,i);
-        if(m){ out.push({t:m, k:PARTICLES[m]?'p':'jp'}); i+=m.length; continue; }
-        var ty=jtype(ch), j2=i+1;
-        while(j2<n && jtype(text[j2])===ty && !dictAt(text,j2)) j2++;
-        out.push({t:text.slice(i,j2), k:'jp'}); i=j2; continue;
-      }
-      i++; /* drop punctuation / symbols (normalization) */
+  /* representative weekly commit counts (illustrative, fixed series) */
+  var series = [2,0,1,4,3,5,2,1,0,2,6,8,5,4,3,1,0,0,2,3,7,9,6,4,2,1,0,1,3,5,8,7,5,3,2,0,1,2,4,6,9,7,5,3,1,0,2,1];
+  var win = document.getElementById('maWin');
+  var winVal = document.getElementById('maWinVal');
+  var svg = document.getElementById('maSvg');
+  var info = document.getElementById('maInfo');
+  if(!win || !svg) return;
+  var W=720, H=240, padL=34, padR=12, padT=14, padB=24;
+  var n=series.length, maxV=Math.max.apply(null, series) || 1;
+  function xat(i){ return padL + (W-padL-padR)*(i/(n-1)); }
+  function yat(v){ return H-padB - (H-padT-padB)*(v/maxV); }
+  function movavg(k){
+    var out=[], half=Math.floor(k/2), i, j;
+    for(i=0;i<n;i++){
+      var a=Math.max(0,i-half), b=Math.min(n-1,i+half), sum=0, c=0;
+      for(j=a;j<=b;j++){ sum+=series[j]; c++; }
+      out.push(sum/c);
     }
     return out;
   }
-  function surfaces(text){ return tokenize(text).map(function(o){ return o.t; }); }
-
-  /* ---- Demo 1: tokenizer ---- */
-  var tokInput=document.getElementById('tokInput'),
-      tokChips=document.getElementById('tokChips'),
-      tokCount=document.getElementById('tokCount');
-  function renderTok(){
-    var toks=tokenize(tokInput.value);
-    tokChips.innerHTML = toks.map(function(o){
-      return '<span class="chip '+o.k+'">'+escapeHtml(o.t)+'</span>';
-    }).join('') || '<span class="chipcount">（トークンがありません）</span>';
-    tokCount.textContent = toks.length+' トークン / tokens';
+  function path(vals){
+    return vals.map(function(v,i){ return (i?'L':'M')+xat(i).toFixed(1)+' '+yat(v).toFixed(1); }).join(' ');
   }
-  if(tokInput){
-    tokInput.addEventListener('input', renderTok);
-    document.querySelectorAll('#demoTok .try button').forEach(function(b){
-      b.addEventListener('click', function(){ tokInput.value=b.getAttribute('data-tok'); renderTok(); });
-    });
-    renderTok();
+  function render(){
+    var k=parseInt(win.value,10);
+    winVal.textContent=k;
+    var ma=movavg(k);
+    var axis='<line x1="'+padL+'" y1="'+(H-padB)+'" x2="'+(W-padR)+'" y2="'+(H-padB)+'" stroke="#E7ECE9" stroke-width="1"/>';
+    var raw='<path d="'+path(series)+'" fill="none" stroke="#B7C0BB" stroke-width="1.5"/>';
+    var mavg='<path d="'+path(ma)+'" fill="none" stroke="#0E6F5C" stroke-width="2.5"/>';
+    svg.innerHTML=axis+raw+mavg;
+    info.textContent='窓幅 '+k+' 週の中心移動平均 ・ 系列 '+n+' 週（灰: 週次コミット数, 緑: 移動平均）';
   }
-
-  /* ---- Demo 2: TF-IDF ---- */
-  var tfIn=document.getElementById('tfidfInput'),
-      tfOut=document.getElementById('tfidfOut');
-  function renderTfidf(){
-    var lines=tfIn.value.split('\n').map(function(s){return s.trim();}).filter(function(s){return s.length;});
-    if(!lines.length){ tfOut.innerHTML='<div class="chipcount">文書を1行ずつ入力してください。</div>'; return; }
-    var docs=lines.map(function(l){ return surfaces(l); });
-    var N=docs.length;
-    var vocab={}; docs.forEach(function(d){ d.forEach(function(w){ vocab[w]=1; }); });
-    var terms=Object.keys(vocab);
-    var df={}; terms.forEach(function(t){ df[t]=docs.filter(function(d){ return d.indexOf(t)>=0; }).length; });
-    var rows=terms.map(function(t){
-      var idf=Math.log(N/df[t]);
-      var vals=docs.map(function(d){
-        var c=d.filter(function(w){return w===t;}).length;
-        var tf=d.length? c/d.length : 0;
-        return tf*idf;
-      });
-      return {t:t, df:df[t], idf:idf, vals:vals, max:Math.max.apply(null,vals)};
-    });
-    rows.sort(function(a,b){ return b.max-a.max; });
-    var maxAll=Math.max.apply(null, rows.map(function(r){return r.max;})) || 1;
-    var head='<table class="dtable"><tr><th>語 / term</th><th>df</th><th>idf</th>'+
-      docs.map(function(_,i){return '<th>D'+(i+1)+'</th>';}).join('')+'</tr>';
-    var body=rows.map(function(r){
-      var cells=r.vals.map(function(v){
-        if(v<=1e-9) return '<td class="zero">0.000</td>';
-        var a=(0.10+0.72*(v/maxAll)).toFixed(3);
-        return '<td style="background:rgba(14,111,92,'+a+');color:'+(v/maxAll>0.55?'#fff':'var(--ink)')+'">'+v.toFixed(3)+'</td>';
-      }).join('');
-      return '<tr><td>'+escapeHtml(r.t)+'</td><td>'+r.df+'</td><td>'+r.idf.toFixed(3)+'</td>'+cells+'</tr>';
-    }).join('');
-    tfOut.innerHTML=head+body+'</table>'+
-      '<div class="chipcount">N = '+N+' 文書 ・ 語彙 '+terms.length+' 種 ・ tf = 語の頻度/文書長, idf = ln(N/df), tf-idf = tf &times; idf</div>';
-  }
-  if(tfIn){
-    tfIn.addEventListener('input', renderTfidf);
-    document.querySelectorAll('#demoTfidf .try button').forEach(function(b){
-      b.addEventListener('click', function(){ tfIn.value=b.getAttribute('data-tf'); renderTfidf(); });
-    });
-    renderTfidf();
-  }
-
-  /* ---- Demo 3: cosine similarity ---- */
-  var cosA=document.getElementById('cosA'),
-      cosB=document.getElementById('cosB'),
-      cosOut=document.getElementById('cosOut');
-  function renderCos(){
-    var a=surfaces(cosA.value), b=surfaces(cosB.value);
-    var vocab={}; a.concat(b).forEach(function(w){ vocab[w]=1; });
-    var terms=Object.keys(vocab);
-    function vec(d){ return terms.map(function(t){ return d.filter(function(w){return w===t;}).length; }); }
-    var va=vec(a), vb=vec(b);
-    var dot=0, na=0, nb=0;
-    for(var i=0;i<terms.length;i++){ dot+=va[i]*vb[i]; na+=va[i]*va[i]; nb+=vb[i]*vb[i]; }
-    var denom=Math.sqrt(na)*Math.sqrt(nb);
-    var cos=denom? dot/denom : 0;
-    var pct=(cos*100).toFixed(0);
-    var shared=terms.filter(function(t,i){ return va[i]>0 && vb[i]>0; });
-    if(!terms.length){ cosOut.innerHTML='<div class="chipcount">2つの文を入力してください。</div>'; return; }
-    cosOut.innerHTML=
-      '<div class="cos-score"><span class="val">'+cos.toFixed(3)+'</span><span class="lab">コサイン類似度 / cosine similarity（0 から 1）</span></div>'+
-      '<div class="cos-bar"><span style="width:'+Math.max(0,Math.min(100,pct))+'%"></span></div>'+
-      '<div class="cos-detail">A の語: '+chipLine(a)+'<br>B の語: '+chipLine(b)+'<br>'+
-      '共通の語: <b>'+(shared.length? shared.map(escapeHtml).join(', ') : 'なし')+'</b>　|　'+
-      '内積 = <b>'+dot+'</b>, &#8214;A&#8214; = <b>'+Math.sqrt(na).toFixed(3)+'</b>, &#8214;B&#8214; = <b>'+Math.sqrt(nb).toFixed(3)+'</b></div>';
-  }
-  function chipLine(arr){ return arr.length? arr.map(escapeHtml).join(' / ') : '（なし）'; }
-  if(cosA){
-    cosA.addEventListener('input', renderCos);
-    cosB.addEventListener('input', renderCos);
-    document.querySelectorAll('#demoCos .try button').forEach(function(b){
-      b.addEventListener('click', function(){ cosA.value=b.getAttribute('data-a'); cosB.value=b.getAttribute('data-b'); renderCos(); });
-    });
-    renderCos();
-  }
-
-  function escapeHtml(s){ return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+  win.addEventListener('input', render);
+  render();
 })();
 </script>
 
