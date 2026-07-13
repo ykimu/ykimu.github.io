@@ -3,15 +3,15 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>プログラム解析 - 研究の技術を実践的に学ぶ / Program Analysis</title>
-<meta name="description" content="A hands-on learning module on program analysis: lexing and parsing into an abstract syntax tree, static analysis with control and data flow, code metrics and cyclomatic complexity, dynamic analysis with coverage and profiling, and token-based code clone detection. With interactive demos and runnable Python examples. Part of Yuta Kimura's learning course.">
-<link rel="canonical" href="https://ykimu.github.io/learn/program-analysis.html">
+<title>統計分析 - 研究の技術を実践的に学ぶ / Statistical Analysis</title>
+<meta name="description" content="A hands-on learning module on statistical analysis: descriptive statistics, probability distributions, estimation and confidence intervals, hypothesis testing (t-test, chi-square, ANOVA) and effect size, and correlation and regression toward causal inference. With interactive demos and runnable Python examples. Part of Yuta Kimura's learning course.">
+<link rel="canonical" href="https://ykimu.github.io/learn/statistics.html">
 <link rel="icon" href="../favicon.svg" type="image/svg+xml">
 <meta property="og:site_name" content="Yuta Kimura / 木村祐太">
 <meta property="og:type" content="article">
-<meta property="og:title" content="プログラム解析 - 研究の技術を実践的に学ぶ / Program Analysis">
-<meta property="og:description" content="A hands-on learning module on program analysis: parsing to an AST, static analysis, code metrics and cyclomatic complexity, dynamic analysis, and code clone detection, with interactive demos and runnable Python examples.">
-<meta property="og:url" content="https://ykimu.github.io/learn/program-analysis.html">
+<meta property="og:title" content="統計分析 - 研究の技術を実践的に学ぶ / Statistical Analysis">
+<meta property="og:description" content="A hands-on learning module on statistical analysis: descriptive statistics, distributions, estimation, hypothesis testing and effect size, and regression, with interactive demos and runnable Python examples.">
+<meta property="og:url" content="https://ykimu.github.io/learn/statistics.html">
 <meta property="og:image" content="https://ykimu.github.io/assets/og.png">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="color-scheme" content="light">
@@ -526,11 +526,11 @@
               <a href="../learn/machine-learning.html"><span lang="ja">機械学習</span><span lang="en">Machine Learning</span></a>
               <a href="../learn/deep-learning.html"><span lang="ja">深層学習</span><span lang="en">Deep Learning</span></a>
               <a href="../learn/llm.html"><span lang="ja">大規模言語モデル（LLM）</span><span lang="en">Large Language Models</span></a>
-              <a class="here" aria-current="page" href="../learn/program-analysis.html"><span lang="ja">プログラム解析</span><span lang="en">Program Analysis</span></a>
+              <a href="../learn/program-analysis.html"><span lang="ja">プログラム解析</span><span lang="en">Program Analysis</span></a>
             </div>
             <div class="megacol">
               <div class="navlabel"><span lang="ja">統計とデータ分析</span><span lang="en">Statistics & data analysis</span></div>
-              <a href="../learn/statistics.html"><span lang="ja">統計分析</span><span lang="en">Statistical analysis</span></a>
+              <a class="here" aria-current="page" href="../learn/statistics.html"><span lang="ja">統計分析</span><span lang="en">Statistical analysis</span></a>
               <a href="../learn/data-visualization.html"><span lang="ja">データ可視化</span><span lang="en">Data visualization</span></a>
               <a href="../learn/causal-inference.html"><span lang="ja">因果推論</span><span lang="en">Causal inference</span></a>
               <a href="../learn/time-series.html"><span lang="ja">時系列分析</span><span lang="en">Time series analysis</span></a>
@@ -616,9 +616,9 @@
       <a href="../learn/machine-learning.html"><span lang="ja">機械学習</span><span lang="en">Machine Learning</span></a>
       <a href="../learn/deep-learning.html"><span lang="ja">深層学習</span><span lang="en">Deep Learning</span></a>
       <a href="../learn/llm.html"><span lang="ja">大規模言語モデル（LLM）</span><span lang="en">Large Language Models</span></a>
-      <a class="here" aria-current="page" href="../learn/program-analysis.html"><span lang="ja">プログラム解析</span><span lang="en">Program Analysis</span></a>
+      <a href="../learn/program-analysis.html"><span lang="ja">プログラム解析</span><span lang="en">Program Analysis</span></a>
       <div class="mobsublabel"><span lang="ja">統計とデータ分析</span><span lang="en">Statistics & data analysis</span></div>
-      <a href="../learn/statistics.html"><span lang="ja">統計分析</span><span lang="en">Statistical analysis</span></a>
+      <a class="here" aria-current="page" href="../learn/statistics.html"><span lang="ja">統計分析</span><span lang="en">Statistical analysis</span></a>
       <a href="../learn/data-visualization.html"><span lang="ja">データ可視化</span><span lang="en">Data visualization</span></a>
       <a href="../learn/causal-inference.html"><span lang="ja">因果推論</span><span lang="en">Causal inference</span></a>
       <a href="../learn/time-series.html"><span lang="ja">時系列分析</span><span lang="en">Time series analysis</span></a>
@@ -648,11 +648,32 @@
 </div>
 
 <main id="main">
+<style>
+  /* demo controls (statistics module) */
+  .demo .slider{display:grid; grid-template-columns:132px 1fr 68px; align-items:center; gap:14px; margin:12px 0}
+  @media(max-width:520px){.demo .slider{grid-template-columns:104px 1fr 56px; gap:10px}}
+  .demo .slider .snm{font:600 .68rem/1.3 var(--disp); letter-spacing:.06em; text-transform:uppercase; color:var(--muted)}
+  .demo input[type=range]{width:100%; accent-color:var(--accent); height:4px; cursor:pointer}
+  .demo .sval{font:600 .98rem/1 var(--disp); color:var(--accent-2); text-align:right; font-variant-numeric:tabular-nums}
+  .stat-grid{display:grid; grid-template-columns:repeat(auto-fit,minmax(116px,1fr)); gap:10px; margin:4px 0 0}
+  .stat{background:var(--bg-2); border:1px solid var(--hair); border-radius:12px; padding:10px 13px}
+  .stat .k{font:600 .6rem/1.2 var(--disp); letter-spacing:.07em; text-transform:uppercase; color:var(--muted); display:block; margin-bottom:6px}
+  .stat .v{font:500 1.26rem/1 var(--disp); color:var(--ink); font-variant-numeric:tabular-nums; letter-spacing:-.01em}
+  .stat .v small{font-size:.72rem; color:var(--muted); font-weight:400; margin-left:2px}
+  .verdict{display:inline-flex; align-items:center; gap:8px; margin-top:15px; padding:8px 15px; border-radius:999px; font:600 .84rem/1 var(--sans)}
+  .verdict::before{content:""; width:7px; height:7px; border-radius:50%; background:currentColor; flex:0 0 auto}
+  .verdict.sig{background:var(--accent-soft); color:var(--accent-2)}
+  .verdict.nsig{background:rgba(138,109,59,.12); color:var(--warn)}
+  .demo svg.viz{display:block; width:100%; height:auto; margin-top:16px; background:var(--bg); border-radius:12px; border:1px solid var(--hair)}
+  .prob-val{display:flex; align-items:baseline; gap:12px; margin:14px 0 4px}
+  .prob-val .val{font:500 2.5rem/1 var(--disp); color:var(--accent); letter-spacing:-.03em; font-variant-numeric:tabular-nums}
+  .prob-val .lab{font-size:.9rem; color:var(--muted)}
+</style>
 <div class="wrap" style="padding-top:24px">
   <nav class="crumbs" aria-label="パンくず">
     <a href="../index.html"><span lang="ja">ホーム</span><span lang="en">Home</span></a>
     <span class="csep" aria-hidden="true">&rsaquo;</span>
-    <span class="cur" aria-current="page"><span lang="ja">学習コース：プログラム解析</span><span lang="en">Learn: Program Analysis</span></span>
+    <span class="cur" aria-current="page"><span lang="ja">学習コース：統計分析</span><span lang="en">Learn: Statistical Analysis</span></span>
   </nav>
 </div>
 
@@ -660,15 +681,15 @@
 <div class="hero">
   <div class="wrap">
     <p class="kick"><span lang="ja">学習コース</span><span lang="en">Learn</span></p>
-    <h1>プログラム解析</h1>
-    <p class="lead">プログラムを実行せずに、あるいは実行しながら解析し、コードの構造・品質・振る舞いを読み解く技術を、概要から理論、そして実際に動かせるコードまで、順を追って学ぶモジュールです。各ステップは「概要 → 仕組み（座学）→ コードで動かす」の3層で進みます。ページ内には手を動かせるデモを3つ用意しました。</p>
+    <h1>統計分析</h1>
+    <p class="lead">データから確かな結論を導くための、推測統計と仮説検定を基礎から手を動かして学ぶモジュールです。各ステップは「概要 → 仕組み（座学）→ コードで動かす」の3層で進みます。ページ内には手を動かせるデモを3つ用意しました。</p>
     <p class="ja-note"><span lang="ja">この教材は日本語のみで提供しています</span><span lang="en">This learning material is available in Japanese only.</span></p>
     <div class="hero-cta">
       <a class="btn ink" href="#intro" style="padding:12px 22px">
         <span lang="ja">学びはじめる</span><span lang="en">Start learning</span>
       </a>
       <a class="tlink" href="#step2">
-        <span lang="ja">まず手を動かす（構文木デモ）</span><span lang="en">Jump to the syntax-tree demo</span>
+        <span lang="ja">まず手を動かす（記述統計電卓）</span><span lang="en">Jump to the statistics calculator</span>
         <span class="ar" aria-hidden="true">&rsaquo;</span>
       </a>
     </div>
@@ -680,12 +701,12 @@
 <div class="tocbar">
   <nav class="tocbar-inner" aria-label="ページ内目次">
     <a class="tocpill" href="#intro"><span lang="ja">はじめに</span><span lang="en">Intro</span></a>
-    <a class="tocpill" href="#step1">Step 1 <span lang="ja">プログラム解析とは</span><span lang="en">What is program analysis</span></a>
-    <a class="tocpill" href="#step2">Step 2 <span lang="ja">構文解析とAST</span><span lang="en">Parsing &amp; AST</span></a>
-    <a class="tocpill" href="#step3">Step 3 <span lang="ja">静的解析</span><span lang="en">Static analysis</span></a>
-    <a class="tocpill" href="#step4">Step 4 <span lang="ja">コードメトリクス</span><span lang="en">Code metrics</span></a>
-    <a class="tocpill" href="#step5">Step 5 <span lang="ja">動的解析</span><span lang="en">Dynamic analysis</span></a>
-    <a class="tocpill" href="#step6">Step 6 <span lang="ja">応用とこれから</span><span lang="en">Applications</span></a>
+    <a class="tocpill" href="#step1">Step 1 <span lang="ja">統計分析とは</span><span lang="en">What is statistics</span></a>
+    <a class="tocpill" href="#step2">Step 2 <span lang="ja">記述統計</span><span lang="en">Describe</span></a>
+    <a class="tocpill" href="#step3">Step 3 <span lang="ja">確率分布</span><span lang="en">Distributions</span></a>
+    <a class="tocpill" href="#step4">Step 4 <span lang="ja">推定</span><span lang="en">Estimation</span></a>
+    <a class="tocpill" href="#step5">Step 5 <span lang="ja">仮説検定</span><span lang="en">Testing</span></a>
+    <a class="tocpill" href="#step6">Step 6 <span lang="ja">相関と回帰</span><span lang="en">Regression</span></a>
     <a class="tocpill" href="#closing"><span lang="ja">まとめ</span><span lang="en">Wrap-up</span></a>
     <a class="tocpill" href="#beyond"><span lang="ja">発展トピック</span><span lang="en">Beyond</span></a>
   </nav>
@@ -697,55 +718,60 @@
     <p class="eyebrow"><span lang="ja">はじめに</span><span lang="en">Introduction</span></p>
     <h2 class="big">このモジュールの全体像</h2>
     <div class="prose" style="margin-top:22px">
-      <p><b>プログラム解析（program analysis）</b>とは、ソースコードやプログラムそのものを対象に、その構造・品質・振る舞いを機械的に読み解く技術の総称です。コンパイラの最適化、統合開発環境（IDE）のエラー表示や補完、リンタによるスタイル指摘、セキュリティ検査、そしてリファクタリング支援まで、私たちが日々使う開発ツールの多くが、この技術の上に成り立っています。</p>
-      <p>プログラム解析には大きく2つの立場があります。プログラムを<b>実行せずに</b>コードそのものから性質を調べる<b>静的解析</b>と、実際に<b>実行して</b>その様子を観測する<b>動的解析</b>です。どちらの場合も、まず生のソースコードを機械が扱える構造へ変換することから始まります。次のような流れ（パイプライン）が基本です。</p>
+      <p><b>統計分析（statistical analysis）</b>とは、データにひそむパターンや規則を数量的に読み取り、手元のデータを超えて「確かなことは何か」を導く技術です。効果があったのか、差は偶然ではないのか、全体ではどうなっているのか。こうした問いに、あいまいな印象ではなく、根拠をもって答えるための道具立てです。</p>
+      <p>統計分析は大きく2つに分かれます。手元のデータそのものを要約する<b>記述統計</b>と、標本（サンプル）から背後の母集団を推し量る<b>推測統計</b>です。このモジュールは推測統計と仮説検定を核にしながら、次の流れ（パイプライン）に沿って進みます。</p>
     </div>
 
     <div class="diagram-wrap reveal">
-      <p class="cap">プログラム解析の基本パイプライン</p>
-      <svg viewBox="0 0 940 150" role="img" aria-label="プログラム解析のパイプライン: ソースコードから字句・構文解析（AST）、解析、結果への流れ">
+      <p class="cap">統計分析の基本の流れ</p>
+      <svg viewBox="0 0 940 150" role="img" aria-label="統計分析の流れ: データから記述統計、分布と推測、検定、結論への流れ">
         <g>
-          <rect class="dg-box" x="30" y="46" width="166" height="58" rx="12"/>
-          <text class="dg-lbl" x="113" y="72">ソースコード</text>
-          <text class="dg-en" x="113" y="90">Source code</text>
+          <rect class="dg-box" x="12" y="46" width="150" height="58" rx="12"/>
+          <text class="dg-lbl" x="87" y="72">データ</text>
+          <text class="dg-en" x="87" y="90">Data</text>
         </g>
         <g>
-          <rect class="dg-box acc" x="268" y="46" width="166" height="58" rx="12"/>
-          <text class="dg-lbl" x="351" y="72">構文解析（AST）</text>
-          <text class="dg-en" x="351" y="90">Parse</text>
+          <rect class="dg-box acc" x="204" y="46" width="150" height="58" rx="12"/>
+          <text class="dg-lbl" x="279" y="72">記述統計</text>
+          <text class="dg-en" x="279" y="90">Describe</text>
         </g>
         <g>
-          <rect class="dg-box acc" x="506" y="46" width="166" height="58" rx="12"/>
-          <text class="dg-lbl" x="589" y="72">解析</text>
-          <text class="dg-en" x="589" y="90">Analyze</text>
+          <rect class="dg-box acc" x="396" y="46" width="150" height="58" rx="12"/>
+          <text class="dg-lbl" x="471" y="72">分布と推測</text>
+          <text class="dg-en" x="471" y="90">Infer</text>
         </g>
         <g>
-          <rect class="dg-box" x="744" y="46" width="166" height="58" rx="12"/>
-          <text class="dg-lbl" x="827" y="72">結果</text>
-          <text class="dg-en" x="827" y="90">Result</text>
+          <rect class="dg-box acc" x="588" y="46" width="150" height="58" rx="12"/>
+          <text class="dg-lbl" x="663" y="72">仮説検定</text>
+          <text class="dg-en" x="663" y="90">Test</text>
+        </g>
+        <g>
+          <rect class="dg-box" x="780" y="46" width="148" height="58" rx="12"/>
+          <text class="dg-lbl" x="854" y="72">結論</text>
+          <text class="dg-en" x="854" y="90">Conclusion</text>
         </g>
         <g class="dg-line">
-          <line x1="196" y1="75" x2="262" y2="75"/><line x1="434" y1="75" x2="500" y2="75"/>
-          <line x1="672" y1="75" x2="738" y2="75"/>
+          <line x1="162" y1="75" x2="196" y2="75"/><line x1="354" y1="75" x2="388" y2="75"/>
+          <line x1="546" y1="75" x2="580" y2="75"/><line x1="738" y1="75" x2="772" y2="75"/>
         </g>
         <g class="dg-arrow">
-          <polygon points="262,75 254,71 254,79"/><polygon points="500,75 492,71 492,79"/>
-          <polygon points="738,75 730,71 730,79"/>
+          <polygon points="196,75 188,71 188,79"/><polygon points="388,75 380,71 380,79"/>
+          <polygon points="580,75 572,71 572,79"/><polygon points="772,75 764,71 764,79"/>
         </g>
-        <text class="dg-note" x="351" y="130">字句解析・構文木</text>
-        <text class="dg-note" x="589" y="130">静的解析・動的解析</text>
-        <text class="dg-note" x="827" y="130">指標・警告・クローン</text>
+        <text class="dg-note" x="279" y="130">平均・分散・可視化</text>
+        <text class="dg-note" x="471" y="130">確率分布・推定</text>
+        <text class="dg-note" x="663" y="130">p値・有意差</text>
       </svg>
     </div>
 
     <div class="prose">
-      <p>このモジュールは、上のパイプラインを左から順にたどります。各ステップは次の3層で構成します。</p>
+      <p>このモジュールは、上の流れを左から順にたどります。各ステップは次の3層で構成します。</p>
       <ul>
-        <li><b>概要</b>：その技術が何のためにあるのか、あらましをつかむ。</li>
-        <li><b>仕組み（座学）</b>：背後にある考え方・定義・式を、ていねいに理解する。</li>
-        <li><b>コードで動かす</b>：Python の標準ライブラリや定番ツール、ページ内デモで実際に動かして確かめる。</li>
+        <li><b>概要</b>：その考え方が何のためにあるのか、あらましをつかむ。</li>
+        <li><b>仕組み（座学）</b>：背後にある定義・式・解釈を、ていねいに理解する。</li>
+        <li><b>コードで動かす</b>：Python の定番ライブラリや、ページ内デモで実際に計算して確かめる。</li>
       </ul>
-      <p>手を動かす題材には、特別なデータは使いません。Python の標準ライブラリのソースや任意の公開 Python コード、そしてページ内の小さなコード片やサンプルだけを使います。特別な環境がなくても、読みながら試せる構成です。</p>
+      <p>手を動かす題材には、ページ内の小さなサンプルや、実在の公開データセット（scikit-learn 内蔵の iris・diabetes、seaborn の tips など）を使います。特別な環境がなくても、読みながら試せる構成です。</p>
     </div>
   </div>
 </section>
@@ -755,36 +781,31 @@
   <div class="wrap reveal">
     <div class="stephead">
       <span class="num">1</span>
-      <div class="tt"><h2>プログラム解析とは</h2><span class="st-en">What is program analysis</span></div>
+      <div class="tt"><h2>統計分析とは</h2><span class="st-en">What is statistical analysis</span></div>
     </div>
     <div class="steprule"></div>
 
     <p class="layer first"><span lang="ja">概要</span><span lang="en">Overview</span></p>
     <div class="prose">
-      <p>プログラム解析は「プログラムについて、プログラムで調べる」技術です。人が目で追うには大きすぎるコードから、機械的に情報を引き出します。おもな用途を挙げます。</p>
+      <p>統計分析は「データ」と「結論」の橋渡しをする分野です。集めた数値をながめるだけでは、それが偶然なのか意味のある傾向なのか判断できません。統計は、不確かさを数量として扱い、根拠のある主張へと変えるための枠組みを与えます。</p>
+      <p>統計分析には、目的の異なる2つの柱があります。</p>
       <ul>
-        <li><b>バグ発見</b>：未定義の変数、到達しないコード、型の不一致などを、実行前に見つける。</li>
-        <li><b>品質評価</b>：複雑さや重複を数値化し、保守しにくい箇所を可視化する。</li>
-        <li><b>セキュリティ</b>：外部入力が危険な場所に届く経路（脆弱性）を検出する。</li>
-        <li><b>リファクタリング支援</b>：安全に名前を変える、関数を抽出する、といった変換を機械的に助ける。</li>
-        <li><b>最適化</b>：コンパイラが、意味を変えずに速く・小さくコードを書き換える。</li>
+        <li><b>記述統計（descriptive statistics）</b>：手元のデータそのものを要約し、その特徴を平均・ばらつき・図で描き出す。</li>
+        <li><b>推測統計（inferential statistics）</b>：手元のデータ（標本）から、その背後にある全体（母集団）の性質を推し量る。このモジュールの中心です。</li>
       </ul>
     </div>
 
     <p class="layer"><span lang="ja">仕組み</span><span lang="en">How it works</span></p>
     <div class="prose">
-      <p>解析には、実行するかどうかで大きく2つの立場があります。</p>
-      <h4>静的解析（static analysis）</h4>
-      <p>プログラムを<b>実行せずに</b>、ソースコードやコンパイル後のバイトコードそのものを調べます。あらゆる入力・あらゆる経路を（近似的に）まとめて扱えるのが強みです。いっぽう、実行時にしか決まらない値（利用者の入力やファイルの中身など）は分からないため、結果はどうしても<b>近似</b>になります。安全側に倒すと、実際には問題ない箇所まで警告する<b>偽陽性</b>が増えがちです。</p>
-      <h4>動的解析（dynamic analysis）</h4>
-      <p>プログラムを<b>実際に実行して</b>、その振る舞いを観測します。実行した具体的な値や経路について正確な情報が得られます。ただし、観測できるのは<b>実行した経路だけ</b>で、試さなかった入力の挙動は分かりません。見逃し（<b>偽陰性</b>）が起きやすいのが弱点です。テストカバレッジやプロファイリングが代表例です。</p>
-      <h4>解析の限界</h4>
-      <p>「このプログラムは必ず停止するか」「この2つのプログラムは同じ振る舞いか」といった、プログラムの<b>意味に関する非自明な性質</b>は、一般には機械的に完全に判定できないことが知られています（ライスの定理・停止性問題）。だからこそ実務の解析は、安全な近似・ヒューリスティック・限定した範囲での判定を組み合わせて、役に立つ答えを返すよう設計されています。静的と動的は対立するものではなく、互いの弱点を補い合う道具だと考えるのがよいでしょう。</p>
+      <h4>母集団と標本</h4>
+      <p>推測統計のかなめは、<b>母集団</b>と<b>標本</b>の区別です。<b>母集団（population）</b>は本当に知りたい対象全体（たとえば「ある製品の全ユーザー」）、<b>標本（sample）</b>はそこから実際に観測できた一部です。全体を調べつくすのは多くの場合むずかしいので、標本から母集団を推測します。標本から計算した量（標本平均など）を<b>統計量</b>、母集団の真の値（母平均など）を<b>母数（パラメータ）</b>と呼び、統計量を手がかりに母数を推し量ります。</p>
+      <h4>統計分析と機械学習のちがい</h4>
+      <p>データからモデルを作る点で、統計分析と機械学習は重なります。ただし主眼が異なります。機械学習は<b>予測</b>の精度を第一に置き、未知のデータをどれだけ当てられるかを重視します。いっぽう統計分析は<b>説明と結論</b>を重視します。「この要因は結果に効いているか」「差は偶然の範囲か」を、解釈できる形で、不確かさとともに述べることを目指します。同じ回帰式でも、機械学習は予測誤差を、統計分析は各係数が偶然でないか（有意か）を見る、という違いです。</p>
     </div>
 
     <div class="callout tip">
       <h4>この Step のまとめ</h4>
-      <p>プログラム解析はコードから機械的に情報を引き出す技術。実行しない<b>静的解析</b>は網羅的だが近似的、実行する<b>動的解析</b>は正確だが観測した経路だけ。両者を組み合わせて、バグ発見・品質評価・セキュリティに役立てます。</p>
+      <p>統計分析は記述統計と推測統計の2本柱。標本から母集団を推し量るのが推測統計です。機械学習が「予測」を狙うのに対し、統計分析は「説明と結論」を、不確かさとともに述べることを目指します。</p>
     </div>
   </div>
 </section>
@@ -794,107 +815,84 @@
   <div class="wrap reveal">
     <div class="stephead">
       <span class="num">2</span>
-      <div class="tt"><h2>字句・構文解析とAST</h2><span class="st-en">Lexing, parsing &amp; the AST</span></div>
+      <div class="tt"><h2>データを要約する</h2><span class="st-en">Descriptive statistics</span></div>
     </div>
     <div class="steprule"></div>
 
     <p class="layer first"><span lang="ja">概要</span><span lang="en">Overview</span></p>
     <div class="prose">
-      <p>コードを解析する第一歩は、ただの文字の並びを<b>構造</b>に変えることです。人間が「2 + 3 * 4」を見て「掛け算が先」と読み取るように、機械にも文の骨組みを理解させます。この骨組みが<b>抽象構文木（AST: Abstract Syntax Tree）</b>で、ほとんどの解析はこの木の上で行われます。</p>
+      <p>分析の第一歩は、データの姿を「代表値」と「ばらつき」でつかむことです。数百個の数字も、中心はどこか、どれくらい散らばっているか、極端な値はないか、を要約すれば全体像が見えてきます。これが記述統計です。</p>
     </div>
 
     <p class="layer"><span lang="ja">仕組み</span><span lang="en">How it works</span></p>
     <div class="prose">
-      <h4>1. 字句解析（lexing / tokenization）</h4>
-      <p>文字列を、意味のある最小単位である<b>トークン</b>に区切ります。<code>y = 2 + 3</code> なら、<code>y</code>（識別子）・<code>=</code>（記号）・<code>2</code>（数値）・<code>+</code>（記号）・<code>3</code>（数値）に分けます。空白やコメントはここで落とします。Python では標準ライブラリ <code>tokenize</code> がこの役目を担います。</p>
-      <h4>2. 構文解析（parsing）</h4>
-      <p>トークンの並びを、文法規則に従って木に組み立てます。ここで<b>演算子の優先順位</b>と<b>結合性</b>が効きます。<code>2 + 3 * 4</code> では、掛け算が足し算より優先されるので、<code>3 * 4</code> がひとつのまとまりになり、その結果と <code>2</code> を足す、という入れ子の木になります。同じ優先順位の <code>10 - 4 - 2</code> は左から結合し、<code>(10 - 4) - 2</code> と解釈されます。</p>
-      <h4>3. 抽象構文木（AST）</h4>
-      <p>できあがった木からは、括弧やセミコロンといった「書き方の飾り」を落とし、<b>構造の本質だけ</b>を残します。これが AST です。各ノードは「代入」「二項演算」「関数呼び出し」などの構文要素に対応します。木になっていれば、深さ優先でたどって特定のパターンを探す、といった処理が素直に書けます。</p>
-      <p>なお、Python はソースを<b>バイトコード</b>にコンパイルしてから仮想マシンで実行します。標準ライブラリ <code>dis</code> を使うと、この中間表現（どんな命令に落ちるか）を覗くことができます。字句解析・構文解析・AST は、その手前の「意味を組み立てる」段階だと考えるとよいでしょう。</p>
+      <h4>中心を表す（代表値）</h4>
+      <ul>
+        <li><b>平均（mean）</b>：すべての値の合計を個数で割ったもの。<code>mean = &Sigma;x / n</code>。もっとも一般的だが、極端な値（外れ値）に引っぱられやすい。</li>
+        <li><b>中央値（median）</b>：値を小さい順に並べたときの真ん中の値。外れ値に強く、分布が偏っているときの中心として頼れる。</li>
+        <li><b>最頻値（mode）</b>：もっとも多く現れる値。カテゴリデータの中心として使う。</li>
+      </ul>
+      <h4>ばらつきを表す</h4>
+      <p>中心だけでは足りません。同じ平均でも、値が密集しているか広く散っているかで意味は大きく変わります。</p>
+      <div class="formula">
+        s<span class="op">&sup2;</span> = <span class="op">&Sigma;</span>(x<sub>i</sub> &minus; x&#772;)<span class="op">&sup2;</span> / (n &minus; 1)　　s = <span class="op">&radic;</span>s<span class="op">&sup2;</span>
+        <small>標本分散 s&sup2; と標本標準偏差 s。平均からの隔たりを2乗して平均する（n&minus;1 で割るのは母分散の偏りのない推定にするため）。標準偏差はその平方根で、元の値と同じ単位になる。</small>
+      </div>
+      <h4>位置を表す（四分位）</h4>
+      <p>データを小さい順に並べ、四等分する位置の値を<b>四分位数</b>と呼びます。第1四分位（Q1、下から25%）、第2四分位（中央値）、第3四分位（Q3、下から75%）です。Q3 と Q1 の差を<b>四分位範囲（IQR）</b>と呼び、外れ値の影響を受けにくいばらつきの指標になります。これらを図にしたのが<b>箱ひげ図</b>で、中心・広がり・外れ値を一目で示します。</p>
+      <p>分布の<b>形</b>も大切です。左右対称の山なりか、片側に裾を引いているか（歪み）。平均と中央値が大きくずれていれば、分布が偏っているサインです。</p>
     </div>
 
-    <!-- DEMO 1: expression syntax tree -->
-    <div class="demo reveal" id="demoAst">
+    <!-- DEMO 1: descriptive stats calculator -->
+    <div class="demo reveal" id="demoDesc">
       <span class="dtag"><span lang="ja">デモ 1</span><span lang="en">Demo 1</span></span>
-      <h4>式の構文木</h4>
-      <p class="dnote">算術式（<code>+ - * /</code> と括弧、整数）を入力すると、簡易パーサが演算子の優先順位に従って構文木を組み立て、SVG のツリーで表示します。掛け算・割り算は足し算・引き算より先に、括弧が最優先です。木の下には、その優先順位で計算した結果も表示します。</p>
-      <label class="fld" for="astInput">式 / Expression</label>
-      <input type="text" id="astInput" spellcheck="false" value="2 + 3 * 4">
+      <h4>記述統計電卓</h4>
+      <p class="dnote">数値をカンマや空白、改行で区切って入力すると、平均・中央値・標準偏差・四分位数を計算し、下に簡易的な箱ひげ図を描きます。値を書き換えると、代表値やばらつきがどう動くかを確かめられます。四分位数は線形補間（NumPy と同じ既定の方法）で求めます。</p>
+      <label class="fld" for="descInput">数値データ / Numbers</label>
+      <textarea id="descInput" rows="2" spellcheck="false">72, 85, 90, 68, 95, 78, 88, 76, 83, 91</textarea>
       <div class="try">
         <span class="tlbl">例</span>
-        <button type="button" data-ex="2 + 3 * 4">2 + 3 * 4</button>
-        <button type="button" data-ex="(2 + 3) * 4">(2 + 3) * 4</button>
-        <button type="button" data-ex="10 - 4 - 2">10 - 4 - 2</button>
-        <button type="button" data-ex="2 * 3 + 4 * 5">2 * 3 + 4 * 5</button>
-        <button type="button" data-ex="8 / 2 + 1">8 / 2 + 1</button>
+        <button type="button" data-desc="72, 85, 90, 68, 95, 78, 88, 76, 83, 91">テストの点</button>
+        <button type="button" data-desc="3, 3, 4, 4, 4, 5, 5, 6, 40">外れ値あり</button>
+        <button type="button" data-desc="10, 12, 11, 13, 12, 11, 12, 10, 13, 12">ばらつき小</button>
+        <button type="button" data-desc="1, 20, 5, 45, 8, 33, 15, 50, 2, 27">ばらつき大</button>
       </div>
-      <div class="demo-out" id="astOut" aria-live="polite"></div>
+      <div class="demo-out" id="descOut" aria-live="polite"></div>
     </div>
 
     <p class="layer"><span lang="ja">コードで動かす</span><span lang="en">Run the code</span></p>
     <div class="prose">
-      <p>まず字句解析です。標準ライブラリ <code>tokenize</code> で、文字列がどんなトークンに分かれるかを見てみます。</p>
+      <p>pandas の <code>describe()</code> は、これらの要約をまとめて出してくれます。NumPy を使えば一つずつ計算することもできます。</p>
     </div>
     <div class="code-wrap attached">
-      <div class="code-head"><span class="lbl">Python</span><span class="lang-tag">lex_tokenize.py</span><button class="copy" type="button" onclick="copyCode(this)">copy</button></div>
-      <pre><code><span class="kw">import</span> tokenize, io
+      <div class="code-head"><span class="lbl">Python</span><span class="lang-tag">describe.py</span><button class="copy" type="button" onclick="copyCode(this)">copy</button></div>
+      <pre><code><span class="kw">import</span> numpy <span class="kw">as</span> np
+<span class="kw">import</span> pandas <span class="kw">as</span> pd
 
-src = <span class="st">"y = 2 + 3 * 4\n"</span>
-<span class="kw">for</span> tok <span class="kw">in</span> tokenize.generate_tokens(io.StringIO(src).readline):
-    <span class="kw">if</span> tok.string.strip():          <span class="cm"># 空白・改行トークンは省く</span>
-        <span class="kw">print</span>(tokenize.tok_name[tok.type], repr(tok.string))</code></pre>
-    </div>
-    <div class="code-out"><span class="olbl">出力例 / Output</span><pre><code>NAME 'y'
-OP '='
-NUMBER '2'
-OP '+'
-NUMBER '3'
-OP '*'
-NUMBER '4'</code></pre></div>
+scores = pd.Series([<span class="nu">72</span>, <span class="nu">85</span>, <span class="nu">90</span>, <span class="nu">68</span>, <span class="nu">95</span>,
+                    <span class="nu">78</span>, <span class="nu">88</span>, <span class="nu">76</span>, <span class="nu">83</span>, <span class="nu">91</span>])
+<span class="kw">print</span>(scores.describe())          <span class="cm"># 件数・平均・標準偏差・四分位など</span>
 
-    <div class="prose">
-      <p>次に構文解析です。標準ライブラリ <code>ast</code> の <code>ast.parse</code> でソースを AST に変換し、<code>ast.dump</code> で構造を文字列にして眺めます。<code>2 + 3 * 4</code> が、掛け算を内側に持つ入れ子の <code>BinOp</code> になっている点に注目してください。</p>
+<span class="cm"># NumPy で個別に（標準偏差は ddof=1 で標本標準偏差）</span>
+x = scores.to_numpy()
+<span class="kw">print</span>(np.mean(x), np.median(x), np.std(x, ddof=<span class="nu">1</span>))
+<span class="kw">print</span>(np.percentile(x, [<span class="nu">25</span>, <span class="nu">50</span>, <span class="nu">75</span>]))</code></pre>
     </div>
-    <div class="code-wrap attached">
-      <div class="code-head"><span class="lbl">Python</span><span class="lang-tag">ast_dump.py</span><button class="copy" type="button" onclick="copyCode(this)">copy</button></div>
-      <pre><code><span class="kw">import</span> ast
-
-tree = ast.parse(<span class="st">"y = 2 + 3 * 4"</span>)
-<span class="kw">print</span>(ast.dump(tree, indent=<span class="nu">2</span>))</code></pre>
-    </div>
-    <div class="code-out"><span class="olbl">出力例 / Output</span><pre><code>Module(
-  body=[
-    Assign(
-      targets=[
-        Name(id='y', ctx=Store())],
-      value=BinOp(
-        left=Constant(value=2),
-        op=Add(),
-        right=BinOp(
-          left=Constant(value=3),
-          op=Mult(),
-          right=Constant(value=4))))],
-  type_ignores=[])</code></pre></div>
-
-    <div class="prose">
-      <p><code>ast.walk</code> を使うと、木のすべてのノードを順にたどれます。ここでは二項演算（<code>BinOp</code>）のノードだけを拾い、その演算子の種類を表示してみます。</p>
-    </div>
-    <div class="code-wrap attached">
-      <div class="code-head"><span class="lbl">Python</span><span class="lang-tag">ast_walk.py</span><button class="copy" type="button" onclick="copyCode(this)">copy</button></div>
-      <pre><code><span class="kw">import</span> ast
-
-tree = ast.parse(<span class="st">"y = 2 + 3 * 4"</span>)
-<span class="kw">for</span> node <span class="kw">in</span> ast.walk(tree):
-    <span class="kw">if</span> isinstance(node, ast.BinOp):
-        <span class="kw">print</span>(type(node.op).__name__)</code></pre>
-    </div>
-    <div class="code-out"><span class="olbl">出力例 / Output</span><pre><code>Add
-Mult</code></pre></div>
+    <div class="code-out"><span class="olbl">出力例 / Output</span><pre><code>count    10.000000
+mean     82.600000
+std       8.846845
+min      68.000000
+25%      76.500000
+50%      84.000000
+75%      89.500000
+max      95.000000
+dtype: float64
+82.6 84.0 8.846845012017937
+[76.5 84.  89.5]</code></pre></div>
 
     <div class="callout tip">
       <h4>この Step のまとめ</h4>
-      <p>解析は「文字列 → トークン → 構文木（AST）」という変換から始まります。演算子の優先順位はこの木の形に現れます。Python では <code>tokenize</code> で字句解析、<code>ast</code> で構文解析ができ、以降の解析はすべてこの木の上で行われます。</p>
+      <p>データは「中心（平均・中央値）」と「ばらつき（分散・標準偏差・IQR）」で要約します。平均は外れ値に弱く、中央値と四分位は頑健です。pandas の <code>describe()</code> でひととおりの要約が得られます。</p>
     </div>
   </div>
 </section>
@@ -904,60 +902,72 @@ Mult</code></pre></div>
   <div class="wrap reveal">
     <div class="stephead">
       <span class="num">3</span>
-      <div class="tt"><h2>静的解析</h2><span class="st-en">Static analysis</span></div>
+      <div class="tt"><h2>確率分布</h2><span class="st-en">Probability distributions</span></div>
     </div>
     <div class="steprule"></div>
 
     <p class="layer first"><span lang="ja">概要</span><span lang="en">Overview</span></p>
     <div class="prose">
-      <p>AST が手に入れば、プログラムを実行せずにさまざまな性質を調べられます。これが<b>静的解析</b>です。処理の流れ（制御フロー）やデータの流れ（データフロー）を追い、あやしい箇所を機械的に指摘します。リンタや型検査器、IDE の警告は、みなこの技術の応用です。</p>
+      <p>推測統計に進むには、「データがどんなふうに散らばるか」を数式で表す道具が要ります。それが<b>確率分布</b>です。分布がわかれば、「この値が出る確率」や「この範囲に入る確率」を計算でき、推定や検定の土台になります。</p>
     </div>
 
     <p class="layer"><span lang="ja">仕組み</span><span lang="en">How it works</span></p>
     <div class="prose">
-      <h4>制御フローグラフ（CFG）</h4>
-      <p>プログラムの「どこからどこへ進みうるか」をグラフで表したものが<b>制御フローグラフ（Control Flow Graph）</b>です。分岐のない一続きの命令列を<b>基本ブロック</b>としてノードにまとめ、条件分岐やループによる遷移をエッジで結びます。「この行に到達できるか」「ここから抜け出せるか」といった問いは、このグラフ上の到達可能性の問題になります。</p>
-      <h4>データフロー解析</h4>
-      <p>変数の値がプログラム中をどう流れるかを追うのが<b>データフロー解析</b>です。ある地点で「どの代入の結果が生きているか（到達定義）」「この先で使われる変数はどれか（生存変数）」などを、CFG に沿って伝播させて求めます。応用として、<b>定義・使用連鎖（def-use chain）</b>を作れば、「代入したのに一度も使われない変数」や「使う前に値が入っていない変数」を検出できます。</p>
-      <h4>リンタの仕組み</h4>
-      <p><b>リンタ（linter）</b>は、AST を走査してあらかじめ決めたパターン（アンチパターン）に一致する箇所を警告するツールです。未使用の変数・インポート、比較演算子の誤用、命名規約からの逸脱などを指摘します。Python では <b>pylint</b> や <b>flake8</b> が定番で、内部では <code>ast</code> のような構文木の走査を行っています。次のコードは、その「未使用変数の検出」を <code>ast</code> だけでミニチュア実装した例です。</p>
+      <h4>代表的な分布</h4>
+      <ul>
+        <li><b>正規分布（normal distribution）</b>：平均を中心に左右対称の釣鐘型。身長や測定誤差など、多くの連続量がこの形に近づく。平均 &mu; と標準偏差 &sigma; の2つで形が決まる。</li>
+        <li><b>二項分布（binomial distribution）</b>：成功確率 p の試行を n 回くり返したときの成功回数の分布。コイン投げやクリック率など、成功か失敗かの繰り返しに使う。</li>
+        <li><b>ポアソン分布（Poisson distribution）</b>：一定の時間や区間に、まれな事象が起きる回数の分布。単位時間あたりの平均発生数 &lambda; で決まる。</li>
+      </ul>
+      <h4>中心極限定理と標準化</h4>
+      <p>推測統計で正規分布が主役になる理由が<b>中心極限定理</b>です。もとの分布の形によらず、標本平均は標本サイズ n を大きくするほど正規分布に近づきます。だからこそ、多くの手法が正規分布を前提にできます。</p>
+      <p>正規分布どうしを比べるには、単位をそろえる<b>標準化</b>が便利です。値から平均を引き、標準偏差で割ると、平均0・標準偏差1の<b>標準正規分布</b>上の位置＝<b>z値</b>になります。</p>
+      <div class="formula">
+        z = (x &minus; &mu;) / &sigma;
+        <small>z値は「平均から標準偏差いくつ分はなれているか」を表す。たとえば z = 1.96 の外側（両側）にはおよそ 5% しか入らない。</small>
+      </div>
     </div>
 
-    <div class="code-wrap attached">
-      <div class="code-head"><span class="lbl">Python</span><span class="lang-tag">unused_vars.py</span><button class="copy" type="button" onclick="copyCode(this)">copy</button></div>
-      <pre><code><span class="kw">import</span> ast
-
-source = <span class="st">'''
-def f(x):
-    y = x + 1
-    z = x * 2      # z は使われない
-    return y
-'''</span>
-
-fn = ast.parse(source).body[<span class="nu">0</span>]          <span class="cm"># 関数定義ノード</span>
-assigned, used = set(), set()
-<span class="kw">for</span> node <span class="kw">in</span> ast.walk(fn):
-    <span class="kw">if</span> isinstance(node, ast.Name):
-        <span class="kw">if</span> isinstance(node.ctx, ast.Store):    <span class="cm"># 代入されている名前</span>
-            assigned.add(node.id)
-        <span class="kw">elif</span> isinstance(node.ctx, ast.Load):  <span class="cm"># 読み出されている名前</span>
-            used.add(node.id)
-
-<span class="kw">print</span>(<span class="st">"assigned:"</span>, sorted(assigned))
-<span class="kw">print</span>(<span class="st">"used:    "</span>, sorted(used))
-<span class="kw">print</span>(<span class="st">"unused:  "</span>, sorted(assigned - used))</code></pre>
+    <!-- DEMO 2: normal distribution visualizer -->
+    <div class="demo reveal" id="demoNorm">
+      <span class="dtag"><span lang="ja">デモ 2</span><span lang="en">Demo 2</span></span>
+      <h4>正規分布ビジュアライザ</h4>
+      <p class="dnote">平均と標準偏差のスライダを動かすと、正規分布の曲線が描き直されます。範囲スライダで下限と上限を決めると、その範囲に入る確率（＝曲線と横軸で囲まれた面積）を計算し、色をつけて示します。曲線の面積の合計は必ず1になります。</p>
+      <div class="slider"><span class="snm"><span lang="ja">平均 &mu;</span><span lang="en">Mean &mu;</span></span><input type="range" id="nMu" min="20" max="80" step="1" value="50"><span class="sval" id="nMuV">50</span></div>
+      <div class="slider"><span class="snm"><span lang="ja">標準偏差 &sigma;</span><span lang="en">SD &sigma;</span></span><input type="range" id="nSd" min="4" max="24" step="1" value="10"><span class="sval" id="nSdV">10</span></div>
+      <div class="slider"><span class="snm"><span lang="ja">範囲 下限</span><span lang="en">Lower</span></span><input type="range" id="nLo" min="0" max="100" step="1" value="40"><span class="sval" id="nLoV">40</span></div>
+      <div class="slider"><span class="snm"><span lang="ja">範囲 上限</span><span lang="en">Upper</span></span><input type="range" id="nHi" min="0" max="100" step="1" value="60"><span class="sval" id="nHiV">60</span></div>
+      <div class="demo-out" id="normOut" aria-live="polite"></div>
     </div>
-    <div class="code-out"><span class="olbl">出力例 / Output</span><pre><code>assigned: ['y', 'z']
-used:     ['x', 'y']
-unused:   ['z']</code></pre></div>
 
+    <p class="layer"><span lang="ja">コードで動かす</span><span lang="en">Run the code</span></p>
     <div class="prose">
-      <p>ノードの <code>ctx</code>（コンテキスト）が <code>Store</code> なら代入、<code>Load</code> なら読み出しです。代入された名前の集合から使われた名前の集合を引けば、「代入したのに使われていない」変数が求まります。これは静的解析の考え方そのもので、本物のリンタは、これに<b>スコープ</b>や<b>制御フロー</b>の情報を加えて精度を高めています。</p>
+      <p>SciPy の <code>scipy.stats</code> を使うと、各分布の確率密度 <code>pdf</code> や累積確率 <code>cdf</code> がそのまま計算できます。</p>
     </div>
+    <div class="code-wrap attached">
+      <div class="code-head"><span class="lbl">Python</span><span class="lang-tag">distributions.py</span><button class="copy" type="button" onclick="copyCode(this)">copy</button></div>
+      <pre><code><span class="kw">from</span> scipy <span class="kw">import</span> stats
+
+<span class="cm"># 標準正規分布（平均0, 標準偏差1）</span>
+<span class="kw">print</span>(stats.norm.pdf(<span class="nu">0</span>))              <span class="cm"># 中心の密度</span>
+<span class="kw">print</span>(stats.norm.cdf(<span class="nu">1.96</span>))           <span class="cm"># 1.96 以下の確率</span>
+
+<span class="cm"># 範囲の確率 = cdf(上) - cdf(下)。P(-1.96 &lt; Z &lt; 1.96)</span>
+<span class="kw">print</span>(stats.norm.cdf(<span class="nu">1.96</span>) - stats.norm.cdf(-<span class="nu">1.96</span>))
+
+<span class="cm"># 二項分布 B(n=10, p=0.5): ちょうど5回成功する確率</span>
+<span class="kw">print</span>(stats.binom.pmf(<span class="nu">5</span>, <span class="nu">10</span>, <span class="nu">0.5</span>))
+<span class="kw">print</span>(stats.binom.cdf(<span class="nu">3</span>, <span class="nu">10</span>, <span class="nu">0.5</span>))   <span class="cm"># 3回以下の確率</span></code></pre>
+    </div>
+    <div class="code-out"><span class="olbl">出力例 / Output</span><pre><code>0.3989422804014327
+0.9750021048517795
+0.950004209703559
+0.24609375000000003
+0.171875</code></pre></div>
 
     <div class="callout tip">
       <h4>この Step のまとめ</h4>
-      <p>静的解析は AST の上で、制御フロー（CFG）とデータフローを追う技術です。定義・使用の関係を調べれば、未使用変数のような問題を実行前に見つけられます。pylint や flake8 は、この考え方を体系化したツールです。</p>
+      <p>確率分布は「値の散らばり方」を数式で表す道具。正規分布・二項分布・ポアソン分布が基本です。中心極限定理により標本平均は正規分布に近づき、z値で位置を比べられます。範囲の確率は累積確率（cdf）の差で求めます。</p>
     </div>
   </div>
 </section>
@@ -967,89 +977,55 @@ unused:   ['z']</code></pre></div>
   <div class="wrap reveal">
     <div class="stephead">
       <span class="num">4</span>
-      <div class="tt"><h2>コードメトリクスと品質</h2><span class="st-en">Code metrics &amp; quality</span></div>
+      <div class="tt"><h2>標本から母集団を推し量る</h2><span class="st-en">Estimation &amp; confidence intervals</span></div>
     </div>
     <div class="steprule"></div>
 
     <p class="layer first"><span lang="ja">概要</span><span lang="en">Overview</span></p>
     <div class="prose">
-      <p>「このコードは複雑すぎないか」「テストしにくくないか」を、感覚ではなく数字で語るための道具が<b>コードメトリクス</b>です。規模・複雑さ・重複などを測り、保守しにくい箇所を客観的に浮かび上がらせます。品質のすべてを数字で表せるわけではありませんが、注意を向けるべき場所の目印になります。</p>
+      <p>手元の標本から、母集団の真の値（母平均など）を見積もるのが<b>推定</b>です。ここでカギになるのが「標本は取り直すたびに少しずつ変わる」という事実。この揺らぎを見積もることで、推定にどれだけ幅があるかを言えるようになります。</p>
     </div>
 
     <p class="layer"><span lang="ja">仕組み</span><span lang="en">How it works</span></p>
     <div class="prose">
-      <h4>行数（LOC）</h4>
-      <p>もっとも素朴な指標が<b>行数（Lines of Code）</b>です。空行やコメントを除いた実行文の行数（論理行数）を数えるのが一般的です。単純ですが、規模の当たりをつけるのに役立ちます。</p>
-      <h4>循環的複雑度（cyclomatic complexity）</h4>
-      <p>McCabe が提案した<b>循環的複雑度</b>は、制御フローグラフをもとに「独立した経路の数」を測る指標です。分岐が多いほど値が大きく、テストすべき経路も増えます。CFG のエッジ数を E、ノード数を N、連結成分の数を P とすると、次の式で定義されます。</p>
-    </div>
-    <div class="formula">
-      M <span class="op">=</span> E <span class="op">-</span> N <span class="op">+</span> 2P
-      <small>E: 制御フローグラフのエッジ数　N: ノード数　P: 連結成分の数（1つの関数なら P = 1）<br>これは、判定点（if・for・while・and・or・case など）が d 個ある構造化プログラムでは M = d + 1 と一致します。</small>
-    </div>
-    <div class="prose">
-      <p>実務では、この「判定点を数えて 1 を足す」やり方で手早く見積もります。分岐が 0 なら M = 1（一本道）、分岐が増えるほど M も増えます。目安として、M が小さいほど理解・テストしやすく、大きくなるほど分割を検討する合図になります。次のデモは、まさにこの数え方で複雑度を計算します。</p>
-      <h4>その他の指標</h4>
-      <ul>
-        <li><b>Halstead 指標</b>：コード中の演算子・オペランドの種類数と総数から、プログラムの語彙・規模・難しさ（difficulty）・労力（effort）などを見積もる。</li>
-        <li><b>保守性指数（Maintainability Index）</b>：Halstead 体積・循環的複雑度・行数を組み合わせ、保守のしやすさを一つの数値にまとめたもの。</li>
-        <li><b>コードスメル</b>：長すぎる関数、巨大なクラス、重複コードなど、設計上の「におい」。バグそのものではないが、改善の候補。</li>
-        <li><b>コードクローン</b>：コピー＆ペーストなどで生まれた、よく似たコード片。片方を直すともう片方が直し忘れられる、といったリスクの温床（Step 5 で検出を体験します）。</li>
-      </ul>
-    </div>
-
-    <!-- DEMO 2: cyclomatic complexity -->
-    <div class="demo reveal" id="demoCc">
-      <span class="dtag"><span lang="ja">デモ 2</span><span lang="en">Demo 2</span></span>
-      <h4>循環的複雑度</h4>
-      <p class="dnote">疑似コード（Python 風）を入力すると、<code>if</code>・<code>elif</code>・<code>for</code>・<code>while</code>・<code>case</code>・<code>and</code>・<code>or</code>（<code>&amp;&amp;</code>・<code>||</code> も）といった判定点を数え、循環的複雑度 <b>M = 判定数 + 1</b> を計算します。内訳の表と、簡単・やや複雑・複雑の目安も表示します。</p>
-      <label class="fld" for="ccInput">疑似コード / Pseudocode</label>
-      <textarea id="ccInput" rows="9" spellcheck="false">def grade(s):
-    if s >= 90:
-        return "A"
-    elif s >= 80:
-        return "B"
-    elif s >= 70:
-        return "C"
-    else:
-        return "F"</textarea>
-      <div class="try">
-        <span class="tlbl">例</span>
-        <button type="button" data-cc="def f(x):&#10;    return x + 1">一本道（M=1）</button>
-        <button type="button" data-cc="def grade(s):&#10;    if s >= 90:&#10;        return &quot;A&quot;&#10;    elif s >= 80:&#10;        return &quot;B&quot;&#10;    elif s >= 70:&#10;        return &quot;C&quot;&#10;    else:&#10;        return &quot;F&quot;">grade 関数</button>
-        <button type="button" data-cc="def check(items):&#10;    total = 0&#10;    for x in items:&#10;        if x > 0 and x < 100:&#10;            total = total + x&#10;        elif x >= 100 or x == -1:&#10;            total = total - x&#10;    while total > 1000:&#10;        total = total / 2&#10;    return total">分岐とループ</button>
+      <h4>標本分布と標準誤差</h4>
+      <p>同じ母集団から標本を何度も取り直すと、標本平均は毎回わずかに違います。この標本平均そのものの分布を<b>標本分布</b>と呼び、その散らばりの大きさを<b>標準誤差（standard error, SE）</b>といいます。標準誤差は次のように、標本サイズ n が大きいほど小さくなります。</p>
+      <div class="formula">
+        SE = s / <span class="op">&radic;</span>n
+        <small>s は標本標準偏差、n は標本サイズ。データを増やすほど推定の揺らぎ（標準誤差）は小さくなる。標準偏差（データ自体の散らばり）と標準誤差（平均の推定の揺らぎ）は別物なので混同しない。</small>
       </div>
-      <div class="demo-out" id="ccOut" aria-live="polite"></div>
+      <h4>点推定と区間推定</h4>
+      <p>母平均を「82.6」のように1つの値で見積もるのが<b>点推定</b>です。しかし1つの値だけでは、それがどれだけ確からしいか伝わりません。そこで幅をもたせて「だいたいこの範囲」と示すのが<b>区間推定</b>で、代表が<b>信頼区間（confidence interval, CI）</b>です。95%信頼区間は、点推定の周りにおよそ「標準誤差の約2倍」の幅を取ります。</p>
+      <h4>95%信頼区間の正しい読み方</h4>
+      <p>ここは誤解の多いところです。「母平均が95%の確率でこの区間に入る」ではありません。母平均は動かない未知の定数です。正しくは、<b>同じ手続きで標本を取り直して区間を作る作業を何度もくり返せば、そのうち約95%の区間が母平均を含む</b>、という意味です。信頼は「区間を作る手続き」に対するもので、いま得た1本の区間に対する確率ではありません。</p>
     </div>
 
     <p class="layer"><span lang="ja">コードで動かす</span><span lang="en">Run the code</span></p>
     <div class="prose">
-      <p>Python では <b>radon</b> が定番です。次の <code>example.py</code>（先ほどの grade 関数）を測ってみます。この関数は <code>if</code> と <code>elif</code> が2つ、合わせて判定点が3つなので、複雑度は M = 3 + 1 = 4 です。コマンドラインの <code>radon cc</code> で確認します。</p>
+      <p>母標準偏差が未知で標本が小さいときは、正規分布ではなく<b>t分布</b>を使って平均の信頼区間を求めます。SciPy なら数行です。</p>
     </div>
     <div class="code-wrap attached">
-      <div class="code-head"><span class="lbl">Shell</span><span class="lang-tag">radon_cc.sh</span><button class="copy" type="button" onclick="copyCode(this)">copy</button></div>
-      <pre><code><span class="cm"># pip install radon</span>
-$ radon cc example.py -s</code></pre>
-    </div>
-    <div class="code-out"><span class="olbl">出力例 / Output</span><pre><code>example.py
-    F 1:0 grade - A (4)</code></pre></div>
+      <div class="code-head"><span class="lbl">Python</span><span class="lang-tag">confidence_interval.py</span><button class="copy" type="button" onclick="copyCode(this)">copy</button></div>
+      <pre><code><span class="kw">import</span> numpy <span class="kw">as</span> np
+<span class="kw">from</span> scipy <span class="kw">import</span> stats
 
-    <div class="prose">
-      <p><code>F</code> は関数（Function）、<code>1:0</code> は行:列、<code>grade</code> は名前、<code>A</code> はランク、<code>(4)</code> が循環的複雑度です。radon はランクを A（1〜5）から F（41 以上）で表します。同じことを Python から行うには <code>radon.complexity.cc_visit</code> を使います。</p>
-    </div>
-    <div class="code-wrap attached">
-      <div class="code-head"><span class="lbl">Python</span><span class="lang-tag">radon_api.py</span><button class="copy" type="button" onclick="copyCode(this)">copy</button></div>
-      <pre><code><span class="kw">from</span> radon.complexity <span class="kw">import</span> cc_visit
+x = np.array([<span class="nu">72</span>, <span class="nu">85</span>, <span class="nu">90</span>, <span class="nu">68</span>, <span class="nu">95</span>,
+              <span class="nu">78</span>, <span class="nu">88</span>, <span class="nu">76</span>, <span class="nu">83</span>, <span class="nu">91</span>])
+n = len(x)
+mean = x.mean()
+se = x.std(ddof=<span class="nu">1</span>) / np.sqrt(n)     <span class="cm"># 標準誤差</span>
 
-source = open(<span class="st">"example.py"</span>).read()
-<span class="kw">for</span> block <span class="kw">in</span> cc_visit(source):
-    <span class="kw">print</span>(block.name, block.complexity)</code></pre>
+<span class="cm"># 平均の95%信頼区間（自由度 n-1 の t 分布）</span>
+ci = stats.t.interval(<span class="nu">0.95</span>, df=n-<span class="nu">1</span>, loc=mean, scale=se)
+<span class="kw">print</span>(round(mean, <span class="nu">2</span>), round(se, <span class="nu">3</span>))
+<span class="kw">print</span>(tuple(round(v, <span class="nu">2</span>) <span class="kw">for</span> v <span class="kw">in</span> ci))</code></pre>
     </div>
-    <div class="code-out"><span class="olbl">出力例 / Output</span><pre><code>grade 4</code></pre></div>
+    <div class="code-out"><span class="olbl">出力例 / Output</span><pre><code>82.6 2.798
+(76.27, 88.93)</code></pre></div>
 
     <div class="callout tip">
       <h4>この Step のまとめ</h4>
-      <p>コードメトリクスは品質を数値化する道具。<b>循環的複雑度</b>は M = E - N + 2P（判定点 + 1）で分岐の多さを測ります。radon の <code>cc</code> で簡単に計測でき、テストしにくい複雑な関数の目印になります。</p>
+      <p>推定は標本から母数を見積もる作業。標準誤差 <code>SE = s / &radic;n</code> は平均の推定の揺らぎで、n を増やすほど小さくなります。95%信頼区間は「手続きをくり返せば約95%が母平均を含む」という意味で、いまの1本に対する確率ではありません。</p>
     </div>
   </div>
 </section>
@@ -1059,105 +1035,104 @@ source = open(<span class="st">"example.py"</span>).read()
   <div class="wrap reveal">
     <div class="stephead">
       <span class="num">5</span>
-      <div class="tt"><h2>動的解析</h2><span class="st-en">Dynamic analysis</span></div>
+      <div class="tt"><h2>仮説検定</h2><span class="st-en">Hypothesis testing</span></div>
     </div>
     <div class="steprule"></div>
 
     <p class="layer first"><span lang="ja">概要</span><span lang="en">Overview</span></p>
     <div class="prose">
-      <p>ここまでは実行せずに調べる静的解析でした。いっぽう<b>動的解析</b>は、プログラムを実際に動かして、その様子を観測します。「どの行が実行されたか」「どこで時間がかかったか」といった、実行時にしか分からない情報が得られます。テストカバレッジ・プロファイリング・トレースが代表的な道具です。</p>
+      <p>「新しい方法で成績は上がったか」「2つのグループに差はあるか」。こうした問いに、偶然のばらつきと区別して答えるのが<b>仮説検定</b>です。統計分析のもっとも実用的な部分で、推測統計の核心にあたります。</p>
     </div>
 
     <p class="layer"><span lang="ja">仕組み</span><span lang="en">How it works</span></p>
     <div class="prose">
-      <h4>テストカバレッジ</h4>
-      <p><b>カバレッジ</b>は、テストがコードのどれだけを実行したかを測る指標です。<b>行カバレッジ</b>は実行された行の割合、<b>分岐カバレッジ</b>は条件分岐の真・偽の両方を通ったかを見ます。カバレッジが低い箇所は「テストで一度も動かしていない場所」であり、バグが潜みやすい要注意ゾーンです。Python では <b>coverage.py</b> が定番です。</p>
-      <h4>プロファイリング</h4>
-      <p><b>プロファイリング</b>は、どの関数がどれだけ呼ばれ、どれだけ時間を使ったかを計測します。「速くしたい」ときに、当てずっぽうで直すのではなく、実測にもとづいてボトルネックを特定するために使います。Python 標準の <b>cProfile</b> が手軽です。</p>
-      <h4>トレースと限界</h4>
-      <p><b>トレース</b>は、実行の経路や関数の呼び出し順を時系列で記録します。動的解析に共通する限界は、<b>観測できるのは実際に実行した経路だけ</b>という点です。与えた入力しだいで結果が変わるため、静的解析のような網羅性はありません。だからこそ、両者を組み合わせるのが実務の基本になります。</p>
+      <h4>帰無仮説と対立仮説</h4>
+      <p>検定は、まず「差はない」という控えめな主張＝<b>帰無仮説（H&#8320;）</b>を立てるところから始めます。示したいこと（差がある）は<b>対立仮説（H&#8321;）</b>です。そして「もし帰無仮説が正しかったら、観測されたデータはどれくらい起こりにくいか」を計算します。とても起こりにくければ、帰無仮説を<b>棄却</b>し、差があると判断します。</p>
+      <h4>p値と有意水準</h4>
+      <p><b>p値</b>は、<b>帰無仮説が正しいと仮定したときに、観測された以上に極端な結果が得られる確率</b>です。あらかじめ基準となる<b>有意水準 &alpha;</b>（多くは0.05）を決めておき、p値が &alpha; を下回れば「有意差あり」と判断します。ここで大切な注意が2つあります。p値は「帰無仮説が正しい確率」でも「差の大きさ」でもありません。あくまで「帰無仮説のもとでの、データの起こりにくさ」です。</p>
+      <h4>2種類の誤り</h4>
+      <ul>
+        <li><b>第一種の誤り（Type I error）</b>：本当は差がないのに「差あり」としてしまう（偽陽性）。その確率が有意水準 &alpha;。</li>
+        <li><b>第二種の誤り（Type II error）</b>：本当は差があるのに「差なし」としてしまう（偽陰性）。その確率が &beta; で、1 &minus; &beta; を<b>検出力</b>という。</li>
+      </ul>
+      <h4>代表的な検定</h4>
+      <ul>
+        <li><b>t検定（t-test）</b>：平均の差を調べる。1標本（ある値との比較）・2標本（2群の比較）・対応あり（同じ対象の前後比較）がある。</li>
+        <li><b>カイ二乗検定（chi-square test）</b>：カテゴリ同士に関連があるか（分割表の独立性）を調べる。</li>
+        <li><b>分散分析（ANOVA）</b>：3群以上の平均に差があるかを一度に調べる。</li>
+      </ul>
+      <h4>効果量と多重比較</h4>
+      <p>p値は「差があるか」を答えますが、「差がどれくらい大きいか」は答えません。そこで<b>効果量</b>を併せて報告します。平均差の効果量が<b>Cohen's d</b>で、差を標準偏差の単位で表します（目安は 0.2 で小、0.5 で中、0.8 で大）。また、同じデータで検定を何度もくり返すと偶然の有意が増えます（多重比較問題）。有意水準を検定回数で割って厳しくする<b>ボンフェローニ補正</b>などで対処します。</p>
+      <div class="formula">
+        t = (x&#772;&#8321; &minus; x&#772;&#8322;) / (s<sub>p</sub> <span class="op">&radic;</span>(1/n&#8321; + 1/n&#8322;))　　d = (x&#772;&#8321; &minus; x&#772;&#8322;) / s<sub>p</sub>
+        <small>2標本 t 検定（等分散を仮定）と Cohen's d。s<sub>p</sub> はプールした標準偏差 &radic;(((n&#8321;&minus;1)s&#8321;&sup2;+(n&#8322;&minus;1)s&#8322;&sup2;)/(n&#8321;+n&#8322;&minus;2))、自由度は n&#8321;+n&#8322;&minus;2。</small>
+      </div>
     </div>
 
-    <p class="layer"><span lang="ja">コードで動かす</span><span lang="en">Run the code</span></p>
-    <div class="prose">
-      <p>まずカバレッジです。テストを <code>coverage</code> 経由で実行し、レポートを出します。<code>-m</code> を付けると、実行されなかった行番号（Missing）も表示されます。</p>
-    </div>
-    <div class="code-wrap attached">
-      <div class="code-head"><span class="lbl">Shell</span><span class="lang-tag">coverage.sh</span><button class="copy" type="button" onclick="copyCode(this)">copy</button></div>
-      <pre><code><span class="cm"># pip install coverage</span>
-$ coverage run -m pytest
-$ coverage report -m</code></pre>
-    </div>
-    <div class="code-out"><span class="olbl">出力例 / Output</span><pre><code>Name          Stmts   Miss  Cover   Missing
--------------------------------------------
-mymodule.py      20      3    85%   12-14
--------------------------------------------
-TOTAL            20      3    85%</code></pre></div>
-
-    <div class="prose">
-      <p>全 20 文のうち 3 文（12〜14 行目）が未実行で、行カバレッジは 85% です。次はプロファイリングです。<code>cProfile.run</code> に測りたい処理を渡します。</p>
-    </div>
-    <div class="code-wrap attached">
-      <div class="code-head"><span class="lbl">Python</span><span class="lang-tag">profile_example.py</span><button class="copy" type="button" onclick="copyCode(this)">copy</button></div>
-      <pre><code><span class="kw">import</span> cProfile
-
-<span class="kw">def</span> slow():
-    <span class="kw">return</span> sum(i * i <span class="kw">for</span> i <span class="kw">in</span> range(<span class="nu">100000</span>))
-
-cProfile.run(<span class="st">"slow()"</span>)</code></pre>
-    </div>
-    <div class="code-out"><span class="olbl">出力例 / Output</span><pre><code>         100005 function calls in 0.012 seconds
-
-   Ordered by: standard name
-
-   ncalls  tottime  percall  cumtime  percall filename:lineno(function)
-        1    0.001    0.001    0.011    0.011 profile_example.py:3(slow)
-   100001    0.005    0.000    0.005    0.000 profile_example.py:4(&lt;genexpr&gt;)
-        1    0.000    0.000    0.012    0.012 {built-in method builtins.exec}
-        1    0.005    0.005    0.010    0.010 {built-in method builtins.sum}
-        1    0.000    0.000    0.000    0.000 {method 'disable' of '_lsprof.Profiler' objects}</code></pre></div>
-
-    <div class="prose">
-      <p>ジェネレータ式が 100001 回呼ばれ（10 万個の値と、最後の停止で 1 回）、そこと <code>sum</code> に時間が集中しているのが読み取れます。どこを直せば速くなるかが、実測から分かります。</p>
-      <h4>実践：コードの重複を測る（クローン検出）</h4>
-      <p>最後に、品質評価の実践として<b>コードクローン検出</b>を体験します。これはコードを実行せずトークン列を比べる手法ですが、コピー＆ペーストで増えた重複を見つけ、保守性の問題を洗い出すのに使われます。よくある手法は、コードを正規化してトークン列にし、その<b>類似度</b>を測るものです。空白やコメントを無視するだけの一致（Type-1）に加え、<b>変数名や定数の違いを吸収</b>すると、名前だけ変えた複製（Type-2）も見つかります。次のデモは、正規化したトークンの並びから類似度を計算します。</p>
-    </div>
-
-    <!-- DEMO 3: code clone detection -->
-    <div class="demo reveal" id="demoClone">
+    <!-- DEMO 3: two-sample t-test -->
+    <div class="demo reveal" id="demoT">
       <span class="dtag"><span lang="ja">デモ 3</span><span lang="en">Demo 3</span></span>
-      <h4>コードクローン検出</h4>
-      <p class="dnote">2つのコード片を入力すると、空白とコメントを除き、変数名を <code>ID</code>・数値を <code>NUM</code>・文字列を <code>STR</code> に正規化してトークン列にします。トークンの2-gram（隣り合う2つ組）の集合どうしの <b>Jaccard 係数</b>で類似度を測り、クローンかどうかを判定します。<code>Jaccard = |共通| / |和集合|</code> です。</p>
+      <h4>2群のt検定</h4>
+      <p class="dnote">2つのグループの数値を入力すると、平均の差・t値・p値・有意判定（&alpha;=0.05, 両側）・効果量 Cohen's d を計算します。等分散を仮定した2標本 t 検定です。p値は t 分布から数値計算で求めており、SciPy の <code>ttest_ind</code> と一致します。下の図は各群の平均と標準偏差の範囲を示します。</p>
       <div class="two">
         <div>
-          <label class="fld" for="clA">コード A / Code A</label>
-          <textarea id="clA" rows="7" spellcheck="false">def sum_list(nums):
-    total = 0
-    for n in nums:
-        total = total + n
-    return total</textarea>
+          <label class="fld" for="tA">グループ A / Group A</label>
+          <textarea id="tA" rows="2" spellcheck="false">68, 72, 75, 70, 74, 69, 73</textarea>
         </div>
         <div>
-          <label class="fld" for="clB">コード B / Code B</label>
-          <textarea id="clB" rows="7" spellcheck="false">def add_all(values):
-    acc = 0
-    for v in values:
-        acc = acc + v
-    return acc</textarea>
+          <label class="fld" for="tB">グループ B / Group B</label>
+          <textarea id="tB" rows="2" spellcheck="false">78, 82, 80, 85, 79, 83, 81</textarea>
         </div>
       </div>
       <div class="try">
         <span class="tlbl">例</span>
-        <button type="button" data-a="def sum_list(nums):&#10;    total = 0&#10;    for n in nums:&#10;        total = total + n&#10;    return total" data-b="def add_all(values):&#10;    acc = 0&#10;    for v in values:&#10;        acc = acc + v&#10;    return acc">名前だけ違う複製（Type-2）</button>
-        <button type="button" data-a="def sum_list(nums):&#10;    total = 0&#10;    for n in nums:&#10;        total = total + n&#10;    return total" data-b="def is_even(x):&#10;    if x % 2 == 0:&#10;        return True&#10;    return False">別のコード</button>
-        <button type="button" data-a="def area(w, h):&#10;    return w * h" data-b="def area(w, h):  # 面積&#10;    return w * h">空白・コメントだけ違う（Type-1）</button>
+        <button type="button" data-a="68, 72, 75, 70, 74, 69, 73" data-b="78, 82, 80, 85, 79, 83, 81">明確な差</button>
+        <button type="button" data-a="50, 52, 48, 51, 49, 53, 47" data-b="51, 49, 52, 50, 48, 53, 50">差が小さい</button>
+        <button type="button" data-a="60, 62, 58, 61, 59, 63" data-b="64, 66, 62, 65, 63, 67">中くらいの差</button>
       </div>
-      <div class="demo-out" id="clOut" aria-live="polite"></div>
+      <div class="demo-out" id="tOut" aria-live="polite"></div>
     </div>
+
+    <p class="layer"><span lang="ja">コードで動かす</span><span lang="en">Run the code</span></p>
+    <div class="prose">
+      <p>SciPy の <code>scipy.stats</code> には主要な検定がそろっています。2標本 t 検定・カイ二乗検定・分散分析を続けて見てみます。</p>
+    </div>
+    <div class="code-wrap attached">
+      <div class="code-head"><span class="lbl">Python</span><span class="lang-tag">tests.py</span><button class="copy" type="button" onclick="copyCode(this)">copy</button></div>
+      <pre><code><span class="kw">import</span> numpy <span class="kw">as</span> np
+<span class="kw">from</span> scipy <span class="kw">import</span> stats
+
+A = [<span class="nu">68</span>, <span class="nu">72</span>, <span class="nu">75</span>, <span class="nu">70</span>, <span class="nu">74</span>, <span class="nu">69</span>, <span class="nu">73</span>]
+B = [<span class="nu">78</span>, <span class="nu">82</span>, <span class="nu">80</span>, <span class="nu">85</span>, <span class="nu">79</span>, <span class="nu">83</span>, <span class="nu">81</span>]
+
+<span class="cm"># 2標本 t 検定（等分散を仮定）</span>
+t, p = stats.ttest_ind(A, B)
+<span class="kw">print</span>(<span class="st">f"t={t:.3f}  p={p:.2e}"</span>)
+
+<span class="cm"># 効果量 Cohen's d（プールした標準偏差で割る）</span>
+a, b = np.array(A, float), np.array(B, float)
+sp = np.sqrt(((len(a)-<span class="nu">1</span>)*a.var(ddof=<span class="nu">1</span>) +
+              (len(b)-<span class="nu">1</span>)*b.var(ddof=<span class="nu">1</span>)) / (len(a)+len(b)-<span class="nu">2</span>))
+<span class="kw">print</span>(<span class="st">f"Cohen d = {(a.mean()-b.mean())/sp:.2f}"</span>)
+
+<span class="cm"># カイ二乗検定（2x2 分割表の独立性, 既定でYates補正）</span>
+table = np.array([[<span class="nu">30</span>, <span class="nu">20</span>], [<span class="nu">15</span>, <span class="nu">35</span>]])
+chi2, p2, dof, exp = stats.chi2_contingency(table)
+<span class="kw">print</span>(<span class="st">f"chi2={chi2:.3f}  p={p2:.4f}  dof={dof}"</span>)
+
+<span class="cm"># 分散分析（3群以上の平均の差）</span>
+g1, g2, g3 = [<span class="nu">85</span>,<span class="nu">88</span>,<span class="nu">90</span>,<span class="nu">86</span>,<span class="nu">89</span>], [<span class="nu">78</span>,<span class="nu">82</span>,<span class="nu">80</span>,<span class="nu">79</span>,<span class="nu">81</span>], [<span class="nu">92</span>,<span class="nu">95</span>,<span class="nu">91</span>,<span class="nu">94</span>,<span class="nu">93</span>]
+F, p3 = stats.f_oneway(g1, g2, g3)
+<span class="kw">print</span>(<span class="st">f"F={F:.3f}  p={p3:.2e}"</span>)</code></pre>
+    </div>
+    <div class="code-out"><span class="olbl">出力例 / Output</span><pre><code>t=-7.089  p=1.27e-05
+Cohen d = -3.79
+chi2=7.919  p=0.0049  dof=1
+F=68.796  p=2.66e-07</code></pre></div>
 
     <div class="callout tip">
       <h4>この Step のまとめ</h4>
-      <p>動的解析は、実行して観測する技術です。<code>coverage</code> でテストの網羅度を、<code>cProfile</code> で性能のボトルネックを測れます。観測できるのは通った経路だけという限界を、静的解析が補います。トークンを正規化して比べれば、コードクローンも検出できます。</p>
+      <p>検定は「差はない」という帰無仮説を立て、p値が有意水準 &alpha; を下回れば棄却します。p値は「帰無仮説が正しい確率」でも「差の大きさ」でもありません。差の大きさは効果量（Cohen's d）で、くり返し検定にはボンフェローニ補正で備えます。</p>
     </div>
   </div>
 </section>
@@ -1167,28 +1142,52 @@ cProfile.run(<span class="st">"slow()"</span>)</code></pre>
   <div class="wrap reveal">
     <div class="stephead">
       <span class="num">6</span>
-      <div class="tt"><h2>応用とこれから</h2><span class="st-en">Applications &amp; what comes next</span></div>
+      <div class="tt"><h2>相関と回帰、そして因果へ</h2><span class="st-en">Correlation, regression, and causality</span></div>
     </div>
     <div class="steprule"></div>
 
     <p class="layer first"><span lang="ja">概要</span><span lang="en">Overview</span></p>
     <div class="prose">
-      <p>ここまでで、構文解析・静的解析・メトリクス・動的解析という基本の道具がそろいました。これらは単独でも役立ちますが、組み合わせると、より実践的な課題に応用できます。最後に、その広がりと、この先の学びへの橋渡しを見ておきましょう。</p>
+      <p>ここまでは1つの量を扱ってきました。最後に、2つ以上の量の<b>関係</b>を見ます。片方が増えるともう片方も増えるのか。その関係を数式で表せるのか。そして忘れてはならない、<b>相関と因果は違う</b>という大原則を確認します。</p>
     </div>
 
     <p class="layer"><span lang="ja">仕組み</span><span lang="en">How it works</span></p>
     <div class="prose">
-      <h4>バグ検出と欠陥予測</h4>
-      <p>静的解析のパターン照合で「ぬるぽ（null 参照）になりうる」「例外が握りつぶされている」といった典型的な欠陥を見つけられます。さらに、過去の変更履歴やメトリクスを組み合わせ、どのファイルがバグを含みやすいかを見積もる<b>欠陥予測</b>という研究分野もあります。</p>
-      <h4>セキュリティ解析</h4>
-      <p>脆弱性を見つける解析には、コードを実行せず調べる<b>SAST（静的アプリケーションセキュリティテスト）</b>と、動かして試す<b>DAST（動的〜）</b>があります。中核となる考え方の一つが<b>テイント解析</b>で、外部からの入力（汚染源）が、データベース問い合わせやコマンド実行などの危険な地点（シンク）まで、無害化されずに届く経路を追跡します。</p>
-      <h4>コードへの機械学習</h4>
-      <p>近年は、コードを<b>データ</b>として機械学習にかける流れが広がっています。AST やトークン列を数値ベクトルに変換する<b>コード表現・埋め込み</b>を作り、バグ検出・コード補完・要約などに使います。テキストを数値にする自然言語処理の発想が、そのままコードにも応用されているのです。ここは、このコースの機械学習・大規模言語モデル（LLM）のモジュールへとつながっていきます。</p>
+      <h4>相関</h4>
+      <p>2つの量が一緒に動く度合いを表すのが<b>相関係数</b>です。もっとも一般的な<b>ピアソンの相関係数 r</b>は、直線的な関係の強さを &minus;1 から +1 の範囲で表します。+1 は完全な右上がり、&minus;1 は完全な右下がり、0 は直線的な関係がないことを示します。ただし r が測るのは<b>直線関係</b>だけで、曲線的な関係は捉えられない点に注意します。</p>
+      <h4>相関は因果ではない</h4>
+      <p>強い相関があっても、一方が他方の<b>原因</b>とは限りません。よくあるのが<b>交絡</b>で、背後にある第3の要因が両方を動かしているだけ、という状況です。たとえば「アイスの売上」と「水難事故」は相関しますが、原因は共通の「気温」です。相関から因果を主張するには、実験（ランダム化）や、交絡を調整する専用の手法が要ります。この先は<b>因果推論</b>のモジュールで扱います。</p>
+      <h4>説明のための線形回帰</h4>
+      <p>関係を式で表す基本が<b>線形回帰</b>です。<code>y = &beta;&#8320; + &beta;&#8321; x</code> の係数を、残差（予測と実測の差）の二乗和が最小になるように決めます（最小二乗法）。統計分析では、各係数が偶然でないか（p値）、あてはまりの良さ（決定係数 R&sup2;、0から1で1に近いほど良い）を見ます。妥当な解釈には<b>残差の前提</b>（残差が独立・等分散・おおむね正規）が満たされていることの確認も欠かせません。</p>
     </div>
+
+    <p class="layer"><span lang="ja">コードで動かす</span><span lang="en">Run the code</span></p>
+    <div class="prose">
+      <p>説明のための回帰には statsmodels の OLS が向いています。<code>summary()</code> が係数・p値・R&sup2; を一枚にまとめて出します。</p>
+    </div>
+    <div class="code-wrap attached">
+      <div class="code-head"><span class="lbl">Python</span><span class="lang-tag">ols_regression.py</span><button class="copy" type="button" onclick="copyCode(this)">copy</button></div>
+      <pre><code><span class="kw">import</span> numpy <span class="kw">as</span> np
+<span class="kw">import</span> statsmodels.api <span class="kw">as</span> sm
+
+x = np.arange(<span class="nu">1</span>, <span class="nu">11</span>, dtype=float)
+y = np.array([<span class="nu">5.1</span>, <span class="nu">6.8</span>, <span class="nu">9.2</span>, <span class="nu">11.3</span>, <span class="nu">12.9</span>,
+              <span class="nu">15.4</span>, <span class="nu">17.1</span>, <span class="nu">18.8</span>, <span class="nu">21.2</span>, <span class="nu">23.0</span>])
+
+X = sm.add_constant(x)          <span class="cm"># 切片の列を追加</span>
+model = sm.OLS(y, X).fit()      <span class="cm"># 最小二乗法で当てはめ</span>
+<span class="kw">print</span>(model.summary())</code></pre>
+    </div>
+    <div class="code-out"><span class="olbl">出力例（抜粋） / Output (excerpt)</span><pre><code>                 coef    std err          t      P&gt;|t|      [0.025      0.975]
+------------------------------------------------------------------------------
+const          3.0867      0.148     20.845      0.000       2.745       3.428
+x1             1.9988      0.024     83.756      0.000       1.944       2.054
+==============================================================================
+R-squared:                       0.999</code></pre></div>
 
     <div class="callout tip">
       <h4>この Step のまとめ</h4>
-      <p>基本の道具は、バグ検出・欠陥予測・セキュリティ解析（SAST/DAST・テイント解析）へ応用できます。さらにコードを機械学習の対象とみなす流れが、コード表現・埋め込みを通じて機械学習や LLM のモジュールへつながります。</p>
+      <p>相関係数は直線関係の強さを &minus;1 から +1 で表します。ただし<b>相関は因果ではありません</b>（交絡に注意）。線形回帰は関係を式で表し、係数の p値や R&sup2; で評価します。因果を主張するには、次の因果推論モジュールで扱う専用の手続きが必要です。</p>
     </div>
   </div>
 </section>
@@ -1199,56 +1198,56 @@ cProfile.run(<span class="st">"slow()"</span>)</code></pre>
     <p class="eyebrow"><span lang="ja">まとめ</span><span lang="en">Wrap-up</span></p>
     <h2 class="big">学びの振り返りと、さらに学ぶために</h2>
     <div class="prose" style="margin-top:22px">
-      <p>このモジュールでは、プログラムを読み解く基本の道具を、パイプラインに沿って順に手に入れました。</p>
+      <p>このモジュールでは、データから確かな結論を導く道具を、流れに沿って順に手に入れました。</p>
       <ul>
-        <li><b>構文解析とAST</b>：文字列をトークンに区切り、優先順位を反映した構文木に組み立てる。</li>
-        <li><b>静的解析</b>：実行せずに制御フロー・データフローを追い、未使用変数などを見つける。</li>
-        <li><b>コードメトリクス</b>：循環的複雑度などで複雑さ・品質を数値化する。</li>
-        <li><b>動的解析</b>：実行して観測し、カバレッジやプロファイルを測る。</li>
-        <li><b>応用</b>：バグ検出・セキュリティ解析、そしてコードへの機械学習へ。</li>
+        <li><b>記述統計</b>：平均・中央値・標準偏差・四分位でデータを要約する。</li>
+        <li><b>確率分布</b>：正規分布などで散らばりを表し、中心極限定理と z値で扱う。</li>
+        <li><b>推定</b>：標準誤差と信頼区間で、標本から母集団を幅をもって見積もる。</li>
+        <li><b>仮説検定</b>：帰無仮説・p値・有意水準で差を判断し、効果量で大きさを見る。</li>
+        <li><b>相関と回帰</b>：関係を測り式で表す。ただし相関は因果ではない。</li>
       </ul>
       <p>次に進むなら、下の道具と資料が役に立ちます。</p>
     </div>
 
     <div class="res-grid reveal">
       <div class="res">
-        <h5>解析の対象・データ</h5>
+        <h5>公開データセット</h5>
         <ul>
-          <li><b>任意の公開 Python ソース</b>：手元のスクリプトや OSS のコードをそのまま解析対象にできる。</li>
-          <li><b>Python 標準ライブラリのコード</b>：<code>ast</code> や <code>tokenize</code> で読み込み、実在するコードで練習できる。</li>
+          <li><b>seaborn tips</b>：飲食店の会計データ。<code>seaborn.load_dataset("tips")</code> で取得でき、相関や群間比較の練習に向く。</li>
+          <li><b>iris / diabetes</b>：scikit-learn 内蔵。<code>load_iris()</code> / <code>load_diabetes()</code> で分類・回帰の題材に。</li>
         </ul>
       </div>
       <div class="res">
-        <h5>ライブラリ・ツール</h5>
+        <h5>ライブラリ</h5>
         <ul>
-          <li><b>Python 標準 ast・dis・tokenize</b>：構文木・バイトコード・トークン列。</li>
-          <li><b>radon</b>：循環的複雑度・保守性指数などの計測。</li>
-          <li><b>coverage</b>：テストカバレッジの計測。</li>
-          <li><b>pylint / flake8</b>：静的解析にもとづくリンタ。</li>
-          <li><b>tree-sitter</b>：多言語対応の高速な構文解析ライブラリ。</li>
+          <li><b>NumPy</b>：数値計算の土台。</li>
+          <li><b>SciPy（scipy.stats）</b>：分布と検定の定番。</li>
+          <li><b>statsmodels</b>：回帰・検定と詳しい統計サマリ。</li>
+          <li><b>pandas</b>：データ整形と <code>describe()</code>。</li>
+          <li><b>matplotlib</b>：可視化。</li>
         </ul>
       </div>
       <div class="res">
         <h5>参考書</h5>
         <ul>
-          <li>Aho ほか『コンパイラ 原理・技法・ツール』（通称ドラゴンブック）</li>
-          <li>Nielson ほか『Principles of Program Analysis』</li>
-          <li>Møller, Schwartzbach『Static Program Analysis』（公開講義ノート）</li>
+          <li>東京大学教養学部統計学教室 編『統計学入門』東京大学出版会</li>
+          <li>Larry Wasserman『All of Statistics』</li>
+          <li>涌井良幸・涌井貞美『統計学の図鑑』</li>
         </ul>
       </div>
       <div class="res">
         <h5>次のモジュールへ</h5>
         <ul>
-          <li>機械学習の基礎（分類・回帰・評価）</li>
-          <li>大規模言語モデル（LLM）とコード生成</li>
-          <li>リポジトリマイニング（変更履歴の分析）</li>
+          <li>因果推論（相関を超えて原因を見極める）</li>
+          <li>データ可視化（正しく伝える図の作り方）</li>
+          <li>機械学習（データから予測する）</li>
         </ul>
       </div>
     </div>
 
     <div class="callout tip">
       <h4>おつかれさまでした</h4>
-      <p>ここで学んだ「コードを構造にして、静的・動的に調べる」という流れは、言語や規模を問わず通用する考え方です。手元の Python ファイルを題材に、3 つのデモを動かしてみてください。式を変え、疑似コードの分岐を増やし、コードを少しずつ書き換えると、構文木・複雑度・類似度がどう変わるかを確かめられ、理解がぐっと深まります。</p>
+      <p>ここで学んだ「要約する → 分布で考える → 推定する → 検定する」という流れは、どんな分野のデータにも共通の考え方です。3つのデモの数値を書き換えて、平均・p値・信頼区間・効果量がどう動くかを確かめると、理解がぐっと深まります。</p>
     </div>
   </div>
 </section>
@@ -1258,37 +1257,36 @@ cProfile.run(<span class="st">"slow()"</span>)</code></pre>
     <p class="eyebrow"><span lang="ja">発展トピック</span><span lang="en">Beyond this module</span></p>
     <h2 class="big">このコースでは扱わない、関係する発展トピック</h2>
     <div class="prose" style="margin-top:22px">
-      <p>このモジュールでは、コードを構造にして静的・動的に調べる「基礎の流れ」を扱いました。いっぽうでプログラム解析は、より厳密な理論から最新の機械学習まで、幅広く発展しています。ここでは、このコースでは踏み込まないものの、知っておくと視野が広がる発展的なトピックを紹介します。深掘りは各自の興味に合わせてどうぞ。</p>
+      <p>このモジュールでは、推測統計と仮説検定を軸に「データから結論を導く基礎の流れ」を扱いました。統計にはこの先に、より柔軟な考え方や手法が広がっています。ここでは、このコースでは踏み込まないものの、知っておくと視野が広がる発展的なトピックを紹介します。深掘りは各自の興味に合わせてどうぞ。因果推論は、別モジュールで改めて扱う予定です。</p>
     </div>
 
     <div class="res-grid reveal">
       <div class="res">
-        <h5>高度な静的解析</h5>
+        <h5>ベイズ統計</h5>
         <ul>
-          <li><b>記号実行（symbolic execution）</b>：変数を具体値ではなく記号のまま実行し、どんな入力でどの経路を通るかを論理的に解く。</li>
-          <li><b>抽象解釈（abstract interpretation）</b>：値を「符号」「区間」などの抽象領域で近似し、健全に性質を証明する理論的枠組み。</li>
+          <li><b>ベイズ推定</b>：事前分布に情報を足して事後分布を得る、確率の更新としての推論。頻度論とは別の立場。</li>
+          <li><b>MCMC とライブラリ</b>：複雑な事後分布を数値的に扱う（マルコフ連鎖モンテカルロ）。PyMC や Stan が定番。</li>
         </ul>
       </div>
       <div class="res">
-        <h5>セキュリティと検証</h5>
+        <h5>頑健・ノンパラメトリック</h5>
         <ul>
-          <li><b>テイント解析</b>：外部入力が危険な地点に届く経路を追跡し、脆弱性を見つける。</li>
-          <li><b>ファジング（fuzzing）</b>：大量のランダム・変異入力を与えてクラッシュを探す動的手法。</li>
-          <li><b>形式検証</b>：仕様に対する正しさを、モデル検査や定理証明で数学的に確かめる。</li>
+          <li><b>ノンパラメトリック検定</b>：分布の形を仮定しない検定（Mann-Whitney U 検定・Wilcoxon 符号順位検定）。</li>
+          <li><b>ブートストラップ</b>：データを再標本化して、信頼区間や標準誤差を数値的に見積もる。</li>
         </ul>
       </div>
       <div class="res">
-        <h5>コードの機械学習</h5>
+        <h5>モデルの一般化</h5>
         <ul>
-          <li><b>コード表現学習</b>：AST やトークン列を数値ベクトルに変換する（code2vec など）。</li>
-          <li><b>事前学習モデル</b>：大量のコードで学習したモデル（CodeBERT など）を、バグ検出や要約に応用する。</li>
+          <li><b>一般化線形モデル（GLM）</b>：ロジスティック回帰・ポアソン回帰など、正規分布以外にも回帰を広げる枠組み。</li>
+          <li><b>多変量解析</b>：主成分分析・因子分析など、多数の変数を同時に扱う手法。</li>
         </ul>
       </div>
       <div class="res">
-        <h5>生成と合成</h5>
+        <h5>設計と因果</h5>
         <ul>
-          <li><b>プログラム合成</b>：入出力例や仕様から、条件を満たすプログラムを自動生成する。</li>
-          <li><b>LLM によるコード生成・解析</b>：大規模言語モデルがコードを書き、説明し、レビューを支援する最新の広がり。別モジュールで扱う予定。</li>
+          <li><b>検定力分析</b>：必要な標本サイズを事前に見積もり、検出力を確保する（実験計画）。</li>
+          <li><b>因果推論</b>：相関を超えて処置の効果を推定する（RCT・傾向スコア・差分の差分法）。別モジュールで扱う予定。</li>
         </ul>
       </div>
     </div>
@@ -1306,8 +1304,8 @@ cProfile.run(<span class="st">"slow()"</span>)</code></pre>
       <div>
         <h3><span lang="ja">この学習モジュールについて</span><span lang="en">About this module</span></h3>
         <div class="cite">
-          <span lang="ja">「研究で使う技術を実践的に学ぶ」学習コースの1モジュールです。概要から理論、動かせるコードまでを一続きにして、プログラム解析の基礎を独習できるように構成しています。内容は分野標準の一般的なもので、特定の研究や論文には紐づきません。</span>
-          <span lang="en">A module in a learning course on research skills, walking from overview to theory to runnable code so you can study the basics of program analysis on your own. The content is standard and general, not tied to any specific study.</span>
+          <span lang="ja">「研究で使う技術を実践的に学ぶ」学習コースの1モジュールです。概要から理論、動かせるコードまでを一続きにして、統計分析（推測統計と仮説検定）の基礎を独習できるように構成しています。内容は分野標準の一般的なもので、特定の研究や論文には紐づきません。</span>
+          <span lang="en">A module in a learning course on research skills, walking from overview to theory to runnable code so you can study the basics of statistical analysis (inferential statistics and hypothesis testing) on your own. The content is standard and general, not tied to any specific study.</span>
         </div>
       </div>
       <div>
@@ -1350,8 +1348,8 @@ cProfile.run(<span class="st">"slow()"</span>)</code></pre>
     </div>
     <div class="foot-rule"></div>
     <p class="foot-note">
-      <span lang="ja">本ページは学習用のプロトタイプ教材です。コード例は分野標準のライブラリ（Python 標準の ast・dis・tokenize、radon、coverage）にもとづき、出力例は実際の実行結果に一致させています。</span>
-      <span lang="en">This page is a prototype learning material. Code examples use standard libraries (Python's ast, dis, tokenize, radon, coverage), and the shown outputs match real runs.</span>
+      <span lang="ja">本ページは学習用のプロトタイプ教材です。コード例は分野標準のライブラリ（NumPy・SciPy・pandas・statsmodels）にもとづき、出力例は実際の実行結果に一致させています。</span>
+      <span lang="en">This page is a prototype learning material. Code examples use standard libraries (NumPy, SciPy, pandas, statsmodels), and the shown outputs match real runs.</span>
     </p>
   </div>
 </footer>
@@ -1386,218 +1384,247 @@ cProfile.run(<span class="st">"slow()"</span>)</code></pre>
 <script>
 /* ==================== interactive demos (vanilla JS, self-contained) ==================== */
 (function(){
-  function escapeHtml(s){ return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+  var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-  /* ---- Demo 1: expression syntax tree ---- */
-  var astInput=document.getElementById('astInput'),
-      astOut=document.getElementById('astOut');
-
-  function parseExpr(src){
-    var toks=[], i=0, s=src, n=s.length;
-    while(i<n){
-      var c=s[i];
-      if(/\s/.test(c)){ i++; continue; }
-      if(/[0-9]/.test(c)){ var j=i; while(j<n && /[0-9.]/.test(s[j])) j++; toks.push({t:'num', v:s.slice(i,j)}); i=j; continue; }
-      if('+-*/()'.indexOf(c)>=0){ toks.push({t:c}); i++; continue; }
-      throw new Error('使えない文字があります: "'+c+'"');
-    }
-    var p=0;
-    function peek(){ return toks[p]; }
-    function next(){ return toks[p++]; }
-    function parseE(){
-      var node=parseT();
-      while(peek() && (peek().t==='+'||peek().t==='-')){
-        var op=next().t; var right=parseT();
-        node={op:op, left:node, right:right};
-      }
-      return node;
-    }
-    function parseT(){
-      var node=parseF();
-      while(peek() && (peek().t==='*'||peek().t==='/')){
-        var op=next().t; var right=parseF();
-        node={op:op, left:node, right:right};
-      }
-      return node;
-    }
-    function parseF(){
-      var tk=peek();
-      if(!tk) throw new Error('式が途中で終わっています');
-      if(tk.t==='('){ next(); var e=parseE(); if(!peek()||peek().t!==')') throw new Error('閉じ括弧 ) がありません'); next(); return e; }
-      if(tk.t==='-'){ next(); return {op:'u-', left:parseF()}; }
-      if(tk.t==='+'){ next(); return parseF(); }
-      if(tk.t==='num'){ next(); return {num:tk.v}; }
-      throw new Error('予期しない記号: "'+tk.t+'"');
-    }
-    if(!toks.length) throw new Error('式を入力してください');
-    var tree=parseE();
-    if(p<toks.length) throw new Error('余分な入力があります: "'+(toks[p].v||toks[p].t)+'"');
-    return tree;
+  /* ---- shared numeric helpers ---- */
+  function parseNums(s){
+    return String(s).split(/[\s,;]+/).map(function(t){ return parseFloat(t); })
+      .filter(function(v){ return isFinite(v); });
   }
-
-  function evalNode(nd){
-    if('num' in nd) return parseFloat(nd.num);
-    if(nd.op==='u-') return -evalNode(nd.left);
-    var a=evalNode(nd.left), b=evalNode(nd.right);
-    if(nd.op==='+') return a+b;
-    if(nd.op==='-') return a-b;
-    if(nd.op==='*') return a*b;
-    if(nd.op==='/') return b===0? NaN : a/b;
+  function mean(a){ var s=0; for(var i=0;i<a.length;i++) s+=a[i]; return s/a.length; }
+  function variance(a, ddof){ var m=mean(a), s=0; for(var i=0;i<a.length;i++){ var d=a[i]-m; s+=d*d; }
+    return s/(a.length-(ddof||0)); }
+  function std(a, ddof){ return Math.sqrt(variance(a, ddof)); }
+  /* linear-interpolation quantile (matches numpy default) */
+  function quantile(sortedAsc, q){
+    var n=sortedAsc.length;
+    if(n===1) return sortedAsc[0];
+    var pos=(n-1)*q, base=Math.floor(pos), rest=pos-base;
+    if(base+1<n) return sortedAsc[base]+rest*(sortedAsc[base+1]-sortedAsc[base]);
+    return sortedAsc[base];
   }
+  function median(sortedAsc){ return quantile(sortedAsc, 0.5); }
+  function fmt(v, d){ if(!isFinite(v)) return '-'; d=(d===undefined)?2:d; return v.toFixed(d); }
 
-  function layout(root){
-    var nodes=[], col=0, maxd=0;
-    function rec(nd, depth){
-      nd.depth=depth; if(depth>maxd) maxd=depth;
-      if(nd.left) rec(nd.left, depth+1);
-      nd.col=col++;
-      if(nd.right) rec(nd.right, depth+1);
-      nodes.push(nd);
-    }
-    rec(root,0);
-    return {nodes:nodes, cols:col, depth:maxd};
+  /* error function (Abramowitz & Stegun 7.1.26) and standard normal CDF */
+  function erf(x){
+    var s=x<0?-1:1; x=Math.abs(x);
+    var t=1/(1+0.3275911*x);
+    var y=1-(((((1.061405429*t-1.453152027)*t)+1.421413741)*t-0.284496736)*t+0.254829592)*t*Math.exp(-x*x);
+    return s*y;
   }
+  function normCdf(x, mu, sd){ return 0.5*(1+erf((x-mu)/(sd*Math.SQRT2))); }
+  function normPdf(x, mu, sd){ var z=(x-mu)/sd; return Math.exp(-0.5*z*z)/(sd*Math.sqrt(2*Math.PI)); }
 
-  function renderAst(){
-    var src=astInput.value;
-    var tree;
-    try{ tree=parseExpr(src); }
-    catch(err){
-      astOut.innerHTML='<div class="cos-detail" style="color:var(--bad)">解析できませんでした: '+escapeHtml(err.message)+'</div>';
-      return;
+  /* ln gamma (Lanczos) + regularized incomplete beta -> Student t two-tailed p */
+  function lgamma(z){
+    var g=[676.5203681218851,-1259.1392167224028,771.32342877765313,
+      -176.61502916214059,12.507343278686905,-0.13857109526572012,
+      9.9843695780195716e-6,1.5056327351493116e-7];
+    if(z<0.5) return Math.log(Math.PI/Math.sin(Math.PI*z))-lgamma(1-z);
+    z-=1; var x=0.99999999999980993;
+    for(var i=0;i<g.length;i++) x+=g[i]/(z+i+1);
+    var t=z+g.length-0.5;
+    return 0.5*Math.log(2*Math.PI)+(z+0.5)*Math.log(t)-t+Math.log(x);
+  }
+  function betacf(a,b,x){
+    var MAXIT=250, EPS=3e-12, FPMIN=1e-300;
+    var qab=a+b, qap=a+1, qam=a-1;
+    var c=1, d=1-qab*x/qap;
+    if(Math.abs(d)<FPMIN) d=FPMIN; d=1/d; var h=d;
+    for(var m=1;m<=MAXIT;m++){
+      var m2=2*m;
+      var aa=m*(b-m)*x/((qam+m2)*(a+m2));
+      d=1+aa*d; if(Math.abs(d)<FPMIN)d=FPMIN;
+      c=1+aa/c; if(Math.abs(c)<FPMIN)c=FPMIN;
+      d=1/d; h*=d*c;
+      aa=-(a+m)*(qab+m)*x/((a+m2)*(qap+m2));
+      d=1+aa*d; if(Math.abs(d)<FPMIN)d=FPMIN;
+      c=1+aa/c; if(Math.abs(c)<FPMIN)c=FPMIN;
+      d=1/d; var del=d*c; h*=del;
+      if(Math.abs(del-1)<EPS) break;
     }
-    var info=layout(tree);
-    var colW=64, rowH=78, r=20;
-    var W=Math.max(info.cols*colW, colW), H=(info.depth+1)*rowH;
-    function cx(nd){ return nd.col*colW + colW/2; }
-    function cy(nd){ return nd.depth*rowH + rowH/2; }
-    var edges='';
-    info.nodes.forEach(function(nd){
-      [nd.left, nd.right].forEach(function(ch){
-        if(ch) edges+='<line x1="'+cx(nd)+'" y1="'+cy(nd)+'" x2="'+cx(ch)+'" y2="'+cy(ch)+'" stroke="var(--faint)" stroke-width="1.6"/>';
-      });
+    return h;
+  }
+  function betai(a,b,x){
+    if(x<=0) return 0; if(x>=1) return 1;
+    var bt=Math.exp(lgamma(a+b)-lgamma(a)-lgamma(b)+a*Math.log(x)+b*Math.log(1-x));
+    if(x<(a+1)/(a+b+2)) return bt*betacf(a,b,x)/a;
+    return 1-bt*betacf(b,a,1-x)/b;
+  }
+  /* two-tailed p-value for Student t with df degrees of freedom */
+  function tTwoTailP(t, df){ t=Math.abs(t); return betai(df/2, 0.5, df/(df+t*t)); }
+
+  function statCard(k, v, sub){
+    return '<div class="stat"><span class="k">'+k+'</span><span class="v">'+v+(sub?'<small>'+sub+'</small>':'')+'</span></div>';
+  }
+  var SVGNS='http://www.w3.org/2000/svg';
+
+  /* ============ Demo 1: descriptive statistics calculator + box plot ============ */
+  var descIn=document.getElementById('descInput'), descOut=document.getElementById('descOut');
+  function renderDesc(){
+    var a=parseNums(descIn.value);
+    if(a.length<2){ descOut.innerHTML='<div class="chipcount">数値を2つ以上入力してください。</div>'; return; }
+    var sorted=a.slice().sort(function(p,q){ return p-q; });
+    var mn=mean(a), md=median(sorted), sd=std(a,1);
+    var q1=quantile(sorted,0.25), q3=quantile(sorted,0.75);
+    var lo=sorted[0], hi=sorted[sorted.length-1], iqr=q3-q1;
+    var cards='<div class="stat-grid">'+
+      statCard('件数 n', a.length)+
+      statCard('平均 mean', fmt(mn))+
+      statCard('中央値 median', fmt(md))+
+      statCard('標準偏差 s', fmt(sd), '(n-1)')+
+      statCard('最小 min', fmt(lo))+
+      statCard('Q1 (25%)', fmt(q1))+
+      statCard('Q3 (75%)', fmt(q3))+
+      statCard('最大 max', fmt(hi))+
+      statCard('IQR', fmt(iqr))+
+      '</div>';
+    /* box plot SVG: horizontal, fixed viewBox 0 0 900 150 */
+    var W=900, x0=60, x1=840;
+    var span=(hi-lo)||1;
+    function X(v){ return x0+(v-lo)/span*(x1-x0); }
+    var yBox=44, hBox=48, yMid=yBox+hBox/2;
+    var svg='<svg class="viz" viewBox="0 0 '+W+' 150" role="img" aria-label="箱ひげ図">';
+    /* whiskers */
+    svg+='<line x1="'+X(lo).toFixed(1)+'" y1="'+yMid+'" x2="'+X(q1).toFixed(1)+'" y2="'+yMid+'" class="dg-line"/>';
+    svg+='<line x1="'+X(q3).toFixed(1)+'" y1="'+yMid+'" x2="'+X(hi).toFixed(1)+'" y2="'+yMid+'" class="dg-line"/>';
+    /* whisker caps */
+    svg+='<line x1="'+X(lo).toFixed(1)+'" y1="'+(yBox+8)+'" x2="'+X(lo).toFixed(1)+'" y2="'+(yBox+hBox-8)+'" class="dg-line"/>';
+    svg+='<line x1="'+X(hi).toFixed(1)+'" y1="'+(yBox+8)+'" x2="'+X(hi).toFixed(1)+'" y2="'+(yBox+hBox-8)+'" class="dg-line"/>';
+    /* box */
+    svg+='<rect x="'+X(q1).toFixed(1)+'" y="'+yBox+'" width="'+(X(q3)-X(q1)).toFixed(1)+'" height="'+hBox+'" rx="6" fill="var(--accent-soft)" stroke="var(--accent)" stroke-width="1.5"/>';
+    /* median line */
+    svg+='<line x1="'+X(md).toFixed(1)+'" y1="'+yBox+'" x2="'+X(md).toFixed(1)+'" y2="'+(yBox+hBox)+'" stroke="var(--accent-2)" stroke-width="2.5"/>';
+    /* axis with 5 evenly spaced ticks (no overlap) */
+    var ay=122;
+    svg+='<line x1="'+x0+'" y1="'+ay+'" x2="'+x1+'" y2="'+ay+'" class="dg-ax"/>';
+    for(var i=0;i<=4;i++){
+      var val=lo+span*i/4, px=x0+(x1-x0)*i/4;
+      svg+='<line x1="'+px.toFixed(1)+'" y1="'+ay+'" x2="'+px.toFixed(1)+'" y2="'+(ay+5)+'" class="dg-ax"/>';
+      svg+='<text class="dg-en" x="'+px.toFixed(1)+'" y="'+(ay+18)+'">'+(Math.abs(val)>=100?val.toFixed(0):val.toFixed(1))+'</text>';
+    }
+    /* median label above box */
+    svg+='<text class="dg-lbl" x="'+X(md).toFixed(1)+'" y="'+(yBox-8)+'" style="font-size:11px">中央値 '+fmt(md,1)+'</text>';
+    svg+='</svg>';
+    descOut.innerHTML=cards+svg+'<div class="chipcount">箱＝Q1からQ3（中央50%）, 太線＝中央値, ひげ＝最小と最大。下の目盛りは最小から最大を4等分した位置。</div>';
+  }
+  if(descIn){
+    descIn.addEventListener('input', renderDesc);
+    document.querySelectorAll('#demoDesc .try button').forEach(function(b){
+      b.addEventListener('click', function(){ descIn.value=b.getAttribute('data-desc'); renderDesc(); });
     });
-    var circ='';
-    info.nodes.forEach(function(nd){
-      var isOp=!('num' in nd);
-      var label=isOp?(nd.op==='u-'?'-':nd.op):nd.num;
-      var fs=label.length<=2?15:(label.length===3?13:11);
-      circ+='<circle cx="'+cx(nd)+'" cy="'+cy(nd)+'" r="'+r+'" fill="var(--card)" stroke="none"/>'+
-        '<circle cx="'+cx(nd)+'" cy="'+cy(nd)+'" r="'+r+'" fill="'+(isOp?'var(--accent-soft)':'var(--card)')+'" stroke="'+(isOp?'var(--accent)':'var(--line)')+'" stroke-width="1.6"/>'+
-        '<text x="'+cx(nd)+'" y="'+(cy(nd)+fs*0.35)+'" text-anchor="middle" font-family="ui-monospace,monospace" font-size="'+fs+'" font-weight="600" fill="'+(isOp?'var(--accent-2)':'var(--ink)')+'">'+escapeHtml(label)+'</text>';
-    });
-    var svg='<svg viewBox="0 0 '+W+' '+H+'" role="img" aria-label="式の構文木" style="display:block;width:100%;max-width:'+Math.min(W,760)+'px;height:auto;background:var(--card);border-radius:14px;padding:10px;box-shadow:0 0 0 6px var(--shell),0 0 0 6.5px var(--hair),var(--soft)">'+edges+circ+'</svg>';
-    var val=evalNode(tree);
-    var valStr=isNaN(val)?'計算できません（0 除算）':(Number.isInteger(val)?String(val):String(Math.round(val*1000)/1000));
-    astOut.innerHTML=svg+
-      '<div class="cos-detail" style="margin-top:14px">式 <b>'+escapeHtml(src.trim())+'</b> の木は '+info.nodes.length+' ノード ・ 深さ '+info.depth+'　|　計算結果 = <b>'+valStr+'</b></div>'+
-      '<div class="chipcount">緑のノードが演算子、白のノードが数値。掛け算・割り算ほど木の下（先に計算される側）に入ります。</div>';
-  }
-  if(astInput){
-    astInput.addEventListener('input', renderAst);
-    document.querySelectorAll('#demoAst .try button').forEach(function(b){
-      b.addEventListener('click', function(){ astInput.value=b.getAttribute('data-ex'); renderAst(); });
-    });
-    renderAst();
+    renderDesc();
   }
 
-  /* ---- Demo 2: cyclomatic complexity ---- */
-  var ccIn=document.getElementById('ccInput'), ccOut=document.getElementById('ccOut');
-  function countMatches(re, str){ var m=str.match(re); return m?m.length:0; }
-  function renderCc(){
-    var code=ccIn.value;
-    var rows=[
-      {name:'if', label:'if', c:countMatches(/\bif\b/g, code)},
-      {name:'elif', label:'elif', c:countMatches(/\belif\b/g, code)},
-      {name:'for', label:'for', c:countMatches(/\bfor\b/g, code)},
-      {name:'while', label:'while', c:countMatches(/\bwhile\b/g, code)},
-      {name:'case', label:'case', c:countMatches(/\bcase\b/g, code)},
-      {name:'and', label:'and / &&', c:countMatches(/\band\b/g, code)+countMatches(/&&/g, code)},
-      {name:'or', label:'or / ||', c:countMatches(/\bor\b/g, code)+countMatches(/\|\|/g, code)}
-    ];
-    var D=rows.reduce(function(s,r){ return s+r.c; }, 0);
-    var M=D+1;
-    var verdict, vcolor;
-    if(M<=5){ verdict='簡単（テストしやすい）'; vcolor='var(--good)'; }
-    else if(M<=10){ verdict='やや複雑'; vcolor='var(--warn)'; }
-    else { verdict='複雑（分割を検討）'; vcolor='var(--bad)'; }
-    var body=rows.map(function(r){
-      var z=r.c===0?' class="zero"':'';
-      return '<tr><td>'+escapeHtml(r.label)+'</td><td'+z+'>'+r.c+'</td></tr>';
-    }).join('');
-    ccOut.innerHTML=
-      '<div class="cos-score"><span class="val">'+M+'</span><span class="lab">循環的複雑度 M = 判定数 '+D+' + 1</span></div>'+
-      '<div class="cos-detail" style="color:'+vcolor+';font-family:var(--sans);font-weight:600">目安: '+verdict+'</div>'+
-      '<table class="dtable" style="max-width:340px"><tr><th>判定点 / decision</th><th>回数</th></tr>'+body+
-      '<tr><td>判定点の合計</td><td>'+D+'</td></tr></table>'+
-      '<div class="chipcount">M = 判定数 + 1。分岐が無ければ M = 1（一本道）。目安: 1〜5 簡単, 6〜10 やや複雑, 11 以上 複雑。</div>';
-  }
-  if(ccIn){
-    ccIn.addEventListener('input', renderCc);
-    document.querySelectorAll('#demoCc .try button').forEach(function(b){
-      b.addEventListener('click', function(){ ccIn.value=b.getAttribute('data-cc'); renderCc(); });
-    });
-    renderCc();
-  }
-
-  /* ---- Demo 3: code clone detection (token normalization + Jaccard) ---- */
-  var clA=document.getElementById('clA'), clB=document.getElementById('clB'), clOut=document.getElementById('clOut');
-  var KW={"def":1,"return":1,"if":1,"elif":1,"else":1,"for":1,"while":1,"in":1,"and":1,"or":1,
-    "not":1,"is":1,"None":1,"True":1,"False":1,"break":1,"continue":1,"pass":1,"import":1,
-    "from":1,"class":1,"lambda":1,"with":1,"as":1,"try":1,"except":1,"finally":1,"raise":1,
-    "print":1,"range":1,"len":1,"int":1,"float":1,"str":1};
-  var MULTI=['==','!=','<=','>=','//','**','&&','||','+=','-=','*=','/=','->'];
-  function tokenizeCode(src){
-    var toks=[], i=0, s=src, n=s.length;
-    while(i<n){
-      var c=s[i];
-      if(/\s/.test(c)){ i++; continue; }
-      if(c==='#'){ while(i<n && s[i]!=='\n') i++; continue; }
-      if(/[A-Za-z_]/.test(c)){ var j=i; while(j<n && /[A-Za-z0-9_]/.test(s[j])) j++; var w=s.slice(i,j); toks.push(KW[w]?w:'ID'); i=j; continue; }
-      if(/[0-9]/.test(c)){ var j2=i; while(j2<n && /[0-9.]/.test(s[j2])) j2++; toks.push('NUM'); i=j2; continue; }
-      if(c==='"'||c==="'"){ var q=c; var j3=i+1; while(j3<n && s[j3]!==q) j3++; toks.push('STR'); i=j3+1; continue; }
-      var two=s.substr(i,2);
-      if(MULTI.indexOf(two)>=0){ toks.push(two); i+=2; continue; }
-      toks.push(c); i++;
+  /* ============ Demo 2: normal distribution visualizer ============ */
+  var nMu=document.getElementById('nMu'), nSd=document.getElementById('nSd'),
+      nLo=document.getElementById('nLo'), nHi=document.getElementById('nHi'),
+      nMuV=document.getElementById('nMuV'), nSdV=document.getElementById('nSdV'),
+      nLoV=document.getElementById('nLoV'), nHiV=document.getElementById('nHiV'),
+      normOut=document.getElementById('normOut');
+  function renderNorm(){
+    var mu=+nMu.value, sd=+nSd.value, lo=+nLo.value, hi=+nHi.value;
+    if(lo>hi){ var tmp=lo; lo=hi; hi=tmp; }
+    nMuV.textContent=mu; nSdV.textContent=sd; nLoV.textContent=lo; nHiV.textContent=hi;
+    var W=900, H=300, mL=52, mR=20, mT=20, mB=44;
+    var d0=0, d1=100;                          /* fixed domain */
+    var px0=mL, px1=W-mR, py0=H-mB, py1=mT;
+    function PX(v){ return px0+(v-d0)/(d1-d0)*(px1-px0); }
+    var peak=normPdf(mu, mu, sd);
+    function PY(y){ return py0-(y/peak)*(py0-py1); }
+    var N=200, pts=[];
+    for(var i=0;i<=N;i++){ var x=d0+(d1-d0)*i/N; pts.push([PX(x), PY(normPdf(x,mu,sd))]); }
+    var svg='<svg class="viz" viewBox="0 0 '+W+' '+H+'" role="img" aria-label="正規分布の曲線と指定範囲の面積">';
+    /* baseline axis */
+    svg+='<line x1="'+px0+'" y1="'+py0+'" x2="'+px1+'" y2="'+py0+'" class="dg-ax"/>';
+    for(var t=0;t<=100;t+=25){
+      svg+='<line x1="'+PX(t).toFixed(1)+'" y1="'+py0+'" x2="'+PX(t).toFixed(1)+'" y2="'+(py0+5)+'" class="dg-ax"/>';
+      svg+='<text class="dg-en" x="'+PX(t).toFixed(1)+'" y="'+(py0+20)+'">'+t+'</text>';
     }
-    return toks;
+    /* shaded area between lo and hi */
+    var area='';
+    var loP=Math.max(d0,lo), hiP=Math.min(d1,hi);
+    if(hiP>loP){
+      area+='M '+PX(loP).toFixed(1)+' '+py0.toFixed(1);
+      var M=120;
+      for(var j=0;j<=M;j++){ var xv=loP+(hiP-loP)*j/M; area+=' L '+PX(xv).toFixed(1)+' '+PY(normPdf(xv,mu,sd)).toFixed(1); }
+      area+=' L '+PX(hiP).toFixed(1)+' '+py0.toFixed(1)+' Z';
+      svg+='<path d="'+area+'" fill="var(--accent-soft)" stroke="none"/>';
+      svg+='<line x1="'+PX(loP).toFixed(1)+'" y1="'+py0+'" x2="'+PX(loP).toFixed(1)+'" y2="'+PY(normPdf(loP,mu,sd)).toFixed(1)+'" stroke="var(--accent)" stroke-width="1.2" stroke-dasharray="3 3"/>';
+      svg+='<line x1="'+PX(hiP).toFixed(1)+'" y1="'+py0+'" x2="'+PX(hiP).toFixed(1)+'" y2="'+PY(normPdf(hiP,mu,sd)).toFixed(1)+'" stroke="var(--accent)" stroke-width="1.2" stroke-dasharray="3 3"/>';
+    }
+    /* curve */
+    var dpath='M '+pts.map(function(p){ return p[0].toFixed(1)+' '+p[1].toFixed(1); }).join(' L ');
+    svg+='<path d="'+dpath+'" fill="none" stroke="var(--accent)" stroke-width="2.4"/>';
+    /* mean line */
+    svg+='<line x1="'+PX(mu).toFixed(1)+'" y1="'+PY(peak).toFixed(1)+'" x2="'+PX(mu).toFixed(1)+'" y2="'+py0+'" stroke="var(--ink-2)" stroke-width="1" stroke-dasharray="2 3"/>';
+    svg+='<text class="dg-en" x="'+PX(mu).toFixed(1)+'" y="'+(py1+2)+'">&mu;='+mu+'</text>';
+    svg+='</svg>';
+    var prob=normCdf(hi,mu,sd)-normCdf(lo,mu,sd);
+    var zlo=((lo-mu)/sd), zhi=((hi-mu)/sd);
+    normOut.innerHTML=
+      '<div class="prob-val"><span class="val">'+fmt(prob*100,1)+'%</span><span class="lab">P('+lo+' &le; X &le; '+hi+') ＝ 網かけの面積</span></div>'+
+      svg+
+      '<div class="chipcount">P = '+fmt(prob,4)+'　|　標準化すると z ＝ '+fmt(zlo,2)+' から '+fmt(zhi,2)+'　|　曲線全体の面積は 1</div>';
   }
-  function bigrams(arr){ var b={}; for(var i=0;i<arr.length-1;i++){ b[arr[i]+' '+arr[i+1]]=1; } return b; }
-  function jaccard(a,b){
-    var ka=Object.keys(a), inter=0;
-    ka.forEach(function(k){ if(b[k]) inter++; });
-    var uni=ka.length+Object.keys(b).length-inter;
-    return {j: uni? inter/uni : 0, inter:inter, uni:uni};
-  }
-  function renderClone(){
-    var ta=tokenizeCode(clA.value), tb=tokenizeCode(clB.value);
-    if(!ta.length || !tb.length){ clOut.innerHTML='<div class="chipcount">2つのコード片を入力してください。</div>'; return; }
-    var ba=bigrams(ta), bb=bigrams(tb);
-    var jr=jaccard(ba,bb);
-    var same=(ta.join(' ')===tb.join(' '));
-    var pct=(jr.j*100).toFixed(0);
-    var verdict, vcolor;
-    if(same){ verdict='正規化後のトークン列が完全一致（Type-1 / Type-2 クローン）'; vcolor='var(--bad)'; }
-    else if(jr.j>=0.8){ verdict='クローンの可能性が高い'; vcolor='var(--bad)'; }
-    else if(jr.j>=0.5){ verdict='部分的に類似（要確認）'; vcolor='var(--warn)'; }
-    else { verdict='クローンではない'; vcolor='var(--good)'; }
-    function seq(arr){ var s=arr.join(' '); return s.length>140? escapeHtml(s.slice(0,140))+' …' : escapeHtml(s); }
-    clOut.innerHTML=
-      '<div class="cos-score"><span class="val">'+jr.j.toFixed(3)+'</span><span class="lab">Jaccard 類似度（2-gram 集合, 0 から 1）</span></div>'+
-      '<div class="cos-bar"><span style="width:'+Math.max(0,Math.min(100,pct))+'%"></span></div>'+
-      '<div class="cos-detail" style="color:'+vcolor+';font-family:var(--sans);font-weight:600;margin-top:12px">判定: '+verdict+'</div>'+
-      '<div class="cos-detail">正規化 A（'+ta.length+' トークン）: '+seq(ta)+'<br>'+
-      '正規化 B（'+tb.length+' トークン）: '+seq(tb)+'<br>'+
-      '共通の 2-gram = <b>'+jr.inter+'</b> / 和集合 = <b>'+jr.uni+'</b></div>'+
-      '<div class="chipcount">変数名 → ID, 数値 → NUM, 文字列 → STR に正規化。名前だけ変えた複製も同じ列になり、高い類似度になります。</div>';
-  }
-  if(clA){
-    clA.addEventListener('input', renderClone);
-    clB.addEventListener('input', renderClone);
-    document.querySelectorAll('#demoClone .try button').forEach(function(b){
-      b.addEventListener('click', function(){ clA.value=b.getAttribute('data-a'); clB.value=b.getAttribute('data-b'); renderClone(); });
+  [nMu,nSd,nLo,nHi].forEach(function(el){ if(el) el.addEventListener('input', renderNorm); });
+  if(nMu) renderNorm();
+
+  /* ============ Demo 3: two-sample t-test ============ */
+  var tA=document.getElementById('tA'), tB=document.getElementById('tB'), tOut=document.getElementById('tOut');
+  function renderT(){
+    var A=parseNums(tA.value), B=parseNums(tB.value);
+    if(A.length<2 || B.length<2){ tOut.innerHTML='<div class="chipcount">各グループに数値を2つ以上入力してください。</div>'; return; }
+    var n1=A.length, n2=B.length, m1=mean(A), m2=mean(B), s1=std(A,1), s2=std(B,1);
+    var sp=Math.sqrt(((n1-1)*s1*s1+(n2-1)*s2*s2)/(n1+n2-2));
+    var t=(m1-m2)/(sp*Math.sqrt(1/n1+1/n2));
+    var df=n1+n2-2;
+    var p=tTwoTailP(t, df);
+    var d=(m1-m2)/sp;
+    var sig=p<0.05;
+    var cards='<div class="stat-grid">'+
+      statCard('平均 A', fmt(m1))+
+      statCard('平均 B', fmt(m2))+
+      statCard('平均差', fmt(m1-m2))+
+      statCard('t 値', fmt(t,3))+
+      statCard('自由度 df', df)+
+      statCard('p 値', p<1e-4?p.toExponential(2):fmt(p,4))+
+      statCard("Cohen's d", fmt(d,2))+
+      '</div>';
+    var verdict='<div class="verdict '+(sig?'sig':'nsig')+'">'+
+      (sig?'有意差あり（p &lt; 0.05, 帰無仮説を棄却）':'有意差なし（p &ge; 0.05, 帰無仮説は棄却されない）')+'</div>';
+    /* comparison viz: two rows, mean marker + sd whiskers on shared scale */
+    var allMin=Math.min(m1-2*s1, m2-2*s2), allMax=Math.max(m1+2*s1, m2+2*s2);
+    var pad=(allMax-allMin)*0.08||1; allMin-=pad; allMax+=pad;
+    var W=900, x0=64, x1=850;
+    function X(v){ return x0+(v-allMin)/((allMax-allMin)||1)*(x1-x0); }
+    var svg='<svg class="viz" viewBox="0 0 '+W+' 160" role="img" aria-label="2群の平均と標準偏差の比較">';
+    var rows=[{m:m1,s:s1,y:48,lb:'A'},{m:m2,s:s2,y:100,lb:'B'}];
+    rows.forEach(function(r){
+      svg+='<text class="dg-lbl" x="24" y="'+(r.y+4)+'" style="text-anchor:start">'+r.lb+'</text>';
+      svg+='<line x1="'+X(r.m-r.s).toFixed(1)+'" y1="'+r.y+'" x2="'+X(r.m+r.s).toFixed(1)+'" y2="'+r.y+'" stroke="var(--accent)" stroke-width="2"/>';
+      svg+='<line x1="'+X(r.m-r.s).toFixed(1)+'" y1="'+(r.y-7)+'" x2="'+X(r.m-r.s).toFixed(1)+'" y2="'+(r.y+7)+'" stroke="var(--accent)" stroke-width="1.5"/>';
+      svg+='<line x1="'+X(r.m+r.s).toFixed(1)+'" y1="'+(r.y-7)+'" x2="'+X(r.m+r.s).toFixed(1)+'" y2="'+(r.y+7)+'" stroke="var(--accent)" stroke-width="1.5"/>';
+      svg+='<circle cx="'+X(r.m).toFixed(1)+'" cy="'+r.y+'" r="6" fill="var(--accent-2)"/>';
+      svg+='<text class="dg-en" x="'+X(r.m).toFixed(1)+'" y="'+(r.y-12)+'">'+fmt(r.m,1)+'</text>';
     });
-    renderClone();
+    /* axis */
+    var ay=140;
+    svg+='<line x1="'+x0+'" y1="'+ay+'" x2="'+x1+'" y2="'+ay+'" class="dg-ax"/>';
+    for(var i=0;i<=4;i++){ var val=allMin+(allMax-allMin)*i/4, px=x0+(x1-x0)*i/4;
+      svg+='<line x1="'+px.toFixed(1)+'" y1="'+ay+'" x2="'+px.toFixed(1)+'" y2="'+(ay+5)+'" class="dg-ax"/>';
+      svg+='<text class="dg-en" x="'+px.toFixed(1)+'" y="'+(ay+18)+'">'+val.toFixed(1)+'</text>'; }
+    svg+='</svg>';
+    tOut.innerHTML=cards+verdict+svg+
+      '<div class="chipcount">点＝各群の平均, 横線＝平均±標準偏差。p値は自由度 '+df+' の t 分布から算出（両側）。効果量 d の目安: 0.2 小 / 0.5 中 / 0.8 大。</div>';
+  }
+  if(tA){
+    tA.addEventListener('input', renderT); tB.addEventListener('input', renderT);
+    document.querySelectorAll('#demoT .try button').forEach(function(b){
+      b.addEventListener('click', function(){ tA.value=b.getAttribute('data-a'); tB.value=b.getAttribute('data-b'); renderT(); });
+    });
+    renderT();
   }
 })();
 </script>

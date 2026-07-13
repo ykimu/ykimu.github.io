@@ -3,15 +3,15 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>プログラム解析 - 研究の技術を実践的に学ぶ / Program Analysis</title>
-<meta name="description" content="A hands-on learning module on program analysis: lexing and parsing into an abstract syntax tree, static analysis with control and data flow, code metrics and cyclomatic complexity, dynamic analysis with coverage and profiling, and token-based code clone detection. With interactive demos and runnable Python examples. Part of Yuta Kimura's learning course.">
-<link rel="canonical" href="https://ykimu.github.io/learn/program-analysis.html">
+<title>データ可視化 - 研究の技術を実践的に学ぶ / Data Visualization</title>
+<meta name="description" content="A hands-on learning module on data visualization: why we visualize, choosing the right chart, principles of honest and clear figures, matplotlib basics, statistical graphics with seaborn, and how to avoid misleading charts. With interactive demos and runnable Python examples. Part of Yuta Kimura's learning course.">
+<link rel="canonical" href="https://ykimu.github.io/learn/data-visualization.html">
 <link rel="icon" href="../favicon.svg" type="image/svg+xml">
 <meta property="og:site_name" content="Yuta Kimura / 木村祐太">
 <meta property="og:type" content="article">
-<meta property="og:title" content="プログラム解析 - 研究の技術を実践的に学ぶ / Program Analysis">
-<meta property="og:description" content="A hands-on learning module on program analysis: parsing to an AST, static analysis, code metrics and cyclomatic complexity, dynamic analysis, and code clone detection, with interactive demos and runnable Python examples.">
-<meta property="og:url" content="https://ykimu.github.io/learn/program-analysis.html">
+<meta property="og:title" content="データ可視化 - 研究の技術を実践的に学ぶ / Data Visualization">
+<meta property="og:description" content="A hands-on learning module on data visualization: choosing the right chart, principles of clear figures, matplotlib and seaborn, and how to avoid misleading charts, with interactive demos and runnable Python examples.">
+<meta property="og:url" content="https://ykimu.github.io/learn/data-visualization.html">
 <meta property="og:image" content="https://ykimu.github.io/assets/og.png">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="color-scheme" content="light">
@@ -526,12 +526,12 @@
               <a href="../learn/machine-learning.html"><span lang="ja">機械学習</span><span lang="en">Machine Learning</span></a>
               <a href="../learn/deep-learning.html"><span lang="ja">深層学習</span><span lang="en">Deep Learning</span></a>
               <a href="../learn/llm.html"><span lang="ja">大規模言語モデル（LLM）</span><span lang="en">Large Language Models</span></a>
-              <a class="here" aria-current="page" href="../learn/program-analysis.html"><span lang="ja">プログラム解析</span><span lang="en">Program Analysis</span></a>
+              <a href="../learn/program-analysis.html"><span lang="ja">プログラム解析</span><span lang="en">Program Analysis</span></a>
             </div>
             <div class="megacol">
               <div class="navlabel"><span lang="ja">統計とデータ分析</span><span lang="en">Statistics & data analysis</span></div>
               <a href="../learn/statistics.html"><span lang="ja">統計分析</span><span lang="en">Statistical analysis</span></a>
-              <a href="../learn/data-visualization.html"><span lang="ja">データ可視化</span><span lang="en">Data visualization</span></a>
+              <a class="here" aria-current="page" href="../learn/data-visualization.html"><span lang="ja">データ可視化</span><span lang="en">Data visualization</span></a>
               <a href="../learn/causal-inference.html"><span lang="ja">因果推論</span><span lang="en">Causal inference</span></a>
               <a href="../learn/time-series.html"><span lang="ja">時系列分析</span><span lang="en">Time series analysis</span></a>
             </div>
@@ -616,10 +616,10 @@
       <a href="../learn/machine-learning.html"><span lang="ja">機械学習</span><span lang="en">Machine Learning</span></a>
       <a href="../learn/deep-learning.html"><span lang="ja">深層学習</span><span lang="en">Deep Learning</span></a>
       <a href="../learn/llm.html"><span lang="ja">大規模言語モデル（LLM）</span><span lang="en">Large Language Models</span></a>
-      <a class="here" aria-current="page" href="../learn/program-analysis.html"><span lang="ja">プログラム解析</span><span lang="en">Program Analysis</span></a>
+      <a href="../learn/program-analysis.html"><span lang="ja">プログラム解析</span><span lang="en">Program Analysis</span></a>
       <div class="mobsublabel"><span lang="ja">統計とデータ分析</span><span lang="en">Statistics & data analysis</span></div>
       <a href="../learn/statistics.html"><span lang="ja">統計分析</span><span lang="en">Statistical analysis</span></a>
-      <a href="../learn/data-visualization.html"><span lang="ja">データ可視化</span><span lang="en">Data visualization</span></a>
+      <a class="here" aria-current="page" href="../learn/data-visualization.html"><span lang="ja">データ可視化</span><span lang="en">Data visualization</span></a>
       <a href="../learn/causal-inference.html"><span lang="ja">因果推論</span><span lang="en">Causal inference</span></a>
       <a href="../learn/time-series.html"><span lang="ja">時系列分析</span><span lang="en">Time series analysis</span></a>
       <div class="mobsublabel"><span lang="ja">実践編</span><span lang="en">Practice</span></div>
@@ -652,7 +652,7 @@
   <nav class="crumbs" aria-label="パンくず">
     <a href="../index.html"><span lang="ja">ホーム</span><span lang="en">Home</span></a>
     <span class="csep" aria-hidden="true">&rsaquo;</span>
-    <span class="cur" aria-current="page"><span lang="ja">学習コース：プログラム解析</span><span lang="en">Learn: Program Analysis</span></span>
+    <span class="cur" aria-current="page"><span lang="ja">学習コース：データ可視化</span><span lang="en">Learn: Data Visualization</span></span>
   </nav>
 </div>
 
@@ -660,15 +660,15 @@
 <div class="hero">
   <div class="wrap">
     <p class="kick"><span lang="ja">学習コース</span><span lang="en">Learn</span></p>
-    <h1>プログラム解析</h1>
-    <p class="lead">プログラムを実行せずに、あるいは実行しながら解析し、コードの構造・品質・振る舞いを読み解く技術を、概要から理論、そして実際に動かせるコードまで、順を追って学ぶモジュールです。各ステップは「概要 → 仕組み（座学）→ コードで動かす」の3層で進みます。ページ内には手を動かせるデモを3つ用意しました。</p>
+    <h1>データ可視化</h1>
+    <p class="lead">データを正しく、そしてわかりやすく伝えるための図の作り方を、概要から原則、そして実際に動かせるコードまで、順を追って学ぶモジュールです。各ステップは「概要 → 仕組み（座学）→ コードで動かす」の3層で進みます。ページ内には手を動かせるデモを3つ用意しました。</p>
     <p class="ja-note"><span lang="ja">この教材は日本語のみで提供しています</span><span lang="en">This learning material is available in Japanese only.</span></p>
     <div class="hero-cta">
       <a class="btn ink" href="#intro" style="padding:12px 22px">
         <span lang="ja">学びはじめる</span><span lang="en">Start learning</span>
       </a>
       <a class="tlink" href="#step2">
-        <span lang="ja">まず手を動かす（構文木デモ）</span><span lang="en">Jump to the syntax-tree demo</span>
+        <span lang="ja">まず手を動かす（図の選び方ガイド）</span><span lang="en">Jump to the chart chooser demo</span>
         <span class="ar" aria-hidden="true">&rsaquo;</span>
       </a>
     </div>
@@ -680,12 +680,12 @@
 <div class="tocbar">
   <nav class="tocbar-inner" aria-label="ページ内目次">
     <a class="tocpill" href="#intro"><span lang="ja">はじめに</span><span lang="en">Intro</span></a>
-    <a class="tocpill" href="#step1">Step 1 <span lang="ja">プログラム解析とは</span><span lang="en">What is program analysis</span></a>
-    <a class="tocpill" href="#step2">Step 2 <span lang="ja">構文解析とAST</span><span lang="en">Parsing &amp; AST</span></a>
-    <a class="tocpill" href="#step3">Step 3 <span lang="ja">静的解析</span><span lang="en">Static analysis</span></a>
-    <a class="tocpill" href="#step4">Step 4 <span lang="ja">コードメトリクス</span><span lang="en">Code metrics</span></a>
-    <a class="tocpill" href="#step5">Step 5 <span lang="ja">動的解析</span><span lang="en">Dynamic analysis</span></a>
-    <a class="tocpill" href="#step6">Step 6 <span lang="ja">応用とこれから</span><span lang="en">Applications</span></a>
+    <a class="tocpill" href="#step1">Step 1 <span lang="ja">可視化とは</span><span lang="en">Why visualize</span></a>
+    <a class="tocpill" href="#step2">Step 2 <span lang="ja">図の選び方</span><span lang="en">Choosing charts</span></a>
+    <a class="tocpill" href="#step3">Step 3 <span lang="ja">良い図の原則</span><span lang="en">Design principles</span></a>
+    <a class="tocpill" href="#step4">Step 4 <span lang="ja">matplotlib基礎</span><span lang="en">matplotlib</span></a>
+    <a class="tocpill" href="#step5">Step 5 <span lang="ja">seaborn</span><span lang="en">seaborn</span></a>
+    <a class="tocpill" href="#step6">Step 6 <span lang="ja">誤解を招く図</span><span lang="en">Misleading charts</span></a>
     <a class="tocpill" href="#closing"><span lang="ja">まとめ</span><span lang="en">Wrap-up</span></a>
     <a class="tocpill" href="#beyond"><span lang="ja">発展トピック</span><span lang="en">Beyond</span></a>
   </nav>
@@ -697,55 +697,60 @@
     <p class="eyebrow"><span lang="ja">はじめに</span><span lang="en">Introduction</span></p>
     <h2 class="big">このモジュールの全体像</h2>
     <div class="prose" style="margin-top:22px">
-      <p><b>プログラム解析（program analysis）</b>とは、ソースコードやプログラムそのものを対象に、その構造・品質・振る舞いを機械的に読み解く技術の総称です。コンパイラの最適化、統合開発環境（IDE）のエラー表示や補完、リンタによるスタイル指摘、セキュリティ検査、そしてリファクタリング支援まで、私たちが日々使う開発ツールの多くが、この技術の上に成り立っています。</p>
-      <p>プログラム解析には大きく2つの立場があります。プログラムを<b>実行せずに</b>コードそのものから性質を調べる<b>静的解析</b>と、実際に<b>実行して</b>その様子を観測する<b>動的解析</b>です。どちらの場合も、まず生のソースコードを機械が扱える構造へ変換することから始まります。次のような流れ（パイプライン）が基本です。</p>
+      <p><b>データ可視化（data visualization）</b>とは、数値や表のままでは見えにくいデータの構造や傾向を、図やグラフの形にして目で読み取れるようにする技術です。データを自分で理解するための<b>探索的な可視化</b>と、わかったことを他者に伝えるための<b>説明的な可視化</b>の、両方の場面で使われます。</p>
+      <p>良い図はただ数値をきれいに飾るものではありません。伝えたいことを正確に、そして誤解なく届けるための道具です。そのために、多くの図づくりに共通する次のような流れ（考え方の順序）があります。伝えたいことに合わせて図を選び、軸や色を設計し、余計な装飾を削り、読み手に伝わる形へ仕上げます。</p>
     </div>
 
     <div class="diagram-wrap reveal">
-      <p class="cap">プログラム解析の基本パイプライン</p>
-      <svg viewBox="0 0 940 150" role="img" aria-label="プログラム解析のパイプライン: ソースコードから字句・構文解析（AST）、解析、結果への流れ">
+      <p class="cap">データ可視化の基本的な流れ</p>
+      <svg viewBox="0 0 940 150" role="img" aria-label="データ可視化の流れ: データから、図を選ぶ、設計する、装飾を削る、伝わるへの流れ">
         <g>
-          <rect class="dg-box" x="30" y="46" width="166" height="58" rx="12"/>
-          <text class="dg-lbl" x="113" y="72">ソースコード</text>
-          <text class="dg-en" x="113" y="90">Source code</text>
+          <rect class="dg-box" x="12" y="46" width="150" height="58" rx="12"/>
+          <text class="dg-lbl" x="87" y="72">データ</text>
+          <text class="dg-en" x="87" y="90">Data</text>
         </g>
         <g>
-          <rect class="dg-box acc" x="268" y="46" width="166" height="58" rx="12"/>
-          <text class="dg-lbl" x="351" y="72">構文解析（AST）</text>
-          <text class="dg-en" x="351" y="90">Parse</text>
+          <rect class="dg-box acc" x="204" y="46" width="150" height="58" rx="12"/>
+          <text class="dg-lbl" x="279" y="72">図を選ぶ</text>
+          <text class="dg-en" x="279" y="90">Choose</text>
         </g>
         <g>
-          <rect class="dg-box acc" x="506" y="46" width="166" height="58" rx="12"/>
-          <text class="dg-lbl" x="589" y="72">解析</text>
-          <text class="dg-en" x="589" y="90">Analyze</text>
+          <rect class="dg-box acc" x="396" y="46" width="150" height="58" rx="12"/>
+          <text class="dg-lbl" x="471" y="72">設計する</text>
+          <text class="dg-en" x="471" y="90">Design</text>
         </g>
         <g>
-          <rect class="dg-box" x="744" y="46" width="166" height="58" rx="12"/>
-          <text class="dg-lbl" x="827" y="72">結果</text>
-          <text class="dg-en" x="827" y="90">Result</text>
+          <rect class="dg-box acc" x="588" y="46" width="150" height="58" rx="12"/>
+          <text class="dg-lbl" x="663" y="72">装飾を削る</text>
+          <text class="dg-en" x="663" y="90">Reduce</text>
+        </g>
+        <g>
+          <rect class="dg-box" x="780" y="46" width="148" height="58" rx="12"/>
+          <text class="dg-lbl" x="854" y="72">伝わる</text>
+          <text class="dg-en" x="854" y="90">Communicate</text>
         </g>
         <g class="dg-line">
-          <line x1="196" y1="75" x2="262" y2="75"/><line x1="434" y1="75" x2="500" y2="75"/>
-          <line x1="672" y1="75" x2="738" y2="75"/>
+          <line x1="162" y1="75" x2="196" y2="75"/><line x1="354" y1="75" x2="388" y2="75"/>
+          <line x1="546" y1="75" x2="580" y2="75"/><line x1="738" y1="75" x2="772" y2="75"/>
         </g>
         <g class="dg-arrow">
-          <polygon points="262,75 254,71 254,79"/><polygon points="500,75 492,71 492,79"/>
-          <polygon points="738,75 730,71 730,79"/>
+          <polygon points="196,75 188,71 188,79"/><polygon points="388,75 380,71 380,79"/>
+          <polygon points="580,75 572,71 572,79"/><polygon points="772,75 764,71 764,79"/>
         </g>
-        <text class="dg-note" x="351" y="130">字句解析・構文木</text>
-        <text class="dg-note" x="589" y="130">静的解析・動的解析</text>
-        <text class="dg-note" x="827" y="130">指標・警告・クローン</text>
+        <text class="dg-note" x="279" y="130">目的とデータ型</text>
+        <text class="dg-note" x="471" y="130">軸・色・凡例</text>
+        <text class="dg-note" x="663" y="130">データインク比</text>
       </svg>
     </div>
 
     <div class="prose">
-      <p>このモジュールは、上のパイプラインを左から順にたどります。各ステップは次の3層で構成します。</p>
+      <p>このモジュールは、上の流れに沿って進みます。各ステップは次の3層で構成します。</p>
       <ul>
-        <li><b>概要</b>：その技術が何のためにあるのか、あらましをつかむ。</li>
-        <li><b>仕組み（座学）</b>：背後にある考え方・定義・式を、ていねいに理解する。</li>
-        <li><b>コードで動かす</b>：Python の標準ライブラリや定番ツール、ページ内デモで実際に動かして確かめる。</li>
+        <li><b>概要</b>：その考え方や道具が何のためにあるのか、あらましをつかむ。</li>
+        <li><b>仕組み（座学）</b>：背後にある原則・定義を、ていねいに理解する。</li>
+        <li><b>コードで動かす</b>：Python の定番ライブラリや、ページ内デモで実際に動かして確かめる。</li>
       </ul>
-      <p>手を動かす題材には、特別なデータは使いません。Python の標準ライブラリのソースや任意の公開 Python コード、そしてページ内の小さなコード片やサンプルだけを使います。特別な環境がなくても、読みながら試せる構成です。</p>
+      <p>手を動かす題材には、実在の公開データセット（seaborn に同梱の tips や penguins など）や、ページ内の小さなサンプルだけを使います。特別な環境がなくても、読みながら試せる構成です。</p>
     </div>
   </div>
 </section>
@@ -755,36 +760,36 @@
   <div class="wrap reveal">
     <div class="stephead">
       <span class="num">1</span>
-      <div class="tt"><h2>プログラム解析とは</h2><span class="st-en">What is program analysis</span></div>
+      <div class="tt"><h2>データ可視化とは</h2><span class="st-en">Why we visualize</span></div>
     </div>
     <div class="steprule"></div>
 
     <p class="layer first"><span lang="ja">概要</span><span lang="en">Overview</span></p>
     <div class="prose">
-      <p>プログラム解析は「プログラムについて、プログラムで調べる」技術です。人が目で追うには大きすぎるコードから、機械的に情報を引き出します。おもな用途を挙げます。</p>
+      <p>データ可視化は、数値や表を図の形にして「目で読み取れる」ようにする技術です。私たちは次のような場面で、すでにその成果に触れています。</p>
       <ul>
-        <li><b>バグ発見</b>：未定義の変数、到達しないコード、型の不一致などを、実行前に見つける。</li>
-        <li><b>品質評価</b>：複雑さや重複を数値化し、保守しにくい箇所を可視化する。</li>
-        <li><b>セキュリティ</b>：外部入力が危険な場所に届く経路（脆弱性）を検出する。</li>
-        <li><b>リファクタリング支援</b>：安全に名前を変える、関数を抽出する、といった変換を機械的に助ける。</li>
-        <li><b>最適化</b>：コンパイラが、意味を変えずに速く・小さくコードを書き換える。</li>
+        <li><b>探索</b>：手元のデータにどんな傾向や外れ値があるかを、自分の目で確かめる。</li>
+        <li><b>報告</b>：分析でわかったことを、資料や論文の図として他者に伝える。</li>
+        <li><b>比較</b>：グループごとの違いや、時間による変化を一目で見比べる。</li>
+        <li><b>監視</b>：売上や気温などの指標を、ダッシュボードで継続的に見守る。</li>
       </ul>
+      <p>可視化の目的は大きく2つに分けられます。データを理解するための<b>探索的可視化（exploratory）</b>と、わかったことを伝えるための<b>説明的可視化（explanatory）</b>です。前者は自分のための素早い図でよく、後者は読み手に配慮した丁寧な図が求められます。</p>
     </div>
 
     <p class="layer"><span lang="ja">仕組み</span><span lang="en">How it works</span></p>
     <div class="prose">
-      <p>解析には、実行するかどうかで大きく2つの立場があります。</p>
-      <h4>静的解析（static analysis）</h4>
-      <p>プログラムを<b>実行せずに</b>、ソースコードやコンパイル後のバイトコードそのものを調べます。あらゆる入力・あらゆる経路を（近似的に）まとめて扱えるのが強みです。いっぽう、実行時にしか決まらない値（利用者の入力やファイルの中身など）は分からないため、結果はどうしても<b>近似</b>になります。安全側に倒すと、実際には問題ない箇所まで警告する<b>偽陽性</b>が増えがちです。</p>
-      <h4>動的解析（dynamic analysis）</h4>
-      <p>プログラムを<b>実際に実行して</b>、その振る舞いを観測します。実行した具体的な値や経路について正確な情報が得られます。ただし、観測できるのは<b>実行した経路だけ</b>で、試さなかった入力の挙動は分かりません。見逃し（<b>偽陰性</b>）が起きやすいのが弱点です。テストカバレッジやプロファイリングが代表例です。</p>
-      <h4>解析の限界</h4>
-      <p>「このプログラムは必ず停止するか」「この2つのプログラムは同じ振る舞いか」といった、プログラムの<b>意味に関する非自明な性質</b>は、一般には機械的に完全に判定できないことが知られています（ライスの定理・停止性問題）。だからこそ実務の解析は、安全な近似・ヒューリスティック・限定した範囲での判定を組み合わせて、役に立つ答えを返すよう設計されています。静的と動的は対立するものではなく、互いの弱点を補い合う道具だと考えるのがよいでしょう。</p>
+      <p>そもそも、なぜ図にするのでしょうか。平均や分散などの<b>要約統計だけでは、データの姿は見えない</b>からです。これを鮮やかに示すのが<b>アンスコムの例（Anscombe's quartet）</b>です。統計学者フランク・アンスコムが1973年に示した、4つのデータの組です。</p>
+      <ul>
+        <li>4つの組は、<b>平均・分散・相関係数・回帰直線がほぼ同じ</b>になるように作られています。数値の要約だけを見ると、4つは「同じデータ」に見えます。</li>
+        <li>ところが散布図を描くと、ある組はきれいな直線、ある組は曲線、ある組は1つの外れ値に引っ張られた形と、まったく違う姿が現れます。</li>
+      </ul>
+      <p>同じ主旨の、より新しい例に「Datasaurus（データサウルス）」もあります。要約統計はそっくりなのに、点を描くと恐竜の絵になるデータです。いずれも「まず図を描く」ことの大切さを教えてくれます。図は、要約された数値が捨ててしまう<b>分布の形・外れ値・関係のかたち</b>を目に見せてくれるのです。</p>
+      <p>このモジュールでは、Step&nbsp;2 で図の選び方を、Step&nbsp;3 で良い図の原則を学び、Step&nbsp;4・5 で matplotlib と seaborn による実装を、Step&nbsp;6 で誤解を招く図の避け方を扱います。</p>
     </div>
 
     <div class="callout tip">
       <h4>この Step のまとめ</h4>
-      <p>プログラム解析はコードから機械的に情報を引き出す技術。実行しない<b>静的解析</b>は網羅的だが近似的、実行する<b>動的解析</b>は正確だが観測した経路だけ。両者を組み合わせて、バグ発見・品質評価・セキュリティに役立てます。</p>
+      <p>データ可視化は、要約統計だけでは見えないデータの姿を目で読み取れるようにする技術です。目的は「自分が理解するため（探索的）」と「他者に伝えるため（説明的）」の2つ。アンスコムの例が示すように、まず図を描く習慣が分析の第一歩です。</p>
     </div>
   </div>
 </section>
@@ -794,107 +799,110 @@
   <div class="wrap reveal">
     <div class="stephead">
       <span class="num">2</span>
-      <div class="tt"><h2>字句・構文解析とAST</h2><span class="st-en">Lexing, parsing &amp; the AST</span></div>
+      <div class="tt"><h2>図の種類と選び方</h2><span class="st-en">Choosing the right chart</span></div>
     </div>
     <div class="steprule"></div>
 
     <p class="layer first"><span lang="ja">概要</span><span lang="en">Overview</span></p>
     <div class="prose">
-      <p>コードを解析する第一歩は、ただの文字の並びを<b>構造</b>に変えることです。人間が「2 + 3 * 4」を見て「掛け算が先」と読み取るように、機械にも文の骨組みを理解させます。この骨組みが<b>抽象構文木（AST: Abstract Syntax Tree）</b>で、ほとんどの解析はこの木の上で行われます。</p>
+      <p>図づくりの最初の分かれ道は「どの図を使うか」です。図の種類は、見た目の好みではなく<b>伝えたいこと（目的）</b>と<b>データの型</b>から決めます。目的に合わない図を選ぶと、正しいデータでも読み手に伝わりません。まずは代表的な5つの目的と、それに対応する図を押さえましょう。</p>
     </div>
 
     <p class="layer"><span lang="ja">仕組み</span><span lang="en">How it works</span></p>
     <div class="prose">
-      <h4>1. 字句解析（lexing / tokenization）</h4>
-      <p>文字列を、意味のある最小単位である<b>トークン</b>に区切ります。<code>y = 2 + 3</code> なら、<code>y</code>（識別子）・<code>=</code>（記号）・<code>2</code>（数値）・<code>+</code>（記号）・<code>3</code>（数値）に分けます。空白やコメントはここで落とします。Python では標準ライブラリ <code>tokenize</code> がこの役目を担います。</p>
-      <h4>2. 構文解析（parsing）</h4>
-      <p>トークンの並びを、文法規則に従って木に組み立てます。ここで<b>演算子の優先順位</b>と<b>結合性</b>が効きます。<code>2 + 3 * 4</code> では、掛け算が足し算より優先されるので、<code>3 * 4</code> がひとつのまとまりになり、その結果と <code>2</code> を足す、という入れ子の木になります。同じ優先順位の <code>10 - 4 - 2</code> は左から結合し、<code>(10 - 4) - 2</code> と解釈されます。</p>
-      <h4>3. 抽象構文木（AST）</h4>
-      <p>できあがった木からは、括弧やセミコロンといった「書き方の飾り」を落とし、<b>構造の本質だけ</b>を残します。これが AST です。各ノードは「代入」「二項演算」「関数呼び出し」などの構文要素に対応します。木になっていれば、深さ優先でたどって特定のパターンを探す、といった処理が素直に書けます。</p>
-      <p>なお、Python はソースを<b>バイトコード</b>にコンパイルしてから仮想マシンで実行します。標準ライブラリ <code>dis</code> を使うと、この中間表現（どんな命令に落ちるか）を覗くことができます。字句解析・構文解析・AST は、その手前の「意味を組み立てる」段階だと考えるとよいでしょう。</p>
+      <h4>1. 比較：棒グラフ</h4>
+      <p>カテゴリごとの量を比べるなら<b>棒グラフ</b>です。長さで大小を読むので、<b>必ず0を起点</b>にします。項目が多いときは横棒にすると項目名が読みやすくなります。</p>
+      <h4>2. 推移：折れ線グラフ</h4>
+      <p>時間にそった変化を見るなら<b>折れ線グラフ</b>です。連続した時間を線でつなぎます。順序のないカテゴリを線で結ぶのは誤りです。折れ線は変化の傾きが主役なので、0起点は必須ではありません。</p>
+      <h4>3. 分布：ヒストグラム・箱ひげ図・バイオリンプロット</h4>
+      <p>1つの数値変数がどう散らばっているかを見るなら<b>ヒストグラム</b>です。値を区間（ビン）に区切って本数を数えます。ビン幅で印象が変わる点に注意します。複数の群を比べるなら、<b>箱ひげ図</b>（中央値・四分位・外れ値）や<b>バイオリンプロット</b>（分布の形も見える）が便利です。</p>
+      <h4>4. 関係：散布図</h4>
+      <p>2つの数値変数の関係を見るなら<b>散布図</b>です。点の広がりから、相関の向きや強さ、外れ値が読み取れます。点が重なるときは透明度やサイズを調整します。</p>
+      <h4>5. 割合：円グラフには注意</h4>
+      <p>全体に対する内訳を示すのが<b>割合</b>です。円グラフは有名ですが、人は角度や面積の比較が苦手なので、<b>項目が2〜3個</b>までに留めます。項目が多いときや正確な比較には、棒グラフ（必要なら積み上げ棒）のほうが読みやすくなります。</p>
     </div>
 
-    <!-- DEMO 1: expression syntax tree -->
-    <div class="demo reveal" id="demoAst">
+    <!-- DEMO 1: chart chooser -->
+    <div class="demo reveal" id="demoChooser">
       <span class="dtag"><span lang="ja">デモ 1</span><span lang="en">Demo 1</span></span>
-      <h4>式の構文木</h4>
-      <p class="dnote">算術式（<code>+ - * /</code> と括弧、整数）を入力すると、簡易パーサが演算子の優先順位に従って構文木を組み立て、SVG のツリーで表示します。掛け算・割り算は足し算・引き算より先に、括弧が最優先です。木の下には、その優先順位で計算した結果も表示します。</p>
-      <label class="fld" for="astInput">式 / Expression</label>
-      <input type="text" id="astInput" spellcheck="false" value="2 + 3 * 4">
-      <div class="try">
-        <span class="tlbl">例</span>
-        <button type="button" data-ex="2 + 3 * 4">2 + 3 * 4</button>
-        <button type="button" data-ex="(2 + 3) * 4">(2 + 3) * 4</button>
-        <button type="button" data-ex="10 - 4 - 2">10 - 4 - 2</button>
-        <button type="button" data-ex="2 * 3 + 4 * 5">2 * 3 + 4 * 5</button>
-        <button type="button" data-ex="8 / 2 + 1">8 / 2 + 1</button>
+      <h4>図の選び方ガイド</h4>
+      <p class="dnote">伝えたい<b>目的</b>と、手元の<b>データの型</b>を選ぶと、おすすめの図と注意点を表示します。小さなサムネイルで図の形もイメージできます。目的とデータの型がかみ合っているかも判定します。</p>
+      <div class="two">
+        <div>
+          <label class="fld" for="chPurpose">目的 / Purpose</label>
+          <select id="chPurpose" style="width:100%; padding:11px 14px; border-radius:12px; border:1px solid var(--hair); background:var(--bg); color:var(--ink); font:500 .92rem/1.4 var(--sans); outline:none; cursor:pointer">
+            <option value="compare">比較（大小をくらべる）</option>
+            <option value="trend">推移（時間の変化を見る）</option>
+            <option value="distribution">分布（散らばりを見る）</option>
+            <option value="relationship">関係（2変数の関係を見る）</option>
+            <option value="proportion">割合（全体の内訳を見る）</option>
+          </select>
+        </div>
+        <div>
+          <label class="fld" for="chType">データの型 / Data type</label>
+          <select id="chType" style="width:100%; padding:11px 14px; border-radius:12px; border:1px solid var(--hair); background:var(--bg); color:var(--ink); font:500 .92rem/1.4 var(--sans); outline:none; cursor:pointer">
+            <option value="cat">カテゴリ × 数値</option>
+            <option value="time">時間（時系列）× 数値</option>
+            <option value="num1">数値（1変数）</option>
+            <option value="num2">数値 × 数値（2変数）</option>
+            <option value="part">内訳（合計 = 100%）</option>
+          </select>
+        </div>
       </div>
-      <div class="demo-out" id="astOut" aria-live="polite"></div>
+      <div class="demo-out" id="chOut" aria-live="polite"></div>
     </div>
 
     <p class="layer"><span lang="ja">コードで動かす</span><span lang="en">Run the code</span></p>
     <div class="prose">
-      <p>まず字句解析です。標準ライブラリ <code>tokenize</code> で、文字列がどんなトークンに分かれるかを見てみます。</p>
+      <p>matplotlib では、目的に応じて呼ぶメソッドを変えるだけです。まず比較の棒グラフ。<b>0起点</b>を保つよう <code>set_ylim</code> の下限を0にします。</p>
     </div>
     <div class="code-wrap attached">
-      <div class="code-head"><span class="lbl">Python</span><span class="lang-tag">lex_tokenize.py</span><button class="copy" type="button" onclick="copyCode(this)">copy</button></div>
-      <pre><code><span class="kw">import</span> tokenize, io
+      <div class="code-head"><span class="lbl">Python</span><span class="lang-tag">bar_chart.py</span><button class="copy" type="button" onclick="copyCode(this)">copy</button></div>
+      <pre><code><span class="kw">import</span> matplotlib.pyplot <span class="kw">as</span> plt
 
-src = <span class="st">"y = 2 + 3 * 4\n"</span>
-<span class="kw">for</span> tok <span class="kw">in</span> tokenize.generate_tokens(io.StringIO(src).readline):
-    <span class="kw">if</span> tok.string.strip():          <span class="cm"># 空白・改行トークンは省く</span>
-        <span class="kw">print</span>(tokenize.tok_name[tok.type], repr(tok.string))</code></pre>
+categories = [<span class="st">"A"</span>, <span class="st">"B"</span>, <span class="st">"C"</span>, <span class="st">"D"</span>]
+values = [<span class="nu">23</span>, <span class="nu">45</span>, <span class="nu">17</span>, <span class="nu">31</span>]
+
+fig, ax = plt.subplots()
+ax.bar(categories, values)
+ax.set_ylabel(<span class="st">"count"</span>)
+ax.set_ylim(<span class="nu">0</span>, <span class="nu">50</span>)  <span class="cm"># 棒グラフは必ず0起点</span>
+plt.show()</code></pre>
     </div>
-    <div class="code-out"><span class="olbl">出力例 / Output</span><pre><code>NAME 'y'
-OP '='
-NUMBER '2'
-OP '+'
-NUMBER '3'
-OP '*'
-NUMBER '4'</code></pre></div>
+    <div class="code-out"><span class="olbl">出力例 / Output</span><pre><code># A〜D の高さ 23・45・17・31 の棒グラフが表示される
+# 縦軸は 0 から 50 まで（0起点なので大小が正しく読める）</code></pre></div>
 
     <div class="prose">
-      <p>次に構文解析です。標準ライブラリ <code>ast</code> の <code>ast.parse</code> でソースを AST に変換し、<code>ast.dump</code> で構造を文字列にして眺めます。<code>2 + 3 * 4</code> が、掛け算を内側に持つ入れ子の <code>BinOp</code> になっている点に注目してください。</p>
+      <p>推移は折れ線、関係は散布図です。同じ <code>ax</code> に対してメソッドを変えるだけで描き分けられます。</p>
     </div>
     <div class="code-wrap attached">
-      <div class="code-head"><span class="lbl">Python</span><span class="lang-tag">ast_dump.py</span><button class="copy" type="button" onclick="copyCode(this)">copy</button></div>
-      <pre><code><span class="kw">import</span> ast
+      <div class="code-head"><span class="lbl">Python</span><span class="lang-tag">line_scatter.py</span><button class="copy" type="button" onclick="copyCode(this)">copy</button></div>
+      <pre><code><span class="kw">import</span> matplotlib.pyplot <span class="kw">as</span> plt
 
-tree = ast.parse(<span class="st">"y = 2 + 3 * 4"</span>)
-<span class="kw">print</span>(ast.dump(tree, indent=<span class="nu">2</span>))</code></pre>
-    </div>
-    <div class="code-out"><span class="olbl">出力例 / Output</span><pre><code>Module(
-  body=[
-    Assign(
-      targets=[
-        Name(id='y', ctx=Store())],
-      value=BinOp(
-        left=Constant(value=2),
-        op=Add(),
-        right=BinOp(
-          left=Constant(value=3),
-          op=Mult(),
-          right=Constant(value=4))))],
-  type_ignores=[])</code></pre></div>
+<span class="cm"># 推移: 折れ線グラフ（横軸は時間の順序）</span>
+years = [<span class="nu">2019</span>, <span class="nu">2020</span>, <span class="nu">2021</span>, <span class="nu">2022</span>, <span class="nu">2023</span>]
+sales = [<span class="nu">120</span>, <span class="nu">135</span>, <span class="nu">128</span>, <span class="nu">150</span>, <span class="nu">162</span>]
 
-    <div class="prose">
-      <p><code>ast.walk</code> を使うと、木のすべてのノードを順にたどれます。ここでは二項演算（<code>BinOp</code>）のノードだけを拾い、その演算子の種類を表示してみます。</p>
-    </div>
-    <div class="code-wrap attached">
-      <div class="code-head"><span class="lbl">Python</span><span class="lang-tag">ast_walk.py</span><button class="copy" type="button" onclick="copyCode(this)">copy</button></div>
-      <pre><code><span class="kw">import</span> ast
+fig, ax = plt.subplots()
+ax.plot(years, sales, marker=<span class="st">"o"</span>)
+ax.set_xlabel(<span class="st">"year"</span>)
+ax.set_ylabel(<span class="st">"sales"</span>)
+plt.show()
 
-tree = ast.parse(<span class="st">"y = 2 + 3 * 4"</span>)
-<span class="kw">for</span> node <span class="kw">in</span> ast.walk(tree):
-    <span class="kw">if</span> isinstance(node, ast.BinOp):
-        <span class="kw">print</span>(type(node.op).__name__)</code></pre>
+<span class="cm"># 関係: 散布図</span>
+x = [<span class="nu">1.2</span>, <span class="nu">2.4</span>, <span class="nu">3.1</span>, <span class="nu">4.6</span>, <span class="nu">5.0</span>]
+y = [<span class="nu">2.1</span>, <span class="nu">3.9</span>, <span class="nu">6.2</span>, <span class="nu">7.8</span>, <span class="nu">9.9</span>]
+
+fig, ax = plt.subplots()
+ax.scatter(x, y)
+plt.show()</code></pre>
     </div>
-    <div class="code-out"><span class="olbl">出力例 / Output</span><pre><code>Add
-Mult</code></pre></div>
+    <div class="code-out"><span class="olbl">出力例 / Output</span><pre><code># 折れ線: 2019→2023 の売上の推移が右上がりの線で表示される
+# 散布図: x と y の点が右上がりに並ぶ（正の関係）</code></pre></div>
 
     <div class="callout tip">
       <h4>この Step のまとめ</h4>
-      <p>解析は「文字列 → トークン → 構文木（AST）」という変換から始まります。演算子の優先順位はこの木の形に現れます。Python では <code>tokenize</code> で字句解析、<code>ast</code> で構文解析ができ、以降の解析はすべてこの木の上で行われます。</p>
+      <p>図は「目的（比較・推移・分布・関係・割合）」と「データの型」から選びます。比較は棒、推移は折れ線、分布はヒストグラムや箱ひげ、関係は散布図、割合は棒（円は控えめに）。デモで組み合わせを試すと、対応関係が体になじみます。</p>
     </div>
   </div>
 </section>
@@ -904,60 +912,87 @@ Mult</code></pre></div>
   <div class="wrap reveal">
     <div class="stephead">
       <span class="num">3</span>
-      <div class="tt"><h2>静的解析</h2><span class="st-en">Static analysis</span></div>
+      <div class="tt"><h2>良い図の原則</h2><span class="st-en">Principles of good figures</span></div>
     </div>
     <div class="steprule"></div>
 
     <p class="layer first"><span lang="ja">概要</span><span lang="en">Overview</span></p>
     <div class="prose">
-      <p>AST が手に入れば、プログラムを実行せずにさまざまな性質を調べられます。これが<b>静的解析</b>です。処理の流れ（制御フロー）やデータの流れ（データフロー）を追い、あやしい箇所を機械的に指摘します。リンタや型検査器、IDE の警告は、みなこの技術の応用です。</p>
+      <p>図の種類を選んだら、次は「わかりやすく、正直に」仕上げます。ここには昔から語られてきた原則があります。中心にあるのは、<b>読み手が最小の労力で正しく読み取れること</b>です。飾りではなく、伝えることを優先します。</p>
     </div>
 
     <p class="layer"><span lang="ja">仕組み</span><span lang="en">How it works</span></p>
     <div class="prose">
-      <h4>制御フローグラフ（CFG）</h4>
-      <p>プログラムの「どこからどこへ進みうるか」をグラフで表したものが<b>制御フローグラフ（Control Flow Graph）</b>です。分岐のない一続きの命令列を<b>基本ブロック</b>としてノードにまとめ、条件分岐やループによる遷移をエッジで結びます。「この行に到達できるか」「ここから抜け出せるか」といった問いは、このグラフ上の到達可能性の問題になります。</p>
-      <h4>データフロー解析</h4>
-      <p>変数の値がプログラム中をどう流れるかを追うのが<b>データフロー解析</b>です。ある地点で「どの代入の結果が生きているか（到達定義）」「この先で使われる変数はどれか（生存変数）」などを、CFG に沿って伝播させて求めます。応用として、<b>定義・使用連鎖（def-use chain）</b>を作れば、「代入したのに一度も使われない変数」や「使う前に値が入っていない変数」を検出できます。</p>
-      <h4>リンタの仕組み</h4>
-      <p><b>リンタ（linter）</b>は、AST を走査してあらかじめ決めたパターン（アンチパターン）に一致する箇所を警告するツールです。未使用の変数・インポート、比較演算子の誤用、命名規約からの逸脱などを指摘します。Python では <b>pylint</b> や <b>flake8</b> が定番で、内部では <code>ast</code> のような構文木の走査を行っています。次のコードは、その「未使用変数の検出」を <code>ast</code> だけでミニチュア実装した例です。</p>
+      <h4>データインク比（data-ink ratio）</h4>
+      <p>統計グラフィックスの古典を書いた<b>エドワード・タフテ（Edward Tufte）</b>は、図に使うインクのうち「データそのものを表す割合」を<b>データインク比</b>と呼びました。狙いは、この比を高めること。背景の濃い色、余計な枠線、意味のない3D、目盛りの過剰な装飾（chartjunk）を削り、データに注意を集めます。</p>
+      <h4>明快さ第一</h4>
+      <p>図はパズルではありません。タイトル・軸ラベル・単位を明記し、凡例は該当する要素の近くに置きます。要素が少なければ、凡例の代わりに線や棒へ直接ラベルを添えるほうが読みやすいこともあります。</p>
+      <h4>軸の扱い</h4>
+      <p>もっとも誤解を生みやすいのが軸です。<b>棒グラフは必ず0を起点</b>にします。棒は長さで量を表すため、途中で切ると差が誇張されてしまうからです（次のデモで体験します）。折れ線は変化の傾きを見るので、0起点は必須ではありませんが、起点は明示します。二重軸（左右で別スケール）は誤解のもとになりやすく、慎重に使います。</p>
+      <h4>色の使い方と色覚多様性</h4>
+      <p>色は意味を持たせて使い、数を絞ります。<b>赤と緑だけで区別する</b>のは、色覚の多様性を考えると避けたい配色です。色に加えて形やラベルでも区別できるようにし、連続量には <code>viridis</code> のような色覚に配慮したカラーマップを使うと安全です。</p>
     </div>
 
+    <!-- DEMO 2: misleading vs honest bar chart -->
+    <div class="demo reveal" id="demoAxis">
+      <span class="dtag"><span lang="ja">デモ 2</span><span lang="en">Demo 2</span></span>
+      <h4>誤解を招く図 vs 正直な図</h4>
+      <p class="dnote">まったく同じ4つの値の棒グラフです。y軸の起点を「0から」と「値の近くで切る」で切り替えると、棒の見え方がどれだけ変わるかがわかります。データは同じでも、軸の切り詰めだけで差を何倍にも誇張できてしまいます。</p>
+      <div class="try">
+        <span class="tlbl">y軸の起点</span>
+        <button type="button" id="axisZero" data-base="0" aria-pressed="true">0から始める（正直）</button>
+        <button type="button" id="axisCut" data-base="cut" aria-pressed="false">値の近くで切る（誤解を招く）</button>
+      </div>
+      <div class="demo-out" id="axisOut" aria-live="polite"></div>
+    </div>
+
+    <p class="layer"><span lang="ja">コードで動かす</span><span lang="en">Run the code</span></p>
+    <div class="prose">
+      <p>matplotlib で「装飾を削る」のは、余分な枠線（spines）を消し、目盛りを整え、0起点を保つといった小さな積み重ねです。デフォルトの図から、データに注意が向く図へ整えます。</p>
+    </div>
     <div class="code-wrap attached">
-      <div class="code-head"><span class="lbl">Python</span><span class="lang-tag">unused_vars.py</span><button class="copy" type="button" onclick="copyCode(this)">copy</button></div>
-      <pre><code><span class="kw">import</span> ast
+      <div class="code-head"><span class="lbl">Python</span><span class="lang-tag">declutter.py</span><button class="copy" type="button" onclick="copyCode(this)">copy</button></div>
+      <pre><code><span class="kw">import</span> matplotlib.pyplot <span class="kw">as</span> plt
 
-source = <span class="st">'''
-def f(x):
-    y = x + 1
-    z = x * 2      # z は使われない
-    return y
-'''</span>
+categories = [<span class="st">"A"</span>, <span class="st">"B"</span>, <span class="st">"C"</span>, <span class="st">"D"</span>]
+values = [<span class="nu">48</span>, <span class="nu">50</span>, <span class="nu">53</span>, <span class="nu">55</span>]
 
-fn = ast.parse(source).body[<span class="nu">0</span>]          <span class="cm"># 関数定義ノード</span>
-assigned, used = set(), set()
-<span class="kw">for</span> node <span class="kw">in</span> ast.walk(fn):
-    <span class="kw">if</span> isinstance(node, ast.Name):
-        <span class="kw">if</span> isinstance(node.ctx, ast.Store):    <span class="cm"># 代入されている名前</span>
-            assigned.add(node.id)
-        <span class="kw">elif</span> isinstance(node.ctx, ast.Load):  <span class="cm"># 読み出されている名前</span>
-            used.add(node.id)
+fig, ax = plt.subplots()
+ax.bar(categories, values, color=<span class="st">"#0E6F5C"</span>)
 
-<span class="kw">print</span>(<span class="st">"assigned:"</span>, sorted(assigned))
-<span class="kw">print</span>(<span class="st">"used:    "</span>, sorted(used))
-<span class="kw">print</span>(<span class="st">"unused:  "</span>, sorted(assigned - used))</code></pre>
+<span class="cm"># 余計な装飾を削る（データインク比を上げる）</span>
+ax.spines[<span class="st">"top"</span>].set_visible(<span class="kw">False</span>)
+ax.spines[<span class="st">"right"</span>].set_visible(<span class="kw">False</span>)
+ax.set_ylim(<span class="nu">0</span>, <span class="nu">60</span>)      <span class="cm"># 棒グラフは0起点を保つ</span>
+ax.set_ylabel(<span class="st">"score"</span>)
+ax.set_title(<span class="st">"scores by group"</span>)
+plt.show()</code></pre>
     </div>
-    <div class="code-out"><span class="olbl">出力例 / Output</span><pre><code>assigned: ['y', 'z']
-used:     ['x', 'y']
-unused:   ['z']</code></pre></div>
+    <div class="code-out"><span class="olbl">出力例 / Output</span><pre><code># 上と右の枠線が消え、0起点の棒グラフが表示される
+# 4本の高さ 48・50・53・55 の差は「わずか」であることが正しく伝わる</code></pre></div>
 
     <div class="prose">
-      <p>ノードの <code>ctx</code>（コンテキスト）が <code>Store</code> なら代入、<code>Load</code> なら読み出しです。代入された名前の集合から使われた名前の集合を引けば、「代入したのに使われていない」変数が求まります。これは静的解析の考え方そのもので、本物のリンタは、これに<b>スコープ</b>や<b>制御フロー</b>の情報を加えて精度を高めています。</p>
+      <p>色覚に配慮した連続カラーマップを使うのも簡単です。散布図の点を数値で色分けするときは、既定の色ではなく <code>viridis</code> を指定します。</p>
     </div>
+    <div class="code-wrap attached">
+      <div class="code-head"><span class="lbl">Python</span><span class="lang-tag">colormap.py</span><button class="copy" type="button" onclick="copyCode(this)">copy</button></div>
+      <pre><code><span class="kw">import</span> matplotlib.pyplot <span class="kw">as</span> plt
+
+x = [<span class="nu">1</span>, <span class="nu">2</span>, <span class="nu">3</span>, <span class="nu">4</span>, <span class="nu">5</span>]
+y = [<span class="nu">2</span>, <span class="nu">3</span>, <span class="nu">5</span>, <span class="nu">4</span>, <span class="nu">6</span>]
+z = [<span class="nu">10</span>, <span class="nu">30</span>, <span class="nu">50</span>, <span class="nu">70</span>, <span class="nu">90</span>]  <span class="cm"># 色で表す量</span>
+
+fig, ax = plt.subplots()
+sc = ax.scatter(x, y, c=z, cmap=<span class="st">"viridis"</span>)
+fig.colorbar(sc, label=<span class="st">"value"</span>)  <span class="cm"># 凡例としてカラーバー</span>
+plt.show()</code></pre>
+    </div>
+    <div class="code-out"><span class="olbl">出力例 / Output</span><pre><code># 点が z の値に応じて viridis の色（紫→黄）で塗り分けられ、
+# 右側に色と値の対応を示すカラーバーが表示される</code></pre></div>
 
     <div class="callout tip">
       <h4>この Step のまとめ</h4>
-      <p>静的解析は AST の上で、制御フロー（CFG）とデータフローを追う技術です。定義・使用の関係を調べれば、未使用変数のような問題を実行前に見つけられます。pylint や flake8 は、この考え方を体系化したツールです。</p>
+      <p>良い図は「データインク比を高め、明快に、正直に」。とくに<b>棒グラフは0起点</b>が鉄則です。色は数を絞り、赤緑だけに頼らず、連続量には色覚に配慮したカラーマップを使います。デモで軸の切り詰めの威力を確かめてください。</p>
     </div>
   </div>
 </section>
@@ -967,89 +1002,97 @@ unused:   ['z']</code></pre></div>
   <div class="wrap reveal">
     <div class="stephead">
       <span class="num">4</span>
-      <div class="tt"><h2>コードメトリクスと品質</h2><span class="st-en">Code metrics &amp; quality</span></div>
+      <div class="tt"><h2>matplotlib の基礎</h2><span class="st-en">matplotlib basics</span></div>
     </div>
     <div class="steprule"></div>
 
     <p class="layer first"><span lang="ja">概要</span><span lang="en">Overview</span></p>
     <div class="prose">
-      <p>「このコードは複雑すぎないか」「テストしにくくないか」を、感覚ではなく数字で語るための道具が<b>コードメトリクス</b>です。規模・複雑さ・重複などを測り、保守しにくい箇所を客観的に浮かび上がらせます。品質のすべてを数字で表せるわけではありませんが、注意を向けるべき場所の目印になります。</p>
+      <p>Python で図を描くときの土台になるのが <b>matplotlib</b> です。seaborn や pandas の作図も、内部では matplotlib を使っています。まずはその基本的な組み立て方を押さえると、あらゆる図を細かく調整できるようになります。</p>
     </div>
 
     <p class="layer"><span lang="ja">仕組み</span><span lang="en">How it works</span></p>
     <div class="prose">
-      <h4>行数（LOC）</h4>
-      <p>もっとも素朴な指標が<b>行数（Lines of Code）</b>です。空行やコメントを除いた実行文の行数（論理行数）を数えるのが一般的です。単純ですが、規模の当たりをつけるのに役立ちます。</p>
-      <h4>循環的複雑度（cyclomatic complexity）</h4>
-      <p>McCabe が提案した<b>循環的複雑度</b>は、制御フローグラフをもとに「独立した経路の数」を測る指標です。分岐が多いほど値が大きく、テストすべき経路も増えます。CFG のエッジ数を E、ノード数を N、連結成分の数を P とすると、次の式で定義されます。</p>
-    </div>
-    <div class="formula">
-      M <span class="op">=</span> E <span class="op">-</span> N <span class="op">+</span> 2P
-      <small>E: 制御フローグラフのエッジ数　N: ノード数　P: 連結成分の数（1つの関数なら P = 1）<br>これは、判定点（if・for・while・and・or・case など）が d 個ある構造化プログラムでは M = d + 1 と一致します。</small>
-    </div>
-    <div class="prose">
-      <p>実務では、この「判定点を数えて 1 を足す」やり方で手早く見積もります。分岐が 0 なら M = 1（一本道）、分岐が増えるほど M も増えます。目安として、M が小さいほど理解・テストしやすく、大きくなるほど分割を検討する合図になります。次のデモは、まさにこの数え方で複雑度を計算します。</p>
-      <h4>その他の指標</h4>
+      <h4>figure と axes</h4>
+      <p>matplotlib の図は、2つの入れ物でできています。<b>figure（図全体のキャンバス）</b>と、その中に置かれる <b>axes（1枚1枚の描画領域）</b>です。<code>fig, ax = plt.subplots()</code> と書くと、figure と1つの axes をまとめて作れます。以降は <code>ax</code> に対して <code>ax.plot()</code> や <code>ax.bar()</code> を呼んで描き、<code>ax.set_xlabel()</code> などで飾ります。この「オブジェクト指向スタイル」は、複数の図を扱うときに見通しがよく、おすすめです。</p>
+      <h4>軸・目盛・凡例・注釈</h4>
+      <p>図の意味は、周辺の情報で決まります。よく使う設定は次のとおりです。</p>
       <ul>
-        <li><b>Halstead 指標</b>：コード中の演算子・オペランドの種類数と総数から、プログラムの語彙・規模・難しさ（difficulty）・労力（effort）などを見積もる。</li>
-        <li><b>保守性指数（Maintainability Index）</b>：Halstead 体積・循環的複雑度・行数を組み合わせ、保守のしやすさを一つの数値にまとめたもの。</li>
-        <li><b>コードスメル</b>：長すぎる関数、巨大なクラス、重複コードなど、設計上の「におい」。バグそのものではないが、改善の候補。</li>
-        <li><b>コードクローン</b>：コピー＆ペーストなどで生まれた、よく似たコード片。片方を直すともう片方が直し忘れられる、といったリスクの温床（Step 5 で検出を体験します）。</li>
+        <li><b>軸ラベル・タイトル</b>：<code>ax.set_xlabel</code> / <code>ax.set_ylabel</code> / <code>ax.set_title</code>。</li>
+        <li><b>範囲</b>：<code>ax.set_xlim</code> / <code>ax.set_ylim</code>（棒グラフは下限を0に）。</li>
+        <li><b>凡例</b>：各プロットに <code>label=</code> を付け、<code>ax.legend()</code> を呼ぶ。</li>
+        <li><b>注釈</b>：特定の点に説明を添える <code>ax.annotate("text", xy=(x, y))</code>。</li>
       </ul>
-    </div>
-
-    <!-- DEMO 2: cyclomatic complexity -->
-    <div class="demo reveal" id="demoCc">
-      <span class="dtag"><span lang="ja">デモ 2</span><span lang="en">Demo 2</span></span>
-      <h4>循環的複雑度</h4>
-      <p class="dnote">疑似コード（Python 風）を入力すると、<code>if</code>・<code>elif</code>・<code>for</code>・<code>while</code>・<code>case</code>・<code>and</code>・<code>or</code>（<code>&amp;&amp;</code>・<code>||</code> も）といった判定点を数え、循環的複雑度 <b>M = 判定数 + 1</b> を計算します。内訳の表と、簡単・やや複雑・複雑の目安も表示します。</p>
-      <label class="fld" for="ccInput">疑似コード / Pseudocode</label>
-      <textarea id="ccInput" rows="9" spellcheck="false">def grade(s):
-    if s >= 90:
-        return "A"
-    elif s >= 80:
-        return "B"
-    elif s >= 70:
-        return "C"
-    else:
-        return "F"</textarea>
-      <div class="try">
-        <span class="tlbl">例</span>
-        <button type="button" data-cc="def f(x):&#10;    return x + 1">一本道（M=1）</button>
-        <button type="button" data-cc="def grade(s):&#10;    if s >= 90:&#10;        return &quot;A&quot;&#10;    elif s >= 80:&#10;        return &quot;B&quot;&#10;    elif s >= 70:&#10;        return &quot;C&quot;&#10;    else:&#10;        return &quot;F&quot;">grade 関数</button>
-        <button type="button" data-cc="def check(items):&#10;    total = 0&#10;    for x in items:&#10;        if x > 0 and x < 100:&#10;            total = total + x&#10;        elif x >= 100 or x == -1:&#10;            total = total - x&#10;    while total > 1000:&#10;        total = total / 2&#10;    return total">分岐とループ</button>
-      </div>
-      <div class="demo-out" id="ccOut" aria-live="polite"></div>
+      <h4>複数図（subplots）</h4>
+      <p>1枚の figure に複数の axes を並べたいときは <code>plt.subplots(nrows, ncols)</code> を使います。返ってくる <code>axes</code> は配列で、<code>axes[0]</code>, <code>axes[1]</code> のように個別に描けます。並べて比べる図（スモールマルチプル）に便利です。</p>
+      <h4>日本語表示の注意</h4>
+      <p>matplotlib の既定フォントは日本語を含まないため、そのままだと日本語ラベルが豆腐（□）になります。日本語を表示するには、日本語フォントを設定するか、<code>japanize-matplotlib</code> のような補助ライブラリを使います。<code>plt.rcParams["font.family"]</code> に手元の日本語フォント名を指定するのが基本です。</p>
     </div>
 
     <p class="layer"><span lang="ja">コードで動かす</span><span lang="en">Run the code</span></p>
     <div class="prose">
-      <p>Python では <b>radon</b> が定番です。次の <code>example.py</code>（先ほどの grade 関数）を測ってみます。この関数は <code>if</code> と <code>elif</code> が2つ、合わせて判定点が3つなので、複雑度は M = 3 + 1 = 4 です。コマンドラインの <code>radon cc</code> で確認します。</p>
+      <p>まずは figure と axes を作り、折れ線を描いて、ラベル・凡例・注釈まで付ける基本形です。</p>
     </div>
     <div class="code-wrap attached">
-      <div class="code-head"><span class="lbl">Shell</span><span class="lang-tag">radon_cc.sh</span><button class="copy" type="button" onclick="copyCode(this)">copy</button></div>
-      <pre><code><span class="cm"># pip install radon</span>
-$ radon cc example.py -s</code></pre>
+      <div class="code-head"><span class="lbl">Python</span><span class="lang-tag">mpl_basics.py</span><button class="copy" type="button" onclick="copyCode(this)">copy</button></div>
+      <pre><code><span class="kw">import</span> matplotlib.pyplot <span class="kw">as</span> plt
+
+x = [<span class="nu">0</span>, <span class="nu">1</span>, <span class="nu">2</span>, <span class="nu">3</span>, <span class="nu">4</span>]
+y = [<span class="nu">1</span>, <span class="nu">3</span>, <span class="nu">2</span>, <span class="nu">5</span>, <span class="nu">4</span>]
+
+fig, ax = plt.subplots(figsize=(<span class="nu">6</span>, <span class="nu">4</span>))
+ax.plot(x, y, marker=<span class="st">"o"</span>, label=<span class="st">"series 1"</span>)
+ax.set_xlabel(<span class="st">"x"</span>)
+ax.set_ylabel(<span class="st">"y"</span>)
+ax.set_title(<span class="st">"a simple line plot"</span>)
+ax.legend()                        <span class="cm"># label を凡例として表示</span>
+ax.annotate(<span class="st">"peak"</span>, xy=(<span class="nu">3</span>, <span class="nu">5</span>),   <span class="cm"># 点に注釈</span>
+            xytext=(<span class="nu">3.2</span>, <span class="nu">4.2</span>))
+plt.show()</code></pre>
     </div>
-    <div class="code-out"><span class="olbl">出力例 / Output</span><pre><code>example.py
-    F 1:0 grade - A (4)</code></pre></div>
+    <div class="code-out"><span class="olbl">出力例 / Output</span><pre><code># タイトル・軸ラベル・凡例・注釈つきの折れ線グラフが1枚表示される</code></pre></div>
 
     <div class="prose">
-      <p><code>F</code> は関数（Function）、<code>1:0</code> は行:列、<code>grade</code> は名前、<code>A</code> はランク、<code>(4)</code> が循環的複雑度です。radon はランクを A（1〜5）から F（41 以上）で表します。同じことを Python から行うには <code>radon.complexity.cc_visit</code> を使います。</p>
+      <p>複数の図を横に並べるには <code>subplots</code> の行数・列数を指定します。返り値の <code>axes</code> を個別に扱います。</p>
     </div>
     <div class="code-wrap attached">
-      <div class="code-head"><span class="lbl">Python</span><span class="lang-tag">radon_api.py</span><button class="copy" type="button" onclick="copyCode(this)">copy</button></div>
-      <pre><code><span class="kw">from</span> radon.complexity <span class="kw">import</span> cc_visit
+      <div class="code-head"><span class="lbl">Python</span><span class="lang-tag">mpl_subplots.py</span><button class="copy" type="button" onclick="copyCode(this)">copy</button></div>
+      <pre><code><span class="kw">import</span> matplotlib.pyplot <span class="kw">as</span> plt
 
-source = open(<span class="st">"example.py"</span>).read()
-<span class="kw">for</span> block <span class="kw">in</span> cc_visit(source):
-    <span class="kw">print</span>(block.name, block.complexity)</code></pre>
+fig, axes = plt.subplots(<span class="nu">1</span>, <span class="nu">2</span>, figsize=(<span class="nu">9</span>, <span class="nu">4</span>))
+
+axes[<span class="nu">0</span>].bar([<span class="st">"A"</span>, <span class="st">"B"</span>, <span class="st">"C"</span>], [<span class="nu">3</span>, <span class="nu">5</span>, <span class="nu">2</span>])
+axes[<span class="nu">0</span>].set_title(<span class="st">"bar"</span>)
+
+axes[<span class="nu">1</span>].plot([<span class="nu">1</span>, <span class="nu">2</span>, <span class="nu">3</span>], [<span class="nu">2</span>, <span class="nu">1</span>, <span class="nu">3</span>])
+axes[<span class="nu">1</span>].set_title(<span class="st">"line"</span>)
+
+fig.tight_layout()   <span class="cm"># 余白を自動調整</span>
+plt.show()</code></pre>
     </div>
-    <div class="code-out"><span class="olbl">出力例 / Output</span><pre><code>grade 4</code></pre></div>
+    <div class="code-out"><span class="olbl">出力例 / Output</span><pre><code># 左に棒グラフ、右に折れ線グラフが横並びで表示される</code></pre></div>
+
+    <div class="prose">
+      <p>日本語ラベルを使うなら、フォントの設定が要ります。手元に入っている日本語フォント名を指定します。</p>
+    </div>
+    <div class="code-wrap attached">
+      <div class="code-head"><span class="lbl">Python</span><span class="lang-tag">mpl_japanese.py</span><button class="copy" type="button" onclick="copyCode(this)">copy</button></div>
+      <pre><code><span class="kw">import</span> matplotlib.pyplot <span class="kw">as</span> plt
+
+<span class="cm"># 手元の日本語フォントを指定（例: IPAexGothic / Noto Sans CJK JP）</span>
+plt.rcParams[<span class="st">"font.family"</span>] = <span class="st">"IPAexGothic"</span>
+
+fig, ax = plt.subplots()
+ax.bar([<span class="st">"りんご"</span>, <span class="st">"みかん"</span>, <span class="st">"ぶどう"</span>], [<span class="nu">5</span>, <span class="nu">3</span>, <span class="nu">4</span>])
+ax.set_ylabel(<span class="st">"個数"</span>)
+plt.show()
+<span class="cm"># japanize_matplotlib を import するだけで済ませる方法もある</span></code></pre>
+    </div>
+    <div class="code-out"><span class="olbl">出力例 / Output</span><pre><code># 軸ラベルや項目名が日本語で正しく表示される（□にならない）</code></pre></div>
 
     <div class="callout tip">
       <h4>この Step のまとめ</h4>
-      <p>コードメトリクスは品質を数値化する道具。<b>循環的複雑度</b>は M = E - N + 2P（判定点 + 1）で分岐の多さを測ります。radon の <code>cc</code> で簡単に計測でき、テストしにくい複雑な関数の目印になります。</p>
+      <p>matplotlib は <b>figure（キャンバス）</b>と <b>axes（描画領域）</b>の2階層。<code>fig, ax = plt.subplots()</code> から始め、<code>ax</code> に描いてラベル・凡例・注釈で仕上げます。日本語はフォント設定が必要です。この土台の上に、次の seaborn が乗ります。</p>
     </div>
   </div>
 </section>
@@ -1059,105 +1102,107 @@ source = open(<span class="st">"example.py"</span>).read()
   <div class="wrap reveal">
     <div class="stephead">
       <span class="num">5</span>
-      <div class="tt"><h2>動的解析</h2><span class="st-en">Dynamic analysis</span></div>
+      <div class="tt"><h2>seaborn で統計的可視化</h2><span class="st-en">Statistical graphics with seaborn</span></div>
     </div>
     <div class="steprule"></div>
 
     <p class="layer first"><span lang="ja">概要</span><span lang="en">Overview</span></p>
     <div class="prose">
-      <p>ここまでは実行せずに調べる静的解析でした。いっぽう<b>動的解析</b>は、プログラムを実際に動かして、その様子を観測します。「どの行が実行されたか」「どこで時間がかかったか」といった、実行時にしか分からない情報が得られます。テストカバレッジ・プロファイリング・トレースが代表的な道具です。</p>
+      <p><b>seaborn</b> は matplotlib の上に作られた、統計的な可視化に特化したライブラリです。分布・関係・カテゴリの比較といった「よくある図」を、短いコードで、見栄えよく描けます。pandas のデータフレームと相性がよく、列名を指定するだけで図になります。</p>
     </div>
 
     <p class="layer"><span lang="ja">仕組み</span><span lang="en">How it works</span></p>
     <div class="prose">
-      <h4>テストカバレッジ</h4>
-      <p><b>カバレッジ</b>は、テストがコードのどれだけを実行したかを測る指標です。<b>行カバレッジ</b>は実行された行の割合、<b>分岐カバレッジ</b>は条件分岐の真・偽の両方を通ったかを見ます。カバレッジが低い箇所は「テストで一度も動かしていない場所」であり、バグが潜みやすい要注意ゾーンです。Python では <b>coverage.py</b> が定番です。</p>
-      <h4>プロファイリング</h4>
-      <p><b>プロファイリング</b>は、どの関数がどれだけ呼ばれ、どれだけ時間を使ったかを計測します。「速くしたい」ときに、当てずっぽうで直すのではなく、実測にもとづいてボトルネックを特定するために使います。Python 標準の <b>cProfile</b> が手軽です。</p>
-      <h4>トレースと限界</h4>
-      <p><b>トレース</b>は、実行の経路や関数の呼び出し順を時系列で記録します。動的解析に共通する限界は、<b>観測できるのは実際に実行した経路だけ</b>という点です。与えた入力しだいで結果が変わるため、静的解析のような網羅性はありません。だからこそ、両者を組み合わせるのが実務の基本になります。</p>
+      <h4>分布を見る</h4>
+      <p>1つの数値変数の散らばりは <code>histplot</code>（ヒストグラム）や <code>kdeplot</code>（カーネル密度推定でなめらかな分布曲線）で見ます。<code>hue</code> にカテゴリ列を渡すと、群ごとに色を分けて重ねられます。</p>
+      <h4>関係を見る</h4>
+      <p>2つの数値変数の関係は <code>scatterplot</code>（散布図）です。傾向線も一緒に見たいときは <code>regplot</code> を使うと、散布図に回帰直線と信頼区間の帯を重ねてくれます。</p>
+      <h4>カテゴリで比べる</h4>
+      <p>群ごとの分布を比べるには <code>boxplot</code>（箱ひげ図）や <code>violinplot</code>（分布の形も見える）が便利です。中央値・四分位・外れ値や、山の形の違いが一目で分かります。</p>
+      <h4>相関を俯瞰する</h4>
+      <p>多くの変数の相関を一望するには、相関行列を <code>heatmap</code> で色分けします。<code>annot=True</code> で数値も重ねられます。</p>
+      <h4>ファセット（小さな図の並び）</h4>
+      <p>カテゴリごとに同じ図を並べて比べたいときは <code>relplot</code> や <code>FacetGrid</code> を使い、<code>col=</code> や <code>row=</code> に列名を渡します。seaborn には練習用の実在データが同梱されており、<code>sns.load_dataset("tips")</code> や <code>sns.load_dataset("penguins")</code> ですぐ読み込めます。</p>
+    </div>
+
+    <!-- DEMO 3: scatter & correlation -->
+    <div class="demo reveal" id="demoScatter">
+      <span class="dtag"><span lang="ja">デモ 3</span><span lang="en">Demo 3</span></span>
+      <h4>散布図と相関</h4>
+      <p class="dnote">点を追加したりプリセットを選ぶと、<b>ピアソンの相関係数</b>と<b>最小二乗法による回帰直線</b>をその場で計算し、SVGで描きます。図の上でクリックすると点を足せます。相関の強さが、点の散らばり（視覚）と数値でどう対応するかを確かめてください。</p>
+      <div class="try">
+        <span class="tlbl">プリセット</span>
+        <button type="button" data-preset="pos">強い正の相関</button>
+        <button type="button" data-preset="neg">負の相関</button>
+        <button type="button" data-preset="none">相関なし</button>
+        <button type="button" data-preset="clear">クリア</button>
+      </div>
+      <div class="demo-out" id="scatterOut" aria-live="polite"></div>
     </div>
 
     <p class="layer"><span lang="ja">コードで動かす</span><span lang="en">Run the code</span></p>
     <div class="prose">
-      <p>まずカバレッジです。テストを <code>coverage</code> 経由で実行し、レポートを出します。<code>-m</code> を付けると、実行されなかった行番号（Missing）も表示されます。</p>
+      <p>まずは同梱データ <code>tips</code>（レストランの会計と心づけ）で、散布図に回帰直線を重ねます。列名を渡すだけです。</p>
     </div>
     <div class="code-wrap attached">
-      <div class="code-head"><span class="lbl">Shell</span><span class="lang-tag">coverage.sh</span><button class="copy" type="button" onclick="copyCode(this)">copy</button></div>
-      <pre><code><span class="cm"># pip install coverage</span>
-$ coverage run -m pytest
-$ coverage report -m</code></pre>
+      <div class="code-head"><span class="lbl">Python</span><span class="lang-tag">seaborn_regplot.py</span><button class="copy" type="button" onclick="copyCode(this)">copy</button></div>
+      <pre><code><span class="cm"># pip install seaborn</span>
+<span class="kw">import</span> seaborn <span class="kw">as</span> sns
+<span class="kw">import</span> matplotlib.pyplot <span class="kw">as</span> plt
+
+tips = sns.load_dataset(<span class="st">"tips"</span>)   <span class="cm"># 実在の同梱データ</span>
+
+<span class="cm"># 会計額と心づけの関係を、回帰直線つきで見る</span>
+sns.regplot(data=tips, x=<span class="st">"total_bill"</span>, y=<span class="st">"tip"</span>)
+plt.show()
+
+<span class="cm"># 相関係数（ピアソン）を数値でも確認</span>
+<span class="kw">print</span>(tips[<span class="st">"total_bill"</span>].corr(tips[<span class="st">"tip"</span>]).round(<span class="nu">3</span>))</code></pre>
     </div>
-    <div class="code-out"><span class="olbl">出力例 / Output</span><pre><code>Name          Stmts   Miss  Cover   Missing
--------------------------------------------
-mymodule.py      20      3    85%   12-14
--------------------------------------------
-TOTAL            20      3    85%</code></pre></div>
+    <div class="code-out"><span class="olbl">出力例 / Output</span><pre><code># 会計額(x)と心づけ(y)の散布図に、右上がりの回帰直線と帯が重なる
+0.676</code></pre></div>
 
     <div class="prose">
-      <p>全 20 文のうち 3 文（12〜14 行目）が未実行で、行カバレッジは 85% です。次はプロファイリングです。<code>cProfile.run</code> に測りたい処理を渡します。</p>
+      <p>分布とカテゴリ比較も一行です。<code>penguins</code>（3種のペンギンの計測データ）で、種ごとの分布を箱ひげ図とヒストグラムにします。</p>
     </div>
     <div class="code-wrap attached">
-      <div class="code-head"><span class="lbl">Python</span><span class="lang-tag">profile_example.py</span><button class="copy" type="button" onclick="copyCode(this)">copy</button></div>
-      <pre><code><span class="kw">import</span> cProfile
+      <div class="code-head"><span class="lbl">Python</span><span class="lang-tag">seaborn_dist.py</span><button class="copy" type="button" onclick="copyCode(this)">copy</button></div>
+      <pre><code><span class="kw">import</span> seaborn <span class="kw">as</span> sns
+<span class="kw">import</span> matplotlib.pyplot <span class="kw">as</span> plt
 
-<span class="kw">def</span> slow():
-    <span class="kw">return</span> sum(i * i <span class="kw">for</span> i <span class="kw">in</span> range(<span class="nu">100000</span>))
+pen = sns.load_dataset(<span class="st">"penguins"</span>)
 
-cProfile.run(<span class="st">"slow()"</span>)</code></pre>
+<span class="cm"># 種ごとに、くちばしの長さの分布を箱ひげ図で比較</span>
+sns.boxplot(data=pen, x=<span class="st">"species"</span>, y=<span class="st">"bill_length_mm"</span>)
+plt.show()
+
+<span class="cm"># 種ごとに色を分けたヒストグラム（分布を重ねて表示）</span>
+sns.histplot(data=pen, x=<span class="st">"flipper_length_mm"</span>, hue=<span class="st">"species"</span>)
+plt.show()</code></pre>
     </div>
-    <div class="code-out"><span class="olbl">出力例 / Output</span><pre><code>         100005 function calls in 0.012 seconds
-
-   Ordered by: standard name
-
-   ncalls  tottime  percall  cumtime  percall filename:lineno(function)
-        1    0.001    0.001    0.011    0.011 profile_example.py:3(slow)
-   100001    0.005    0.000    0.005    0.000 profile_example.py:4(&lt;genexpr&gt;)
-        1    0.000    0.000    0.012    0.012 {built-in method builtins.exec}
-        1    0.005    0.005    0.010    0.010 {built-in method builtins.sum}
-        1    0.000    0.000    0.000    0.000 {method 'disable' of '_lsprof.Profiler' objects}</code></pre></div>
+    <div class="code-out"><span class="olbl">出力例 / Output</span><pre><code># 箱ひげ図: 3種のくちばし長の中央値・四分位・外れ値が並ぶ
+# ヒストグラム: 種ごとに色分けされたひれ長の分布が重なって表示される</code></pre></div>
 
     <div class="prose">
-      <p>ジェネレータ式が 100001 回呼ばれ（10 万個の値と、最後の停止で 1 回）、そこと <code>sum</code> に時間が集中しているのが読み取れます。どこを直せば速くなるかが、実測から分かります。</p>
-      <h4>実践：コードの重複を測る（クローン検出）</h4>
-      <p>最後に、品質評価の実践として<b>コードクローン検出</b>を体験します。これはコードを実行せずトークン列を比べる手法ですが、コピー＆ペーストで増えた重複を見つけ、保守性の問題を洗い出すのに使われます。よくある手法は、コードを正規化してトークン列にし、その<b>類似度</b>を測るものです。空白やコメントを無視するだけの一致（Type-1）に加え、<b>変数名や定数の違いを吸収</b>すると、名前だけ変えた複製（Type-2）も見つかります。次のデモは、正規化したトークンの並びから類似度を計算します。</p>
+      <p>数値列どうしの相関をまとめて見るなら、相関行列をヒートマップにします。<code>tips</code> の数値列で試します。</p>
     </div>
+    <div class="code-wrap attached">
+      <div class="code-head"><span class="lbl">Python</span><span class="lang-tag">seaborn_heatmap.py</span><button class="copy" type="button" onclick="copyCode(this)">copy</button></div>
+      <pre><code><span class="kw">import</span> seaborn <span class="kw">as</span> sns
+<span class="kw">import</span> matplotlib.pyplot <span class="kw">as</span> plt
 
-    <!-- DEMO 3: code clone detection -->
-    <div class="demo reveal" id="demoClone">
-      <span class="dtag"><span lang="ja">デモ 3</span><span lang="en">Demo 3</span></span>
-      <h4>コードクローン検出</h4>
-      <p class="dnote">2つのコード片を入力すると、空白とコメントを除き、変数名を <code>ID</code>・数値を <code>NUM</code>・文字列を <code>STR</code> に正規化してトークン列にします。トークンの2-gram（隣り合う2つ組）の集合どうしの <b>Jaccard 係数</b>で類似度を測り、クローンかどうかを判定します。<code>Jaccard = |共通| / |和集合|</code> です。</p>
-      <div class="two">
-        <div>
-          <label class="fld" for="clA">コード A / Code A</label>
-          <textarea id="clA" rows="7" spellcheck="false">def sum_list(nums):
-    total = 0
-    for n in nums:
-        total = total + n
-    return total</textarea>
-        </div>
-        <div>
-          <label class="fld" for="clB">コード B / Code B</label>
-          <textarea id="clB" rows="7" spellcheck="false">def add_all(values):
-    acc = 0
-    for v in values:
-        acc = acc + v
-    return acc</textarea>
-        </div>
-      </div>
-      <div class="try">
-        <span class="tlbl">例</span>
-        <button type="button" data-a="def sum_list(nums):&#10;    total = 0&#10;    for n in nums:&#10;        total = total + n&#10;    return total" data-b="def add_all(values):&#10;    acc = 0&#10;    for v in values:&#10;        acc = acc + v&#10;    return acc">名前だけ違う複製（Type-2）</button>
-        <button type="button" data-a="def sum_list(nums):&#10;    total = 0&#10;    for n in nums:&#10;        total = total + n&#10;    return total" data-b="def is_even(x):&#10;    if x % 2 == 0:&#10;        return True&#10;    return False">別のコード</button>
-        <button type="button" data-a="def area(w, h):&#10;    return w * h" data-b="def area(w, h):  # 面積&#10;    return w * h">空白・コメントだけ違う（Type-1）</button>
-      </div>
-      <div class="demo-out" id="clOut" aria-live="polite"></div>
+tips = sns.load_dataset(<span class="st">"tips"</span>)
+corr = tips[[<span class="st">"total_bill"</span>, <span class="st">"tip"</span>, <span class="st">"size"</span>]].corr()
+
+sns.heatmap(corr, annot=<span class="kw">True</span>, cmap=<span class="st">"viridis"</span>, vmin=<span class="nu">0</span>, vmax=<span class="nu">1</span>)
+plt.show()</code></pre>
     </div>
+    <div class="code-out"><span class="olbl">出力例 / Output</span><pre><code># 3x3 の相関行列がヒートマップで表示される（対角は 1.00）
+# total_bill と tip の相関 0.68 などがマスに数値つきで色分けされる</code></pre></div>
 
     <div class="callout tip">
       <h4>この Step のまとめ</h4>
-      <p>動的解析は、実行して観測する技術です。<code>coverage</code> でテストの網羅度を、<code>cProfile</code> で性能のボトルネックを測れます。観測できるのは通った経路だけという限界を、静的解析が補います。トークンを正規化して比べれば、コードクローンも検出できます。</p>
+      <p>seaborn は「よくある統計の図」を短く描く道具。分布は <code>histplot</code>/<code>kdeplot</code>、関係は <code>scatterplot</code>/<code>regplot</code>、カテゴリ比較は <code>boxplot</code>/<code>violinplot</code>、相関一覧は <code>heatmap</code>、並べるなら <code>relplot</code>。同梱の tips・penguins ですぐ試せます。</p>
     </div>
   </div>
 </section>
@@ -1167,28 +1212,32 @@ cProfile.run(<span class="st">"slow()"</span>)</code></pre>
   <div class="wrap reveal">
     <div class="stephead">
       <span class="num">6</span>
-      <div class="tt"><h2>応用とこれから</h2><span class="st-en">Applications &amp; what comes next</span></div>
+      <div class="tt"><h2>誤解を招く図を避ける</h2><span class="st-en">Avoiding misleading charts</span></div>
     </div>
     <div class="steprule"></div>
 
     <p class="layer first"><span lang="ja">概要</span><span lang="en">Overview</span></p>
     <div class="prose">
-      <p>ここまでで、構文解析・静的解析・メトリクス・動的解析という基本の道具がそろいました。これらは単独でも役立ちますが、組み合わせると、より実践的な課題に応用できます。最後に、その広がりと、この先の学びへの橋渡しを見ておきましょう。</p>
+      <p>可視化は強力ですが、その力は誤用もできてしまいます。正しいデータでも、図の作り方次第で読み手を誤らせられるのです。悪意がなくても、うっかり誤解を招く図を作ってしまうことは珍しくありません。ここでは、典型的な落とし穴を知り、自分の図を点検できるようにします。</p>
     </div>
 
     <p class="layer"><span lang="ja">仕組み</span><span lang="en">How it works</span></p>
     <div class="prose">
-      <h4>バグ検出と欠陥予測</h4>
-      <p>静的解析のパターン照合で「ぬるぽ（null 参照）になりうる」「例外が握りつぶされている」といった典型的な欠陥を見つけられます。さらに、過去の変更履歴やメトリクスを組み合わせ、どのファイルがバグを含みやすいかを見積もる<b>欠陥予測</b>という研究分野もあります。</p>
-      <h4>セキュリティ解析</h4>
-      <p>脆弱性を見つける解析には、コードを実行せず調べる<b>SAST（静的アプリケーションセキュリティテスト）</b>と、動かして試す<b>DAST（動的〜）</b>があります。中核となる考え方の一つが<b>テイント解析</b>で、外部からの入力（汚染源）が、データベース問い合わせやコマンド実行などの危険な地点（シンク）まで、無害化されずに届く経路を追跡します。</p>
-      <h4>コードへの機械学習</h4>
-      <p>近年は、コードを<b>データ</b>として機械学習にかける流れが広がっています。AST やトークン列を数値ベクトルに変換する<b>コード表現・埋め込み</b>を作り、バグ検出・コード補完・要約などに使います。テキストを数値にする自然言語処理の発想が、そのままコードにも応用されているのです。ここは、このコースの機械学習・大規模言語モデル（LLM）のモジュールへとつながっていきます。</p>
+      <h4>1. 軸の操作</h4>
+      <p>もっとも多いのが軸の細工です。<b>棒グラフのy軸を0以外から始める</b>と、わずかな差が何倍にも見えます（Step&nbsp;3のデモで体験したとおりです）。逆に、変化を小さく見せたいときに軸を極端に広げることもあります。折れ線でも、縦軸の範囲しだいで傾きの印象は大きく変わります。</p>
+      <h4>2. チェリーピッキング</h4>
+      <p>都合のよい期間や対象だけを選んで見せる手口です。上昇に転じた月からグラフを始める、外れ値を黙って除く、といった<b>切り取り</b>で、全体像とは違う印象を与えます。図の「範囲」そのものを疑う視点が大切です。</p>
+      <h4>3. 3Dの乱用と面積・体積の誤用</h4>
+      <p>立体的な棒グラフや円グラフは、奥行きによって手前が大きく見え、正確な比較を妨げます。また、値を<b>円や図形の面積・体積</b>で表すとき、直径や辺の長さを値に比例させてしまうと、面積は2乗・体積は3乗で効くため、差が過大に見えます。長さで比べられる棒グラフのほうが安全です。</p>
+      <h4>4. 二重軸の罠</h4>
+      <p>左右で別々のスケールを持つ<b>二重軸</b>は、2本の線の交差や上下関係を、目盛りの取り方しだいで自由に演出できてしまいます。「相関しているように見せる」ための道具になりやすく、使うなら目盛りの根拠を明確にします。</p>
+      <h4>5. 相関の見せかけ</h4>
+      <p>2つの量が一緒に動いていても、それは偶然の一致や、背後の第三の要因によることがあります（見せかけの相関、擬似相関）。<b>相関は因果を意味しません</b>。散布図で強い関係が見えても、「だから一方が他方の原因だ」と結論づけないよう注意します。</p>
     </div>
 
     <div class="callout tip">
       <h4>この Step のまとめ</h4>
-      <p>基本の道具は、バグ検出・欠陥予測・セキュリティ解析（SAST/DAST・テイント解析）へ応用できます。さらにコードを機械学習の対象とみなす流れが、コード表現・埋め込みを通じて機械学習や LLM のモジュールへつながります。</p>
+      <p>誤解を招く図の典型は、軸の操作・チェリーピッキング・3Dや面積の誤用・二重軸・見せかけの相関。作る側としてはこれらを避け、読む側としては「軸の起点」「範囲」「相関と因果」を疑う目を持つこと。これが正直な可視化の土台です。</p>
     </div>
   </div>
 </section>
@@ -1199,56 +1248,55 @@ cProfile.run(<span class="st">"slow()"</span>)</code></pre>
     <p class="eyebrow"><span lang="ja">まとめ</span><span lang="en">Wrap-up</span></p>
     <h2 class="big">学びの振り返りと、さらに学ぶために</h2>
     <div class="prose" style="margin-top:22px">
-      <p>このモジュールでは、プログラムを読み解く基本の道具を、パイプラインに沿って順に手に入れました。</p>
+      <p>このモジュールでは、データを図にして正しく伝えるための考え方と道具を、順に手に入れました。</p>
       <ul>
-        <li><b>構文解析とAST</b>：文字列をトークンに区切り、優先順位を反映した構文木に組み立てる。</li>
-        <li><b>静的解析</b>：実行せずに制御フロー・データフローを追い、未使用変数などを見つける。</li>
-        <li><b>コードメトリクス</b>：循環的複雑度などで複雑さ・品質を数値化する。</li>
-        <li><b>動的解析</b>：実行して観測し、カバレッジやプロファイルを測る。</li>
-        <li><b>応用</b>：バグ検出・セキュリティ解析、そしてコードへの機械学習へ。</li>
+        <li><b>可視化とは</b>：要約統計だけでは見えないデータの姿を、図で読み取る（探索的と説明的）。</li>
+        <li><b>図の選び方</b>：目的（比較・推移・分布・関係・割合）とデータの型から図を選ぶ。</li>
+        <li><b>良い図の原則</b>：データインク比を高め、棒グラフは0起点、色は色覚に配慮する。</li>
+        <li><b>実装</b>：matplotlib で土台を組み、seaborn で統計の図を短く描く。</li>
+        <li><b>誤解を避ける</b>：軸の操作・チェリーピッキング・二重軸・見せかけの相関に注意する。</li>
       </ul>
       <p>次に進むなら、下の道具と資料が役に立ちます。</p>
     </div>
 
     <div class="res-grid reveal">
       <div class="res">
-        <h5>解析の対象・データ</h5>
+        <h5>公開データセット</h5>
         <ul>
-          <li><b>任意の公開 Python ソース</b>：手元のスクリプトや OSS のコードをそのまま解析対象にできる。</li>
-          <li><b>Python 標準ライブラリのコード</b>：<code>ast</code> や <code>tokenize</code> で読み込み、実在するコードで練習できる。</li>
+          <li><b>tips</b>：レストランの会計と心づけ。seaborn に同梱（<code>load_dataset("tips")</code>）。</li>
+          <li><b>penguins</b>：3種のペンギンの計測データ。seaborn 同梱。</li>
+          <li><b>flights</b>：月別の航空旅客数。seaborn 同梱で時系列やヒートマップの練習に。</li>
         </ul>
       </div>
       <div class="res">
-        <h5>ライブラリ・ツール</h5>
+        <h5>ライブラリ</h5>
         <ul>
-          <li><b>Python 標準 ast・dis・tokenize</b>：構文木・バイトコード・トークン列。</li>
-          <li><b>radon</b>：循環的複雑度・保守性指数などの計測。</li>
-          <li><b>coverage</b>：テストカバレッジの計測。</li>
-          <li><b>pylint / flake8</b>：静的解析にもとづくリンタ。</li>
-          <li><b>tree-sitter</b>：多言語対応の高速な構文解析ライブラリ。</li>
+          <li><b>matplotlib</b>：Python の作図の土台。</li>
+          <li><b>seaborn</b>：統計的可視化を短く。</li>
+          <li><b>plotly</b>：インタラクティブな可視化。</li>
+          <li><b>pandas.plot</b>：データフレームから直接作図。</li>
         </ul>
       </div>
       <div class="res">
         <h5>参考書</h5>
         <ul>
-          <li>Aho ほか『コンパイラ 原理・技法・ツール』（通称ドラゴンブック）</li>
-          <li>Nielson ほか『Principles of Program Analysis』</li>
-          <li>Møller, Schwartzbach『Static Program Analysis』（公開講義ノート）</li>
+          <li>Edward Tufte『The Visual Display of Quantitative Information』</li>
+          <li>Alberto Cairo『The Truthful Art』</li>
+          <li>藤俊久仁 ほか『データ視覚化のデザイン』</li>
         </ul>
       </div>
       <div class="res">
         <h5>次のモジュールへ</h5>
         <ul>
+          <li>統計分析（記述統計・推測統計・検定）</li>
           <li>機械学習の基礎（分類・回帰・評価）</li>
-          <li>大規模言語モデル（LLM）とコード生成</li>
-          <li>リポジトリマイニング（変更履歴の分析）</li>
         </ul>
       </div>
     </div>
 
     <div class="callout tip">
       <h4>おつかれさまでした</h4>
-      <p>ここで学んだ「コードを構造にして、静的・動的に調べる」という流れは、言語や規模を問わず通用する考え方です。手元の Python ファイルを題材に、3 つのデモを動かしてみてください。式を変え、疑似コードの分岐を増やし、コードを少しずつ書き換えると、構文木・複雑度・類似度がどう変わるかを確かめられ、理解がぐっと深まります。</p>
+      <p>ここで学んだ「目的から図を選び、正直に設計する」という流れは、あらゆるデータを扱う場面で共通の考え方です。手元のサンプルを書き換えて、3 つのデモをもう一度動かしてみてください。図の見え方がどう変わるかを確かめると、理解がぐっと深まります。</p>
     </div>
   </div>
 </section>
@@ -1258,37 +1306,36 @@ cProfile.run(<span class="st">"slow()"</span>)</code></pre>
     <p class="eyebrow"><span lang="ja">発展トピック</span><span lang="en">Beyond this module</span></p>
     <h2 class="big">このコースでは扱わない、関係する発展トピック</h2>
     <div class="prose" style="margin-top:22px">
-      <p>このモジュールでは、コードを構造にして静的・動的に調べる「基礎の流れ」を扱いました。いっぽうでプログラム解析は、より厳密な理論から最新の機械学習まで、幅広く発展しています。ここでは、このコースでは踏み込まないものの、知っておくと視野が広がる発展的なトピックを紹介します。深掘りは各自の興味に合わせてどうぞ。</p>
+      <p>このモジュールでは、matplotlib と seaborn による静的な図づくりの「基礎の流れ」を扱いました。いっぽうで近年の可視化は、対話的な操作や地図・大規模データ・ウェブ表現へと広がっています。ここでは、このコースでは踏み込まないものの、知っておくと視野が広がる発展的なトピックを、特に近年の主流を中心に紹介します。深掘りは各自の興味に合わせてどうぞ。</p>
     </div>
 
     <div class="res-grid reveal">
       <div class="res">
-        <h5>高度な静的解析</h5>
+        <h5>インタラクティブ可視化</h5>
         <ul>
-          <li><b>記号実行（symbolic execution）</b>：変数を具体値ではなく記号のまま実行し、どんな入力でどの経路を通るかを論理的に解く。</li>
-          <li><b>抽象解釈（abstract interpretation）</b>：値を「符号」「区間」などの抽象領域で近似し、健全に性質を証明する理論的枠組み。</li>
+          <li><b>Plotly・Bokeh</b>：ズームやホバーで詳細を見られる対話的な図をブラウザ上で描く。</li>
+          <li><b>Altair</b>：可視化文法（Vega-Lite）にもとづき、宣言的に図を組み立てるライブラリ。</li>
         </ul>
       </div>
       <div class="res">
-        <h5>セキュリティと検証</h5>
+        <h5>地理空間とダッシュボード</h5>
         <ul>
-          <li><b>テイント解析</b>：外部入力が危険な地点に届く経路を追跡し、脆弱性を見つける。</li>
-          <li><b>ファジング（fuzzing）</b>：大量のランダム・変異入力を与えてクラッシュを探す動的手法。</li>
-          <li><b>形式検証</b>：仕様に対する正しさを、モデル検査や定理証明で数学的に確かめる。</li>
+          <li><b>地理空間可視化</b>：地図上にデータを重ねる（GeoPandas など）。</li>
+          <li><b>ダッシュボード</b>：指標を継続的に見せるアプリを作る（Streamlit・Dash）。</li>
         </ul>
       </div>
       <div class="res">
-        <h5>コードの機械学習</h5>
+        <h5>大規模データとネットワーク</h5>
         <ul>
-          <li><b>コード表現学習</b>：AST やトークン列を数値ベクトルに変換する（code2vec など）。</li>
-          <li><b>事前学習モデル</b>：大量のコードで学習したモデル（CodeBERT など）を、バグ検出や要約に応用する。</li>
+          <li><b>大規模データの可視化</b>：数百万点を集約して描く（datashader）。</li>
+          <li><b>ネットワーク可視化</b>：ノードとエッジのつながりを図にする（別途ネットワーク分析の話題）。</li>
         </ul>
       </div>
       <div class="res">
-        <h5>生成と合成</h5>
+        <h5>色理論とウェブ表現</h5>
         <ul>
-          <li><b>プログラム合成</b>：入出力例や仕様から、条件を満たすプログラムを自動生成する。</li>
-          <li><b>LLM によるコード生成・解析</b>：大規模言語モデルがコードを書き、説明し、レビューを支援する最新の広がり。別モジュールで扱う予定。</li>
+          <li><b>色理論とアクセシビリティ</b>：色覚多様性に配慮した配色や、知覚的に均等なカラーマップの設計。</li>
+          <li><b>D3.js</b>：ウェブ上で自由度の高い可視化を作るための JavaScript ライブラリ。</li>
         </ul>
       </div>
     </div>
@@ -1306,8 +1353,8 @@ cProfile.run(<span class="st">"slow()"</span>)</code></pre>
       <div>
         <h3><span lang="ja">この学習モジュールについて</span><span lang="en">About this module</span></h3>
         <div class="cite">
-          <span lang="ja">「研究で使う技術を実践的に学ぶ」学習コースの1モジュールです。概要から理論、動かせるコードまでを一続きにして、プログラム解析の基礎を独習できるように構成しています。内容は分野標準の一般的なもので、特定の研究や論文には紐づきません。</span>
-          <span lang="en">A module in a learning course on research skills, walking from overview to theory to runnable code so you can study the basics of program analysis on your own. The content is standard and general, not tied to any specific study.</span>
+          <span lang="ja">「研究で使う技術を実践的に学ぶ」学習コースの1モジュールです。概要から原則、動かせるコードまでを一続きにして、データ可視化の基礎を独習できるように構成しています。内容は分野標準の一般的なもので、特定の研究や論文には紐づきません。</span>
+          <span lang="en">A module in a learning course on research skills, walking from overview to principles to runnable code so you can study the basics of data visualization on your own. The content is standard and general, not tied to any specific study.</span>
         </div>
       </div>
       <div>
@@ -1350,8 +1397,8 @@ cProfile.run(<span class="st">"slow()"</span>)</code></pre>
     </div>
     <div class="foot-rule"></div>
     <p class="foot-note">
-      <span lang="ja">本ページは学習用のプロトタイプ教材です。コード例は分野標準のライブラリ（Python 標準の ast・dis・tokenize、radon、coverage）にもとづき、出力例は実際の実行結果に一致させています。</span>
-      <span lang="en">This page is a prototype learning material. Code examples use standard libraries (Python's ast, dis, tokenize, radon, coverage), and the shown outputs match real runs.</span>
+      <span lang="ja">本ページは学習用のプロトタイプ教材です。コード例は分野標準のライブラリ（matplotlib・seaborn・pandas）の実在するAPIにもとづき、出力例は図の内容を言葉で説明しています。</span>
+      <span lang="en">This page is a prototype learning material. Code examples use the real APIs of standard libraries (matplotlib, seaborn, pandas), and the outputs describe the resulting figures.</span>
     </p>
   </div>
 </footer>
@@ -1388,216 +1435,220 @@ cProfile.run(<span class="st">"slow()"</span>)</code></pre>
 (function(){
   function escapeHtml(s){ return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
 
-  /* ---- Demo 1: expression syntax tree ---- */
-  var astInput=document.getElementById('astInput'),
-      astOut=document.getElementById('astOut');
-
-  function parseExpr(src){
-    var toks=[], i=0, s=src, n=s.length;
-    while(i<n){
-      var c=s[i];
-      if(/\s/.test(c)){ i++; continue; }
-      if(/[0-9]/.test(c)){ var j=i; while(j<n && /[0-9.]/.test(s[j])) j++; toks.push({t:'num', v:s.slice(i,j)}); i=j; continue; }
-      if('+-*/()'.indexOf(c)>=0){ toks.push({t:c}); i++; continue; }
-      throw new Error('使えない文字があります: "'+c+'"');
+  /* ---- shared: small SVG thumbnail for Demo 1 ---- */
+  function thumb(kind){
+    var s='<svg viewBox="0 0 210 118" role="img" aria-label="図のサムネイル" '+
+      'style="width:230px;max-width:100%;height:auto;margin-top:6px;background:var(--card);border-radius:12px;padding:8px;'+
+      'box-shadow:0 0 0 6px var(--shell),0 0 0 6.5px var(--hair),var(--soft)">';
+    var base=96, top=16, left=20, right=196;
+    if(kind!=='pie'){
+      s+='<line x1="'+left+'" y1="'+top+'" x2="'+left+'" y2="'+base+'" stroke="var(--faint)" stroke-width="1.2"/>';
+      s+='<line x1="'+left+'" y1="'+base+'" x2="'+right+'" y2="'+base+'" stroke="var(--faint)" stroke-width="1.2"/>';
     }
-    var p=0;
-    function peek(){ return toks[p]; }
-    function next(){ return toks[p++]; }
-    function parseE(){
-      var node=parseT();
-      while(peek() && (peek().t==='+'||peek().t==='-')){
-        var op=next().t; var right=parseT();
-        node={op:op, left:node, right:right};
-      }
-      return node;
+    if(kind==='bars'){
+      var bv=[34,58,44,70], x=40;
+      bv.forEach(function(v){ s+='<rect x="'+x+'" y="'+(base-v)+'" width="26" height="'+v+'" rx="2" fill="var(--accent)"/>'; x+=38; });
+    } else if(kind==='line'){
+      var lp=[[34,74],[74,52],[112,60],[150,30],[184,38]];
+      var d=lp.map(function(p,i){return (i?'L':'M')+p[0]+' '+p[1];}).join(' ');
+      s+='<path d="'+d+'" fill="none" stroke="var(--accent)" stroke-width="2.6"/>';
+      lp.forEach(function(p){ s+='<circle cx="'+p[0]+'" cy="'+p[1]+'" r="2.8" fill="var(--accent)"/>'; });
+    } else if(kind==='hist'){
+      var hv=[16,32,54,68,48,28,14], x2=30;
+      hv.forEach(function(v){ s+='<rect x="'+x2+'" y="'+(base-v)+'" width="22" height="'+v+'" fill="var(--accent)"/>'; x2+=23; });
+    } else if(kind==='scatter'){
+      var sp=[[40,74],[58,66],[74,68],[92,52],[108,56],[126,44],[144,36],[162,32],[178,24]];
+      sp.forEach(function(p){ s+='<circle cx="'+p[0]+'" cy="'+p[1]+'" r="3.4" fill="var(--accent)"/>'; });
+    } else if(kind==='pie'){
+      var cx=105, cy=57, r=40;
+      var fr=[0.5,0.3,0.2], cols=['var(--accent)','var(--accent-2)','var(--bg-3)'];
+      var a0=-Math.PI/2;
+      fr.forEach(function(f,i){
+        var a1=a0+f*2*Math.PI;
+        var x0=cx+r*Math.cos(a0), y0=cy+r*Math.sin(a0);
+        var x1=cx+r*Math.cos(a1), y1=cy+r*Math.sin(a1);
+        var large=(a1-a0)>Math.PI?1:0;
+        s+='<path d="M'+cx+' '+cy+' L'+x0.toFixed(1)+' '+y0.toFixed(1)+' A'+r+' '+r+' 0 '+large+' 1 '+x1.toFixed(1)+' '+y1.toFixed(1)+' Z" fill="'+cols[i]+'" stroke="var(--card)" stroke-width="1.5"/>';
+        a0=a1;
+      });
     }
-    function parseT(){
-      var node=parseF();
-      while(peek() && (peek().t==='*'||peek().t==='/')){
-        var op=next().t; var right=parseF();
-        node={op:op, left:node, right:right};
-      }
-      return node;
-    }
-    function parseF(){
-      var tk=peek();
-      if(!tk) throw new Error('式が途中で終わっています');
-      if(tk.t==='('){ next(); var e=parseE(); if(!peek()||peek().t!==')') throw new Error('閉じ括弧 ) がありません'); next(); return e; }
-      if(tk.t==='-'){ next(); return {op:'u-', left:parseF()}; }
-      if(tk.t==='+'){ next(); return parseF(); }
-      if(tk.t==='num'){ next(); return {num:tk.v}; }
-      throw new Error('予期しない記号: "'+tk.t+'"');
-    }
-    if(!toks.length) throw new Error('式を入力してください');
-    var tree=parseE();
-    if(p<toks.length) throw new Error('余分な入力があります: "'+(toks[p].v||toks[p].t)+'"');
-    return tree;
+    s+='</svg>';
+    return s;
   }
 
-  function evalNode(nd){
-    if('num' in nd) return parseFloat(nd.num);
-    if(nd.op==='u-') return -evalNode(nd.left);
-    var a=evalNode(nd.left), b=evalNode(nd.right);
-    if(nd.op==='+') return a+b;
-    if(nd.op==='-') return a-b;
-    if(nd.op==='*') return a*b;
-    if(nd.op==='/') return b===0? NaN : a/b;
+  /* ---- Demo 1: chart chooser ---- */
+  var chPurpose=document.getElementById('chPurpose'),
+      chType=document.getElementById('chType'),
+      chOut=document.getElementById('chOut');
+  var REC={
+    compare:{title:'棒グラフ（bar chart）', kind:'bars', suited:'cat',
+      note:'長さで大小を比べます。<b>必ず0を起点</b>にし、途中で切らないこと。項目が多いときは横棒にすると読みやすくなります。'},
+    trend:{title:'折れ線グラフ（line chart）', kind:'line', suited:'time',
+      note:'時間にそった変化を線でつなぎます。順序のないカテゴリを線で結ぶのは誤り。変化の傾きが主役なので0起点は必須ではありません。'},
+    distribution:{title:'ヒストグラム／箱ひげ図／バイオリンプロット', kind:'hist', suited:'num1',
+      note:'1つの数値変数の散らばりを見ます。ヒストグラムは<b>ビン幅</b>で印象が変わります。群ごとの比較は箱ひげ図やバイオリンプロットで。'},
+    relationship:{title:'散布図（scatter plot）', kind:'scatter', suited:'num2',
+      note:'2つの数値変数の関係を点で見ます。点が重なるときは透明度やサイズを調整します。相関が見えても因果とは限りません。'},
+    proportion:{title:'棒グラフ（内訳）／円グラフは控えめに', kind:'pie', suited:'part',
+      note:'全体に対する内訳を見ます。円グラフは<b>項目が2〜3個</b>まで。多いときや正確な比較には棒グラフが読みやすいです。'}
+  };
+  var TYPELABEL={cat:'カテゴリ × 数値', time:'時間（時系列）× 数値', num1:'数値（1変数）',
+    num2:'数値 × 数値（2変数）', part:'内訳（合計 = 100%）'};
+  function renderChooser(){
+    if(!chOut) return;
+    var p=chPurpose.value, t=chType.value, r=REC[p];
+    var ok=(t===r.suited);
+    var match = ok
+      ? '<div class="callout tip" style="margin:14px 0 0"><p><b>相性: 良好</b>　この目的と、選んだデータの型（'+TYPELABEL[r.suited]+'）はよくかみ合っています。</p></div>'
+      : '<div class="callout warn" style="margin:14px 0 0"><p><b>相性: 注意</b>　選んだデータの型（'+TYPELABEL[t]+'）では、この目的に向かないことがあります。おすすめの型は <b>'+TYPELABEL[r.suited]+'</b> です。</p></div>';
+    chOut.innerHTML=
+      '<div class="cos-detail" style="font-family:var(--sans);font-size:1rem;color:var(--ink-2);margin-top:2px">おすすめの図：<b style="color:var(--accent-2)">'+r.title+'</b></div>'+
+      thumb(r.kind)+
+      '<p class="dnote" style="margin:12px 0 0">'+r.note+'</p>'+
+      match;
+  }
+  if(chPurpose && chType){
+    chPurpose.addEventListener('change', renderChooser);
+    chType.addEventListener('change', renderChooser);
+    renderChooser();
   }
 
-  function layout(root){
-    var nodes=[], col=0, maxd=0;
-    function rec(nd, depth){
-      nd.depth=depth; if(depth>maxd) maxd=depth;
-      if(nd.left) rec(nd.left, depth+1);
-      nd.col=col++;
-      if(nd.right) rec(nd.right, depth+1);
-      nodes.push(nd);
+  /* ---- Demo 2: misleading vs honest bar chart ---- */
+  var axisOut=document.getElementById('axisOut'),
+      axisZero=document.getElementById('axisZero'),
+      axisCut=document.getElementById('axisCut');
+  var axisData=[48,50,53,55], axisCats=['A','B','C','D'], axisBase='0';
+  function renderAxis(){
+    if(!axisOut) return;
+    var vmin=Math.min.apply(null,axisData), vmax=Math.max.apply(null,axisData);
+    var axMin, axMax;
+    if(axisBase==='0'){ axMin=0; axMax=60; } else { axMin=vmin-2; axMax=vmax+2; }
+    var W=440,H=270, left=52, right=414, base=214, top=26;
+    var plotH=base-top, plotW=right-left, n=axisData.length, step=plotW/n, bw=step*0.56;
+    function y(v){ return base-(v-axMin)/(axMax-axMin)*plotH; }
+    var svg='<svg viewBox="0 0 '+W+' '+H+'" role="img" aria-label="同じデータの棒グラフ。y軸の起点を切り替えて見え方を比べる" '+
+      'style="width:100%;height:auto;background:var(--card);border-radius:14px;padding:10px;'+
+      'box-shadow:0 0 0 7px var(--shell),0 0 0 7.5px var(--hair),var(--soft)">';
+    svg+='<line x1="'+left+'" y1="'+top+'" x2="'+left+'" y2="'+base+'" stroke="var(--faint)" stroke-width="1.2"/>';
+    svg+='<line x1="'+left+'" y1="'+base+'" x2="'+right+'" y2="'+base+'" stroke="var(--faint)" stroke-width="1.2"/>';
+    var ticks=5;
+    for(var k=0;k<=ticks;k++){
+      var tv=axMin+(axMax-axMin)*k/ticks, ty=y(tv);
+      svg+='<line x1="'+(left-5)+'" y1="'+ty.toFixed(1)+'" x2="'+left+'" y2="'+ty.toFixed(1)+'" stroke="var(--faint)" stroke-width="1"/>';
+      svg+='<text x="'+(left-9)+'" y="'+(ty+4).toFixed(1)+'" text-anchor="end" font-size="11" fill="var(--muted)" font-family="ui-monospace,monospace">'+(Math.round(tv*10)/10)+'</text>';
     }
-    rec(root,0);
-    return {nodes:nodes, cols:col, depth:maxd};
+    axisData.forEach(function(v,i){
+      var cx=left+step*i+step/2, bx=cx-bw/2, by=y(v), bh=base-by;
+      svg+='<rect x="'+bx.toFixed(1)+'" y="'+by.toFixed(1)+'" width="'+bw.toFixed(1)+'" height="'+bh.toFixed(1)+'" rx="3" fill="var(--accent)"/>';
+      svg+='<text x="'+cx.toFixed(1)+'" y="'+(base+19)+'" text-anchor="middle" font-size="12" fill="var(--ink-2)" font-family="sans-serif">'+axisCats[i]+'</text>';
+      svg+='<text x="'+cx.toFixed(1)+'" y="'+(by-7).toFixed(1)+'" text-anchor="middle" font-size="11" fill="var(--muted)" font-family="ui-monospace,monospace">'+v+'</text>';
+    });
+    svg+='</svg>';
+    var real=vmax/vmin;
+    var appMin=vmin-axMin, appMax=vmax-axMin;
+    var apparent=appMin>0? appMax/appMin : 0;
+    var msg;
+    if(axisBase==='0'){
+      msg='<div class="cos-detail">y軸：<b>0 から '+axMax+'</b>（正直）　実際の比 '+vmin+' → '+vmax+' は <b>約'+real.toFixed(2)+'倍</b>。棒の高さの比もほぼ同じで、差は「わずか」であることが正しく伝わります。</div>';
+    } else {
+      msg='<div class="cos-detail">y軸：<b>'+axMin+' から '+axMax+' で切り詰め</b>（誤解を招く）　同じデータなのに、棒の高さの比は <b>約'+apparent.toFixed(1)+'倍</b>に誇張されます（実際の値の比は約'+real.toFixed(2)+'倍）。</div>';
+    }
+    axisOut.innerHTML=svg+msg;
+    [axisZero,axisCut].forEach(function(b){ if(b){ b.style.borderColor=''; b.style.color=''; b.setAttribute('aria-pressed','false'); } });
+    var act=axisBase==='0'?axisZero:axisCut;
+    if(act){ act.style.borderColor='var(--accent)'; act.style.color='var(--ink)'; act.setAttribute('aria-pressed','true'); }
+  }
+  if(axisOut){
+    if(axisZero) axisZero.addEventListener('click', function(){ axisBase='0'; renderAxis(); });
+    if(axisCut) axisCut.addEventListener('click', function(){ axisBase='cut'; renderAxis(); });
+    renderAxis();
   }
 
-  function renderAst(){
-    var src=astInput.value;
-    var tree;
-    try{ tree=parseExpr(src); }
-    catch(err){
-      astOut.innerHTML='<div class="cos-detail" style="color:var(--bad)">解析できませんでした: '+escapeHtml(err.message)+'</div>';
-      return;
+  /* ---- Demo 3: scatter & correlation (Pearson r + least squares) ---- */
+  var scatterOut=document.getElementById('scatterOut');
+  var PRESETS={
+    pos:[[1,1.5],[2,2.2],[3,3.4],[4,3.8],[5,5.2],[6,5.6],[7,7.1],[8,7.6],[9,9.0]],
+    neg:[[1,9.2],[2,8.1],[3,7.4],[4,6.0],[5,5.3],[6,4.1],[7,3.4],[8,2.0],[9,1.3]],
+    none:[[1,5.2],[2,2.1],[3,8.0],[4,4.3],[5,6.8],[6,3.0],[7,7.2],[8,4.9],[9,2.6],[5,9.0]]
+  };
+  var pts=PRESETS.pos.map(function(p){return [p[0],p[1]];});
+  var GEO={W:440,H:300,left:46,right:410,base:250,top:26,dom:10};
+  function mapX(x){ return GEO.left+x/GEO.dom*(GEO.right-GEO.left); }
+  function mapY(y){ return GEO.base-y/GEO.dom*(GEO.base-GEO.top); }
+  function stats(){
+    var n=pts.length;
+    if(n<2) return null;
+    var sx=0,sy=0; pts.forEach(function(p){ sx+=p[0]; sy+=p[1]; });
+    var mx=sx/n, my=sy/n;
+    var sxx=0,syy=0,sxy=0;
+    pts.forEach(function(p){ var dx=p[0]-mx, dy=p[1]-my; sxx+=dx*dx; syy+=dy*dy; sxy+=dx*dy; });
+    if(sxx===0||syy===0) return {n:n, r:null, b:null, a:null, mx:mx, my:my};
+    var r=sxy/Math.sqrt(sxx*syy);
+    var b=sxy/sxx, a=my-b*mx;
+    return {n:n, r:r, b:b, a:a, mx:mx, my:my};
+  }
+  function renderScatter(){
+    if(!scatterOut) return;
+    var st=stats();
+    var svg='<svg id="scSvg" viewBox="0 0 '+GEO.W+' '+GEO.H+'" role="img" aria-label="散布図と回帰直線。図をクリックして点を追加できる" '+
+      'style="width:100%;height:auto;cursor:crosshair;background:var(--card);border-radius:14px;padding:10px;'+
+      'box-shadow:0 0 0 7px var(--shell),0 0 0 7.5px var(--hair),var(--soft)">';
+    svg+='<defs><clipPath id="scClip"><rect x="'+GEO.left+'" y="'+GEO.top+'" width="'+(GEO.right-GEO.left)+'" height="'+(GEO.base-GEO.top)+'"/></clipPath></defs>';
+    svg+='<line x1="'+GEO.left+'" y1="'+GEO.top+'" x2="'+GEO.left+'" y2="'+GEO.base+'" stroke="var(--faint)" stroke-width="1.2"/>';
+    svg+='<line x1="'+GEO.left+'" y1="'+GEO.base+'" x2="'+GEO.right+'" y2="'+GEO.base+'" stroke="var(--faint)" stroke-width="1.2"/>';
+    [0,5,10].forEach(function(t){
+      svg+='<text x="'+mapX(t).toFixed(1)+'" y="'+(GEO.base+18)+'" text-anchor="middle" font-size="11" fill="var(--muted)" font-family="ui-monospace,monospace">'+t+'</text>';
+      svg+='<text x="'+(GEO.left-9)+'" y="'+(mapY(t)+4).toFixed(1)+'" text-anchor="end" font-size="11" fill="var(--muted)" font-family="ui-monospace,monospace">'+t+'</text>';
+    });
+    svg+='<text x="'+mapX(5).toFixed(1)+'" y="'+(GEO.base+32)+'" text-anchor="middle" font-size="11" fill="var(--muted)" font-family="sans-serif">x</text>';
+    if(st && st.b!==null){
+      var x0=0, y0=st.a+st.b*0, x1=GEO.dom, y1=st.a+st.b*GEO.dom;
+      svg+='<line x1="'+mapX(x0).toFixed(1)+'" y1="'+mapY(y0).toFixed(1)+'" x2="'+mapX(x1).toFixed(1)+'" y2="'+mapY(y1).toFixed(1)+'" stroke="var(--accent-2)" stroke-width="2.4" clip-path="url(#scClip)"/>';
     }
-    var info=layout(tree);
-    var colW=64, rowH=78, r=20;
-    var W=Math.max(info.cols*colW, colW), H=(info.depth+1)*rowH;
-    function cx(nd){ return nd.col*colW + colW/2; }
-    function cy(nd){ return nd.depth*rowH + rowH/2; }
-    var edges='';
-    info.nodes.forEach(function(nd){
-      [nd.left, nd.right].forEach(function(ch){
-        if(ch) edges+='<line x1="'+cx(nd)+'" y1="'+cy(nd)+'" x2="'+cx(ch)+'" y2="'+cy(ch)+'" stroke="var(--faint)" stroke-width="1.6"/>';
+    pts.forEach(function(p){
+      svg+='<circle cx="'+mapX(p[0]).toFixed(1)+'" cy="'+mapY(p[1]).toFixed(1)+'" r="4.5" fill="var(--accent)" fill-opacity="0.85"/>';
+    });
+    svg+='</svg>';
+    var info;
+    if(!st){
+      info='<div class="cos-detail">点が2つ以上になると、相関係数と回帰直線を計算します。図をクリックして点を足すか、プリセットを選んでください。</div>';
+    } else if(st.r===null){
+      info='<div class="cos-detail">点数 n = <b>'+st.n+'</b>。x か y が一定のため、相関係数は定義できません。</div>';
+    } else {
+      var near = Math.abs(st.r)<0.2;
+      var strength = Math.abs(st.r)>=0.7?'強い':(Math.abs(st.r)>=0.4?'中程度の':'弱い');
+      var dir = st.r>0?'正':'負';
+      var label = near ? 'ほとんど相関なし' : (strength+dir+'の相関');
+      var sign=st.a>=0?'+':'-';
+      info='<div class="cos-score"><span class="val">'+st.r.toFixed(3)+'</span><span class="lab">ピアソンの相関係数 r（-1 から 1）</span></div>'+
+        '<div class="cos-detail">'+label+'　|　点数 n = <b>'+st.n+'</b><br>'+
+        '回帰直線（最小二乗）：<b>y = '+st.b.toFixed(2)+' x '+sign+' '+Math.abs(st.a).toFixed(2)+'</b></div>';
+    }
+    scatterOut.innerHTML=svg+info;
+    var sv=document.getElementById('scSvg');
+    if(sv){
+      sv.addEventListener('click', function(e){
+        var rect=sv.getBoundingClientRect();
+        var px=(e.clientX-rect.left)/rect.width*GEO.W;
+        var py=(e.clientY-rect.top)/rect.height*GEO.H;
+        var dx=(px-GEO.left)/(GEO.right-GEO.left)*GEO.dom;
+        var dy=(GEO.base-py)/(GEO.base-GEO.top)*GEO.dom;
+        if(dx<0||dx>GEO.dom||dy<0||dy>GEO.dom) return;
+        pts.push([Math.round(dx*100)/100, Math.round(dy*100)/100]);
+        renderScatter();
+      });
+    }
+  }
+  if(scatterOut){
+    document.querySelectorAll('#demoScatter .try button').forEach(function(b){
+      b.addEventListener('click', function(){
+        var key=b.getAttribute('data-preset');
+        if(key==='clear') pts=[];
+        else if(PRESETS[key]) pts=PRESETS[key].map(function(p){return [p[0],p[1]];});
+        renderScatter();
       });
     });
-    var circ='';
-    info.nodes.forEach(function(nd){
-      var isOp=!('num' in nd);
-      var label=isOp?(nd.op==='u-'?'-':nd.op):nd.num;
-      var fs=label.length<=2?15:(label.length===3?13:11);
-      circ+='<circle cx="'+cx(nd)+'" cy="'+cy(nd)+'" r="'+r+'" fill="var(--card)" stroke="none"/>'+
-        '<circle cx="'+cx(nd)+'" cy="'+cy(nd)+'" r="'+r+'" fill="'+(isOp?'var(--accent-soft)':'var(--card)')+'" stroke="'+(isOp?'var(--accent)':'var(--line)')+'" stroke-width="1.6"/>'+
-        '<text x="'+cx(nd)+'" y="'+(cy(nd)+fs*0.35)+'" text-anchor="middle" font-family="ui-monospace,monospace" font-size="'+fs+'" font-weight="600" fill="'+(isOp?'var(--accent-2)':'var(--ink)')+'">'+escapeHtml(label)+'</text>';
-    });
-    var svg='<svg viewBox="0 0 '+W+' '+H+'" role="img" aria-label="式の構文木" style="display:block;width:100%;max-width:'+Math.min(W,760)+'px;height:auto;background:var(--card);border-radius:14px;padding:10px;box-shadow:0 0 0 6px var(--shell),0 0 0 6.5px var(--hair),var(--soft)">'+edges+circ+'</svg>';
-    var val=evalNode(tree);
-    var valStr=isNaN(val)?'計算できません（0 除算）':(Number.isInteger(val)?String(val):String(Math.round(val*1000)/1000));
-    astOut.innerHTML=svg+
-      '<div class="cos-detail" style="margin-top:14px">式 <b>'+escapeHtml(src.trim())+'</b> の木は '+info.nodes.length+' ノード ・ 深さ '+info.depth+'　|　計算結果 = <b>'+valStr+'</b></div>'+
-      '<div class="chipcount">緑のノードが演算子、白のノードが数値。掛け算・割り算ほど木の下（先に計算される側）に入ります。</div>';
-  }
-  if(astInput){
-    astInput.addEventListener('input', renderAst);
-    document.querySelectorAll('#demoAst .try button').forEach(function(b){
-      b.addEventListener('click', function(){ astInput.value=b.getAttribute('data-ex'); renderAst(); });
-    });
-    renderAst();
-  }
-
-  /* ---- Demo 2: cyclomatic complexity ---- */
-  var ccIn=document.getElementById('ccInput'), ccOut=document.getElementById('ccOut');
-  function countMatches(re, str){ var m=str.match(re); return m?m.length:0; }
-  function renderCc(){
-    var code=ccIn.value;
-    var rows=[
-      {name:'if', label:'if', c:countMatches(/\bif\b/g, code)},
-      {name:'elif', label:'elif', c:countMatches(/\belif\b/g, code)},
-      {name:'for', label:'for', c:countMatches(/\bfor\b/g, code)},
-      {name:'while', label:'while', c:countMatches(/\bwhile\b/g, code)},
-      {name:'case', label:'case', c:countMatches(/\bcase\b/g, code)},
-      {name:'and', label:'and / &&', c:countMatches(/\band\b/g, code)+countMatches(/&&/g, code)},
-      {name:'or', label:'or / ||', c:countMatches(/\bor\b/g, code)+countMatches(/\|\|/g, code)}
-    ];
-    var D=rows.reduce(function(s,r){ return s+r.c; }, 0);
-    var M=D+1;
-    var verdict, vcolor;
-    if(M<=5){ verdict='簡単（テストしやすい）'; vcolor='var(--good)'; }
-    else if(M<=10){ verdict='やや複雑'; vcolor='var(--warn)'; }
-    else { verdict='複雑（分割を検討）'; vcolor='var(--bad)'; }
-    var body=rows.map(function(r){
-      var z=r.c===0?' class="zero"':'';
-      return '<tr><td>'+escapeHtml(r.label)+'</td><td'+z+'>'+r.c+'</td></tr>';
-    }).join('');
-    ccOut.innerHTML=
-      '<div class="cos-score"><span class="val">'+M+'</span><span class="lab">循環的複雑度 M = 判定数 '+D+' + 1</span></div>'+
-      '<div class="cos-detail" style="color:'+vcolor+';font-family:var(--sans);font-weight:600">目安: '+verdict+'</div>'+
-      '<table class="dtable" style="max-width:340px"><tr><th>判定点 / decision</th><th>回数</th></tr>'+body+
-      '<tr><td>判定点の合計</td><td>'+D+'</td></tr></table>'+
-      '<div class="chipcount">M = 判定数 + 1。分岐が無ければ M = 1（一本道）。目安: 1〜5 簡単, 6〜10 やや複雑, 11 以上 複雑。</div>';
-  }
-  if(ccIn){
-    ccIn.addEventListener('input', renderCc);
-    document.querySelectorAll('#demoCc .try button').forEach(function(b){
-      b.addEventListener('click', function(){ ccIn.value=b.getAttribute('data-cc'); renderCc(); });
-    });
-    renderCc();
-  }
-
-  /* ---- Demo 3: code clone detection (token normalization + Jaccard) ---- */
-  var clA=document.getElementById('clA'), clB=document.getElementById('clB'), clOut=document.getElementById('clOut');
-  var KW={"def":1,"return":1,"if":1,"elif":1,"else":1,"for":1,"while":1,"in":1,"and":1,"or":1,
-    "not":1,"is":1,"None":1,"True":1,"False":1,"break":1,"continue":1,"pass":1,"import":1,
-    "from":1,"class":1,"lambda":1,"with":1,"as":1,"try":1,"except":1,"finally":1,"raise":1,
-    "print":1,"range":1,"len":1,"int":1,"float":1,"str":1};
-  var MULTI=['==','!=','<=','>=','//','**','&&','||','+=','-=','*=','/=','->'];
-  function tokenizeCode(src){
-    var toks=[], i=0, s=src, n=s.length;
-    while(i<n){
-      var c=s[i];
-      if(/\s/.test(c)){ i++; continue; }
-      if(c==='#'){ while(i<n && s[i]!=='\n') i++; continue; }
-      if(/[A-Za-z_]/.test(c)){ var j=i; while(j<n && /[A-Za-z0-9_]/.test(s[j])) j++; var w=s.slice(i,j); toks.push(KW[w]?w:'ID'); i=j; continue; }
-      if(/[0-9]/.test(c)){ var j2=i; while(j2<n && /[0-9.]/.test(s[j2])) j2++; toks.push('NUM'); i=j2; continue; }
-      if(c==='"'||c==="'"){ var q=c; var j3=i+1; while(j3<n && s[j3]!==q) j3++; toks.push('STR'); i=j3+1; continue; }
-      var two=s.substr(i,2);
-      if(MULTI.indexOf(two)>=0){ toks.push(two); i+=2; continue; }
-      toks.push(c); i++;
-    }
-    return toks;
-  }
-  function bigrams(arr){ var b={}; for(var i=0;i<arr.length-1;i++){ b[arr[i]+' '+arr[i+1]]=1; } return b; }
-  function jaccard(a,b){
-    var ka=Object.keys(a), inter=0;
-    ka.forEach(function(k){ if(b[k]) inter++; });
-    var uni=ka.length+Object.keys(b).length-inter;
-    return {j: uni? inter/uni : 0, inter:inter, uni:uni};
-  }
-  function renderClone(){
-    var ta=tokenizeCode(clA.value), tb=tokenizeCode(clB.value);
-    if(!ta.length || !tb.length){ clOut.innerHTML='<div class="chipcount">2つのコード片を入力してください。</div>'; return; }
-    var ba=bigrams(ta), bb=bigrams(tb);
-    var jr=jaccard(ba,bb);
-    var same=(ta.join(' ')===tb.join(' '));
-    var pct=(jr.j*100).toFixed(0);
-    var verdict, vcolor;
-    if(same){ verdict='正規化後のトークン列が完全一致（Type-1 / Type-2 クローン）'; vcolor='var(--bad)'; }
-    else if(jr.j>=0.8){ verdict='クローンの可能性が高い'; vcolor='var(--bad)'; }
-    else if(jr.j>=0.5){ verdict='部分的に類似（要確認）'; vcolor='var(--warn)'; }
-    else { verdict='クローンではない'; vcolor='var(--good)'; }
-    function seq(arr){ var s=arr.join(' '); return s.length>140? escapeHtml(s.slice(0,140))+' …' : escapeHtml(s); }
-    clOut.innerHTML=
-      '<div class="cos-score"><span class="val">'+jr.j.toFixed(3)+'</span><span class="lab">Jaccard 類似度（2-gram 集合, 0 から 1）</span></div>'+
-      '<div class="cos-bar"><span style="width:'+Math.max(0,Math.min(100,pct))+'%"></span></div>'+
-      '<div class="cos-detail" style="color:'+vcolor+';font-family:var(--sans);font-weight:600;margin-top:12px">判定: '+verdict+'</div>'+
-      '<div class="cos-detail">正規化 A（'+ta.length+' トークン）: '+seq(ta)+'<br>'+
-      '正規化 B（'+tb.length+' トークン）: '+seq(tb)+'<br>'+
-      '共通の 2-gram = <b>'+jr.inter+'</b> / 和集合 = <b>'+jr.uni+'</b></div>'+
-      '<div class="chipcount">変数名 → ID, 数値 → NUM, 文字列 → STR に正規化。名前だけ変えた複製も同じ列になり、高い類似度になります。</div>';
-  }
-  if(clA){
-    clA.addEventListener('input', renderClone);
-    clB.addEventListener('input', renderClone);
-    document.querySelectorAll('#demoClone .try button').forEach(function(b){
-      b.addEventListener('click', function(){ clA.value=b.getAttribute('data-a'); clB.value=b.getAttribute('data-b'); renderClone(); });
-    });
-    renderClone();
+    renderScatter();
   }
 })();
 </script>

@@ -3,15 +3,15 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>プログラム解析 - 研究の技術を実践的に学ぶ / Program Analysis</title>
-<meta name="description" content="A hands-on learning module on program analysis: lexing and parsing into an abstract syntax tree, static analysis with control and data flow, code metrics and cyclomatic complexity, dynamic analysis with coverage and profiling, and token-based code clone detection. With interactive demos and runnable Python examples. Part of Yuta Kimura's learning course.">
-<link rel="canonical" href="https://ykimu.github.io/learn/program-analysis.html">
+<title>因果推論 - 研究の技術を実践的に学ぶ / Causal Inference</title>
+<meta name="description" content="A hands-on learning module on causal inference: correlation versus causation, confounding and Simpson's paradox, randomized controlled trials, propensity scores and inverse probability weighting, difference-in-differences, instrumental variables, and regression discontinuity. With interactive demos and runnable Python examples. Part of Yuta Kimura's learning course.">
+<link rel="canonical" href="https://ykimu.github.io/learn/causal-inference.html">
 <link rel="icon" href="../favicon.svg" type="image/svg+xml">
 <meta property="og:site_name" content="Yuta Kimura / 木村祐太">
 <meta property="og:type" content="article">
-<meta property="og:title" content="プログラム解析 - 研究の技術を実践的に学ぶ / Program Analysis">
-<meta property="og:description" content="A hands-on learning module on program analysis: parsing to an AST, static analysis, code metrics and cyclomatic complexity, dynamic analysis, and code clone detection, with interactive demos and runnable Python examples.">
-<meta property="og:url" content="https://ykimu.github.io/learn/program-analysis.html">
+<meta property="og:title" content="因果推論 - 研究の技術を実践的に学ぶ / Causal Inference">
+<meta property="og:description" content="A hands-on learning module on causal inference: confounding and Simpson's paradox, randomized controlled trials, propensity scores and IPW, and difference-in-differences, with interactive demos and runnable Python examples.">
+<meta property="og:url" content="https://ykimu.github.io/learn/causal-inference.html">
 <meta property="og:image" content="https://ykimu.github.io/assets/og.png">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="color-scheme" content="light">
@@ -526,13 +526,13 @@
               <a href="../learn/machine-learning.html"><span lang="ja">機械学習</span><span lang="en">Machine Learning</span></a>
               <a href="../learn/deep-learning.html"><span lang="ja">深層学習</span><span lang="en">Deep Learning</span></a>
               <a href="../learn/llm.html"><span lang="ja">大規模言語モデル（LLM）</span><span lang="en">Large Language Models</span></a>
-              <a class="here" aria-current="page" href="../learn/program-analysis.html"><span lang="ja">プログラム解析</span><span lang="en">Program Analysis</span></a>
+              <a href="../learn/program-analysis.html"><span lang="ja">プログラム解析</span><span lang="en">Program Analysis</span></a>
             </div>
             <div class="megacol">
               <div class="navlabel"><span lang="ja">統計とデータ分析</span><span lang="en">Statistics & data analysis</span></div>
               <a href="../learn/statistics.html"><span lang="ja">統計分析</span><span lang="en">Statistical analysis</span></a>
               <a href="../learn/data-visualization.html"><span lang="ja">データ可視化</span><span lang="en">Data visualization</span></a>
-              <a href="../learn/causal-inference.html"><span lang="ja">因果推論</span><span lang="en">Causal inference</span></a>
+              <a class="here" aria-current="page" href="../learn/causal-inference.html"><span lang="ja">因果推論</span><span lang="en">Causal inference</span></a>
               <a href="../learn/time-series.html"><span lang="ja">時系列分析</span><span lang="en">Time series analysis</span></a>
             </div>
             <div class="megacol">
@@ -616,11 +616,11 @@
       <a href="../learn/machine-learning.html"><span lang="ja">機械学習</span><span lang="en">Machine Learning</span></a>
       <a href="../learn/deep-learning.html"><span lang="ja">深層学習</span><span lang="en">Deep Learning</span></a>
       <a href="../learn/llm.html"><span lang="ja">大規模言語モデル（LLM）</span><span lang="en">Large Language Models</span></a>
-      <a class="here" aria-current="page" href="../learn/program-analysis.html"><span lang="ja">プログラム解析</span><span lang="en">Program Analysis</span></a>
+      <a href="../learn/program-analysis.html"><span lang="ja">プログラム解析</span><span lang="en">Program Analysis</span></a>
       <div class="mobsublabel"><span lang="ja">統計とデータ分析</span><span lang="en">Statistics & data analysis</span></div>
       <a href="../learn/statistics.html"><span lang="ja">統計分析</span><span lang="en">Statistical analysis</span></a>
       <a href="../learn/data-visualization.html"><span lang="ja">データ可視化</span><span lang="en">Data visualization</span></a>
-      <a href="../learn/causal-inference.html"><span lang="ja">因果推論</span><span lang="en">Causal inference</span></a>
+      <a class="here" aria-current="page" href="../learn/causal-inference.html"><span lang="ja">因果推論</span><span lang="en">Causal inference</span></a>
       <a href="../learn/time-series.html"><span lang="ja">時系列分析</span><span lang="en">Time series analysis</span></a>
       <div class="mobsublabel"><span lang="ja">実践編</span><span lang="en">Practice</span></div>
       <a href="../learn/practice-oss-health.html"><span lang="ja">OSSプロジェクトの健康診断</span><span lang="en">OSS health check</span></a>
@@ -652,7 +652,7 @@
   <nav class="crumbs" aria-label="パンくず">
     <a href="../index.html"><span lang="ja">ホーム</span><span lang="en">Home</span></a>
     <span class="csep" aria-hidden="true">&rsaquo;</span>
-    <span class="cur" aria-current="page"><span lang="ja">学習コース：プログラム解析</span><span lang="en">Learn: Program Analysis</span></span>
+    <span class="cur" aria-current="page"><span lang="ja">学習コース：因果推論</span><span lang="en">Learn: Causal Inference</span></span>
   </nav>
 </div>
 
@@ -660,15 +660,15 @@
 <div class="hero">
   <div class="wrap">
     <p class="kick"><span lang="ja">学習コース</span><span lang="en">Learn</span></p>
-    <h1>プログラム解析</h1>
-    <p class="lead">プログラムを実行せずに、あるいは実行しながら解析し、コードの構造・品質・振る舞いを読み解く技術を、概要から理論、そして実際に動かせるコードまで、順を追って学ぶモジュールです。各ステップは「概要 → 仕組み（座学）→ コードで動かす」の3層で進みます。ページ内には手を動かせるデモを3つ用意しました。</p>
+    <h1>因果推論</h1>
+    <p class="lead">相関を超えて「原因と結果」を見極めるための考え方と手法を、概要から理論、そして実際に動かせるコードまで、順を追って学ぶモジュールです。各ステップは「概要 → 仕組み（座学）→ コードで動かす」の3層で進みます。ページ内には手を動かせるデモを3つ用意しました。</p>
     <p class="ja-note"><span lang="ja">この教材は日本語のみで提供しています</span><span lang="en">This learning material is available in Japanese only.</span></p>
     <div class="hero-cta">
       <a class="btn ink" href="#intro" style="padding:12px 22px">
         <span lang="ja">学びはじめる</span><span lang="en">Start learning</span>
       </a>
       <a class="tlink" href="#step2">
-        <span lang="ja">まず手を動かす（構文木デモ）</span><span lang="en">Jump to the syntax-tree demo</span>
+        <span lang="ja">まず手を動かす（シンプソンのパラドックス）</span><span lang="en">Jump to the Simpson's paradox demo</span>
         <span class="ar" aria-hidden="true">&rsaquo;</span>
       </a>
     </div>
@@ -680,12 +680,12 @@
 <div class="tocbar">
   <nav class="tocbar-inner" aria-label="ページ内目次">
     <a class="tocpill" href="#intro"><span lang="ja">はじめに</span><span lang="en">Intro</span></a>
-    <a class="tocpill" href="#step1">Step 1 <span lang="ja">プログラム解析とは</span><span lang="en">What is program analysis</span></a>
-    <a class="tocpill" href="#step2">Step 2 <span lang="ja">構文解析とAST</span><span lang="en">Parsing &amp; AST</span></a>
-    <a class="tocpill" href="#step3">Step 3 <span lang="ja">静的解析</span><span lang="en">Static analysis</span></a>
-    <a class="tocpill" href="#step4">Step 4 <span lang="ja">コードメトリクス</span><span lang="en">Code metrics</span></a>
-    <a class="tocpill" href="#step5">Step 5 <span lang="ja">動的解析</span><span lang="en">Dynamic analysis</span></a>
-    <a class="tocpill" href="#step6">Step 6 <span lang="ja">応用とこれから</span><span lang="en">Applications</span></a>
+    <a class="tocpill" href="#step1">Step 1 <span lang="ja">因果推論とは</span><span lang="en">What is causal inference</span></a>
+    <a class="tocpill" href="#step2">Step 2 <span lang="ja">交絡とバイアス</span><span lang="en">Confounding</span></a>
+    <a class="tocpill" href="#step3">Step 3 <span lang="ja">ランダム化比較</span><span lang="en">RCT</span></a>
+    <a class="tocpill" href="#step4">Step 4 <span lang="ja">傾向スコア</span><span lang="en">Propensity scores</span></a>
+    <a class="tocpill" href="#step5">Step 5 <span lang="ja">DID・IV・RDD</span><span lang="en">DID / IV / RDD</span></a>
+    <a class="tocpill" href="#step6">Step 6 <span lang="ja">落とし穴とこれから</span><span lang="en">Pitfalls</span></a>
     <a class="tocpill" href="#closing"><span lang="ja">まとめ</span><span lang="en">Wrap-up</span></a>
     <a class="tocpill" href="#beyond"><span lang="ja">発展トピック</span><span lang="en">Beyond</span></a>
   </nav>
@@ -697,55 +697,56 @@
     <p class="eyebrow"><span lang="ja">はじめに</span><span lang="en">Introduction</span></p>
     <h2 class="big">このモジュールの全体像</h2>
     <div class="prose" style="margin-top:22px">
-      <p><b>プログラム解析（program analysis）</b>とは、ソースコードやプログラムそのものを対象に、その構造・品質・振る舞いを機械的に読み解く技術の総称です。コンパイラの最適化、統合開発環境（IDE）のエラー表示や補完、リンタによるスタイル指摘、セキュリティ検査、そしてリファクタリング支援まで、私たちが日々使う開発ツールの多くが、この技術の上に成り立っています。</p>
-      <p>プログラム解析には大きく2つの立場があります。プログラムを<b>実行せずに</b>コードそのものから性質を調べる<b>静的解析</b>と、実際に<b>実行して</b>その様子を観測する<b>動的解析</b>です。どちらの場合も、まず生のソースコードを機械が扱える構造へ変換することから始まります。次のような流れ（パイプライン）が基本です。</p>
+      <p><b>因果推論（causal inference）</b>とは、「Xを変えたら、本当にYは変わるのか」という<b>原因と結果の関係</b>をデータから見極めるための考え方と手法の総称です。ある教材で成績が上がったのか、ある薬で症状が改善したのか、ある施策で売上が伸びたのか。こうした問いに答えるには、単にXとYが一緒に動くこと（相関）を確かめるだけでは足りません。</p>
+      <p>データ分析でくり返し戒められる言葉に「<b>相関は因果ではない</b>」があります。二つの量が連動していても、片方がもう片方を引き起こしているとは限らないからです。因果推論は、この落とし穴を避け、正しく効果を測るための道具立てを与えてくれます。多くの手法に共通するのが、次のような考えの流れです。</p>
     </div>
 
     <div class="diagram-wrap reveal">
-      <p class="cap">プログラム解析の基本パイプライン</p>
-      <svg viewBox="0 0 940 150" role="img" aria-label="プログラム解析のパイプライン: ソースコードから字句・構文解析（AST）、解析、結果への流れ">
+      <p class="cap">因果推論の考え方の流れ</p>
+      <svg viewBox="0 0 940 150" role="img" aria-label="因果推論の流れ: 相関を見る、交絡を疑う、効果を識別する、効果量を推定する">
         <g>
-          <rect class="dg-box" x="30" y="46" width="166" height="58" rx="12"/>
-          <text class="dg-lbl" x="113" y="72">ソースコード</text>
-          <text class="dg-en" x="113" y="90">Source code</text>
+          <rect class="dg-box" x="12" y="46" width="180" height="58" rx="12"/>
+          <text class="dg-lbl" x="102" y="72">相関を見る</text>
+          <text class="dg-en" x="102" y="90">Correlation</text>
         </g>
         <g>
-          <rect class="dg-box acc" x="268" y="46" width="166" height="58" rx="12"/>
-          <text class="dg-lbl" x="351" y="72">構文解析（AST）</text>
-          <text class="dg-en" x="351" y="90">Parse</text>
+          <rect class="dg-box acc" x="252" y="46" width="180" height="58" rx="12"/>
+          <text class="dg-lbl" x="342" y="72">交絡を疑う</text>
+          <text class="dg-en" x="342" y="90">Confounding</text>
         </g>
         <g>
-          <rect class="dg-box acc" x="506" y="46" width="166" height="58" rx="12"/>
-          <text class="dg-lbl" x="589" y="72">解析</text>
-          <text class="dg-en" x="589" y="90">Analyze</text>
+          <rect class="dg-box acc" x="492" y="46" width="180" height="58" rx="12"/>
+          <text class="dg-lbl" x="582" y="72">効果を識別する</text>
+          <text class="dg-en" x="582" y="90">Identify</text>
         </g>
         <g>
-          <rect class="dg-box" x="744" y="46" width="166" height="58" rx="12"/>
-          <text class="dg-lbl" x="827" y="72">結果</text>
-          <text class="dg-en" x="827" y="90">Result</text>
+          <rect class="dg-box" x="732" y="46" width="196" height="58" rx="12"/>
+          <text class="dg-lbl" x="830" y="72">効果量を推定する</text>
+          <text class="dg-en" x="830" y="90">Estimate</text>
         </g>
         <g class="dg-line">
-          <line x1="196" y1="75" x2="262" y2="75"/><line x1="434" y1="75" x2="500" y2="75"/>
-          <line x1="672" y1="75" x2="738" y2="75"/>
+          <line x1="192" y1="75" x2="246" y2="75"/><line x1="432" y1="75" x2="486" y2="75"/>
+          <line x1="672" y1="75" x2="726" y2="75"/>
         </g>
         <g class="dg-arrow">
-          <polygon points="262,75 254,71 254,79"/><polygon points="500,75 492,71 492,79"/>
-          <polygon points="738,75 730,71 730,79"/>
+          <polygon points="246,75 238,71 238,79"/><polygon points="486,75 478,71 478,79"/>
+          <polygon points="726,75 718,71 718,79"/>
         </g>
-        <text class="dg-note" x="351" y="130">字句解析・構文木</text>
-        <text class="dg-note" x="589" y="130">静的解析・動的解析</text>
-        <text class="dg-note" x="827" y="130">指標・警告・クローン</text>
+        <text class="dg-note" x="102" y="130">散布図・相関係数</text>
+        <text class="dg-note" x="342" y="130">交絡変数・DAG</text>
+        <text class="dg-note" x="582" y="130">RCT・調整・IPW</text>
+        <text class="dg-note" x="830" y="130">ATE・DID</text>
       </svg>
     </div>
 
     <div class="prose">
-      <p>このモジュールは、上のパイプラインを左から順にたどります。各ステップは次の3層で構成します。</p>
+      <p>このモジュールは、上の流れを左から順にたどります。各ステップは次の3層で構成します。</p>
       <ul>
-        <li><b>概要</b>：その技術が何のためにあるのか、あらましをつかむ。</li>
-        <li><b>仕組み（座学）</b>：背後にある考え方・定義・式を、ていねいに理解する。</li>
-        <li><b>コードで動かす</b>：Python の標準ライブラリや定番ツール、ページ内デモで実際に動かして確かめる。</li>
+        <li><b>概要</b>：その考え方や手法が何のためにあるのか、あらましをつかむ。</li>
+        <li><b>仕組み（座学）</b>：背後にある定義・仮定・式を、ていねいに理解する。</li>
+        <li><b>コードで動かす</b>：Python の定番ライブラリや、ページ内デモで実際に確かめる。</li>
       </ul>
-      <p>手を動かす題材には、特別なデータは使いません。Python の標準ライブラリのソースや任意の公開 Python コード、そしてページ内の小さなコード片やサンプルだけを使います。特別な環境がなくても、読みながら試せる構成です。</p>
+      <p>手を動かす題材には、ページ内の小さなサンプルや、乱数で作ったシミュレーションデータを使います。因果効果の「正解」があらかじめ分かっているシミュレーションは、各手法が本当に正しい値を取り戻せるかを確かめるのに向いています。特別な環境がなくても、読みながら試せる構成です。</p>
     </div>
   </div>
 </section>
@@ -755,36 +756,43 @@
   <div class="wrap reveal">
     <div class="stephead">
       <span class="num">1</span>
-      <div class="tt"><h2>プログラム解析とは</h2><span class="st-en">What is program analysis</span></div>
+      <div class="tt"><h2>因果推論とは</h2><span class="st-en">What is causal inference</span></div>
     </div>
     <div class="steprule"></div>
 
     <p class="layer first"><span lang="ja">概要</span><span lang="en">Overview</span></p>
     <div class="prose">
-      <p>プログラム解析は「プログラムについて、プログラムで調べる」技術です。人が目で追うには大きすぎるコードから、機械的に情報を引き出します。おもな用途を挙げます。</p>
+      <p>私たちが本当に知りたいのは、多くの場合「<b>もし介入したら結果はどう変わるか</b>」です。ある施策を打つべきか、ある治療を選ぶべきか。こうした意思決定は、単なる予測ではなく<b>因果</b>の問いです。ところが観察されたデータには、しばしば見かけの関係が紛れ込みます。</p>
       <ul>
-        <li><b>バグ発見</b>：未定義の変数、到達しないコード、型の不一致などを、実行前に見つける。</li>
-        <li><b>品質評価</b>：複雑さや重複を数値化し、保守しにくい箇所を可視化する。</li>
-        <li><b>セキュリティ</b>：外部入力が危険な場所に届く経路（脆弱性）を検出する。</li>
-        <li><b>リファクタリング支援</b>：安全に名前を変える、関数を抽出する、といった変換を機械的に助ける。</li>
-        <li><b>最適化</b>：コンパイラが、意味を変えずに速く・小さくコードを書き換える。</li>
+        <li><b>相関</b>：二つの量が一緒に動く、という観測上のパターン。</li>
+        <li><b>因果</b>：一方を変えれば他方が変わる、という介入に対する応答。</li>
       </ul>
+      <p>よく知られた例に「アイスクリームの売上が増えると水難事故も増える」があります。両者は強く相関しますが、アイスが事故を起こすわけではありません。背後には<b>気温</b>という共通の原因があり、暑い日にはアイスも売れ、泳ぐ人も増えるだけです。相関を因果と取り違えないために、私たちは考えの枠組みを必要とします。</p>
     </div>
 
     <p class="layer"><span lang="ja">仕組み</span><span lang="en">How it works</span></p>
     <div class="prose">
-      <p>解析には、実行するかどうかで大きく2つの立場があります。</p>
-      <h4>静的解析（static analysis）</h4>
-      <p>プログラムを<b>実行せずに</b>、ソースコードやコンパイル後のバイトコードそのものを調べます。あらゆる入力・あらゆる経路を（近似的に）まとめて扱えるのが強みです。いっぽう、実行時にしか決まらない値（利用者の入力やファイルの中身など）は分からないため、結果はどうしても<b>近似</b>になります。安全側に倒すと、実際には問題ない箇所まで警告する<b>偽陽性</b>が増えがちです。</p>
-      <h4>動的解析（dynamic analysis）</h4>
-      <p>プログラムを<b>実際に実行して</b>、その振る舞いを観測します。実行した具体的な値や経路について正確な情報が得られます。ただし、観測できるのは<b>実行した経路だけ</b>で、試さなかった入力の挙動は分かりません。見逃し（<b>偽陰性</b>）が起きやすいのが弱点です。テストカバレッジやプロファイリングが代表例です。</p>
-      <h4>解析の限界</h4>
-      <p>「このプログラムは必ず停止するか」「この2つのプログラムは同じ振る舞いか」といった、プログラムの<b>意味に関する非自明な性質</b>は、一般には機械的に完全に判定できないことが知られています（ライスの定理・停止性問題）。だからこそ実務の解析は、安全な近似・ヒューリスティック・限定した範囲での判定を組み合わせて、役に立つ答えを返すよう設計されています。静的と動的は対立するものではなく、互いの弱点を補い合う道具だと考えるのがよいでしょう。</p>
+      <h4>反実仮想（potential outcomes）</h4>
+      <p>因果を厳密に考えるための土台が<b>反実仮想</b>の枠組みです（Rubin の因果モデルとも呼ばれます）。ある個体 i について、処置（介入）を受けたかどうかを表す二値 <code>T</code> を考え、次の二つの結果を想定します。</p>
+      <ul>
+        <li><b>Y<sub>i</sub>(1)</b>：もし処置を<b>受けた</b>ら得られる結果。</li>
+        <li><b>Y<sub>i</sub>(0)</b>：もし処置を<b>受けなかった</b>ら得られる結果。</li>
+      </ul>
+      <p>この個体にとっての処置効果は、両者の差 <code>Y<sub>i</sub>(1) - Y<sub>i</sub>(0)</code> です。ところが現実には、同じ個体について「受けた場合」と「受けなかった場合」を同時に観測できません。処置を受けた人からは Y(1) しか、受けなかった人からは Y(0) しか手に入らないのです。もう一方はけっして観測できない<b>反実仮想</b>であり、これを<b>因果推論の根本問題</b>と呼びます。</p>
+      <h4>平均処置効果（ATE）</h4>
+      <p>個体ごとの効果は取り出せませんが、集団全体で<b>平均</b>を取れば推定できる見込みがあります。これが<b>平均処置効果（ATE: Average Treatment Effect）</b>です。</p>
+    </div>
+    <div class="formula">
+      ATE <span class="op">=</span> E[ Y(1) <span class="op">&minus;</span> Y(0) ] <span class="op">=</span> E[Y(1)] <span class="op">&minus;</span> E[Y(0)]
+      <small>E[&middot;]: 期待値（母集団での平均）。処置を受けたときの結果の平均と、受けなかったときの結果の平均の差。<br>単純な「処置群の平均 &minus; 対照群の平均」がこれと一致するのは、両群が処置以外の点でそろっているときに限られます。</small>
+    </div>
+    <div class="prose">
+      <p>ここが因果推論の核心です。観察データでは、処置を受けた人と受けなかった人が<b>もともと違う集団</b>であることが多く、両者を素朴に比べても ATE にはなりません。Step&nbsp;2 以降では、この「もともとの違い」＝<b>交絡</b>をどう扱うかを、順に見ていきます。</p>
     </div>
 
     <div class="callout tip">
       <h4>この Step のまとめ</h4>
-      <p>プログラム解析はコードから機械的に情報を引き出す技術。実行しない<b>静的解析</b>は網羅的だが近似的、実行する<b>動的解析</b>は正確だが観測した経路だけ。両者を組み合わせて、バグ発見・品質評価・セキュリティに役立てます。</p>
+      <p>因果推論が問うのは「介入したら結果はどう変わるか」。各個体には受けた場合 Y(1) と受けなかった場合 Y(0) があり、片方しか観測できません（根本問題）。その差の平均が平均処置効果（ATE）で、これを正しく推定するのがこのモジュールの目標です。</p>
     </div>
   </div>
 </section>
@@ -794,107 +802,48 @@
   <div class="wrap reveal">
     <div class="stephead">
       <span class="num">2</span>
-      <div class="tt"><h2>字句・構文解析とAST</h2><span class="st-en">Lexing, parsing &amp; the AST</span></div>
+      <div class="tt"><h2>交絡とバイアス</h2><span class="st-en">Confounding &amp; bias</span></div>
     </div>
     <div class="steprule"></div>
 
     <p class="layer first"><span lang="ja">概要</span><span lang="en">Overview</span></p>
     <div class="prose">
-      <p>コードを解析する第一歩は、ただの文字の並びを<b>構造</b>に変えることです。人間が「2 + 3 * 4」を見て「掛け算が先」と読み取るように、機械にも文の骨組みを理解させます。この骨組みが<b>抽象構文木（AST: Abstract Syntax Tree）</b>で、ほとんどの解析はこの木の上で行われます。</p>
+      <p>観察データで因果を測るときに、最大の敵となるのが<b>交絡（confounding）</b>です。処置の有無と結果の両方に影響する第三の要因があると、処置と結果の見かけの関係がゆがみます。この Step では、交絡とそこから生じるバイアスの正体を、具体例とともに押さえます。</p>
     </div>
 
     <p class="layer"><span lang="ja">仕組み</span><span lang="en">How it works</span></p>
     <div class="prose">
-      <h4>1. 字句解析（lexing / tokenization）</h4>
-      <p>文字列を、意味のある最小単位である<b>トークン</b>に区切ります。<code>y = 2 + 3</code> なら、<code>y</code>（識別子）・<code>=</code>（記号）・<code>2</code>（数値）・<code>+</code>（記号）・<code>3</code>（数値）に分けます。空白やコメントはここで落とします。Python では標準ライブラリ <code>tokenize</code> がこの役目を担います。</p>
-      <h4>2. 構文解析（parsing）</h4>
-      <p>トークンの並びを、文法規則に従って木に組み立てます。ここで<b>演算子の優先順位</b>と<b>結合性</b>が効きます。<code>2 + 3 * 4</code> では、掛け算が足し算より優先されるので、<code>3 * 4</code> がひとつのまとまりになり、その結果と <code>2</code> を足す、という入れ子の木になります。同じ優先順位の <code>10 - 4 - 2</code> は左から結合し、<code>(10 - 4) - 2</code> と解釈されます。</p>
-      <h4>3. 抽象構文木（AST）</h4>
-      <p>できあがった木からは、括弧やセミコロンといった「書き方の飾り」を落とし、<b>構造の本質だけ</b>を残します。これが AST です。各ノードは「代入」「二項演算」「関数呼び出し」などの構文要素に対応します。木になっていれば、深さ優先でたどって特定のパターンを探す、といった処理が素直に書けます。</p>
-      <p>なお、Python はソースを<b>バイトコード</b>にコンパイルしてから仮想マシンで実行します。標準ライブラリ <code>dis</code> を使うと、この中間表現（どんな命令に落ちるか）を覗くことができます。字句解析・構文解析・AST は、その手前の「意味を組み立てる」段階だと考えるとよいでしょう。</p>
+      <h4>交絡変数（confounder）</h4>
+      <p><b>交絡変数</b>とは、処置 T と結果 Y の<b>両方</b>に影響する変数のことです。先ほどの例では、気温がアイスの売上（T）と水難事故（Y）の共通原因でした。交絡があると、T と Y の相関には「T が Y を引き起こす効果」と「共通原因を通じた見かけの効果」が混ざり込み、素朴な比較は<b>偏り（バイアス）</b>を持ちます。</p>
+      <h4>選択バイアス（selection bias）</h4>
+      <p>誰がデータに含まれるか、誰が処置を受けるかが結果と関係していると、<b>選択バイアス</b>が生じます。たとえば「やる気のある人ほど講座を受講する」なら、受講者の成績が良くても、それが講座の効果なのか、もともとのやる気の差なのか区別できません。処置群と対照群が処置以外の点で異なるとき、比較は公平になりません。</p>
+      <h4>シンプソンのパラドックス</h4>
+      <p>交絡の効果が劇的に現れるのが<b>シンプソンのパラドックス</b>です。<b>全体で見ると</b>ある傾向があるのに、集団を適切なグループに<b>層別すると、すべての層で逆の傾向</b>になる、という現象です。下のデモで実際に体験できますが、たとえば「治療法Aは全体では回復率が低く見えるのに、軽症でも重症でも、層別すればAのほうがBより回復率が高い」といったことが起こります。原因は、Aが重症者に多く使われている（＝重症度が交絡している）ことです。どちらの数字を見るべきかは、背後の因果構造によって決まります。</p>
+      <h4>因果ダイアグラム（DAG）とバックドア基準</h4>
+      <p>どの変数を調整すべきかを見きわめる道具が<b>因果ダイアグラム（DAG: 有向非巡回グラフ）</b>です。変数を点、因果の向きを矢印で描きます。処置から結果への「まっすぐな道」以外に、交絡変数を経由して裏から回り込む経路（<b>バックドア経路</b>）があると、見かけの相関が生まれます。この裏道を、交絡変数で条件づけて<b>ふさぐ</b>のが<b>バックドア基準</b>の考え方です。必要な交絡変数をすべて調整できれば、観察データからでも因果効果を識別できます。逆に、調整すべきでない変数（結果の後に来る変数など）まで触ると、かえって新たなバイアスを生む点にも注意します。</p>
     </div>
 
-    <!-- DEMO 1: expression syntax tree -->
-    <div class="demo reveal" id="demoAst">
+    <!-- DEMO 1: Simpson's paradox -->
+    <div class="demo reveal" id="demoSimpson">
       <span class="dtag"><span lang="ja">デモ 1</span><span lang="en">Demo 1</span></span>
-      <h4>式の構文木</h4>
-      <p class="dnote">算術式（<code>+ - * /</code> と括弧、整数）を入力すると、簡易パーサが演算子の優先順位に従って構文木を組み立て、SVG のツリーで表示します。掛け算・割り算は足し算・引き算より先に、括弧が最優先です。木の下には、その優先順位で計算した結果も表示します。</p>
-      <label class="fld" for="astInput">式 / Expression</label>
-      <input type="text" id="astInput" spellcheck="false" value="2 + 3 * 4">
+      <h4>シンプソンのパラドックス</h4>
+      <p class="dnote">全体で見たときと、グループごとに層別したときで、結論が逆転する数値例です。データを選び、「全体で見る」「層別で見る」を切り替えて、棒グラフと表がどう変わるかを確かめてください。全体では負けている側が、じつはどの層でも勝っている、という逆転が起こります。</p>
       <div class="try">
-        <span class="tlbl">例</span>
-        <button type="button" data-ex="2 + 3 * 4">2 + 3 * 4</button>
-        <button type="button" data-ex="(2 + 3) * 4">(2 + 3) * 4</button>
-        <button type="button" data-ex="10 - 4 - 2">10 - 4 - 2</button>
-        <button type="button" data-ex="2 * 3 + 4 * 5">2 * 3 + 4 * 5</button>
-        <button type="button" data-ex="8 / 2 + 1">8 / 2 + 1</button>
+        <span class="tlbl">データ</span>
+        <button type="button" data-simp="treat">治療法 A と B の回復率</button>
+        <button type="button" data-simp="admit">学部別の合格率</button>
       </div>
-      <div class="demo-out" id="astOut" aria-live="polite"></div>
+      <div class="try">
+        <span class="tlbl">表示</span>
+        <button type="button" data-view="strat" id="simpStratBtn">層別で見る</button>
+        <button type="button" data-view="agg" id="simpAggBtn">全体で見る</button>
+      </div>
+      <div class="demo-out" id="simpOut" aria-live="polite"></div>
     </div>
-
-    <p class="layer"><span lang="ja">コードで動かす</span><span lang="en">Run the code</span></p>
-    <div class="prose">
-      <p>まず字句解析です。標準ライブラリ <code>tokenize</code> で、文字列がどんなトークンに分かれるかを見てみます。</p>
-    </div>
-    <div class="code-wrap attached">
-      <div class="code-head"><span class="lbl">Python</span><span class="lang-tag">lex_tokenize.py</span><button class="copy" type="button" onclick="copyCode(this)">copy</button></div>
-      <pre><code><span class="kw">import</span> tokenize, io
-
-src = <span class="st">"y = 2 + 3 * 4\n"</span>
-<span class="kw">for</span> tok <span class="kw">in</span> tokenize.generate_tokens(io.StringIO(src).readline):
-    <span class="kw">if</span> tok.string.strip():          <span class="cm"># 空白・改行トークンは省く</span>
-        <span class="kw">print</span>(tokenize.tok_name[tok.type], repr(tok.string))</code></pre>
-    </div>
-    <div class="code-out"><span class="olbl">出力例 / Output</span><pre><code>NAME 'y'
-OP '='
-NUMBER '2'
-OP '+'
-NUMBER '3'
-OP '*'
-NUMBER '4'</code></pre></div>
-
-    <div class="prose">
-      <p>次に構文解析です。標準ライブラリ <code>ast</code> の <code>ast.parse</code> でソースを AST に変換し、<code>ast.dump</code> で構造を文字列にして眺めます。<code>2 + 3 * 4</code> が、掛け算を内側に持つ入れ子の <code>BinOp</code> になっている点に注目してください。</p>
-    </div>
-    <div class="code-wrap attached">
-      <div class="code-head"><span class="lbl">Python</span><span class="lang-tag">ast_dump.py</span><button class="copy" type="button" onclick="copyCode(this)">copy</button></div>
-      <pre><code><span class="kw">import</span> ast
-
-tree = ast.parse(<span class="st">"y = 2 + 3 * 4"</span>)
-<span class="kw">print</span>(ast.dump(tree, indent=<span class="nu">2</span>))</code></pre>
-    </div>
-    <div class="code-out"><span class="olbl">出力例 / Output</span><pre><code>Module(
-  body=[
-    Assign(
-      targets=[
-        Name(id='y', ctx=Store())],
-      value=BinOp(
-        left=Constant(value=2),
-        op=Add(),
-        right=BinOp(
-          left=Constant(value=3),
-          op=Mult(),
-          right=Constant(value=4))))],
-  type_ignores=[])</code></pre></div>
-
-    <div class="prose">
-      <p><code>ast.walk</code> を使うと、木のすべてのノードを順にたどれます。ここでは二項演算（<code>BinOp</code>）のノードだけを拾い、その演算子の種類を表示してみます。</p>
-    </div>
-    <div class="code-wrap attached">
-      <div class="code-head"><span class="lbl">Python</span><span class="lang-tag">ast_walk.py</span><button class="copy" type="button" onclick="copyCode(this)">copy</button></div>
-      <pre><code><span class="kw">import</span> ast
-
-tree = ast.parse(<span class="st">"y = 2 + 3 * 4"</span>)
-<span class="kw">for</span> node <span class="kw">in</span> ast.walk(tree):
-    <span class="kw">if</span> isinstance(node, ast.BinOp):
-        <span class="kw">print</span>(type(node.op).__name__)</code></pre>
-    </div>
-    <div class="code-out"><span class="olbl">出力例 / Output</span><pre><code>Add
-Mult</code></pre></div>
 
     <div class="callout tip">
       <h4>この Step のまとめ</h4>
-      <p>解析は「文字列 → トークン → 構文木（AST）」という変換から始まります。演算子の優先順位はこの木の形に現れます。Python では <code>tokenize</code> で字句解析、<code>ast</code> で構文解析ができ、以降の解析はすべてこの木の上で行われます。</p>
+      <p>交絡変数は処置と結果の両方に影響し、素朴な比較にバイアスを生みます。シンプソンのパラドックスは、その極端な現れ方です。DAG とバックドア基準は「どの変数を調整すべきか」を教えてくれます。次の Step では、交絡そのものを断ち切る最強の方法＝ランダム化を見ます。</p>
     </div>
   </div>
 </section>
@@ -904,60 +853,88 @@ Mult</code></pre></div>
   <div class="wrap reveal">
     <div class="stephead">
       <span class="num">3</span>
-      <div class="tt"><h2>静的解析</h2><span class="st-en">Static analysis</span></div>
+      <div class="tt"><h2>ランダム化比較試験（RCT）</h2><span class="st-en">Randomized controlled trials</span></div>
     </div>
     <div class="steprule"></div>
 
     <p class="layer first"><span lang="ja">概要</span><span lang="en">Overview</span></p>
     <div class="prose">
-      <p>AST が手に入れば、プログラムを実行せずにさまざまな性質を調べられます。これが<b>静的解析</b>です。処理の流れ（制御フロー）やデータの流れ（データフロー）を追い、あやしい箇所を機械的に指摘します。リンタや型検査器、IDE の警告は、みなこの技術の応用です。</p>
+      <p>交絡を根本から断ち切る、もっとも確実な方法が<b>ランダム化比較試験（RCT）</b>です。誰が処置を受けるかを<b>くじ引き（無作為割り付け）</b>で決めることで、処置群と対照群を「処置以外はそっくりな二つの集団」に仕立てます。新薬の治験や、施策の効果検証（A/Bテスト）の基礎にある考え方です。</p>
     </div>
 
     <p class="layer"><span lang="ja">仕組み</span><span lang="en">How it works</span></p>
     <div class="prose">
-      <h4>制御フローグラフ（CFG）</h4>
-      <p>プログラムの「どこからどこへ進みうるか」をグラフで表したものが<b>制御フローグラフ（Control Flow Graph）</b>です。分岐のない一続きの命令列を<b>基本ブロック</b>としてノードにまとめ、条件分岐やループによる遷移をエッジで結びます。「この行に到達できるか」「ここから抜け出せるか」といった問いは、このグラフ上の到達可能性の問題になります。</p>
-      <h4>データフロー解析</h4>
-      <p>変数の値がプログラム中をどう流れるかを追うのが<b>データフロー解析</b>です。ある地点で「どの代入の結果が生きているか（到達定義）」「この先で使われる変数はどれか（生存変数）」などを、CFG に沿って伝播させて求めます。応用として、<b>定義・使用連鎖（def-use chain）</b>を作れば、「代入したのに一度も使われない変数」や「使う前に値が入っていない変数」を検出できます。</p>
-      <h4>リンタの仕組み</h4>
-      <p><b>リンタ（linter）</b>は、AST を走査してあらかじめ決めたパターン（アンチパターン）に一致する箇所を警告するツールです。未使用の変数・インポート、比較演算子の誤用、命名規約からの逸脱などを指摘します。Python では <b>pylint</b> や <b>flake8</b> が定番で、内部では <code>ast</code> のような構文木の走査を行っています。次のコードは、その「未使用変数の検出」を <code>ast</code> だけでミニチュア実装した例です。</p>
+      <h4>なぜランダム化で交絡が消えるのか</h4>
+      <p>処置を受けるかどうかをコイン投げで決めると、割り付けは<b>あらゆる背景要因と統計的に独立</b>になります。年齢も、重症度も、やる気も、まだ測っていない未知の要因さえも、処置群と対照群にほぼ同じ割合で散らばります。つまり、既知の交絡だけでなく<b>未観測の交絡までまとめてバランス</b>させられるのが、ランダム化の決定的な強みです。両群がそろっている以上、処置後に生じた結果の差は、処置そのものの効果と見なせます。</p>
+      <h4>処置群・対照群と ATE の推定</h4>
+      <p>ランダム化のもとでは、処置群の結果の平均が E[Y(1)] の、対照群の結果の平均が E[Y(0)] の、それぞれ偏りのない推定になります。したがって単純な差</p>
     </div>
-
-    <div class="code-wrap attached">
-      <div class="code-head"><span class="lbl">Python</span><span class="lang-tag">unused_vars.py</span><button class="copy" type="button" onclick="copyCode(this)">copy</button></div>
-      <pre><code><span class="kw">import</span> ast
-
-source = <span class="st">'''
-def f(x):
-    y = x + 1
-    z = x * 2      # z は使われない
-    return y
-'''</span>
-
-fn = ast.parse(source).body[<span class="nu">0</span>]          <span class="cm"># 関数定義ノード</span>
-assigned, used = set(), set()
-<span class="kw">for</span> node <span class="kw">in</span> ast.walk(fn):
-    <span class="kw">if</span> isinstance(node, ast.Name):
-        <span class="kw">if</span> isinstance(node.ctx, ast.Store):    <span class="cm"># 代入されている名前</span>
-            assigned.add(node.id)
-        <span class="kw">elif</span> isinstance(node.ctx, ast.Load):  <span class="cm"># 読み出されている名前</span>
-            used.add(node.id)
-
-<span class="kw">print</span>(<span class="st">"assigned:"</span>, sorted(assigned))
-<span class="kw">print</span>(<span class="st">"used:    "</span>, sorted(used))
-<span class="kw">print</span>(<span class="st">"unused:  "</span>, sorted(assigned - used))</code></pre>
+    <div class="formula">
+      <span class="op">^</span>ATE <span class="op">=</span> (処置群の平均) <span class="op">&minus;</span> (対照群の平均)
+      <small>ランダム化によって両群の背景がそろうため、この素朴な差がそのまま平均処置効果 ATE の推定になります。<br>観察データでは、この等式は交絡のぶんだけ成り立ちません。</small>
     </div>
-    <div class="code-out"><span class="olbl">出力例 / Output</span><pre><code>assigned: ['y', 'z']
-used:     ['x', 'y']
-unused:   ['z']</code></pre></div>
-
     <div class="prose">
-      <p>ノードの <code>ctx</code>（コンテキスト）が <code>Store</code> なら代入、<code>Load</code> なら読み出しです。代入された名前の集合から使われた名前の集合を引けば、「代入したのに使われていない」変数が求まります。これは静的解析の考え方そのもので、本物のリンタは、これに<b>スコープ</b>や<b>制御フロー</b>の情報を加えて精度を高めています。</p>
+      <p>下のデモは、この違いを目で見て確かめるものです。同じ母集団に対し、重症者ほど処置を受けやすい<b>観察データ</b>と、コイン投げで割り付けた<b>ランダム化</b>を並べ、それぞれの単純比較が「本当の効果」からどれだけずれるかを見ます。</p>
+    </div>
+
+    <!-- DEMO 2: randomization -->
+    <div class="demo reveal" id="demoRand">
+      <span class="dtag"><span lang="ja">デモ 2</span><span lang="en">Demo 2</span></span>
+      <h4>ランダム化の効果</h4>
+      <p class="dnote">重症度が交絡している母集団を作り、二通りの割り付けを比べます。観察データ（重症ほど処置を受けやすい）と、ランダム化（コイン投げ）です。真の平均処置効果はどちらでも同じですが、単純比較の値は大きく変わります。スライダで交絡の強さを変え、再サンプリングで別の乱数も試せます。</p>
+      <label class="fld" for="randConf">交絡の強さ / Confounding strength</label>
+      <input type="range" id="randConf" min="0" max="100" value="80" style="width:100%;max-width:340px;accent-color:var(--accent)">
+      <div class="try">
+        <span class="tlbl">操作</span>
+        <button type="button" id="randRun">別の乱数で再サンプリング</button>
+      </div>
+      <div class="demo-out" id="randOut" aria-live="polite"></div>
+    </div>
+
+    <p class="layer"><span lang="ja">コードで動かす</span><span lang="en">Run the code</span></p>
+    <div class="prose">
+      <p>NumPy で同じ状況をシミュレーションできます。潜在結果 Y(0)・Y(1) を先に作っておけば、割り付けを変えるだけで観察データとランダム化を比べられます。真の ATE は 10 に設定しています。</p>
+    </div>
+    <div class="code-wrap attached">
+      <div class="code-head"><span class="lbl">Python</span><span class="lang-tag">randomization_sim.py</span><button class="copy" type="button" onclick="copyCode(this)">copy</button></div>
+      <pre><code><span class="kw">import</span> numpy <span class="kw">as</span> np
+
+rng = np.random.default_rng(<span class="nu">42</span>)
+N = <span class="nu">2000</span>
+<span class="cm"># 交絡変数 U: 重症度（1=重症, 0=軽症）</span>
+U = rng.integers(<span class="nu">0</span>, <span class="nu">2</span>, size=N)
+
+<span class="cm"># 潜在結果（健康スコア, 高いほど良い）。真の処置効果 tau = 10</span>
+tau = <span class="nu">10.0</span>
+base = np.where(U == <span class="nu">1</span>, <span class="nu">40.0</span>, <span class="nu">65.0</span>)    <span class="cm"># 重症は低い</span>
+Y0 = base + rng.normal(<span class="nu">0</span>, <span class="nu">5</span>, size=N)   <span class="cm"># 処置を受けない場合の結果</span>
+Y1 = Y0 + tau                          <span class="cm"># 処置を受ける場合の結果</span>
+
+<span class="cm"># 観察データ: 重症ほど処置を受けやすい（交絡）</span>
+p = np.where(U == <span class="nu">1</span>, <span class="nu">0.8</span>, <span class="nu">0.2</span>)
+T = rng.binomial(<span class="nu">1</span>, p)
+Y = np.where(T == <span class="nu">1</span>, Y1, Y0)
+naive = Y[T == <span class="nu">1</span>].mean() - Y[T == <span class="nu">0</span>].mean()
+
+<span class="cm"># ランダム化: コイン投げで割り付け（U と独立）</span>
+Tr = rng.binomial(<span class="nu">1</span>, <span class="nu">0.5</span>, size=N)
+Yr = np.where(Tr == <span class="nu">1</span>, Y1, Y0)
+rct = Yr[Tr == <span class="nu">1</span>].mean() - Yr[Tr == <span class="nu">0</span>].mean()
+
+<span class="kw">print</span>(<span class="st">f"真の ATE           : {(Y1 - Y0).mean():.2f}"</span>)
+<span class="kw">print</span>(<span class="st">f"観察データ 単純比較 : {naive:.2f}"</span>)
+<span class="kw">print</span>(<span class="st">f"ランダム化 単純比較 : {rct:.2f}"</span>)</code></pre>
+    </div>
+    <div class="code-out"><span class="olbl">出力例 / Output</span><pre><code>真の ATE           : 10.00
+観察データ 単純比較 : -5.12
+ランダム化 単純比較 : 9.11</code></pre></div>
+    <div class="prose">
+      <p>観察データの単純比較は <b>-5.12</b>、つまり「処置は結果を下げる」と<b>符号すら逆</b>に出てしまいました。重症者ほど処置を受けているため、処置群の結果が低く引きずられたのです。いっぽうランダム化では <b>9.11</b> と、真の値 10 のごく近くに収まりました（残りのずれは有限標本の偶然によるもので、N を増やすと縮みます）。</p>
     </div>
 
     <div class="callout tip">
       <h4>この Step のまとめ</h4>
-      <p>静的解析は AST の上で、制御フロー（CFG）とデータフローを追う技術です。定義・使用の関係を調べれば、未使用変数のような問題を実行前に見つけられます。pylint や flake8 は、この考え方を体系化したツールです。</p>
+      <p>ランダム化は、既知・未知を問わずあらゆる交絡をバランスさせ、単純な群間差をそのまま ATE の推定にします。これが因果推論の理想形です。とはいえ、倫理やコストの制約でランダム化できない場面も多い。次の Step からは、すでにある観察データから因果を取り出す方法を学びます。</p>
     </div>
   </div>
 </section>
@@ -967,89 +944,80 @@ unused:   ['z']</code></pre></div>
   <div class="wrap reveal">
     <div class="stephead">
       <span class="num">4</span>
-      <div class="tt"><h2>コードメトリクスと品質</h2><span class="st-en">Code metrics &amp; quality</span></div>
+      <div class="tt"><h2>観察データでの因果推定 &#9312;</h2><span class="st-en">Adjusting observational data</span></div>
     </div>
     <div class="steprule"></div>
 
     <p class="layer first"><span lang="ja">概要</span><span lang="en">Overview</span></p>
     <div class="prose">
-      <p>「このコードは複雑すぎないか」「テストしにくくないか」を、感覚ではなく数字で語るための道具が<b>コードメトリクス</b>です。規模・複雑さ・重複などを測り、保守しにくい箇所を客観的に浮かび上がらせます。品質のすべてを数字で表せるわけではありませんが、注意を向けるべき場所の目印になります。</p>
+      <p>ランダム化ができないとき、私たちは手持ちの<b>観察データ</b>から因果効果を取り出そうとします。鍵は、Step&nbsp;2 で見た<b>交絡変数を測って調整する</b>ことです。ここでは、層別・回帰による調整と、<b>傾向スコア</b>という強力な考え方を扱います。</p>
     </div>
 
     <p class="layer"><span lang="ja">仕組み</span><span lang="en">How it works</span></p>
     <div class="prose">
-      <h4>行数（LOC）</h4>
-      <p>もっとも素朴な指標が<b>行数（Lines of Code）</b>です。空行やコメントを除いた実行文の行数（論理行数）を数えるのが一般的です。単純ですが、規模の当たりをつけるのに役立ちます。</p>
-      <h4>循環的複雑度（cyclomatic complexity）</h4>
-      <p>McCabe が提案した<b>循環的複雑度</b>は、制御フローグラフをもとに「独立した経路の数」を測る指標です。分岐が多いほど値が大きく、テストすべき経路も増えます。CFG のエッジ数を E、ノード数を N、連結成分の数を P とすると、次の式で定義されます。</p>
+      <h4>層別と回帰による調整</h4>
+      <p>もっとも素直なのは、交絡変数の値ごとに<b>層別</b>して、層のなかで処置群と対照群を比べる方法です。シンプソンのパラドックスの例で「軽症・重症に分けて比べる」のが、まさにこれでした。各層での効果を、層の大きさで重み付けして平均すれば、全体の効果になります。交絡変数が多いと層が細かくなりすぎるため、実務では<b>回帰</b>で調整することも多い。結果 Y を、処置 T と交絡変数 X の両方で説明する回帰式を立て、X をそろえたうえでの T の係数を効果と見なします。</p>
+      <h4>傾向スコア（propensity score）</h4>
+      <p>交絡変数が多いと、層別も回帰も扱いづらくなります。そこで登場するのが<b>傾向スコア</b>です。傾向スコアとは、共変量 X が与えられたときに<b>その個体が処置を受ける確率</b></p>
     </div>
     <div class="formula">
-      M <span class="op">=</span> E <span class="op">-</span> N <span class="op">+</span> 2P
-      <small>E: 制御フローグラフのエッジ数　N: ノード数　P: 連結成分の数（1つの関数なら P = 1）<br>これは、判定点（if・for・while・and・or・case など）が d 個ある構造化プログラムでは M = d + 1 と一致します。</small>
+      e(X) <span class="op">=</span> P( T <span class="op">=</span> 1 <span class="op">|</span> X )
+      <small>共変量 X のもとで処置を受ける確率。ふつうロジスティック回帰などで推定します。<br>傾向スコアが同じ個体どうしは、共変量の分布がそろう（バランスする）という性質があります。</small>
     </div>
     <div class="prose">
-      <p>実務では、この「判定点を数えて 1 を足す」やり方で手早く見積もります。分岐が 0 なら M = 1（一本道）、分岐が増えるほど M も増えます。目安として、M が小さいほど理解・テストしやすく、大きくなるほど分割を検討する合図になります。次のデモは、まさにこの数え方で複雑度を計算します。</p>
-      <h4>その他の指標</h4>
+      <p>多次元の X を、この<b>1つの確率</b>に要約できるのが利点です。同じ傾向スコアを持つ処置群と対照群は、共変量の分布がそろうため、擬似的にランダム化に近い比較ができます。使い方は主に二つです。</p>
       <ul>
-        <li><b>Halstead 指標</b>：コード中の演算子・オペランドの種類数と総数から、プログラムの語彙・規模・難しさ（difficulty）・労力（effort）などを見積もる。</li>
-        <li><b>保守性指数（Maintainability Index）</b>：Halstead 体積・循環的複雑度・行数を組み合わせ、保守のしやすさを一つの数値にまとめたもの。</li>
-        <li><b>コードスメル</b>：長すぎる関数、巨大なクラス、重複コードなど、設計上の「におい」。バグそのものではないが、改善の候補。</li>
-        <li><b>コードクローン</b>：コピー＆ペーストなどで生まれた、よく似たコード片。片方を直すともう片方が直し忘れられる、といったリスクの温床（Step 5 で検出を体験します）。</li>
+        <li><b>マッチング</b>：傾向スコアが近い処置群と対照群をペアにして比べる。</li>
+        <li><b>逆確率重み付け（IPW: Inverse Probability Weighting）</b>：処置を受けにくかった人が受けた場合など、めずらしい組み合わせを重く数えて、集団全体を作り直す。</li>
       </ul>
+      <p>IPW による ATE の推定量は次の形です。処置群は 1/e(X) で、対照群は 1/(1&minus;e(X)) で重み付けします。</p>
     </div>
-
-    <!-- DEMO 2: cyclomatic complexity -->
-    <div class="demo reveal" id="demoCc">
-      <span class="dtag"><span lang="ja">デモ 2</span><span lang="en">Demo 2</span></span>
-      <h4>循環的複雑度</h4>
-      <p class="dnote">疑似コード（Python 風）を入力すると、<code>if</code>・<code>elif</code>・<code>for</code>・<code>while</code>・<code>case</code>・<code>and</code>・<code>or</code>（<code>&amp;&amp;</code>・<code>||</code> も）といった判定点を数え、循環的複雑度 <b>M = 判定数 + 1</b> を計算します。内訳の表と、簡単・やや複雑・複雑の目安も表示します。</p>
-      <label class="fld" for="ccInput">疑似コード / Pseudocode</label>
-      <textarea id="ccInput" rows="9" spellcheck="false">def grade(s):
-    if s >= 90:
-        return "A"
-    elif s >= 80:
-        return "B"
-    elif s >= 70:
-        return "C"
-    else:
-        return "F"</textarea>
-      <div class="try">
-        <span class="tlbl">例</span>
-        <button type="button" data-cc="def f(x):&#10;    return x + 1">一本道（M=1）</button>
-        <button type="button" data-cc="def grade(s):&#10;    if s >= 90:&#10;        return &quot;A&quot;&#10;    elif s >= 80:&#10;        return &quot;B&quot;&#10;    elif s >= 70:&#10;        return &quot;C&quot;&#10;    else:&#10;        return &quot;F&quot;">grade 関数</button>
-        <button type="button" data-cc="def check(items):&#10;    total = 0&#10;    for x in items:&#10;        if x > 0 and x < 100:&#10;            total = total + x&#10;        elif x >= 100 or x == -1:&#10;            total = total - x&#10;    while total > 1000:&#10;        total = total / 2&#10;    return total">分岐とループ</button>
-      </div>
-      <div class="demo-out" id="ccOut" aria-live="polite"></div>
+    <div class="formula">
+      <span class="op">^</span>ATE <span class="op">=</span> (1/N) &Sigma;<sub>i</sub> [ T<sub>i</sub> Y<sub>i</sub> <span class="op">/</span> e(X<sub>i</sub>) <span class="op">&minus;</span> (1&minus;T<sub>i</sub>) Y<sub>i</sub> <span class="op">/</span> (1&minus;e(X<sub>i</sub>)) ]
+      <small>e(X<sub>i</sub>): 個体 i の傾向スコア。処置群は 1/e、対照群は 1/(1&minus;e) の重みをかけて平均を取り直します。<br>この推定が正しいのは、必要な交絡変数がすべて X に含まれている（未観測交絡がない）という仮定のもとです。</small>
     </div>
 
     <p class="layer"><span lang="ja">コードで動かす</span><span lang="en">Run the code</span></p>
     <div class="prose">
-      <p>Python では <b>radon</b> が定番です。次の <code>example.py</code>（先ほどの grade 関数）を測ってみます。この関数は <code>if</code> と <code>elif</code> が2つ、合わせて判定点が3つなので、複雑度は M = 3 + 1 = 4 です。コマンドラインの <code>radon cc</code> で確認します。</p>
+      <p>scikit-learn のロジスティック回帰で傾向スコアを推定し、IPW で ATE を求めてみます。交絡があるため単純比較は上振れしますが、IPW は真の効果に近づきます。真の効果は 5 に設定しています。</p>
     </div>
     <div class="code-wrap attached">
-      <div class="code-head"><span class="lbl">Shell</span><span class="lang-tag">radon_cc.sh</span><button class="copy" type="button" onclick="copyCode(this)">copy</button></div>
-      <pre><code><span class="cm"># pip install radon</span>
-$ radon cc example.py -s</code></pre>
-    </div>
-    <div class="code-out"><span class="olbl">出力例 / Output</span><pre><code>example.py
-    F 1:0 grade - A (4)</code></pre></div>
+      <div class="code-head"><span class="lbl">Python</span><span class="lang-tag">propensity_ipw.py</span><button class="copy" type="button" onclick="copyCode(this)">copy</button></div>
+      <pre><code><span class="kw">import</span> numpy <span class="kw">as</span> np
+<span class="kw">from</span> sklearn.linear_model <span class="kw">import</span> LogisticRegression
 
+rng = np.random.default_rng(<span class="nu">0</span>)
+N = <span class="nu">2000</span>
+X = rng.normal(<span class="nu">0</span>, <span class="nu">1</span>, size=(N, <span class="nu">1</span>))          <span class="cm"># 共変量（交絡変数）</span>
+<span class="cm"># 交絡: X が大きいほど処置を受けやすく、結果も高くなる</span>
+p = <span class="nu">1</span> / (<span class="nu">1</span> + np.exp(-(-<span class="nu">0.2</span> + <span class="nu">1.3</span> * X[:, <span class="nu">0</span>])))
+T = rng.binomial(<span class="nu">1</span>, p)
+tau = <span class="nu">5.0</span>                                   <span class="cm"># 真の処置効果</span>
+Y = <span class="nu">2.0</span> * X[:, <span class="nu">0</span>] + tau * T + rng.normal(<span class="nu">0</span>, <span class="nu">1</span>, size=N)
+
+naive = Y[T == <span class="nu">1</span>].mean() - Y[T == <span class="nu">0</span>].mean()
+
+<span class="cm"># 傾向スコア e(X)=P(T=1|X) をロジスティック回帰で推定</span>
+ps = LogisticRegression().fit(X, T)
+e = ps.predict_proba(X)[:, <span class="nu">1</span>]
+
+<span class="cm"># 逆確率重み付け（IPW）による ATE の推定</span>
+ate = np.mean(T * Y / e - (<span class="nu">1</span> - T) * Y / (<span class="nu">1</span> - e))
+
+<span class="kw">print</span>(<span class="st">f"単純比較（交絡あり）: {naive:.2f}"</span>)
+<span class="kw">print</span>(<span class="st">f"IPW による ATE 推定 : {ate:.2f}"</span>)
+<span class="kw">print</span>(<span class="st">f"真の処置効果        : {tau:.2f}"</span>)</code></pre>
+    </div>
+    <div class="code-out"><span class="olbl">出力例 / Output</span><pre><code>単純比較（交絡あり）: 7.06
+IPW による ATE 推定 : 4.88
+真の処置効果        : 5.00</code></pre></div>
     <div class="prose">
-      <p><code>F</code> は関数（Function）、<code>1:0</code> は行:列、<code>grade</code> は名前、<code>A</code> はランク、<code>(4)</code> が循環的複雑度です。radon はランクを A（1〜5）から F（41 以上）で表します。同じことを Python から行うには <code>radon.complexity.cc_visit</code> を使います。</p>
+      <p>単純比較は <b>7.06</b> と、真の効果 5 を大きく上回りました。もともと結果が高くなりやすい人ほど処置を受けているためです。傾向スコアで重み付けし直した IPW は <b>4.88</b> と、真の値に近づきました。ただしこれは、交絡変数 X をすべて観測できているという前提のうえに成り立つ点を忘れてはいけません。</p>
     </div>
-    <div class="code-wrap attached">
-      <div class="code-head"><span class="lbl">Python</span><span class="lang-tag">radon_api.py</span><button class="copy" type="button" onclick="copyCode(this)">copy</button></div>
-      <pre><code><span class="kw">from</span> radon.complexity <span class="kw">import</span> cc_visit
-
-source = open(<span class="st">"example.py"</span>).read()
-<span class="kw">for</span> block <span class="kw">in</span> cc_visit(source):
-    <span class="kw">print</span>(block.name, block.complexity)</code></pre>
-    </div>
-    <div class="code-out"><span class="olbl">出力例 / Output</span><pre><code>grade 4</code></pre></div>
 
     <div class="callout tip">
       <h4>この Step のまとめ</h4>
-      <p>コードメトリクスは品質を数値化する道具。<b>循環的複雑度</b>は M = E - N + 2P（判定点 + 1）で分岐の多さを測ります。radon の <code>cc</code> で簡単に計測でき、テストしにくい複雑な関数の目印になります。</p>
+      <p>観察データでは、交絡変数を測って調整するのが基本です。層別・回帰に加え、多次元の共変量を1つの確率にまとめる傾向スコア（マッチング・IPW）が強力です。ただしどの方法も「必要な交絡をすべて観測できている」という仮定に依存します。</p>
     </div>
   </div>
 </section>
@@ -1059,105 +1027,102 @@ source = open(<span class="st">"example.py"</span>).read()
   <div class="wrap reveal">
     <div class="stephead">
       <span class="num">5</span>
-      <div class="tt"><h2>動的解析</h2><span class="st-en">Dynamic analysis</span></div>
+      <div class="tt"><h2>観察データでの因果推定 &#9313;</h2><span class="st-en">DID, IV, and RDD</span></div>
     </div>
     <div class="steprule"></div>
 
     <p class="layer first"><span lang="ja">概要</span><span lang="en">Overview</span></p>
     <div class="prose">
-      <p>ここまでは実行せずに調べる静的解析でした。いっぽう<b>動的解析</b>は、プログラムを実際に動かして、その様子を観測します。「どの行が実行されたか」「どこで時間がかかったか」といった、実行時にしか分からない情報が得られます。テストカバレッジ・プロファイリング・トレースが代表的な道具です。</p>
+      <p>交絡変数をすべて測るのは、現実には難しいことがあります。そこで、データの<b>構造</b>や<b>自然に起きた変化</b>を賢く利用して因果を取り出す手法群が発達しました。代表的な三つ、<b>差分の差分法（DID）</b>・<b>操作変数法（IV）</b>・<b>回帰不連続デザイン（RDD）</b>を概観します。</p>
     </div>
 
     <p class="layer"><span lang="ja">仕組み</span><span lang="en">How it works</span></p>
     <div class="prose">
-      <h4>テストカバレッジ</h4>
-      <p><b>カバレッジ</b>は、テストがコードのどれだけを実行したかを測る指標です。<b>行カバレッジ</b>は実行された行の割合、<b>分岐カバレッジ</b>は条件分岐の真・偽の両方を通ったかを見ます。カバレッジが低い箇所は「テストで一度も動かしていない場所」であり、バグが潜みやすい要注意ゾーンです。Python では <b>coverage.py</b> が定番です。</p>
-      <h4>プロファイリング</h4>
-      <p><b>プロファイリング</b>は、どの関数がどれだけ呼ばれ、どれだけ時間を使ったかを計測します。「速くしたい」ときに、当てずっぽうで直すのではなく、実測にもとづいてボトルネックを特定するために使います。Python 標準の <b>cProfile</b> が手軽です。</p>
-      <h4>トレースと限界</h4>
-      <p><b>トレース</b>は、実行の経路や関数の呼び出し順を時系列で記録します。動的解析に共通する限界は、<b>観測できるのは実際に実行した経路だけ</b>という点です。与えた入力しだいで結果が変わるため、静的解析のような網羅性はありません。だからこそ、両者を組み合わせるのが実務の基本になります。</p>
+      <h4>差分の差分法（DID: Difference-in-Differences）</h4>
+      <p>ある施策が一部の集団（<b>処置群</b>）だけに導入され、別の集団（<b>対照群</b>）には導入されなかったとします。両群の<b>処置前後の変化の差</b>を取ることで、施策の効果を推定するのが DID です。定義は次のとおりです。</p>
     </div>
-
-    <p class="layer"><span lang="ja">コードで動かす</span><span lang="en">Run the code</span></p>
+    <div class="formula">
+      DID <span class="op">=</span> ( &Delta;処置群 ) <span class="op">&minus;</span> ( &Delta;対照群 )
+      <small>&Delta;処置群 = 処置群の(処置後 &minus; 処置前)　　&Delta;対照群 = 対照群の(処置後 &minus; 処置前)<br>両群に共通する時間変化（トレンド）を、対照群の変化として差し引くのが要点です。</small>
+    </div>
     <div class="prose">
-      <p>まずカバレッジです。テストを <code>coverage</code> 経由で実行し、レポートを出します。<code>-m</code> を付けると、実行されなかった行番号（Missing）も表示されます。</p>
-    </div>
-    <div class="code-wrap attached">
-      <div class="code-head"><span class="lbl">Shell</span><span class="lang-tag">coverage.sh</span><button class="copy" type="button" onclick="copyCode(this)">copy</button></div>
-      <pre><code><span class="cm"># pip install coverage</span>
-$ coverage run -m pytest
-$ coverage report -m</code></pre>
-    </div>
-    <div class="code-out"><span class="olbl">出力例 / Output</span><pre><code>Name          Stmts   Miss  Cover   Missing
--------------------------------------------
-mymodule.py      20      3    85%   12-14
--------------------------------------------
-TOTAL            20      3    85%</code></pre></div>
-
-    <div class="prose">
-      <p>全 20 文のうち 3 文（12〜14 行目）が未実行で、行カバレッジは 85% です。次はプロファイリングです。<code>cProfile.run</code> に測りたい処理を渡します。</p>
-    </div>
-    <div class="code-wrap attached">
-      <div class="code-head"><span class="lbl">Python</span><span class="lang-tag">profile_example.py</span><button class="copy" type="button" onclick="copyCode(this)">copy</button></div>
-      <pre><code><span class="kw">import</span> cProfile
-
-<span class="kw">def</span> slow():
-    <span class="kw">return</span> sum(i * i <span class="kw">for</span> i <span class="kw">in</span> range(<span class="nu">100000</span>))
-
-cProfile.run(<span class="st">"slow()"</span>)</code></pre>
-    </div>
-    <div class="code-out"><span class="olbl">出力例 / Output</span><pre><code>         100005 function calls in 0.012 seconds
-
-   Ordered by: standard name
-
-   ncalls  tottime  percall  cumtime  percall filename:lineno(function)
-        1    0.001    0.001    0.011    0.011 profile_example.py:3(slow)
-   100001    0.005    0.000    0.005    0.000 profile_example.py:4(&lt;genexpr&gt;)
-        1    0.000    0.000    0.012    0.012 {built-in method builtins.exec}
-        1    0.005    0.005    0.010    0.010 {built-in method builtins.sum}
-        1    0.000    0.000    0.000    0.000 {method 'disable' of '_lsprof.Profiler' objects}</code></pre></div>
-
-    <div class="prose">
-      <p>ジェネレータ式が 100001 回呼ばれ（10 万個の値と、最後の停止で 1 回）、そこと <code>sum</code> に時間が集中しているのが読み取れます。どこを直せば速くなるかが、実測から分かります。</p>
-      <h4>実践：コードの重複を測る（クローン検出）</h4>
-      <p>最後に、品質評価の実践として<b>コードクローン検出</b>を体験します。これはコードを実行せずトークン列を比べる手法ですが、コピー＆ペーストで増えた重複を見つけ、保守性の問題を洗い出すのに使われます。よくある手法は、コードを正規化してトークン列にし、その<b>類似度</b>を測るものです。空白やコメントを無視するだけの一致（Type-1）に加え、<b>変数名や定数の違いを吸収</b>すると、名前だけ変えた複製（Type-2）も見つかります。次のデモは、正規化したトークンの並びから類似度を計算します。</p>
+      <p>DID が効果を正しく捉えるための鍵が<b>平行トレンドの仮定</b>です。「もし施策がなかったら、処置群も対照群と同じだけ変化していたはずだ」という仮定です。これが成り立つなら、対照群の変化ぶんを「処置群にとっての反実仮想の変化」と見なせます。処置群の実際の変化と、この反実仮想の変化との差が、施策の効果です。下のデモで、この関係を図で確かめられます。</p>
+      <h4>操作変数法（IV: Instrumental Variables）</h4>
+      <p>未観測の交絡があっても使えることがあるのが IV です。<b>操作変数</b>とは、(1)&nbsp;処置には影響するが、(2)&nbsp;結果には処置を通じてしか影響せず、(3)&nbsp;交絡変数とは無関係、という三条件を満たす変数です。この「処置をゆさぶるが結果には直接効かない」外生的な変動だけを取り出して、効果を推定します。たとえば、くじで決まる何かや、制度上の割り当てなどが操作変数の候補になります。適切な操作変数を見つけるのが最大の難所です。</p>
+      <h4>回帰不連続デザイン（RDD: Regression Discontinuity Design）</h4>
+      <p>ある連続量の<b>しきい値</b>で処置の有無がぱっと切り替わる状況を使うのが RDD です。たとえば「点数が基準点以上なら奨学金を受給」なら、基準点のすぐ上とすぐ下の人は、点数以外はほとんど同じはずです。境界のすぐ両側を比べれば、その場所での効果を、あたかも局所的なランダム化のように推定できます。境界近傍という限られた範囲での効果である点に注意します。</p>
     </div>
 
-    <!-- DEMO 3: code clone detection -->
-    <div class="demo reveal" id="demoClone">
+    <!-- DEMO 3: difference-in-differences -->
+    <div class="demo reveal" id="demoDid">
       <span class="dtag"><span lang="ja">デモ 3</span><span lang="en">Demo 3</span></span>
-      <h4>コードクローン検出</h4>
-      <p class="dnote">2つのコード片を入力すると、空白とコメントを除き、変数名を <code>ID</code>・数値を <code>NUM</code>・文字列を <code>STR</code> に正規化してトークン列にします。トークンの2-gram（隣り合う2つ組）の集合どうしの <b>Jaccard 係数</b>で類似度を測り、クローンかどうかを判定します。<code>Jaccard = |共通| / |和集合|</code> です。</p>
+      <h4>差分の差分法（DID）</h4>
+      <p class="dnote">処置群と対照群について、処置前・処置後の平均アウトカムを入力すると、DID 推定量を計算し図にします。破線は「もし処置がなければ処置群はこう動いたはず」という平行トレンドの仮定にもとづく反実仮想です。実際の処置後の値と破線との差が、推定された効果（DID）です。</p>
       <div class="two">
         <div>
-          <label class="fld" for="clA">コード A / Code A</label>
-          <textarea id="clA" rows="7" spellcheck="false">def sum_list(nums):
-    total = 0
-    for n in nums:
-        total = total + n
-    return total</textarea>
+          <label class="fld" for="didTb">処置群・処置前 / Treated, before</label>
+          <input type="text" id="didTb" inputmode="decimal" value="20" spellcheck="false">
         </div>
         <div>
-          <label class="fld" for="clB">コード B / Code B</label>
-          <textarea id="clB" rows="7" spellcheck="false">def add_all(values):
-    acc = 0
-    for v in values:
-        acc = acc + v
-    return acc</textarea>
+          <label class="fld" for="didTa">処置群・処置後 / Treated, after</label>
+          <input type="text" id="didTa" inputmode="decimal" value="35" spellcheck="false">
+        </div>
+      </div>
+      <div class="two" style="margin-top:12px">
+        <div>
+          <label class="fld" for="didCb">対照群・処置前 / Control, before</label>
+          <input type="text" id="didCb" inputmode="decimal" value="25" spellcheck="false">
+        </div>
+        <div>
+          <label class="fld" for="didCa">対照群・処置後 / Control, after</label>
+          <input type="text" id="didCa" inputmode="decimal" value="32" spellcheck="false">
         </div>
       </div>
       <div class="try">
         <span class="tlbl">例</span>
-        <button type="button" data-a="def sum_list(nums):&#10;    total = 0&#10;    for n in nums:&#10;        total = total + n&#10;    return total" data-b="def add_all(values):&#10;    acc = 0&#10;    for v in values:&#10;        acc = acc + v&#10;    return acc">名前だけ違う複製（Type-2）</button>
-        <button type="button" data-a="def sum_list(nums):&#10;    total = 0&#10;    for n in nums:&#10;        total = total + n&#10;    return total" data-b="def is_even(x):&#10;    if x % 2 == 0:&#10;        return True&#10;    return False">別のコード</button>
-        <button type="button" data-a="def area(w, h):&#10;    return w * h" data-b="def area(w, h):  # 面積&#10;    return w * h">空白・コメントだけ違う（Type-1）</button>
+        <button type="button" data-did="20,35,25,32">効果あり（+8）</button>
+        <button type="button" data-did="30,38,25,33">効果なし（0）</button>
+        <button type="button" data-did="50,52,40,50">負の効果（-8）</button>
       </div>
-      <div class="demo-out" id="clOut" aria-live="polite"></div>
+      <div class="demo-out" id="didOut" aria-live="polite"></div>
+    </div>
+
+    <p class="layer"><span lang="ja">コードで動かす</span><span lang="en">Run the code</span></p>
+    <div class="prose">
+      <p>DID は、<b>交互作用項つきの回帰</b>としてすっきり書けます。処置群ダミー <code>treat</code> と処置後ダミー <code>post</code> を用意し、その<b>積</b> <code>treat:post</code> の係数が DID 推定量になります。statsmodels で確かめましょう。</p>
+    </div>
+    <div class="code-wrap attached">
+      <div class="code-head"><span class="lbl">Python</span><span class="lang-tag">did_ols.py</span><button class="copy" type="button" onclick="copyCode(this)">copy</button></div>
+      <pre><code><span class="kw">import</span> pandas <span class="kw">as</span> pd
+<span class="kw">import</span> statsmodels.formula.api <span class="kw">as</span> smf
+
+<span class="cm"># 処置群・対照群 × 処置前後 のデータ（各セルの平均アウトカム）</span>
+df = pd.DataFrame({
+    <span class="st">"treat"</span>: [<span class="nu">1</span>, <span class="nu">1</span>, <span class="nu">0</span>, <span class="nu">0</span>],   <span class="cm"># 1=処置群, 0=対照群</span>
+    <span class="st">"post"</span>:  [<span class="nu">0</span>, <span class="nu">1</span>, <span class="nu">0</span>, <span class="nu">1</span>],   <span class="cm"># 0=処置前, 1=処置後</span>
+    <span class="st">"Y"</span>:     [<span class="nu">20.0</span>, <span class="nu">35.0</span>, <span class="nu">25.0</span>, <span class="nu">32.0</span>],
+})
+
+<span class="cm"># Y = b0 + b1*treat + b2*post + b3*(treat*post) を最小二乗推定</span>
+model = smf.ols(<span class="st">"Y ~ treat * post"</span>, data=df).fit()
+<span class="kw">print</span>(model.params.round(<span class="nu">1</span>))
+<span class="kw">print</span>()
+<span class="kw">print</span>(<span class="st">f"DID 推定量（交互作用項）= {model.params['treat:post']:.1f}"</span>)</code></pre>
+    </div>
+    <div class="code-out"><span class="olbl">出力例 / Output</span><pre><code>Intercept     25.0
+treat         -5.0
+post           7.0
+treat:post     8.0
+dtype: float64
+
+DID 推定量（交互作用項）= 8.0</code></pre></div>
+    <div class="prose">
+      <p>係数を読み解くと、<code>Intercept</code>=25 は対照群の処置前、<code>post</code>=7 は対照群に共通する時間変化、<code>treat</code>=&minus;5 は両群のもともとの差、そして <code>treat:post</code>=<b>8</b> が、時間変化を差し引いてなお残る処置群だけの上乗せ＝<b>DID 推定量</b>です。デモの「効果あり（+8）」と同じ値になっているのが分かります。</p>
     </div>
 
     <div class="callout tip">
       <h4>この Step のまとめ</h4>
-      <p>動的解析は、実行して観測する技術です。<code>coverage</code> でテストの網羅度を、<code>cProfile</code> で性能のボトルネックを測れます。観測できるのは通った経路だけという限界を、静的解析が補います。トークンを正規化して比べれば、コードクローンも検出できます。</p>
+      <p>DID・IV・RDD は、交絡をすべて測れなくても、データの構造や自然な変化を利用して因果を取り出す準実験的な手法です。いずれも「平行トレンド」「操作変数の三条件」「境界での連続性」といった<b>識別のための仮定</b>に支えられており、その仮定が妥当かどうかが結果の信頼性を決めます。</p>
     </div>
   </div>
 </section>
@@ -1167,28 +1132,30 @@ cProfile.run(<span class="st">"slow()"</span>)</code></pre>
   <div class="wrap reveal">
     <div class="stephead">
       <span class="num">6</span>
-      <div class="tt"><h2>応用とこれから</h2><span class="st-en">Applications &amp; what comes next</span></div>
+      <div class="tt"><h2>落とし穴とこれから</h2><span class="st-en">Pitfalls and what comes next</span></div>
     </div>
     <div class="steprule"></div>
 
     <p class="layer first"><span lang="ja">概要</span><span lang="en">Overview</span></p>
     <div class="prose">
-      <p>ここまでで、構文解析・静的解析・メトリクス・動的解析という基本の道具がそろいました。これらは単独でも役立ちますが、組み合わせると、より実践的な課題に応用できます。最後に、その広がりと、この先の学びへの橋渡しを見ておきましょう。</p>
+      <p>ここまで見てきた手法は強力ですが、どれも<b>仮定のうえに立って</b>います。因果推論を実務で使うときに気をつけたい落とし穴を整理し、機械学習との接点にも触れて、このモジュールを締めくくります。</p>
     </div>
 
     <p class="layer"><span lang="ja">仕組み</span><span lang="en">How it works</span></p>
     <div class="prose">
-      <h4>バグ検出と欠陥予測</h4>
-      <p>静的解析のパターン照合で「ぬるぽ（null 参照）になりうる」「例外が握りつぶされている」といった典型的な欠陥を見つけられます。さらに、過去の変更履歴やメトリクスを組み合わせ、どのファイルがバグを含みやすいかを見積もる<b>欠陥予測</b>という研究分野もあります。</p>
-      <h4>セキュリティ解析</h4>
-      <p>脆弱性を見つける解析には、コードを実行せず調べる<b>SAST（静的アプリケーションセキュリティテスト）</b>と、動かして試す<b>DAST（動的〜）</b>があります。中核となる考え方の一つが<b>テイント解析</b>で、外部からの入力（汚染源）が、データベース問い合わせやコマンド実行などの危険な地点（シンク）まで、無害化されずに届く経路を追跡します。</p>
-      <h4>コードへの機械学習</h4>
-      <p>近年は、コードを<b>データ</b>として機械学習にかける流れが広がっています。AST やトークン列を数値ベクトルに変換する<b>コード表現・埋め込み</b>を作り、バグ検出・コード補完・要約などに使います。テキストを数値にする自然言語処理の発想が、そのままコードにも応用されているのです。ここは、このコースの機械学習・大規模言語モデル（LLM）のモジュールへとつながっていきます。</p>
+      <h4>識別仮定の重要性</h4>
+      <p>因果効果を観察データから取り出せるかどうかは、<b>識別仮定</b>にかかっています。傾向スコアや回帰調整は「必要な交絡をすべて観測できている」、DID は「平行トレンド」、IV は「操作変数の三条件」、RDD は「境界での連続性」を前提にしていました。手法の計算が正しく回ることと、仮定が現実に成り立つことは<b>別の話</b>です。どんなに洗練された推定でも、仮定が崩れていれば結論は信用できません。</p>
+      <h4>未観測交絡</h4>
+      <p>観察データでの最大の脅威が<b>未観測交絡</b>です。測れていない、あるいは存在に気づいていない交絡変数があると、調整のしようがありません。ランダム化がこれほど尊ばれるのは、まさに未観測交絡までバランスさせられるからです。観察研究では、結論がどれだけ未観測交絡に対して頑健かを調べる<b>感度分析</b>が役立ちます。</p>
+      <h4>外的妥当性</h4>
+      <p>ある集団・ある状況で得られた効果が、<b>別の集団や状況でも同じとは限りません</b>。これを外的妥当性の問題と呼びます。特定の地域や時期の実験結果を、そのまま一般化してよいかは慎重に考える必要があります。効果が誰にとっても一定とは限らず、人によって異なる（異質な処置効果）ことも多いのです。</p>
+      <h4>因果推論と機械学習の接点</h4>
+      <p>近年は、機械学習と因果推論が急速に融合しています。多数の共変量から傾向スコアや結果を柔軟に予測させつつ、因果効果の推定には偏りが乗らないように工夫する<b>二重機械学習（Double ML）</b>や、人によって異なる効果（<b>異質処置効果</b>）を推定する手法が発展しています。予測を得意とする機械学習と、介入の効果を問う因果推論は、目的が違うからこそ補い合う関係にあります。</p>
     </div>
 
     <div class="callout tip">
       <h4>この Step のまとめ</h4>
-      <p>基本の道具は、バグ検出・欠陥予測・セキュリティ解析（SAST/DAST・テイント解析）へ応用できます。さらにコードを機械学習の対象とみなす流れが、コード表現・埋め込みを通じて機械学習や LLM のモジュールへつながります。</p>
+      <p>因果推論の結論は、識別仮定の妥当性しだいです。未観測交絡・外的妥当性・効果の異質性に注意し、感度分析で頑健さを確かめましょう。機械学習との融合は、この分野のもっとも活発なフロンティアの一つです。</p>
     </div>
   </div>
 </section>
@@ -1199,56 +1166,55 @@ cProfile.run(<span class="st">"slow()"</span>)</code></pre>
     <p class="eyebrow"><span lang="ja">まとめ</span><span lang="en">Wrap-up</span></p>
     <h2 class="big">学びの振り返りと、さらに学ぶために</h2>
     <div class="prose" style="margin-top:22px">
-      <p>このモジュールでは、プログラムを読み解く基本の道具を、パイプラインに沿って順に手に入れました。</p>
+      <p>このモジュールでは、相関を超えて因果に迫るための道具を、考えの流れに沿って手に入れました。</p>
       <ul>
-        <li><b>構文解析とAST</b>：文字列をトークンに区切り、優先順位を反映した構文木に組み立てる。</li>
-        <li><b>静的解析</b>：実行せずに制御フロー・データフローを追い、未使用変数などを見つける。</li>
-        <li><b>コードメトリクス</b>：循環的複雑度などで複雑さ・品質を数値化する。</li>
-        <li><b>動的解析</b>：実行して観測し、カバレッジやプロファイルを測る。</li>
-        <li><b>応用</b>：バグ検出・セキュリティ解析、そしてコードへの機械学習へ。</li>
+        <li><b>反実仮想と ATE</b>：受けた場合 Y(1) と受けなかった場合 Y(0) の差の平均が、測りたい効果。</li>
+        <li><b>交絡とバイアス</b>：処置と結果の共通原因が、素朴な比較をゆがめる。シンプソンのパラドックスはその極端な例。</li>
+        <li><b>ランダム化（RCT）</b>：くじ引きで交絡を断ち切り、群間差をそのまま効果にできる理想形。</li>
+        <li><b>観察データの調整</b>：層別・回帰・傾向スコア（マッチング・IPW）で交絡を調整する。</li>
+        <li><b>準実験的手法</b>：DID・IV・RDD は、データの構造や自然な変化を利用する。仮定が命。</li>
       </ul>
       <p>次に進むなら、下の道具と資料が役に立ちます。</p>
     </div>
 
     <div class="res-grid reveal">
       <div class="res">
-        <h5>解析の対象・データ</h5>
+        <h5>公開データセット</h5>
         <ul>
-          <li><b>任意の公開 Python ソース</b>：手元のスクリプトや OSS のコードをそのまま解析対象にできる。</li>
-          <li><b>Python 標準ライブラリのコード</b>：<code>ast</code> や <code>tokenize</code> で読み込み、実在するコードで練習できる。</li>
+          <li><b>LaLonde（NSW 職業訓練データ）</b>：職業訓練の効果検証に使われる古典的な公開データ。因果推論の教材で広く用いられる。</li>
+          <li><b>シミュレーション生成データ</b>：効果の「正解」を自分で決められるため、手法の検証に最適。本ページの例もこの方式。</li>
         </ul>
       </div>
       <div class="res">
-        <h5>ライブラリ・ツール</h5>
+        <h5>ライブラリ</h5>
         <ul>
-          <li><b>Python 標準 ast・dis・tokenize</b>：構文木・バイトコード・トークン列。</li>
-          <li><b>radon</b>：循環的複雑度・保守性指数などの計測。</li>
-          <li><b>coverage</b>：テストカバレッジの計測。</li>
-          <li><b>pylint / flake8</b>：静的解析にもとづくリンタ。</li>
-          <li><b>tree-sitter</b>：多言語対応の高速な構文解析ライブラリ。</li>
+          <li><b>statsmodels</b>：回帰・DID など計量経済の定番。</li>
+          <li><b>scikit-learn</b>：傾向スコア（ロジスティック回帰）など。</li>
+          <li><b>DoWhy</b>：因果グラフにもとづく効果推定の枠組み。</li>
+          <li><b>EconML</b>：機械学習と組み合わせた効果推定。</li>
         </ul>
       </div>
       <div class="res">
         <h5>参考書</h5>
         <ul>
-          <li>Aho ほか『コンパイラ 原理・技法・ツール』（通称ドラゴンブック）</li>
-          <li>Nielson ほか『Principles of Program Analysis』</li>
-          <li>Møller, Schwartzbach『Static Program Analysis』（公開講義ノート）</li>
+          <li>Judea Pearl ほか『入門 統計的因果推論』</li>
+          <li>宮川雅巳『統計的因果推論』</li>
+          <li>安井翔太『効果検証入門』</li>
         </ul>
       </div>
       <div class="res">
         <h5>次のモジュールへ</h5>
         <ul>
-          <li>機械学習の基礎（分類・回帰・評価）</li>
-          <li>大規模言語モデル（LLM）とコード生成</li>
-          <li>リポジトリマイニング（変更履歴の分析）</li>
+          <li>統計分析（推定・仮説検定）</li>
+          <li>時系列分析（時間を伴うデータ）</li>
+          <li>機械学習（予測と因果の使い分け）</li>
         </ul>
       </div>
     </div>
 
     <div class="callout tip">
       <h4>おつかれさまでした</h4>
-      <p>ここで学んだ「コードを構造にして、静的・動的に調べる」という流れは、言語や規模を問わず通用する考え方です。手元の Python ファイルを題材に、3 つのデモを動かしてみてください。式を変え、疑似コードの分岐を増やし、コードを少しずつ書き換えると、構文木・複雑度・類似度がどう変わるかを確かめられ、理解がぐっと深まります。</p>
+      <p>ここで学んだ「相関を疑い、交絡を洗い出し、仮定を明示して効果を推定する」という姿勢は、データから意思決定へつなぐあらゆる場面で共通します。3つのデモの数値を書き換えて、推定値がどう動くかを何度も確かめてみてください。手を動かすほど、仮定の大切さが実感できます。</p>
     </div>
   </div>
 </section>
@@ -1258,37 +1224,37 @@ cProfile.run(<span class="st">"slow()"</span>)</code></pre>
     <p class="eyebrow"><span lang="ja">発展トピック</span><span lang="en">Beyond this module</span></p>
     <h2 class="big">このコースでは扱わない、関係する発展トピック</h2>
     <div class="prose" style="margin-top:22px">
-      <p>このモジュールでは、コードを構造にして静的・動的に調べる「基礎の流れ」を扱いました。いっぽうでプログラム解析は、より厳密な理論から最新の機械学習まで、幅広く発展しています。ここでは、このコースでは踏み込まないものの、知っておくと視野が広がる発展的なトピックを紹介します。深掘りは各自の興味に合わせてどうぞ。</p>
+      <p>このモジュールでは、反実仮想から出発して交絡を調整し、効果を推定する「基礎の流れ」を扱いました。いっぽうで現代の因果推論は、グラフ理論や機械学習と結びつきながら急速に広がっています。ここでは、このコースでは踏み込まないものの、知っておくと視野が広がる発展的なトピックを、特に近年の主流を中心に紹介します。深掘りは各自の興味に合わせてどうぞ。</p>
     </div>
 
     <div class="res-grid reveal">
       <div class="res">
-        <h5>高度な静的解析</h5>
+        <h5>構造的因果モデルと do 演算</h5>
         <ul>
-          <li><b>記号実行（symbolic execution）</b>：変数を具体値ではなく記号のまま実行し、どんな入力でどの経路を通るかを論理的に解く。</li>
-          <li><b>抽象解釈（abstract interpretation）</b>：値を「符号」「区間」などの抽象領域で近似し、健全に性質を証明する理論的枠組み。</li>
+          <li><b>構造的因果モデル（SCM）</b>：変数間の因果関係を方程式とグラフで表す枠組み（Pearl）。</li>
+          <li><b>do 演算子</b>：観測ではなく「介入した世界」を数式で表す記法。バックドア基準やフロントドア基準は、この上で導かれる。</li>
         </ul>
       </div>
       <div class="res">
-        <h5>セキュリティと検証</h5>
+        <h5>機械学習との融合</h5>
         <ul>
-          <li><b>テイント解析</b>：外部入力が危険な地点に届く経路を追跡し、脆弱性を見つける。</li>
-          <li><b>ファジング（fuzzing）</b>：大量のランダム・変異入力を与えてクラッシュを探す動的手法。</li>
-          <li><b>形式検証</b>：仕様に対する正しさを、モデル検査や定理証明で数学的に確かめる。</li>
+          <li><b>二重機械学習（Double ML）</b>：柔軟な機械学習で共変量を捌きつつ、効果推定の偏りを抑える。</li>
+          <li><b>異質処置効果</b>：人によって異なる効果（CATE）を推定する（Causal Forest など）。</li>
+          <li><b>DoWhy・EconML</b>：これらを実装したライブラリ群。</li>
         </ul>
       </div>
       <div class="res">
-        <h5>コードの機械学習</h5>
+        <h5>因果探索と媒介分析</h5>
         <ul>
-          <li><b>コード表現学習</b>：AST やトークン列を数値ベクトルに変換する（code2vec など）。</li>
-          <li><b>事前学習モデル</b>：大量のコードで学習したモデル（CodeBERT など）を、バグ検出や要約に応用する。</li>
+          <li><b>因果探索（causal discovery）</b>：データから因果グラフの構造そのものを推定する試み。</li>
+          <li><b>媒介分析</b>：効果を「直接効果」と「媒介変数を経由する間接効果」に分解する。</li>
         </ul>
       </div>
       <div class="res">
-        <h5>生成と合成</h5>
+        <h5>頑健性の評価</h5>
         <ul>
-          <li><b>プログラム合成</b>：入出力例や仕様から、条件を満たすプログラムを自動生成する。</li>
-          <li><b>LLM によるコード生成・解析</b>：大規模言語モデルがコードを書き、説明し、レビューを支援する最新の広がり。別モジュールで扱う予定。</li>
+          <li><b>感度分析</b>：未観測交絡がどれほどあれば結論が覆るかを調べ、推定の頑健さを測る。</li>
+          <li><b>反証テスト</b>：効果が出るはずのない場所（プラセボ）で本当に効果ゼロか確かめる健全性チェック。</li>
         </ul>
       </div>
     </div>
@@ -1306,8 +1272,8 @@ cProfile.run(<span class="st">"slow()"</span>)</code></pre>
       <div>
         <h3><span lang="ja">この学習モジュールについて</span><span lang="en">About this module</span></h3>
         <div class="cite">
-          <span lang="ja">「研究で使う技術を実践的に学ぶ」学習コースの1モジュールです。概要から理論、動かせるコードまでを一続きにして、プログラム解析の基礎を独習できるように構成しています。内容は分野標準の一般的なもので、特定の研究や論文には紐づきません。</span>
-          <span lang="en">A module in a learning course on research skills, walking from overview to theory to runnable code so you can study the basics of program analysis on your own. The content is standard and general, not tied to any specific study.</span>
+          <span lang="ja">「研究で使う技術を実践的に学ぶ」学習コースの1モジュールです。概要から理論、動かせるコードまでを一続きにして、因果推論の基礎を独習できるように構成しています。内容は分野標準の一般的なもので、特定の研究や論文には紐づきません。</span>
+          <span lang="en">A module in a learning course on research skills, walking from overview to theory to runnable code so you can study the basics of causal inference on your own. The content is standard and general, not tied to any specific study.</span>
         </div>
       </div>
       <div>
@@ -1350,8 +1316,8 @@ cProfile.run(<span class="st">"slow()"</span>)</code></pre>
     </div>
     <div class="foot-rule"></div>
     <p class="foot-note">
-      <span lang="ja">本ページは学習用のプロトタイプ教材です。コード例は分野標準のライブラリ（Python 標準の ast・dis・tokenize、radon、coverage）にもとづき、出力例は実際の実行結果に一致させています。</span>
-      <span lang="en">This page is a prototype learning material. Code examples use standard libraries (Python's ast, dis, tokenize, radon, coverage), and the shown outputs match real runs.</span>
+      <span lang="ja">本ページは学習用のプロトタイプ教材です。コード例は分野標準のライブラリ（NumPy・statsmodels・scikit-learn）にもとづき、出力例は実際の実行結果に一致させています。</span>
+      <span lang="en">This page is a prototype learning material. Code examples use standard libraries (NumPy, statsmodels, scikit-learn), and the shown outputs match real runs.</span>
     </p>
   </div>
 </footer>
@@ -1386,218 +1352,216 @@ cProfile.run(<span class="st">"slow()"</span>)</code></pre>
 <script>
 /* ==================== interactive demos (vanilla JS, self-contained) ==================== */
 (function(){
-  function escapeHtml(s){ return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+  function pct(r,t){ return t? (r/t*100):0; }
 
-  /* ---- Demo 1: expression syntax tree ---- */
-  var astInput=document.getElementById('astInput'),
-      astOut=document.getElementById('astOut');
+  /* ---- Demo 1: Simpson's paradox ---- */
+  var SIMP={
+    treat:{ metric:'回復率', aName:'治療法A', bName:'治療法B',
+      strata:[ {name:'軽症', a:[81,87],  b:[234,270]},
+               {name:'重症', a:[192,263], b:[55,80]} ] },
+    admit:{ metric:'合格率', aName:'女性', bName:'男性',
+      strata:[ {name:'学部X', a:[75,100],  b:[280,400]},
+               {name:'学部Y', a:[100,400], b:[20,100]} ] }
+  };
+  var simpKey='treat', simpView='strat';
+  var simpOut=document.getElementById('simpOut');
+  var simpStratBtn=document.getElementById('simpStratBtn'),
+      simpAggBtn=document.getElementById('simpAggBtn');
 
-  function parseExpr(src){
-    var toks=[], i=0, s=src, n=s.length;
-    while(i<n){
-      var c=s[i];
-      if(/\s/.test(c)){ i++; continue; }
-      if(/[0-9]/.test(c)){ var j=i; while(j<n && /[0-9.]/.test(s[j])) j++; toks.push({t:'num', v:s.slice(i,j)}); i=j; continue; }
-      if('+-*/()'.indexOf(c)>=0){ toks.push({t:c}); i++; continue; }
-      throw new Error('使えない文字があります: "'+c+'"');
-    }
-    var p=0;
-    function peek(){ return toks[p]; }
-    function next(){ return toks[p++]; }
-    function parseE(){
-      var node=parseT();
-      while(peek() && (peek().t==='+'||peek().t==='-')){
-        var op=next().t; var right=parseT();
-        node={op:op, left:node, right:right};
-      }
-      return node;
-    }
-    function parseT(){
-      var node=parseF();
-      while(peek() && (peek().t==='*'||peek().t==='/')){
-        var op=next().t; var right=parseF();
-        node={op:op, left:node, right:right};
-      }
-      return node;
-    }
-    function parseF(){
-      var tk=peek();
-      if(!tk) throw new Error('式が途中で終わっています');
-      if(tk.t==='('){ next(); var e=parseE(); if(!peek()||peek().t!==')') throw new Error('閉じ括弧 ) がありません'); next(); return e; }
-      if(tk.t==='-'){ next(); return {op:'u-', left:parseF()}; }
-      if(tk.t==='+'){ next(); return parseF(); }
-      if(tk.t==='num'){ next(); return {num:tk.v}; }
-      throw new Error('予期しない記号: "'+tk.t+'"');
-    }
-    if(!toks.length) throw new Error('式を入力してください');
-    var tree=parseE();
-    if(p<toks.length) throw new Error('余分な入力があります: "'+(toks[p].v||toks[p].t)+'"');
-    return tree;
+  function svgBars(bars, groups){
+    var base=200, top=28, H=base-top;
+    var s='<svg viewBox="0 0 640 250" role="img" aria-label="グループごとと全体の割合を比べる棒グラフ">';
+    [0,25,50,75,100].forEach(function(p){
+      var y=base-p/100*H;
+      s+='<line class="dg-ax" x1="60" y1="'+y+'" x2="612" y2="'+y+'" style="opacity:'+(p===0?'1':'.35')+'"/>';
+      s+='<text class="dg-en" x="52" y="'+(y+4)+'" text-anchor="end">'+p+'</text>';
+    });
+    bars.forEach(function(b){
+      var h=b.val/100*H, y=base-h;
+      var fill=b.cls==='a'?'var(--accent)':'var(--faint)';
+      s+='<rect x="'+b.x+'" y="'+y.toFixed(1)+'" width="'+b.w+'" height="'+h.toFixed(1)+'" rx="4" fill="'+fill+'"/>';
+      s+='<text class="dg-lbl" x="'+(b.x+b.w/2)+'" y="'+(y-7).toFixed(1)+'">'+b.val.toFixed(1)+'%</text>';
+    });
+    (groups||[]).forEach(function(g){
+      s+='<text class="dg-lbl" x="'+g.x+'" y="'+(base+26)+'">'+g.label+'</text>';
+    });
+    s+='</svg>';
+    return s;
   }
 
-  function evalNode(nd){
-    if('num' in nd) return parseFloat(nd.num);
-    if(nd.op==='u-') return -evalNode(nd.left);
-    var a=evalNode(nd.left), b=evalNode(nd.right);
-    if(nd.op==='+') return a+b;
-    if(nd.op==='-') return a-b;
-    if(nd.op==='*') return a*b;
-    if(nd.op==='/') return b===0? NaN : a/b;
+  function renderSimpson(){
+    if(!simpOut) return;
+    var d=SIMP[simpKey];
+    var aRec=0,aTot=0,bRec=0,bTot=0;
+    d.strata.forEach(function(st){ aRec+=st.a[0]; aTot+=st.a[1]; bRec+=st.b[0]; bTot+=st.b[1]; });
+    var aggA=pct(aRec,aTot), aggB=pct(bRec,bTot);
+
+    /* table */
+    var head='<table class="dtable"><tr><th>群 / group</th>';
+    d.strata.forEach(function(st){ head+='<th>'+st.name+'</th>'; });
+    head+='<th>全体</th></tr>';
+    function row(name, cls){
+      var cells='';
+      d.strata.forEach(function(st){
+        var arr=cls==='a'?st.a:st.b, other=cls==='a'?st.b:st.a;
+        var r=pct(arr[0],arr[1]), ro=pct(other[0],other[1]);
+        var hi=r>ro;
+        cells+='<td'+(hi?' style="color:var(--accent-2);font-weight:700"':'')+'>'+r.toFixed(1)+'% <span style="color:var(--muted);font-weight:400">('+arr[0]+'/'+arr[1]+')</span></td>';
+      });
+      var ov=cls==='a'?aggA:aggB, ovo=cls==='a'?aggB:aggA, ohi=ov>ovo;
+      cells+='<td'+(ohi?' style="color:var(--accent-2);font-weight:700"':'')+'>'+ov.toFixed(1)+'% <span style="color:var(--muted);font-weight:400">('+(cls==='a'?aRec+'/'+aTot:bRec+'/'+bTot)+')</span></td>';
+      return '<tr><td>'+name+'</td>'+cells+'</tr>';
+    }
+    var table=head+row(d.aName,'a')+row(d.bName,'b')+'</table>';
+
+    /* svg */
+    var svg, note;
+    if(simpView==='strat'){
+      var s1=d.strata[0], s2=d.strata[1];
+      var bars=[
+        {x:168,w:40,val:pct(s1.a[0],s1.a[1]),cls:'a'},
+        {x:212,w:40,val:pct(s1.b[0],s1.b[1]),cls:'b'},
+        {x:388,w:40,val:pct(s2.a[0],s2.a[1]),cls:'a'},
+        {x:432,w:40,val:pct(s2.b[0],s2.b[1]),cls:'b'}
+      ];
+      svg=svgBars(bars,[{x:210,label:s1.name},{x:430,label:s2.name}]);
+      note='<b>層別で見る</b>：どちらの層でも <b>'+d.aName+'</b> のほうが '+d.metric+' が高くなっています。';
+    } else {
+      var bars2=[ {x:250,w:80,val:aggA,cls:'a'}, {x:360,w:80,val:aggB,cls:'b'} ];
+      svg=svgBars(bars2,[{x:345,label:'全体'}]);
+      note='<b>全体で見る</b>：まとめると <b>'+d.bName+'</b> のほうが '+d.metric+' が高く<b>見えます</b>。層別の結論と逆転しています。';
+    }
+    var legend='<div class="chip-legend"><span><i style="background:var(--accent)"></i>'+d.aName+'</span><span><i style="background:var(--faint)"></i>'+d.bName+'</span></div>';
+    simpOut.innerHTML=table+
+      '<div class="chipcount" style="margin-top:14px">'+note+'</div>'+
+      svg+legend+
+      '<div class="chipcount" style="margin-top:10px">逆転の原因は交絡です。'+
+      (simpKey==='treat'?'重症の患者ほど '+d.aName+' が使われている':d.aName+' ほど合格率の低い学部に多く出願している')+
+      'ため、全体の平均が引きずられています。</div>';
+  }
+  function setSimpBtns(){
+    if(simpStratBtn) simpStratBtn.style.cssText=(simpView==='strat')?'border-color:var(--accent);color:var(--accent-2)':'';
+    if(simpAggBtn) simpAggBtn.style.cssText=(simpView==='agg')?'border-color:var(--accent);color:var(--accent-2)':'';
+  }
+  document.querySelectorAll('#demoSimpson .try button[data-simp]').forEach(function(b){
+    b.addEventListener('click', function(){ simpKey=b.getAttribute('data-simp'); renderSimpson(); });
+  });
+  document.querySelectorAll('#demoSimpson .try button[data-view]').forEach(function(b){
+    b.addEventListener('click', function(){ simpView=b.getAttribute('data-view'); setSimpBtns(); renderSimpson(); });
+  });
+  if(simpOut){ setSimpBtns(); renderSimpson(); }
+
+  /* ---- Demo 2: randomization vs observational ---- */
+  function mulberry32(a){ return function(){ a|=0; a=a+0x6D2B79F5|0; var t=Math.imul(a^a>>>15,1|a); t=t+Math.imul(t^t>>>7,61|t)^t; return ((t^t>>>14)>>>0)/4294967296; }; }
+  var randConf=document.getElementById('randConf'),
+      randOut=document.getElementById('randOut'),
+      randRun=document.getElementById('randRun'),
+      randSeed=20240513;
+  function renderRand(){
+    if(!randOut) return;
+    var s=(+randConf.value)/100, rnd=mulberry32(randSeed);
+    var N=800, tau=12;
+    var sTa=0,nTa=0,sCa=0,nCa=0, sTr=0,nTr=0,sCr=0,nCr=0;
+    for(var i=0;i<N;i++){
+      var U=(i<N/2)?1:0;
+      var base=U?40:65;
+      var y0=base+(rnd()*10-5), y1=y0+tau;
+      var pObs=U?(0.5+0.4*s):(0.5-0.4*s);
+      if(rnd()<pObs){ sTa+=y1; nTa++; } else { sCa+=y0; nCa++; }
+      if(rnd()<0.5){ sTr+=y1; nTr++; } else { sCr+=y0; nCr++; }
+    }
+    var oT=nTa?sTa/nTa:0, oC=nCa?sCa/nCa:0, oD=oT-oC;
+    var rT=nTr?sTr/nTr:0, rC=nCr?sCr/nCr:0, rD=rT-rC;
+    function col(v){ return (Math.abs(v-tau)<=2)?'var(--good)':'var(--bad)'; }
+    function sg(v){ return (v>=0?'+':'')+v.toFixed(1); }
+    randOut.innerHTML=
+      '<div class="cos-score"><span class="val">'+sg(tau)+'</span><span class="lab">真の平均処置効果 ATE（この設定での正解）</span></div>'+
+      '<table class="dtable"><tr><th>割り付け</th><th>処置群の平均</th><th>対照群の平均</th><th>単純比較（差）</th></tr>'+
+      '<tr><td>観察データ</td><td>'+oT.toFixed(1)+'</td><td>'+oC.toFixed(1)+'</td><td style="color:'+col(oD)+';font-weight:700">'+sg(oD)+'</td></tr>'+
+      '<tr><td>ランダム化</td><td>'+rT.toFixed(1)+'</td><td>'+rC.toFixed(1)+'</td><td style="color:'+col(rD)+';font-weight:700">'+sg(rD)+'</td></tr>'+
+      '</table>'+
+      '<div class="chipcount" style="margin-top:12px">交絡の強さ = '+(s*100).toFixed(0)+'% ・ N = '+N+'（重症 '+(N/2)+'・軽症 '+(N/2)+'）。'+
+      '観察データでは重症ほど処置を受けやすいため単純比較がゆがみますが、ランダム化では真の値の近くに収まります。</div>';
+  }
+  if(randOut){
+    randConf.addEventListener('input', renderRand);
+    if(randRun) randRun.addEventListener('click', function(){ randSeed=(randSeed*1103515245+12345)>>>0; renderRand(); });
+    renderRand();
   }
 
-  function layout(root){
-    var nodes=[], col=0, maxd=0;
-    function rec(nd, depth){
-      nd.depth=depth; if(depth>maxd) maxd=depth;
-      if(nd.left) rec(nd.left, depth+1);
-      nd.col=col++;
-      if(nd.right) rec(nd.right, depth+1);
-      nodes.push(nd);
-    }
-    rec(root,0);
-    return {nodes:nodes, cols:col, depth:maxd};
+  /* ---- Demo 3: difference-in-differences ---- */
+  var didTb=document.getElementById('didTb'), didTa=document.getElementById('didTa'),
+      didCb=document.getElementById('didCb'), didCa=document.getElementById('didCa'),
+      didOut=document.getElementById('didOut');
+  function drawDid(Tb,Ta,Cb,Ca){
+    var dC=Ca-Cb, cf=Tb+dC;
+    var vals=[Tb,Ta,Cb,Ca,cf];
+    var lo=Math.min.apply(null,vals), hi=Math.max.apply(null,vals);
+    if(hi-lo<1e-9){ hi=lo+1; lo=lo-1; }
+    var pad=(hi-lo)*0.18, lo2=lo-pad, hi2=hi+pad;
+    var pTop=34, pBot=200, Hh=pBot-pTop;
+    function Y(v){ return (pBot-((v-lo2)/(hi2-lo2))*Hh).toFixed(1); }
+    var xB=170, xA=470;
+    var s='<svg viewBox="0 0 640 250" role="img" aria-label="差分の差分法の可視化。処置群・対照群の処置前後の平均と、平行トレンドにもとづく反実仮想">';
+    s+='<line class="dg-ax" x1="120" y1="'+pBot+'" x2="612" y2="'+pBot+'"/>';
+    s+='<line class="dg-ax" x1="120" y1="'+pTop+'" x2="120" y2="'+pBot+'"/>';
+    /* control solid gray */
+    s+='<line x1="'+xB+'" y1="'+Y(Cb)+'" x2="'+xA+'" y2="'+Y(Ca)+'" class="dg-vec2"/>';
+    s+='<circle cx="'+xB+'" cy="'+Y(Cb)+'" r="4.5" style="fill:var(--ink-2)"/>';
+    s+='<circle cx="'+xA+'" cy="'+Y(Ca)+'" r="4.5" style="fill:var(--ink-2)"/>';
+    /* counterfactual dashed green */
+    s+='<line x1="'+xB+'" y1="'+Y(Tb)+'" x2="'+xA+'" y2="'+Y(cf)+'" stroke="var(--accent)" stroke-width="2" stroke-dasharray="6 5" fill="none"/>';
+    s+='<circle cx="'+xA+'" cy="'+Y(cf)+'" r="4" style="fill:none;stroke:var(--accent);stroke-width:2"/>';
+    /* treatment solid green */
+    s+='<line x1="'+xB+'" y1="'+Y(Tb)+'" x2="'+xA+'" y2="'+Y(Ta)+'" class="dg-vec"/>';
+    s+='<circle cx="'+xB+'" cy="'+Y(Tb)+'" r="4.5" class="dg-pt"/>';
+    s+='<circle cx="'+xA+'" cy="'+Y(Ta)+'" r="4.5" class="dg-pt"/>';
+    /* DID bracket */
+    var xk=xA+16, did=Ta-cf;
+    s+='<line x1="'+xk+'" y1="'+Y(Ta)+'" x2="'+xk+'" y2="'+Y(cf)+'" stroke="var(--accent)" stroke-width="1.5"/>';
+    s+='<line x1="'+(xk-5)+'" y1="'+Y(Ta)+'" x2="'+(xk+5)+'" y2="'+Y(Ta)+'" stroke="var(--accent)" stroke-width="1.5"/>';
+    s+='<line x1="'+(xk-5)+'" y1="'+Y(cf)+'" x2="'+(xk+5)+'" y2="'+Y(cf)+'" stroke="var(--accent)" stroke-width="1.5"/>';
+    var midY=(parseFloat(Y(Ta))+parseFloat(Y(cf)))/2;
+    s+='<text class="dg-lbl" x="'+(xk+9)+'" y="'+(midY+4).toFixed(1)+'" text-anchor="start" style="fill:var(--accent-2)">DID = '+(did>=0?'+':'')+did.toFixed(1)+'</text>';
+    /* left labels */
+    s+='<text class="dg-ptl" x="'+(xB-10)+'" y="'+(parseFloat(Y(Tb))+4)+'" text-anchor="end" style="fill:var(--accent-2)">処置群</text>';
+    s+='<text class="dg-ptl" x="'+(xB-10)+'" y="'+(parseFloat(Y(Cb))+4)+'" text-anchor="end" style="fill:var(--ink-2)">対照群</text>';
+    /* cf label */
+    s+='<text class="dg-note" x="'+((xB+xA)/2)+'" y="'+(((parseFloat(Y(Tb))+parseFloat(Y(cf)))/2)-8).toFixed(1)+'">反実仮想</text>';
+    /* x-axis labels */
+    s+='<text class="dg-en" x="'+xB+'" y="'+(pBot+22)+'">処置前</text>';
+    s+='<text class="dg-en" x="'+xA+'" y="'+(pBot+22)+'">処置後</text>';
+    s+='</svg>';
+    return s;
   }
-
-  function renderAst(){
-    var src=astInput.value;
-    var tree;
-    try{ tree=parseExpr(src); }
-    catch(err){
-      astOut.innerHTML='<div class="cos-detail" style="color:var(--bad)">解析できませんでした: '+escapeHtml(err.message)+'</div>';
-      return;
+  function renderDid(){
+    if(!didOut) return;
+    var Tb=parseFloat(didTb.value), Ta=parseFloat(didTa.value),
+        Cb=parseFloat(didCb.value), Ca=parseFloat(didCa.value);
+    if([Tb,Ta,Cb,Ca].some(function(v){ return isNaN(v); })){
+      didOut.innerHTML='<div class="chipcount">4つの数値をすべて入力してください。</div>'; return;
     }
-    var info=layout(tree);
-    var colW=64, rowH=78, r=20;
-    var W=Math.max(info.cols*colW, colW), H=(info.depth+1)*rowH;
-    function cx(nd){ return nd.col*colW + colW/2; }
-    function cy(nd){ return nd.depth*rowH + rowH/2; }
-    var edges='';
-    info.nodes.forEach(function(nd){
-      [nd.left, nd.right].forEach(function(ch){
-        if(ch) edges+='<line x1="'+cx(nd)+'" y1="'+cy(nd)+'" x2="'+cx(ch)+'" y2="'+cy(ch)+'" stroke="var(--faint)" stroke-width="1.6"/>';
+    var dT=Ta-Tb, dC=Ca-Cb, did=dT-dC, cf=Tb+dC;
+    function sg(v){ return (v>=0?'+':'')+v.toFixed(1); }
+    didOut.innerHTML=
+      '<div class="cos-score"><span class="val">'+sg(did)+'</span><span class="lab">DID 推定量 = &Delta;処置群 &minus; &Delta;対照群</span></div>'+
+      drawDid(Tb,Ta,Cb,Ca)+
+      '<div class="chip-legend"><span><i style="background:var(--accent)"></i>処置群（実際）</span><span><i style="background:var(--ink-2)"></i>対照群</span><span><i style="background:var(--accent);opacity:.5"></i>反実仮想（破線）</span></div>'+
+      '<div class="cos-detail" style="margin-top:12px">'+
+      '&Delta;処置群 = '+Ta.toFixed(1)+' &minus; '+Tb.toFixed(1)+' = <b>'+sg(dT)+'</b>　|　'+
+      '&Delta;対照群 = '+Ca.toFixed(1)+' &minus; '+Cb.toFixed(1)+' = <b>'+sg(dC)+'</b><br>'+
+      '反実仮想（処置群がもし処置を受けなければ）= '+Tb.toFixed(1)+' + ('+sg(dC)+') = <b>'+cf.toFixed(1)+'</b>　|　'+
+      '実際の処置後 = <b>'+Ta.toFixed(1)+'</b>　→　差 = DID = <b>'+sg(did)+'</b></div>';
+  }
+  if(didOut){
+    [didTb,didTa,didCb,didCa].forEach(function(el){ el.addEventListener('input', renderDid); });
+    document.querySelectorAll('#demoDid .try button[data-did]').forEach(function(b){
+      b.addEventListener('click', function(){
+        var p=b.getAttribute('data-did').split(',');
+        didTb.value=p[0]; didTa.value=p[1]; didCb.value=p[2]; didCa.value=p[3]; renderDid();
       });
     });
-    var circ='';
-    info.nodes.forEach(function(nd){
-      var isOp=!('num' in nd);
-      var label=isOp?(nd.op==='u-'?'-':nd.op):nd.num;
-      var fs=label.length<=2?15:(label.length===3?13:11);
-      circ+='<circle cx="'+cx(nd)+'" cy="'+cy(nd)+'" r="'+r+'" fill="var(--card)" stroke="none"/>'+
-        '<circle cx="'+cx(nd)+'" cy="'+cy(nd)+'" r="'+r+'" fill="'+(isOp?'var(--accent-soft)':'var(--card)')+'" stroke="'+(isOp?'var(--accent)':'var(--line)')+'" stroke-width="1.6"/>'+
-        '<text x="'+cx(nd)+'" y="'+(cy(nd)+fs*0.35)+'" text-anchor="middle" font-family="ui-monospace,monospace" font-size="'+fs+'" font-weight="600" fill="'+(isOp?'var(--accent-2)':'var(--ink)')+'">'+escapeHtml(label)+'</text>';
-    });
-    var svg='<svg viewBox="0 0 '+W+' '+H+'" role="img" aria-label="式の構文木" style="display:block;width:100%;max-width:'+Math.min(W,760)+'px;height:auto;background:var(--card);border-radius:14px;padding:10px;box-shadow:0 0 0 6px var(--shell),0 0 0 6.5px var(--hair),var(--soft)">'+edges+circ+'</svg>';
-    var val=evalNode(tree);
-    var valStr=isNaN(val)?'計算できません（0 除算）':(Number.isInteger(val)?String(val):String(Math.round(val*1000)/1000));
-    astOut.innerHTML=svg+
-      '<div class="cos-detail" style="margin-top:14px">式 <b>'+escapeHtml(src.trim())+'</b> の木は '+info.nodes.length+' ノード ・ 深さ '+info.depth+'　|　計算結果 = <b>'+valStr+'</b></div>'+
-      '<div class="chipcount">緑のノードが演算子、白のノードが数値。掛け算・割り算ほど木の下（先に計算される側）に入ります。</div>';
-  }
-  if(astInput){
-    astInput.addEventListener('input', renderAst);
-    document.querySelectorAll('#demoAst .try button').forEach(function(b){
-      b.addEventListener('click', function(){ astInput.value=b.getAttribute('data-ex'); renderAst(); });
-    });
-    renderAst();
-  }
-
-  /* ---- Demo 2: cyclomatic complexity ---- */
-  var ccIn=document.getElementById('ccInput'), ccOut=document.getElementById('ccOut');
-  function countMatches(re, str){ var m=str.match(re); return m?m.length:0; }
-  function renderCc(){
-    var code=ccIn.value;
-    var rows=[
-      {name:'if', label:'if', c:countMatches(/\bif\b/g, code)},
-      {name:'elif', label:'elif', c:countMatches(/\belif\b/g, code)},
-      {name:'for', label:'for', c:countMatches(/\bfor\b/g, code)},
-      {name:'while', label:'while', c:countMatches(/\bwhile\b/g, code)},
-      {name:'case', label:'case', c:countMatches(/\bcase\b/g, code)},
-      {name:'and', label:'and / &&', c:countMatches(/\band\b/g, code)+countMatches(/&&/g, code)},
-      {name:'or', label:'or / ||', c:countMatches(/\bor\b/g, code)+countMatches(/\|\|/g, code)}
-    ];
-    var D=rows.reduce(function(s,r){ return s+r.c; }, 0);
-    var M=D+1;
-    var verdict, vcolor;
-    if(M<=5){ verdict='簡単（テストしやすい）'; vcolor='var(--good)'; }
-    else if(M<=10){ verdict='やや複雑'; vcolor='var(--warn)'; }
-    else { verdict='複雑（分割を検討）'; vcolor='var(--bad)'; }
-    var body=rows.map(function(r){
-      var z=r.c===0?' class="zero"':'';
-      return '<tr><td>'+escapeHtml(r.label)+'</td><td'+z+'>'+r.c+'</td></tr>';
-    }).join('');
-    ccOut.innerHTML=
-      '<div class="cos-score"><span class="val">'+M+'</span><span class="lab">循環的複雑度 M = 判定数 '+D+' + 1</span></div>'+
-      '<div class="cos-detail" style="color:'+vcolor+';font-family:var(--sans);font-weight:600">目安: '+verdict+'</div>'+
-      '<table class="dtable" style="max-width:340px"><tr><th>判定点 / decision</th><th>回数</th></tr>'+body+
-      '<tr><td>判定点の合計</td><td>'+D+'</td></tr></table>'+
-      '<div class="chipcount">M = 判定数 + 1。分岐が無ければ M = 1（一本道）。目安: 1〜5 簡単, 6〜10 やや複雑, 11 以上 複雑。</div>';
-  }
-  if(ccIn){
-    ccIn.addEventListener('input', renderCc);
-    document.querySelectorAll('#demoCc .try button').forEach(function(b){
-      b.addEventListener('click', function(){ ccIn.value=b.getAttribute('data-cc'); renderCc(); });
-    });
-    renderCc();
-  }
-
-  /* ---- Demo 3: code clone detection (token normalization + Jaccard) ---- */
-  var clA=document.getElementById('clA'), clB=document.getElementById('clB'), clOut=document.getElementById('clOut');
-  var KW={"def":1,"return":1,"if":1,"elif":1,"else":1,"for":1,"while":1,"in":1,"and":1,"or":1,
-    "not":1,"is":1,"None":1,"True":1,"False":1,"break":1,"continue":1,"pass":1,"import":1,
-    "from":1,"class":1,"lambda":1,"with":1,"as":1,"try":1,"except":1,"finally":1,"raise":1,
-    "print":1,"range":1,"len":1,"int":1,"float":1,"str":1};
-  var MULTI=['==','!=','<=','>=','//','**','&&','||','+=','-=','*=','/=','->'];
-  function tokenizeCode(src){
-    var toks=[], i=0, s=src, n=s.length;
-    while(i<n){
-      var c=s[i];
-      if(/\s/.test(c)){ i++; continue; }
-      if(c==='#'){ while(i<n && s[i]!=='\n') i++; continue; }
-      if(/[A-Za-z_]/.test(c)){ var j=i; while(j<n && /[A-Za-z0-9_]/.test(s[j])) j++; var w=s.slice(i,j); toks.push(KW[w]?w:'ID'); i=j; continue; }
-      if(/[0-9]/.test(c)){ var j2=i; while(j2<n && /[0-9.]/.test(s[j2])) j2++; toks.push('NUM'); i=j2; continue; }
-      if(c==='"'||c==="'"){ var q=c; var j3=i+1; while(j3<n && s[j3]!==q) j3++; toks.push('STR'); i=j3+1; continue; }
-      var two=s.substr(i,2);
-      if(MULTI.indexOf(two)>=0){ toks.push(two); i+=2; continue; }
-      toks.push(c); i++;
-    }
-    return toks;
-  }
-  function bigrams(arr){ var b={}; for(var i=0;i<arr.length-1;i++){ b[arr[i]+' '+arr[i+1]]=1; } return b; }
-  function jaccard(a,b){
-    var ka=Object.keys(a), inter=0;
-    ka.forEach(function(k){ if(b[k]) inter++; });
-    var uni=ka.length+Object.keys(b).length-inter;
-    return {j: uni? inter/uni : 0, inter:inter, uni:uni};
-  }
-  function renderClone(){
-    var ta=tokenizeCode(clA.value), tb=tokenizeCode(clB.value);
-    if(!ta.length || !tb.length){ clOut.innerHTML='<div class="chipcount">2つのコード片を入力してください。</div>'; return; }
-    var ba=bigrams(ta), bb=bigrams(tb);
-    var jr=jaccard(ba,bb);
-    var same=(ta.join(' ')===tb.join(' '));
-    var pct=(jr.j*100).toFixed(0);
-    var verdict, vcolor;
-    if(same){ verdict='正規化後のトークン列が完全一致（Type-1 / Type-2 クローン）'; vcolor='var(--bad)'; }
-    else if(jr.j>=0.8){ verdict='クローンの可能性が高い'; vcolor='var(--bad)'; }
-    else if(jr.j>=0.5){ verdict='部分的に類似（要確認）'; vcolor='var(--warn)'; }
-    else { verdict='クローンではない'; vcolor='var(--good)'; }
-    function seq(arr){ var s=arr.join(' '); return s.length>140? escapeHtml(s.slice(0,140))+' …' : escapeHtml(s); }
-    clOut.innerHTML=
-      '<div class="cos-score"><span class="val">'+jr.j.toFixed(3)+'</span><span class="lab">Jaccard 類似度（2-gram 集合, 0 から 1）</span></div>'+
-      '<div class="cos-bar"><span style="width:'+Math.max(0,Math.min(100,pct))+'%"></span></div>'+
-      '<div class="cos-detail" style="color:'+vcolor+';font-family:var(--sans);font-weight:600;margin-top:12px">判定: '+verdict+'</div>'+
-      '<div class="cos-detail">正規化 A（'+ta.length+' トークン）: '+seq(ta)+'<br>'+
-      '正規化 B（'+tb.length+' トークン）: '+seq(tb)+'<br>'+
-      '共通の 2-gram = <b>'+jr.inter+'</b> / 和集合 = <b>'+jr.uni+'</b></div>'+
-      '<div class="chipcount">変数名 → ID, 数値 → NUM, 文字列 → STR に正規化。名前だけ変えた複製も同じ列になり、高い類似度になります。</div>';
-  }
-  if(clA){
-    clA.addEventListener('input', renderClone);
-    clB.addEventListener('input', renderClone);
-    document.querySelectorAll('#demoClone .try button').forEach(function(b){
-      b.addEventListener('click', function(){ clA.value=b.getAttribute('data-a'); clB.value=b.getAttribute('data-b'); renderClone(); });
-    });
-    renderClone();
+    renderDid();
   }
 })();
 </script>
