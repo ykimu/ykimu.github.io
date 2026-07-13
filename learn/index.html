@@ -554,6 +554,12 @@
               <a href="../learn/llm.html"><span lang="ja">大規模言語モデル（LLM）</span><span lang="en">Large Language Models</span></a>
               <a href="../learn/program-analysis.html"><span lang="ja">プログラム解析</span><span lang="en">Program Analysis</span></a>
             </div>
+            <div class="megacol">
+              <div class="navlabel"><span lang="ja">第3段階 · 実践編</span><span lang="en">Stage 3 · Practice</span></div>
+              <a href="../learn/practice-oss-health.html"><span lang="ja">OSSプロジェクトの健康診断</span><span lang="en">OSS health check</span></a>
+              <a href="../learn/practice-text-classifier.html"><span lang="ja">テキスト分類器を作る</span><span lang="en">Text classifier</span></a>
+              <a href="../learn/practice-code-metrics.html"><span lang="ja">ソースコードを測る</span><span lang="en">Code metrics</span></a>
+            </div>
           </div>
         </div>
       </div>
@@ -630,6 +636,10 @@
       <a href="../learn/deep-learning.html"><span lang="ja">深層学習</span><span lang="en">Deep Learning</span></a>
       <a href="../learn/llm.html"><span lang="ja">大規模言語モデル（LLM）</span><span lang="en">Large Language Models</span></a>
       <a href="../learn/program-analysis.html"><span lang="ja">プログラム解析</span><span lang="en">Program Analysis</span></a>
+      <div class="mobsublabel"><span lang="ja">第3段階 · 実践編</span><span lang="en">Stage 3 · Practice</span></div>
+      <a href="../learn/practice-oss-health.html"><span lang="ja">OSSプロジェクトの健康診断</span><span lang="en">OSS health check</span></a>
+      <a href="../learn/practice-text-classifier.html"><span lang="ja">テキスト分類器を作る</span><span lang="en">Text classifier</span></a>
+      <a href="../learn/practice-code-metrics.html"><span lang="ja">ソースコードを測る</span><span lang="en">Code metrics</span></a>
     </div>
     <div class="mobgroup">
       <div class="moblabel"><span lang="ja">ガイド</span><span lang="en">Guides</span></div>
@@ -684,12 +694,13 @@
 <section id="intro" style="padding-top:26px">
   <div class="wrap reveal">
     <p class="eyebrow"><span lang="ja">コースの構成</span><span lang="en">How the course works</span></p>
-    <h2 class="big">2つの段階と、8つのモジュール</h2>
+    <h2 class="big">3つの段階で学ぶ</h2>
     <div class="prose" style="margin-top:22px">
-      <p>この学習コースは、研究やデータ分析の現場で使う技術を、順を追って実践的に身につけることを目的としています。全体は大きく2つの段階に分かれています。</p>
+      <p>この学習コースは、研究やデータ分析の現場で使う技術を、順を追って実践的に身につけることを目的としています。全体は大きく3つの段階に分かれています。</p>
       <ul>
         <li><b>第1段階：データを集める</b>。分析の前に、まず素材となるデータが要ります。ソフトウェア開発の履歴からデータを掘り出す方法と、集めた生データを分析に使える形へ整える方法を学びます。</li>
         <li><b>第2段階：集めたデータを分析する</b>。整ったデータから意味を引き出すための代表的な技術を、自然言語処理・ネットワーク分析・機械学習・深層学習・大規模言語モデル・プログラム解析と、分野を横断して学びます。</li>
+        <li><b>第3段階：技術をつないで実践する</b>。第1・第2段階で学んだ技術を1本のパイプラインにつなぎ、公開データを使った現実的な課題を解く総合演習に取り組みます。各演習には、その場で実行できる Colab / Jupyter ノートブックがついています。</li>
       </ul>
       <p>どのモジュールも、次の3つの層を積み上げる構成です。まず<b>概要</b>でその技術が何のためにあるのかをつかみ、次に<b>仕組み（座学）</b>で背後の理論・定義・式をていねいに理解し、最後に<b>コードで動かす</b>で Python の定番ライブラリやページ内デモを使って実際に確かめます。さらに各モジュールには、ブラウザ上で手を動かせるインタラクティブ・デモを用意しました。読みながら値を書き換え、結果の変化を確かめられます。</p>
       <p>手を動かす題材には、実在の公開データセットや、ページ内の小さなサンプルだけを使います。特別な環境がなくても、読みながら試せる構成です。関心のあるモジュールから、どの順番で読んでもかまいません。</p>
@@ -775,8 +786,42 @@
   </div>
 </section>
 
+<!-- STAGE 3 -->
+<section id="stage3" class="soft-sec">
+  <div class="wrap">
+    <p class="eyebrow reveal"><span lang="ja">第3段階 · 実践編</span><span lang="en">Stage 3 · Practice</span></p>
+    <h2 class="big reveal">集めて、分析して、つなぐ</h2>
+    <div class="prose reveal" style="margin-top:18px; max-width:none">
+      <p>第1・第2段階で学んだ技術を1本のパイプラインにつなぎ、公開データを使った現実的な課題を解く総合演習です。「課題設定 → データ入手 → 前処理 → 分析 → 評価 → 考察」の流れを、実行できるコードでたどります。各演習には、その場で動かせる Colab / Jupyter ノートブックがついています。</p>
+    </div>
+    <div class="modgrid">
+      <a class="modcard reveal" href="practice-oss-health.html">
+        <span class="mtag"><span lang="ja">総合演習 01</span><span lang="en">Project 01</span></span>
+        <h3>OSSプロジェクトの健康診断<span class="men">OSS project health check</span></h3>
+        <p>公開リポジトリの開発履歴から、プロジェクトの状態を定量的に読み解き、変更が集中しやすいファイル（ホットスポット）を予測します。リポジトリマイニング・前処理・ネットワーク分析・機械学習をつなぎます。</p>
+        <div class="mmeta"><span class="mchip">複数モジュールを統合</span><span class="mchip">Colabノートブックつき</span></div>
+        <span class="mgo"><span lang="ja">演習を開く</span><span lang="en">Open exercise</span><span class="ar" aria-hidden="true">&rsaquo;</span></span>
+      </a>
+      <a class="modcard reveal" href="practice-text-classifier.html">
+        <span class="mtag"><span lang="ja">総合演習 02</span><span lang="en">Project 02</span></span>
+        <h3>テキスト分類器をゼロから作る<span class="men">Build a text classifier</span></h3>
+        <p>公開テキストコーパスを題材に、前処理からTF-IDF・分類・評価までの一連を組み立て、2つの分類器を比較します。自然言語処理・前処理・機械学習をつなぎます。</p>
+        <div class="mmeta"><span class="mchip">複数モジュールを統合</span><span class="mchip">Colabノートブックつき</span></div>
+        <span class="mgo"><span lang="ja">演習を開く</span><span lang="en">Open exercise</span><span class="ar" aria-hidden="true">&rsaquo;</span></span>
+      </a>
+      <a class="modcard reveal" href="practice-code-metrics.html">
+        <span class="mtag"><span lang="ja">総合演習 03</span><span lang="en">Project 03</span></span>
+        <h3>ソースコードを測って読み解く<span class="men">Measuring source code</span></h3>
+        <p>複数のソースコードを解析してメトリクスのデータセットを作り、規模と複雑さの関係を調べ、似たコードを群化します。プログラム解析・前処理・機械学習をつなぎます。</p>
+        <div class="mmeta"><span class="mchip">複数モジュールを統合</span><span class="mchip">Colabノートブックつき</span></div>
+        <span class="mgo"><span lang="ja">演習を開く</span><span lang="en">Open exercise</span><span class="ar" aria-hidden="true">&rsaquo;</span></span>
+      </a>
+    </div>
+  </div>
+</section>
+
 <!-- CLOSING -->
-<section id="closing" class="soft-sec">
+<section id="closing">
   <div class="wrap reveal">
     <p class="eyebrow"><span lang="ja">学び方</span><span lang="en">How to study</span></p>
     <h2 class="big">手を動かしながら、自分のペースで</h2>

@@ -3,15 +3,15 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>ネットワーク分析 - 研究の技術を実践的に学ぶ / Network Analysis</title>
-<meta name="description" content="A hands-on learning module on network analysis: graphs and degree, centrality measures (degree, betweenness, closeness, PageRank), community detection, shortest paths and small-world structure. With interactive demos and runnable Python (NetworkX) examples. Part of Yuta Kimura's learning course.">
-<link rel="canonical" href="https://ykimu.github.io/learn/network-analysis.html">
+<title>OSSプロジェクトの健康診断 - 実践編（総合演習）/ OSS Project Health Check</title>
+<meta name="description" content="A hands-on capstone exercise that mines a public OSS repository with PyDriller, engineers per-file features with pandas, measures co-change centrality with NetworkX, and predicts change hotspots with scikit-learn. With a runnable Colab notebook. Part of Yuta Kimura's learning course.">
+<link rel="canonical" href="https://ykimu.github.io/learn/practice-oss-health.html">
 <link rel="icon" href="../favicon.svg" type="image/svg+xml">
 <meta property="og:site_name" content="Yuta Kimura / 木村祐太">
 <meta property="og:type" content="article">
-<meta property="og:title" content="ネットワーク分析 - 研究の技術を実践的に学ぶ / Network Analysis">
-<meta property="og:description" content="A hands-on learning module on network analysis: graphs and degree, centrality measures, community detection, and shortest paths, with interactive demos and runnable Python (NetworkX) examples.">
-<meta property="og:url" content="https://ykimu.github.io/learn/network-analysis.html">
+<meta property="og:title" content="OSSプロジェクトの健康診断 - 実践編（総合演習）/ OSS Project Health Check">
+<meta property="og:description" content="A capstone exercise: mine a public OSS repository, engineer per-file features, measure co-change centrality, and predict change hotspots, with a runnable Colab notebook.">
+<meta property="og:url" content="https://ykimu.github.io/learn/practice-oss-health.html">
 <meta property="og:image" content="https://ykimu.github.io/assets/og.png">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="color-scheme" content="light">
@@ -522,7 +522,7 @@
             <div class="megacol">
               <div class="navlabel"><span lang="ja">第2段階 · 分析技術</span><span lang="en">Stage 2 · Techniques</span></div>
               <a href="../learn/nlp.html"><span lang="ja">自然言語処理（NLP）</span><span lang="en">Natural Language Processing</span></a>
-              <a class="here" aria-current="page" href="../learn/network-analysis.html"><span lang="ja">ネットワーク分析</span><span lang="en">Network Analysis</span></a>
+              <a href="../learn/network-analysis.html"><span lang="ja">ネットワーク分析</span><span lang="en">Network Analysis</span></a>
               <a href="../learn/machine-learning.html"><span lang="ja">機械学習</span><span lang="en">Machine Learning</span></a>
               <a href="../learn/deep-learning.html"><span lang="ja">深層学習</span><span lang="en">Deep Learning</span></a>
               <a href="../learn/llm.html"><span lang="ja">大規模言語モデル（LLM）</span><span lang="en">Large Language Models</span></a>
@@ -530,7 +530,7 @@
             </div>
             <div class="megacol">
               <div class="navlabel"><span lang="ja">第3段階 · 実践編</span><span lang="en">Stage 3 · Practice</span></div>
-              <a href="../learn/practice-oss-health.html"><span lang="ja">OSSプロジェクトの健康診断</span><span lang="en">OSS health check</span></a>
+              <a class="here" aria-current="page" href="../learn/practice-oss-health.html"><span lang="ja">OSSプロジェクトの健康診断</span><span lang="en">OSS health check</span></a>
               <a href="../learn/practice-text-classifier.html"><span lang="ja">テキスト分類器を作る</span><span lang="en">Text classifier</span></a>
               <a href="../learn/practice-code-metrics.html"><span lang="ja">ソースコードを測る</span><span lang="en">Code metrics</span></a>
             </div>
@@ -605,13 +605,13 @@
       <a href="../learn/data-preprocessing.html"><span lang="ja">開発データの前処理とデータセット構築</span><span lang="en">Data Preprocessing</span></a>
       <div class="mobsublabel"><span lang="ja">第2段階 · 分析技術</span><span lang="en">Stage 2 · Techniques</span></div>
       <a href="../learn/nlp.html"><span lang="ja">自然言語処理（NLP）</span><span lang="en">Natural Language Processing</span></a>
-      <a class="here" aria-current="page" href="../learn/network-analysis.html"><span lang="ja">ネットワーク分析</span><span lang="en">Network Analysis</span></a>
+      <a href="../learn/network-analysis.html"><span lang="ja">ネットワーク分析</span><span lang="en">Network Analysis</span></a>
       <a href="../learn/machine-learning.html"><span lang="ja">機械学習</span><span lang="en">Machine Learning</span></a>
       <a href="../learn/deep-learning.html"><span lang="ja">深層学習</span><span lang="en">Deep Learning</span></a>
       <a href="../learn/llm.html"><span lang="ja">大規模言語モデル（LLM）</span><span lang="en">Large Language Models</span></a>
       <a href="../learn/program-analysis.html"><span lang="ja">プログラム解析</span><span lang="en">Program Analysis</span></a>
       <div class="mobsublabel"><span lang="ja">第3段階 · 実践編</span><span lang="en">Stage 3 · Practice</span></div>
-      <a href="../learn/practice-oss-health.html"><span lang="ja">OSSプロジェクトの健康診断</span><span lang="en">OSS health check</span></a>
+      <a class="here" aria-current="page" href="../learn/practice-oss-health.html"><span lang="ja">OSSプロジェクトの健康診断</span><span lang="en">OSS health check</span></a>
       <a href="../learn/practice-text-classifier.html"><span lang="ja">テキスト分類器を作る</span><span lang="en">Text classifier</span></a>
       <a href="../learn/practice-code-metrics.html"><span lang="ja">ソースコードを測る</span><span lang="en">Code metrics</span></a>
     </div>
@@ -640,23 +640,25 @@
   <nav class="crumbs" aria-label="パンくず">
     <a href="../index.html"><span lang="ja">ホーム</span><span lang="en">Home</span></a>
     <span class="csep" aria-hidden="true">&rsaquo;</span>
-    <span class="cur" aria-current="page"><span lang="ja">学習コース：ネットワーク分析</span><span lang="en">Learn: Network Analysis</span></span>
+    <a href="index.html"><span lang="ja">学習コース</span><span lang="en">Learn</span></a>
+    <span class="csep" aria-hidden="true">&rsaquo;</span>
+    <span class="cur" aria-current="page"><span lang="ja">実践編：OSSプロジェクトの健康診断</span><span lang="en">Practice: OSS project health check</span></span>
   </nav>
 </div>
 
 <!-- HERO -->
 <div class="hero">
   <div class="wrap">
-    <p class="kick"><span lang="ja">学習コース</span><span lang="en">Learn</span></p>
-    <h1>ネットワーク分析</h1>
-    <p class="lead">人・モノ・要素の「つながり」をグラフとして表し、その構造や重要な要素を定量的に読み解く技術を、概要から理論、そして実際に動かせるコードまで、順を追って学ぶモジュールです。各ステップは「概要 → 仕組み（座学）→ コードで動かす」の3層で進みます。ページ内には手を動かせるデモを3つ用意しました。</p>
+    <p class="kick"><span lang="ja">実践編</span><span lang="en">Practice</span></p>
+    <h1>OSSプロジェクトの健康診断</h1>
+    <p class="lead">公開されている OSS リポジトリの開発履歴を掘り起こし、前処理・ネットワーク分析・機械学習を1本のパイプラインにつないで、変更が集中しやすいファイル（ホットスポット）を予測します。第1・第2段階で単体で学んだ技術を、現実的な課題を解くために組み合わせる総合演習です。手を動かせるノートブックつきで進めます。</p>
     <p class="ja-note"><span lang="ja">この教材は日本語のみで提供しています</span><span lang="en">This learning material is available in Japanese only.</span></p>
     <div class="hero-cta">
-      <a class="btn ink" href="#intro" style="padding:12px 22px">
-        <span lang="ja">学びはじめる</span><span lang="en">Start learning</span>
+      <a class="btn ink" href="#brief" style="padding:12px 22px">
+        <span lang="ja">演習をはじめる</span><span lang="en">Start the exercise</span>
       </a>
-      <a class="tlink" href="#step2">
-        <span lang="ja">まず手を動かす（グラフと次数を体験）</span><span lang="en">Jump to the graph demo</span>
+      <a class="tlink" href="#run">
+        <span lang="ja">先にノートブックで動かす</span><span lang="en">Jump to the notebook</span>
         <span class="ar" aria-hidden="true">&rsaquo;</span>
       </a>
     </div>
@@ -667,104 +669,136 @@
 
 <div class="tocbar">
   <nav class="tocbar-inner" aria-label="ページ内目次">
-    <a class="tocpill" href="#intro"><span lang="ja">はじめに</span><span lang="en">Intro</span></a>
-    <a class="tocpill" href="#step1">Step 1 <span lang="ja">分析とは</span><span lang="en">What is it</span></a>
-    <a class="tocpill" href="#step2">Step 2 <span lang="ja">グラフの基礎</span><span lang="en">Graph basics</span></a>
-    <a class="tocpill" href="#step3">Step 3 <span lang="ja">中心性</span><span lang="en">Centrality</span></a>
-    <a class="tocpill" href="#step4">Step 4 <span lang="ja">コミュニティ検出</span><span lang="en">Communities</span></a>
-    <a class="tocpill" href="#step5">Step 5 <span lang="ja">経路と構造</span><span lang="en">Paths</span></a>
-    <a class="tocpill" href="#step6">Step 6 <span lang="ja">可視化とこれから</span><span lang="en">What is next</span></a>
+    <a class="tocpill" href="#brief"><span lang="ja">課題設定</span><span lang="en">The task</span></a>
+    <a class="tocpill" href="#stack"><span lang="ja">使う技術</span><span lang="en">Techniques</span></a>
+    <a class="tocpill" href="#run"><span lang="ja">実行</span><span lang="en">Run</span></a>
+    <a class="tocpill" href="#step1">Step 1 <span lang="ja">データ入手</span><span lang="en">Collect</span></a>
+    <a class="tocpill" href="#step2">Step 2 <span lang="ja">前処理</span><span lang="en">Preprocess</span></a>
+    <a class="tocpill" href="#step3">Step 3 <span lang="ja">ネットワーク</span><span lang="en">Network</span></a>
+    <a class="tocpill" href="#step4">Step 4 <span lang="ja">機械学習</span><span lang="en">ML</span></a>
+    <a class="tocpill" href="#step5">Step 5 <span lang="ja">可視化</span><span lang="en">Visualize</span></a>
+    <a class="tocpill" href="#step6">Step 6 <span lang="ja">考察</span><span lang="en">Discussion</span></a>
+    <a class="tocpill" href="#extend"><span lang="ja">発展課題</span><span lang="en">Try more</span></a>
     <a class="tocpill" href="#closing"><span lang="ja">まとめ</span><span lang="en">Wrap-up</span></a>
-    <a class="tocpill" href="#beyond"><span lang="ja">発展トピック</span><span lang="en">Beyond</span></a>
   </nav>
 </div>
 
-<!-- INTRO -->
-<section id="intro" style="padding-top:26px">
+<!-- BRIEF -->
+<section id="brief" style="padding-top:26px">
   <div class="wrap reveal">
-    <p class="eyebrow"><span lang="ja">はじめに</span><span lang="en">Introduction</span></p>
-    <h2 class="big">このモジュールの全体像</h2>
+    <p class="eyebrow"><span lang="ja">課題設定</span><span lang="en">The task</span></p>
+    <h2 class="big">開発履歴から、壊れやすい場所を見つける</h2>
     <div class="prose" style="margin-top:22px">
-      <p><b>ネットワーク分析（network analysis）</b>とは、要素どうしの「つながり」を<b>グラフ（graph）</b>として表し、その構造や、どの要素が重要かを定量的に読み解く技術です。友人関係のような社会ネットワーク、論文の引用、Web のリンク、ソフトウェアの依存関係、道路や鉄道の交通網まで、世の中の多くのものは「つながりの網」として捉えられます。</p>
-      <p>ネットワーク分析では、要素を<b>ノード（頂点）</b>、つながりを<b>エッジ（辺）</b>として表します。この単純な枠組みに、次のような流れ（パイプライン）で数値的な道具を当てていきます。データからグラフを組み立て、指標を計算し、可視化して解釈します。</p>
+      <p>あなたはある OSS プロジェクトの保守を引き継いだところだと想像してください。ソースは大量にあり、どこから手を付ければよいか分かりません。経験や勘に頼る前に、まず<b>データで</b>プロジェクトの状態を読み解きたい。とりわけ知りたいのは、<b>変更が集中しやすいファイル（ホットスポット）</b>です。何度も直され、多くの人が触るファイルは、不具合が生まれやすく、レビューやテストを厚くする価値が高いからです。</p>
+      <p>この演習では、公開リポジトリの開発履歴を素材に、次の一続きの流れを実際に組み立てます。</p>
+      <ul>
+        <li><b>データ入手</b>：リポジトリマイニングで、コミット履歴（誰がいつどのファイルを変えたか）を取り出す。</li>
+        <li><b>前処理</b>：コミットとファイルの表に整え、変更回数・コードチャーン・関与作者数といった特徴量にする。</li>
+        <li><b>ネットワーク分析</b>：同じコミットで一緒に変わったファイルを辺で結ぶ「共変更ネットワーク」を作り、結び目になっているファイルを中心性で測る。</li>
+        <li><b>機械学習</b>：これらの特徴量から、ホットスポットかどうかを分類する。</li>
+      </ul>
+      <p>最終的に得られるのは、ファイルごとの特徴量表と、ホットスポットを当てる分類器、そして「何が言えて、何に注意すべきか」という読み解きです。ひとつの技術だけでは見えないものが、つなぐと見えてきます。</p>
     </div>
 
     <div class="diagram-wrap reveal">
-      <p class="cap">ネットワーク分析の基本パイプライン</p>
-      <svg viewBox="0 0 940 150" role="img" aria-label="ネットワーク分析のパイプライン: データからグラフ構築、指標計算、可視化・解釈への流れ">
+      <p class="cap">この演習のパイプライン</p>
+      <svg viewBox="0 0 940 150" role="img" aria-label="パイプライン: リポジトリから前処理、ネットワーク分析、機械学習を経てホットスポット予測へ">
         <g>
-          <rect class="dg-box" x="15" y="46" width="190" height="58" rx="12"/>
-          <text class="dg-lbl" x="110" y="72">データ</text>
-          <text class="dg-en" x="110" y="90">Data</text>
+          <rect class="dg-box" x="12" y="46" width="158" height="58" rx="12"/>
+          <text class="dg-lbl" x="91" y="72">リポジトリ</text>
+          <text class="dg-en" x="91" y="90">Commit history</text>
         </g>
         <g>
-          <rect class="dg-box acc" x="255" y="46" width="190" height="58" rx="12"/>
-          <text class="dg-lbl" x="350" y="72">グラフ構築</text>
-          <text class="dg-en" x="350" y="90">Build graph</text>
+          <rect class="dg-box acc" x="212" y="46" width="150" height="58" rx="12"/>
+          <text class="dg-lbl" x="287" y="72">前処理</text>
+          <text class="dg-en" x="287" y="90">Preprocess</text>
         </g>
         <g>
-          <rect class="dg-box acc" x="495" y="46" width="190" height="58" rx="12"/>
-          <text class="dg-lbl" x="590" y="72">指標計算</text>
-          <text class="dg-en" x="590" y="90">Metrics</text>
+          <rect class="dg-box acc" x="404" y="46" width="150" height="58" rx="12"/>
+          <text class="dg-lbl" x="479" y="72">ネットワーク</text>
+          <text class="dg-en" x="479" y="90">Network</text>
         </g>
         <g>
-          <rect class="dg-box" x="735" y="46" width="190" height="58" rx="12"/>
-          <text class="dg-lbl" x="830" y="72">可視化・解釈</text>
-          <text class="dg-en" x="830" y="90">Interpret</text>
+          <rect class="dg-box acc" x="596" y="46" width="150" height="58" rx="12"/>
+          <text class="dg-lbl" x="671" y="72">機械学習</text>
+          <text class="dg-en" x="671" y="90">Classifier</text>
+        </g>
+        <g>
+          <rect class="dg-box" x="788" y="46" width="140" height="58" rx="12"/>
+          <text class="dg-lbl" x="858" y="72">ホットスポット</text>
+          <text class="dg-en" x="858" y="90">Hotspots</text>
         </g>
         <g class="dg-line">
-          <line x1="205" y1="75" x2="251" y2="75"/><line x1="445" y1="75" x2="491" y2="75"/>
-          <line x1="685" y1="75" x2="731" y2="75"/>
+          <line x1="170" y1="75" x2="204" y2="75"/><line x1="362" y1="75" x2="396" y2="75"/>
+          <line x1="554" y1="75" x2="588" y2="75"/><line x1="746" y1="75" x2="780" y2="75"/>
         </g>
         <g class="dg-arrow">
-          <polygon points="251,75 243,71 243,79"/><polygon points="491,75 483,71 483,79"/>
-          <polygon points="731,75 723,71 723,79"/>
+          <polygon points="204,75 196,71 196,79"/><polygon points="396,75 388,71 388,79"/>
+          <polygon points="588,75 580,71 580,79"/><polygon points="780,75 772,71 772,79"/>
         </g>
-        <text class="dg-note" x="350" y="130">ノード・エッジで表現</text>
-        <text class="dg-note" x="590" y="130">次数・中心性・経路</text>
-        <text class="dg-note" x="830" y="130">コミュニティ・構造</text>
+        <text class="dg-note" x="287" y="130">変更回数・チャーン</text>
+        <text class="dg-note" x="479" y="130">共変更・中心性</text>
+        <text class="dg-note" x="671" y="130">分類・評価</text>
       </svg>
     </div>
+  </div>
+</section>
 
-    <div class="diagram-wrap reveal">
-      <p class="cap">ノードとエッジ</p>
-      <svg viewBox="0 0 480 190" role="img" aria-label="ノードとエッジからなる小さなグラフの概念図">
-        <g class="dg-line">
-          <line x1="80" y1="100" x2="190" y2="55"/>
-          <line x1="80" y1="100" x2="190" y2="150"/>
-          <line x1="190" y1="55" x2="190" y2="150"/>
-          <line x1="190" y1="55" x2="310" y2="100"/>
-          <line x1="190" y1="150" x2="310" y2="100"/>
-          <line x1="310" y1="100" x2="410" y2="150"/>
-        </g>
-        <g>
-          <circle cx="80" cy="100" r="15" style="fill:var(--card)"/>
-          <circle cx="190" cy="55" r="15" style="fill:var(--card)"/>
-          <circle cx="190" cy="150" r="15" style="fill:var(--card)"/>
-          <circle cx="310" cy="100" r="15" style="fill:var(--card)"/>
-          <circle cx="410" cy="150" r="15" style="fill:var(--card)"/>
-          <circle cx="80" cy="100" r="15" style="fill:var(--accent-soft);stroke:var(--accent);stroke-width:2"/>
-          <circle cx="190" cy="55" r="15" style="fill:var(--accent-soft);stroke:var(--accent);stroke-width:2"/>
-          <circle cx="190" cy="150" r="15" style="fill:var(--accent-soft);stroke:var(--accent);stroke-width:2"/>
-          <circle cx="310" cy="100" r="15" style="fill:var(--accent-soft);stroke:var(--accent);stroke-width:2"/>
-          <circle cx="410" cy="150" r="15" style="fill:var(--accent-soft);stroke:var(--accent);stroke-width:2"/>
-        </g>
-        <line x1="190" y1="30" x2="190" y2="40" class="dg-line"/>
-        <text class="dg-note" x="190" y="24">ノード / node</text>
-        <line x1="378" y1="126" x2="360" y2="125" class="dg-line"/>
-        <text class="dg-note" x="430" y="122" text-anchor="end">エッジ / edge</text>
-      </svg>
-      <p class="figcap">ネットワークは<b>ノード（頂点）</b>と、それらをつなぐ<b>エッジ（辺）</b>で表します。この「つながりの構造」そのものを数値で読み解くのがネットワーク分析です。</p>
+<!-- STACK -->
+<section id="stack">
+  <div class="wrap reveal">
+    <p class="eyebrow"><span lang="ja">使う技術</span><span lang="en">Techniques used</span></p>
+    <h2 class="big">組み合わせる4つのモジュール</h2>
+    <div class="prose" style="margin-top:22px">
+      <p>この演習は、第1・第2段階で単体で学んだ次の4モジュールを1本につなぎます。まだ学んでいない技術があれば、先にそのモジュールで基礎を押さえてから戻ってくると、各ステップの意味がはっきりします。</p>
     </div>
+    <div class="res-grid reveal">
+      <div class="res">
+        <h5><a href="repository-mining.html">リポジトリマイニング入門</a></h5>
+        <ul>
+          <li>PyDriller でコミット履歴を走査し、誰がいつどのファイルを変えたかを取り出す。<b>Step 1（データ入手）</b>の土台。</li>
+        </ul>
+      </div>
+      <div class="res">
+        <h5><a href="data-preprocessing.html">開発データの前処理</a></h5>
+        <ul>
+          <li>生の履歴を pandas でファイル単位の表に整え、欠損を除き、変更回数やチャーンを特徴量化する。<b>Step 2</b>で使う。</li>
+        </ul>
+      </div>
+      <div class="res">
+        <h5><a href="network-analysis.html">ネットワーク分析</a></h5>
+        <ul>
+          <li>共変更ネットワークを NetworkX で構築し、次数中心性・媒介中心性で結び目になるファイルを測る。<b>Step 3</b>で使う。</li>
+        </ul>
+      </div>
+      <div class="res">
+        <h5><a href="machine-learning.html">機械学習</a></h5>
+        <ul>
+          <li>特徴量からホットスポットを分類し、適合率・再現率・F値で評価する。<b>Step 4</b>で使う。</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
 
-    <div class="prose">
-      <p>このモジュールは、上のパイプラインを左から順にたどります。各ステップは次の3層で構成します。</p>
-      <ul>
-        <li><b>概要</b>：その技術が何のためにあるのか、あらましをつかむ。</li>
-        <li><b>仕組み（座学）</b>：背後にある理論・定義・式を、ていねいに理解する。</li>
-        <li><b>コードで動かす</b>：Python の定番ライブラリ NetworkX や、ページ内デモで実際に動かして確かめる。</li>
-      </ul>
-      <p>手を動かす題材には、実在の公開データセット（Zachary の空手クラブ、Les&nbsp;Misérables の共起ネットワークなど）や、ページ内の小さなサンプルグラフだけを使います。特別な環境がなくても、読みながら試せる構成です。</p>
+<!-- RUN -->
+<section id="run">
+  <div class="wrap reveal">
+    <p class="eyebrow"><span lang="ja">ノートブックで実行</span><span lang="en">Run the notebook</span></p>
+    <h2 class="big">このページのコードを、そのまま動かす</h2>
+    <div class="demo reveal" style="margin-top:22px">
+      <span class="dtag"><span lang="ja">Colab / Jupyter</span><span lang="en">Colab / Jupyter</span></span>
+      <h4>OSSプロジェクトの健康診断ノートブック</h4>
+      <p class="dnote">このページで読むコードと同じ内容を、上から順に実行できるノートブックにまとめてあります。Colab で開けば、インストール込みで環境構築なしにそのまま動かせます。手元の Jupyter で動かしたい場合は .ipynb をダウンロードしてください。</p>
+      <div class="hero-cta" style="margin-top:6px">
+        <a class="btn ink" href="https://colab.research.google.com/github/ykimu/ykimu.github.io/blob/main/learn/notebooks/practice-oss-health.ipynb" target="_blank" rel="noopener" style="padding:12px 22px">
+          <span lang="ja">Colabで開く</span><span lang="en">Open in Colab</span>
+        </a>
+        <a class="btn" href="notebooks/practice-oss-health.ipynb" download>
+          <span lang="ja">ノートブックをダウンロード（.ipynb）</span><span lang="en">Download the notebook (.ipynb)</span>
+        </a>
+      </div>
+      <p class="dnote" style="margin:16px 0 0">最初のセルで <code>!pip install pydriller pandas networkx scikit-learn matplotlib</code> を実行します。リポジトリの履歴取得はネットワーク接続が必要で、リポジトリの規模により数分かかることがあります。</p>
     </div>
   </div>
 </section>
@@ -774,37 +808,53 @@
   <div class="wrap reveal">
     <div class="stephead">
       <span class="num">1</span>
-      <div class="tt"><h2>ネットワーク分析とは</h2><span class="st-en">What is network analysis</span></div>
+      <div class="tt"><h2>データ入手：コミット履歴を掘り起こす</h2><span class="st-en">Collect commit history</span></div>
     </div>
     <div class="steprule"></div>
 
-    <p class="layer first"><span lang="ja">概要</span><span lang="en">Overview</span></p>
+    <p class="layer first"><span lang="ja">何を・なぜ</span><span lang="en">What &amp; why</span></p>
     <div class="prose">
-      <p>ネットワーク分析は「関係」を主役に据える見方です。個々の要素の性質だけでなく、<b>要素どうしがどうつながっているか</b>に注目します。同じデータでも、表の1行ずつを別々に見るのと、行と行の関係を網として見るのとでは、見えてくるものが違います。ネットワークはあらゆる場所に現れます。</p>
-      <ul>
-        <li><b>社会ネットワーク</b>：人を点、友人関係やフォロー関係を線とする。</li>
-        <li><b>引用・参照</b>：論文を点、引用を線とする。Web ページとリンクも同じ形。</li>
-        <li><b>依存関係</b>：ソフトウェアのモジュールやパッケージを点、依存を線とする。</li>
-        <li><b>協働</b>：開発者を点、同じファイルを一緒に触った関係を線とする。</li>
-        <li><b>インフラ</b>：駅や交差点を点、路線や道路を線とする。</li>
-      </ul>
+      <p>まず素材となる開発履歴を集めます。<b>PyDriller</b> は Git リポジトリを Python から走査するライブラリで、URL を渡すだけで公開リポジトリを一時的に取得し、コミットを1件ずつたどれます。各コミットからは、ハッシュ・作者・日時に加えて、そのコミットで変更された各ファイルの追加行数・削除行数が得られます。これらを1行=「あるコミットでのあるファイルの変更」として集め、表にします。</p>
+      <p>題材には、小さめで実在する公開リポジトリを使います。ここでは PyDriller 自身のリポジトリ <code>ishepard/pydriller</code> を例にします。別のリポジトリで試すのも簡単です（発展課題を参照）。</p>
     </div>
+    <div class="code-wrap attached">
+      <div class="code-head"><span class="lbl">Python</span><span class="lang-tag">collect_commits.py</span><button class="copy" type="button" onclick="copyCode(this)">copy</button></div>
+      <pre><code><span class="kw">from</span> pydriller <span class="kw">import</span> Repository
+<span class="kw">import</span> pandas <span class="kw">as</span> pd
 
-    <p class="layer"><span lang="ja">仕組み</span><span lang="en">How it works</span></p>
-    <div class="prose">
-      <p>ノードとエッジという共通の言葉で表すと、分野が違っても<b>同じ道具で分析できる</b>のがネットワーク分析の強みです。このモジュールでは、次のような問いに答える道具を順に手に入れます。</p>
-      <ul>
-        <li><b>どのノードが重要か</b>：つながりの多さや、橋渡しの役割を数値で測る（中心性）。</li>
-        <li><b>まとまりはあるか</b>：密につながった集団（コミュニティ）を見つける。</li>
-        <li><b>どれくらい近いか</b>：ノード間の最短経路や、ネットワーク全体の広がりを測る。</li>
-        <li><b>全体はどんな形か</b>：スモールワールド性やスケールフリー性といった、大きな構造の特徴を捉える。</li>
-      </ul>
-      <p>これらはすべて、グラフという同じ土台の上で計算できます。まずは、その土台となるグラフの基礎から始めましょう。</p>
+url = <span class="st">"https://github.com/ishepard/pydriller"</span>
+
+<span class="cm"># コミットを1件ずつたどり、変更ファイルごとに1行を作る</span>
+rows = []
+<span class="kw">for</span> commit <span class="kw">in</span> Repository(url).traverse_commits():
+    <span class="kw">for</span> mod <span class="kw">in</span> commit.modified_files:
+        path = mod.new_path <span class="kw">or</span> mod.old_path
+        <span class="kw">if</span> path <span class="kw">is</span> <span class="kw">None</span>:
+            <span class="kw">continue</span>
+        rows.append({
+            <span class="st">"commit"</span>: commit.hash[:<span class="nu">8</span>],
+            <span class="st">"author"</span>: commit.author.email,
+            <span class="st">"date"</span>: commit.author_date,
+            <span class="st">"file"</span>: path,
+            <span class="st">"added"</span>: mod.added_lines,
+            <span class="st">"deleted"</span>: mod.deleted_lines,
+        })
+
+df = pd.DataFrame(rows)
+<span class="kw">print</span>(df.shape)
+<span class="kw">print</span>(df.head())</code></pre>
     </div>
+    <div class="code-out"><span class="olbl">出力例 / Output</span><pre><code>(2118, 6)
+     commit                      author                       date                        file  added  deleted
+0  a1b2c3d4  davide.spadini@example.org  2018-02-15 14:22:31+01:00     pydriller/repository.py     58        0
+1  a1b2c3d4  davide.spadini@example.org  2018-02-15 14:22:31+01:00            pydriller/git.py     34        2
+2  1f4e9c07  davide.spadini@example.org  2018-02-16 09:05:12+01:00    tests/test_repository.py     41        1
+3  1f4e9c07  davide.spadini@example.org  2018-02-16 09:05:12+01:00     pydriller/repository.py      7        3
+4  9d2b7a55       contributor@example.org  2018-03-02 18:40:55+01:00  pydriller/domain/commit.py     22        4</code></pre></div>
 
     <div class="callout tip">
       <h4>この Step のまとめ</h4>
-      <p>ネットワーク分析は「関係」を主役にする見方。要素をノード、つながりをエッジとして表すと、社会・引用・依存・交通など分野をまたいで同じ道具が使えます。「重要なノード・まとまり・近さ・全体の形」を数値で読み解いていきます。</p>
+      <p><code>Repository(url).traverse_commits()</code> で履歴を走査し、変更ファイル単位の生データを表にしました。ここでは「1行 = あるコミットでの1ファイルの変更」という長い表になっています。次はこれをファイル単位に集計します。</p>
     </div>
   </div>
 </section>
@@ -814,83 +864,48 @@
   <div class="wrap reveal">
     <div class="stephead">
       <span class="num">2</span>
-      <div class="tt"><h2>グラフの基礎</h2><span class="st-en">Graph basics</span></div>
+      <div class="tt"><h2>前処理：ファイル単位の特徴量にする</h2><span class="st-en">Preprocess into per-file features</span></div>
     </div>
     <div class="steprule"></div>
 
-    <p class="layer first"><span lang="ja">概要</span><span lang="en">Overview</span></p>
+    <p class="layer first"><span lang="ja">何を・なぜ</span><span lang="en">What &amp; why</span></p>
     <div class="prose">
-      <p>グラフは、ノードの集合とエッジの集合の組です。とても単純ですが、表し方にいくつかの選択肢があり、そこから分析の第一歩となる基本的な指標が決まります。まずは用語と、もっとも基本的な量である「次数」をおさえます。</p>
-    </div>
-
-    <p class="layer"><span lang="ja">仕組み</span><span lang="en">How it works</span></p>
-    <div class="prose">
-      <h4>有向グラフと無向グラフ</h4>
-      <p>エッジに向きがないものを<b>無向グラフ</b>と呼びます。友人関係のように「たがいに」つながる関係です。いっぽう、向きがあるものを<b>有向グラフ</b>と呼びます。フォロー関係や引用のように「AからBへ」という一方向の関係です。エッジに数値（距離・重み・回数など）を付けたものは<b>重み付きグラフ</b>です。</p>
-      <h4>隣接行列と隣接リスト</h4>
-      <p>グラフをコンピュータで表す代表的な方法が2つあります。<b>隣接行列</b>は、ノード数を n として n×n の表を作り、ノード i とノード j がつながっていれば 1（重み付きなら重み）を書きます。<b>隣接リスト</b>は、各ノードについて「つながっている相手の一覧」を持ちます。エッジが少ない（疎な）グラフでは、隣接リストのほうが省メモリで効率的です。</p>
-      <h4>次数（degree）</h4>
-      <p>あるノードにつながっているエッジの本数を<b>次数</b>と呼びます。無向グラフでは単に本数ですが、有向グラフでは、入ってくるエッジの数を<b>入次数（in-degree）</b>、出ていくエッジの数を<b>出次数（out-degree）</b>と区別します。次数は「そのノードが何本の線を持つか」という、もっとも素朴な重要度の目安になります。</p>
-      <h4>密度（density）</h4>
-      <p>ネットワーク全体が「どれくらい密につながっているか」を表すのが<b>密度</b>です。実際にあるエッジ数を、あり得る最大のエッジ数で割った値で、0（線がまったくない）から 1（すべてのノードが互いにつながる完全グラフ）までの範囲を取ります。無向グラフでは次の式です。</p>
-    </div>
-    <div class="formula">
-      density <span class="op">=</span> 2m <span class="op">/</span> ( n ( n <span class="op">-</span> 1 ) )
-      <small>m: エッジ数　n: ノード数（無向グラフの場合）<br>あり得る最大エッジ数 n(n-1)/2 のうち、実際に何本あるかの割合です。</small>
-    </div>
-
-    <!-- DEMO 1: graph & degree -->
-    <div class="demo reveal" id="demoDeg">
-      <span class="dtag"><span lang="ja">デモ 1</span><span lang="en">Demo 1</span></span>
-      <h4>グラフと次数</h4>
-      <p class="dnote">プリセットのグラフを表示します。ノードをクリックすると、そのノードにつながるエッジ（次数）と隣接ノードを強調し、次数中心性を計算します。上のボタンでグラフを切り替えられます。もう一度クリックすると選択が解除されます。</p>
-      <div class="try">
-        <span class="tlbl">グラフ</span>
-        <button type="button" data-graph="friends">交友グラフ（7ノード）</button>
-        <button type="button" data-graph="star">スターグラフ（6ノード）</button>
-      </div>
-      <div id="d1graph" style="margin-top:14px"></div>
-      <div class="demo-out" id="d1out" aria-live="polite"></div>
-    </div>
-
-    <p class="layer"><span lang="ja">コードで動かす</span><span lang="en">Run the code</span></p>
-    <div class="prose">
-      <p>Python では <code>NetworkX</code> が定番です。ノードとエッジを足していくだけでグラフができ、次数や密度もすぐに取れます。デモと同じ7ノードのグラフ（A から G）を作ってみましょう。</p>
+      <p>生の履歴のままでは分析しづらいので、pandas でファイル単位に集計します。ここでは学習しやすいように Python ファイル（<code>.py</code>）だけに絞り、パスが取れない変更（削除など）を除きます。そのうえで、各ファイルについて次の特徴量を作ります。</p>
+      <ul>
+        <li><b>changes</b>：そのファイルが変更されたコミット数（変更回数）。ホットスポットの目安になります。</li>
+        <li><b>churn</b>：コードチャーン。追加行と削除行の合計で、変更の量を表します。</li>
+        <li><b>authors</b>：そのファイルに関与した作者の数。多いほど所有が分散しています。</li>
+      </ul>
     </div>
     <div class="code-wrap attached">
-      <div class="code-head"><span class="lbl">Python</span><span class="lang-tag">build_graph.py</span><button class="copy" type="button" onclick="copyCode(this)">copy</button></div>
-      <pre><code><span class="kw">import</span> networkx <span class="kw">as</span> nx
+      <div class="code-head"><span class="lbl">Python</span><span class="lang-tag">build_features.py</span><button class="copy" type="button" onclick="copyCode(this)">copy</button></div>
+      <pre><code><span class="cm"># パスが取れない変更を除き、Pythonファイルに絞る</span>
+df = df[df[<span class="st">"file"</span>].notna()]
+df = df[df[<span class="st">"file"</span>].str.endswith(<span class="st">".py"</span>)]
 
-G = nx.Graph()
-<span class="kw">for</span> u, v <span class="kw">in</span> [(<span class="st">"A"</span>, <span class="st">"B"</span>), (<span class="st">"A"</span>, <span class="st">"C"</span>), (<span class="st">"B"</span>, <span class="st">"C"</span>), (<span class="st">"C"</span>, <span class="st">"D"</span>),
-             (<span class="st">"D"</span>, <span class="st">"E"</span>), (<span class="st">"D"</span>, <span class="st">"F"</span>), (<span class="st">"E"</span>, <span class="st">"F"</span>), (<span class="st">"F"</span>, <span class="st">"G"</span>)]:
-    G.add_edge(u, v)
+<span class="cm"># コードチャーン = 追加行 + 削除行</span>
+df[<span class="st">"churn"</span>] = df[<span class="st">"added"</span>] + df[<span class="st">"deleted"</span>]
 
-<span class="kw">print</span>(G.number_of_nodes(), G.number_of_edges())
-<span class="kw">print</span>(dict(G.degree()))
-<span class="kw">print</span>(round(nx.density(G), <span class="nu">3</span>))</code></pre>
-    </div>
-    <div class="code-out"><span class="olbl">出力例 / Output</span><pre><code>7 8
-{'A': 2, 'B': 2, 'C': 3, 'D': 3, 'E': 2, 'F': 3, 'G': 1}
-0.381</code></pre></div>
+<span class="cm"># ファイル単位に集計して特徴量表にする</span>
+feat = df.groupby(<span class="st">"file"</span>).agg(
+    changes=(<span class="st">"commit"</span>, <span class="st">"nunique"</span>),
+    churn=(<span class="st">"churn"</span>, <span class="st">"sum"</span>),
+    authors=(<span class="st">"author"</span>, <span class="st">"nunique"</span>),
+).reset_index()
 
-    <div class="prose">
-      <p>有向グラフでは <code>DiGraph</code> を使い、入次数と出次数を区別できます。</p>
+feat = feat.sort_values(<span class="st">"changes"</span>, ascending=<span class="kw">False</span>)
+<span class="kw">print</span>(feat.head())</code></pre>
     </div>
-    <div class="code-wrap attached">
-      <div class="code-head"><span class="lbl">Python</span><span class="lang-tag">directed.py</span><button class="copy" type="button" onclick="copyCode(this)">copy</button></div>
-      <pre><code><span class="cm"># 有向グラフでは入次数と出次数を区別する</span>
-D = nx.DiGraph()
-D.add_edges_from([(<span class="st">"A"</span>, <span class="st">"B"</span>), (<span class="st">"B"</span>, <span class="st">"C"</span>), (<span class="st">"A"</span>, <span class="st">"C"</span>)])
-<span class="kw">print</span>(dict(D.in_degree()))
-<span class="kw">print</span>(dict(D.out_degree()))</code></pre>
-    </div>
-    <div class="code-out"><span class="olbl">出力例 / Output</span><pre><code>{'A': 0, 'B': 1, 'C': 2}
-{'A': 2, 'B': 1, 'C': 0}</code></pre></div>
+    <div class="code-out"><span class="olbl">出力例 / Output</span><pre><code>                          file  changes  churn  authors
+0      pydriller/repository.py      146   4820       18
+1             pydriller/git.py       98   3110       15
+2   pydriller/domain/commit.py       74   2185       12
+3     tests/test_repository.py       61   1740        9
+4      pydriller/utils/conf.py       37    690        6</code></pre></div>
 
     <div class="callout tip">
       <h4>この Step のまとめ</h4>
-      <p>グラフはノードとエッジの組。有向/無向・重みの有無で表し方が変わり、隣接行列や隣接リストで保持します。もっとも基本の量が<b>次数</b>で、そこから全体の<b>密度</b>もわかります。次はこの上で「どのノードが重要か」を測ります。</p>
+      <p>長い表を <code>groupby</code> でファイル単位に畳み込み、changes・churn・authors という3つの特徴量にしました。上位のファイルは変更回数もチャーンも大きく、直感とも合います。次に、ファイル同士の「つながり」を特徴量に加えます。</p>
     </div>
   </div>
 </section>
@@ -900,92 +915,53 @@ D.add_edges_from([(<span class="st">"A"</span>, <span class="st">"B"</span>), (<
   <div class="wrap reveal">
     <div class="stephead">
       <span class="num">3</span>
-      <div class="tt"><h2>重要なノードを測る（中心性）</h2><span class="st-en">Centrality</span></div>
+      <div class="tt"><h2>ネットワーク分析：共変更の結び目を測る</h2><span class="st-en">Co-change network</span></div>
     </div>
     <div class="steprule"></div>
 
-    <p class="layer first"><span lang="ja">概要</span><span lang="en">Overview</span></p>
+    <p class="layer first"><span lang="ja">何を・なぜ</span><span lang="en">What &amp; why</span></p>
     <div class="prose">
-      <p>ネットワークで「どのノードが重要か」を数値化するのが<b>中心性（centrality）</b>です。ただし「重要」の意味は一通りではありません。つながりの多さが大事な場面もあれば、集団と集団の橋渡しをする役割が大事な場面もあります。目的に応じて指標を使い分けます。代表的な4つを見ていきましょう。</p>
-    </div>
-
-    <p class="layer"><span lang="ja">仕組み</span><span lang="en">How it works</span></p>
-    <div class="prose">
-      <h4>次数中心性（degree centrality）</h4>
-      <p>もっとも単純で、<b>つながっている相手の多さ</b>をそのまま重要度とします。比較しやすいよう、次数を「あり得る最大の次数 n-1」で割って 0 から 1 に正規化します。SNS でフォロワーが多い人、といったイメージです。</p>
-    </div>
-    <div class="formula">
-      C<sub>D</sub>(v) <span class="op">=</span> deg(v) <span class="op">/</span> ( n <span class="op">-</span> 1 )
-      <small>deg(v): ノード v の次数　n: ノード数</small>
-    </div>
-    <div class="prose">
-      <h4>媒介中心性（betweenness centrality）</h4>
-      <p>ノードが<b>どれだけ「橋渡し」をしているか</b>を測ります。すべてのノード対の最短経路を考え、そのうち何割が自分を通るかを合計します。集団と集団をつなぐ位置にあるノードは、次数が少なくても媒介中心性が高くなります。情報や物の流れの「関所」にあたる重要な役割です。</p>
-    </div>
-    <div class="formula">
-      C<sub>B</sub>(v) <span class="op">=</span> &Sigma;<sub>s&ne;v&ne;t</sub> &sigma;<sub>st</sub>(v) <span class="op">/</span> &sigma;<sub>st</sub>
-      <small>&sigma;<sub>st</sub>: ノード s と t の間の最短経路の数　&sigma;<sub>st</sub>(v): そのうち v を通る本数</small>
-    </div>
-    <div class="prose">
-      <h4>近接中心性（closeness centrality）</h4>
-      <p>あるノードから<b>他のすべてのノードへ、どれだけ近いか</b>を測ります。最短距離の合計が小さいほど、ネットワークの「中心」に近いと考えます。全体へ素早く到達できる位置にあるノードほど高くなります。</p>
-    </div>
-    <div class="formula">
-      C<sub>C</sub>(v) <span class="op">=</span> ( n <span class="op">-</span> 1 ) <span class="op">/</span> &Sigma;<sub>u</sub> d(v, u)
-      <small>d(v, u): ノード v から u への最短距離　合計は v 以外のすべての u について取る</small>
-    </div>
-    <div class="prose">
-      <h4>固有ベクトル中心性と PageRank</h4>
-      <p>「重要なノードにつながっているノードは重要」という再帰的な考え方が<b>固有ベクトル中心性</b>です。つながりの数だけでなく、<b>つながる相手の重要度</b>まで考慮します。これを有向グラフ（Web のリンクなど）向けに改良し、実用的にしたのが <b>PageRank</b> です。Google の初期の検索順位づけで有名になりました。多くの重要なページからリンクされるページほど、高いスコアになります。</p>
-      <p>これらの指標は、同じグラフでも「誰が重要か」の答えが変わります。次のデモで、指標を切り替えながらその違いを体感してみましょう。</p>
-    </div>
-
-    <!-- DEMO 2: centrality ranking -->
-    <div class="demo reveal" id="demoCent">
-      <span class="dtag"><span lang="ja">デモ 2</span><span lang="en">Demo 2</span></span>
-      <h4>中心性ランキング</h4>
-      <p class="dnote">Step 2 と同じ交友グラフ（7ノード）に対して、指標を選ぶと各ノードの中心性スコアを計算し、高い順にランキングします。グラフ上のノードは、色が濃いほどスコアが高いことを表します。指標によって「重要なノード」が入れ替わることに注目してください。</p>
-      <div class="try">
-        <span class="tlbl">指標</span>
-        <button type="button" data-metric="degree">次数中心性</button>
-        <button type="button" data-metric="betweenness">媒介中心性</button>
-        <button type="button" data-metric="closeness">近接中心性</button>
-      </div>
-      <div id="d2graph" style="margin-top:14px"></div>
-      <div class="demo-out" id="d2out" aria-live="polite"></div>
-    </div>
-
-    <p class="layer"><span lang="ja">コードで動かす</span><span lang="en">Run the code</span></p>
-    <div class="prose">
-      <p>NetworkX には主要な中心性がひととおり用意されています。同じグラフに対して4つの指標を計算し、見やすいよう小数第3位で丸めて表示します。</p>
+      <p>ファイルは単独で変わるだけでなく、しばしば一緒に変わります。仕様変更で本体とテストが同時に直る、といった具合です。<b>同じコミットで一緒に変更されたファイル同士を辺で結ぶ</b>と、プロジェクトの構造を映すネットワークができます。これを<b>共変更ネットワーク（co-change network）</b>と呼びます。</p>
+      <p>NetworkX でこのグラフを作り、各ファイルの<b>次数中心性</b>（多くのファイルと共に変わるほど高い）と<b>媒介中心性</b>（異なる部分をつなぐ橋になっているほど高い）を測ります。中心性が高いファイルは、変更の影響が広がりやすい「結び目」です。</p>
     </div>
     <div class="code-wrap attached">
-      <div class="code-head"><span class="lbl">Python</span><span class="lang-tag">centrality.py</span><button class="copy" type="button" onclick="copyCode(this)">copy</button></div>
+      <div class="code-head"><span class="lbl">Python</span><span class="lang-tag">cochange_network.py</span><button class="copy" type="button" onclick="copyCode(this)">copy</button></div>
       <pre><code><span class="kw">import</span> networkx <span class="kw">as</span> nx
+<span class="kw">from</span> itertools <span class="kw">import</span> combinations
 
+<span class="cm"># 同じコミットで一緒に変わったファイルを辺で結ぶ</span>
 G = nx.Graph()
-G.add_edges_from([(<span class="st">"A"</span>, <span class="st">"B"</span>), (<span class="st">"A"</span>, <span class="st">"C"</span>), (<span class="st">"B"</span>, <span class="st">"C"</span>), (<span class="st">"C"</span>, <span class="st">"D"</span>),
-                  (<span class="st">"D"</span>, <span class="st">"E"</span>), (<span class="st">"D"</span>, <span class="st">"F"</span>), (<span class="st">"E"</span>, <span class="st">"F"</span>), (<span class="st">"F"</span>, <span class="st">"G"</span>)])
+<span class="kw">for</span> commit, grp <span class="kw">in</span> df.groupby(<span class="st">"commit"</span>):
+    files = sorted(grp[<span class="st">"file"</span>].unique())
+    <span class="kw">for</span> a, b <span class="kw">in</span> combinations(files, <span class="nu">2</span>):
+        <span class="kw">if</span> G.has_edge(a, b):
+            G[a][b][<span class="st">"weight"</span>] += <span class="nu">1</span>
+        <span class="kw">else</span>:
+            G.add_edge(a, b, weight=<span class="nu">1</span>)
 
-<span class="kw">def</span> show(d):
-    <span class="kw">return</span> {k: round(v, <span class="nu">3</span>) <span class="kw">for</span> k, v <span class="kw">in</span> d.items()}
+<span class="cm"># 次数中心性と媒介中心性</span>
+degree = nx.degree_centrality(G)
+between = nx.betweenness_centrality(G)
 
-<span class="kw">print</span>(show(nx.degree_centrality(G)))
-<span class="kw">print</span>(show(nx.betweenness_centrality(G)))
-<span class="kw">print</span>(show(nx.closeness_centrality(G)))
-<span class="kw">print</span>(show(nx.pagerank(G)))</code></pre>
+cent = pd.DataFrame({
+    <span class="st">"file"</span>: list(degree.keys()),
+    <span class="st">"degree"</span>: list(degree.values()),
+    <span class="st">"betweenness"</span>: [between[f] <span class="kw">for</span> f <span class="kw">in</span> degree],
+})
+<span class="kw">print</span>(<span class="st">"nodes:"</span>, G.number_of_nodes(), <span class="st">"edges:"</span>, G.number_of_edges())
+<span class="kw">print</span>(cent.sort_values(<span class="st">"betweenness"</span>, ascending=<span class="kw">False</span>).head())</code></pre>
     </div>
-    <div class="code-out"><span class="olbl">出力例 / Output</span><pre><code>{'A': 0.333, 'B': 0.333, 'C': 0.5, 'D': 0.5, 'E': 0.333, 'F': 0.5, 'G': 0.167}
-{'A': 0.0, 'B': 0.0, 'C': 0.533, 'D': 0.6, 'E': 0.0, 'F': 0.333, 'G': 0.0}
-{'A': 0.429, 'B': 0.429, 'C': 0.6, 'D': 0.667, 'E': 0.5, 'F': 0.545, 'G': 0.375}
-{'A': 0.125, 'B': 0.125, 'C': 0.179, 'D': 0.179, 'E': 0.126, 'F': 0.19, 'G': 0.075}</code></pre></div>
-    <div class="prose">
-      <p>結果を見比べると面白いことがわかります。次数では C・D・F が同点ですが、<b>媒介中心性では D が最大</b>（左右の集団をつなぐ橋渡し）、<b>近接中心性でも D が最大</b>（全体の中心）です。いっぽう PageRank では、末端の G から流れ込むぶんだけ <b>F が少し高く</b>なります。「重要さ」は測り方しだいなのです。</p>
-    </div>
+    <div class="code-out"><span class="olbl">出力例 / Output</span><pre><code>nodes: 214 edges: 1180
+                          file    degree  betweenness
+0      pydriller/repository.py  0.375587     0.284120
+1             pydriller/git.py  0.286385     0.176433
+2   pydriller/domain/commit.py  0.234742     0.121876
+3     tests/test_repository.py  0.187793     0.058291
+4      pydriller/scm/commit.py  0.145540     0.041020</code></pre></div>
 
     <div class="callout tip">
       <h4>この Step のまとめ</h4>
-      <p>中心性は「重要なノード」を数値化する道具。次数は多さ、媒介は橋渡し、近接は全体への近さ、PageRank は重要な相手からのつながりを重く見ます。目的に合った指標を選ぶことが肝心です。</p>
+      <p>共変更ネットワークを作り、次数中心性と媒介中心性で「結び目」になるファイルを数値化しました。中心性が高いファイルは、変更回数の多いファイルと重なりがちですが、完全には一致しません。この差が、次の機械学習で効いてきます。</p>
     </div>
   </div>
 </section>
@@ -995,73 +971,66 @@ G.add_edges_from([(<span class="st">"A"</span>, <span class="st">"B"</span>), (<
   <div class="wrap reveal">
     <div class="stephead">
       <span class="num">4</span>
-      <div class="tt"><h2>まとまりを見つける（コミュニティ検出）</h2><span class="st-en">Community detection</span></div>
+      <div class="tt"><h2>機械学習：ホットスポットを予測する</h2><span class="st-en">Predict the hotspots</span></div>
     </div>
     <div class="steprule"></div>
 
-    <p class="layer first"><span lang="ja">概要</span><span lang="en">Overview</span></p>
+    <p class="layer first"><span lang="ja">何を・なぜ</span><span lang="en">What &amp; why</span></p>
     <div class="prose">
-      <p>大きなネットワークには、<b>内部が密につながった集団</b>がしばしば潜んでいます。友人グループ、研究分野、機能ごとのモジュール群などです。こうしたまとまりを見つけ出すのが<b>コミュニティ検出（community detection）</b>です。全体をいくつかのグループに分け、構造を理解しやすくします。</p>
-    </div>
-
-    <p class="layer"><span lang="ja">仕組み</span><span lang="en">How it works</span></p>
-    <div class="prose">
-      <h4>連結成分</h4>
-      <p>もっとも素朴なまとまりが<b>連結成分（connected component）</b>です。エッジをたどって互いに行き来できるノードの集まりで、グラフが「いくつの島に分かれているか」を表します。まず全体がひとつながりかどうかを確かめるのが出発点です。</p>
-      <h4>モジュラリティ</h4>
-      <p>連結成分よりも細かく「密なまとまり」を見つけるには、分割の良さを測るものさしが要ります。定番が<b>モジュラリティ（modularity）</b>です。コミュニティの内部にエッジが多く、コミュニティ間のエッジが少ないほど値が大きくなります。よい分割ほどモジュラリティが高い、という考え方です。</p>
-    </div>
-    <div class="formula">
-      Q <span class="op">=</span> &Sigma;<sub>c</sub> ( e<sub>cc</sub> <span class="op">-</span> a<sub>c</sub><sup>2</sup> )
-      <small>e<sub>cc</sub>: コミュニティ c の内部にあるエッジの割合　a<sub>c</sub>: c につながるエッジ端の割合<br>実際の内部エッジが、ランダムな場合の期待値をどれだけ上回るかを足し合わせます。</small>
-    </div>
-    <div class="prose">
-      <h4>コミュニティ検出の手法</h4>
-      <p>モジュラリティを手がかりに分割を探す代表的な手法があります。<b>ガーバン・ニューマン法</b>は、橋渡しをするエッジ（媒介の高いエッジ）を少しずつ取り除いてコミュニティを浮かび上がらせます。<b>Louvain 法</b>は、モジュラリティが上がるようにノードをまとめていく高速な手法で、大規模なネットワークでもよく使われます。NetworkX の <code>greedy_modularity_communities</code> は、モジュラリティを貪欲に最大化する手法です。</p>
-      <h4>クラスタリング係数</h4>
-      <p>「友達の友達は友達か」という、まとまりやすさの局所的な指標が<b>クラスタリング係数</b>です。あるノードの隣どうしが、実際にどれだけ互いにつながっているかの割合で、社会ネットワークでは高くなりがちです。ネットワーク全体で平均したものを平均クラスタリング係数と呼びます。</p>
-    </div>
-
-    <p class="layer"><span lang="ja">コードで動かす</span><span lang="en">Run the code</span></p>
-    <div class="prose">
-      <p>まず、島が2つに分かれた小さなグラフで連結成分を確かめます。</p>
+      <p>ここまでに作った特徴量（チャーン・作者数・次数中心性・媒介中心性）を1つの表にまとめ、機械学習でホットスポットを分類します。まず「ホットスポット」を定義します。ここでは<b>変更回数が上位25%のファイルを正例（1）</b>とします。</p>
+      <p>注意点が1つあります。ラベルの定義に使った<b>変更回数そのものは特徴量に入れません</b>。入れると答えを直接見せることになり、意味のある予測になりません。そこで残りの特徴量から予測できるかを試します。<code>train_test_split</code> で学習用と検証用に分け、<code>RandomForestClassifier</code> で分類し、<code>classification_report</code> で適合率・再現率・F値を確認します。</p>
     </div>
     <div class="code-wrap attached">
-      <div class="code-head"><span class="lbl">Python</span><span class="lang-tag">components.py</span><button class="copy" type="button" onclick="copyCode(this)">copy</button></div>
-      <pre><code><span class="kw">import</span> networkx <span class="kw">as</span> nx
+      <div class="code-head"><span class="lbl">Python</span><span class="lang-tag">predict_hotspots.py</span><button class="copy" type="button" onclick="copyCode(this)">copy</button></div>
+      <pre><code><span class="kw">from</span> sklearn.model_selection <span class="kw">import</span> train_test_split
+<span class="kw">from</span> sklearn.ensemble <span class="kw">import</span> RandomForestClassifier
+<span class="kw">from</span> sklearn.metrics <span class="kw">import</span> classification_report
 
-H = nx.Graph()
-H.add_edges_from([(<span class="st">"A"</span>, <span class="st">"B"</span>), (<span class="st">"B"</span>, <span class="st">"C"</span>), (<span class="st">"D"</span>, <span class="st">"E"</span>)])
-<span class="kw">print</span>(nx.number_connected_components(H))
-<span class="kw">print</span>([sorted(c) <span class="kw">for</span> c <span class="kw">in</span> nx.connected_components(H)])</code></pre>
+<span class="cm"># 中心性を特徴量表に結合（単独変更のファイルは中心性0で補完）</span>
+data = feat.merge(cent, on=<span class="st">"file"</span>, how=<span class="st">"left"</span>).fillna(<span class="nu">0</span>)
+
+<span class="cm"># ラベル: 変更回数が上位25%のファイルをホットスポット(1)</span>
+threshold = data[<span class="st">"changes"</span>].quantile(<span class="nu">0.75</span>)
+data[<span class="st">"hotspot"</span>] = (data[<span class="st">"changes"</span>] &gt;= threshold).astype(int)
+
+<span class="cm"># 変更回数そのものは特徴量に入れない（ラベルの定義に使ったため）</span>
+X = data[[<span class="st">"churn"</span>, <span class="st">"authors"</span>, <span class="st">"degree"</span>, <span class="st">"betweenness"</span>]]
+y = data[<span class="st">"hotspot"</span>]
+
+X_train, X_test, y_train, y_test = train_test_split(
+    X, y, test_size=<span class="nu">0.3</span>, random_state=<span class="nu">42</span>, stratify=y)
+
+clf = RandomForestClassifier(n_estimators=<span class="nu">300</span>, random_state=<span class="nu">42</span>)
+clf.fit(X_train, y_train)
+pred = clf.predict(X_test)
+
+<span class="kw">print</span>(classification_report(y_test, pred))
+<span class="cm"># どの特徴量が効いたか</span>
+<span class="kw">for</span> name, imp <span class="kw">in</span> sorted(zip(X.columns, clf.feature_importances_),
+                        key=<span class="kw">lambda</span> t: t[<span class="nu">1</span>], reverse=<span class="kw">True</span>):
+    <span class="kw">print</span>(<span class="st">f"{name:12s} {imp:.3f}"</span>)</code></pre>
     </div>
-    <div class="code-out"><span class="olbl">出力例 / Output</span><pre><code>2
-[['A', 'B', 'C'], ['D', 'E']]</code></pre></div>
+    <div class="code-out"><span class="olbl">出力例 / Output</span><pre><code>              precision    recall  f1-score   support
+
+           0       0.90      0.94      0.92        48
+           1       0.79      0.69      0.73        16
+
+    accuracy                           0.88        64
+   macro avg       0.84      0.81      0.83        64
+weighted avg       0.87      0.88      0.87        64
+
+churn        0.462
+degree       0.281
+betweenness  0.171
+authors      0.086</code></pre></div>
 
     <div class="prose">
-      <p>次に、実在の公開データ <b>Zachary の空手クラブ</b>（34人の会員と、その交友関係からなる有名なネットワーク）で、コミュニティ検出とクラスタリング係数を試します。NetworkX に内蔵されているので、ダウンロード不要です。</p>
-    </div>
-    <div class="code-wrap attached">
-      <div class="code-head"><span class="lbl">Python</span><span class="lang-tag">communities.py</span><button class="copy" type="button" onclick="copyCode(this)">copy</button></div>
-      <pre><code>G = nx.karate_club_graph()          <span class="cm"># 実在の空手クラブ・ネットワーク</span>
-<span class="kw">print</span>(nx.number_connected_components(G))   <span class="cm"># 全体はひとつながり</span>
-
-comms = nx.community.greedy_modularity_communities(G)
-<span class="kw">print</span>(len(comms))                          <span class="cm"># 見つかったコミュニティ数</span>
-<span class="kw">print</span>(round(nx.community.modularity(G, comms), <span class="nu">4</span>))
-<span class="kw">print</span>(round(nx.average_clustering(G), <span class="nu">4</span>))</code></pre>
-    </div>
-    <div class="code-out"><span class="olbl">出力例 / Output</span><pre><code>1
-3
-0.3807
-0.5706</code></pre></div>
-    <div class="prose">
-      <p>34人のネットワークが3つのコミュニティに分かれ、その分割のモジュラリティは約 0.38、平均クラスタリング係数は約 0.57 でした。空手クラブは実際に2つの派閥に分裂した歴史があり、こうした構造がデータからも読み取れます。</p>
+      <p>正例（ホットスポット）は少数派なので、多数派の負例より当てるのが難しく、再現率がやや低く出ています。特徴量の重要度を見ると、チャーンが最も効き、次いで共変更の次数中心性が効いています。つまり「よく書き換えられ、多くのファイルと一緒に変わる」ファイルほどホットスポットになりやすい、という素直な傾向が読み取れます。</p>
     </div>
 
     <div class="callout tip">
       <h4>この Step のまとめ</h4>
-      <p>コミュニティ検出は「密なまとまり」を見つける道具。連結成分でまず島の数を数え、モジュラリティを手がかりに Louvain 法などで細かく分割します。クラスタリング係数は「友達の友達は友達か」という局所的なまとまりやすさを表します。</p>
+      <p>4つの特徴量からホットスポットを分類し、評価指標で性能を確かめました。ネットワーク由来の中心性が予測に寄与している点が、複数の技術をつないだ効果です。<code>LogisticRegression</code> に差し替えて比べるのも良い練習になります。</p>
     </div>
   </div>
 </section>
@@ -1071,78 +1040,41 @@ comms = nx.community.greedy_modularity_communities(G)
   <div class="wrap reveal">
     <div class="stephead">
       <span class="num">5</span>
-      <div class="tt"><h2>経路と全体の構造</h2><span class="st-en">Paths &amp; structure</span></div>
+      <div class="tt"><h2>可視化：分布とネットワークを眺める</h2><span class="st-en">Visualize</span></div>
     </div>
     <div class="steprule"></div>
 
-    <p class="layer first"><span lang="ja">概要</span><span lang="en">Overview</span></p>
+    <p class="layer first"><span lang="ja">何を・なぜ</span><span lang="en">What &amp; why</span></p>
     <div class="prose">
-      <p>ネットワークの「近さ」や「広がり」は、ノードからノードへたどる<b>経路</b>で測ります。とくに大切なのが、あいだのエッジ数が最小の<b>最短経路</b>です。最短経路がわかると、ネットワーク全体がどれくらいコンパクトか、どんな大きな構造を持つかまで見えてきます。</p>
-    </div>
-
-    <p class="layer"><span lang="ja">仕組み</span><span lang="en">How it works</span></p>
-    <div class="prose">
-      <h4>最短経路（BFS とダイクストラ）</h4>
-      <p>重みのないグラフでは、<b>幅優先探索（BFS: breadth-first search）</b>で最短経路を求められます。始点から近い順に、波が広がるようにノードを訪れていくので、初めて終点に届いたときの経路が最短です。エッジに重み（距離など）があるグラフでは、<b>ダイクストラ法</b>を使います。次のデモは BFS で、始点から終点までの最短経路をたどります。</p>
-      <h4>直径と平均経路長</h4>
-      <p>すべてのノード対について最短距離を求めると、ネットワーク全体の広がりがわかります。最短距離の最大値を<b>直径（diameter）</b>、平均を<b>平均経路長</b>と呼びます。直径が小さいほど、ネットワークは「どこからどこへも近い」コンパクトな形です。</p>
-      <h4>スモールワールドとスケールフリー</h4>
-      <p>現実の多くのネットワークには、共通する2つの性質が見られます。ひとつは<b>スモールワールド性</b>で、巨大なネットワークでも、ごく少ないステップで任意の2ノードがつながります。「六次の隔たり」で知られる性質です。もうひとつは<b>スケールフリー性</b>で、次数の分布が<b>べき則（power law）</b>に従い、ごく一部の「ハブ」が飛び抜けて多くのつながりを持ちます。SNS や Web、引用ネットワークなどで観察されます。</p>
-    </div>
-
-    <!-- DEMO 3: shortest path -->
-    <div class="demo reveal" id="demoPath">
-      <span class="dtag"><span lang="ja">デモ 3</span><span lang="en">Demo 3</span></span>
-      <h4>最短経路（BFS）</h4>
-      <p class="dnote">Step 2 と同じ交友グラフで、始点と終点を選ぶと、BFS（幅優先探索）で最短経路を求め、グラフ上に太い線で示します。始点と終点は濃い緑、経路上のノードは薄い緑で表示します。経路の長さ（エッジの数）が最短距離です。</p>
-      <div class="two">
-        <div>
-          <label class="fld" for="pathStart">始点 / Start</label>
-          <select id="pathStart" style="width:100%;padding:11px 14px;border-radius:12px;border:1px solid var(--hair);background:var(--bg);color:var(--ink);font:500 .95rem/1 var(--mono);cursor:pointer">
-            <option value="A" selected>A</option><option value="B">B</option><option value="C">C</option>
-            <option value="D">D</option><option value="E">E</option><option value="F">F</option><option value="G">G</option>
-          </select>
-        </div>
-        <div>
-          <label class="fld" for="pathEnd">終点 / End</label>
-          <select id="pathEnd" style="width:100%;padding:11px 14px;border-radius:12px;border:1px solid var(--hair);background:var(--bg);color:var(--ink);font:500 .95rem/1 var(--mono);cursor:pointer">
-            <option value="A">A</option><option value="B">B</option><option value="C">C</option>
-            <option value="D">D</option><option value="E">E</option><option value="F">F</option><option value="G" selected>G</option>
-          </select>
-        </div>
-      </div>
-      <div id="d3graph" style="margin-top:16px"></div>
-      <div class="demo-out" id="d3out" aria-live="polite"></div>
-    </div>
-
-    <p class="layer"><span lang="ja">コードで動かす</span><span lang="en">Run the code</span></p>
-    <div class="prose">
-      <p>NetworkX なら、最短経路も全体の構造も一行ずつで求まります。デモと同じグラフで確かめましょう。</p>
+      <p>数値だけでなく、図でも確かめます。変更回数の分布を見ると、少数のファイルに変更が集中する<b>ロングテール</b>になっているはずです。共変更ネットワークの中心部分を描くと、中心性の高いファイルが実際に多くの辺を集めている様子が見えます。matplotlib と NetworkX の描画関数で描きます。</p>
     </div>
     <div class="code-wrap attached">
-      <div class="code-head"><span class="lbl">Python</span><span class="lang-tag">paths.py</span><button class="copy" type="button" onclick="copyCode(this)">copy</button></div>
-      <pre><code><span class="kw">import</span> networkx <span class="kw">as</span> nx
+      <div class="code-head"><span class="lbl">Python</span><span class="lang-tag">visualize.py</span><button class="copy" type="button" onclick="copyCode(this)">copy</button></div>
+      <pre><code><span class="kw">import</span> matplotlib.pyplot <span class="kw">as</span> plt
 
-G = nx.Graph()
-G.add_edges_from([(<span class="st">"A"</span>, <span class="st">"B"</span>), (<span class="st">"A"</span>, <span class="st">"C"</span>), (<span class="st">"B"</span>, <span class="st">"C"</span>), (<span class="st">"C"</span>, <span class="st">"D"</span>),
-                  (<span class="st">"D"</span>, <span class="st">"E"</span>), (<span class="st">"D"</span>, <span class="st">"F"</span>), (<span class="st">"E"</span>, <span class="st">"F"</span>), (<span class="st">"F"</span>, <span class="st">"G"</span>)])
+fig, ax = plt.subplots(<span class="nu">1</span>, <span class="nu">2</span>, figsize=(<span class="nu">11</span>, <span class="nu">4</span>))
 
-<span class="kw">print</span>(nx.shortest_path(G, <span class="st">"A"</span>, <span class="st">"G"</span>))
-<span class="kw">print</span>(nx.shortest_path_length(G, <span class="st">"A"</span>, <span class="st">"G"</span>))
-<span class="kw">print</span>(nx.diameter(G))
-<span class="kw">print</span>(round(nx.average_shortest_path_length(G), <span class="nu">3</span>))</code></pre>
+<span class="cm"># 左: ファイルごとの変更回数の分布（ロングテール）</span>
+ax[<span class="nu">0</span>].hist(feat[<span class="st">"changes"</span>], bins=<span class="nu">30</span>, color=<span class="st">"#0E6F5C"</span>)
+ax[<span class="nu">0</span>].set_xlabel(<span class="st">"changes per file"</span>)
+ax[<span class="nu">0</span>].set_ylabel(<span class="st">"number of files"</span>)
+ax[<span class="nu">0</span>].set_title(<span class="st">"Change frequency"</span>)
+
+<span class="cm"># 右: 共変更ネットワークの中心部分（次数の高い上位30ノード）</span>
+top_nodes = [n <span class="kw">for</span> n, _ <span class="kw">in</span> sorted(G.degree,
+             key=<span class="kw">lambda</span> x: x[<span class="nu">1</span>], reverse=<span class="kw">True</span>)[:<span class="nu">30</span>]]
+H = G.subgraph(top_nodes)
+pos = nx.spring_layout(H, seed=<span class="nu">42</span>)
+nx.draw_networkx_nodes(H, pos, ax=ax[<span class="nu">1</span>], node_size=<span class="nu">120</span>, node_color=<span class="st">"#0E6F5C"</span>)
+nx.draw_networkx_edges(H, pos, ax=ax[<span class="nu">1</span>], edge_color=<span class="st">"#B7C0BB"</span>)
+ax[<span class="nu">1</span>].set_title(<span class="st">"Co-change network (top 30)"</span>)
+ax[<span class="nu">1</span>].axis(<span class="st">"off"</span>)
+
+plt.tight_layout()
+plt.show()</code></pre>
     </div>
-    <div class="code-out"><span class="olbl">出力例 / Output</span><pre><code>['A', 'C', 'D', 'F', 'G']
-4
-4
-2.048</code></pre></div>
     <div class="prose">
-      <p>A から G への最短経路は A → C → D → F → G の4ステップ、ネットワークの直径も4、平均経路長は約2.05でした。橋渡しの役割を担う C と D を必ず通っていることに注目してください。Step 3 で C と D の媒介中心性が高かったのは、まさにこのためです。</p>
-    </div>
-
-    <div class="callout tip">
-      <h4>この Step のまとめ</h4>
-      <p>ネットワークの「近さ」は最短経路で測り、重みがなければ BFS で求まります。全体の広がりは直径や平均経路長で表します。現実のネットワークには、少ないステップでつながる<b>スモールワールド性</b>と、一部のハブが偏って多くつながる<b>スケールフリー性</b>がよく見られます。</p>
+      <p>左のヒストグラムは、大半のファイルが数回しか変更されない一方で、ごく少数のファイルが飛び抜けて多く変更される、右に長い裾を引いた形になります。右のグラフでは、中央に位置する数個のノード（Step 3 で中心性が高かったファイル）に辺が集まり、周辺のファイルがそれらを介してつながる様子が見えます。図の見た目はレイアウトの乱数（<code>seed</code>）で変わりますが、構造の傾向は保たれます。</p>
     </div>
   </div>
 </section>
@@ -1152,41 +1084,75 @@ G.add_edges_from([(<span class="st">"A"</span>, <span class="st">"B"</span>), (<
   <div class="wrap reveal">
     <div class="stephead">
       <span class="num">6</span>
-      <div class="tt"><h2>可視化とこれから</h2><span class="st-en">Visualization &amp; what is next</span></div>
+      <div class="tt"><h2>考察：何が言えて、何に注意するか</h2><span class="st-en">Discussion &amp; caveats</span></div>
     </div>
     <div class="steprule"></div>
 
-    <p class="layer first"><span lang="ja">概要</span><span lang="en">Overview</span></p>
+    <p class="layer first"><span lang="ja">読み解き</span><span lang="en">Reading the result</span></p>
     <div class="prose">
-      <p>数値だけでなく、ネットワークは<b>絵</b>にすると理解が一気に進みます。ただし、ノードをどこに置くかで見え方が大きく変わります。よい配置（レイアウト）と、大規模なネットワークをどう扱うかが、可視化の鍵になります。</p>
+      <p>一連の分析から、このプロジェクトでは少数のファイルに変更が集中し、それらが共変更ネットワークの結び目にもなっていることが分かりました。ホットスポットは、チャーンの大きさと共変更の次数中心性からある程度予測でき、レビューやテスト、リファクタリングの投資先を選ぶ手がかりになります。単体のメトリクスだけでなく、ネットワーク由来の指標を足すと予測が補強される、というのがこの演習の要点です。</p>
     </div>
 
-    <p class="layer"><span lang="ja">仕組み</span><span lang="en">How it works</span></p>
-    <div class="prose">
-      <h4>レイアウト</h4>
-      <p>グラフ描画で広く使われるのが<b>力学モデル（force-directed layout）</b>です。エッジをばね、ノードどうしを反発する電荷に見立て、力がつり合う位置へノードを配置します。密につながったノードは近くに、そうでないノードは遠くに集まるので、コミュニティ構造が自然と見えてきます。</p>
-      <h4>大規模ネットワークと動的ネットワーク</h4>
-      <p>ノードが数万・数百万になると、すべてを描くと「毛玉」のようになり、かえって読み取れません。重要な部分だけを抜き出す、集約する、対話的に拡大縮小するといった工夫が要ります。専用ツールの <b>Gephi</b> や、Python の <b>igraph</b>・<b>graph-tool</b> は大きなグラフに向いています。また、つながりが時間とともに変わる<b>動的ネットワーク</b>を扱う研究も進んでいます。</p>
-      <h4>描画のコード</h4>
-      <p>小さなグラフなら、NetworkX と matplotlib で手軽に描けます。レイアウトを計算し、ノード・エッジ・ラベルを重ねて描画します。</p>
-    </div>
-    <div class="code-wrap attached">
-      <div class="code-head"><span class="lbl">Python</span><span class="lang-tag">draw_graph.py</span><button class="copy" type="button" onclick="copyCode(this)">copy</button></div>
-      <pre><code><span class="kw">import</span> networkx <span class="kw">as</span> nx
-<span class="kw">import</span> matplotlib.pyplot <span class="kw">as</span> plt
-
-G = nx.karate_club_graph()
-pos = nx.spring_layout(G, seed=<span class="nu">42</span>)     <span class="cm"># 力学モデル（force-directed）で配置</span>
-nx.draw_networkx_nodes(G, pos, node_size=<span class="nu">300</span>)
-nx.draw_networkx_edges(G, pos, alpha=<span class="nu">0.4</span>)
-nx.draw_networkx_labels(G, pos, font_size=<span class="nu">8</span>)
-plt.axis(<span class="st">"off"</span>)
-plt.savefig(<span class="st">"karate.png"</span>, dpi=<span class="nu">150</span>)</code></pre>
+    <p class="layer"><span lang="ja">注意点</span><span lang="en">Caveats</span></p>
+    <div class="grid2">
+      <div class="box lim">
+        <h5><span lang="ja">解釈の限界</span><span lang="en">Limits</span></h5>
+        <ul>
+          <li><b>相関であって因果ではない</b>：変更が多い＝悪いとは限らない。活発に育っている中心機能かもしれません。</li>
+          <li><b>tangled commit</b>：無関係な変更が1コミットに混ざると、共変更が過大に見えることがあります。</li>
+          <li><b>リネーム・移動</b>：ファイル名の変更で履歴が途切れ、変更回数を過小評価することがあります。</li>
+        </ul>
+      </div>
+      <div class="box">
+        <h5><span lang="ja">妥当性を高めるには</span><span lang="en">Toward validity</span></h5>
+        <ul>
+          <li>期間を区切って、最近の傾向と過去を分ける。</li>
+          <li>リネーム追跡を有効にして履歴のつながりを保つ。</li>
+          <li>不具合修正コミットと結びつけ、実際の欠陥と対応するか確かめる。</li>
+        </ul>
+      </div>
     </div>
 
-    <div class="callout tip">
-      <h4>この Step のまとめ</h4>
-      <p>可視化はレイアウトしだいで見え方が変わり、力学モデルはコミュニティ構造を自然に浮かび上がらせます。大規模・動的なネットワークには専用の道具と工夫が必要です。ここまでの「グラフ構築 → 指標 → まとまり → 経路 → 可視化」が、ネットワーク分析の基本の一巡です。</p>
+    <div class="callout warn">
+      <h4>数字を鵜呑みにしない</h4>
+      <p>ここで得た予測やランキングは、あくまで「見るべき場所の候補」です。最終的な判断には、コードの中身やチームの文脈を合わせて読む必要があります。メトリクスは会話の出発点であって、結論ではありません。</p>
+    </div>
+  </div>
+</section>
+
+<!-- EXTEND -->
+<section id="extend">
+  <div class="wrap reveal">
+    <p class="eyebrow"><span lang="ja">発展課題</span><span lang="en">Try more</span></p>
+    <h2 class="big">こう変えたら、どうなる？</h2>
+    <div class="prose" style="margin-top:22px">
+      <p>パイプラインができたら、少しずつ条件を変えて挙動を確かめましょう。答えは用意しません。手を動かして、数字がどう動くかを観察するのが目的です。</p>
+    </div>
+    <div class="res-grid reveal">
+      <div class="res">
+        <h5>別のリポジトリで試す</h5>
+        <ul>
+          <li><code>url</code> を別の小さな公開リポジトリに変えて走らせる。プロジェクトによってホットスポットの偏り方がどう違うかを比べる。</li>
+        </ul>
+      </div>
+      <div class="res">
+        <h5>期間で区切る</h5>
+        <ul>
+          <li><code>Repository(url, since=..., to=...)</code> で期間を絞り、直近1年と全期間で結果を比べる。ホットスポットは時期によって移り変わります。</li>
+        </ul>
+      </div>
+      <div class="res">
+        <h5>特徴量を足す</h5>
+        <ul>
+          <li>ファイルの平均コミット間隔、直近の変更からの経過日数、コメント行の割合などを加えて、予測が変わるかを見る。</li>
+        </ul>
+      </div>
+      <div class="res">
+        <h5>バグ修正を辿る</h5>
+        <ul>
+          <li>コミットメッセージから <code>fix</code> や <code>bug</code> を含むものを拾い、修正が集中するファイルを調べる。SZZ 的にバグ混入コミットまで遡るとさらに踏み込めます。</li>
+        </ul>
+      </div>
     </div>
   </div>
 </section>
@@ -1195,103 +1161,43 @@ plt.savefig(<span class="st">"karate.png"</span>, dpi=<span class="nu">150</span
 <section id="closing" class="soft-sec">
   <div class="wrap reveal">
     <p class="eyebrow"><span lang="ja">まとめ</span><span lang="en">Wrap-up</span></p>
-    <h2 class="big">学びの振り返りと、さらに学ぶために</h2>
+    <h2 class="big">つないで見えたもの、次へ</h2>
     <div class="prose" style="margin-top:22px">
-      <p>このモジュールでは、つながりを読み解く基本の道具を、パイプラインに沿って順に手に入れました。</p>
+      <p>この演習では、単体で学んだ4つの技術を1本のパイプラインにつなぎ、現実の OSS リポジトリからホットスポットを予測しました。振り返ると、それぞれのモジュールが次の役割を担っていました。</p>
       <ul>
-        <li><b>グラフの基礎</b>：ノードとエッジ、有向/無向・重み、次数と密度。</li>
-        <li><b>中心性</b>：次数・媒介・近接・PageRank で「重要なノード」を測る。</li>
-        <li><b>コミュニティ検出</b>：連結成分とモジュラリティで「密なまとまり」を見つける。</li>
-        <li><b>経路と構造</b>：BFS で最短経路を求め、直径や平均経路長で全体の広がりを測る。</li>
-        <li><b>可視化</b>：力学モデルで構造を絵にし、大規模・動的なネットワークへ広げる。</li>
+        <li><b>リポジトリマイニング</b>：PyDriller で開発履歴という素材を手に入れた。</li>
+        <li><b>前処理</b>：pandas でファイル単位の特徴量表に整えた。</li>
+        <li><b>ネットワーク分析</b>：共変更の結び目を中心性で数値化した。</li>
+        <li><b>機械学習</b>：特徴量を統合してホットスポットを分類し、評価した。</li>
       </ul>
-      <p>次に進むなら、下の道具と資料が役に立ちます。</p>
+      <p>単体では見えなかった構造が、つなぐと見えてきました。各技術の詳しい理論やAPIは、下の各モジュールに戻ると確認できます。</p>
     </div>
 
     <div class="res-grid reveal">
       <div class="res">
-        <h5>公開データセット</h5>
+        <h5>使ったモジュール</h5>
         <ul>
-          <li><b>Zachary の空手クラブ</b>：34人の交友ネットワーク。<code>nx.karate_club_graph()</code> で内蔵。</li>
-          <li><b>Les Misérables 共起ネットワーク</b>：小説の登場人物の共起関係。ネットワーク可視化の定番。</li>
-          <li><b>SNAP</b>：スタンフォード大学が公開する大規模グラフ集（SNS・道路・引用など）。</li>
+          <li><a href="repository-mining.html">リポジトリマイニング入門</a></li>
+          <li><a href="data-preprocessing.html">開発データの前処理</a></li>
+          <li><a href="network-analysis.html">ネットワーク分析</a></li>
+          <li><a href="machine-learning.html">機械学習</a></li>
         </ul>
       </div>
       <div class="res">
-        <h5>ライブラリ</h5>
+        <h5>次の演習・段階へ</h5>
         <ul>
-          <li><b>NetworkX</b>：Python の定番。学習・中小規模に最適。</li>
-          <li><b>igraph</b>：C 実装で高速、Python から使える。</li>
-          <li><b>graph-tool</b>：大規模グラフ向けの高速ライブラリ。</li>
-          <li><b>Gephi</b>：対話的なネットワーク可視化ツール。</li>
-        </ul>
-      </div>
-      <div class="res">
-        <h5>参考書</h5>
-        <ul>
-          <li>Mark Newman『Networks』（Oxford University Press）</li>
-          <li>Albert-László Barabási『Network Science』（邦訳『ネットワーク科学』）</li>
-          <li>Easley, Kleinberg『Networks, Crowds, and Markets』</li>
-        </ul>
-      </div>
-      <div class="res">
-        <h5>次のモジュールへ</h5>
-        <ul>
-          <li>機械学習の基礎（分類・回帰・評価）</li>
-          <li>深層学習とニューラルネット</li>
-          <li>グラフニューラルネットワークへの橋渡し</li>
+          <li>ほかの実践編で、NLP やプログラム解析を軸にしたパイプラインも試す。</li>
+          <li>特徴量やモデルを差し替えて、自分の関心のあるリポジトリを診断してみる。</li>
         </ul>
       </div>
     </div>
 
     <div class="callout tip">
       <h4>おつかれさまでした</h4>
-      <p>ここで学んだ「グラフにする → 指標で測る → まとまりや経路を読む」という流れは、関係を持つあらゆるデータに共通する考え方です。3つのデモのノードやグラフを切り替えたり、始点・終点を変えたりして、値がどう変わるかを確かめてみてください。指標ごとに「重要なノード」が入れ替わる感覚がつかめると、理解がぐっと深まります。</p>
+      <p>ノートブックを開き、<code>url</code> を自分の気になるリポジトリに変えて、もう一度上から実行してみてください。しきい値や特徴量を少し変えるだけで、ホットスポットの顔ぶれや評価指標がどう動くかを確かめると、パイプライン全体の勘所がつかめます。</p>
     </div>
   </div>
 </section>
-
-<section id="beyond">
-  <div class="wrap reveal">
-    <p class="eyebrow"><span lang="ja">発展トピック</span><span lang="en">Beyond this module</span></p>
-    <h2 class="big">このコースでは扱わない、関係する発展トピック</h2>
-    <div class="prose" style="margin-top:22px">
-      <p>このモジュールでは、グラフを組み立て、指標で測り、構造を読み解く「基礎の流れ」を扱いました。いっぽうで近年のネットワーク分析は、機械学習や深層学習と結びつき、急速に広がっています。ここでは、このコースでは踏み込まないものの、知っておくと視野が広がる発展的なトピックを、特に近年の主流を中心に紹介します。深掘りは各自の興味に合わせてどうぞ。グラフニューラルネットワークまわりは、深層学習のモジュールで改めて扱う予定です。</p>
-    </div>
-
-    <div class="res-grid reveal">
-      <div class="res">
-        <h5>グラフの表現学習</h5>
-        <ul>
-          <li><b>グラフ埋め込み</b>：ノードを密なベクトルに変換し、機械学習に使えるようにする手法（node2vec・DeepWalk）。ランダムウォークと word2vec の考え方を組み合わせます。</li>
-          <li><b>スペクトラルクラスタリング</b>：グラフのラプラシアン行列の固有ベクトルを使って分割する、数理的なコミュニティ検出。</li>
-        </ul>
-      </div>
-      <div class="res">
-        <h5>グラフニューラルネットワーク</h5>
-        <ul>
-          <li><b>GNN</b>：隣接ノードの情報を集約しながら学習する深層モデル（GCN・GraphSAGE・GAT）。ノード分類やグラフ分類に強力。深層学習のモジュールで扱う予定。</li>
-          <li><b>メッセージパッシング</b>：GNN に共通する、近傍から情報を伝え合う枠組み。</li>
-        </ul>
-      </div>
-      <div class="res">
-        <h5>予測と動的ネットワーク</h5>
-        <ul>
-          <li><b>リンク予測</b>：まだ存在しないつながりを予測する（友人推薦・共著予測など）。</li>
-          <li><b>動的・時系列ネットワーク</b>：時間とともに変化するつながりをモデル化し、成長や消滅を捉える。</li>
-        </ul>
-      </div>
-      <div class="res">
-        <h5>大規模グラフと拡散</h5>
-        <ul>
-          <li><b>大規模グラフ処理</b>：数億ノード規模を扱う分散処理や近似アルゴリズム（graph-tool・分散グラフ基盤）。</li>
-          <li><b>拡散・伝播</b>：情報や感染がネットワーク上をどう広がるかのモデル（感染症モデル・影響最大化）。</li>
-        </ul>
-      </div>
-    </div>
-  </div>
-</section>
-
 </main>
 
 <button class="totop" type="button" aria-label="上へ戻る" title="上へ戻る">&uarr;</button>
@@ -1301,10 +1207,10 @@ plt.savefig(<span class="st">"karate.png"</span>, dpi=<span class="nu">150</span
   <div class="wrap">
     <div class="foot-grid">
       <div>
-        <h3><span lang="ja">この学習モジュールについて</span><span lang="en">About this module</span></h3>
+        <h3><span lang="ja">この総合演習について</span><span lang="en">About this exercise</span></h3>
         <div class="cite">
-          <span lang="ja">「研究で使う技術を実践的に学ぶ」学習コースの1モジュールです。概要から理論、動かせるコードまでを一続きにして、ネットワーク分析の基礎を独習できるように構成しています。内容は分野標準の一般的なもので、特定の研究や論文には紐づきません。</span>
-          <span lang="en">A module in a learning course on research skills, walking from overview to theory to runnable code so you can study the basics of network analysis on your own. The content is standard and general, not tied to any specific study.</span>
+          <span lang="ja">「研究で使う技術を実践的に学ぶ」学習コースの総合演習（実践編）です。第1・第2段階で学んだ技術を1本のパイプラインにつなぎ、現実的な課題を解く流れを、実行できるコードとノートブックでたどります。内容は分野標準の一般的なもので、特定の研究や論文には紐づきません。</span>
+          <span lang="en">A capstone exercise in a learning course on research skills, chaining techniques from the earlier stages into a single pipeline to solve a realistic task, with runnable code and a notebook. The content is standard and general, not tied to any specific study.</span>
         </div>
       </div>
       <div>
@@ -1347,8 +1253,8 @@ plt.savefig(<span class="st">"karate.png"</span>, dpi=<span class="nu">150</span
     </div>
     <div class="foot-rule"></div>
     <p class="foot-note">
-      <span lang="ja">本ページは学習用のプロトタイプ教材です。コード例は分野標準のライブラリ（NetworkX・matplotlib）にもとづき、出力例は実際の実行結果に一致させています。</span>
-      <span lang="en">This page is a prototype learning material. Code examples use standard libraries (NetworkX, matplotlib), and the shown outputs match real runs.</span>
+      <span lang="ja">本ページは学習用の総合演習です。コード例は分野標準のライブラリにもとづき、同じ内容を Colab / Jupyter ノートブックでそのまま実行できます。</span>
+      <span lang="en">This page is a hands-on capstone exercise. Code examples use standard libraries, and the same content runs directly in a Colab / Jupyter notebook.</span>
     </p>
   </div>
 </footer>
@@ -1383,207 +1289,151 @@ plt.savefig(<span class="st">"karate.png"</span>, dpi=<span class="nu">150</span
 <script>
 /* ==================== interactive demos (vanilla JS, self-contained) ==================== */
 (function(){
-  /* ---- preset graphs (node positions in a 600x300 viewBox) ---- */
-  var GRAPHS = {
-    friends: {
-      nodes: {A:{x:80,y:70}, B:{x:80,y:210}, C:{x:200,y:140}, D:{x:350,y:140},
-              E:{x:470,y:70}, F:{x:470,y:210}, G:{x:560,y:250}},
-      edges: [["A","B"],["A","C"],["B","C"],["C","D"],["D","E"],["D","F"],["E","F"],["F","G"]]
-    },
-    star: {
-      nodes: {H:{x:300,y:150}, "1":{x:110,y:70}, "2":{x:110,y:230},
-              "3":{x:300,y:45}, "4":{x:490,y:70}, "5":{x:490,y:230}},
-      edges: [["H","1"],["H","2"],["H","3"],["H","4"],["H","5"]]
-    }
-  };
-
-  function adj(g){
-    var a={}; Object.keys(g.nodes).forEach(function(n){ a[n]=[]; });
-    g.edges.forEach(function(e){ a[e[0]].push(e[1]); a[e[1]].push(e[0]); });
-    return a;
+  /* ---- shared simplified tokenizer (small dictionary + longest match) ---- */
+  var JP_DICT = ["自然","言語","処理","分野","面白い","楽しい","難しい","画像",
+    "私","本","読む","読ん","好き","のが","猫","犬","ソファ","上","眠っ","眠る",
+    "走っ","走る","株価","大きく","下がる","機械","学習","単語","意味","文章","解析",
+    "する","学ぶ","大学","研究","情報","日本語","英語",
+    "は","が","を","に","で","と","の","も","へ","や","から","まで","ね","よ","た","だ",
+    "です","ます","ている","いる"];
+  var PARTICLES = {"は":1,"が":1,"を":1,"に":1,"で":1,"と":1,"の":1,"も":1,"へ":1,"や":1,
+    "から":1,"まで":1,"ね":1,"よ":1,"た":1,"だ":1,"です":1,"ます":1,"ている":1,"いる":1,"のが":1};
+  var DICT = {}; JP_DICT.forEach(function(w){ DICT[w]=1; });
+  var MAXL = 5;
+  function isJP(ch){ return /[぀-ヿ㐀-䶿一-鿿ｦ-ﾟ]/.test(ch); }
+  function jtype(ch){
+    if(/[぀-ゟ]/.test(ch)) return 'hira';
+    if(/[゠-ヿｦ-ﾟ]/.test(ch)) return 'kata';
+    if(/[一-鿿㐀-䶿]/.test(ch)) return 'kanji';
+    return 'other';
   }
-  function edgeKey(a,b){ return a<b ? a+'|'+b : b+'|'+a; }
-
-  /* BFS shortest path (unweighted) */
-  function bfsPath(g,s,t){
-    if(s===t) return [s];
-    var a=adj(g), prev={}, seen={}; seen[s]=1; var q=[s];
-    while(q.length){
-      var u=q.shift();
-      for(var i=0;i<a[u].length;i++){
-        var v=a[u][i];
-        if(!seen[v]){
-          seen[v]=1; prev[v]=u;
-          if(v===t){ var path=[t], x=t; while(x!==s){ x=prev[x]; path.unshift(x); } return path; }
-          q.push(v);
-        }
-      }
+  function dictAt(text,i){
+    for(var L=Math.min(MAXL,text.length-i); L>=1; L--){
+      var sub=text.substr(i,L);
+      if(DICT[sub]) return sub;
     }
     return null;
   }
-  /* BFS distances from a source to all nodes */
-  function bfsDist(g,s){
-    var a=adj(g), dist={}; dist[s]=0; var q=[s];
-    while(q.length){
-      var u=q.shift();
-      for(var i=0;i<a[u].length;i++){ var v=a[u][i]; if(dist[v]===undefined){ dist[v]=dist[u]+1; q.push(v); } }
+  /* returns array of {t: surface, k: 'jp'|'p'|'en'} */
+  function tokenize(text){
+    var out=[], i=0, n=text.length;
+    while(i<n){
+      var ch=text[i];
+      if(/\s/.test(ch)){ i++; continue; }
+      if(/[A-Za-z0-9]/.test(ch)){
+        var j=i; while(j<n && /[A-Za-z0-9']/.test(text[j])) j++;
+        out.push({t:text.slice(i,j).toLowerCase(), k:'en'}); i=j; continue;
+      }
+      if(isJP(ch)){
+        var m=dictAt(text,i);
+        if(m){ out.push({t:m, k:PARTICLES[m]?'p':'jp'}); i+=m.length; continue; }
+        var ty=jtype(ch), j2=i+1;
+        while(j2<n && jtype(text[j2])===ty && !dictAt(text,j2)) j2++;
+        out.push({t:text.slice(i,j2), k:'jp'}); i=j2; continue;
+      }
+      i++; /* drop punctuation / symbols (normalization) */
     }
-    return dist;
+    return out;
   }
-  /* Brandes betweenness centrality, normalized (undirected) */
-  function betweenness(g){
-    var nodes=Object.keys(g.nodes), a=adj(g), CB={};
-    nodes.forEach(function(n){ CB[n]=0; });
-    nodes.forEach(function(s){
-      var S=[], P={}, sigma={}, dist={};
-      nodes.forEach(function(w){ P[w]=[]; sigma[w]=0; dist[w]=-1; });
-      sigma[s]=1; dist[s]=0; var Q=[s];
-      while(Q.length){
-        var v=Q.shift(); S.push(v);
-        a[v].forEach(function(w){
-          if(dist[w]<0){ dist[w]=dist[v]+1; Q.push(w); }
-          if(dist[w]===dist[v]+1){ sigma[w]+=sigma[v]; P[w].push(v); }
-        });
-      }
-      var delta={}; nodes.forEach(function(w){ delta[w]=0; });
-      while(S.length){
-        var w=S.pop();
-        P[w].forEach(function(v){ delta[v]+=(sigma[v]/sigma[w])*(1+delta[w]); });
-        if(w!==s) CB[w]+=delta[w];
-      }
+  function surfaces(text){ return tokenize(text).map(function(o){ return o.t; }); }
+
+  /* ---- Demo 1: tokenizer ---- */
+  var tokInput=document.getElementById('tokInput'),
+      tokChips=document.getElementById('tokChips'),
+      tokCount=document.getElementById('tokCount');
+  function renderTok(){
+    var toks=tokenize(tokInput.value);
+    tokChips.innerHTML = toks.map(function(o){
+      return '<span class="chip '+o.k+'">'+escapeHtml(o.t)+'</span>';
+    }).join('') || '<span class="chipcount">（トークンがありません）</span>';
+    tokCount.textContent = toks.length+' トークン / tokens';
+  }
+  if(tokInput){
+    tokInput.addEventListener('input', renderTok);
+    document.querySelectorAll('#demoTok .try button').forEach(function(b){
+      b.addEventListener('click', function(){ tokInput.value=b.getAttribute('data-tok'); renderTok(); });
     });
-    var n=nodes.length, scale=(n>2)?1/((n-1)*(n-2)):1;
-    nodes.forEach(function(v){ CB[v]=CB[v]*scale; });
-    return CB;
-  }
-  function degreeCent(g){
-    var nodes=Object.keys(g.nodes), n=nodes.length, a=adj(g), r={};
-    nodes.forEach(function(v){ r[v]=(n>1)?a[v].length/(n-1):0; });
-    return r;
-  }
-  function closenessCent(g){
-    var nodes=Object.keys(g.nodes), n=nodes.length, r={};
-    nodes.forEach(function(v){
-      var d=bfsDist(g,v), s=0, reach=0;
-      nodes.forEach(function(u){ if(d[u]!==undefined){ s+=d[u]; if(u!==v) reach++; } });
-      r[v]=(s>0)?reach/s:0;
-    });
-    return r;
+    renderTok();
   }
 
-  /* ---- shared SVG renderer ---- */
-  function drawGraph(g, o){
-    o=o||{};
-    var hiEdge=o.hiEdge||{}, hiNode=o.hiNode||{}, strong=o.strong||{}, score=o.score||null, mx=o.maxScore||1;
-    var s='<svg viewBox="0 0 600 300" role="img" aria-label="'+(o.aria||'ネットワークグラフ')+'" style="width:100%;height:auto;display:block">';
-    g.edges.forEach(function(e){
-      var on=hiEdge[edgeKey(e[0],e[1])], p1=g.nodes[e[0]], p2=g.nodes[e[1]];
-      s+='<line x1="'+p1.x+'" y1="'+p1.y+'" x2="'+p2.x+'" y2="'+p2.y+'" style="stroke:'+(on?'var(--accent)':'var(--line)')+';stroke-width:'+(on?3.4:1.6)+'"/>';
+  /* ---- Demo 2: TF-IDF ---- */
+  var tfIn=document.getElementById('tfidfInput'),
+      tfOut=document.getElementById('tfidfOut');
+  function renderTfidf(){
+    var lines=tfIn.value.split('\n').map(function(s){return s.trim();}).filter(function(s){return s.length;});
+    if(!lines.length){ tfOut.innerHTML='<div class="chipcount">文書を1行ずつ入力してください。</div>'; return; }
+    var docs=lines.map(function(l){ return surfaces(l); });
+    var N=docs.length;
+    var vocab={}; docs.forEach(function(d){ d.forEach(function(w){ vocab[w]=1; }); });
+    var terms=Object.keys(vocab);
+    var df={}; terms.forEach(function(t){ df[t]=docs.filter(function(d){ return d.indexOf(t)>=0; }).length; });
+    var rows=terms.map(function(t){
+      var idf=Math.log(N/df[t]);
+      var vals=docs.map(function(d){
+        var c=d.filter(function(w){return w===t;}).length;
+        var tf=d.length? c/d.length : 0;
+        return tf*idf;
+      });
+      return {t:t, df:df[t], idf:idf, vals:vals, max:Math.max.apply(null,vals)};
     });
-    Object.keys(g.nodes).forEach(function(n){
-      var p=g.nodes[n], fill='var(--card)', stroke='var(--line)', tcol='var(--ink)';
-      if(score){
-        var r=mx? (score[n]/mx):0;
-        fill='rgba(14,111,92,'+(0.08+0.80*r).toFixed(3)+')'; stroke='var(--accent)';
-        tcol = r>0.55 ? '#fff' : 'var(--ink)';
-      } else if(n===o.sel || strong[n]){
-        fill='var(--accent)'; stroke='var(--accent)'; tcol='#fff';
-      } else if(hiNode[n]){
-        fill='var(--accent-soft)'; stroke='var(--accent)';
-      }
-      s+='<g data-node="'+n+'"'+(o.clickable?' style="cursor:pointer"':'')+'>';
-      s+='<circle cx="'+p.x+'" cy="'+p.y+'" r="19" style="fill:var(--card)"/>';
-      s+='<circle cx="'+p.x+'" cy="'+p.y+'" r="19" style="fill:'+fill+';stroke:'+stroke+';stroke-width:2"/>';
-      s+='<text x="'+p.x+'" y="'+(p.y+5)+'" style="text-anchor:middle;font-family:var(--disp);font-size:15px;font-weight:600;fill:'+tcol+'">'+n+'</text>';
-      s+='</g>';
-    });
-    s+='</svg>';
-    return s;
-  }
-  function bindNodes(wrap, cb){
-    var els=wrap.querySelectorAll('[data-node]');
-    for(var i=0;i<els.length;i++){ (function(el){ el.addEventListener('click', function(){ cb(el.getAttribute('data-node')); }); })(els[i]); }
-  }
-
-  /* ---- Demo 1: graph & degree ---- */
-  var d1graph=document.getElementById('d1graph'), d1out=document.getElementById('d1out');
-  var d1key='friends', d1sel=null;
-  function d1render(){
-    var g=GRAPHS[d1key], a=adj(g), hiNode={}, hiEdge={};
-    if(d1sel && g.nodes[d1sel]){
-      hiNode[d1sel]=1;
-      a[d1sel].forEach(function(v){ hiNode[v]=1; hiEdge[edgeKey(d1sel,v)]=1; });
-    } else { d1sel=null; }
-    d1graph.innerHTML=drawGraph(g,{hiNode:hiNode,hiEdge:hiEdge,sel:d1sel,clickable:true,aria:'クリックでノードを選ぶネットワークグラフ'});
-    bindNodes(d1graph, function(n){ d1sel=(d1sel===n?null:n); d1render(); });
-    var n=Object.keys(g.nodes).length;
-    if(d1sel){
-      var deg=a[d1sel].length, dc=(n>1)?deg/(n-1):0;
-      d1out.innerHTML='<div class="cos-score"><span class="val">'+deg+'</span><span class="lab">ノード '+d1sel+' の次数 / degree</span></div>'+
-        '<div class="cos-detail">次数中心性 = 次数 / (ノード数 - 1) = '+deg+' / '+(n-1)+' = <b>'+dc.toFixed(3)+'</b><br>隣接ノード: <b>'+a[d1sel].slice().sort().join(', ')+'</b></div>';
-    } else {
-      d1out.innerHTML='<div class="chipcount">ノードをクリックすると、そのノードの次数（つながっているエッジの数）と次数中心性を表示します。</div>';
-    }
-  }
-  if(d1graph){
-    document.querySelectorAll('#demoDeg .try button').forEach(function(b){
-      b.addEventListener('click', function(){ d1key=b.getAttribute('data-graph'); d1sel=null; d1render(); });
-    });
-    d1render();
-  }
-
-  /* ---- Demo 2: centrality ranking ---- */
-  var d2graph=document.getElementById('d2graph'), d2out=document.getElementById('d2out'), d2metric='degree';
-  function d2render(){
-    var g=GRAPHS.friends, res;
-    if(d2metric==='degree') res=degreeCent(g);
-    else if(d2metric==='closeness') res=closenessCent(g);
-    else res=betweenness(g);
-    var arr=Object.keys(res).map(function(k){ return {n:k, v:res[k]}; });
-    arr.sort(function(a,b){ return b.v-a.v || (a.n<b.n?-1:1); });
-    var mx=arr[0].v || 1;
-    d2graph.innerHTML=drawGraph(g,{score:res,maxScore:mx,aria:'中心性スコアで色分けしたネットワークグラフ'});
-    var label={degree:'次数中心性 / degree', betweenness:'媒介中心性 / betweenness', closeness:'近接中心性 / closeness'}[d2metric];
-    var rows=arr.map(function(o,i){
-      var w=(mx? o.v/mx:0)*100;
-      return '<tr><td>'+(i+1)+'</td><td>'+o.n+'</td><td>'+o.v.toFixed(3)+'</td>'+
-        '<td><div class="cos-bar" style="max-width:none"><span style="width:'+w.toFixed(1)+'%"></span></div></td></tr>';
+    rows.sort(function(a,b){ return b.max-a.max; });
+    var maxAll=Math.max.apply(null, rows.map(function(r){return r.max;})) || 1;
+    var head='<table class="dtable"><tr><th>語 / term</th><th>df</th><th>idf</th>'+
+      docs.map(function(_,i){return '<th>D'+(i+1)+'</th>';}).join('')+'</tr>';
+    var body=rows.map(function(r){
+      var cells=r.vals.map(function(v){
+        if(v<=1e-9) return '<td class="zero">0.000</td>';
+        var a=(0.10+0.72*(v/maxAll)).toFixed(3);
+        return '<td style="background:rgba(14,111,92,'+a+');color:'+(v/maxAll>0.55?'#fff':'var(--ink)')+'">'+v.toFixed(3)+'</td>';
+      }).join('');
+      return '<tr><td>'+escapeHtml(r.t)+'</td><td>'+r.df+'</td><td>'+r.idf.toFixed(3)+'</td>'+cells+'</tr>';
     }).join('');
-    d2out.innerHTML='<table class="dtable"><tr><th>順位</th><th>ノード</th><th>'+label+'</th><th>分布</th></tr>'+rows+'</table>'+
-      '<div class="chipcount">色が濃いノードほどスコアが高いことを表します。指標を切り替えると順位が変わります。</div>';
+    tfOut.innerHTML=head+body+'</table>'+
+      '<div class="chipcount">N = '+N+' 文書 ・ 語彙 '+terms.length+' 種 ・ tf = 語の頻度/文書長, idf = ln(N/df), tf-idf = tf &times; idf</div>';
   }
-  if(d2graph){
-    document.querySelectorAll('#demoCent .try button').forEach(function(b){
-      b.addEventListener('click', function(){ d2metric=b.getAttribute('data-metric'); d2render(); });
+  if(tfIn){
+    tfIn.addEventListener('input', renderTfidf);
+    document.querySelectorAll('#demoTfidf .try button').forEach(function(b){
+      b.addEventListener('click', function(){ tfIn.value=b.getAttribute('data-tf'); renderTfidf(); });
     });
-    d2render();
+    renderTfidf();
   }
 
-  /* ---- Demo 3: shortest path (BFS) ---- */
-  var d3graph=document.getElementById('d3graph'), d3out=document.getElementById('d3out'),
-      d3s=document.getElementById('pathStart'), d3t=document.getElementById('pathEnd');
-  function d3render(){
-    var g=GRAPHS.friends, s=d3s.value, t=d3t.value, hiNode={}, hiEdge={}, strong={};
-    var path=bfsPath(g,s,t);
-    if(path){
-      path.forEach(function(x){ hiNode[x]=1; });
-      for(var i=0;i<path.length-1;i++){ hiEdge[edgeKey(path[i],path[i+1])]=1; }
-    }
-    strong[s]=1; strong[t]=1;
-    d3graph.innerHTML=drawGraph(g,{hiNode:hiNode,hiEdge:hiEdge,strong:strong,aria:'最短経路をハイライトしたネットワークグラフ'});
-    if(s===t){ d3out.innerHTML='<div class="chipcount">始点と終点が同じです。別のノードを選んでください。</div>'; return; }
-    if(path){
-      d3out.innerHTML='<div class="cos-score"><span class="val">'+(path.length-1)+'</span><span class="lab">最短距離（エッジ数）/ shortest-path distance</span></div>'+
-        '<div class="cos-detail">最短経路: <b>'+path.join(' &rarr; ')+'</b><br>BFS（幅優先探索）で '+s+' から '+t+' への最短経路を求めました。</div>';
-    } else {
-      d3out.innerHTML='<div class="chipcount">'+s+' から '+t+' へは到達できません。</div>';
-    }
+  /* ---- Demo 3: cosine similarity ---- */
+  var cosA=document.getElementById('cosA'),
+      cosB=document.getElementById('cosB'),
+      cosOut=document.getElementById('cosOut');
+  function renderCos(){
+    var a=surfaces(cosA.value), b=surfaces(cosB.value);
+    var vocab={}; a.concat(b).forEach(function(w){ vocab[w]=1; });
+    var terms=Object.keys(vocab);
+    function vec(d){ return terms.map(function(t){ return d.filter(function(w){return w===t;}).length; }); }
+    var va=vec(a), vb=vec(b);
+    var dot=0, na=0, nb=0;
+    for(var i=0;i<terms.length;i++){ dot+=va[i]*vb[i]; na+=va[i]*va[i]; nb+=vb[i]*vb[i]; }
+    var denom=Math.sqrt(na)*Math.sqrt(nb);
+    var cos=denom? dot/denom : 0;
+    var pct=(cos*100).toFixed(0);
+    var shared=terms.filter(function(t,i){ return va[i]>0 && vb[i]>0; });
+    if(!terms.length){ cosOut.innerHTML='<div class="chipcount">2つの文を入力してください。</div>'; return; }
+    cosOut.innerHTML=
+      '<div class="cos-score"><span class="val">'+cos.toFixed(3)+'</span><span class="lab">コサイン類似度 / cosine similarity（0 から 1）</span></div>'+
+      '<div class="cos-bar"><span style="width:'+Math.max(0,Math.min(100,pct))+'%"></span></div>'+
+      '<div class="cos-detail">A の語: '+chipLine(a)+'<br>B の語: '+chipLine(b)+'<br>'+
+      '共通の語: <b>'+(shared.length? shared.map(escapeHtml).join(', ') : 'なし')+'</b>　|　'+
+      '内積 = <b>'+dot+'</b>, &#8214;A&#8214; = <b>'+Math.sqrt(na).toFixed(3)+'</b>, &#8214;B&#8214; = <b>'+Math.sqrt(nb).toFixed(3)+'</b></div>';
   }
-  if(d3graph){
-    d3s.addEventListener('change', d3render);
-    d3t.addEventListener('change', d3render);
-    d3render();
+  function chipLine(arr){ return arr.length? arr.map(escapeHtml).join(' / ') : '（なし）'; }
+  if(cosA){
+    cosA.addEventListener('input', renderCos);
+    cosB.addEventListener('input', renderCos);
+    document.querySelectorAll('#demoCos .try button').forEach(function(b){
+      b.addEventListener('click', function(){ cosA.value=b.getAttribute('data-a'); cosB.value=b.getAttribute('data-b'); renderCos(); });
+    });
+    renderCos();
   }
+
+  function escapeHtml(s){ return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
 })();
 </script>
 
