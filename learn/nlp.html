@@ -1,0 +1,1661 @@
+<!DOCTYPE html>
+<html lang="ja" class="no-js">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>自然言語処理（NLP）- 研究の技術を実践的に学ぶ / Natural Language Processing</title>
+<meta name="description" content="A hands-on learning module on natural language processing: preprocessing and tokenization, Bag-of-Words and TF-IDF, word embeddings and cosine similarity, text classification, and the road to Transformers. With interactive demos and runnable Python examples. Part of Yuta Kimura's learning course.">
+<link rel="canonical" href="https://ykimu.github.io/learn/nlp.html">
+<link rel="icon" href="../favicon.svg" type="image/svg+xml">
+<meta property="og:site_name" content="Yuta Kimura / 木村祐太">
+<meta property="og:type" content="article">
+<meta property="og:title" content="自然言語処理（NLP）- 研究の技術を実践的に学ぶ / Natural Language Processing">
+<meta property="og:description" content="A hands-on learning module on natural language processing: preprocessing, TF-IDF, word embeddings, cosine similarity, and text classification, with interactive demos and runnable Python examples.">
+<meta property="og:url" content="https://ykimu.github.io/learn/nlp.html">
+<meta property="og:image" content="https://ykimu.github.io/assets/og.png">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="color-scheme" content="light">
+<script>document.documentElement.className="js";</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&family=Noto+Sans+JP:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#FBFCFB; --bg-2:#F3F6F4; --bg-3:#EBEFED; --card:#FFFFFF;
+    --ink:#101312; --ink-2:#3C4340; --muted:#6B746F; --faint:#B7C0BB;
+    --line:#E7ECE9; --hair:rgba(16,19,18,.08); --shell:rgba(16,19,18,.035);
+    --accent:#0E6F5C; --accent-2:#0A5748; --accent-soft:rgba(14,111,92,.08);
+    --soft:0 1px 2px rgba(16,19,18,.04), 0 24px 60px -28px rgba(16,19,18,.16);
+    --inhi:inset 0 1px 0 rgba(255,255,255,.85);
+    --ease:cubic-bezier(.32,.72,0,1);
+    --sans:"Plus Jakarta Sans","Noto Sans JP",-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+    --disp:"Space Grotesk","Plus Jakarta Sans","Noto Sans JP",sans-serif;
+    --mono:ui-monospace,SFMono-Regular,Menlo,Consolas,"Liberation Mono",monospace;
+    --maxw:1440px; --readw:clamp(680px, 62vw, 1060px);
+    --kw:#0A5748; --ty:#3C4340; --st:#7A5C34; --cm:#87918C; --nu:#7A5C34;
+    --good:#0E6F5C; --bad:#B04A3E; --warn:#8A6D3B;
+  }
+  html{color-scheme:light}
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth; -webkit-text-size-adjust:100%}
+  body{margin:0; background:var(--bg); color:var(--ink); font-family:var(--sans);
+    font-size:17px; line-height:1.75; font-weight:400; -webkit-font-smoothing:antialiased; text-rendering:optimizeLegibility}
+  body.lang-ja [lang=en]{display:none}
+  body.lang-en [lang=ja]{display:none}
+  ::selection{background:rgba(14,111,92,.16)}
+  h1,h2,h3{margin:0; color:var(--ink); font-weight:500; line-height:1.16; letter-spacing:-.02em; font-family:var(--disp); text-wrap:balance}
+  body.lang-ja h1,body.lang-ja h2,body.lang-ja h3{letter-spacing:0; font-family:var(--sans)}
+  p,.lead,.cite,.muted-s{text-wrap:pretty}
+  [lang="en"]{line-break:auto}
+  [lang="ja"]{line-break:strict; word-break:normal}
+  h1 [lang="ja"],h2 [lang="ja"],h3 [lang="ja"]{word-break:auto-phrase}
+  p{margin:0 0 1em}
+  a{color:var(--accent-2); text-decoration:none; transition:color .3s var(--ease)}
+  a:hover{color:var(--accent)}
+  a:focus-visible,button:focus-visible,.btn:focus-visible,[tabindex]:focus-visible{outline:2px solid var(--accent); outline-offset:3px; border-radius:8px}
+  .wrap{max-width:var(--maxw); margin:0 auto; padding:0 40px}
+  [id]{scroll-margin-top:96px}
+  section{padding:96px 0}
+
+  .skip{position:fixed; top:10px; left:10px; padding:10px 16px; background:var(--ink); color:#fff; border-radius:999px; transform:translateY(-200%); transition:none; z-index:100; font:500 .85rem/1 var(--sans); text-decoration:none}
+  .skip:focus{transform:none}
+
+  /* film grain overlay */
+  body::after{content:""; position:fixed; inset:0; z-index:1; pointer-events:none; opacity:.02;
+    background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='g'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23g)'/%3E%3C/svg%3E")}
+
+  h2.big{font-size:clamp(1.9rem,3.2vw,2.7rem); font-weight:500; letter-spacing:-.025em; max-width:26ch}
+  body.lang-ja h2.big{letter-spacing:-.01em; max-width:none}
+  .eyebrow,.kick{display:inline-flex; align-items:center; gap:8px; width:max-content; max-width:100%;
+    padding:5px 13px 5px 11px; border-radius:999px; border:1px solid var(--hair); background:#fff;
+    font:600 .66rem/1 var(--disp); letter-spacing:.14em; text-transform:uppercase; color:var(--ink-2); margin:0 0 18px}
+  .eyebrow::before,.kick::before{content:""; flex:0 0 auto; width:6px; height:6px; border-radius:50%; background:var(--accent)}
+  .lead{font-size:1.14rem; color:var(--ink-2); line-height:1.78; font-weight:400}
+
+  /* motion */
+  .js .reveal{opacity:0; transform:translateY(18px); filter:blur(6px); transition:opacity .9s var(--ease), transform .9s var(--ease), filter .9s var(--ease)}
+  .js .reveal.in{opacity:1; transform:none; filter:none}
+  @media (prefers-reduced-motion:reduce){
+    .js .reveal{opacity:1!important; transform:none!important; filter:none!important}
+    .btn:active,.btn.ink:hover .ic,.pill:hover,.totop:hover,.tocpill{transform:none!important}
+    html{scroll-behavior:auto}
+  }
+
+  /* floating island nav */
+  header.bar{position:sticky; top:18px; z-index:60; background:transparent; border-bottom:none}
+  .bar .wrap{display:flex; align-items:center; justify-content:space-between;
+    width:max-content; max-width:calc(100% - 32px); margin:0 auto; height:auto;
+    padding:9px 12px 9px 20px; gap:20px; border-radius:999px;
+    background:rgba(255,255,255,.72); -webkit-backdrop-filter:saturate(1.4) blur(18px); backdrop-filter:saturate(1.4) blur(18px);
+    border:1px solid var(--hair); box-shadow:var(--soft)}
+  .brand{font-weight:600; font-size:.92rem; letter-spacing:-.01em; color:var(--ink); display:inline-flex; align-items:center; gap:8px}
+  .brand span.sep{color:var(--muted); font-weight:400; margin:0 2px}
+  .bar-right{display:flex; align-items:center; gap:8px}
+
+  /* buttons */
+  .btn{display:inline-flex; align-items:center; gap:10px; font:500 .85rem/1 var(--sans); padding:10px 18px;
+    border-radius:999px; border:1px solid var(--hair); background:#fff; color:var(--ink); cursor:pointer;
+    transition:transform .4s var(--ease), box-shadow .4s var(--ease), border-color .3s var(--ease), background .3s var(--ease), color .3s var(--ease)}
+  .btn:hover{border-color:var(--ink); transform:translateY(-1px); color:var(--ink)}
+  .btn:active{transform:scale(.98)}
+  .btn.ink{background:var(--ink); border-color:var(--ink); color:#fff; padding:10px 10px 10px 22px;
+    box-shadow:0 12px 26px -14px rgba(16,19,18,.5)}
+  .btn.ink:not(:has(.ic)){padding:10px 22px}
+  .btn.ink:hover{box-shadow:0 16px 32px -14px rgba(16,19,18,.55); color:#fff}
+  .btn .ic{width:32px; height:32px; border-radius:999px; background:rgba(255,255,255,.18); display:grid; place-items:center;
+    transition:transform .45s var(--ease); flex:0 0 auto}
+  .btn.ink:hover .ic{transform:translate(3px,-1px)}
+  .tlink{display:inline-flex; align-items:center; gap:8px; font-weight:500; font-size:.95rem; color:var(--ink)}
+  .tlink .ar{transition:transform .4s var(--ease)}
+  .tlink:hover .ar{transform:translateX(4px)}
+
+  /* hero */
+  .hero{position:relative; overflow:hidden}
+  .hero > .wrap{position:relative; z-index:1}
+  .hero::before{content:""; position:absolute; z-index:0; width:640px; height:640px; right:-150px; top:-240px;
+    border-radius:50%; pointer-events:none; opacity:.55;
+    background:radial-gradient(circle, var(--accent-soft), transparent 62%); filter:blur(20px)}
+  .hero .wrap{padding-top:72px; padding-bottom:64px}
+  .hero h1{font-size:clamp(2.6rem,5vw,4.2rem); font-weight:500; letter-spacing:-.03em; line-height:1.08; color:var(--ink); max-width:none}
+  body.lang-ja .hero h1{font-size:clamp(2rem,4.2vw,3.1rem); font-weight:500; letter-spacing:0; line-height:1.24}
+  .hero h1 em{font-style:normal; color:var(--accent)}
+  .hero .lead{max-width:var(--readw); margin-top:24px}
+  .ja-note{display:inline-flex; align-items:center; gap:8px; margin-top:22px; padding:7px 15px; border-radius:999px;
+    border:1px solid var(--hair); background:var(--accent-soft); font-size:.8rem; font-weight:500; color:var(--accent-2)}
+  .ja-note::before{content:""; width:6px; height:6px; border-radius:50%; background:var(--accent); flex:0 0 auto}
+  .hero-meta{display:flex; gap:10px; flex-wrap:wrap; margin-top:16px}
+  .hero-meta span{font-size:.82rem; color:var(--muted); background:#fff; border:1px solid var(--hair);
+    border-radius:999px; padding:6px 14px}
+  .hero-cta{display:flex; gap:20px; align-items:center; flex-wrap:wrap; margin-top:28px}
+
+  .soft-sec{background:var(--bg-2); border-top:1px solid var(--line); border-bottom:1px solid var(--line)}
+
+  /* prose */
+  .prose{max-width:var(--readw)}
+  .prose p{margin:0 0 1em; color:var(--ink-2)}
+  .prose h4{font-family:var(--sans); font-size:1.1rem; font-weight:600; letter-spacing:0; color:var(--ink); margin:1.5em 0 .5em}
+  .prose ul{margin:0 0 1.2em; padding-left:0; list-style:none}
+  .prose ul li{position:relative; padding-left:22px; margin:11px 0; color:var(--ink-2)}
+  .prose ul li::before{content:""; position:absolute; left:0; top:13px; width:11px; height:1.5px; background:var(--accent)}
+  .prose ul li b,.prose b{color:var(--ink); font-weight:600}
+  .prose i{color:var(--ink-2)}
+  code{font-family:var(--mono); font-size:.86em; background:var(--shell); border:1px solid var(--hair); border-radius:6px; padding:.08em .4em; color:var(--accent-2)}
+  .formula{font-family:var(--mono); font-size:.98rem; color:var(--ink); background:var(--card); text-align:center;
+    border-radius:14px; padding:18px 20px; margin:18px 0; max-width:var(--readw);
+    box-shadow:0 0 0 6px var(--shell),0 0 0 6.5px var(--hair),var(--soft); line-height:1.9}
+  .formula .op{color:var(--accent-2); font-weight:600}
+  .formula small{display:block; font-family:var(--sans); font-size:.82rem; color:var(--muted); margin-top:8px; line-height:1.6}
+
+  .callout{border-radius:16px; padding:18px 22px; margin:20px 0; max-width:var(--readw);
+    background:var(--card); box-shadow:0 0 0 6px var(--shell),0 0 0 6.5px var(--hair),var(--soft)}
+  .callout h4{margin:0 0 6px; font-size:1rem; font-family:var(--sans); font-weight:600; letter-spacing:0; color:var(--ink)}
+  .callout.tip{background:var(--accent-soft)}
+  .callout.warn{background:rgba(138,109,59,.08)}
+  .callout p{margin:0; color:var(--ink-2); font-size:.96rem}
+  .callout a{font-weight:600}
+
+  .grid2{display:grid; grid-template-columns:1fr 1fr; gap:16px; margin:20px 0; max-width:var(--readw)}
+  .box{border-radius:16px; padding:16px 20px; background:var(--card);
+    box-shadow:0 0 0 6px var(--shell),0 0 0 6.5px var(--hair),var(--soft)}
+  .box h5{margin:0 0 10px; font-size:.92rem; font-family:var(--sans); font-weight:600; letter-spacing:0; color:var(--accent-2); display:flex; align-items:center; gap:7px}
+  .box.lim h5{color:var(--warn)}
+  .box ul{margin:0; padding-left:18px}
+  .box li{margin:6px 0; font-size:.92rem; color:var(--ink-2)}
+
+  .steps{border-radius:16px; padding:16px 20px; margin:20px 0; max-width:var(--readw); background:var(--card);
+    box-shadow:0 0 0 6px var(--shell),0 0 0 6.5px var(--hair),var(--soft)}
+  .steps h5{margin:0 0 10px; font-size:.92rem; font-family:var(--sans); font-weight:600; letter-spacing:0; color:var(--accent-2)}
+  .steps ol{margin:0; padding:0; list-style:none; counter-reset:st}
+  .steps ol li{counter-increment:st; position:relative; padding-left:36px; margin:9px 0; font-size:.94rem; color:var(--ink-2)}
+  .steps ol li::before{content:counter(st); position:absolute; left:0; top:2px; width:23px; height:23px; border-radius:50%;
+    background:var(--accent-soft); color:var(--accent-2); font:600 .74rem/23px var(--disp); text-align:center}
+  .steps ol li b{color:var(--ink); font-weight:600}
+
+  /* step headers */
+  .stephead{display:flex; align-items:baseline; gap:20px; max-width:var(--readw)}
+  .stephead .num{font-family:var(--disp); font-size:clamp(2.6rem,5.4vw,3.8rem); font-weight:500; color:var(--accent);
+    letter-spacing:-.04em; line-height:.9; flex:0 0 auto; font-variant-numeric:tabular-nums}
+  .stephead .tt h2{font-size:clamp(1.5rem,2.6vw,2rem)}
+  .stephead .tt .st-en{display:block; font:600 .68rem/1 var(--disp); letter-spacing:.13em; text-transform:uppercase; color:var(--muted); margin-top:8px}
+  body.lang-en .stephead .tt .st-en{display:none}
+  .steprule{height:2px; background:var(--ink); max-width:var(--readw); margin:16px 0 26px}
+  .layer{display:inline-flex; align-items:center; gap:8px; margin:34px 0 12px; padding:5px 13px 5px 11px;
+    border-radius:999px; border:1px solid var(--hair); background:#fff;
+    font:600 .64rem/1 var(--disp); letter-spacing:.13em; text-transform:uppercase; color:var(--ink-2)}
+  .layer::before{content:""; width:6px; height:6px; border-radius:50%; background:var(--accent); flex:0 0 auto}
+  .layer.first{margin-top:6px}
+
+  /* diagrams */
+  .diagram-wrap{margin:22px 0; max-width:var(--readw)}
+  .diagram-wrap .cap{margin:0 0 10px; font-size:.9rem; font-family:var(--sans); font-weight:600; letter-spacing:0; color:var(--accent-2)}
+  .diagram-wrap svg{display:block; width:100%; height:auto; background:var(--card);
+    border-radius:16px; padding:12px; box-shadow:0 0 0 7px var(--shell),0 0 0 7.5px var(--hair),var(--soft)}
+  .dg-box{fill:var(--card); stroke:var(--line); stroke-width:1.3}
+  .dg-box.acc{fill:var(--accent-soft); stroke:var(--accent)}
+  .dg-lbl{fill:var(--ink); font-size:13px; font-weight:600; text-anchor:middle; font-family:var(--sans)}
+  .dg-en{fill:var(--muted); font-size:10.5px; text-anchor:middle; font-family:var(--disp)}
+  .dg-line{stroke:var(--muted); stroke-width:1.5; fill:none}
+  .dg-arrow{fill:var(--muted)}
+  .dg-note{fill:var(--muted); font-size:11.5px; text-anchor:middle; font-style:italic}
+  .dg-ax{stroke:var(--faint); stroke-width:1.2}
+  .dg-vec{stroke:var(--accent); stroke-width:2; fill:none}
+  .dg-vec2{stroke:var(--ink-2); stroke-width:2; fill:none}
+  .dg-pt{fill:var(--accent)}
+  .dg-ptl{fill:var(--ink); font-size:11px; font-family:var(--sans)}
+  .figcap{font-size:.88rem; color:var(--muted); margin:12px 2px 0; max-width:var(--readw); line-height:1.6}
+  .figcap b{color:var(--ink); font-weight:600}
+
+  /* code blocks */
+  .code-wrap{margin:16px 0 0; border:1px solid var(--hair); border-radius:14px; overflow:hidden; background:var(--shell); max-width:var(--readw)}
+  .code-head{display:flex; align-items:center; gap:10px; background:var(--bg-2); border-bottom:1px solid var(--hair); padding:9px 16px}
+  .code-head .lbl{margin-right:auto; font:600 .74rem/1 var(--disp); letter-spacing:.06em; text-transform:uppercase; color:var(--muted)}
+  .code-head .lang-tag{font:500 .74rem/1 var(--sans); color:var(--muted)}
+  .code-head .copy{background:#fff; border:1px solid var(--hair); color:var(--ink-2); border-radius:999px;
+    padding:5px 12px; font:500 .74rem/1 var(--sans); cursor:pointer; transition:border-color .3s var(--ease), color .3s var(--ease)}
+  .code-head .copy:hover{border-color:var(--ink); color:var(--ink)}
+  pre{margin:0; background:var(--shell); padding:16px 18px; overflow-x:auto; font-size:.82rem; line-height:1.65}
+  pre code{font-family:var(--mono); color:#2F3A33; white-space:pre; background:none; border:none; padding:0; font-size:1em}
+  .kw{color:var(--kw); font-weight:600} .st{color:var(--st)} .cm{color:var(--cm); font-style:italic} .nu{color:var(--nu)}
+  .code-out{max-width:var(--readw); margin:0 0 8px; border:1px solid var(--hair); border-top:none;
+    border-radius:0 0 14px 14px; background:var(--bg-2); padding:12px 18px}
+  .code-out .olbl{font:600 .66rem/1 var(--disp); letter-spacing:.1em; text-transform:uppercase; color:var(--muted); display:block; margin-bottom:8px}
+  .code-out pre{background:transparent; padding:0; font-size:.8rem}
+  .code-out pre code{color:var(--ink-2)}
+  .code-wrap.attached{border-radius:14px 14px 0 0; margin-bottom:0}
+
+  /* interactive demo (double-bezel) */
+  .demo{border-radius:21px; padding:24px 26px; margin:24px 0; max-width:var(--readw); background:var(--card);
+    box-shadow:0 0 0 7px var(--shell),0 0 0 7.5px var(--hair),var(--soft)}
+  .demo .dtag{display:inline-flex; align-items:center; gap:8px; margin:0 0 10px; padding:5px 12px 5px 10px;
+    border-radius:999px; background:var(--accent-soft); color:var(--accent-2); font:600 .62rem/1 var(--disp); letter-spacing:.12em; text-transform:uppercase}
+  .demo .dtag::before{content:""; width:6px; height:6px; border-radius:50%; background:var(--accent)}
+  .demo h4{margin:0 0 6px; font-size:1.12rem; font-family:var(--sans); font-weight:600; color:var(--ink)}
+  .demo .dnote{font-size:.88rem; color:var(--muted); margin:0 0 16px}
+  .demo label.fld{display:block; font:600 .74rem/1 var(--disp); letter-spacing:.08em; text-transform:uppercase; color:var(--muted); margin:0 0 7px}
+  .demo textarea,.demo input[type=text]{width:100%; padding:12px 15px; border-radius:12px; border:1px solid var(--hair);
+    background:var(--bg); color:var(--ink); font:400 .95rem/1.6 var(--mono); outline:none; resize:vertical;
+    transition:border-color .3s var(--ease)}
+  .demo textarea:focus,.demo input[type=text]:focus{border-color:var(--accent)}
+  .demo .try{display:flex; gap:8px; flex-wrap:wrap; margin:12px 0 4px}
+  .demo .try button{background:#fff; border:1px solid var(--hair); color:var(--ink-2); border-radius:999px;
+    padding:8px 14px; font:500 .82rem/1 var(--sans); cursor:pointer; transition:border-color .3s var(--ease), transform .3s var(--ease), color .3s var(--ease)}
+  .demo .try button:hover{border-color:var(--ink); color:var(--ink); transform:translateY(-1px)}
+  .demo .try .tlbl{font:600 .72rem/1 var(--disp); letter-spacing:.06em; text-transform:uppercase; color:var(--faint); align-self:center; margin-right:2px}
+  .demo .two{display:grid; grid-template-columns:1fr 1fr; gap:16px}
+  @media(max-width:640px){.demo .two{grid-template-columns:1fr}}
+  .demo-out{margin-top:18px}
+
+  /* chips */
+  .chips{display:flex; flex-wrap:wrap; gap:7px; margin-top:6px}
+  .chip{display:inline-flex; align-items:center; font:500 .88rem/1 var(--mono); padding:8px 12px; border-radius:9px;
+    background:var(--accent-soft); color:var(--accent-2); border:1px solid rgba(14,111,92,.16)}
+  .chip.p{background:var(--bg-3); color:var(--muted); border-color:var(--hair)}
+  .chip.en{background:var(--card); color:var(--ink-2); border-color:var(--hair)}
+  .chipcount{font:600 .74rem/1 var(--disp); color:var(--muted); margin-top:12px; letter-spacing:.04em}
+  .chip-legend{display:flex; gap:16px; flex-wrap:wrap; margin-top:12px; font-size:.78rem; color:var(--muted)}
+  .chip-legend i{display:inline-block; width:11px; height:11px; border-radius:3px; margin-right:6px; vertical-align:-1px}
+
+  /* tables */
+  .dtable{border-collapse:separate; border-spacing:0; margin:16px 0 0; width:100%; font-size:.86rem;
+    border-radius:12px; overflow:hidden; box-shadow:0 0 0 1px var(--hair)}
+  .dtable th,.dtable td{border-bottom:1px solid var(--line); border-right:1px solid var(--line); padding:9px 12px; text-align:right; background:var(--card); font-variant-numeric:tabular-nums; font-family:var(--disp)}
+  .dtable th{background:var(--bg-2); font-weight:600; color:var(--ink); font-family:var(--sans); text-align:right}
+  .dtable td:first-child,.dtable th:first-child{text-align:left; font-family:var(--mono); color:var(--ink)}
+  .dtable tr:last-child th,.dtable tr:last-child td{border-bottom:none}
+  .dtable td:last-child,.dtable th:last-child{border-right:none}
+  .dtable td.zero{color:var(--faint)}
+
+  /* cosine output */
+  .cos-score{display:flex; align-items:baseline; gap:12px; margin:6px 0 10px}
+  .cos-score .val{font:500 2.6rem/1 var(--disp); color:var(--accent); letter-spacing:-.03em; font-variant-numeric:tabular-nums}
+  .cos-score .lab{font-size:.9rem; color:var(--muted)}
+  .cos-bar{height:14px; border-radius:999px; background:var(--bg-3); box-shadow:inset 0 1px 2px rgba(16,19,18,.06); overflow:hidden; max-width:520px}
+  .cos-bar span{display:block; height:100%; border-radius:999px; background:linear-gradient(90deg,var(--accent-2),var(--accent)); transition:width .5s var(--ease)}
+  .cos-detail{font-size:.86rem; color:var(--muted); margin-top:12px; font-family:var(--mono)}
+  .cos-detail b{color:var(--ink-2)}
+  @media (prefers-reduced-motion:reduce){.cos-bar span{transition:none}}
+
+  /* closing lists */
+  .res-grid{display:grid; grid-template-columns:1fr 1fr; gap:16px; margin:20px 0; max-width:var(--readw)}
+  @media(max-width:640px){.res-grid{grid-template-columns:1fr}}
+  .res{border-radius:16px; padding:18px 20px; background:var(--card); box-shadow:0 0 0 6px var(--shell),0 0 0 6.5px var(--hair),var(--soft)}
+  .res h5{margin:0 0 10px; font-size:.95rem; font-family:var(--sans); font-weight:600; color:var(--accent-2)}
+  .res ul{margin:0; padding-left:0; list-style:none}
+  .res li{position:relative; padding-left:20px; margin:8px 0; font-size:.9rem; color:var(--ink-2)}
+  .res li::before{content:""; position:absolute; left:0; top:11px; width:9px; height:1.5px; background:var(--accent)}
+  .res li b{color:var(--ink); font-weight:600}
+
+  /* footer */
+  footer{border-top:1px solid var(--line); padding:68px 0 46px; background:var(--bg)}
+  footer h3{font-size:.72rem; font-weight:600; letter-spacing:.12em; text-transform:uppercase; color:var(--muted); margin:0 0 1em; font-family:var(--disp)}
+  .foot-grid{display:grid; grid-template-columns:1.5fr 1fr; gap:44px}
+  .foot-grid3{display:grid; grid-template-columns:1.3fr 1fr 1fr; gap:44px; margin-top:40px}
+  .foot-grid3 a{color:var(--ink-2)}
+  .foot-grid3 a:hover{color:var(--accent)}
+  .cite{font-size:.98rem; color:var(--ink-2); line-height:1.7; max-width:52ch}
+  .muted-s{color:var(--muted); font-size:.9rem; line-height:1.75}
+  .muted-s b{color:var(--ink); font-weight:600}
+  .muted-s a{line-height:1.9}
+  .foot-rule{height:1px; background:var(--line); margin:44px 0 20px}
+  .foot-note{color:var(--muted); font-size:.82rem}
+
+  /* crumbs */
+  .crumbs{display:flex; flex-wrap:wrap; align-items:center; gap:7px; margin:0; font-size:.8rem; font-weight:500; color:var(--muted)}
+  .crumbs a{color:var(--muted)}
+  .crumbs a:hover{color:var(--ink)}
+  .crumbs .csep{color:var(--faint)}
+  .crumbs .cur{color:var(--ink)}
+
+  @media(max-width:860px){
+    section{padding:72px 0}
+    .hero .wrap{padding-top:52px; padding-bottom:56px}
+    .wrap{padding:0 24px}
+    .grid2{grid-template-columns:1fr}
+    .foot-grid{grid-template-columns:1fr}
+    .foot-grid3{grid-template-columns:1fr; gap:30px}
+  }
+  @media(max-width:640px){
+    .bar-right .btn:not(.ink){display:none}
+    .brand{font-size:.82rem}
+    .stephead .num{font-size:2.4rem}
+  }
+
+  /* JP-only teaching page: fill content width for body text & boxes */
+  .lead,.prose,.callout,.formula,.grid2,.steps,.stephead,.steprule,
+  .diagram-wrap,.figcap,.code-wrap,.code-out,.demo,.res-grid{max-width:none !important}
+
+  /* ==================== NAV SYSTEM (from research/course template) ==================== */
+  .navlinks{display:flex; gap:4px; align-items:center}
+  .navlinks .navgroup{position:relative; display:flex}
+  .navlinks .navtop{display:inline-flex; align-items:center; gap:7px; font-size:.86rem; font-weight:500;
+    color:var(--ink-2); padding:8px 13px; border-radius:999px; white-space:nowrap;
+    transition:color .3s var(--ease), background .3s var(--ease)}
+  .navlinks .navtop:hover{color:var(--ink)}
+  .navlinks .navgroup:hover .navtop,.navlinks .navgroup:focus-within .navtop{color:var(--ink); background:var(--bg-2)}
+  .navlinks .navpanel{position:absolute; top:100%; left:50%; margin-top:9px; min-width:238px; padding:10px;
+    transform:translateX(-50%) translateY(6px); text-align:left;
+    background:var(--card); border:1px solid var(--hair); border-radius:16px; box-shadow:var(--soft);
+    opacity:0; visibility:hidden; pointer-events:none;
+    transition:opacity .25s var(--ease), transform .25s var(--ease), visibility 0s linear .25s; z-index:5}
+  .navlinks .navpanel::before{content:""; position:absolute; top:-13px; left:0; right:0; height:14px}
+  .navlinks .navgroup:hover .navpanel,.navlinks .navgroup:focus-within .navpanel{
+    opacity:1; visibility:visible; pointer-events:auto; transform:translateX(-50%) translateY(0);
+    transition:opacity .25s var(--ease), transform .25s var(--ease), visibility 0s linear 0s}
+  .navlinks .navgroup.collapsed .navpanel{opacity:0; visibility:hidden; pointer-events:none}
+  .navlinks .navpanel a{display:flex; align-items:center; gap:9px; padding:9px 12px; border-radius:11px;
+    font-size:.85rem; font-weight:500; color:var(--ink-2); white-space:nowrap;
+    transition:background .25s var(--ease), color .25s var(--ease)}
+  .navlinks .navpanel a:hover{background:var(--accent-soft); color:var(--ink)}
+  .navlinks .navpanel a.here{background:var(--accent-soft); color:var(--ink)}
+  .navlinks .navpanel a.here::before{content:""; flex:0 0 auto; width:6px; height:6px; border-radius:50%; background:var(--accent)}
+  .navlinks .navlabel{padding:8px 12px 3px; font:600 .6rem/1 var(--disp); letter-spacing:.13em;
+    text-transform:uppercase; color:var(--muted)}
+  .navlinks .navpanel hr.navdiv{border:0; border-top:1px solid var(--line); margin:8px 6px}
+  @media(max-width:860px){.navlinks{display:none}}
+
+  .lswitch{display:inline-flex; align-items:center; gap:2px; padding:3px; border-radius:999px;
+    border:1px solid var(--hair); background:#fff}
+  .lswitch button{appearance:none; -webkit-appearance:none; border:0; background:transparent; cursor:pointer;
+    font:600 .78rem/1 var(--disp); letter-spacing:.03em; color:var(--ink-2); padding:8px 13px; border-radius:999px;
+    transition:background .3s var(--ease), color .3s var(--ease)}
+  .lswitch button:hover{color:var(--ink)}
+  body.lang-ja .lswitch .ls-ja,body.lang-en .lswitch .ls-en{background:var(--ink); color:#fff}
+
+  .navtoggle{display:none; position:relative; width:42px; height:42px; flex:0 0 auto;
+    border-radius:999px; border:1px solid var(--hair); background:#fff; cursor:pointer; padding:0}
+  .navtoggle span{position:absolute; left:11px; right:11px; height:2px; background:var(--ink); border-radius:2px;
+    transition:transform .35s var(--ease), opacity .2s var(--ease)}
+  .navtoggle span:nth-child(1){top:15px}
+  .navtoggle span:nth-child(2){top:20px}
+  .navtoggle span:nth-child(3){top:25px}
+  body.navopen .navtoggle span:nth-child(1){transform:translateY(5px) rotate(45deg)}
+  body.navopen .navtoggle span:nth-child(2){opacity:0}
+  body.navopen .navtoggle span:nth-child(3){transform:translateY(-5px) rotate(-45deg)}
+
+  .mobnav{position:fixed; inset:0; z-index:80; display:flex; flex-direction:column; overflow-y:auto;
+    background:rgba(251,252,251,.9); -webkit-backdrop-filter:saturate(1.2) blur(24px); backdrop-filter:saturate(1.2) blur(24px);
+    opacity:0; visibility:hidden; pointer-events:none;
+    transition:opacity .35s var(--ease), visibility 0s linear .35s}
+  body.navopen .mobnav{opacity:1; visibility:visible; pointer-events:auto; transition:opacity .35s var(--ease), visibility 0s linear 0s}
+  body.navopen{overflow:hidden}
+  body.navopen header.bar{z-index:90}
+  .mobnav-inner{width:100%; max-width:600px; margin:0 auto; padding:104px 28px 64px;
+    display:flex; flex-direction:column; gap:24px}
+  .mobgroup{display:flex; flex-direction:column; gap:1px}
+  .moblabel{font:600 .64rem/1 var(--disp); letter-spacing:.14em; text-transform:uppercase; color:var(--muted); margin-bottom:9px}
+  .mobgroup a{font-size:1.28rem; font-weight:500; color:var(--ink); padding:7px 0; line-height:1.24}
+  .mobgroup a:hover{color:var(--accent-2)}
+  .mobgroup a.here{color:var(--accent-2)}
+  .mobgroup a.here::before{content:""; display:inline-block; width:6px; height:6px; border-radius:50%; background:var(--accent); margin-right:9px; vertical-align:middle}
+  .mobfoot{display:flex; align-items:center; justify-content:space-between; gap:16px; flex-wrap:wrap;
+    margin-top:6px; padding-top:22px; border-top:1px solid var(--line)}
+  .mobext{font-size:1rem; font-weight:500; color:var(--ink-2)}
+  .mobext:hover{color:var(--ink)}
+  .js .mobnav-inner > *{opacity:0; transform:translateY(12px);
+    transition:opacity .4s var(--ease), transform .4s var(--ease)}
+  body.navopen .mobnav-inner > *{opacity:1; transform:none}
+  body.navopen .mobnav-inner > *:nth-child(1){transition-delay:.04s}
+  body.navopen .mobnav-inner > *:nth-child(2){transition-delay:.08s}
+  body.navopen .mobnav-inner > *:nth-child(3){transition-delay:.12s}
+  body.navopen .mobnav-inner > *:nth-child(4){transition-delay:.16s}
+  body.navopen .mobnav-inner > *:nth-child(5){transition-delay:.20s}
+  .mobgroup .mobsublabel{font:600 .6rem/1 var(--disp); letter-spacing:.12em; text-transform:uppercase;
+    color:var(--faint); margin:15px 0 5px}
+  .mobgroup .mobsublabel:first-of-type{margin-top:2px}
+
+  .navlinks .navpanel.mega{min-width:568px; max-width:calc(100vw - 24px); padding:12px}
+  .navlinks .navpanel.mega .megacourses{display:grid; grid-template-columns:repeat(4,1fr); gap:1px 4px}
+  .navlinks .navpanel.mega .megagrid{display:grid; grid-template-columns:1fr 1fr; gap:2px 10px; align-items:start}
+  .navlinks .navpanel.mega .megacol{display:flex; flex-direction:column; min-width:0}
+  .navlinks .navpanel.mega a{white-space:normal; line-height:1.28}
+  .navlinks .navpanel.mega .navlabel{padding:8px 12px 4px}
+
+  /* sticky TOC bar */
+  .tocbar{position:sticky; top:84px; z-index:40; margin:8px 0 0;
+    background:rgba(255,255,255,.82); -webkit-backdrop-filter:saturate(1.4) blur(14px); backdrop-filter:saturate(1.4) blur(14px);
+    border-top:1px solid var(--hair); border-bottom:1px solid var(--hair)}
+  .tocbar-inner{max-width:var(--maxw); margin:0 auto; padding:9px 40px; display:flex; gap:8px;
+    overflow-x:auto; scrollbar-width:none; -ms-overflow-style:none}
+  .tocbar-inner::-webkit-scrollbar{display:none}
+  .tocpill{flex:0 0 auto; display:inline-flex; align-items:center; gap:7px; padding:7px 14px; border-radius:999px;
+    font-size:.8rem; font-weight:500; color:var(--ink-2); border:1px solid transparent; white-space:nowrap;
+    transition:background .25s var(--ease), color .25s var(--ease), border-color .25s var(--ease)}
+  .tocpill:hover{color:var(--ink); border-color:var(--hair)}
+  .tocpill.on{background:var(--accent-soft); color:var(--ink)}
+  .tocpill.on::before{content:""; flex:0 0 auto; width:6px; height:6px; border-radius:50%; background:var(--accent)}
+  section[id]{scroll-margin-top:150px}
+
+  .totop{position:fixed; right:22px; bottom:22px; z-index:55; width:46px; height:46px; border-radius:999px;
+    display:grid; place-items:center; background:#fff; border:1px solid var(--hair); box-shadow:var(--soft);
+    color:var(--ink); cursor:pointer; font-size:1.15rem; line-height:1;
+    opacity:0; transform:translateY(10px) scale(.9); pointer-events:none;
+    transition:opacity .35s var(--ease), transform .35s var(--ease)}
+  .totop.show{opacity:1; transform:none; pointer-events:auto}
+  .totop:hover{transform:translateY(-2px)}
+
+  @media(max-width:860px){
+    .navtoggle{display:block}
+    .bar-right .btn{display:none}
+    .tocbar{top:76px}
+  }
+  @media(max-width:430px){.bar-right .lswitch{display:none}}
+  @media (prefers-reduced-motion:reduce){
+    .navlinks .navpanel,.navtoggle span,.mobnav,.js .mobnav-inner > *,.navtop,.lswitch button,.totop,.tocpill{transition-duration:.001ms !important}
+    .js .mobnav-inner > *{transition-delay:0s !important}
+    .navtoggle:hover,.totop:hover{transform:none !important}
+  }
+</style>
+</head>
+<body class="lang-ja">
+<a class="skip" href="#main"><span lang="ja">本文へスキップ</span><span lang="en">Skip to content</span></a>
+
+<header class="bar">
+  <nav class="wrap" aria-label="メイン">
+    <a class="brand" href="../index.html">
+      <span aria-hidden="true">&lsaquo;</span>
+      <span lang="ja">木村祐太</span><span lang="en">Yuta Kimura</span>
+      <span class="sep">·</span><span lang="ja">学習コース</span><span lang="en">Learn</span>
+    </a>
+    <div class="navlinks">
+      <div class="navgroup">
+        <a class="navtop" href="../publications.html" aria-haspopup="true" aria-expanded="false"><span lang="ja">研究</span><span lang="en">Research</span></a>
+        <div class="navpanel">
+          <a href="../publications.html"><span lang="ja">業績・研究活動</span><span lang="en">Publications &amp; activity</span></a>
+          <a href="../research/technical-debt-metrics.html"><span lang="ja">技術的負債とメトリクス</span><span lang="en">Technical debt &amp; metrics</span></a>
+          <a href="../research/apr-coding-standards.html"><span lang="ja">自動生成パッチと規約</span><span lang="en">Auto-generated patches &amp; standards</span></a>
+          <a href="../research/td-repayment-refactoring.html"><span lang="ja">負債返済とリファクタリング</span><span lang="en">Debt repayment &amp; refactoring</span></a>
+          <a href="../research/satd-issue-classification.html"><span lang="ja">課題票の負債分類</span><span lang="en">Issue-ticket debt classification</span></a>
+        </div>
+      </div>
+      <div class="navgroup">
+        <a class="navtop" href="../teaching.html" aria-haspopup="true" aria-expanded="false"><span lang="ja">教育</span><span lang="en">Teaching</span></a>
+        <div class="navpanel mega">
+          <div class="navlabel"><span lang="ja">科目</span><span lang="en">Courses</span></div>
+          <div class="megacourses">
+            <a href="../teaching.html"><span lang="ja">教育・担当授業</span><span lang="en">Teaching &amp; courses</span></a>
+            <a href="../course/index.html"><span lang="ja">ソフトウェア工学</span><span lang="en">Software Engineering</span></a>
+            <a href="../course/logic-circuits.html"><span lang="ja">論理回路1</span><span lang="en">Logic Circuits I</span></a>
+            <a href="../course/intelligent-informatics-1.html"><span lang="ja">知能情報実験実習1</span><span lang="en">Intelligent Informatics Lab I</span></a>
+          </div>
+          <hr class="navdiv">
+          <div class="megagrid">
+            <div class="megacol">
+              <div class="navlabel"><span lang="ja">要求・モデリング</span><span lang="en">Requirements &amp; Modeling</span></div>
+              <a href="../course/requirements-engineering.html"><span lang="ja">要求工学</span><span lang="en">Requirements Engineering</span></a>
+              <a href="../course/system-modeling-uml.html"><span lang="ja">システムモデリング(UML)</span><span lang="en">System Modeling</span></a>
+              <a href="../course/uml-guide.html"><span lang="ja">クラス図/シーケンス図ガイド</span><span lang="en">UML Diagram Guide</span></a>
+            </div>
+            <div class="megacol">
+              <div class="navlabel"><span lang="ja">設計・実装</span><span lang="en">Design &amp; Implementation</span></div>
+              <a href="../course/software-architecture.html"><span lang="ja">アーキテクチャパターン大全</span><span lang="en">Software Architecture</span></a>
+              <a href="../course/design-patterns.html"><span lang="ja">デザインパターン学習ガイド</span><span lang="en">Design Patterns Guide</span></a>
+              <a href="../course/software-reuse-oss.html"><span lang="ja">ソフトウェア再利用とOSS</span><span lang="en">Software Reuse &amp; OSS</span></a>
+            </div>
+            <div class="megacol">
+              <div class="navlabel"><span lang="ja">計画・プロセス</span><span lang="en">Planning &amp; Process</span></div>
+              <a href="../course/agile-scrum.html"><span lang="ja">アジャイル開発とスクラム</span><span lang="en">Agile &amp; Scrum</span></a>
+              <a href="../course/project-management.html"><span lang="ja">プロジェクト管理と見積もり</span><span lang="en">Project Management</span></a>
+              <a href="../course/project-estimation-planning.html"><span lang="ja">プロジェクト計画・見積もり</span><span lang="en">Project Planning &amp; Estimation</span></a>
+            </div>
+            <div class="megacol">
+              <div class="navlabel"><span lang="ja">品質・運用</span><span lang="en">Quality &amp; Operations</span></div>
+              <a href="../course/software-testing.html"><span lang="ja">ソフトウェアテスト学習ガイド</span><span lang="en">Software Testing Guide</span></a>
+              <a href="../course/dependable-systems.html"><span lang="ja">ディペンダブルシステム</span><span lang="en">Dependable Systems</span></a>
+              <a href="../course/software-evolution.html"><span lang="ja">ソフトウェア進化と技術的負債</span><span lang="en">Software Evolution</span></a>
+              <a href="../course/version-control-cicd.html"><span lang="ja">バージョン管理とCI/CD</span><span lang="en">Version Control &amp; CI/CD</span></a>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="navgroup">
+        <a class="navtop on" href="../learn/index.html" aria-haspopup="true" aria-expanded="false"><span lang="ja">学習コース</span><span lang="en">Learn</span></a>
+        <div class="navpanel mega">
+          <div class="navlabel"><span lang="ja">学習コース</span><span lang="en">Learning course</span></div>
+          <a href="../learn/index.html"><span lang="ja">学習コースの全体像</span><span lang="en">Course overview</span></a>
+          <hr class="navdiv">
+          <div class="megagrid">
+            <div class="megacol">
+              <div class="navlabel"><span lang="ja">第1段階 · データ収集</span><span lang="en">Stage 1 · Data collection</span></div>
+              <a href="../learn/repository-mining.html"><span lang="ja">リポジトリマイニング入門</span><span lang="en">Repository Mining</span></a>
+              <a href="../learn/data-preprocessing.html"><span lang="ja">開発データの前処理とデータセット構築</span><span lang="en">Data Preprocessing</span></a>
+            </div>
+            <div class="megacol">
+              <div class="navlabel"><span lang="ja">第2段階 · 分析技術</span><span lang="en">Stage 2 · Techniques</span></div>
+              <a class="here" aria-current="page" href="../learn/nlp.html"><span lang="ja">自然言語処理（NLP）</span><span lang="en">Natural Language Processing</span></a>
+              <a href="../learn/network-analysis.html"><span lang="ja">ネットワーク分析</span><span lang="en">Network Analysis</span></a>
+              <a href="../learn/machine-learning.html"><span lang="ja">機械学習</span><span lang="en">Machine Learning</span></a>
+              <a href="../learn/deep-learning.html"><span lang="ja">深層学習</span><span lang="en">Deep Learning</span></a>
+              <a href="../learn/llm.html"><span lang="ja">大規模言語モデル（LLM）</span><span lang="en">Large Language Models</span></a>
+              <a href="../learn/program-analysis.html"><span lang="ja">プログラム解析</span><span lang="en">Program Analysis</span></a>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="navgroup">
+        <a class="navtop" href="../software-engineering.html" aria-haspopup="true" aria-expanded="false"><span lang="ja">ガイド</span><span lang="en">Guides</span></a>
+        <div class="navpanel">
+          <a href="../software-engineering.html"><span lang="ja">ソフトウェア工学とは</span><span lang="en">What is software engineering</span></a>
+          <a href="../technical-debt.html"><span lang="ja">技術的負債とは</span><span lang="en">What is technical debt</span></a>
+          <a href="../glossary.html"><span lang="ja">研究用語ミニ辞典</span><span lang="en">Research glossary</span></a>
+        </div>
+      </div>
+      <div class="navgroup">
+        <a class="navtop" href="../students.html"><span lang="ja">学生の皆さんへ</span><span lang="en">For Students</span></a>
+      </div>
+    </div>
+    <div class="bar-right">
+      <a class="btn" href="https://researchmap.jp/kimura_yuta" target="_blank" rel="noopener">researchmap</a>
+      <div class="lswitch" role="group" aria-label="言語 / Language">
+        <button type="button" class="ls-ja" onclick="setLang('ja')" aria-pressed="true">JA</button>
+        <button type="button" class="ls-en" onclick="setLang('en')" aria-pressed="false">EN</button>
+      </div>
+      <button class="navtoggle" id="navToggle" type="button" aria-label="メニュー" aria-expanded="false" aria-controls="mobnav">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </nav>
+</header>
+
+<div class="mobnav" id="mobnav" aria-hidden="true">
+  <div class="mobnav-inner">
+    <div class="mobgroup">
+      <div class="moblabel"><span lang="ja">研究</span><span lang="en">Research</span></div>
+      <a href="../publications.html"><span lang="ja">業績・研究活動</span><span lang="en">Publications &amp; activity</span></a>
+      <a href="../research/technical-debt-metrics.html"><span lang="ja">技術的負債とメトリクス</span><span lang="en">Technical debt &amp; metrics</span></a>
+      <a href="../research/apr-coding-standards.html"><span lang="ja">自動生成パッチと規約</span><span lang="en">Auto-generated patches &amp; standards</span></a>
+      <a href="../research/td-repayment-refactoring.html"><span lang="ja">負債返済とリファクタリング</span><span lang="en">Debt repayment &amp; refactoring</span></a>
+      <a href="../research/satd-issue-classification.html"><span lang="ja">課題票の負債分類</span><span lang="en">Issue-ticket debt classification</span></a>
+    </div>
+    <div class="mobgroup">
+      <div class="moblabel"><span lang="ja">教育</span><span lang="en">Teaching</span></div>
+      <div class="mobsublabel"><span lang="ja">科目</span><span lang="en">Courses</span></div>
+      <a href="../teaching.html"><span lang="ja">教育・担当授業</span><span lang="en">Teaching &amp; courses</span></a>
+      <a href="../course/index.html"><span lang="ja">ソフトウェア工学</span><span lang="en">Software Engineering</span></a>
+      <a href="../course/logic-circuits.html"><span lang="ja">論理回路1</span><span lang="en">Logic Circuits I</span></a>
+      <a href="../course/intelligent-informatics-1.html"><span lang="ja">知能情報実験実習1</span><span lang="en">Intelligent Informatics Lab I</span></a>
+      <div class="mobsublabel"><span lang="ja">要求・モデリング</span><span lang="en">Requirements &amp; Modeling</span></div>
+      <a href="../course/requirements-engineering.html"><span lang="ja">要求工学</span><span lang="en">Requirements Engineering</span></a>
+      <a href="../course/system-modeling-uml.html"><span lang="ja">システムモデリング(UML)</span><span lang="en">System Modeling</span></a>
+      <a href="../course/uml-guide.html"><span lang="ja">クラス図/シーケンス図ガイド</span><span lang="en">UML Diagram Guide</span></a>
+      <div class="mobsublabel"><span lang="ja">設計・実装</span><span lang="en">Design &amp; Implementation</span></div>
+      <a href="../course/software-architecture.html"><span lang="ja">アーキテクチャパターン大全</span><span lang="en">Software Architecture</span></a>
+      <a href="../course/design-patterns.html"><span lang="ja">デザインパターン学習ガイド</span><span lang="en">Design Patterns Guide</span></a>
+      <a href="../course/software-reuse-oss.html"><span lang="ja">ソフトウェア再利用とOSS</span><span lang="en">Software Reuse &amp; OSS</span></a>
+      <div class="mobsublabel"><span lang="ja">計画・プロセス</span><span lang="en">Planning &amp; Process</span></div>
+      <a href="../course/agile-scrum.html"><span lang="ja">アジャイル開発とスクラム</span><span lang="en">Agile &amp; Scrum</span></a>
+      <a href="../course/project-management.html"><span lang="ja">プロジェクト管理と見積もり</span><span lang="en">Project Management</span></a>
+      <a href="../course/project-estimation-planning.html"><span lang="ja">プロジェクト計画・見積もり</span><span lang="en">Project Planning &amp; Estimation</span></a>
+      <div class="mobsublabel"><span lang="ja">品質・運用</span><span lang="en">Quality &amp; Operations</span></div>
+      <a href="../course/software-testing.html"><span lang="ja">ソフトウェアテスト学習ガイド</span><span lang="en">Software Testing Guide</span></a>
+      <a href="../course/dependable-systems.html"><span lang="ja">ディペンダブルシステム</span><span lang="en">Dependable Systems</span></a>
+      <a href="../course/software-evolution.html"><span lang="ja">ソフトウェア進化と技術的負債</span><span lang="en">Software Evolution</span></a>
+      <a href="../course/version-control-cicd.html"><span lang="ja">バージョン管理とCI/CD</span><span lang="en">Version Control &amp; CI/CD</span></a>
+    </div>
+    <div class="mobgroup">
+      <div class="moblabel"><span lang="ja">学習コース</span><span lang="en">Learn</span></div>
+      <a href="../learn/index.html"><span lang="ja">学習コースの全体像</span><span lang="en">Course overview</span></a>
+      <div class="mobsublabel"><span lang="ja">第1段階 · データ収集</span><span lang="en">Stage 1 · Data collection</span></div>
+      <a href="../learn/repository-mining.html"><span lang="ja">リポジトリマイニング入門</span><span lang="en">Repository Mining</span></a>
+      <a href="../learn/data-preprocessing.html"><span lang="ja">開発データの前処理とデータセット構築</span><span lang="en">Data Preprocessing</span></a>
+      <div class="mobsublabel"><span lang="ja">第2段階 · 分析技術</span><span lang="en">Stage 2 · Techniques</span></div>
+      <a class="here" aria-current="page" href="../learn/nlp.html"><span lang="ja">自然言語処理（NLP）</span><span lang="en">Natural Language Processing</span></a>
+      <a href="../learn/network-analysis.html"><span lang="ja">ネットワーク分析</span><span lang="en">Network Analysis</span></a>
+      <a href="../learn/machine-learning.html"><span lang="ja">機械学習</span><span lang="en">Machine Learning</span></a>
+      <a href="../learn/deep-learning.html"><span lang="ja">深層学習</span><span lang="en">Deep Learning</span></a>
+      <a href="../learn/llm.html"><span lang="ja">大規模言語モデル（LLM）</span><span lang="en">Large Language Models</span></a>
+      <a href="../learn/program-analysis.html"><span lang="ja">プログラム解析</span><span lang="en">Program Analysis</span></a>
+    </div>
+    <div class="mobgroup">
+      <div class="moblabel"><span lang="ja">ガイド</span><span lang="en">Guides</span></div>
+      <a href="../software-engineering.html"><span lang="ja">ソフトウェア工学とは</span><span lang="en">What is software engineering</span></a>
+      <a href="../technical-debt.html"><span lang="ja">技術的負債とは</span><span lang="en">What is technical debt</span></a>
+      <a href="../glossary.html"><span lang="ja">研究用語ミニ辞典</span><span lang="en">Research glossary</span></a>
+    </div>
+    <div class="mobgroup">
+      <div class="moblabel"><span lang="ja">学生の皆さんへ</span><span lang="en">For Students</span></div>
+      <a href="../students.html"><span lang="ja">学生の皆さんへ</span><span lang="en">For Students</span></a>
+    </div>
+    <div class="mobfoot">
+      <a class="mobext" href="https://researchmap.jp/kimura_yuta" target="_blank" rel="noopener">researchmap</a>
+      <div class="lswitch" role="group" aria-label="言語 / Language">
+        <button type="button" class="ls-ja" onclick="setLang('ja')" aria-pressed="true">JA</button>
+        <button type="button" class="ls-en" onclick="setLang('en')" aria-pressed="false">EN</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<main id="main">
+<div class="wrap" style="padding-top:24px">
+  <nav class="crumbs" aria-label="パンくず">
+    <a href="../index.html"><span lang="ja">ホーム</span><span lang="en">Home</span></a>
+    <span class="csep" aria-hidden="true">&rsaquo;</span>
+    <span class="cur" aria-current="page"><span lang="ja">学習コース：自然言語処理</span><span lang="en">Learn: Natural Language Processing</span></span>
+  </nav>
+</div>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="wrap">
+    <p class="kick"><span lang="ja">学習コース</span><span lang="en">Learn</span></p>
+    <h1>自然言語処理（NLP）</h1>
+    <p class="lead">テキストデータをコンピュータで扱うための基礎技術を、概要から理論、そして実際に動かせるコードまで、順を追って学ぶモジュールです。各ステップは「概要 → 仕組み（座学）→ コードで動かす」の3層で進みます。ページ内には手を動かせるデモを3つ用意しました。</p>
+    <p class="ja-note"><span lang="ja">この教材は日本語のみで提供しています</span><span lang="en">This learning material is available in Japanese only.</span></p>
+    <div class="hero-cta">
+      <a class="btn ink" href="#intro" style="padding:12px 22px">
+        <span lang="ja">学びはじめる</span><span lang="en">Start learning</span>
+      </a>
+      <a class="tlink" href="#step2">
+        <span lang="ja">まず手を動かす（トークナイザ体験）</span><span lang="en">Jump to the tokenizer demo</span>
+        <span class="ar" aria-hidden="true">&rsaquo;</span>
+      </a>
+    </div>
+  </div>
+</div>
+
+<div id="toTopSentinel" aria-hidden="true"></div>
+
+<div class="tocbar">
+  <nav class="tocbar-inner" aria-label="ページ内目次">
+    <a class="tocpill" href="#intro"><span lang="ja">はじめに</span><span lang="en">Intro</span></a>
+    <a class="tocpill" href="#step1">Step 1 <span lang="ja">NLPとは</span><span lang="en">What is NLP</span></a>
+    <a class="tocpill" href="#step2">Step 2 <span lang="ja">前処理</span><span lang="en">Preprocessing</span></a>
+    <a class="tocpill" href="#step3">Step 3 <span lang="ja">BoW / TF-IDF</span><span lang="en">BoW / TF-IDF</span></a>
+    <a class="tocpill" href="#step4">Step 4 <span lang="ja">分散表現</span><span lang="en">Embeddings</span></a>
+    <a class="tocpill" href="#step5">Step 5 <span lang="ja">テキスト分類</span><span lang="en">Classification</span></a>
+    <a class="tocpill" href="#step6">Step 6 <span lang="ja">これからのNLP</span><span lang="en">What is next</span></a>
+    <a class="tocpill" href="#closing"><span lang="ja">まとめ</span><span lang="en">Wrap-up</span></a>
+    <a class="tocpill" href="#beyond"><span lang="ja">発展トピック</span><span lang="en">Beyond</span></a>
+  </nav>
+</div>
+
+<!-- INTRO -->
+<section id="intro" style="padding-top:26px">
+  <div class="wrap reveal">
+    <p class="eyebrow"><span lang="ja">はじめに</span><span lang="en">Introduction</span></p>
+    <h2 class="big">このモジュールの全体像</h2>
+    <div class="prose" style="margin-top:22px">
+      <p><b>自然言語処理（NLP: Natural Language Processing）</b>とは、私たちが普段使う言葉（自然言語）をコンピュータで解析・生成する技術の総称です。検索エンジン、機械翻訳、迷惑メールの判定、チャットボット、そして大規模言語モデル（LLM）まで、身のまわりの多くのサービスがこの技術の上に成り立っています。</p>
+      <p>ただし、テキストはそのままでは計算できません。多くの手法に共通するのが、次のような処理の流れ（パイプライン）です。生のテキストを整え、数値（特徴量）に変換し、モデルで分析し、応用へつなげます。</p>
+    </div>
+
+    <div class="diagram-wrap reveal">
+      <p class="cap">NLPの基本パイプライン</p>
+      <svg viewBox="0 0 940 150" role="img" aria-label="NLPパイプライン: テキストから前処理、特徴量化、モデルと分析、応用への流れ">
+        <g>
+          <rect class="dg-box" x="12" y="46" width="150" height="58" rx="12"/>
+          <text class="dg-lbl" x="87" y="72">テキスト</text>
+          <text class="dg-en" x="87" y="90">Raw text</text>
+        </g>
+        <g>
+          <rect class="dg-box acc" x="204" y="46" width="150" height="58" rx="12"/>
+          <text class="dg-lbl" x="279" y="72">前処理</text>
+          <text class="dg-en" x="279" y="90">Preprocess</text>
+        </g>
+        <g>
+          <rect class="dg-box acc" x="396" y="46" width="150" height="58" rx="12"/>
+          <text class="dg-lbl" x="471" y="72">特徴量化</text>
+          <text class="dg-en" x="471" y="90">Vectorize</text>
+        </g>
+        <g>
+          <rect class="dg-box acc" x="588" y="46" width="150" height="58" rx="12"/>
+          <text class="dg-lbl" x="663" y="72">モデル・分析</text>
+          <text class="dg-en" x="663" y="90">Model</text>
+        </g>
+        <g>
+          <rect class="dg-box" x="780" y="46" width="148" height="58" rx="12"/>
+          <text class="dg-lbl" x="854" y="72">応用</text>
+          <text class="dg-en" x="854" y="90">Application</text>
+        </g>
+        <g class="dg-line">
+          <line x1="162" y1="75" x2="196" y2="75"/><line x1="354" y1="75" x2="388" y2="75"/>
+          <line x1="546" y1="75" x2="580" y2="75"/><line x1="738" y1="75" x2="772" y2="75"/>
+        </g>
+        <g class="dg-arrow">
+          <polygon points="196,75 188,71 188,79"/><polygon points="388,75 380,71 380,79"/>
+          <polygon points="580,75 572,71 572,79"/><polygon points="772,75 764,71 764,79"/>
+        </g>
+        <text class="dg-note" x="279" y="130">正規化・トークン化</text>
+        <text class="dg-note" x="471" y="130">BoW・TF-IDF・埋め込み</text>
+        <text class="dg-note" x="663" y="130">分類・類似度・生成</text>
+      </svg>
+    </div>
+
+    <div class="prose">
+      <p>このモジュールは、上のパイプラインを左から順にたどります。各ステップは次の3層で構成します。</p>
+      <ul>
+        <li><b>概要</b>：その技術が何のためにあるのか、あらましをつかむ。</li>
+        <li><b>仕組み（座学）</b>：背後にある理論・定義・式を、ていねいに理解する。</li>
+        <li><b>コードで動かす</b>：Python の定番ライブラリや、ページ内デモで実際に動かして確かめる。</li>
+      </ul>
+      <p>手を動かす題材には、実在の公開データセット（20&nbsp;Newsgroups、livedoorニュースコーパスなど）や、ページ内の小さなサンプル文だけを使います。特別な環境がなくても、読みながら試せる構成です。</p>
+    </div>
+  </div>
+</section>
+
+<!-- STEP 1 -->
+<section id="step1" class="soft-sec">
+  <div class="wrap reveal">
+    <div class="stephead">
+      <span class="num">1</span>
+      <div class="tt"><h2>自然言語処理とは</h2><span class="st-en">What is NLP</span></div>
+    </div>
+    <div class="steprule"></div>
+
+    <p class="layer first"><span lang="ja">概要</span><span lang="en">Overview</span></p>
+    <div class="prose">
+      <p>自然言語処理は「人間の言葉」と「コンピュータの計算」の橋渡しをする分野です。私たちは次のような場面で、すでにその成果に触れています。</p>
+      <ul>
+        <li><b>検索</b>：キーワードから関連文書を並べ替える。</li>
+        <li><b>機械翻訳</b>：ある言語の文を別の言語へ変換する。</li>
+        <li><b>分類</b>：メールを迷惑/通常に、レビューを肯定/否定に振り分ける。</li>
+        <li><b>対話</b>：チャットボットや音声アシスタントが応答する。</li>
+        <li><b>大規模言語モデル（LLM）</b>：文章の生成・要約・質問応答をこなす。</li>
+      </ul>
+    </div>
+
+    <p class="layer"><span lang="ja">仕組み</span><span lang="en">How it works</span></p>
+    <div class="prose">
+      <p>言葉をコンピュータで扱うのが難しいのは、自然言語が本質的に<b>曖昧</b>で<b>文脈依存</b>だからです。代表的な難しさを3つ挙げます。</p>
+      <ul>
+        <li><b>曖昧性</b>：一つの語が複数の意味を持つ。たとえば「はし」は「橋」「箸」「端」のどれか、文脈がなければ決まりません。</li>
+        <li><b>文脈依存</b>：「それ」「彼」などの指示語や省略は、前後の文がないと解釈できません。同じ「大丈夫」でも肯定にも辞退にもなります。</li>
+        <li><b>表記ゆれ</b>：「コンピュータ / コンピューター」「Apple / apple」「令和6年 / 2024年」のように、同じものが違う表記で現れます。</li>
+      </ul>
+      <p>そこで多くの手法は、いきなり意味を扱うのではなく、まずテキストを機械が処理しやすい形に整え（前処理）、次に数値へ変換し（特徴量化）、その数値に対して統計や機械学習を適用する、という段階を踏みます。このモジュールの Step&nbsp;2 以降は、まさにこの流れを一つずつ体験していきます。</p>
+    </div>
+
+    <div class="callout tip">
+      <h4>この Step のまとめ</h4>
+      <p>NLP は言葉をコンピュータで扱う技術の総称。曖昧性・文脈・表記ゆれという難しさがあるため、「整える → 数値化する → モデルにかける」というパイプラインで少しずつ攻略していきます。</p>
+    </div>
+  </div>
+</section>
+
+<!-- STEP 2 -->
+<section id="step2">
+  <div class="wrap reveal">
+    <div class="stephead">
+      <span class="num">2</span>
+      <div class="tt"><h2>テキストの前処理</h2><span class="st-en">Preprocessing &amp; tokenization</span></div>
+    </div>
+    <div class="steprule"></div>
+
+    <p class="layer first"><span lang="ja">概要</span><span lang="en">Overview</span></p>
+    <div class="prose">
+      <p>前処理は、生のテキストを「そろえて、区切る」工程です。ここで質が決まると言ってよいほど大切で、後段の特徴量化やモデルの精度に直結します。おおまかに、正規化・トークン化・不要語の除去・語形のまとめ、という作業があります。</p>
+    </div>
+
+    <p class="layer"><span lang="ja">仕組み</span><span lang="en">How it works</span></p>
+    <div class="prose">
+      <h4>1. 正規化（normalization）</h4>
+      <p>表記のゆれをそろえます。英語なら大文字を小文字にする（<code>Apple</code> と <code>apple</code> を同一視）、日本語なら全角と半角、記号の統一などです。数字や記号を落とすかどうかは目的次第で決めます。</p>
+      <h4>2. トークン化（tokenization）</h4>
+      <p>文を語（トークン）の並びに区切ります。英語は単語が空白で区切られているので、空白と句読点で分けるのが基本です。一方、<b>日本語は語の間に空白がありません</b>。そこで<b>形態素解析</b>を使い、辞書と文法規則にもとづいて「分かち書き」します。日本語では MeCab や janome といったツールが定番です。</p>
+      <h4>3. ストップワード（stop words）</h4>
+      <p>「の」「は」「a」「the」のように、どの文書にも高頻度で現れ、内容の区別に寄与しにくい語を<b>ストップワード</b>と呼び、目的に応じて除去します。ただし機械翻訳のように語順や機能語が重要な課題では、安易に消すと情報が失われる点に注意します。</p>
+      <h4>4. ステミングとレンマ化</h4>
+      <p>英語では、活用や語尾の違いを吸収して語をまとめる処理があります。<b>ステミング（stemming）</b>は規則で語尾を機械的に削る方法で、<code>studies</code> や <code>studying</code> を <code>studi</code> のような語幹にします（Porter ステマーが有名）。<b>レンマ化（lemmatization）</b>は辞書を使って正しい原形（見出し語）に戻す方法で、<code>studies</code> は <code>study</code>、<code>better</code> は <code>good</code> になります。</p>
+    </div>
+
+    <!-- DEMO 1: Tokenizer -->
+    <div class="demo reveal" id="demoTok">
+      <span class="dtag"><span lang="ja">デモ 1</span><span lang="en">Demo 1</span></span>
+      <h4>トークナイザ体験</h4>
+      <p class="dnote">テキストを入力すると、トークン（語）に区切ってチップで表示します。英語は空白・句読点で分割、日本語は簡易的な分かち書き（小さな辞書＋最長一致）で区切ります。実務では MeCab や janome などの形態素解析器を使いますが、区切りの雰囲気をつかむには十分です。</p>
+      <label class="fld" for="tokInput">入力テキスト / Input</label>
+      <textarea id="tokInput" rows="2" spellcheck="false">自然言語処理は面白い分野です</textarea>
+      <div class="try">
+        <span class="tlbl">例</span>
+        <button type="button" data-tok="自然言語処理は面白い分野です">日本語 A</button>
+        <button type="button" data-tok="私は本を読むのが好きです">日本語 B</button>
+        <button type="button" data-tok="猫がソファの上で眠っている">日本語 C</button>
+        <button type="button" data-tok="Natural language processing is fun!">English</button>
+        <button type="button" data-tok="機械学習でtextを解析する">日本語＋英語</button>
+      </div>
+      <div class="demo-out">
+        <div class="chips" id="tokChips" aria-live="polite"></div>
+        <div class="chipcount" id="tokCount"></div>
+        <div class="chip-legend">
+          <span><i style="background:var(--accent-soft);border:1px solid rgba(14,111,92,.16)"></i>内容語（名詞・動詞など）</span>
+          <span><i style="background:var(--bg-3)"></i>助詞・語尾など</span>
+          <span><i style="background:#fff;border:1px solid var(--hair)"></i>英数字</span>
+        </div>
+      </div>
+    </div>
+
+    <p class="layer"><span lang="ja">コードで動かす</span><span lang="en">Run the code</span></p>
+    <div class="prose">
+      <p>英語の素朴な前処理は、標準ライブラリ <code>re</code> だけでも書けます。小文字化して、単語だけを取り出し、ストップワードを除きます。</p>
+    </div>
+    <div class="code-wrap attached">
+      <div class="code-head"><span class="lbl">Python</span><span class="lang-tag">english_preprocess.py</span><button class="copy" type="button" onclick="copyCode(this)">copy</button></div>
+      <pre><code><span class="kw">import</span> re
+
+text = <span class="st">"Cats are running and the dogs are barking!"</span>
+stop = {<span class="st">"the"</span>, <span class="st">"and"</span>, <span class="st">"are"</span>, <span class="st">"a"</span>, <span class="st">"is"</span>}
+
+<span class="cm"># 小文字化して単語だけ取り出す（正規表現でトークン化）</span>
+tokens = re.findall(<span class="st">r"[a-z]+"</span>, text.lower())
+<span class="cm"># ストップワードを除去</span>
+tokens = [t <span class="kw">for</span> t <span class="kw">in</span> tokens <span class="kw">if</span> t <span class="kw">not</span> <span class="kw">in</span> stop]
+<span class="kw">print</span>(tokens)</code></pre>
+    </div>
+    <div class="code-out"><span class="olbl">出力例 / Output</span><pre><code>['cats', 'running', 'dogs', 'barking']</code></pre></div>
+
+    <div class="prose">
+      <p>日本語は形態素解析が必要です。ここでは純 Python で動く <code>janome</code> を使います。有名な例文で分かち書きと品詞を確認しましょう。</p>
+    </div>
+    <div class="code-wrap attached">
+      <div class="code-head"><span class="lbl">Python</span><span class="lang-tag">janome_tokenize.py</span><button class="copy" type="button" onclick="copyCode(this)">copy</button></div>
+      <pre><code><span class="cm"># pip install janome</span>
+<span class="kw">from</span> janome.tokenizer <span class="kw">import</span> Tokenizer
+
+t = Tokenizer()
+<span class="kw">for</span> token <span class="kw">in</span> t.tokenize(<span class="st">"すもももももももものうち"</span>):
+    <span class="kw">print</span>(token.surface, token.part_of_speech.split(<span class="st">","</span>)[<span class="nu">0</span>])</code></pre>
+    </div>
+    <div class="code-out"><span class="olbl">出力例 / Output</span><pre><code>すもも 名詞
+も 助詞
+もも 名詞
+も 助詞
+もも 名詞
+の 助詞
+うち 名詞</code></pre></div>
+
+    <div class="prose">
+      <p>分かち書きした語だけがほしいときは <code>wakati=True</code> が便利です。</p>
+    </div>
+    <div class="code-wrap attached">
+      <div class="code-head"><span class="lbl">Python</span><span class="lang-tag">janome_wakati.py</span><button class="copy" type="button" onclick="copyCode(this)">copy</button></div>
+      <pre><code><span class="kw">from</span> janome.tokenizer <span class="kw">import</span> Tokenizer
+
+t = Tokenizer(wakati=<span class="kw">True</span>)
+<span class="kw">print</span>(list(t.tokenize(<span class="st">"自然言語処理は面白い分野です"</span>)))</code></pre>
+    </div>
+    <div class="code-out"><span class="olbl">出力例 / Output</span><pre><code>['自然', '言語', '処理', 'は', '面白い', '分野', 'です']</code></pre></div>
+
+    <div class="callout tip">
+      <h4>この Step のまとめ</h4>
+      <p>前処理は「そろえて、区切る」。英語は空白で区切れますが、日本語は形態素解析で分かち書きします。ここで作った<b>トークンの列</b>が、次の Step で数値ベクトルに変わります。</p>
+    </div>
+  </div>
+</section>
+
+<!-- STEP 3 -->
+<section id="step3" class="soft-sec">
+  <div class="wrap reveal">
+    <div class="stephead">
+      <span class="num">3</span>
+      <div class="tt"><h2>テキストを数値にする（BoW・TF-IDF）</h2><span class="st-en">From text to numbers</span></div>
+    </div>
+    <div class="steprule"></div>
+
+    <p class="layer first"><span lang="ja">概要</span><span lang="en">Overview</span></p>
+    <div class="prose">
+      <p>機械学習の多くは数値ベクトルを入力とします。そこで、トークンの列を数のベクトルに変える必要があります。最も基本的な方法が <b>Bag-of-Words（BoW）</b> と、その改良である <b>TF-IDF</b> です。</p>
+    </div>
+
+    <p class="layer"><span lang="ja">仕組み</span><span lang="en">How it works</span></p>
+    <div class="prose">
+      <h4>Bag-of-Words（BoW）</h4>
+      <p>文書を「語の袋（bag）」とみなし、<b>どの語が何回出たか</b>だけで表します。語順は捨てます。語彙全体を列に並べ、各文書を出現回数のベクトルにします。たとえば語彙が <code>[cat, dog, sat, the]</code> のとき、文書「the cat sat」は <code>[1, 0, 1, 1]</code> です。単純ですが、分類などで驚くほどよく効きます。弱点は、語順や文脈を捨てること、そして「the」のようなありふれた語が大きな値を持ちやすいことです。</p>
+      <h4>TF-IDF</h4>
+      <p>後者の弱点に対処するのが TF-IDF です。<b>その文書での出現頻度（TF）</b>を、<b>コーパス全体でのめずらしさ（IDF）</b>で重み付けします。多くの文書に出る語ほど IDF が小さくなり、値が抑えられます。逆に、特定の文書に偏って出る語が強調されます。標準的な定義は次のとおりです。</p>
+    </div>
+    <div class="formula">
+      tf-idf(t, d) <span class="op">=</span> tf(t, d) <span class="op">&times;</span> log( N <span class="op">/</span> df(t) )
+      <small>tf(t,d): 文書 d における語 t の頻度　N: 全文書数　df(t): 語 t を含む文書数<br>すべての文書に出る語は df = N なので log(N/df) = log(1) = 0 となり、重みが 0 になります。</small>
+    </div>
+    <div class="prose">
+      <p>TF の数え方（生の回数か相対頻度か）や IDF の底、平滑化（分母が 0 にならないよう +1 する等）には流儀があります。次のデモは「相対頻度 × 自然対数 log(N/df)」という素直な定義で計算します。いっぽう後述の scikit-learn は、平滑化した IDF と L2 正規化を組み合わせるため、同じ考え方でも数値は少し変わります。</p>
+    </div>
+
+    <!-- DEMO 2: TF-IDF -->
+    <div class="demo reveal" id="demoTfidf">
+      <span class="dtag"><span lang="ja">デモ 2</span><span lang="en">Demo 2</span></span>
+      <h4>TF-IDF ミニ計算機</h4>
+      <p class="dnote">1 行に 1 文書を書きます（語は空白区切り、日本語は簡易分かち書き）。各語の df・idf と、文書ごとの tf-idf を計算して表にします。値が大きいほど濃い緑で強調します。すべての文書に出る語は idf = 0（重み 0）になる点に注目してください。</p>
+      <label class="fld" for="tfidfInput">文書集合（1行=1文書）/ Documents</label>
+      <textarea id="tfidfInput" rows="4" spellcheck="false">the cat sat on the mat
+the dog sat on the log
+the bird flew to the tree</textarea>
+      <div class="try">
+        <span class="tlbl">例</span>
+        <button type="button" data-tf="the cat sat on the mat&#10;the dog sat on the log&#10;the bird flew to the tree">English</button>
+        <button type="button" data-tf="猫 が 好き&#10;犬 が 好き&#10;猫 と 犬 が 好き">日本語（空白区切り）</button>
+        <button type="button" data-tf="自然言語処理は楽しい&#10;自然言語処理は難しい&#10;画像処理は楽しい">日本語（分かち書き）</button>
+      </div>
+      <div class="demo-out" id="tfidfOut" aria-live="polite"></div>
+    </div>
+
+    <p class="layer"><span lang="ja">コードで動かす</span><span lang="en">Run the code</span></p>
+    <div class="prose">
+      <p>scikit-learn を使えば、BoW も TF-IDF も数行で作れます。まず <code>CountVectorizer</code> で出現回数の行列を作ります。</p>
+    </div>
+    <div class="code-wrap attached">
+      <div class="code-head"><span class="lbl">Python</span><span class="lang-tag">count_vectorizer.py</span><button class="copy" type="button" onclick="copyCode(this)">copy</button></div>
+      <pre><code><span class="kw">from</span> sklearn.feature_extraction.text <span class="kw">import</span> CountVectorizer
+
+corpus = [
+    <span class="st">"the cat sat on the mat"</span>,
+    <span class="st">"the dog sat on the log"</span>,
+    <span class="st">"cats and dogs are friends"</span>,
+]
+cv = CountVectorizer()
+X = cv.fit_transform(corpus)
+<span class="kw">print</span>(cv.get_feature_names_out())
+<span class="kw">print</span>(X.toarray())</code></pre>
+    </div>
+    <div class="code-out"><span class="olbl">出力例 / Output</span><pre><code>['and' 'are' 'cat' 'cats' 'dog' 'dogs' 'friends' 'log' 'mat' 'on' 'sat' 'the']
+[[0 0 1 0 0 0 0 0 1 1 1 2]
+ [0 0 0 0 1 0 0 1 0 1 1 2]
+ [1 1 0 1 0 1 1 0 0 0 0 0]]</code></pre></div>
+
+    <div class="prose">
+      <p>語順は失われ、各文書が「語彙の長さのベクトル」になりました。<code>the</code> の列が 2 になっているのが分かります。続いて <code>TfidfVectorizer</code> で重み付けします。</p>
+    </div>
+    <div class="code-wrap attached">
+      <div class="code-head"><span class="lbl">Python</span><span class="lang-tag">tfidf_vectorizer.py</span><button class="copy" type="button" onclick="copyCode(this)">copy</button></div>
+      <pre><code><span class="kw">from</span> sklearn.feature_extraction.text <span class="kw">import</span> TfidfVectorizer
+<span class="kw">import</span> numpy <span class="kw">as</span> np
+
+corpus = [
+    <span class="st">"the cat sat on the mat"</span>,
+    <span class="st">"the dog sat on the log"</span>,
+    <span class="st">"cats and dogs are friends"</span>,
+]
+tv = TfidfVectorizer()
+X = tv.fit_transform(corpus)
+np.set_printoptions(precision=<span class="nu">3</span>, suppress=<span class="kw">True</span>)
+<span class="kw">print</span>(X.toarray())</code></pre>
+    </div>
+    <div class="code-out"><span class="olbl">出力例 / Output</span><pre><code>[[0.    0.    0.428 0.    0.    0.    0.    0.    0.428 0.325 0.325 0.65 ]
+ [0.    0.    0.    0.    0.428 0.    0.    0.428 0.    0.325 0.325 0.65 ]
+ [0.447 0.447 0.    0.447 0.    0.447 0.447 0.    0.    0.    0.    0.   ]]</code></pre></div>
+    <div class="prose">
+      <p>各行は L2 正規化され（長さ 1 のベクトルになり）、めずらしい語ほど大きな値になっています。scikit-learn の既定では IDF に平滑化が入るため、素朴な log(N/df) とは値が異なりますが、「よく出る語を抑え、特徴的な語を強調する」という狙いは同じです。</p>
+    </div>
+
+    <div class="callout tip">
+      <h4>この Step のまとめ</h4>
+      <p>BoW は語の出現回数ベクトル。TF-IDF は「その文書での頻度 × コーパスでのめずらしさ」で重み付けし、ありふれた語を抑えます。これで文書が数値ベクトルになり、次はベクトル同士の「近さ」を測れます。</p>
+    </div>
+  </div>
+</section>
+
+<!-- STEP 4 -->
+<section id="step4">
+  <div class="wrap reveal">
+    <div class="stephead">
+      <span class="num">4</span>
+      <div class="tt"><h2>単語の意味をベクトルに（分散表現）</h2><span class="st-en">Word embeddings</span></div>
+    </div>
+    <div class="steprule"></div>
+
+    <p class="layer first"><span lang="ja">概要</span><span lang="en">Overview</span></p>
+    <div class="prose">
+      <p>BoW や TF-IDF では、各語は「語彙の中の 1 か所だけが 1 の、とても長いベクトル（one-hot 表現）」に対応します。この表し方には限界があり、それを乗り越えるのが<b>分散表現（word embeddings）</b>です。</p>
+    </div>
+
+    <p class="layer"><span lang="ja">仕組み</span><span lang="en">How it works</span></p>
+    <div class="prose">
+      <h4>one-hot の限界</h4>
+      <p>one-hot では、語彙が 5 万語あればベクトルの次元も 5 万になり、しかもほとんどが 0 の疎なベクトルです。さらに致命的なのは、<b>語と語の意味的な近さを表せない</b>ことです。「猫」と「犬」は動物として近いのに、one-hot ではどの 2 語も直交し（内積が 0）、「猫と犬」も「猫と自動車」も同じだけ無関係に見えてしまいます。</p>
+      <h4>分布仮説</h4>
+      <p>この問題への鍵が<b>分布仮説（distributional hypothesis）</b>です。言語学者 J.R. Firth の言葉、<i>&ldquo;You shall know a word by the company it keeps&rdquo;</i>（1957）に象徴されるように、<b>似た文脈に現れる語は、似た意味を持つ</b>という考え方です。「犬が___を食べる」「猫が___を食べる」のように、周囲に現れる語が似ていれば、その 2 語も意味的に近いとみなします。</p>
+      <h4>word2vec の考え方</h4>
+      <p>この仮説をニューラルネットで実装したのが <b>word2vec</b>（Mikolov ら, 2013）です。大量の文から「語とその周辺語」の関係を学習し、各語を数十から数百次元の密なベクトルに割り当てます。学習方式は 2 つあります。</p>
+      <ul>
+        <li><b>CBOW</b>：周辺の語から中心の語を当てる。</li>
+        <li><b>Skip-gram</b>：中心の語から周辺の語を当てる。</li>
+      </ul>
+      <p>学習後は、意味の近い語のベクトルが近くに配置されます。有名なのが「king - man + woman ≒ queen」のような、意味の関係がベクトルの足し引きに現れる例です。文全体を表したいときは、単語ベクトルの平均を取る素朴な方法から、文脈を考慮した文埋め込みまで、さまざまな発展があります。</p>
+      <h4>コサイン類似度</h4>
+      <p>ベクトル同士の「近さ」は<b>コサイン類似度</b>で測るのが定番です。2 つのベクトルのなす角の余弦（cos）で、向きが同じなら 1、直交なら 0、逆向きなら -1 です（出現回数ベクトルのように成分が 0 以上なら 0 から 1 の範囲）。大きさではなく<b>向き</b>を見るので、文書の長さに左右されにくいのが利点です。</p>
+    </div>
+    <div class="formula">
+      cos(A, B) <span class="op">=</span> (A <span class="op">&middot;</span> B) <span class="op">/</span> ( &#8214;A&#8214; <span class="op">&times;</span> &#8214;B&#8214; )
+      <small>A &middot; B: 内積（成分ごとの積の和）　&#8214;A&#8214;: ベクトル A の長さ（各成分の二乗和の平方根）</small>
+    </div>
+
+    <div class="diagram-wrap reveal">
+      <p class="cap">コサイン類似度：向きが近いほど値は 1 に近づく</p>
+      <svg viewBox="0 0 640 260" role="img" aria-label="2次元ベクトル空間でのコサイン類似度の概念図。AとBは角度が小さく類似度が大きい、Cは角度が大きく類似度が小さい">
+        <line class="dg-ax" x1="70" y1="220" x2="600" y2="220"/>
+        <line class="dg-ax" x1="70" y1="220" x2="70" y2="30"/>
+        <text class="dg-en" x="596" y="240" text-anchor="end">次元 1</text>
+        <text class="dg-en" x="88" y="40" text-anchor="start">次元 2</text>
+        <line class="dg-vec" x1="70" y1="220" x2="300" y2="70"/>
+        <circle class="dg-pt" cx="300" cy="70" r="4.5"/>
+        <text class="dg-ptl" x="310" y="66">A =「猫」</text>
+        <line class="dg-vec" x1="70" y1="220" x2="360" y2="120"/>
+        <circle class="dg-pt" cx="360" cy="120" r="4.5"/>
+        <text class="dg-ptl" x="370" y="116">B =「犬」</text>
+        <line class="dg-vec2" x1="70" y1="220" x2="470" y2="196"/>
+        <circle cx="470" cy="196" r="4.5" style="fill:var(--ink-2)"/>
+        <text class="dg-ptl" x="480" y="192" style="fill:var(--ink-2)">C =「自動車」</text>
+        <path d="M 133.7 178.5 A 76 76 0 0 1 141.8 195.2" class="dg-vec" fill="none" stroke-width="1.6"/>
+        <path d="M 153.8 165.4 A 100 100 0 0 1 169.8 214.0" class="dg-vec2" fill="none" stroke-width="1.6"/>
+      </svg>
+      <p class="figcap"><b>A（猫）と B（犬）</b>は向きが近く、なす角（緑の弧）が小さいので、コサイン類似度は 1 に近づきます。いっぽう<b>C（自動車）</b>は向きが離れ、なす角（濃い弧）が大きいので、類似度は小さくなります。</p>
+    </div>
+
+    <!-- DEMO 3: Cosine similarity -->
+    <div class="demo reveal" id="demoCos">
+      <span class="dtag"><span lang="ja">デモ 3</span><span lang="en">Demo 3</span></span>
+      <h4>コサイン類似度</h4>
+      <p class="dnote">2 つの短い文を入力すると、それぞれを Bag-of-Words ベクトルに変換し、コサイン類似度を計算します。共通する語が多いほど 1 に近づきます。日本語は簡易分かち書き、英語は空白・句読点で区切ります。</p>
+      <div class="two">
+        <div>
+          <label class="fld" for="cosA">文 A / Text A</label>
+          <textarea id="cosA" rows="2" spellcheck="false">自然言語処理が好き</textarea>
+        </div>
+        <div>
+          <label class="fld" for="cosB">文 B / Text B</label>
+          <textarea id="cosB" rows="2" spellcheck="false">自然言語処理を学ぶ</textarea>
+        </div>
+      </div>
+      <div class="try">
+        <span class="tlbl">例</span>
+        <button type="button" data-a="自然言語処理が好き" data-b="自然言語処理を学ぶ">似ている（日本語）</button>
+        <button type="button" data-a="猫がソファで眠る" data-b="株価が大きく下がる">似ていない（日本語）</button>
+        <button type="button" data-a="I love natural language processing" data-b="I love machine learning">英語</button>
+      </div>
+      <div class="demo-out" id="cosOut" aria-live="polite"></div>
+    </div>
+
+    <p class="layer"><span lang="ja">コードで動かす</span><span lang="en">Run the code</span></p>
+    <div class="prose">
+      <p>コサイン類似度そのものは、NumPy で数行です。デモと同じく、語彙をそろえた出現回数ベクトル同士で計算してみます。</p>
+    </div>
+    <div class="code-wrap attached">
+      <div class="code-head"><span class="lbl">Python</span><span class="lang-tag">cosine.py</span><button class="copy" type="button" onclick="copyCode(this)">copy</button></div>
+      <pre><code><span class="kw">import</span> numpy <span class="kw">as</span> np
+
+<span class="kw">def</span> cosine(a, b):
+    a, b = np.array(a, dtype=float), np.array(b, dtype=float)
+    <span class="kw">return</span> a @ b / (np.linalg.norm(a) * np.linalg.norm(b))
+
+<span class="cm"># 語彙 [猫, 犬, 好き, 眠る] 上の Bag-of-Words</span>
+neko  = [<span class="nu">1</span>, <span class="nu">0</span>, <span class="nu">1</span>, <span class="nu">0</span>]  <span class="cm"># 「猫 好き」</span>
+inu   = [<span class="nu">0</span>, <span class="nu">1</span>, <span class="nu">1</span>, <span class="nu">0</span>]  <span class="cm"># 「犬 好き」</span>
+<span class="kw">print</span>(round(cosine(neko, inu), <span class="nu">3</span>))
+<span class="kw">print</span>(round(cosine(neko, neko), <span class="nu">3</span>))</code></pre>
+    </div>
+    <div class="code-out"><span class="olbl">出力例 / Output</span><pre><code>0.5
+1.0</code></pre></div>
+
+    <div class="prose">
+      <p>単語ベクトルそのものを学習したいときは <code>gensim</code> の Word2Vec が使えます。次は API の使い方の骨格です。意味のある類似度を得るには大きなコーパスが必要で、下のような数文だけの玩具コーパスでは値は安定しません（ベクトルの形だけ確認します）。</p>
+    </div>
+    <div class="code-wrap attached">
+      <div class="code-head"><span class="lbl">Python</span><span class="lang-tag">word2vec_gensim.py</span><button class="copy" type="button" onclick="copyCode(this)">copy</button></div>
+      <pre><code><span class="cm"># pip install gensim</span>
+<span class="kw">from</span> gensim.models <span class="kw">import</span> Word2Vec
+
+<span class="cm"># 実際は分かち書き済みの大量の文を与える</span>
+sentences = [[<span class="st">"猫"</span>, <span class="st">"が"</span>, <span class="st">"好き"</span>], [<span class="st">"犬"</span>, <span class="st">"が"</span>, <span class="st">"好き"</span>],
+             [<span class="st">"猫"</span>, <span class="st">"が"</span>, <span class="st">"眠る"</span>], [<span class="st">"犬"</span>, <span class="st">"が"</span>, <span class="st">"走る"</span>]]
+model = Word2Vec(sentences, vector_size=<span class="nu">50</span>, window=<span class="nu">2</span>,
+                 min_count=<span class="nu">1</span>, sg=<span class="nu">1</span>)  <span class="cm"># sg=1: Skip-gram</span>
+<span class="kw">print</span>(model.wv[<span class="st">"猫"</span>].shape)   <span class="cm"># 学習した単語ベクトルの次元</span></code></pre>
+    </div>
+    <div class="code-out"><span class="olbl">出力例 / Output</span><pre><code>(50,)</code></pre></div>
+
+    <div class="callout warn">
+      <h4>注意</h4>
+      <p>word2vec は「意味を理解している」わけではなく、大量のテキストから<b>共起の統計</b>を学んでいるだけです。学習データに含まれる偏りや差別的な関連づけも、そのままベクトルに反映されます。結果を使うときは、その出所と限界を意識することが大切です。</p>
+    </div>
+  </div>
+</section>
+
+<!-- STEP 5 -->
+<section id="step5" class="soft-sec">
+  <div class="wrap reveal">
+    <div class="stephead">
+      <span class="num">5</span>
+      <div class="tt"><h2>テキスト分類をやってみる</h2><span class="st-en">Text classification</span></div>
+    </div>
+    <div class="steprule"></div>
+
+    <p class="layer first"><span lang="ja">概要</span><span lang="en">Overview</span></p>
+    <div class="prose">
+      <p>ここまでの道具を組み合わせると、実用的な課題が解けます。代表例が<b>テキスト分類</b>です。迷惑メール判定、ニュースのカテゴリ分け、レビューの感情分析などが、同じ枠組みで実現できます。基本は「TF-IDF で特徴量にして、分類器にかける」だけです。</p>
+    </div>
+
+    <p class="layer"><span lang="ja">仕組み</span><span lang="en">How it works</span></p>
+    <div class="prose">
+      <h4>特徴量と分類器</h4>
+      <p>文書を TF-IDF ベクトルにし、教師あり学習の分類器を学習させます。テキスト分類で古くから強いのが、次の 2 つです。</p>
+      <ul>
+        <li><b>ナイーブベイズ</b>：各語の出現が「クラスが決まれば互いに独立」と仮定して確率を計算する。単純で高速、少データでも安定。</li>
+        <li><b>ロジスティック回帰</b>：各語の重みを学習して、クラスの確率を出す線形モデル。解釈しやすく高精度。</li>
+      </ul>
+      <h4>学習データと検証データ</h4>
+      <p>モデルの本当の実力は、学習に使っていないデータで測ります。データを<b>学習用（train）と検証用（test）に分割</b>し、train で学習し、test で評価します。データが少ないときは、分割を変えながら繰り返し評価する<b>交差検証（cross-validation）</b>で、偶然のばらつきをならします。</p>
+      <h4>評価指標</h4>
+      <p>「正解率（accuracy）」だけでは不十分な場合があります。たとえば 99% が通常メールのデータでは、全部を通常と答えるだけで正解率 99% になってしまいます。そこでクラスごとに次を見ます。</p>
+      <ul>
+        <li><b>適合率（precision）</b>：陽性と予測したうち、本当に陽性だった割合。TP / (TP + FP)。</li>
+        <li><b>再現率（recall）</b>：本当の陽性のうち、正しく拾えた割合。TP / (TP + FN)。</li>
+        <li><b>F値（F1）</b>：適合率と再現率の調和平均。2PR / (P + R)。両者のバランスを 1 つの数字で表す。</li>
+      </ul>
+    </div>
+
+    <p class="layer"><span lang="ja">コードで動かす</span><span lang="en">Run the code</span></p>
+    <div class="prose">
+      <p>scikit-learn の <code>Pipeline</code> を使うと、TF-IDF と分類器をひとまとめにできます。まずは、ダウンロード不要で手元で再現できる小さなサンプル（スポーツ 対 宇宙の英文各 15）で、分類の一連の流れを体験します。</p>
+    </div>
+    <div class="code-wrap attached">
+      <div class="code-head"><span class="lbl">Python</span><span class="lang-tag">text_classify.py</span><button class="copy" type="button" onclick="copyCode(this)">copy</button></div>
+      <pre><code><span class="kw">from</span> sklearn.feature_extraction.text <span class="kw">import</span> TfidfVectorizer
+<span class="kw">from</span> sklearn.naive_bayes <span class="kw">import</span> MultinomialNB
+<span class="kw">from</span> sklearn.pipeline <span class="kw">import</span> Pipeline
+<span class="kw">from</span> sklearn.model_selection <span class="kw">import</span> train_test_split
+<span class="kw">from</span> sklearn.metrics <span class="kw">import</span> classification_report
+
+sport = [<span class="st">"the pitcher threw a fastball and the batter hit a home run"</span>,
+         <span class="st">"our team won the baseball game in the ninth inning"</span>,
+         <span class="cm"># ... 合計 15 文（野球の話題）</span>]
+space = [<span class="st">"the rocket launched into orbit around the earth"</span>,
+         <span class="st">"astronauts on the space station study microgravity"</span>,
+         <span class="cm"># ... 合計 15 文（宇宙の話題）</span>]
+
+texts  = sport + space
+labels = [<span class="st">"sport"</span>] * len(sport) + [<span class="st">"space"</span>] * len(space)
+
+X_tr, X_te, y_tr, y_te = train_test_split(
+    texts, labels, test_size=<span class="nu">0.4</span>, random_state=<span class="nu">1</span>, stratify=labels)
+
+clf = Pipeline([
+    (<span class="st">"tfidf"</span>, TfidfVectorizer(stop_words=<span class="st">"english"</span>)),
+    (<span class="st">"clf"</span>, MultinomialNB()),
+])
+clf.fit(X_tr, y_tr)
+pred = clf.predict(X_te)
+<span class="kw">print</span>(classification_report(y_te, pred, digits=<span class="nu">2</span>))
+<span class="kw">print</span>(clf.predict([<span class="st">"he hit a home run to win the game"</span>]))</code></pre>
+    </div>
+    <div class="code-out"><span class="olbl">出力例 / Output</span><pre><code>              precision    recall  f1-score   support
+
+       space       0.86      1.00      0.92         6
+       sport       1.00      0.83      0.91         6
+
+    accuracy                           0.92        12
+   macro avg       0.93      0.92      0.92        12
+weighted avg       0.93      0.92      0.92        12
+
+['sport']</code></pre></div>
+
+    <div class="prose">
+      <p>わずか数十文でも、TF-IDF とナイーブベイズで正解率 0.92 が得られました。より本格的に試すなら、実在の公開データセット <b>20&nbsp;Newsgroups</b>（約 2 万件のニュースグループ投稿を 20 カテゴリに分類）を scikit-learn から直接取得できます。2 カテゴリだけ抜き出して、まったく同じ枠組みで学習・評価できます。</p>
+    </div>
+    <div class="code-wrap attached">
+      <div class="code-head"><span class="lbl">Python</span><span class="lang-tag">newsgroups.py</span><button class="copy" type="button" onclick="copyCode(this)">copy</button></div>
+      <pre><code><span class="kw">from</span> sklearn.datasets <span class="kw">import</span> fetch_20newsgroups
+
+cats = [<span class="st">"rec.sport.baseball"</span>, <span class="st">"sci.space"</span>]  <span class="cm"># 2カテゴリを抜粋</span>
+train = fetch_20newsgroups(subset=<span class="st">"train"</span>, categories=cats,
+            remove=(<span class="st">"headers"</span>, <span class="st">"footers"</span>, <span class="st">"quotes"</span>))
+test  = fetch_20newsgroups(subset=<span class="st">"test"</span>, categories=cats,
+            remove=(<span class="st">"headers"</span>, <span class="st">"footers"</span>, <span class="st">"quotes"</span>))
+
+<span class="cm"># 上と同じ Pipeline（TfidfVectorizer + 分類器）を train で学習し、</span>
+<span class="cm"># test で classification_report を出せば、実データで評価できる。</span>
+<span class="kw">print</span>(len(train.data), <span class="st">"training documents"</span>)</code></pre>
+    </div>
+    <div class="prose">
+      <p>ヘッダやフッタ（差出人や署名）を除くのは、そこに含まれるカテゴリ名などを手がかりに「ずるをして」当ててしまうのを防ぐためです。前処理の設計が評価の妥当性を左右する、よい例です。</p>
+    </div>
+
+    <div class="callout tip">
+      <h4>この Step のまとめ</h4>
+      <p>テキスト分類は「TF-IDF で特徴量にして、分類器にかける」。train と test に分け、正解率だけでなく適合率・再現率・F値で評価します。ここまでが古典的 NLP の王道です。</p>
+    </div>
+  </div>
+</section>
+
+<!-- STEP 6 -->
+<section id="step6">
+  <div class="wrap reveal">
+    <div class="stephead">
+      <span class="num">6</span>
+      <div class="tt"><h2>これからのNLP</h2><span class="st-en">What comes next</span></div>
+    </div>
+    <div class="steprule"></div>
+
+    <p class="layer first"><span lang="ja">概要</span><span lang="en">Overview</span></p>
+    <div class="prose">
+      <p>BoW や TF-IDF は強力ですが、決定的な弱点があります。<b>語順と文脈を捨てている</b>ことです。「犬が人を噛む」と「人が犬を噛む」は、BoW ではまったく同じベクトルになります。この壁を越える流れが、現代の NLP を形づくってきました。</p>
+    </div>
+
+    <p class="layer"><span lang="ja">仕組み</span><span lang="en">How it works</span></p>
+    <div class="prose">
+      <h4>文脈を捉えるモデルの流れ</h4>
+      <p>語の並びを扱うため、まず<b>RNN（再帰型ニューラルネット）</b>が使われました。単語を 1 つずつ順に読み、それまでの内容を「状態」として持ち越します。ただし長い文では前の情報が薄れやすく、逐次処理のため学習に時間がかかりました。</p>
+      <p>これを一変させたのが <b>Transformer</b>（Vaswani ら, 2017「Attention Is All You Need」）です。<b>注意機構（attention）</b>によって、文中のどの語とどの語が関係するかを直接・並列に捉えます。長い依存関係に強く、大規模な並列学習が可能になりました。</p>
+      <p>Transformer を土台に、<b>BERT</b>（Devlin ら, 2018）が登場します。文の<b>両方向</b>の文脈を使い、文章の一部を隠して当てる「マスク言語モデル」で事前学習します。同じ語でも文脈に応じて異なるベクトルになる（文脈化された表現）のが、TF-IDF や word2vec との大きな違いです。</p>
+      <h4>事前学習と転移学習</h4>
+      <p>近年の主役は<b>事前学習（pre-training）と転移学習（transfer learning）</b>という考え方です。まず大量のテキストで言語の一般的な性質を学ばせた汎用モデルを作り（事前学習）、その後、手元の小さなデータで目的の課題に合わせて微調整します（ファインチューニング）。ゼロから学習するより、少ないデータで高い性能に届きます。</p>
+      <h4>LLM への橋渡し</h4>
+      <p>この事前学習をさらに巨大なモデルとデータへ推し進めたのが、<b>大規模言語モデル（LLM）</b>です。文章生成・要約・翻訳・質問応答などを 1 つのモデルでこなします。仕組みの中心は、ここで見た Transformer と事前学習の延長線上にあります。BoW から始まった「テキストを数値にして扱う」という発想が、形を変えて今も生きているのです。</p>
+    </div>
+
+    <div class="callout tip">
+      <h4>この Step のまとめ</h4>
+      <p>BoW/TF-IDF の「語順・文脈を捨てる」限界を、RNN、そして Transformer と BERT が乗り越えました。事前学習＋転移学習という枠組みが、現在の LLM へとつながっています。より深い内容は、今後の機械学習・深層学習・LLM のモジュールで扱う予定です。</p>
+    </div>
+  </div>
+</section>
+
+<!-- CLOSING -->
+<section id="closing" class="soft-sec">
+  <div class="wrap reveal">
+    <p class="eyebrow"><span lang="ja">まとめ</span><span lang="en">Wrap-up</span></p>
+    <h2 class="big">学びの振り返りと、さらに学ぶために</h2>
+    <div class="prose" style="margin-top:22px">
+      <p>このモジュールでは、テキストを扱う基本の道具を、パイプラインに沿って順に手に入れました。</p>
+      <ul>
+        <li><b>前処理</b>：テキストをそろえ、トークンに区切る（日本語は形態素解析）。</li>
+        <li><b>特徴量化</b>：BoW と TF-IDF で、文書を数値ベクトルにする。</li>
+        <li><b>分散表現</b>：分布仮説にもとづき、語の意味を密なベクトルで表す。近さはコサイン類似度で測る。</li>
+        <li><b>テキスト分類</b>：TF-IDF ＋ 分類器で実課題を解き、適合率・再現率・F値で評価する。</li>
+        <li><b>これから</b>：Transformer と事前学習が、現代の LLM へつながる。</li>
+      </ul>
+      <p>次に進むなら、下の道具と資料が役に立ちます。</p>
+    </div>
+
+    <div class="res-grid reveal">
+      <div class="res">
+        <h5>公開データセット</h5>
+        <ul>
+          <li><b>20 Newsgroups</b>：英語のニュースグループ投稿 約2万件を20カテゴリに分類。scikit-learn から取得可能。</li>
+          <li><b>livedoor ニュースコーパス</b>：日本語のニュース記事コーパス（RONDHUIT が公開）。日本語分類の定番。</li>
+        </ul>
+      </div>
+      <div class="res">
+        <h5>ライブラリ</h5>
+        <ul>
+          <li><b>janome / MeCab</b>：日本語の形態素解析。</li>
+          <li><b>scikit-learn</b>：特徴量化・分類・評価の定番。</li>
+          <li><b>gensim</b>：word2vec など分散表現。</li>
+          <li><b>spaCy</b>：多言語の実務向け NLP。</li>
+          <li><b>Hugging Face Transformers</b>：BERT・LLM などの事前学習モデル。</li>
+        </ul>
+      </div>
+      <div class="res">
+        <h5>参考書</h5>
+        <ul>
+          <li>Daniel Jurafsky, James H. Martin『Speech and Language Processing』</li>
+          <li>高村大也『言語処理のための機械学習入門』コロナ社</li>
+          <li>岡崎直観 ほか『自然言語処理の基礎』オーム社</li>
+        </ul>
+      </div>
+      <div class="res">
+        <h5>次のモジュールへ</h5>
+        <ul>
+          <li>機械学習の基礎（分類・回帰・評価）</li>
+          <li>深層学習とニューラルネット</li>
+          <li>Transformer と大規模言語モデル（LLM）</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="callout tip">
+      <h4>おつかれさまでした</h4>
+      <p>ここで学んだ「整える → 数値にする → モデルにかける」という流れは、テキストに限らずデータを扱う多くの場面で共通の考え方です。手元のサンプルを書き換えて、3 つのデモをもう一度動かしてみてください。値がどう変わるかを確かめると、理解がぐっと深まります。</p>
+    </div>
+  </div>
+</section>
+
+<section id="beyond">
+  <div class="wrap reveal">
+    <p class="eyebrow"><span lang="ja">発展トピック</span><span lang="en">Beyond this module</span></p>
+    <h2 class="big">このコースでは扱わない、関係する発展トピック</h2>
+    <div class="prose" style="margin-top:22px">
+      <p>このモジュールでは、テキストを数値にしてモデルにかける「基礎の流れ」を扱いました。いっぽうで近年の自然言語処理は、より大きなモデルと事前学習を軸に急速に広がっています。ここでは、このコースでは踏み込まないものの、知っておくと視野が広がる発展的なトピックを、特に近年の主流を中心に紹介します。深掘りは各自の興味に合わせてどうぞ。大規模言語モデル（LLM）まわりは、別モジュールで改めて扱う予定です。</p>
+    </div>
+
+    <div class="res-grid reveal">
+      <div class="res">
+        <h5>モダンなトークン化と表現</h5>
+        <ul>
+          <li><b>サブワード分割</b>：単語より細かい単位で区切る方式（BPE・WordPiece・SentencePiece）。未知語や表記ゆれに強く、現代モデルの標準。</li>
+          <li><b>文脈埋め込み</b>：語の意味を文脈ごとに変えるベクトル（ELMo・BERT）。静的な word2vec の次の世代。</li>
+        </ul>
+      </div>
+      <div class="res">
+        <h5>Transformer と大規模言語モデル</h5>
+        <ul>
+          <li><b>自己注意機構と Transformer</b>：文中の語どうしの関係を重みづけて捉える、現代 NLP の中核アーキテクチャ。</li>
+          <li><b>大規模言語モデル（LLM）</b>：GPT 系、指示チューニング、少数事例からの学習（few-shot・in-context learning）。別モジュールで扱う予定。</li>
+          <li><b>検索拡張生成（RAG）</b>：外部の文書を検索し、その内容を根拠として LLM に答えさせる仕組み。</li>
+        </ul>
+      </div>
+      <div class="res">
+        <h5>意味検索と応用タスク</h5>
+        <ul>
+          <li><b>文埋め込みと意味検索</b>：文をベクトル化して意味の近い文書を探す（Sentence-BERT・ベクトルデータベース・近似最近傍探索）。</li>
+          <li><b>系列ラベリング</b>：単語ごとにラベルを付けるタスク（固有表現抽出・品詞タグ付け。CRF や BiLSTM が定番）。</li>
+          <li><b>トピックモデル</b>：教師なしで文書集合から話題を見つける（LDA など）。</li>
+        </ul>
+      </div>
+      <div class="res">
+        <h5>生成タスクと評価・広がり</h5>
+        <ul>
+          <li><b>生成タスクと評価</b>：機械翻訳・要約・対話などの生成では、分類とは別の指標を使う（BLEU・ROUGE・パープレキシティ）。</li>
+          <li><b>多言語・マルチモーダル</b>：言語をまたぐモデルや、画像と言語を結ぶモデル（CLIP など）といった最新の広がり。</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<button class="totop" type="button" aria-label="上へ戻る" title="上へ戻る">&uarr;</button>
+
+<!-- FOOTER -->
+<footer>
+  <div class="wrap">
+    <div class="foot-grid">
+      <div>
+        <h3><span lang="ja">この学習モジュールについて</span><span lang="en">About this module</span></h3>
+        <div class="cite">
+          <span lang="ja">「研究で使う技術を実践的に学ぶ」学習コースの1モジュールです。概要から理論、動かせるコードまでを一続きにして、自然言語処理の基礎を独習できるように構成しています。内容は分野標準の一般的なもので、特定の研究や論文には紐づきません。</span>
+          <span lang="en">A module in a learning course on research skills, walking from overview to theory to runnable code so you can study the basics of NLP on your own. The content is standard and general, not tied to any specific study.</span>
+        </div>
+      </div>
+      <div>
+        <h3><span lang="ja">制作</span><span lang="en">Author</span></h3>
+        <p class="muted-s">
+          <b>Yuta Kimura</b><br>
+          <span lang="ja">大阪公立大学工業高等専門学校</span><span lang="en">Osaka Metropolitan University College of Technology</span><br>
+          <a href="mailto:y.kimura@omu.ac.jp">y.kimura [at] omu.ac.jp</a>
+        </p>
+      </div>
+    </div>
+    <div class="foot-grid3">
+      <div>
+        <h3><span lang="ja">連絡先</span><span lang="en">Contact</span></h3>
+        <p class="muted-s">
+          <b>Yuta Kimura</b><br>
+          <span lang="ja">大阪公立大学工業高等専門学校</span><span lang="en">Osaka Metropolitan University College of Technology</span><br>
+          <a href="mailto:y.kimura@omu.ac.jp">y.kimura [at] omu.ac.jp</a>
+        </p>
+      </div>
+      <div>
+        <h3><span lang="ja">サイト</span><span lang="en">Site</span></h3>
+        <p class="muted-s">
+          <a href="../index.html">Home</a><br>
+          <a href="../publications.html"><span lang="ja">業績・研究活動</span><span lang="en">Publications &amp; research activities</span></a><br>
+          <a href="../teaching.html"><span lang="ja">教育</span><span lang="en">Teaching</span></a><br>
+          <a href="../software-engineering.html"><span lang="ja">ソフトウェア工学とは</span><span lang="en">What is software engineering?</span></a><br>
+          <a href="../glossary.html"><span lang="ja">研究用語ミニ辞典</span><span lang="en">Research glossary</span></a>
+        </p>
+      </div>
+      <div>
+        <h3><span lang="ja">関連教材</span><span lang="en">Related material</span></h3>
+        <p class="muted-s">
+          <a href="../course/software-testing.html"><span lang="ja">ソフトウェアテスト学習ガイド</span><span lang="en">Software Testing Guide</span></a><br>
+          <a href="../course/intelligent-informatics-1.html"><span lang="ja">知能情報実験実習1</span><span lang="en">Intelligent Informatics Lab I</span></a><br>
+          <a href="../course/index.html"><span lang="ja">ソフトウェア工学</span><span lang="en">Software Engineering</span></a><br>
+          <a href="https://researchmap.jp/kimura_yuta" target="_blank" rel="noopener">researchmap</a>
+        </p>
+      </div>
+    </div>
+    <div class="foot-rule"></div>
+    <p class="foot-note">
+      <span lang="ja">本ページは学習用のプロトタイプ教材です。コード例は分野標準のライブラリ（scikit-learn・janome・gensim）にもとづき、出力例は実際の実行結果に一致させています。</span>
+      <span lang="en">This page is a prototype learning material. Code examples use standard libraries (scikit-learn, janome, gensim), and the shown outputs match real runs.</span>
+    </p>
+  </div>
+</footer>
+
+<script>
+  /* language: setLang / toggleLang, persisted in localStorage 'site-lang' only */
+  function setLang(l){document.body.classList.remove('lang-ja','lang-en');document.body.classList.add('lang-'+l);document.documentElement.lang=l;
+    try{localStorage.setItem('site-lang',l)}catch(e){}
+    try{var q=new URLSearchParams(location.search);q.set('lang',l);history.replaceState(null,'',location.pathname+'?'+q+location.hash)}catch(e){}}
+  function toggleLang(){setLang(document.body.classList.contains('lang-ja')?'en':'ja')}
+  (function(){var u=null;try{u=new URLSearchParams(location.search).get('lang')}catch(e){}
+    var s=null;try{s=localStorage.getItem('site-lang')}catch(e){}
+    var l=(u==='en'||u==='ja')?u:((s==='en'||s==='ja')?s:'ja');if(l!=='ja')setLang(l);})();
+  if('IntersectionObserver' in window){
+    var io=new IntersectionObserver(function(es){
+      es.forEach(function(e){ if(e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target); } });
+    },{threshold:0.10, rootMargin:"0px 0px -6% 0px"});
+    document.querySelectorAll('.reveal').forEach(function(el){ io.observe(el); });
+  } else { document.querySelectorAll('.reveal').forEach(function(el){ el.classList.add('in'); }); }
+
+  /* copy code (in-memory only, no storage) */
+  function copyCode(btn){
+    var pre=btn.closest('.code-wrap').querySelector('pre code');
+    var text=pre.innerText;
+    if(navigator.clipboard&&navigator.clipboard.writeText){
+      navigator.clipboard.writeText(text).then(function(){flash(btn);},function(){});
+    }
+  }
+  function flash(btn){var o=btn.textContent;btn.textContent='copied';setTimeout(function(){btn.textContent=o;},1200);}
+</script>
+
+<script>
+/* ==================== interactive demos (vanilla JS, self-contained) ==================== */
+(function(){
+  /* ---- shared simplified tokenizer (small dictionary + longest match) ---- */
+  var JP_DICT = ["自然","言語","処理","分野","面白い","楽しい","難しい","画像",
+    "私","本","読む","読ん","好き","のが","猫","犬","ソファ","上","眠っ","眠る",
+    "走っ","走る","株価","大きく","下がる","機械","学習","単語","意味","文章","解析",
+    "する","学ぶ","大学","研究","情報","日本語","英語",
+    "は","が","を","に","で","と","の","も","へ","や","から","まで","ね","よ","た","だ",
+    "です","ます","ている","いる"];
+  var PARTICLES = {"は":1,"が":1,"を":1,"に":1,"で":1,"と":1,"の":1,"も":1,"へ":1,"や":1,
+    "から":1,"まで":1,"ね":1,"よ":1,"た":1,"だ":1,"です":1,"ます":1,"ている":1,"いる":1,"のが":1};
+  var DICT = {}; JP_DICT.forEach(function(w){ DICT[w]=1; });
+  var MAXL = 5;
+  function isJP(ch){ return /[぀-ヿ㐀-䶿一-鿿ｦ-ﾟ]/.test(ch); }
+  function jtype(ch){
+    if(/[぀-ゟ]/.test(ch)) return 'hira';
+    if(/[゠-ヿｦ-ﾟ]/.test(ch)) return 'kata';
+    if(/[一-鿿㐀-䶿]/.test(ch)) return 'kanji';
+    return 'other';
+  }
+  function dictAt(text,i){
+    for(var L=Math.min(MAXL,text.length-i); L>=1; L--){
+      var sub=text.substr(i,L);
+      if(DICT[sub]) return sub;
+    }
+    return null;
+  }
+  /* returns array of {t: surface, k: 'jp'|'p'|'en'} */
+  function tokenize(text){
+    var out=[], i=0, n=text.length;
+    while(i<n){
+      var ch=text[i];
+      if(/\s/.test(ch)){ i++; continue; }
+      if(/[A-Za-z0-9]/.test(ch)){
+        var j=i; while(j<n && /[A-Za-z0-9']/.test(text[j])) j++;
+        out.push({t:text.slice(i,j).toLowerCase(), k:'en'}); i=j; continue;
+      }
+      if(isJP(ch)){
+        var m=dictAt(text,i);
+        if(m){ out.push({t:m, k:PARTICLES[m]?'p':'jp'}); i+=m.length; continue; }
+        var ty=jtype(ch), j2=i+1;
+        while(j2<n && jtype(text[j2])===ty && !dictAt(text,j2)) j2++;
+        out.push({t:text.slice(i,j2), k:'jp'}); i=j2; continue;
+      }
+      i++; /* drop punctuation / symbols (normalization) */
+    }
+    return out;
+  }
+  function surfaces(text){ return tokenize(text).map(function(o){ return o.t; }); }
+
+  /* ---- Demo 1: tokenizer ---- */
+  var tokInput=document.getElementById('tokInput'),
+      tokChips=document.getElementById('tokChips'),
+      tokCount=document.getElementById('tokCount');
+  function renderTok(){
+    var toks=tokenize(tokInput.value);
+    tokChips.innerHTML = toks.map(function(o){
+      return '<span class="chip '+o.k+'">'+escapeHtml(o.t)+'</span>';
+    }).join('') || '<span class="chipcount">（トークンがありません）</span>';
+    tokCount.textContent = toks.length+' トークン / tokens';
+  }
+  if(tokInput){
+    tokInput.addEventListener('input', renderTok);
+    document.querySelectorAll('#demoTok .try button').forEach(function(b){
+      b.addEventListener('click', function(){ tokInput.value=b.getAttribute('data-tok'); renderTok(); });
+    });
+    renderTok();
+  }
+
+  /* ---- Demo 2: TF-IDF ---- */
+  var tfIn=document.getElementById('tfidfInput'),
+      tfOut=document.getElementById('tfidfOut');
+  function renderTfidf(){
+    var lines=tfIn.value.split('\n').map(function(s){return s.trim();}).filter(function(s){return s.length;});
+    if(!lines.length){ tfOut.innerHTML='<div class="chipcount">文書を1行ずつ入力してください。</div>'; return; }
+    var docs=lines.map(function(l){ return surfaces(l); });
+    var N=docs.length;
+    var vocab={}; docs.forEach(function(d){ d.forEach(function(w){ vocab[w]=1; }); });
+    var terms=Object.keys(vocab);
+    var df={}; terms.forEach(function(t){ df[t]=docs.filter(function(d){ return d.indexOf(t)>=0; }).length; });
+    var rows=terms.map(function(t){
+      var idf=Math.log(N/df[t]);
+      var vals=docs.map(function(d){
+        var c=d.filter(function(w){return w===t;}).length;
+        var tf=d.length? c/d.length : 0;
+        return tf*idf;
+      });
+      return {t:t, df:df[t], idf:idf, vals:vals, max:Math.max.apply(null,vals)};
+    });
+    rows.sort(function(a,b){ return b.max-a.max; });
+    var maxAll=Math.max.apply(null, rows.map(function(r){return r.max;})) || 1;
+    var head='<table class="dtable"><tr><th>語 / term</th><th>df</th><th>idf</th>'+
+      docs.map(function(_,i){return '<th>D'+(i+1)+'</th>';}).join('')+'</tr>';
+    var body=rows.map(function(r){
+      var cells=r.vals.map(function(v){
+        if(v<=1e-9) return '<td class="zero">0.000</td>';
+        var a=(0.10+0.72*(v/maxAll)).toFixed(3);
+        return '<td style="background:rgba(14,111,92,'+a+');color:'+(v/maxAll>0.55?'#fff':'var(--ink)')+'">'+v.toFixed(3)+'</td>';
+      }).join('');
+      return '<tr><td>'+escapeHtml(r.t)+'</td><td>'+r.df+'</td><td>'+r.idf.toFixed(3)+'</td>'+cells+'</tr>';
+    }).join('');
+    tfOut.innerHTML=head+body+'</table>'+
+      '<div class="chipcount">N = '+N+' 文書 ・ 語彙 '+terms.length+' 種 ・ tf = 語の頻度/文書長, idf = ln(N/df), tf-idf = tf &times; idf</div>';
+  }
+  if(tfIn){
+    tfIn.addEventListener('input', renderTfidf);
+    document.querySelectorAll('#demoTfidf .try button').forEach(function(b){
+      b.addEventListener('click', function(){ tfIn.value=b.getAttribute('data-tf'); renderTfidf(); });
+    });
+    renderTfidf();
+  }
+
+  /* ---- Demo 3: cosine similarity ---- */
+  var cosA=document.getElementById('cosA'),
+      cosB=document.getElementById('cosB'),
+      cosOut=document.getElementById('cosOut');
+  function renderCos(){
+    var a=surfaces(cosA.value), b=surfaces(cosB.value);
+    var vocab={}; a.concat(b).forEach(function(w){ vocab[w]=1; });
+    var terms=Object.keys(vocab);
+    function vec(d){ return terms.map(function(t){ return d.filter(function(w){return w===t;}).length; }); }
+    var va=vec(a), vb=vec(b);
+    var dot=0, na=0, nb=0;
+    for(var i=0;i<terms.length;i++){ dot+=va[i]*vb[i]; na+=va[i]*va[i]; nb+=vb[i]*vb[i]; }
+    var denom=Math.sqrt(na)*Math.sqrt(nb);
+    var cos=denom? dot/denom : 0;
+    var pct=(cos*100).toFixed(0);
+    var shared=terms.filter(function(t,i){ return va[i]>0 && vb[i]>0; });
+    if(!terms.length){ cosOut.innerHTML='<div class="chipcount">2つの文を入力してください。</div>'; return; }
+    cosOut.innerHTML=
+      '<div class="cos-score"><span class="val">'+cos.toFixed(3)+'</span><span class="lab">コサイン類似度 / cosine similarity（0 から 1）</span></div>'+
+      '<div class="cos-bar"><span style="width:'+Math.max(0,Math.min(100,pct))+'%"></span></div>'+
+      '<div class="cos-detail">A の語: '+chipLine(a)+'<br>B の語: '+chipLine(b)+'<br>'+
+      '共通の語: <b>'+(shared.length? shared.map(escapeHtml).join(', ') : 'なし')+'</b>　|　'+
+      '内積 = <b>'+dot+'</b>, &#8214;A&#8214; = <b>'+Math.sqrt(na).toFixed(3)+'</b>, &#8214;B&#8214; = <b>'+Math.sqrt(nb).toFixed(3)+'</b></div>';
+  }
+  function chipLine(arr){ return arr.length? arr.map(escapeHtml).join(' / ') : '（なし）'; }
+  if(cosA){
+    cosA.addEventListener('input', renderCos);
+    cosB.addEventListener('input', renderCos);
+    document.querySelectorAll('#demoCos .try button').forEach(function(b){
+      b.addEventListener('click', function(){ cosA.value=b.getAttribute('data-a'); cosB.value=b.getAttribute('data-b'); renderCos(); });
+    });
+    renderCos();
+  }
+
+  function escapeHtml(s){ return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+})();
+</script>
+
+<script>
+/* ==================== nav controllers + TOC scroll-spy + back-to-top ==================== */
+(function(){
+  function syncLangUI(l){
+    var ja=l==='ja', lists=document.querySelectorAll('.lswitch');
+    for(var i=0;i<lists.length;i++){
+      var a=lists[i].querySelector('.ls-ja'), e=lists[i].querySelector('.ls-en');
+      if(a) a.setAttribute('aria-pressed', ja?'true':'false');
+      if(e) e.setAttribute('aria-pressed', ja?'false':'true');
+    }
+  }
+  window.syncLangUI=syncLangUI;
+  if(typeof window.setLang==='function'){ var _s=window.setLang; window.setLang=function(l){ _s(l); syncLangUI(l); }; }
+  syncLangUI(document.body.classList.contains('lang-en')?'en':'ja');
+
+  var groups=document.querySelectorAll('.navlinks .navgroup');
+  for(var g=0; g<groups.length; g++){ (function(grp){
+    var top=grp.querySelector('.navtop'), panel=grp.querySelector('.navpanel');
+    if(!panel||!top) return;
+    function set(x){ top.setAttribute('aria-expanded', x?'true':'false'); }
+    grp.addEventListener('mouseenter', function(){ grp.classList.remove('collapsed'); set(true); });
+    grp.addEventListener('mouseleave', function(){ set(false); });
+    grp.addEventListener('focusin', function(){ if(!grp.classList.contains('collapsed')) set(true); });
+    grp.addEventListener('focusout', function(e){ if(!grp.contains(e.relatedTarget)){ grp.classList.remove('collapsed'); set(false); } });
+    grp.addEventListener('keydown', function(e){ if(e.key==='Escape'){ grp.classList.add('collapsed'); set(false); top.focus(); } });
+  })(groups[g]); }
+
+  var tog=document.getElementById('navToggle'), ov=document.getElementById('mobnav');
+  if(tog && ov){
+    function openNav(){ document.body.classList.add('navopen'); tog.setAttribute('aria-expanded','true'); ov.setAttribute('aria-hidden','false');
+      var f=ov.querySelector('a,button'); if(f){ requestAnimationFrame(function(){ f.focus(); }); } }
+    function closeNav(){ document.body.classList.remove('navopen'); tog.setAttribute('aria-expanded','false'); ov.setAttribute('aria-hidden','true'); tog.focus(); }
+    tog.addEventListener('click', function(){ document.body.classList.contains('navopen')?closeNav():openNav(); });
+    ov.addEventListener('click', function(e){ if(e.target.closest('a')) closeNav(); });
+    document.addEventListener('keydown', function(e){ if(e.key==='Escape' && document.body.classList.contains('navopen')) closeNav(); });
+  }
+
+  /* TOC scroll-spy */
+  var bar=document.querySelector('.tocbar');
+  if(bar){
+    var pills=Array.prototype.slice.call(bar.querySelectorAll('.tocpill')), map={};
+    pills.forEach(function(p){ map[p.getAttribute('href').slice(1)]=p; });
+    if('IntersectionObserver' in window){
+      var spy=new IntersectionObserver(function(es){
+        es.forEach(function(e){
+          if(e.isIntersecting){
+            pills.forEach(function(p){ p.classList.remove('on'); });
+            var m=map[e.target.id]; if(m) m.classList.add('on');
+          }
+        });
+      },{rootMargin:'-45% 0px -50% 0px', threshold:0});
+      pills.forEach(function(p){ var s=document.getElementById(p.getAttribute('href').slice(1)); if(s) spy.observe(s); });
+    }
+  }
+
+  /* back to top */
+  var reduce=window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var bt=document.querySelector('.totop'), sen=document.getElementById('toTopSentinel');
+  if(bt && sen && 'IntersectionObserver' in window){
+    new IntersectionObserver(function(es){
+      es.forEach(function(e){ if(e.isIntersecting) bt.classList.remove('show'); else bt.classList.add('show'); });
+    },{threshold:0}).observe(sen);
+  }
+  if(bt){ bt.addEventListener('click', function(){ window.scrollTo({top:0, behavior:reduce?'auto':'smooth'}); }); }
+})();
+</script>
+</body>
+</html>

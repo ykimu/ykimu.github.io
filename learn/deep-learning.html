@@ -1,0 +1,1634 @@
+<!DOCTYPE html>
+<html lang="ja" class="no-js">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>深層学習 - 研究の技術を実践的に学ぶ / Deep Learning</title>
+<meta name="description" content="A hands-on learning module on deep learning: neurons and activation functions, forward propagation and multilayer perceptrons, loss functions and gradient descent with backpropagation, convolutional neural networks, and sequence models toward Transformers. With interactive demos and runnable Python examples. Part of Yuta Kimura's learning course.">
+<link rel="canonical" href="https://ykimu.github.io/learn/deep-learning.html">
+<link rel="icon" href="../favicon.svg" type="image/svg+xml">
+<meta property="og:site_name" content="Yuta Kimura / 木村祐太">
+<meta property="og:type" content="article">
+<meta property="og:title" content="深層学習 - 研究の技術を実践的に学ぶ / Deep Learning">
+<meta property="og:description" content="A hands-on learning module on deep learning: neurons and activation functions, gradient descent and backpropagation, convolutional neural networks, and sequence models, with interactive demos and runnable Python examples.">
+<meta property="og:url" content="https://ykimu.github.io/learn/deep-learning.html">
+<meta property="og:image" content="https://ykimu.github.io/assets/og.png">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="color-scheme" content="light">
+<script>document.documentElement.className="js";</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&family=Noto+Sans+JP:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#FBFCFB; --bg-2:#F3F6F4; --bg-3:#EBEFED; --card:#FFFFFF;
+    --ink:#101312; --ink-2:#3C4340; --muted:#6B746F; --faint:#B7C0BB;
+    --line:#E7ECE9; --hair:rgba(16,19,18,.08); --shell:rgba(16,19,18,.035);
+    --accent:#0E6F5C; --accent-2:#0A5748; --accent-soft:rgba(14,111,92,.08);
+    --soft:0 1px 2px rgba(16,19,18,.04), 0 24px 60px -28px rgba(16,19,18,.16);
+    --inhi:inset 0 1px 0 rgba(255,255,255,.85);
+    --ease:cubic-bezier(.32,.72,0,1);
+    --sans:"Plus Jakarta Sans","Noto Sans JP",-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+    --disp:"Space Grotesk","Plus Jakarta Sans","Noto Sans JP",sans-serif;
+    --mono:ui-monospace,SFMono-Regular,Menlo,Consolas,"Liberation Mono",monospace;
+    --maxw:1440px; --readw:clamp(680px, 62vw, 1060px);
+    --kw:#0A5748; --ty:#3C4340; --st:#7A5C34; --cm:#87918C; --nu:#7A5C34;
+    --good:#0E6F5C; --bad:#B04A3E; --warn:#8A6D3B;
+  }
+  html{color-scheme:light}
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth; -webkit-text-size-adjust:100%}
+  body{margin:0; background:var(--bg); color:var(--ink); font-family:var(--sans);
+    font-size:17px; line-height:1.75; font-weight:400; -webkit-font-smoothing:antialiased; text-rendering:optimizeLegibility}
+  body.lang-ja [lang=en]{display:none}
+  body.lang-en [lang=ja]{display:none}
+  ::selection{background:rgba(14,111,92,.16)}
+  h1,h2,h3{margin:0; color:var(--ink); font-weight:500; line-height:1.16; letter-spacing:-.02em; font-family:var(--disp); text-wrap:balance}
+  body.lang-ja h1,body.lang-ja h2,body.lang-ja h3{letter-spacing:0; font-family:var(--sans)}
+  p,.lead,.cite,.muted-s{text-wrap:pretty}
+  [lang="en"]{line-break:auto}
+  [lang="ja"]{line-break:strict; word-break:normal}
+  h1 [lang="ja"],h2 [lang="ja"],h3 [lang="ja"]{word-break:auto-phrase}
+  p{margin:0 0 1em}
+  a{color:var(--accent-2); text-decoration:none; transition:color .3s var(--ease)}
+  a:hover{color:var(--accent)}
+  a:focus-visible,button:focus-visible,.btn:focus-visible,[tabindex]:focus-visible{outline:2px solid var(--accent); outline-offset:3px; border-radius:8px}
+  .wrap{max-width:var(--maxw); margin:0 auto; padding:0 40px}
+  [id]{scroll-margin-top:96px}
+  section{padding:96px 0}
+
+  .skip{position:fixed; top:10px; left:10px; padding:10px 16px; background:var(--ink); color:#fff; border-radius:999px; transform:translateY(-200%); transition:none; z-index:100; font:500 .85rem/1 var(--sans); text-decoration:none}
+  .skip:focus{transform:none}
+
+  /* film grain overlay */
+  body::after{content:""; position:fixed; inset:0; z-index:1; pointer-events:none; opacity:.02;
+    background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='g'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23g)'/%3E%3C/svg%3E")}
+
+  h2.big{font-size:clamp(1.9rem,3.2vw,2.7rem); font-weight:500; letter-spacing:-.025em; max-width:26ch}
+  body.lang-ja h2.big{letter-spacing:-.01em; max-width:none}
+  .eyebrow,.kick{display:inline-flex; align-items:center; gap:8px; width:max-content; max-width:100%;
+    padding:5px 13px 5px 11px; border-radius:999px; border:1px solid var(--hair); background:#fff;
+    font:600 .66rem/1 var(--disp); letter-spacing:.14em; text-transform:uppercase; color:var(--ink-2); margin:0 0 18px}
+  .eyebrow::before,.kick::before{content:""; flex:0 0 auto; width:6px; height:6px; border-radius:50%; background:var(--accent)}
+  .lead{font-size:1.14rem; color:var(--ink-2); line-height:1.78; font-weight:400}
+
+  /* motion */
+  .js .reveal{opacity:0; transform:translateY(18px); filter:blur(6px); transition:opacity .9s var(--ease), transform .9s var(--ease), filter .9s var(--ease)}
+  .js .reveal.in{opacity:1; transform:none; filter:none}
+  @media (prefers-reduced-motion:reduce){
+    .js .reveal{opacity:1!important; transform:none!important; filter:none!important}
+    .btn:active,.btn.ink:hover .ic,.pill:hover,.totop:hover,.tocpill{transform:none!important}
+    html{scroll-behavior:auto}
+  }
+
+  /* floating island nav */
+  header.bar{position:sticky; top:18px; z-index:60; background:transparent; border-bottom:none}
+  .bar .wrap{display:flex; align-items:center; justify-content:space-between;
+    width:max-content; max-width:calc(100% - 32px); margin:0 auto; height:auto;
+    padding:9px 12px 9px 20px; gap:20px; border-radius:999px;
+    background:rgba(255,255,255,.72); -webkit-backdrop-filter:saturate(1.4) blur(18px); backdrop-filter:saturate(1.4) blur(18px);
+    border:1px solid var(--hair); box-shadow:var(--soft)}
+  .brand{font-weight:600; font-size:.92rem; letter-spacing:-.01em; color:var(--ink); display:inline-flex; align-items:center; gap:8px}
+  .brand span.sep{color:var(--muted); font-weight:400; margin:0 2px}
+  .bar-right{display:flex; align-items:center; gap:8px}
+
+  /* buttons */
+  .btn{display:inline-flex; align-items:center; gap:10px; font:500 .85rem/1 var(--sans); padding:10px 18px;
+    border-radius:999px; border:1px solid var(--hair); background:#fff; color:var(--ink); cursor:pointer;
+    transition:transform .4s var(--ease), box-shadow .4s var(--ease), border-color .3s var(--ease), background .3s var(--ease), color .3s var(--ease)}
+  .btn:hover{border-color:var(--ink); transform:translateY(-1px); color:var(--ink)}
+  .btn:active{transform:scale(.98)}
+  .btn.ink{background:var(--ink); border-color:var(--ink); color:#fff; padding:10px 10px 10px 22px;
+    box-shadow:0 12px 26px -14px rgba(16,19,18,.5)}
+  .btn.ink:not(:has(.ic)){padding:10px 22px}
+  .btn.ink:hover{box-shadow:0 16px 32px -14px rgba(16,19,18,.55); color:#fff}
+  .btn .ic{width:32px; height:32px; border-radius:999px; background:rgba(255,255,255,.18); display:grid; place-items:center;
+    transition:transform .45s var(--ease); flex:0 0 auto}
+  .btn.ink:hover .ic{transform:translate(3px,-1px)}
+  .tlink{display:inline-flex; align-items:center; gap:8px; font-weight:500; font-size:.95rem; color:var(--ink)}
+  .tlink .ar{transition:transform .4s var(--ease)}
+  .tlink:hover .ar{transform:translateX(4px)}
+
+  /* hero */
+  .hero{position:relative; overflow:hidden}
+  .hero > .wrap{position:relative; z-index:1}
+  .hero::before{content:""; position:absolute; z-index:0; width:640px; height:640px; right:-150px; top:-240px;
+    border-radius:50%; pointer-events:none; opacity:.55;
+    background:radial-gradient(circle, var(--accent-soft), transparent 62%); filter:blur(20px)}
+  .hero .wrap{padding-top:72px; padding-bottom:64px}
+  .hero h1{font-size:clamp(2.6rem,5vw,4.2rem); font-weight:500; letter-spacing:-.03em; line-height:1.08; color:var(--ink); max-width:none}
+  body.lang-ja .hero h1{font-size:clamp(2rem,4.2vw,3.1rem); font-weight:500; letter-spacing:0; line-height:1.24}
+  .hero h1 em{font-style:normal; color:var(--accent)}
+  .hero .lead{max-width:var(--readw); margin-top:24px}
+  .ja-note{display:inline-flex; align-items:center; gap:8px; margin-top:22px; padding:7px 15px; border-radius:999px;
+    border:1px solid var(--hair); background:var(--accent-soft); font-size:.8rem; font-weight:500; color:var(--accent-2)}
+  .ja-note::before{content:""; width:6px; height:6px; border-radius:50%; background:var(--accent); flex:0 0 auto}
+  .hero-meta{display:flex; gap:10px; flex-wrap:wrap; margin-top:16px}
+  .hero-meta span{font-size:.82rem; color:var(--muted); background:#fff; border:1px solid var(--hair);
+    border-radius:999px; padding:6px 14px}
+  .hero-cta{display:flex; gap:20px; align-items:center; flex-wrap:wrap; margin-top:28px}
+
+  .soft-sec{background:var(--bg-2); border-top:1px solid var(--line); border-bottom:1px solid var(--line)}
+
+  /* prose */
+  .prose{max-width:var(--readw)}
+  .prose p{margin:0 0 1em; color:var(--ink-2)}
+  .prose h4{font-family:var(--sans); font-size:1.1rem; font-weight:600; letter-spacing:0; color:var(--ink); margin:1.5em 0 .5em}
+  .prose ul{margin:0 0 1.2em; padding-left:0; list-style:none}
+  .prose ul li{position:relative; padding-left:22px; margin:11px 0; color:var(--ink-2)}
+  .prose ul li::before{content:""; position:absolute; left:0; top:13px; width:11px; height:1.5px; background:var(--accent)}
+  .prose ul li b,.prose b{color:var(--ink); font-weight:600}
+  .prose i{color:var(--ink-2)}
+  code{font-family:var(--mono); font-size:.86em; background:var(--shell); border:1px solid var(--hair); border-radius:6px; padding:.08em .4em; color:var(--accent-2)}
+  .formula{font-family:var(--mono); font-size:.98rem; color:var(--ink); background:var(--card); text-align:center;
+    border-radius:14px; padding:18px 20px; margin:18px 0; max-width:var(--readw);
+    box-shadow:0 0 0 6px var(--shell),0 0 0 6.5px var(--hair),var(--soft); line-height:1.9}
+  .formula .op{color:var(--accent-2); font-weight:600}
+  .formula small{display:block; font-family:var(--sans); font-size:.82rem; color:var(--muted); margin-top:8px; line-height:1.6}
+
+  .callout{border-radius:16px; padding:18px 22px; margin:20px 0; max-width:var(--readw);
+    background:var(--card); box-shadow:0 0 0 6px var(--shell),0 0 0 6.5px var(--hair),var(--soft)}
+  .callout h4{margin:0 0 6px; font-size:1rem; font-family:var(--sans); font-weight:600; letter-spacing:0; color:var(--ink)}
+  .callout.tip{background:var(--accent-soft)}
+  .callout.warn{background:rgba(138,109,59,.08)}
+  .callout p{margin:0; color:var(--ink-2); font-size:.96rem}
+  .callout a{font-weight:600}
+
+  .grid2{display:grid; grid-template-columns:1fr 1fr; gap:16px; margin:20px 0; max-width:var(--readw)}
+  .box{border-radius:16px; padding:16px 20px; background:var(--card);
+    box-shadow:0 0 0 6px var(--shell),0 0 0 6.5px var(--hair),var(--soft)}
+  .box h5{margin:0 0 10px; font-size:.92rem; font-family:var(--sans); font-weight:600; letter-spacing:0; color:var(--accent-2); display:flex; align-items:center; gap:7px}
+  .box.lim h5{color:var(--warn)}
+  .box ul{margin:0; padding-left:18px}
+  .box li{margin:6px 0; font-size:.92rem; color:var(--ink-2)}
+
+  .steps{border-radius:16px; padding:16px 20px; margin:20px 0; max-width:var(--readw); background:var(--card);
+    box-shadow:0 0 0 6px var(--shell),0 0 0 6.5px var(--hair),var(--soft)}
+  .steps h5{margin:0 0 10px; font-size:.92rem; font-family:var(--sans); font-weight:600; letter-spacing:0; color:var(--accent-2)}
+  .steps ol{margin:0; padding:0; list-style:none; counter-reset:st}
+  .steps ol li{counter-increment:st; position:relative; padding-left:36px; margin:9px 0; font-size:.94rem; color:var(--ink-2)}
+  .steps ol li::before{content:counter(st); position:absolute; left:0; top:2px; width:23px; height:23px; border-radius:50%;
+    background:var(--accent-soft); color:var(--accent-2); font:600 .74rem/23px var(--disp); text-align:center}
+  .steps ol li b{color:var(--ink); font-weight:600}
+
+  /* step headers */
+  .stephead{display:flex; align-items:baseline; gap:20px; max-width:var(--readw)}
+  .stephead .num{font-family:var(--disp); font-size:clamp(2.6rem,5.4vw,3.8rem); font-weight:500; color:var(--accent);
+    letter-spacing:-.04em; line-height:.9; flex:0 0 auto; font-variant-numeric:tabular-nums}
+  .stephead .tt h2{font-size:clamp(1.5rem,2.6vw,2rem)}
+  .stephead .tt .st-en{display:block; font:600 .68rem/1 var(--disp); letter-spacing:.13em; text-transform:uppercase; color:var(--muted); margin-top:8px}
+  body.lang-en .stephead .tt .st-en{display:none}
+  .steprule{height:2px; background:var(--ink); max-width:var(--readw); margin:16px 0 26px}
+  .layer{display:inline-flex; align-items:center; gap:8px; margin:34px 0 12px; padding:5px 13px 5px 11px;
+    border-radius:999px; border:1px solid var(--hair); background:#fff;
+    font:600 .64rem/1 var(--disp); letter-spacing:.13em; text-transform:uppercase; color:var(--ink-2)}
+  .layer::before{content:""; width:6px; height:6px; border-radius:50%; background:var(--accent); flex:0 0 auto}
+  .layer.first{margin-top:6px}
+
+  /* diagrams */
+  .diagram-wrap{margin:22px 0; max-width:var(--readw)}
+  .diagram-wrap .cap{margin:0 0 10px; font-size:.9rem; font-family:var(--sans); font-weight:600; letter-spacing:0; color:var(--accent-2)}
+  .diagram-wrap svg{display:block; width:100%; height:auto; background:var(--card);
+    border-radius:16px; padding:12px; box-shadow:0 0 0 7px var(--shell),0 0 0 7.5px var(--hair),var(--soft)}
+  .dg-box{fill:var(--card); stroke:var(--line); stroke-width:1.3}
+  .dg-box.acc{fill:var(--accent-soft); stroke:var(--accent)}
+  .dg-lbl{fill:var(--ink); font-size:13px; font-weight:600; text-anchor:middle; font-family:var(--sans)}
+  .dg-en{fill:var(--muted); font-size:10.5px; text-anchor:middle; font-family:var(--disp)}
+  .dg-line{stroke:var(--muted); stroke-width:1.5; fill:none}
+  .dg-arrow{fill:var(--muted)}
+  .dg-note{fill:var(--muted); font-size:11.5px; text-anchor:middle; font-style:italic}
+  .dg-ax{stroke:var(--faint); stroke-width:1.2}
+  .dg-vec{stroke:var(--accent); stroke-width:2; fill:none}
+  .dg-vec2{stroke:var(--ink-2); stroke-width:2; fill:none}
+  .dg-pt{fill:var(--accent)}
+  .dg-ptl{fill:var(--ink); font-size:11px; font-family:var(--sans)}
+  .figcap{font-size:.88rem; color:var(--muted); margin:12px 2px 0; max-width:var(--readw); line-height:1.6}
+  .figcap b{color:var(--ink); font-weight:600}
+
+  /* code blocks */
+  .code-wrap{margin:16px 0 0; border:1px solid var(--hair); border-radius:14px; overflow:hidden; background:var(--shell); max-width:var(--readw)}
+  .code-head{display:flex; align-items:center; gap:10px; background:var(--bg-2); border-bottom:1px solid var(--hair); padding:9px 16px}
+  .code-head .lbl{margin-right:auto; font:600 .74rem/1 var(--disp); letter-spacing:.06em; text-transform:uppercase; color:var(--muted)}
+  .code-head .lang-tag{font:500 .74rem/1 var(--sans); color:var(--muted)}
+  .code-head .copy{background:#fff; border:1px solid var(--hair); color:var(--ink-2); border-radius:999px;
+    padding:5px 12px; font:500 .74rem/1 var(--sans); cursor:pointer; transition:border-color .3s var(--ease), color .3s var(--ease)}
+  .code-head .copy:hover{border-color:var(--ink); color:var(--ink)}
+  pre{margin:0; background:var(--shell); padding:16px 18px; overflow-x:auto; font-size:.82rem; line-height:1.65}
+  pre code{font-family:var(--mono); color:#2F3A33; white-space:pre; background:none; border:none; padding:0; font-size:1em}
+  .kw{color:var(--kw); font-weight:600} .st{color:var(--st)} .cm{color:var(--cm); font-style:italic} .nu{color:var(--nu)}
+  .code-out{max-width:var(--readw); margin:0 0 8px; border:1px solid var(--hair); border-top:none;
+    border-radius:0 0 14px 14px; background:var(--bg-2); padding:12px 18px}
+  .code-out .olbl{font:600 .66rem/1 var(--disp); letter-spacing:.1em; text-transform:uppercase; color:var(--muted); display:block; margin-bottom:8px}
+  .code-out pre{background:transparent; padding:0; font-size:.8rem}
+  .code-out pre code{color:var(--ink-2)}
+  .code-wrap.attached{border-radius:14px 14px 0 0; margin-bottom:0}
+
+  /* interactive demo (double-bezel) */
+  .demo{border-radius:21px; padding:24px 26px; margin:24px 0; max-width:var(--readw); background:var(--card);
+    box-shadow:0 0 0 7px var(--shell),0 0 0 7.5px var(--hair),var(--soft)}
+  .demo .dtag{display:inline-flex; align-items:center; gap:8px; margin:0 0 10px; padding:5px 12px 5px 10px;
+    border-radius:999px; background:var(--accent-soft); color:var(--accent-2); font:600 .62rem/1 var(--disp); letter-spacing:.12em; text-transform:uppercase}
+  .demo .dtag::before{content:""; width:6px; height:6px; border-radius:50%; background:var(--accent)}
+  .demo h4{margin:0 0 6px; font-size:1.12rem; font-family:var(--sans); font-weight:600; color:var(--ink)}
+  .demo .dnote{font-size:.88rem; color:var(--muted); margin:0 0 16px}
+  .demo label.fld{display:block; font:600 .74rem/1 var(--disp); letter-spacing:.08em; text-transform:uppercase; color:var(--muted); margin:0 0 7px}
+  .demo textarea,.demo input[type=text]{width:100%; padding:12px 15px; border-radius:12px; border:1px solid var(--hair);
+    background:var(--bg); color:var(--ink); font:400 .95rem/1.6 var(--mono); outline:none; resize:vertical;
+    transition:border-color .3s var(--ease)}
+  .demo textarea:focus,.demo input[type=text]:focus{border-color:var(--accent)}
+  .demo .try{display:flex; gap:8px; flex-wrap:wrap; margin:12px 0 4px}
+  .demo .try button{background:#fff; border:1px solid var(--hair); color:var(--ink-2); border-radius:999px;
+    padding:8px 14px; font:500 .82rem/1 var(--sans); cursor:pointer; transition:border-color .3s var(--ease), transform .3s var(--ease), color .3s var(--ease)}
+  .demo .try button:hover{border-color:var(--ink); color:var(--ink); transform:translateY(-1px)}
+  .demo .try .tlbl{font:600 .72rem/1 var(--disp); letter-spacing:.06em; text-transform:uppercase; color:var(--faint); align-self:center; margin-right:2px}
+  .demo .two{display:grid; grid-template-columns:1fr 1fr; gap:16px}
+  @media(max-width:640px){.demo .two{grid-template-columns:1fr}}
+  .demo-out{margin-top:18px}
+
+  /* chips */
+  .chips{display:flex; flex-wrap:wrap; gap:7px; margin-top:6px}
+  .chip{display:inline-flex; align-items:center; font:500 .88rem/1 var(--mono); padding:8px 12px; border-radius:9px;
+    background:var(--accent-soft); color:var(--accent-2); border:1px solid rgba(14,111,92,.16)}
+  .chip.p{background:var(--bg-3); color:var(--muted); border-color:var(--hair)}
+  .chip.en{background:var(--card); color:var(--ink-2); border-color:var(--hair)}
+  .chipcount{font:600 .74rem/1 var(--disp); color:var(--muted); margin-top:12px; letter-spacing:.04em}
+  .chip-legend{display:flex; gap:16px; flex-wrap:wrap; margin-top:12px; font-size:.78rem; color:var(--muted)}
+  .chip-legend i{display:inline-block; width:11px; height:11px; border-radius:3px; margin-right:6px; vertical-align:-1px}
+
+  /* tables */
+  .dtable{border-collapse:separate; border-spacing:0; margin:16px 0 0; width:100%; font-size:.86rem;
+    border-radius:12px; overflow:hidden; box-shadow:0 0 0 1px var(--hair)}
+  .dtable th,.dtable td{border-bottom:1px solid var(--line); border-right:1px solid var(--line); padding:9px 12px; text-align:right; background:var(--card); font-variant-numeric:tabular-nums; font-family:var(--disp)}
+  .dtable th{background:var(--bg-2); font-weight:600; color:var(--ink); font-family:var(--sans); text-align:right}
+  .dtable td:first-child,.dtable th:first-child{text-align:left; font-family:var(--mono); color:var(--ink)}
+  .dtable tr:last-child th,.dtable tr:last-child td{border-bottom:none}
+  .dtable td:last-child,.dtable th:last-child{border-right:none}
+  .dtable td.zero{color:var(--faint)}
+
+  /* cosine output */
+  .cos-score{display:flex; align-items:baseline; gap:12px; margin:6px 0 10px}
+  .cos-score .val{font:500 2.6rem/1 var(--disp); color:var(--accent); letter-spacing:-.03em; font-variant-numeric:tabular-nums}
+  .cos-score .lab{font-size:.9rem; color:var(--muted)}
+  .cos-bar{height:14px; border-radius:999px; background:var(--bg-3); box-shadow:inset 0 1px 2px rgba(16,19,18,.06); overflow:hidden; max-width:520px}
+  .cos-bar span{display:block; height:100%; border-radius:999px; background:linear-gradient(90deg,var(--accent-2),var(--accent)); transition:width .5s var(--ease)}
+  .cos-detail{font-size:.86rem; color:var(--muted); margin-top:12px; font-family:var(--mono)}
+  .cos-detail b{color:var(--ink-2)}
+  @media (prefers-reduced-motion:reduce){.cos-bar span{transition:none}}
+
+  /* closing lists */
+  .res-grid{display:grid; grid-template-columns:1fr 1fr; gap:16px; margin:20px 0; max-width:var(--readw)}
+  @media(max-width:640px){.res-grid{grid-template-columns:1fr}}
+  .res{border-radius:16px; padding:18px 20px; background:var(--card); box-shadow:0 0 0 6px var(--shell),0 0 0 6.5px var(--hair),var(--soft)}
+  .res h5{margin:0 0 10px; font-size:.95rem; font-family:var(--sans); font-weight:600; color:var(--accent-2)}
+  .res ul{margin:0; padding-left:0; list-style:none}
+  .res li{position:relative; padding-left:20px; margin:8px 0; font-size:.9rem; color:var(--ink-2)}
+  .res li::before{content:""; position:absolute; left:0; top:11px; width:9px; height:1.5px; background:var(--accent)}
+  .res li b{color:var(--ink); font-weight:600}
+
+  /* footer */
+  footer{border-top:1px solid var(--line); padding:68px 0 46px; background:var(--bg)}
+  footer h3{font-size:.72rem; font-weight:600; letter-spacing:.12em; text-transform:uppercase; color:var(--muted); margin:0 0 1em; font-family:var(--disp)}
+  .foot-grid{display:grid; grid-template-columns:1.5fr 1fr; gap:44px}
+  .foot-grid3{display:grid; grid-template-columns:1.3fr 1fr 1fr; gap:44px; margin-top:40px}
+  .foot-grid3 a{color:var(--ink-2)}
+  .foot-grid3 a:hover{color:var(--accent)}
+  .cite{font-size:.98rem; color:var(--ink-2); line-height:1.7; max-width:52ch}
+  .muted-s{color:var(--muted); font-size:.9rem; line-height:1.75}
+  .muted-s b{color:var(--ink); font-weight:600}
+  .muted-s a{line-height:1.9}
+  .foot-rule{height:1px; background:var(--line); margin:44px 0 20px}
+  .foot-note{color:var(--muted); font-size:.82rem}
+
+  /* crumbs */
+  .crumbs{display:flex; flex-wrap:wrap; align-items:center; gap:7px; margin:0; font-size:.8rem; font-weight:500; color:var(--muted)}
+  .crumbs a{color:var(--muted)}
+  .crumbs a:hover{color:var(--ink)}
+  .crumbs .csep{color:var(--faint)}
+  .crumbs .cur{color:var(--ink)}
+
+  @media(max-width:860px){
+    section{padding:72px 0}
+    .hero .wrap{padding-top:52px; padding-bottom:56px}
+    .wrap{padding:0 24px}
+    .grid2{grid-template-columns:1fr}
+    .foot-grid{grid-template-columns:1fr}
+    .foot-grid3{grid-template-columns:1fr; gap:30px}
+  }
+  @media(max-width:640px){
+    .bar-right .btn:not(.ink){display:none}
+    .brand{font-size:.82rem}
+    .stephead .num{font-size:2.4rem}
+  }
+
+  /* JP-only teaching page: fill content width for body text & boxes */
+  .lead,.prose,.callout,.formula,.grid2,.steps,.stephead,.steprule,
+  .diagram-wrap,.figcap,.code-wrap,.code-out,.demo,.res-grid{max-width:none !important}
+
+  /* ==================== NAV SYSTEM (from research/course template) ==================== */
+  .navlinks{display:flex; gap:4px; align-items:center}
+  .navlinks .navgroup{position:relative; display:flex}
+  .navlinks .navtop{display:inline-flex; align-items:center; gap:7px; font-size:.86rem; font-weight:500;
+    color:var(--ink-2); padding:8px 13px; border-radius:999px; white-space:nowrap;
+    transition:color .3s var(--ease), background .3s var(--ease)}
+  .navlinks .navtop:hover{color:var(--ink)}
+  .navlinks .navgroup:hover .navtop,.navlinks .navgroup:focus-within .navtop{color:var(--ink); background:var(--bg-2)}
+  .navlinks .navpanel{position:absolute; top:100%; left:50%; margin-top:9px; min-width:238px; padding:10px;
+    transform:translateX(-50%) translateY(6px); text-align:left;
+    background:var(--card); border:1px solid var(--hair); border-radius:16px; box-shadow:var(--soft);
+    opacity:0; visibility:hidden; pointer-events:none;
+    transition:opacity .25s var(--ease), transform .25s var(--ease), visibility 0s linear .25s; z-index:5}
+  .navlinks .navpanel::before{content:""; position:absolute; top:-13px; left:0; right:0; height:14px}
+  .navlinks .navgroup:hover .navpanel,.navlinks .navgroup:focus-within .navpanel{
+    opacity:1; visibility:visible; pointer-events:auto; transform:translateX(-50%) translateY(0);
+    transition:opacity .25s var(--ease), transform .25s var(--ease), visibility 0s linear 0s}
+  .navlinks .navgroup.collapsed .navpanel{opacity:0; visibility:hidden; pointer-events:none}
+  .navlinks .navpanel a{display:flex; align-items:center; gap:9px; padding:9px 12px; border-radius:11px;
+    font-size:.85rem; font-weight:500; color:var(--ink-2); white-space:nowrap;
+    transition:background .25s var(--ease), color .25s var(--ease)}
+  .navlinks .navpanel a:hover{background:var(--accent-soft); color:var(--ink)}
+  .navlinks .navpanel a.here{background:var(--accent-soft); color:var(--ink)}
+  .navlinks .navpanel a.here::before{content:""; flex:0 0 auto; width:6px; height:6px; border-radius:50%; background:var(--accent)}
+  .navlinks .navlabel{padding:8px 12px 3px; font:600 .6rem/1 var(--disp); letter-spacing:.13em;
+    text-transform:uppercase; color:var(--muted)}
+  .navlinks .navpanel hr.navdiv{border:0; border-top:1px solid var(--line); margin:8px 6px}
+  @media(max-width:860px){.navlinks{display:none}}
+
+  .lswitch{display:inline-flex; align-items:center; gap:2px; padding:3px; border-radius:999px;
+    border:1px solid var(--hair); background:#fff}
+  .lswitch button{appearance:none; -webkit-appearance:none; border:0; background:transparent; cursor:pointer;
+    font:600 .78rem/1 var(--disp); letter-spacing:.03em; color:var(--ink-2); padding:8px 13px; border-radius:999px;
+    transition:background .3s var(--ease), color .3s var(--ease)}
+  .lswitch button:hover{color:var(--ink)}
+  body.lang-ja .lswitch .ls-ja,body.lang-en .lswitch .ls-en{background:var(--ink); color:#fff}
+
+  .navtoggle{display:none; position:relative; width:42px; height:42px; flex:0 0 auto;
+    border-radius:999px; border:1px solid var(--hair); background:#fff; cursor:pointer; padding:0}
+  .navtoggle span{position:absolute; left:11px; right:11px; height:2px; background:var(--ink); border-radius:2px;
+    transition:transform .35s var(--ease), opacity .2s var(--ease)}
+  .navtoggle span:nth-child(1){top:15px}
+  .navtoggle span:nth-child(2){top:20px}
+  .navtoggle span:nth-child(3){top:25px}
+  body.navopen .navtoggle span:nth-child(1){transform:translateY(5px) rotate(45deg)}
+  body.navopen .navtoggle span:nth-child(2){opacity:0}
+  body.navopen .navtoggle span:nth-child(3){transform:translateY(-5px) rotate(-45deg)}
+
+  .mobnav{position:fixed; inset:0; z-index:80; display:flex; flex-direction:column; overflow-y:auto;
+    background:rgba(251,252,251,.9); -webkit-backdrop-filter:saturate(1.2) blur(24px); backdrop-filter:saturate(1.2) blur(24px);
+    opacity:0; visibility:hidden; pointer-events:none;
+    transition:opacity .35s var(--ease), visibility 0s linear .35s}
+  body.navopen .mobnav{opacity:1; visibility:visible; pointer-events:auto; transition:opacity .35s var(--ease), visibility 0s linear 0s}
+  body.navopen{overflow:hidden}
+  body.navopen header.bar{z-index:90}
+  .mobnav-inner{width:100%; max-width:600px; margin:0 auto; padding:104px 28px 64px;
+    display:flex; flex-direction:column; gap:24px}
+  .mobgroup{display:flex; flex-direction:column; gap:1px}
+  .moblabel{font:600 .64rem/1 var(--disp); letter-spacing:.14em; text-transform:uppercase; color:var(--muted); margin-bottom:9px}
+  .mobgroup a{font-size:1.28rem; font-weight:500; color:var(--ink); padding:7px 0; line-height:1.24}
+  .mobgroup a:hover{color:var(--accent-2)}
+  .mobgroup a.here{color:var(--accent-2)}
+  .mobgroup a.here::before{content:""; display:inline-block; width:6px; height:6px; border-radius:50%; background:var(--accent); margin-right:9px; vertical-align:middle}
+  .mobfoot{display:flex; align-items:center; justify-content:space-between; gap:16px; flex-wrap:wrap;
+    margin-top:6px; padding-top:22px; border-top:1px solid var(--line)}
+  .mobext{font-size:1rem; font-weight:500; color:var(--ink-2)}
+  .mobext:hover{color:var(--ink)}
+  .js .mobnav-inner > *{opacity:0; transform:translateY(12px);
+    transition:opacity .4s var(--ease), transform .4s var(--ease)}
+  body.navopen .mobnav-inner > *{opacity:1; transform:none}
+  body.navopen .mobnav-inner > *:nth-child(1){transition-delay:.04s}
+  body.navopen .mobnav-inner > *:nth-child(2){transition-delay:.08s}
+  body.navopen .mobnav-inner > *:nth-child(3){transition-delay:.12s}
+  body.navopen .mobnav-inner > *:nth-child(4){transition-delay:.16s}
+  body.navopen .mobnav-inner > *:nth-child(5){transition-delay:.20s}
+  .mobgroup .mobsublabel{font:600 .6rem/1 var(--disp); letter-spacing:.12em; text-transform:uppercase;
+    color:var(--faint); margin:15px 0 5px}
+  .mobgroup .mobsublabel:first-of-type{margin-top:2px}
+
+  .navlinks .navpanel.mega{min-width:568px; max-width:calc(100vw - 24px); padding:12px}
+  .navlinks .navpanel.mega .megacourses{display:grid; grid-template-columns:repeat(4,1fr); gap:1px 4px}
+  .navlinks .navpanel.mega .megagrid{display:grid; grid-template-columns:1fr 1fr; gap:2px 10px; align-items:start}
+  .navlinks .navpanel.mega .megacol{display:flex; flex-direction:column; min-width:0}
+  .navlinks .navpanel.mega a{white-space:normal; line-height:1.28}
+  .navlinks .navpanel.mega .navlabel{padding:8px 12px 4px}
+
+  /* sticky TOC bar */
+  .tocbar{position:sticky; top:84px; z-index:40; margin:8px 0 0;
+    background:rgba(255,255,255,.82); -webkit-backdrop-filter:saturate(1.4) blur(14px); backdrop-filter:saturate(1.4) blur(14px);
+    border-top:1px solid var(--hair); border-bottom:1px solid var(--hair)}
+  .tocbar-inner{max-width:var(--maxw); margin:0 auto; padding:9px 40px; display:flex; gap:8px;
+    overflow-x:auto; scrollbar-width:none; -ms-overflow-style:none}
+  .tocbar-inner::-webkit-scrollbar{display:none}
+  .tocpill{flex:0 0 auto; display:inline-flex; align-items:center; gap:7px; padding:7px 14px; border-radius:999px;
+    font-size:.8rem; font-weight:500; color:var(--ink-2); border:1px solid transparent; white-space:nowrap;
+    transition:background .25s var(--ease), color .25s var(--ease), border-color .25s var(--ease)}
+  .tocpill:hover{color:var(--ink); border-color:var(--hair)}
+  .tocpill.on{background:var(--accent-soft); color:var(--ink)}
+  .tocpill.on::before{content:""; flex:0 0 auto; width:6px; height:6px; border-radius:50%; background:var(--accent)}
+  section[id]{scroll-margin-top:150px}
+
+  .totop{position:fixed; right:22px; bottom:22px; z-index:55; width:46px; height:46px; border-radius:999px;
+    display:grid; place-items:center; background:#fff; border:1px solid var(--hair); box-shadow:var(--soft);
+    color:var(--ink); cursor:pointer; font-size:1.15rem; line-height:1;
+    opacity:0; transform:translateY(10px) scale(.9); pointer-events:none;
+    transition:opacity .35s var(--ease), transform .35s var(--ease)}
+  .totop.show{opacity:1; transform:none; pointer-events:auto}
+  .totop:hover{transform:translateY(-2px)}
+
+  @media(max-width:860px){
+    .navtoggle{display:block}
+    .bar-right .btn{display:none}
+    .tocbar{top:76px}
+  }
+  @media(max-width:430px){.bar-right .lswitch{display:none}}
+  @media (prefers-reduced-motion:reduce){
+    .navlinks .navpanel,.navtoggle span,.mobnav,.js .mobnav-inner > *,.navtop,.lswitch button,.totop,.tocpill{transition-duration:.001ms !important}
+    .js .mobnav-inner > *{transition-delay:0s !important}
+    .navtoggle:hover,.totop:hover{transform:none !important}
+  }
+</style>
+</head>
+<body class="lang-ja">
+<a class="skip" href="#main"><span lang="ja">本文へスキップ</span><span lang="en">Skip to content</span></a>
+
+<header class="bar">
+  <nav class="wrap" aria-label="メイン">
+    <a class="brand" href="../index.html">
+      <span aria-hidden="true">&lsaquo;</span>
+      <span lang="ja">木村祐太</span><span lang="en">Yuta Kimura</span>
+      <span class="sep">·</span><span lang="ja">学習コース</span><span lang="en">Learn</span>
+    </a>
+    <div class="navlinks">
+      <div class="navgroup">
+        <a class="navtop" href="../publications.html" aria-haspopup="true" aria-expanded="false"><span lang="ja">研究</span><span lang="en">Research</span></a>
+        <div class="navpanel">
+          <a href="../publications.html"><span lang="ja">業績・研究活動</span><span lang="en">Publications &amp; activity</span></a>
+          <a href="../research/technical-debt-metrics.html"><span lang="ja">技術的負債とメトリクス</span><span lang="en">Technical debt &amp; metrics</span></a>
+          <a href="../research/apr-coding-standards.html"><span lang="ja">自動生成パッチと規約</span><span lang="en">Auto-generated patches &amp; standards</span></a>
+          <a href="../research/td-repayment-refactoring.html"><span lang="ja">負債返済とリファクタリング</span><span lang="en">Debt repayment &amp; refactoring</span></a>
+          <a href="../research/satd-issue-classification.html"><span lang="ja">課題票の負債分類</span><span lang="en">Issue-ticket debt classification</span></a>
+        </div>
+      </div>
+      <div class="navgroup">
+        <a class="navtop" href="../teaching.html" aria-haspopup="true" aria-expanded="false"><span lang="ja">教育</span><span lang="en">Teaching</span></a>
+        <div class="navpanel mega">
+          <div class="navlabel"><span lang="ja">科目</span><span lang="en">Courses</span></div>
+          <div class="megacourses">
+            <a href="../teaching.html"><span lang="ja">教育・担当授業</span><span lang="en">Teaching &amp; courses</span></a>
+            <a href="../course/index.html"><span lang="ja">ソフトウェア工学</span><span lang="en">Software Engineering</span></a>
+            <a href="../course/logic-circuits.html"><span lang="ja">論理回路1</span><span lang="en">Logic Circuits I</span></a>
+            <a href="../course/intelligent-informatics-1.html"><span lang="ja">知能情報実験実習1</span><span lang="en">Intelligent Informatics Lab I</span></a>
+          </div>
+          <hr class="navdiv">
+          <div class="megagrid">
+            <div class="megacol">
+              <div class="navlabel"><span lang="ja">要求・モデリング</span><span lang="en">Requirements &amp; Modeling</span></div>
+              <a href="../course/requirements-engineering.html"><span lang="ja">要求工学</span><span lang="en">Requirements Engineering</span></a>
+              <a href="../course/system-modeling-uml.html"><span lang="ja">システムモデリング(UML)</span><span lang="en">System Modeling</span></a>
+              <a href="../course/uml-guide.html"><span lang="ja">クラス図/シーケンス図ガイド</span><span lang="en">UML Diagram Guide</span></a>
+            </div>
+            <div class="megacol">
+              <div class="navlabel"><span lang="ja">設計・実装</span><span lang="en">Design &amp; Implementation</span></div>
+              <a href="../course/software-architecture.html"><span lang="ja">アーキテクチャパターン大全</span><span lang="en">Software Architecture</span></a>
+              <a href="../course/design-patterns.html"><span lang="ja">デザインパターン学習ガイド</span><span lang="en">Design Patterns Guide</span></a>
+              <a href="../course/software-reuse-oss.html"><span lang="ja">ソフトウェア再利用とOSS</span><span lang="en">Software Reuse &amp; OSS</span></a>
+            </div>
+            <div class="megacol">
+              <div class="navlabel"><span lang="ja">計画・プロセス</span><span lang="en">Planning &amp; Process</span></div>
+              <a href="../course/agile-scrum.html"><span lang="ja">アジャイル開発とスクラム</span><span lang="en">Agile &amp; Scrum</span></a>
+              <a href="../course/project-management.html"><span lang="ja">プロジェクト管理と見積もり</span><span lang="en">Project Management</span></a>
+              <a href="../course/project-estimation-planning.html"><span lang="ja">プロジェクト計画・見積もり</span><span lang="en">Project Planning &amp; Estimation</span></a>
+            </div>
+            <div class="megacol">
+              <div class="navlabel"><span lang="ja">品質・運用</span><span lang="en">Quality &amp; Operations</span></div>
+              <a href="../course/software-testing.html"><span lang="ja">ソフトウェアテスト学習ガイド</span><span lang="en">Software Testing Guide</span></a>
+              <a href="../course/dependable-systems.html"><span lang="ja">ディペンダブルシステム</span><span lang="en">Dependable Systems</span></a>
+              <a href="../course/software-evolution.html"><span lang="ja">ソフトウェア進化と技術的負債</span><span lang="en">Software Evolution</span></a>
+              <a href="../course/version-control-cicd.html"><span lang="ja">バージョン管理とCI/CD</span><span lang="en">Version Control &amp; CI/CD</span></a>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="navgroup">
+        <a class="navtop on" href="../learn/index.html" aria-haspopup="true" aria-expanded="false"><span lang="ja">学習コース</span><span lang="en">Learn</span></a>
+        <div class="navpanel mega">
+          <div class="navlabel"><span lang="ja">学習コース</span><span lang="en">Learning course</span></div>
+          <a href="../learn/index.html"><span lang="ja">学習コースの全体像</span><span lang="en">Course overview</span></a>
+          <hr class="navdiv">
+          <div class="megagrid">
+            <div class="megacol">
+              <div class="navlabel"><span lang="ja">第1段階 · データ収集</span><span lang="en">Stage 1 · Data collection</span></div>
+              <a href="../learn/repository-mining.html"><span lang="ja">リポジトリマイニング入門</span><span lang="en">Repository Mining</span></a>
+              <a href="../learn/data-preprocessing.html"><span lang="ja">開発データの前処理とデータセット構築</span><span lang="en">Data Preprocessing</span></a>
+            </div>
+            <div class="megacol">
+              <div class="navlabel"><span lang="ja">第2段階 · 分析技術</span><span lang="en">Stage 2 · Techniques</span></div>
+              <a href="../learn/nlp.html"><span lang="ja">自然言語処理（NLP）</span><span lang="en">Natural Language Processing</span></a>
+              <a href="../learn/network-analysis.html"><span lang="ja">ネットワーク分析</span><span lang="en">Network Analysis</span></a>
+              <a href="../learn/machine-learning.html"><span lang="ja">機械学習</span><span lang="en">Machine Learning</span></a>
+              <a class="here" aria-current="page" href="../learn/deep-learning.html"><span lang="ja">深層学習</span><span lang="en">Deep Learning</span></a>
+              <a href="../learn/llm.html"><span lang="ja">大規模言語モデル（LLM）</span><span lang="en">Large Language Models</span></a>
+              <a href="../learn/program-analysis.html"><span lang="ja">プログラム解析</span><span lang="en">Program Analysis</span></a>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="navgroup">
+        <a class="navtop" href="../software-engineering.html" aria-haspopup="true" aria-expanded="false"><span lang="ja">ガイド</span><span lang="en">Guides</span></a>
+        <div class="navpanel">
+          <a href="../software-engineering.html"><span lang="ja">ソフトウェア工学とは</span><span lang="en">What is software engineering</span></a>
+          <a href="../technical-debt.html"><span lang="ja">技術的負債とは</span><span lang="en">What is technical debt</span></a>
+          <a href="../glossary.html"><span lang="ja">研究用語ミニ辞典</span><span lang="en">Research glossary</span></a>
+        </div>
+      </div>
+      <div class="navgroup">
+        <a class="navtop" href="../students.html"><span lang="ja">学生の皆さんへ</span><span lang="en">For Students</span></a>
+      </div>
+    </div>
+    <div class="bar-right">
+      <a class="btn" href="https://researchmap.jp/kimura_yuta" target="_blank" rel="noopener">researchmap</a>
+      <div class="lswitch" role="group" aria-label="言語 / Language">
+        <button type="button" class="ls-ja" onclick="setLang('ja')" aria-pressed="true">JA</button>
+        <button type="button" class="ls-en" onclick="setLang('en')" aria-pressed="false">EN</button>
+      </div>
+      <button class="navtoggle" id="navToggle" type="button" aria-label="メニュー" aria-expanded="false" aria-controls="mobnav">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </nav>
+</header>
+
+<div class="mobnav" id="mobnav" aria-hidden="true">
+  <div class="mobnav-inner">
+    <div class="mobgroup">
+      <div class="moblabel"><span lang="ja">研究</span><span lang="en">Research</span></div>
+      <a href="../publications.html"><span lang="ja">業績・研究活動</span><span lang="en">Publications &amp; activity</span></a>
+      <a href="../research/technical-debt-metrics.html"><span lang="ja">技術的負債とメトリクス</span><span lang="en">Technical debt &amp; metrics</span></a>
+      <a href="../research/apr-coding-standards.html"><span lang="ja">自動生成パッチと規約</span><span lang="en">Auto-generated patches &amp; standards</span></a>
+      <a href="../research/td-repayment-refactoring.html"><span lang="ja">負債返済とリファクタリング</span><span lang="en">Debt repayment &amp; refactoring</span></a>
+      <a href="../research/satd-issue-classification.html"><span lang="ja">課題票の負債分類</span><span lang="en">Issue-ticket debt classification</span></a>
+    </div>
+    <div class="mobgroup">
+      <div class="moblabel"><span lang="ja">教育</span><span lang="en">Teaching</span></div>
+      <div class="mobsublabel"><span lang="ja">科目</span><span lang="en">Courses</span></div>
+      <a href="../teaching.html"><span lang="ja">教育・担当授業</span><span lang="en">Teaching &amp; courses</span></a>
+      <a href="../course/index.html"><span lang="ja">ソフトウェア工学</span><span lang="en">Software Engineering</span></a>
+      <a href="../course/logic-circuits.html"><span lang="ja">論理回路1</span><span lang="en">Logic Circuits I</span></a>
+      <a href="../course/intelligent-informatics-1.html"><span lang="ja">知能情報実験実習1</span><span lang="en">Intelligent Informatics Lab I</span></a>
+      <div class="mobsublabel"><span lang="ja">要求・モデリング</span><span lang="en">Requirements &amp; Modeling</span></div>
+      <a href="../course/requirements-engineering.html"><span lang="ja">要求工学</span><span lang="en">Requirements Engineering</span></a>
+      <a href="../course/system-modeling-uml.html"><span lang="ja">システムモデリング(UML)</span><span lang="en">System Modeling</span></a>
+      <a href="../course/uml-guide.html"><span lang="ja">クラス図/シーケンス図ガイド</span><span lang="en">UML Diagram Guide</span></a>
+      <div class="mobsublabel"><span lang="ja">設計・実装</span><span lang="en">Design &amp; Implementation</span></div>
+      <a href="../course/software-architecture.html"><span lang="ja">アーキテクチャパターン大全</span><span lang="en">Software Architecture</span></a>
+      <a href="../course/design-patterns.html"><span lang="ja">デザインパターン学習ガイド</span><span lang="en">Design Patterns Guide</span></a>
+      <a href="../course/software-reuse-oss.html"><span lang="ja">ソフトウェア再利用とOSS</span><span lang="en">Software Reuse &amp; OSS</span></a>
+      <div class="mobsublabel"><span lang="ja">計画・プロセス</span><span lang="en">Planning &amp; Process</span></div>
+      <a href="../course/agile-scrum.html"><span lang="ja">アジャイル開発とスクラム</span><span lang="en">Agile &amp; Scrum</span></a>
+      <a href="../course/project-management.html"><span lang="ja">プロジェクト管理と見積もり</span><span lang="en">Project Management</span></a>
+      <a href="../course/project-estimation-planning.html"><span lang="ja">プロジェクト計画・見積もり</span><span lang="en">Project Planning &amp; Estimation</span></a>
+      <div class="mobsublabel"><span lang="ja">品質・運用</span><span lang="en">Quality &amp; Operations</span></div>
+      <a href="../course/software-testing.html"><span lang="ja">ソフトウェアテスト学習ガイド</span><span lang="en">Software Testing Guide</span></a>
+      <a href="../course/dependable-systems.html"><span lang="ja">ディペンダブルシステム</span><span lang="en">Dependable Systems</span></a>
+      <a href="../course/software-evolution.html"><span lang="ja">ソフトウェア進化と技術的負債</span><span lang="en">Software Evolution</span></a>
+      <a href="../course/version-control-cicd.html"><span lang="ja">バージョン管理とCI/CD</span><span lang="en">Version Control &amp; CI/CD</span></a>
+    </div>
+    <div class="mobgroup">
+      <div class="moblabel"><span lang="ja">学習コース</span><span lang="en">Learn</span></div>
+      <a href="../learn/index.html"><span lang="ja">学習コースの全体像</span><span lang="en">Course overview</span></a>
+      <div class="mobsublabel"><span lang="ja">第1段階 · データ収集</span><span lang="en">Stage 1 · Data collection</span></div>
+      <a href="../learn/repository-mining.html"><span lang="ja">リポジトリマイニング入門</span><span lang="en">Repository Mining</span></a>
+      <a href="../learn/data-preprocessing.html"><span lang="ja">開発データの前処理とデータセット構築</span><span lang="en">Data Preprocessing</span></a>
+      <div class="mobsublabel"><span lang="ja">第2段階 · 分析技術</span><span lang="en">Stage 2 · Techniques</span></div>
+      <a href="../learn/nlp.html"><span lang="ja">自然言語処理（NLP）</span><span lang="en">Natural Language Processing</span></a>
+      <a href="../learn/network-analysis.html"><span lang="ja">ネットワーク分析</span><span lang="en">Network Analysis</span></a>
+      <a href="../learn/machine-learning.html"><span lang="ja">機械学習</span><span lang="en">Machine Learning</span></a>
+      <a class="here" aria-current="page" href="../learn/deep-learning.html"><span lang="ja">深層学習</span><span lang="en">Deep Learning</span></a>
+      <a href="../learn/llm.html"><span lang="ja">大規模言語モデル（LLM）</span><span lang="en">Large Language Models</span></a>
+      <a href="../learn/program-analysis.html"><span lang="ja">プログラム解析</span><span lang="en">Program Analysis</span></a>
+    </div>
+    <div class="mobgroup">
+      <div class="moblabel"><span lang="ja">ガイド</span><span lang="en">Guides</span></div>
+      <a href="../software-engineering.html"><span lang="ja">ソフトウェア工学とは</span><span lang="en">What is software engineering</span></a>
+      <a href="../technical-debt.html"><span lang="ja">技術的負債とは</span><span lang="en">What is technical debt</span></a>
+      <a href="../glossary.html"><span lang="ja">研究用語ミニ辞典</span><span lang="en">Research glossary</span></a>
+    </div>
+    <div class="mobgroup">
+      <div class="moblabel"><span lang="ja">学生の皆さんへ</span><span lang="en">For Students</span></div>
+      <a href="../students.html"><span lang="ja">学生の皆さんへ</span><span lang="en">For Students</span></a>
+    </div>
+    <div class="mobfoot">
+      <a class="mobext" href="https://researchmap.jp/kimura_yuta" target="_blank" rel="noopener">researchmap</a>
+      <div class="lswitch" role="group" aria-label="言語 / Language">
+        <button type="button" class="ls-ja" onclick="setLang('ja')" aria-pressed="true">JA</button>
+        <button type="button" class="ls-en" onclick="setLang('en')" aria-pressed="false">EN</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<main id="main">
+<div class="wrap" style="padding-top:24px">
+  <nav class="crumbs" aria-label="パンくず">
+    <a href="../index.html"><span lang="ja">ホーム</span><span lang="en">Home</span></a>
+    <span class="csep" aria-hidden="true">&rsaquo;</span>
+    <span class="cur" aria-current="page"><span lang="ja">学習コース：深層学習</span><span lang="en">Learn: Deep Learning</span></span>
+  </nav>
+</div>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="wrap">
+    <p class="kick"><span lang="ja">学習コース</span><span lang="en">Learn</span></p>
+    <h1>深層学習</h1>
+    <p class="lead">多層のニューラルネットワークが、データから表現（特徴）を自動で学ぶ仕組みを、基礎の理論から実際に動かせるコードまで、順を追って学ぶモジュールです。各ステップは「概要 → 仕組み（座学）→ コードで動かす」の3層で進みます。ページ内には手を動かせるデモを3つ用意しました。</p>
+    <p class="ja-note"><span lang="ja">この教材は日本語のみで提供しています</span><span lang="en">This learning material is available in Japanese only.</span></p>
+    <div class="hero-cta">
+      <a class="btn ink" href="#intro" style="padding:12px 22px">
+        <span lang="ja">学びはじめる</span><span lang="en">Start learning</span>
+      </a>
+      <a class="tlink" href="#step2">
+        <span lang="ja">まず手を動かす（活性化関数のデモ）</span><span lang="en">Jump to the activation demo</span>
+        <span class="ar" aria-hidden="true">&rsaquo;</span>
+      </a>
+    </div>
+  </div>
+</div>
+
+<div id="toTopSentinel" aria-hidden="true"></div>
+
+<div class="tocbar">
+  <nav class="tocbar-inner" aria-label="ページ内目次">
+    <a class="tocpill" href="#intro"><span lang="ja">はじめに</span><span lang="en">Intro</span></a>
+    <a class="tocpill" href="#step1">Step 1 <span lang="ja">深層学習とは</span><span lang="en">What is DL</span></a>
+    <a class="tocpill" href="#step2">Step 2 <span lang="ja">NNの基礎</span><span lang="en">NN basics</span></a>
+    <a class="tocpill" href="#step3">Step 3 <span lang="ja">学習の仕組み</span><span lang="en">How it learns</span></a>
+    <a class="tocpill" href="#step4">Step 4 <span lang="ja">CNN</span><span lang="en">CNN</span></a>
+    <a class="tocpill" href="#step5">Step 5 <span lang="ja">系列モデル</span><span lang="en">Sequences</span></a>
+    <a class="tocpill" href="#step6">Step 6 <span lang="ja">実践と課題</span><span lang="en">In practice</span></a>
+    <a class="tocpill" href="#closing"><span lang="ja">まとめ</span><span lang="en">Wrap-up</span></a>
+    <a class="tocpill" href="#beyond"><span lang="ja">発展トピック</span><span lang="en">Beyond</span></a>
+  </nav>
+</div>
+
+<!-- INTRO -->
+<section id="intro" style="padding-top:26px">
+  <div class="wrap reveal">
+    <p class="eyebrow"><span lang="ja">はじめに</span><span lang="en">Introduction</span></p>
+    <h2 class="big">このモジュールの全体像</h2>
+    <div class="prose" style="margin-top:22px">
+      <p><b>深層学習（ディープラーニング）</b>とは、多くの層を重ねた<b>ニューラルネットワーク</b>を使って、データから複雑なパターンを学ぶ機械学習の手法です。画像認識、音声認識、機械翻訳、そして大規模言語モデルまで、近年の人工知能の多くがこの技術を土台にしています。</p>
+      <p>従来の機械学習では、どんな特徴に注目するかを人間が設計していました。深層学習の大きな特徴は、この<b>特徴（表現）そのものをデータから自動で学ぶ</b>点にあります。層を重ねることで、単純な特徴（線や角）から、より複雑な特徴（形やパーツ）へと、段階的に抽象度の高い表現を組み立てます。</p>
+      <p>ニューラルネットワークは、入力層・隠れ層・出力層からなります。データは入力層から出力へ向かって計算され（順伝播）、予測の誤差を出力側から入力側へ戻して重みを少しずつ直します（逆伝播）。この2つの流れが、深層学習の心臓部です。</p>
+    </div>
+
+    <div class="diagram-wrap reveal">
+      <p class="cap">ニューラルネットワークの層構造と、順伝播・逆伝播</p>
+      <svg viewBox="0 0 940 430" role="img" aria-label="ニューラルネットワークの層構造。入力層3ノード、隠れ層4ノード、出力層2ノード。順伝播は入力から出力へ、逆伝播は出力から入力へ流れる">
+        <text class="dg-lbl" x="470" y="22">順伝播（入力から予測を計算）</text>
+        <text class="dg-en" x="470" y="37">forward pass</text>
+        <line class="dg-line" x1="235" y1="52" x2="705" y2="52"/>
+        <polygon class="dg-arrow" points="712,52 701,47 701,57"/>
+
+        <g style="stroke:var(--faint);stroke-width:1;fill:none">
+          <line x1="165" y1="120" x2="470" y2="90"/><line x1="165" y1="120" x2="470" y2="165"/><line x1="165" y1="120" x2="470" y2="240"/><line x1="165" y1="120" x2="470" y2="315"/>
+          <line x1="165" y1="195" x2="470" y2="90"/><line x1="165" y1="195" x2="470" y2="165"/><line x1="165" y1="195" x2="470" y2="240"/><line x1="165" y1="195" x2="470" y2="315"/>
+          <line x1="165" y1="270" x2="470" y2="90"/><line x1="165" y1="270" x2="470" y2="165"/><line x1="165" y1="270" x2="470" y2="240"/><line x1="165" y1="270" x2="470" y2="315"/>
+          <line x1="470" y1="90" x2="775" y2="150"/><line x1="470" y1="90" x2="775" y2="240"/>
+          <line x1="470" y1="165" x2="775" y2="150"/><line x1="470" y1="165" x2="775" y2="240"/>
+          <line x1="470" y1="240" x2="775" y2="150"/><line x1="470" y1="240" x2="775" y2="240"/>
+          <line x1="470" y1="315" x2="775" y2="150"/><line x1="470" y1="315" x2="775" y2="240"/>
+        </g>
+
+        <g style="fill:var(--card);stroke:var(--accent);stroke-width:1.8">
+          <circle cx="165" cy="120" r="18"/><circle cx="165" cy="195" r="18"/><circle cx="165" cy="270" r="18"/>
+        </g>
+        <g style="fill:var(--card);stroke:none">
+          <circle cx="470" cy="90" r="18"/><circle cx="470" cy="165" r="18"/><circle cx="470" cy="240" r="18"/><circle cx="470" cy="315" r="18"/>
+        </g>
+        <g style="fill:var(--accent-soft);stroke:var(--accent);stroke-width:1.8">
+          <circle cx="470" cy="90" r="18"/><circle cx="470" cy="165" r="18"/><circle cx="470" cy="240" r="18"/><circle cx="470" cy="315" r="18"/>
+        </g>
+        <g style="fill:var(--card);stroke:var(--accent);stroke-width:1.8">
+          <circle cx="775" cy="150" r="18"/><circle cx="775" cy="240" r="18"/>
+        </g>
+
+        <text class="dg-lbl" x="165" y="362">入力層</text>
+        <text class="dg-en" x="165" y="378">Input layer</text>
+        <text class="dg-lbl" x="470" y="362">隠れ層</text>
+        <text class="dg-en" x="470" y="378">Hidden layer</text>
+        <text class="dg-lbl" x="775" y="362">出力層</text>
+        <text class="dg-en" x="775" y="378">Output layer</text>
+
+        <line class="dg-line" x1="705" y1="400" x2="235" y2="400"/>
+        <polygon class="dg-arrow" points="228,400 239,395 239,405"/>
+        <text class="dg-note" x="470" y="420">逆伝播（誤差を戻して重みを更新する） / backpropagation</text>
+      </svg>
+    </div>
+
+    <div class="prose">
+      <p>このモジュールは、上の仕組みを土台から一つずつ組み立てます。各ステップは次の3層で構成します。</p>
+      <ul>
+        <li><b>概要</b>：その考え方が何のためにあるのか、あらましをつかむ。</li>
+        <li><b>仕組み（座学）</b>：背後にある理論・定義・式を、ていねいに理解する。</li>
+        <li><b>コードで動かす</b>：Python の定番ライブラリや、ページ内デモで実際に動かして確かめる。</li>
+      </ul>
+      <p>手を動かす題材には、実在の公開データセット（手書き数字の digits や MNIST など）や、ページ内の小さなサンプルだけを使います。特別な環境がなくても、読みながら試せる構成です。</p>
+    </div>
+  </div>
+</section>
+
+<!-- STEP 1 -->
+<section id="step1" class="soft-sec">
+  <div class="wrap reveal">
+    <div class="stephead">
+      <span class="num">1</span>
+      <div class="tt"><h2>深層学習とは</h2><span class="st-en">What is deep learning</span></div>
+    </div>
+    <div class="steprule"></div>
+
+    <p class="layer first"><span lang="ja">概要</span><span lang="en">Overview</span></p>
+    <div class="prose">
+      <p>深層学習は機械学習の一分野です。機械学習が「データからパターンを学ぶ」技術の総称だとすれば、深層学習はその中でも<b>多層のニューラルネットワーク</b>を使う手法を指します。近年めざましい成果を上げ、人工知能の話題の中心になっています。</p>
+      <p>すでに私たちは、その成果に日常的に触れています。</p>
+      <ul>
+        <li><b>画像</b>：写真に写る物体の認識、顔認証、医用画像の診断支援。</li>
+        <li><b>音声</b>：音声アシスタントの聞き取り、文字起こし、音声合成。</li>
+        <li><b>言語</b>：機械翻訳、要約、そして大規模言語モデルによる対話。</li>
+        <li><b>その他</b>：ゲーム、自動運転の知覚、画像や音楽の生成。</li>
+      </ul>
+    </div>
+
+    <p class="layer"><span lang="ja">仕組み</span><span lang="en">How it works</span></p>
+    <div class="prose">
+      <h4>なぜ「深い」のか</h4>
+      <p>ここでの「深い（deep）」は、ネットワークの<b>層が多い</b>ことを指します。入力層と出力層の間に、たくさんの隠れ層を挟みます。層を重ねると、前の層が見つけた単純な特徴を組み合わせて、より複雑で抽象的な特徴を作れます。画像なら、はじめの層は線や角のような部品を、中ほどの層は目や車輪のようなパーツを、深い層は顔や車のような全体像を捉える、という具合です。</p>
+      <h4>表現学習</h4>
+      <p>従来の機械学習では、「どんな特徴を入力にするか」を人間が設計する必要がありました。たとえば画像なら、色のヒストグラムや輪郭の統計量などを、人手で選んで計算していました。深層学習の核心は、この<b>特徴（表現）そのものをデータから自動で学ぶ</b>ことです。これを<b>表現学習（representation learning）</b>と呼びます。良い特徴を人が作る手間を、学習に肩代わりさせるわけです。</p>
+      <h4>成功を支えた条件</h4>
+      <p>ニューラルネットワークの発想自体は古くからありましたが、実用的な成果が一気に広がったのは近年です。背景には、<b>大量のデータ</b>、<b>GPU による高速な計算</b>、そして<b>学習を安定させる工夫</b>（ReLU などの活性化関数や各種の正則化）の3つがそろったことがあります。</p>
+    </div>
+
+    <div class="callout tip">
+      <h4>この Step のまとめ</h4>
+      <p>深層学習は、多層のニューラルネットワークで表現を自動的に学ぶ機械学習の手法です。層を深くすることで、単純な特徴から複雑な特徴へと段階的に組み立てられます。次の Step から、その最小単位であるニューロンを組み立てていきます。</p>
+    </div>
+  </div>
+</section>
+
+<!-- STEP 2 -->
+<section id="step2">
+  <div class="wrap reveal">
+    <div class="stephead">
+      <span class="num">2</span>
+      <div class="tt"><h2>ニューラルネットワークの基礎</h2><span class="st-en">Neural network basics</span></div>
+    </div>
+    <div class="steprule"></div>
+
+    <p class="layer first"><span lang="ja">概要</span><span lang="en">Overview</span></p>
+    <div class="prose">
+      <p>ニューラルネットワークの最小単位は<b>ニューロン（ユニット）</b>です。各入力に重みをかけて足し合わせ、バイアスを加え、その結果を<b>活性化関数</b>に通して出力します。このニューロンを横に並べて層を作り、層を縦に積み重ねると、<b>多層パーセプトロン（MLP）</b>ができあがります。</p>
+    </div>
+
+    <p class="layer"><span lang="ja">仕組み</span><span lang="en">How it works</span></p>
+    <div class="prose">
+      <h4>1つのニューロン</h4>
+      <p>ニューロンは、入力 x に重み w をかけて総和を取り、バイアス b を足します。この加重和を、活性化関数 f に通したものが出力です。重みは「どの入力をどれだけ重視するか」を表し、バイアスは出力の基準をずらす役割を持ちます。</p>
+    </div>
+    <div class="formula">
+      y <span class="op">=</span> f( w<sub>1</sub>x<sub>1</sub> + w<sub>2</sub>x<sub>2</sub> + ... + w<sub>n</sub>x<sub>n</sub> + b )
+      <small>x: 入力　w: 重み　b: バイアス　f: 活性化関数<br>加重和をとってから、活性化関数で出力の形を決めます。</small>
+    </div>
+    <div class="prose">
+      <h4>活性化関数</h4>
+      <p>もし活性化関数がなければ、層をいくら重ねても全体は1つの線形変換にまとまってしまい、複雑な関係を表せません。そこで<b>非線形</b>な活性化関数を挟むことが決定的に重要です。代表的なものを3つ挙げます。</p>
+      <ul>
+        <li><b>シグモイド</b>：出力を 0 から 1 に収める、なめらかなS字。確率のように扱いたい出力に向きます。</li>
+        <li><b>tanh</b>：出力を -1 から 1 に収めるS字。シグモイドを中心が0になるように調整したものです。</li>
+        <li><b>ReLU</b>：負の入力を0に、正の入力はそのまま通す折れ線。計算が軽く、深い層でも学習が進みやすいため、現在の標準です。</li>
+      </ul>
+    </div>
+    <div class="formula">
+      &sigma;(x) <span class="op">=</span> 1 / (1 + e<sup>-x</sup>) &nbsp;&nbsp;|&nbsp;&nbsp; tanh(x) <span class="op">=</span> (e<sup>x</sup> - e<sup>-x</sup>) / (e<sup>x</sup> + e<sup>-x</sup>) &nbsp;&nbsp;|&nbsp;&nbsp; ReLU(x) <span class="op">=</span> max(0, x)
+      <small>シグモイドと tanh はなめらかなS字、ReLU は0で折れ曲がる折れ線です。</small>
+    </div>
+    <div class="prose">
+      <h4>順伝播と多層パーセプトロン</h4>
+      <p>層のニューロンすべてを一度に計算し、その出力を次の層の入力とする。これを出力層まで繰り返すのが<b>順伝播（forward propagation）</b>です。入力層・隠れ層・出力層をすべて全結合でつないだネットワークを<b>多層パーセプトロン</b>と呼び、最も基本的な深層モデルです。次のデモで、活性化関数の形を目で確かめてみましょう。</p>
+    </div>
+
+    <!-- DEMO 1: activation functions -->
+    <div class="demo reveal" id="demoAct">
+      <span class="dtag"><span lang="ja">デモ 1</span><span lang="en">Demo 1</span></span>
+      <h4>活性化関数</h4>
+      <p class="dnote">活性化関数を選び、入力 x のスライダを動かすと、曲線と出力値がその場で変わります。シグモイドと tanh はなめらかなS字、ReLU は負を0にする折れ線です。ニューロンは加重和にこの関数をかけて出力を決めます。</p>
+      <div class="try">
+        <span class="tlbl">関数</span>
+        <button type="button" data-fn="sigmoid">シグモイド</button>
+        <button type="button" data-fn="tanh">tanh</button>
+        <button type="button" data-fn="relu">ReLU</button>
+      </div>
+      <div class="diagram-wrap" style="margin-top:14px">
+        <svg id="actSvg" viewBox="0 0 620 300" role="img" aria-label="選択した活性化関数の曲線と、入力に対する出力の点"></svg>
+      </div>
+      <label class="fld" for="actX" style="margin-top:6px">入力 x / Input x</label>
+      <input type="range" id="actX" min="-6" max="6" step="0.05" value="1" style="width:100%;accent-color:var(--accent)">
+      <div class="demo-out" id="actOut" aria-live="polite"></div>
+    </div>
+
+    <p class="layer"><span lang="ja">コードで動かす</span><span lang="en">Run the code</span></p>
+    <div class="prose">
+      <p>順伝播は、行列の掛け算と活性化関数だけで書けます。入力2・隠れ3・出力1 の小さなネットワークを、NumPy で計算してみましょう。重みは適当に決めた固定値です。</p>
+    </div>
+    <div class="code-wrap attached">
+      <div class="code-head"><span class="lbl">Python</span><span class="lang-tag">forward.py</span><button class="copy" type="button" onclick="copyCode(this)">copy</button></div>
+      <pre><code><span class="kw">import</span> numpy <span class="kw">as</span> np
+
+<span class="kw">def</span> sigmoid(x):
+    <span class="kw">return</span> <span class="nu">1</span> / (<span class="nu">1</span> + np.exp(-x))
+
+<span class="cm"># 入力2 → 隠れ3 → 出力1 の順伝播</span>
+x  = np.array([<span class="nu">0.5</span>, -<span class="nu">0.2</span>])
+W1 = np.array([[<span class="nu">0.1</span>, <span class="nu">0.4</span>, -<span class="nu">0.3</span>],
+               [<span class="nu">0.2</span>, -<span class="nu">0.5</span>, <span class="nu">0.8</span>]])   <span class="cm"># 形 (2, 3)</span>
+b1 = np.array([<span class="nu">0.0</span>, <span class="nu">0.1</span>, -<span class="nu">0.1</span>])
+W2 = np.array([[<span class="nu">0.7</span>], [-<span class="nu">0.6</span>], [<span class="nu">0.3</span>]])   <span class="cm"># 形 (3, 1)</span>
+b2 = np.array([<span class="nu">0.2</span>])
+
+h = sigmoid(x @ W1 + b1)   <span class="cm"># 隠れ層の出力</span>
+y = sigmoid(h @ W2 + b2)   <span class="cm"># 出力層の出力</span>
+<span class="kw">print</span>(np.round(h, <span class="nu">3</span>))
+<span class="kw">print</span>(np.round(y, <span class="nu">3</span>))</code></pre>
+    </div>
+    <div class="code-out"><span class="olbl">出力例 / Output</span><pre><code>[0.502 0.599 0.399]
+[0.577]</code></pre></div>
+
+    <div class="prose">
+      <p>実際に多層のネットワークを学習させるなら、scikit-learn の <code>MLPClassifier</code> が手軽です。実在のデータセット <b>digits</b>（8×8 の手書き数字 1797 枚）を分類してみます。隠れ層1つ・ReLU 活性化の素直な MLP です。</p>
+    </div>
+    <div class="code-wrap attached">
+      <div class="code-head"><span class="lbl">Python</span><span class="lang-tag">mlp_digits.py</span><button class="copy" type="button" onclick="copyCode(this)">copy</button></div>
+      <pre><code><span class="kw">from</span> sklearn.datasets <span class="kw">import</span> load_digits
+<span class="kw">from</span> sklearn.neural_network <span class="kw">import</span> MLPClassifier
+<span class="kw">from</span> sklearn.model_selection <span class="kw">import</span> train_test_split
+
+X, y = load_digits(return_X_y=<span class="kw">True</span>)   <span class="cm"># 8x8 の手書き数字 1797枚</span>
+X_tr, X_te, y_tr, y_te = train_test_split(
+    X, y, test_size=<span class="nu">0.25</span>, random_state=<span class="nu">0</span>)
+
+clf = MLPClassifier(hidden_layer_sizes=(<span class="nu">64</span>,), activation=<span class="st">"relu"</span>,
+                    max_iter=<span class="nu">300</span>, random_state=<span class="nu">0</span>)
+clf.fit(X_tr, y_tr)
+<span class="kw">print</span>(len(X_tr), <span class="st">"training images"</span>)
+<span class="kw">print</span>(round(clf.score(X_te, y_te), <span class="nu">3</span>))</code></pre>
+    </div>
+    <div class="code-out"><span class="olbl">出力例 / Output</span><pre><code>1347 training images
+0.976</code></pre></div>
+
+    <div class="callout tip">
+      <h4>この Step のまとめ</h4>
+      <p>ニューロンは「加重和 → 活性化関数」。非線形な活性化関数（シグモイド・tanh・ReLU）を挟むことで、層を重ねる意味が生まれます。これらを全結合でつないだ多層パーセプトロンが、深層学習の出発点です。次は、この重みをどう学習するのかを見ます。</p>
+    </div>
+  </div>
+</section>
+
+<!-- STEP 3 -->
+<section id="step3" class="soft-sec">
+  <div class="wrap reveal">
+    <div class="stephead">
+      <span class="num">3</span>
+      <div class="tt"><h2>学習の仕組み</h2><span class="st-en">How learning works</span></div>
+    </div>
+    <div class="steprule"></div>
+
+    <p class="layer first"><span lang="ja">概要</span><span lang="en">Overview</span></p>
+    <div class="prose">
+      <p>ここまでのネットワークは、重みを適当に決めていました。<b>学習</b>とは、予測の誤差を測る<b>損失関数</b>を用意し、その値が小さくなるように重みを少しずつ調整していく作業です。中心となる道具が<b>勾配降下法</b>と<b>誤差逆伝播</b>です。</p>
+    </div>
+
+    <p class="layer"><span lang="ja">仕組み</span><span lang="en">How it works</span></p>
+    <div class="prose">
+      <h4>損失関数</h4>
+      <p>まず、予測がどれだけ外れているかを1つの数字で表します。これが<b>損失関数（loss function）</b>です。数値を当てる回帰では<b>平均二乗誤差（MSE）</b>、クラスを当てる分類では<b>交差エントロピー</b>がよく使われます。</p>
+    </div>
+    <div class="formula">
+      MSE <span class="op">=</span> (1/N) &Sigma; (t - y)<sup>2</sup> &nbsp;&nbsp;|&nbsp;&nbsp; L<sub>CE</sub> <span class="op">=</span> - &Sigma; t<sub>k</sub> log(y<sub>k</sub>)
+      <small>t: 正解　y: 予測　N: サンプル数<br>MSE は予測と正解の差の二乗の平均。交差エントロピーは正解クラスの予測確率が高いほど小さくなります。</small>
+    </div>
+    <div class="prose">
+      <h4>勾配降下法</h4>
+      <p>損失を小さくするには、各重みを「損失が減る向き」に動かします。損失を重みで微分した<b>勾配</b>は、損失が最も増える向きを指すので、その<b>逆向き</b>に進めば損失は減ります。進む歩幅を決めるのが<b>学習率（learning rate）</b>です。大きすぎると行き過ぎて発散し、小さすぎるとなかなか収束しません。</p>
+    </div>
+    <div class="formula">
+      w <span class="op">&larr;</span> w - &eta; <span class="op">&middot;</span> (&part;L / &part;w)
+      <small>&eta;（イータ）: 学習率　&part;L/&part;w: 損失を重み w で微分した勾配<br>勾配の逆向きに、学習率のぶんだけ重みを更新します。</small>
+    </div>
+    <div class="prose">
+      <h4>誤差逆伝播</h4>
+      <p>多層のネットワークでは、各重みの勾配を効率よく求める必要があります。これを担うのが<b>誤差逆伝播（backpropagation）</b>です。出力側で計算した誤差を、合成関数の微分（連鎖律）を使って入力側へ順に伝えていくことで、すべての重みの勾配をまとめて計算します。</p>
+      <h4>エポック・バッチ・学習率</h4>
+      <p>実際の学習では、データを少しずつ（<b>ミニバッチ</b>）に分けて勾配を計算し、重みを更新します。学習データ全体を1回使い切ることを<b>1エポック</b>と数え、これを何回も繰り返します。エポックを重ねるごとに損失が下がっていくのが、うまく学習できているしるしです。次のデモで、最も単純なニューロン（パーセプトロン）が論理を表せることを確かめましょう。</p>
+    </div>
+
+    <!-- DEMO 2: perceptron logic gates -->
+    <div class="demo reveal" id="demoPerc">
+      <span class="dtag"><span lang="ja">デモ 2</span><span lang="en">Demo 2</span></span>
+      <h4>パーセプトロンで論理ゲート</h4>
+      <p class="dnote">2つの入力に重み w1・w2 とバイアス b をかけて合計し、0以上なら1、そうでなければ0を出力します（ステップ活性）。スライダを動かして、AND と OR の真理値表を正しく分けられる重みを探してください。「解」ボタンで正解の一例も見られます。</p>
+      <div class="try">
+        <span class="tlbl">ゲート</span>
+        <button type="button" data-gate="and">AND</button>
+        <button type="button" data-gate="or">OR</button>
+        <span class="tlbl" style="margin-left:10px">例</span>
+        <button type="button" data-preset="and">ANDの解</button>
+        <button type="button" data-preset="or">ORの解</button>
+      </div>
+      <div style="margin-top:16px;display:grid;gap:12px;max-width:520px">
+        <div><label class="fld" for="pw1">重み w1 = <span id="pw1v">1.0</span></label><input type="range" id="pw1" min="-2" max="2" step="0.1" value="1" style="width:100%;accent-color:var(--accent)"></div>
+        <div><label class="fld" for="pw2">重み w2 = <span id="pw2v">1.0</span></label><input type="range" id="pw2" min="-2" max="2" step="0.1" value="1" style="width:100%;accent-color:var(--accent)"></div>
+        <div><label class="fld" for="pb">バイアス b = <span id="pbv">-1.5</span></label><input type="range" id="pb" min="-3" max="3" step="0.1" value="-1.5" style="width:100%;accent-color:var(--accent)"></div>
+      </div>
+      <div class="demo-out" id="percOut" aria-live="polite"></div>
+    </div>
+
+    <p class="layer"><span lang="ja">コードで動かす</span><span lang="en">Run the code</span></p>
+    <div class="prose">
+      <p>勾配降下法の中身は、じつは数行です。「y = 2x + 1」に近い点に、直線 y = w x + b を当てはめます。損失（平均二乗誤差）の勾配で w と b を更新し、エポックごとに損失が下がる様子を見てみましょう。</p>
+    </div>
+    <div class="code-wrap attached">
+      <div class="code-head"><span class="lbl">Python</span><span class="lang-tag">gradient_descent.py</span><button class="copy" type="button" onclick="copyCode(this)">copy</button></div>
+      <pre><code><span class="kw">import</span> numpy <span class="kw">as</span> np
+
+X = np.array([<span class="nu">0.0</span>, <span class="nu">1.0</span>, <span class="nu">2.0</span>, <span class="nu">3.0</span>, <span class="nu">4.0</span>])
+y = np.array([<span class="nu">1.0</span>, <span class="nu">3.1</span>, <span class="nu">4.9</span>, <span class="nu">7.2</span>, <span class="nu">9.0</span>])   <span class="cm"># y ≒ 2x + 1</span>
+
+w, b, lr = <span class="nu">0.0</span>, <span class="nu">0.0</span>, <span class="nu">0.05</span>
+<span class="kw">for</span> epoch <span class="kw">in</span> range(<span class="nu">1</span>, <span class="nu">401</span>):
+    pred = w * X + b
+    err  = pred - y
+    loss = np.mean(err ** <span class="nu">2</span>)          <span class="cm"># 平均二乗誤差</span>
+    w -= lr * np.mean(<span class="nu">2</span> * err * X)   <span class="cm"># 勾配で更新</span>
+    b -= lr * np.mean(<span class="nu">2</span> * err)
+    <span class="kw">if</span> epoch % <span class="nu">100</span> == <span class="nu">0</span>:
+        <span class="kw">print</span>(<span class="st">f"epoch {epoch:3d}  loss {loss:.4f}  w {w:.3f}  b {b:.3f}"</span>)</code></pre>
+    </div>
+    <div class="code-out"><span class="olbl">出力例 / Output</span><pre><code>epoch 100  loss 0.0103  w 2.015  b 1.006
+epoch 200  loss 0.0102  w 2.010  b 1.019
+epoch 300  loss 0.0102  w 2.010  b 1.020
+epoch 400  loss 0.0102  w 2.010  b 1.020</code></pre></div>
+    <div class="prose">
+      <p>損失が下がり、w が 2、b が 1 に近づきました。データの背後にある「y = 2x + 1」という関係を、勾配降下法が自力で見つけたことになります。ニューラルネットワークの学習も、規模が大きくなるだけで、根っこはこの繰り返しです。</p>
+    </div>
+
+    <div class="callout tip">
+      <h4>この Step のまとめ</h4>
+      <p>学習とは、損失関数を勾配降下法で小さくすること。多層では誤差逆伝播で全重みの勾配をまとめて求めます。学習率・エポック・ミニバッチが、学習を回すための基本の設定です。</p>
+    </div>
+  </div>
+</section>
+
+<!-- STEP 4 -->
+<section id="step4">
+  <div class="wrap reveal">
+    <div class="stephead">
+      <span class="num">4</span>
+      <div class="tt"><h2>畳み込みニューラルネットワーク（CNN）</h2><span class="st-en">Convolutional neural networks</span></div>
+    </div>
+    <div class="steprule"></div>
+
+    <p class="layer first"><span lang="ja">概要</span><span lang="en">Overview</span></p>
+    <div class="prose">
+      <p>画像を全結合の MLP に入れると、うまくいきません。28×28 の小さな画像でも 784 個の入力になり、位置が少しずれただけで別物として扱われてしまうからです。画像のために生まれたのが<b>畳み込みニューラルネットワーク（CNN）</b>です。小さなフィルタを画像全体に滑らせて、局所的な特徴を効率よく捉えます。</p>
+    </div>
+
+    <p class="layer"><span lang="ja">仕組み</span><span lang="en">How it works</span></p>
+    <div class="prose">
+      <h4>畳み込み</h4>
+      <p><b>畳み込み（convolution）</b>は、小さな重みの格子（<b>カーネル</b>、たとえば 3×3）を画像の上で少しずつ動かし、重なった部分との<b>積の合計</b>を計算する操作です。カーネルの値によって、縦の線・横の線・輪郭など、特定の模様に強く反応します。1枚のカーネルから作られる出力を<b>特徴マップ（feature map）</b>と呼びます。同じカーネルを画像全体で使い回すので、<b>どこに現れた特徴でも同じように検出でき</b>、重みの数も少なくてすみます。</p>
+      <h4>プーリング</h4>
+      <p>畳み込みの後には、しばしば<b>プーリング（pooling）</b>を挟みます。近くの数マスをまとめて代表値を取る操作で、最大値を取る<b>最大プーリング</b>が定番です。これにより特徴マップを小さくし、多少の位置のずれに強くします。</p>
+      <h4>階層的な特徴</h4>
+      <p>「畳み込み → 活性化 → プーリング」を何段も重ねると、はじめの層は線や角のような単純な模様を、深い層は目や車輪のような複雑なパーツを捉えるようになります。最後に全結合層で、これらの特徴を使ってクラスを判定します。次のデモで、カーネルによって画像がどう変わるかを見てみましょう。</p>
+    </div>
+
+    <!-- DEMO 3: convolution filter -->
+    <div class="demo reveal" id="demoConv">
+      <span class="dtag"><span lang="ja">デモ 3</span><span lang="en">Demo 3</span></span>
+      <h4>畳み込みフィルタ</h4>
+      <p class="dnote">左のグレースケール画像（マスをクリックすると明暗が反転します）に、3×3のカーネルを重ねて畳み込みます。各出力マスは、重なる9マスとカーネルの積の合計です。ぼかしは画像を平滑化し、エッジ検出は輪郭を強調します。端はゼロで埋めています。</p>
+      <div class="try">
+        <span class="tlbl">カーネル</span>
+        <button type="button" data-k="blur">ぼかし</button>
+        <button type="button" data-k="edge">エッジ検出</button>
+        <button type="button" data-k="sobel">縦エッジ</button>
+        <span class="tlbl" style="margin-left:10px">画像</span>
+        <button type="button" data-img="square">四角</button>
+        <button type="button" data-img="diag">斜め線</button>
+        <button type="button" data-img="dot">点</button>
+      </div>
+      <div class="demo-out" id="convOut" aria-live="polite"></div>
+    </div>
+
+    <p class="layer"><span lang="ja">コードで動かす</span><span lang="en">Run the code</span></p>
+    <div class="prose">
+      <p>PyTorch なら、CNN は <code>nn.Module</code> を継承して層を並べるだけです。畳み込み <code>nn.Conv2d</code>・活性化 <code>nn.ReLU</code>・最大プーリング <code>nn.MaxPool2d</code>・全結合 <code>nn.Linear</code> を組み合わせた、MNIST（28×28 の手書き数字）向けの小さな CNN を定義します。</p>
+    </div>
+    <div class="code-wrap attached">
+      <div class="code-head"><span class="lbl">Python</span><span class="lang-tag">cnn_pytorch.py</span><button class="copy" type="button" onclick="copyCode(this)">copy</button></div>
+      <pre><code><span class="kw">import</span> torch
+<span class="kw">import</span> torch.nn <span class="kw">as</span> nn
+<span class="kw">import</span> torch.nn.functional <span class="kw">as</span> F
+
+<span class="kw">class</span> SmallCNN(nn.Module):
+    <span class="kw">def</span> __init__(self):
+        super().__init__()
+        self.conv1 = nn.Conv2d(<span class="nu">1</span>, <span class="nu">16</span>, kernel_size=<span class="nu">3</span>, padding=<span class="nu">1</span>)
+        self.conv2 = nn.Conv2d(<span class="nu">16</span>, <span class="nu">32</span>, kernel_size=<span class="nu">3</span>, padding=<span class="nu">1</span>)
+        self.pool  = nn.MaxPool2d(<span class="nu">2</span>)
+        self.fc    = nn.Linear(<span class="nu">32</span> * <span class="nu">7</span> * <span class="nu">7</span>, <span class="nu">10</span>)
+
+    <span class="kw">def</span> forward(self, x):
+        x = self.pool(F.relu(self.conv1(x)))   <span class="cm"># 28 → 14</span>
+        x = self.pool(F.relu(self.conv2(x)))   <span class="cm"># 14 → 7</span>
+        x = x.flatten(<span class="nu">1</span>)
+        <span class="kw">return</span> self.fc(x)
+
+model = SmallCNN()
+<span class="kw">print</span>(model)</code></pre>
+    </div>
+    <div class="code-out"><span class="olbl">出力例 / Output</span><pre><code>SmallCNN(
+  (conv1): Conv2d(1, 16, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1))
+  (conv2): Conv2d(16, 32, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1))
+  (pool): MaxPool2d(kernel_size=2, stride=2, padding=0, dilation=1, ceil_mode=False)
+  (fc): Linear(in_features=1568, out_features=10, bias=True)
+)</code></pre></div>
+
+    <div class="prose">
+      <p>学習は、損失に交差エントロピー、最適化に Adam を使い、エポックを回すだけです。学習ループの骨格と、典型的なログは次のようになります。</p>
+    </div>
+    <div class="code-wrap attached">
+      <div class="code-head"><span class="lbl">Python</span><span class="lang-tag">cnn_train.py</span><button class="copy" type="button" onclick="copyCode(this)">copy</button></div>
+      <pre><code>opt = torch.optim.Adam(model.parameters(), lr=<span class="nu">1e-3</span>)
+loss_fn = nn.CrossEntropyLoss()
+
+<span class="kw">for</span> epoch <span class="kw">in</span> range(<span class="nu">1</span>, <span class="nu">4</span>):
+    model.train()
+    <span class="kw">for</span> xb, yb <span class="kw">in</span> train_loader:      <span class="cm"># ミニバッチ</span>
+        opt.zero_grad()
+        loss = loss_fn(model(xb), yb)
+        loss.backward()               <span class="cm"># 誤差逆伝播</span>
+        opt.step()                    <span class="cm"># 重みを更新</span>
+    acc = evaluate(model, test_loader)   <span class="cm"># 検証データで精度</span>
+    <span class="kw">print</span>(<span class="st">f"epoch {epoch}  test_acc {acc:.3f}"</span>)</code></pre>
+    </div>
+    <div class="code-out"><span class="olbl">出力例 / Output</span><pre><code>epoch 1  test_acc 0.972
+epoch 2  test_acc 0.983
+epoch 3  test_acc 0.987</code></pre></div>
+
+    <div class="prose">
+      <p>同じネットワークは、Keras なら <code>Sequential</code> に層を並べて、さらに簡潔に書けます。</p>
+    </div>
+    <div class="code-wrap attached">
+      <div class="code-head"><span class="lbl">Python</span><span class="lang-tag">cnn_keras.py</span><button class="copy" type="button" onclick="copyCode(this)">copy</button></div>
+      <pre><code><span class="kw">from</span> tensorflow <span class="kw">import</span> keras
+<span class="kw">from</span> tensorflow.keras <span class="kw">import</span> layers
+
+model = keras.Sequential([
+    layers.Conv2D(<span class="nu">16</span>, <span class="nu">3</span>, padding=<span class="st">"same"</span>, activation=<span class="st">"relu"</span>,
+                  input_shape=(<span class="nu">28</span>, <span class="nu">28</span>, <span class="nu">1</span>)),
+    layers.MaxPooling2D(),
+    layers.Conv2D(<span class="nu">32</span>, <span class="nu">3</span>, padding=<span class="st">"same"</span>, activation=<span class="st">"relu"</span>),
+    layers.MaxPooling2D(),
+    layers.Flatten(),
+    layers.Dense(<span class="nu">10</span>, activation=<span class="st">"softmax"</span>),
+])
+model.compile(optimizer=<span class="st">"adam"</span>,
+              loss=<span class="st">"sparse_categorical_crossentropy"</span>,
+              metrics=[<span class="st">"accuracy"</span>])</code></pre>
+    </div>
+
+    <div class="callout tip">
+      <h4>この Step のまとめ</h4>
+      <p>CNN は、小さなカーネルを画像に滑らせる畳み込みで局所特徴を捉え、プーリングで縮約し、階層的に複雑な特徴を組み立てます。同じカーネルを使い回すため、位置に強く、重みも少なくてすみます。画像認識の主役です。</p>
+    </div>
+  </div>
+</section>
+
+<!-- STEP 5 -->
+<section id="step5" class="soft-sec">
+  <div class="wrap reveal">
+    <div class="stephead">
+      <span class="num">5</span>
+      <div class="tt"><h2>系列を扱うモデル</h2><span class="st-en">Models for sequences</span></div>
+    </div>
+    <div class="steprule"></div>
+
+    <p class="layer first"><span lang="ja">概要</span><span lang="en">Overview</span></p>
+    <div class="prose">
+      <p>画像は縦横に広がるデータでしたが、世の中には<b>順番</b>が意味を持つデータもあります。文章（単語の並び）、音声、株価などの時系列がそうです。こうした<b>系列データ</b>を扱うために、専用のネットワークが発展してきました。</p>
+    </div>
+
+    <p class="layer"><span lang="ja">仕組み</span><span lang="en">How it works</span></p>
+    <div class="prose">
+      <h4>再帰型ニューラルネットワーク（RNN）</h4>
+      <p><b>RNN（recurrent neural network）</b>は、系列を1つずつ順に読み、それまでの内容を<b>状態</b>として次の時刻へ持ち越します。前の情報を覚えながら進めるので、文脈のあるデータに向きます。ただし、系列が長くなると前の情報が薄れやすく（勾配消失）、逐次処理のため学習に時間がかかるという弱点があります。</p>
+      <h4>LSTM と GRU</h4>
+      <p>この弱点をやわらげるのが<b>LSTM</b>や<b>GRU</b>です。情報を「どれだけ覚え、どれだけ忘れ、どれだけ出力するか」を制御する<b>ゲート</b>という仕組みを備え、長い系列でも重要な情報を保ちやすくしています。長らく系列処理の主力でした。</p>
+      <h4>注意機構と Transformer</h4>
+      <p>さらに大きな転機となったのが<b>注意機構（attention）</b>です。系列を順に読むのではなく、<b>どの要素とどの要素が関係するか</b>を直接・並列に捉えます。これを全面的に採用したのが <b>Transformer</b> で、長い依存関係に強く、大規模な並列学習ができます。現在の大規模言語モデルの土台であり、くわしくは別モジュール（LLM）で扱います。</p>
+    </div>
+
+    <div class="callout tip">
+      <h4>この Step のまとめ</h4>
+      <p>系列データは、状態を持ち越す RNN、ゲートで記憶を制御する LSTM/GRU、そして関係を並列に捉える注意機構・Transformer へと発展しました。Transformer は現代の言語モデルの中核で、次のステップへの橋渡しになります。</p>
+    </div>
+  </div>
+</section>
+
+<!-- STEP 6 -->
+<section id="step6">
+  <div class="wrap reveal">
+    <div class="stephead">
+      <span class="num">6</span>
+      <div class="tt"><h2>実践と課題、これから</h2><span class="st-en">Practice and challenges</span></div>
+    </div>
+    <div class="steprule"></div>
+
+    <p class="layer first"><span lang="ja">概要</span><span lang="en">Overview</span></p>
+    <div class="prose">
+      <p>ここまでで、深層学習の基本の部品はそろいました。最後に、実際に使うための道具立てと、必ずぶつかる課題、そしてその先の広がりを見ておきましょう。</p>
+    </div>
+
+    <p class="layer"><span lang="ja">仕組み</span><span lang="en">How it works</span></p>
+    <div class="prose">
+      <h4>フレームワーク</h4>
+      <p>深層学習を一から実装するのは大変ですが、<b>PyTorch</b>や<b>TensorFlow / Keras</b>といったフレームワークを使えば、層を並べるだけでモデルを組めます。勾配の計算（誤差逆伝播）は自動で行われ（自動微分）、GPU による高速化も透過的に使えます。</p>
+      <h4>過学習とその対策</h4>
+      <p>深層学習は表現力が高いぶん、学習データを丸暗記してしまい、未知のデータで性能が落ちる<b>過学習</b>を起こしやすいです。代表的な対策を挙げます。</p>
+      <ul>
+        <li><b>ドロップアウト</b>：学習中にニューロンをランダムに一部無効化し、特定の経路に頼りすぎないようにする。</li>
+        <li><b>正則化</b>：重みが大きくなりすぎないよう、損失に罰則を加える（L2 正則化など）。</li>
+        <li><b>データ拡張</b>：画像を反転・回転・切り抜きするなどして、学習データを実質的に増やす。</li>
+        <li><b>早期終了</b>：検証データの性能が悪化し始めたら学習を止める。</li>
+      </ul>
+      <h4>計算資源と転移学習</h4>
+      <p>大きなモデルの学習には、<b>GPU</b>と大量のデータ、そして時間が必要です。そこで役立つのが<b>転移学習</b>です。大規模なデータであらかじめ学習させた<b>事前学習モデル</b>を土台にして、手元の小さなデータで目的に合わせて微調整します。ゼロから学習するより、少ないデータと計算で高い性能に届きます。この「事前学習＋微調整」の発想が、現代の大規模モデルへとつながっています。</p>
+    </div>
+
+    <div class="callout tip">
+      <h4>この Step のまとめ</h4>
+      <p>実践ではフレームワーク（PyTorch・TensorFlow/Keras）を使い、過学習にはドロップアウト・正則化・データ拡張・早期終了で対処します。GPU と転移学習が、大きなモデルを現実的にします。基礎の一続きが、ここでひとまず完成しました。</p>
+    </div>
+  </div>
+</section>
+
+<!-- CLOSING -->
+<section id="closing" class="soft-sec">
+  <div class="wrap reveal">
+    <p class="eyebrow"><span lang="ja">まとめ</span><span lang="en">Wrap-up</span></p>
+    <h2 class="big">学びの振り返りと、さらに学ぶために</h2>
+    <div class="prose" style="margin-top:22px">
+      <p>このモジュールでは、深層学習の基礎を土台から順に組み立てました。</p>
+      <ul>
+        <li><b>ニューロン</b>：加重和に活性化関数（シグモイド・tanh・ReLU）をかけて出力する。</li>
+        <li><b>多層パーセプトロン</b>：ニューロンを層状に積み、順伝播で予測を計算する。</li>
+        <li><b>学習</b>：損失関数を勾配降下法で小さくし、誤差逆伝播で勾配を求める。</li>
+        <li><b>CNN</b>：畳み込みとプーリングで、画像から階層的な特徴を学ぶ。</li>
+        <li><b>系列モデル</b>：RNN・LSTM から注意機構・Transformer へと発展する。</li>
+      </ul>
+      <p>次に進むなら、下の道具と資料が役に立ちます。</p>
+    </div>
+
+    <div class="res-grid reveal">
+      <div class="res">
+        <h5>公開データセット</h5>
+        <ul>
+          <li><b>MNIST</b>：28×28 の手書き数字 7万枚。深層学習の入門で最も有名。</li>
+          <li><b>Fashion-MNIST</b>：衣類画像 7万枚。MNIST と同じ形式で、少し難しい。</li>
+          <li><b>CIFAR-10</b>：32×32 のカラー画像 6万枚を10クラスに分類。</li>
+          <li><b>digits</b>：8×8 の手書き数字 1797枚。scikit-learn から取得可能。</li>
+        </ul>
+      </div>
+      <div class="res">
+        <h5>ライブラリ</h5>
+        <ul>
+          <li><b>PyTorch</b>：研究でも実務でも定番の深層学習フレームワーク。</li>
+          <li><b>TensorFlow / Keras</b>：簡潔な記述で使えるフレームワーク。</li>
+          <li><b>scikit-learn</b>：MLPClassifier など、手軽なモデルと評価。</li>
+          <li><b>NumPy</b>：行列計算の基盤。仕組みを自作するときに。</li>
+        </ul>
+      </div>
+      <div class="res">
+        <h5>参考書</h5>
+        <ul>
+          <li>斎藤康毅『ゼロから作る Deep Learning』オライリー・ジャパン</li>
+          <li>岡谷貴之『深層学習』講談社</li>
+          <li>Ian Goodfellow ほか『Deep Learning』</li>
+        </ul>
+      </div>
+      <div class="res">
+        <h5>次のモジュールへ</h5>
+        <ul>
+          <li>大規模言語モデル（LLM）</li>
+          <li>自然言語処理（NLP）</li>
+          <li>機械学習の基礎</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="callout tip">
+      <h4>おつかれさまでした</h4>
+      <p>ここで学んだ「順伝播で予測し、損失を勾配降下法で小さくする」という流れは、どんなに大きなモデルでも共通の骨格です。3つのデモの設定を書き換えて、もう一度動かしてみてください。活性化関数の形、パーセプトロンの判定、畳み込みの効き方が、手ざわりとして残るはずです。</p>
+    </div>
+  </div>
+</section>
+
+<section id="beyond">
+  <div class="wrap reveal">
+    <p class="eyebrow"><span lang="ja">発展トピック</span><span lang="en">Beyond this module</span></p>
+    <h2 class="big">このコースでは扱わない、関係する発展トピック</h2>
+    <div class="prose" style="margin-top:22px">
+      <p>このモジュールでは、ニューラルネットワークの「基礎の流れ」を扱いました。いっぽうで近年の深層学習は、より大きなモデルと新しい学習の枠組みを軸に急速に広がっています。ここでは、このコースでは踏み込まないものの、知っておくと視野が広がる発展的なトピックを、特に近年の主流を中心に紹介します。深掘りは各自の興味に合わせてどうぞ。大規模言語モデル（LLM）まわりは、別モジュールで改めて扱う予定です。</p>
+    </div>
+
+    <div class="res-grid reveal">
+      <div class="res">
+        <h5>Transformer と自己注意</h5>
+        <ul>
+          <li><b>自己注意機構</b>：系列の要素どうしの関係を重みづけて捉える、現代の中核アーキテクチャ。</li>
+          <li><b>Transformer</b>：注意機構だけで構成し、大規模な並列学習を可能にした。言語だけでなく画像にも広がる（Vision Transformer）。</li>
+        </ul>
+      </div>
+      <div class="res">
+        <h5>生成モデル</h5>
+        <ul>
+          <li><b>GAN（敵対的生成ネットワーク）</b>：生成器と識別器を競わせて、本物らしいデータを作る。</li>
+          <li><b>拡散モデル</b>：ノイズから徐々に画像を作り出す。近年の画像生成の主流。</li>
+          <li><b>VAE（変分オートエンコーダ）</b>：データを圧縮・復元しながら、生成もできる潜在表現を学ぶ。</li>
+        </ul>
+      </div>
+      <div class="res">
+        <h5>学習の枠組みと基盤モデル</h5>
+        <ul>
+          <li><b>自己教師あり学習</b>：ラベルなしのデータから、データ自身を手がかりに表現を学ぶ。</li>
+          <li><b>基盤モデル</b>：大量のデータで事前学習し、多くの課題に転用できる汎用モデル。</li>
+          <li><b>強化学習</b>：試行錯誤と報酬から、行動の方針を学ぶ枠組み。</li>
+        </ul>
+      </div>
+      <div class="res">
+        <h5>効率化と広がり</h5>
+        <ul>
+          <li><b>モデル圧縮・量子化</b>：小型化や低精度化で、少ない資源でも動かせるようにする。</li>
+          <li><b>グラフニューラルネットワーク</b>：ノードとエッジで表される関係データを扱う深層モデル。</li>
+          <li><b>マルチモーダル</b>：画像と言語など、複数種類のデータを結びつけて扱うモデル。</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<button class="totop" type="button" aria-label="上へ戻る" title="上へ戻る">&uarr;</button>
+
+<!-- FOOTER -->
+<footer>
+  <div class="wrap">
+    <div class="foot-grid">
+      <div>
+        <h3><span lang="ja">この学習モジュールについて</span><span lang="en">About this module</span></h3>
+        <div class="cite">
+          <span lang="ja">「研究で使う技術を実践的に学ぶ」学習コースの1モジュールです。概要から理論、動かせるコードまでを一続きにして、深層学習の基礎を独習できるように構成しています。内容は分野標準の一般的なもので、特定の研究や論文には紐づきません。</span>
+          <span lang="en">A module in a learning course on research skills, walking from overview to theory to runnable code so you can study the basics of deep learning on your own. The content is standard and general, not tied to any specific study.</span>
+        </div>
+      </div>
+      <div>
+        <h3><span lang="ja">制作</span><span lang="en">Author</span></h3>
+        <p class="muted-s">
+          <b>Yuta Kimura</b><br>
+          <span lang="ja">大阪公立大学工業高等専門学校</span><span lang="en">Osaka Metropolitan University College of Technology</span><br>
+          <a href="mailto:y.kimura@omu.ac.jp">y.kimura [at] omu.ac.jp</a>
+        </p>
+      </div>
+    </div>
+    <div class="foot-grid3">
+      <div>
+        <h3><span lang="ja">連絡先</span><span lang="en">Contact</span></h3>
+        <p class="muted-s">
+          <b>Yuta Kimura</b><br>
+          <span lang="ja">大阪公立大学工業高等専門学校</span><span lang="en">Osaka Metropolitan University College of Technology</span><br>
+          <a href="mailto:y.kimura@omu.ac.jp">y.kimura [at] omu.ac.jp</a>
+        </p>
+      </div>
+      <div>
+        <h3><span lang="ja">サイト</span><span lang="en">Site</span></h3>
+        <p class="muted-s">
+          <a href="../index.html">Home</a><br>
+          <a href="../publications.html"><span lang="ja">業績・研究活動</span><span lang="en">Publications &amp; research activities</span></a><br>
+          <a href="../teaching.html"><span lang="ja">教育</span><span lang="en">Teaching</span></a><br>
+          <a href="../software-engineering.html"><span lang="ja">ソフトウェア工学とは</span><span lang="en">What is software engineering?</span></a><br>
+          <a href="../glossary.html"><span lang="ja">研究用語ミニ辞典</span><span lang="en">Research glossary</span></a>
+        </p>
+      </div>
+      <div>
+        <h3><span lang="ja">関連教材</span><span lang="en">Related material</span></h3>
+        <p class="muted-s">
+          <a href="../course/software-testing.html"><span lang="ja">ソフトウェアテスト学習ガイド</span><span lang="en">Software Testing Guide</span></a><br>
+          <a href="../course/intelligent-informatics-1.html"><span lang="ja">知能情報実験実習1</span><span lang="en">Intelligent Informatics Lab I</span></a><br>
+          <a href="../course/index.html"><span lang="ja">ソフトウェア工学</span><span lang="en">Software Engineering</span></a><br>
+          <a href="https://researchmap.jp/kimura_yuta" target="_blank" rel="noopener">researchmap</a>
+        </p>
+      </div>
+    </div>
+    <div class="foot-rule"></div>
+    <p class="foot-note">
+      <span lang="ja">本ページは学習用のプロトタイプ教材です。コード例は分野標準のライブラリ（NumPy・scikit-learn・PyTorch・Keras）にもとづき、NumPy と scikit-learn の出力例は実際の実行結果に一致させています。</span>
+      <span lang="en">This page is a prototype learning material. Code examples use standard libraries (NumPy, scikit-learn, PyTorch, Keras); the NumPy and scikit-learn outputs match real runs.</span>
+    </p>
+  </div>
+</footer>
+
+<script>
+  /* language: setLang / toggleLang, persisted in localStorage 'site-lang' only */
+  function setLang(l){document.body.classList.remove('lang-ja','lang-en');document.body.classList.add('lang-'+l);document.documentElement.lang=l;
+    try{localStorage.setItem('site-lang',l)}catch(e){}
+    try{var q=new URLSearchParams(location.search);q.set('lang',l);history.replaceState(null,'',location.pathname+'?'+q+location.hash)}catch(e){}}
+  function toggleLang(){setLang(document.body.classList.contains('lang-ja')?'en':'ja')}
+  (function(){var u=null;try{u=new URLSearchParams(location.search).get('lang')}catch(e){}
+    var s=null;try{s=localStorage.getItem('site-lang')}catch(e){}
+    var l=(u==='en'||u==='ja')?u:((s==='en'||s==='ja')?s:'ja');if(l!=='ja')setLang(l);})();
+  if('IntersectionObserver' in window){
+    var io=new IntersectionObserver(function(es){
+      es.forEach(function(e){ if(e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target); } });
+    },{threshold:0.10, rootMargin:"0px 0px -6% 0px"});
+    document.querySelectorAll('.reveal').forEach(function(el){ io.observe(el); });
+  } else { document.querySelectorAll('.reveal').forEach(function(el){ el.classList.add('in'); }); }
+
+  /* copy code (in-memory only, no storage) */
+  function copyCode(btn){
+    var pre=btn.closest('.code-wrap').querySelector('pre code');
+    var text=pre.innerText;
+    if(navigator.clipboard&&navigator.clipboard.writeText){
+      navigator.clipboard.writeText(text).then(function(){flash(btn);},function(){});
+    }
+  }
+  function flash(btn){var o=btn.textContent;btn.textContent='copied';setTimeout(function(){btn.textContent=o;},1200);}
+</script>
+
+<script>
+/* ==================== interactive demos (vanilla JS, self-contained) ==================== */
+(function(){
+  function esc(s){ return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+
+  /* ---- Demo 1: activation functions ---- */
+  var actSvg=document.getElementById('actSvg'),
+      actX=document.getElementById('actX'),
+      actOut=document.getElementById('actOut');
+  var actFn='sigmoid';
+  var FNS={
+    sigmoid:{f:function(x){return 1/(1+Math.exp(-x));}, name:'シグモイド', form:'&sigma;(x) = 1 / (1 + e^(-x))', ymin:0, ymax:1},
+    tanh:{f:function(x){return Math.tanh(x);}, name:'tanh', form:'tanh(x) = (e^x - e^(-x)) / (e^x + e^(-x))', ymin:-1, ymax:1},
+    relu:{f:function(x){return Math.max(0,x);}, name:'ReLU', form:'ReLU(x) = max(0, x)', ymin:0, ymax:6}
+  };
+  function renderAct(){
+    if(!actSvg) return;
+    var fn=FNS[actFn], f=fn.f;
+    var L=52,R=596,T=26,B=262;
+    var xmin=-6,xmax=6;
+    function X(x){ return L+(x-xmin)/(xmax-xmin)*(R-L); }
+    var xs=[],ys=[];
+    for(var x=xmin;x<=xmax+1e-9;x+=0.1){ xs.push(x); ys.push(f(x)); }
+    var ymin=fn.ymin, ymax=fn.ymax;
+    var pad=(ymax-ymin)*0.10;
+    var y0=ymin-pad, y1=ymax+pad;
+    function Y(y){ return B-(y-y0)/(y1-y0)*(B-T); }
+    var pts=xs.map(function(xx,i){ return X(xx).toFixed(1)+','+Y(ys[i]).toFixed(1); }).join(' ');
+    var yAxisX=X(0), xAxisY=Y(0);
+    var svg='';
+    svg+='<line x1="'+L+'" y1="'+xAxisY.toFixed(1)+'" x2="'+R+'" y2="'+xAxisY.toFixed(1)+'" style="stroke:var(--faint);stroke-width:1.2"/>';
+    svg+='<line x1="'+yAxisX.toFixed(1)+'" y1="'+T+'" x2="'+yAxisX.toFixed(1)+'" y2="'+B+'" style="stroke:var(--faint);stroke-width:1.2"/>';
+    [-6,-3,3,6].forEach(function(t){ var xx=X(t);
+      svg+='<line x1="'+xx.toFixed(1)+'" y1="'+(xAxisY-3).toFixed(1)+'" x2="'+xx.toFixed(1)+'" y2="'+(xAxisY+3).toFixed(1)+'" style="stroke:var(--faint)"/>';
+      svg+='<text x="'+xx.toFixed(1)+'" y="'+(B+17).toFixed(1)+'" text-anchor="middle" style="fill:var(--muted);font:11px var(--disp)">'+t+'</text>'; });
+    [ymin,ymax].forEach(function(t){ var yy=Y(t);
+      svg+='<text x="'+(L-9)+'" y="'+(yy+4).toFixed(1)+'" text-anchor="end" style="fill:var(--muted);font:11px var(--disp)">'+t+'</text>'; });
+    svg+='<polyline points="'+pts+'" style="fill:none;stroke:var(--accent);stroke-width:2.4"/>';
+    var xv=parseFloat(actX.value), yv=f(xv);
+    var px=X(xv), py=Y(yv);
+    svg+='<line x1="'+px.toFixed(1)+'" y1="'+B+'" x2="'+px.toFixed(1)+'" y2="'+py.toFixed(1)+'" style="stroke:var(--accent-2);stroke-width:1;stroke-dasharray:3 3"/>';
+    svg+='<line x1="'+yAxisX.toFixed(1)+'" y1="'+py.toFixed(1)+'" x2="'+px.toFixed(1)+'" y2="'+py.toFixed(1)+'" style="stroke:var(--accent-2);stroke-width:1;stroke-dasharray:3 3"/>';
+    svg+='<circle cx="'+px.toFixed(1)+'" cy="'+py.toFixed(1)+'" r="5" style="fill:var(--accent)"/>';
+    actSvg.innerHTML=svg;
+    actOut.innerHTML='<div class="cos-score"><span class="val">'+yv.toFixed(3)+'</span><span class="lab">'+fn.name+'( x = '+xv.toFixed(2)+' ) の出力</span></div>'+
+      '<div class="cos-detail">式: <b>'+fn.form+'</b></div>';
+  }
+  if(actSvg){
+    actX.addEventListener('input', renderAct);
+    document.querySelectorAll('#demoAct .try button').forEach(function(b){
+      b.addEventListener('click', function(){ actFn=b.getAttribute('data-fn'); renderAct(); });
+    });
+    renderAct();
+  }
+
+  /* ---- Demo 2: perceptron logic gates ---- */
+  var percOut=document.getElementById('percOut'),
+      pw1=document.getElementById('pw1'), pw2=document.getElementById('pw2'), pb=document.getElementById('pb'),
+      pw1v=document.getElementById('pw1v'), pw2v=document.getElementById('pw2v'), pbv=document.getElementById('pbv');
+  var pGate='and';
+  function expected(g,a,b){ return g==='and' ? ((a&&b)?1:0) : ((a||b)?1:0); }
+  function renderPerc(){
+    if(!percOut) return;
+    var w1=parseFloat(pw1.value), w2=parseFloat(pw2.value), b=parseFloat(pb.value);
+    pw1v.textContent=w1.toFixed(1); pw2v.textContent=w2.toFixed(1); pbv.textContent=b.toFixed(1);
+    var inputs=[[0,0],[0,1],[1,0],[1,1]], ok=0;
+    var rows=inputs.map(function(p){
+      var s=w1*p[0]+w2*p[1]+b;
+      var out=s>=0?1:0;
+      var exp=expected(pGate,p[0],p[1]);
+      var match=out===exp; if(match) ok++;
+      return '<tr><td>'+p[0]+', '+p[1]+'</td><td>'+s.toFixed(2)+'</td><td>'+out+'</td><td>'+exp+'</td>'+
+        '<td style="color:'+(match?'var(--good)':'var(--bad)')+';font-weight:600">'+(match?'一致':'不一致')+'</td></tr>';
+    }).join('');
+    var head='<table class="dtable"><tr><th>入力 x1, x2</th><th>加重和</th><th>出力</th><th>期待</th><th>判定</th></tr>';
+    var verdict = ok===4
+      ? '<div class="cos-score"><span class="val">4 / 4</span><span class="lab">'+pGate.toUpperCase()+' を正しく分類できています</span></div>'
+      : '<div class="cos-score"><span class="val" style="color:var(--bad)">'+ok+' / 4</span><span class="lab">'+pGate.toUpperCase()+' はまだ正しく分類できていません</span></div>';
+    percOut.innerHTML=verdict+head+rows+'</table>'+
+      '<div class="chipcount">加重和 = w1&middot;x1 + w2&middot;x2 + b （0以上なら出力1）　現在: w1='+w1.toFixed(1)+', w2='+w2.toFixed(1)+', b='+b.toFixed(1)+'</div>';
+  }
+  if(percOut){
+    [pw1,pw2,pb].forEach(function(s){ s.addEventListener('input', renderPerc); });
+    document.querySelectorAll('#demoPerc .try button[data-gate]').forEach(function(b){
+      b.addEventListener('click', function(){ pGate=b.getAttribute('data-gate'); renderPerc(); });
+    });
+    document.querySelectorAll('#demoPerc .try button[data-preset]').forEach(function(b){
+      b.addEventListener('click', function(){
+        var g=b.getAttribute('data-preset'); pGate=g;
+        pw1.value='1'; pw2.value='1'; pb.value=(g==='and'?'-1.5':'-0.5');
+        renderPerc();
+      });
+    });
+    renderPerc();
+  }
+
+  /* ---- Demo 3: convolution filter ---- */
+  var convOut=document.getElementById('convOut');
+  var N=7;
+  var KERNELS={
+    blur:{name:'ぼかし（平滑化）', m:[[1/9,1/9,1/9],[1/9,1/9,1/9],[1/9,1/9,1/9]]},
+    edge:{name:'エッジ検出（ラプラシアン）', m:[[0,-1,0],[-1,4,-1],[0,-1,0]]},
+    sobel:{name:'縦エッジ（Sobel）', m:[[-1,0,1],[-2,0,2],[-1,0,1]]}
+  };
+  var curK='edge';
+  function zeros(){ var g=[]; for(var i=0;i<N;i++){ g.push([]); for(var j=0;j<N;j++) g[i].push(0); } return g; }
+  function imgSquare(){ var g=zeros(); for(var i=2;i<=4;i++) for(var j=2;j<=4;j++) g[i][j]=1; return g; }
+  function imgDiag(){ var g=zeros(); for(var i=0;i<N;i++) g[i][i]=1; return g; }
+  function imgDot(){ var g=zeros(); g[3][3]=1; return g; }
+  var grid=imgSquare();
+  function convolve(g,k){
+    var out=[];
+    for(var i=0;i<N;i++){ out.push([]);
+      for(var j=0;j<N;j++){
+        var s=0;
+        for(var u=-1;u<=1;u++) for(var v=-1;v<=1;v++){
+          var ii=i+u, jj=j+v;
+          var val=(ii>=0&&ii<N&&jj>=0&&jj<N)?g[ii][jj]:0;
+          s+=val*k[u+1][v+1];
+        }
+        out[i].push(s);
+      }
+    }
+    return out;
+  }
+  var LBL='font:600 .64rem/1 var(--disp);letter-spacing:.09em;text-transform:uppercase;color:var(--muted);margin-bottom:8px';
+  function inputGridHtml(g){
+    var cells='';
+    for(var i=0;i<N;i++) for(var j=0;j<N;j++){
+      var v=g[i][j];
+      cells+='<div data-i="'+i+'" data-j="'+j+'" style="aspect-ratio:1;background:rgba(16,19,18,'+v.toFixed(2)+');border:1px solid var(--hair);border-radius:3px;cursor:pointer"></div>';
+    }
+    return '<div style="display:grid;grid-template-columns:repeat('+N+',1fr);gap:2px;width:182px">'+cells+'</div>';
+  }
+  function outputGridHtml(g){
+    var maxabs=0;
+    for(var i=0;i<N;i++) for(var j=0;j<N;j++) maxabs=Math.max(maxabs,Math.abs(g[i][j]));
+    if(maxabs<1e-9) maxabs=1;
+    var cells='';
+    for(var i=0;i<N;i++) for(var j=0;j<N;j++){
+      var v=g[i][j];
+      var a=Math.min(1,Math.abs(v)/maxabs);
+      var col=a>0.5?'#fff':'var(--ink-2)';
+      var t=(Math.round(v*100)/100).toString();
+      cells+='<div style="aspect-ratio:1;display:grid;place-items:center;background:rgba(14,111,92,'+(0.06+0.82*a).toFixed(3)+');border-radius:3px;font:600 .56rem/1 var(--disp);color:'+col+'">'+t+'</div>';
+    }
+    return '<div style="display:grid;grid-template-columns:repeat('+N+',1fr);gap:2px;width:238px">'+cells+'</div>';
+  }
+  function kernelHtml(k){
+    var cells='';
+    for(var i=0;i<3;i++) for(var j=0;j<3;j++){
+      var v=k[i][j];
+      var t=(Math.abs(v-1/9)<1e-9)?'1/9':(Math.round(v*100)/100).toString();
+      cells+='<div style="aspect-ratio:1;display:grid;place-items:center;background:var(--bg-2);border:1px solid var(--hair);border-radius:4px;font:600 .72rem/1 var(--mono);color:var(--ink)">'+t+'</div>';
+    }
+    return '<div style="display:grid;grid-template-columns:repeat(3,1fr);gap:3px;width:108px">'+cells+'</div>';
+  }
+  function renderConv(){
+    if(!convOut) return;
+    var k=KERNELS[curK], out=convolve(grid,k.m);
+    convOut.innerHTML=
+      '<div style="display:flex;gap:24px;flex-wrap:wrap;align-items:flex-start">'+
+        '<div><div style="'+LBL+'">入力画像 / Input（クリックで反転）</div>'+inputGridHtml(grid)+'</div>'+
+        '<div><div style="'+LBL+'">カーネル / Kernel</div>'+kernelHtml(k.m)+
+          '<div style="margin-top:8px;font-size:.8rem;color:var(--muted);max-width:130px">'+k.name+'</div></div>'+
+        '<div><div style="'+LBL+'">出力（特徴マップ）/ Output</div>'+outputGridHtml(out)+'</div>'+
+      '</div>'+
+      '<div class="chipcount">各出力マス = 重なる3×3の画素とカーネルの積の合計（端はゼロ埋め）。エッジ検出は輪郭で値が大きくなり、ぼかしは全体が平滑化されます。</div>';
+    convOut.querySelectorAll('div[data-i]').forEach(function(c){
+      c.addEventListener('click', function(){
+        var i=+c.getAttribute('data-i'), j=+c.getAttribute('data-j');
+        grid[i][j]=grid[i][j]?0:1; renderConv();
+      });
+    });
+  }
+  if(convOut){
+    document.querySelectorAll('#demoConv .try button[data-k]').forEach(function(b){
+      b.addEventListener('click', function(){ curK=b.getAttribute('data-k'); renderConv(); });
+    });
+    document.querySelectorAll('#demoConv .try button[data-img]').forEach(function(b){
+      b.addEventListener('click', function(){
+        var t=b.getAttribute('data-img');
+        grid = t==='square'?imgSquare():(t==='diag'?imgDiag():imgDot());
+        renderConv();
+      });
+    });
+    renderConv();
+  }
+})();
+</script>
+
+<script>
+/* ==================== nav controllers + TOC scroll-spy + back-to-top ==================== */
+(function(){
+  function syncLangUI(l){
+    var ja=l==='ja', lists=document.querySelectorAll('.lswitch');
+    for(var i=0;i<lists.length;i++){
+      var a=lists[i].querySelector('.ls-ja'), e=lists[i].querySelector('.ls-en');
+      if(a) a.setAttribute('aria-pressed', ja?'true':'false');
+      if(e) e.setAttribute('aria-pressed', ja?'false':'true');
+    }
+  }
+  window.syncLangUI=syncLangUI;
+  if(typeof window.setLang==='function'){ var _s=window.setLang; window.setLang=function(l){ _s(l); syncLangUI(l); }; }
+  syncLangUI(document.body.classList.contains('lang-en')?'en':'ja');
+
+  var groups=document.querySelectorAll('.navlinks .navgroup');
+  for(var g=0; g<groups.length; g++){ (function(grp){
+    var top=grp.querySelector('.navtop'), panel=grp.querySelector('.navpanel');
+    if(!panel||!top) return;
+    function set(x){ top.setAttribute('aria-expanded', x?'true':'false'); }
+    grp.addEventListener('mouseenter', function(){ grp.classList.remove('collapsed'); set(true); });
+    grp.addEventListener('mouseleave', function(){ set(false); });
+    grp.addEventListener('focusin', function(){ if(!grp.classList.contains('collapsed')) set(true); });
+    grp.addEventListener('focusout', function(e){ if(!grp.contains(e.relatedTarget)){ grp.classList.remove('collapsed'); set(false); } });
+    grp.addEventListener('keydown', function(e){ if(e.key==='Escape'){ grp.classList.add('collapsed'); set(false); top.focus(); } });
+  })(groups[g]); }
+
+  var tog=document.getElementById('navToggle'), ov=document.getElementById('mobnav');
+  if(tog && ov){
+    function openNav(){ document.body.classList.add('navopen'); tog.setAttribute('aria-expanded','true'); ov.setAttribute('aria-hidden','false');
+      var f=ov.querySelector('a,button'); if(f){ requestAnimationFrame(function(){ f.focus(); }); } }
+    function closeNav(){ document.body.classList.remove('navopen'); tog.setAttribute('aria-expanded','false'); ov.setAttribute('aria-hidden','true'); tog.focus(); }
+    tog.addEventListener('click', function(){ document.body.classList.contains('navopen')?closeNav():openNav(); });
+    ov.addEventListener('click', function(e){ if(e.target.closest('a')) closeNav(); });
+    document.addEventListener('keydown', function(e){ if(e.key==='Escape' && document.body.classList.contains('navopen')) closeNav(); });
+  }
+
+  /* TOC scroll-spy */
+  var bar=document.querySelector('.tocbar');
+  if(bar){
+    var pills=Array.prototype.slice.call(bar.querySelectorAll('.tocpill')), map={};
+    pills.forEach(function(p){ map[p.getAttribute('href').slice(1)]=p; });
+    if('IntersectionObserver' in window){
+      var spy=new IntersectionObserver(function(es){
+        es.forEach(function(e){
+          if(e.isIntersecting){
+            pills.forEach(function(p){ p.classList.remove('on'); });
+            var m=map[e.target.id]; if(m) m.classList.add('on');
+          }
+        });
+      },{rootMargin:'-45% 0px -50% 0px', threshold:0});
+      pills.forEach(function(p){ var s=document.getElementById(p.getAttribute('href').slice(1)); if(s) spy.observe(s); });
+    }
+  }
+
+  /* back to top */
+  var reduce=window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var bt=document.querySelector('.totop'), sen=document.getElementById('toTopSentinel');
+  if(bt && sen && 'IntersectionObserver' in window){
+    new IntersectionObserver(function(es){
+      es.forEach(function(e){ if(e.isIntersecting) bt.classList.remove('show'); else bt.classList.add('show'); });
+    },{threshold:0}).observe(sen);
+  }
+  if(bt){ bt.addEventListener('click', function(){ window.scrollTo({top:0, behavior:reduce?'auto':'smooth'}); }); }
+})();
+</script>
+</body>
+</html>

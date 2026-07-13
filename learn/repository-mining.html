@@ -1,0 +1,1570 @@
+<!DOCTYPE html>
+<html lang="ja" class="no-js">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>リポジトリマイニング入門 - 研究の技術を実践的に学ぶ / Mining Software Repositories</title>
+<meta name="description" content="A hands-on learning module on mining software repositories: Git history and the commit graph, extracting commit logs with PyDriller and GitPython, change metrics such as code churn and co-change, issue and bug tracking, and analysis and visualization. With interactive demos and runnable Python examples. Part of Yuta Kimura's learning course.">
+<link rel="canonical" href="https://ykimu.github.io/learn/repository-mining.html">
+<link rel="icon" href="../favicon.svg" type="image/svg+xml">
+<meta property="og:site_name" content="Yuta Kimura / 木村祐太">
+<meta property="og:type" content="article">
+<meta property="og:title" content="リポジトリマイニング入門 - 研究の技術を実践的に学ぶ / Mining Software Repositories">
+<meta property="og:description" content="A hands-on learning module on mining software repositories: the commit graph, extracting history with PyDriller, code churn and co-change metrics, issue and bug tracking, with interactive demos and runnable Python examples.">
+<meta property="og:url" content="https://ykimu.github.io/learn/repository-mining.html">
+<meta property="og:image" content="https://ykimu.github.io/assets/og.png">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="color-scheme" content="light">
+<script>document.documentElement.className="js";</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&family=Noto+Sans+JP:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#FBFCFB; --bg-2:#F3F6F4; --bg-3:#EBEFED; --card:#FFFFFF;
+    --ink:#101312; --ink-2:#3C4340; --muted:#6B746F; --faint:#B7C0BB;
+    --line:#E7ECE9; --hair:rgba(16,19,18,.08); --shell:rgba(16,19,18,.035);
+    --accent:#0E6F5C; --accent-2:#0A5748; --accent-soft:rgba(14,111,92,.08);
+    --soft:0 1px 2px rgba(16,19,18,.04), 0 24px 60px -28px rgba(16,19,18,.16);
+    --inhi:inset 0 1px 0 rgba(255,255,255,.85);
+    --ease:cubic-bezier(.32,.72,0,1);
+    --sans:"Plus Jakarta Sans","Noto Sans JP",-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+    --disp:"Space Grotesk","Plus Jakarta Sans","Noto Sans JP",sans-serif;
+    --mono:ui-monospace,SFMono-Regular,Menlo,Consolas,"Liberation Mono",monospace;
+    --maxw:1440px; --readw:clamp(680px, 62vw, 1060px);
+    --kw:#0A5748; --ty:#3C4340; --st:#7A5C34; --cm:#87918C; --nu:#7A5C34;
+    --good:#0E6F5C; --bad:#B04A3E; --warn:#8A6D3B;
+  }
+  html{color-scheme:light}
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth; -webkit-text-size-adjust:100%}
+  body{margin:0; background:var(--bg); color:var(--ink); font-family:var(--sans);
+    font-size:17px; line-height:1.75; font-weight:400; -webkit-font-smoothing:antialiased; text-rendering:optimizeLegibility}
+  body.lang-ja [lang=en]{display:none}
+  body.lang-en [lang=ja]{display:none}
+  ::selection{background:rgba(14,111,92,.16)}
+  h1,h2,h3{margin:0; color:var(--ink); font-weight:500; line-height:1.16; letter-spacing:-.02em; font-family:var(--disp); text-wrap:balance}
+  body.lang-ja h1,body.lang-ja h2,body.lang-ja h3{letter-spacing:0; font-family:var(--sans)}
+  p,.lead,.cite,.muted-s{text-wrap:pretty}
+  [lang="en"]{line-break:auto}
+  [lang="ja"]{line-break:strict; word-break:normal}
+  h1 [lang="ja"],h2 [lang="ja"],h3 [lang="ja"]{word-break:auto-phrase}
+  p{margin:0 0 1em}
+  a{color:var(--accent-2); text-decoration:none; transition:color .3s var(--ease)}
+  a:hover{color:var(--accent)}
+  a:focus-visible,button:focus-visible,.btn:focus-visible,[tabindex]:focus-visible{outline:2px solid var(--accent); outline-offset:3px; border-radius:8px}
+  .wrap{max-width:var(--maxw); margin:0 auto; padding:0 40px}
+  [id]{scroll-margin-top:96px}
+  section{padding:96px 0}
+
+  .skip{position:fixed; top:10px; left:10px; padding:10px 16px; background:var(--ink); color:#fff; border-radius:999px; transform:translateY(-200%); transition:none; z-index:100; font:500 .85rem/1 var(--sans); text-decoration:none}
+  .skip:focus{transform:none}
+
+  /* film grain overlay */
+  body::after{content:""; position:fixed; inset:0; z-index:1; pointer-events:none; opacity:.02;
+    background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='g'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23g)'/%3E%3C/svg%3E")}
+
+  h2.big{font-size:clamp(1.9rem,3.2vw,2.7rem); font-weight:500; letter-spacing:-.025em; max-width:26ch}
+  body.lang-ja h2.big{letter-spacing:-.01em; max-width:none}
+  .eyebrow,.kick{display:inline-flex; align-items:center; gap:8px; width:max-content; max-width:100%;
+    padding:5px 13px 5px 11px; border-radius:999px; border:1px solid var(--hair); background:#fff;
+    font:600 .66rem/1 var(--disp); letter-spacing:.14em; text-transform:uppercase; color:var(--ink-2); margin:0 0 18px}
+  .eyebrow::before,.kick::before{content:""; flex:0 0 auto; width:6px; height:6px; border-radius:50%; background:var(--accent)}
+  .lead{font-size:1.14rem; color:var(--ink-2); line-height:1.78; font-weight:400}
+
+  /* motion */
+  .js .reveal{opacity:0; transform:translateY(18px); filter:blur(6px); transition:opacity .9s var(--ease), transform .9s var(--ease), filter .9s var(--ease)}
+  .js .reveal.in{opacity:1; transform:none; filter:none}
+  @media (prefers-reduced-motion:reduce){
+    .js .reveal{opacity:1!important; transform:none!important; filter:none!important}
+    .btn:active,.btn.ink:hover .ic,.pill:hover,.totop:hover,.tocpill{transform:none!important}
+    html{scroll-behavior:auto}
+  }
+
+  /* floating island nav */
+  header.bar{position:sticky; top:18px; z-index:60; background:transparent; border-bottom:none}
+  .bar .wrap{display:flex; align-items:center; justify-content:space-between;
+    width:max-content; max-width:calc(100% - 32px); margin:0 auto; height:auto;
+    padding:9px 12px 9px 20px; gap:20px; border-radius:999px;
+    background:rgba(255,255,255,.72); -webkit-backdrop-filter:saturate(1.4) blur(18px); backdrop-filter:saturate(1.4) blur(18px);
+    border:1px solid var(--hair); box-shadow:var(--soft)}
+  .brand{font-weight:600; font-size:.92rem; letter-spacing:-.01em; color:var(--ink); display:inline-flex; align-items:center; gap:8px}
+  .brand span.sep{color:var(--muted); font-weight:400; margin:0 2px}
+  .bar-right{display:flex; align-items:center; gap:8px}
+
+  /* buttons */
+  .btn{display:inline-flex; align-items:center; gap:10px; font:500 .85rem/1 var(--sans); padding:10px 18px;
+    border-radius:999px; border:1px solid var(--hair); background:#fff; color:var(--ink); cursor:pointer;
+    transition:transform .4s var(--ease), box-shadow .4s var(--ease), border-color .3s var(--ease), background .3s var(--ease), color .3s var(--ease)}
+  .btn:hover{border-color:var(--ink); transform:translateY(-1px); color:var(--ink)}
+  .btn:active{transform:scale(.98)}
+  .btn.ink{background:var(--ink); border-color:var(--ink); color:#fff; padding:10px 10px 10px 22px;
+    box-shadow:0 12px 26px -14px rgba(16,19,18,.5)}
+  .btn.ink:not(:has(.ic)){padding:10px 22px}
+  .btn.ink:hover{box-shadow:0 16px 32px -14px rgba(16,19,18,.55); color:#fff}
+  .btn .ic{width:32px; height:32px; border-radius:999px; background:rgba(255,255,255,.18); display:grid; place-items:center;
+    transition:transform .45s var(--ease); flex:0 0 auto}
+  .btn.ink:hover .ic{transform:translate(3px,-1px)}
+  .tlink{display:inline-flex; align-items:center; gap:8px; font-weight:500; font-size:.95rem; color:var(--ink)}
+  .tlink .ar{transition:transform .4s var(--ease)}
+  .tlink:hover .ar{transform:translateX(4px)}
+
+  /* hero */
+  .hero{position:relative; overflow:hidden}
+  .hero > .wrap{position:relative; z-index:1}
+  .hero::before{content:""; position:absolute; z-index:0; width:640px; height:640px; right:-150px; top:-240px;
+    border-radius:50%; pointer-events:none; opacity:.55;
+    background:radial-gradient(circle, var(--accent-soft), transparent 62%); filter:blur(20px)}
+  .hero .wrap{padding-top:72px; padding-bottom:64px}
+  .hero h1{font-size:clamp(2.6rem,5vw,4.2rem); font-weight:500; letter-spacing:-.03em; line-height:1.08; color:var(--ink); max-width:none}
+  body.lang-ja .hero h1{font-size:clamp(2rem,4.2vw,3.1rem); font-weight:500; letter-spacing:0; line-height:1.24}
+  .hero h1 em{font-style:normal; color:var(--accent)}
+  .hero .lead{max-width:var(--readw); margin-top:24px}
+  .ja-note{display:inline-flex; align-items:center; gap:8px; margin-top:22px; padding:7px 15px; border-radius:999px;
+    border:1px solid var(--hair); background:var(--accent-soft); font-size:.8rem; font-weight:500; color:var(--accent-2)}
+  .ja-note::before{content:""; width:6px; height:6px; border-radius:50%; background:var(--accent); flex:0 0 auto}
+  .hero-meta{display:flex; gap:10px; flex-wrap:wrap; margin-top:16px}
+  .hero-meta span{font-size:.82rem; color:var(--muted); background:#fff; border:1px solid var(--hair);
+    border-radius:999px; padding:6px 14px}
+  .hero-cta{display:flex; gap:20px; align-items:center; flex-wrap:wrap; margin-top:28px}
+
+  .soft-sec{background:var(--bg-2); border-top:1px solid var(--line); border-bottom:1px solid var(--line)}
+
+  /* prose */
+  .prose{max-width:var(--readw)}
+  .prose p{margin:0 0 1em; color:var(--ink-2)}
+  .prose h4{font-family:var(--sans); font-size:1.1rem; font-weight:600; letter-spacing:0; color:var(--ink); margin:1.5em 0 .5em}
+  .prose ul{margin:0 0 1.2em; padding-left:0; list-style:none}
+  .prose ul li{position:relative; padding-left:22px; margin:11px 0; color:var(--ink-2)}
+  .prose ul li::before{content:""; position:absolute; left:0; top:13px; width:11px; height:1.5px; background:var(--accent)}
+  .prose ul li b,.prose b{color:var(--ink); font-weight:600}
+  .prose i{color:var(--ink-2)}
+  code{font-family:var(--mono); font-size:.86em; background:var(--shell); border:1px solid var(--hair); border-radius:6px; padding:.08em .4em; color:var(--accent-2)}
+  .formula{font-family:var(--mono); font-size:.98rem; color:var(--ink); background:var(--card); text-align:center;
+    border-radius:14px; padding:18px 20px; margin:18px 0; max-width:var(--readw);
+    box-shadow:0 0 0 6px var(--shell),0 0 0 6.5px var(--hair),var(--soft); line-height:1.9}
+  .formula .op{color:var(--accent-2); font-weight:600}
+  .formula small{display:block; font-family:var(--sans); font-size:.82rem; color:var(--muted); margin-top:8px; line-height:1.6}
+
+  .callout{border-radius:16px; padding:18px 22px; margin:20px 0; max-width:var(--readw);
+    background:var(--card); box-shadow:0 0 0 6px var(--shell),0 0 0 6.5px var(--hair),var(--soft)}
+  .callout h4{margin:0 0 6px; font-size:1rem; font-family:var(--sans); font-weight:600; letter-spacing:0; color:var(--ink)}
+  .callout.tip{background:var(--accent-soft)}
+  .callout.warn{background:rgba(138,109,59,.08)}
+  .callout p{margin:0; color:var(--ink-2); font-size:.96rem}
+  .callout a{font-weight:600}
+
+  .grid2{display:grid; grid-template-columns:1fr 1fr; gap:16px; margin:20px 0; max-width:var(--readw)}
+  .box{border-radius:16px; padding:16px 20px; background:var(--card);
+    box-shadow:0 0 0 6px var(--shell),0 0 0 6.5px var(--hair),var(--soft)}
+  .box h5{margin:0 0 10px; font-size:.92rem; font-family:var(--sans); font-weight:600; letter-spacing:0; color:var(--accent-2); display:flex; align-items:center; gap:7px}
+  .box.lim h5{color:var(--warn)}
+  .box ul{margin:0; padding-left:18px}
+  .box li{margin:6px 0; font-size:.92rem; color:var(--ink-2)}
+
+  .steps{border-radius:16px; padding:16px 20px; margin:20px 0; max-width:var(--readw); background:var(--card);
+    box-shadow:0 0 0 6px var(--shell),0 0 0 6.5px var(--hair),var(--soft)}
+  .steps h5{margin:0 0 10px; font-size:.92rem; font-family:var(--sans); font-weight:600; letter-spacing:0; color:var(--accent-2)}
+  .steps ol{margin:0; padding:0; list-style:none; counter-reset:st}
+  .steps ol li{counter-increment:st; position:relative; padding-left:36px; margin:9px 0; font-size:.94rem; color:var(--ink-2)}
+  .steps ol li::before{content:counter(st); position:absolute; left:0; top:2px; width:23px; height:23px; border-radius:50%;
+    background:var(--accent-soft); color:var(--accent-2); font:600 .74rem/23px var(--disp); text-align:center}
+  .steps ol li b{color:var(--ink); font-weight:600}
+
+  /* step headers */
+  .stephead{display:flex; align-items:baseline; gap:20px; max-width:var(--readw)}
+  .stephead .num{font-family:var(--disp); font-size:clamp(2.6rem,5.4vw,3.8rem); font-weight:500; color:var(--accent);
+    letter-spacing:-.04em; line-height:.9; flex:0 0 auto; font-variant-numeric:tabular-nums}
+  .stephead .tt h2{font-size:clamp(1.5rem,2.6vw,2rem)}
+  .stephead .tt .st-en{display:block; font:600 .68rem/1 var(--disp); letter-spacing:.13em; text-transform:uppercase; color:var(--muted); margin-top:8px}
+  body.lang-en .stephead .tt .st-en{display:none}
+  .steprule{height:2px; background:var(--ink); max-width:var(--readw); margin:16px 0 26px}
+  .layer{display:inline-flex; align-items:center; gap:8px; margin:34px 0 12px; padding:5px 13px 5px 11px;
+    border-radius:999px; border:1px solid var(--hair); background:#fff;
+    font:600 .64rem/1 var(--disp); letter-spacing:.13em; text-transform:uppercase; color:var(--ink-2)}
+  .layer::before{content:""; width:6px; height:6px; border-radius:50%; background:var(--accent); flex:0 0 auto}
+  .layer.first{margin-top:6px}
+
+  /* diagrams */
+  .diagram-wrap{margin:22px 0; max-width:var(--readw)}
+  .diagram-wrap .cap{margin:0 0 10px; font-size:.9rem; font-family:var(--sans); font-weight:600; letter-spacing:0; color:var(--accent-2)}
+  .diagram-wrap svg{display:block; width:100%; height:auto; background:var(--card);
+    border-radius:16px; padding:12px; box-shadow:0 0 0 7px var(--shell),0 0 0 7.5px var(--hair),var(--soft)}
+  .dg-box{fill:var(--card); stroke:var(--line); stroke-width:1.3}
+  .dg-box.acc{fill:var(--accent-soft); stroke:var(--accent)}
+  .dg-lbl{fill:var(--ink); font-size:13px; font-weight:600; text-anchor:middle; font-family:var(--sans)}
+  .dg-en{fill:var(--muted); font-size:10.5px; text-anchor:middle; font-family:var(--disp)}
+  .dg-line{stroke:var(--muted); stroke-width:1.5; fill:none}
+  .dg-arrow{fill:var(--muted)}
+  .dg-note{fill:var(--muted); font-size:11.5px; text-anchor:middle; font-style:italic}
+  .dg-ax{stroke:var(--faint); stroke-width:1.2}
+  .dg-vec{stroke:var(--accent); stroke-width:2; fill:none}
+  .dg-vec2{stroke:var(--ink-2); stroke-width:2; fill:none}
+  .dg-pt{fill:var(--accent)}
+  .dg-ptl{fill:var(--ink); font-size:11px; font-family:var(--sans)}
+  .figcap{font-size:.88rem; color:var(--muted); margin:12px 2px 0; max-width:var(--readw); line-height:1.6}
+  .figcap b{color:var(--ink); font-weight:600}
+
+  /* code blocks */
+  .code-wrap{margin:16px 0 0; border:1px solid var(--hair); border-radius:14px; overflow:hidden; background:var(--shell); max-width:var(--readw)}
+  .code-head{display:flex; align-items:center; gap:10px; background:var(--bg-2); border-bottom:1px solid var(--hair); padding:9px 16px}
+  .code-head .lbl{margin-right:auto; font:600 .74rem/1 var(--disp); letter-spacing:.06em; text-transform:uppercase; color:var(--muted)}
+  .code-head .lang-tag{font:500 .74rem/1 var(--sans); color:var(--muted)}
+  .code-head .copy{background:#fff; border:1px solid var(--hair); color:var(--ink-2); border-radius:999px;
+    padding:5px 12px; font:500 .74rem/1 var(--sans); cursor:pointer; transition:border-color .3s var(--ease), color .3s var(--ease)}
+  .code-head .copy:hover{border-color:var(--ink); color:var(--ink)}
+  pre{margin:0; background:var(--shell); padding:16px 18px; overflow-x:auto; font-size:.82rem; line-height:1.65}
+  pre code{font-family:var(--mono); color:#2F3A33; white-space:pre; background:none; border:none; padding:0; font-size:1em}
+  .kw{color:var(--kw); font-weight:600} .st{color:var(--st)} .cm{color:var(--cm); font-style:italic} .nu{color:var(--nu)}
+  .code-out{max-width:var(--readw); margin:0 0 8px; border:1px solid var(--hair); border-top:none;
+    border-radius:0 0 14px 14px; background:var(--bg-2); padding:12px 18px}
+  .code-out .olbl{font:600 .66rem/1 var(--disp); letter-spacing:.1em; text-transform:uppercase; color:var(--muted); display:block; margin-bottom:8px}
+  .code-out pre{background:transparent; padding:0; font-size:.8rem}
+  .code-out pre code{color:var(--ink-2)}
+  .code-wrap.attached{border-radius:14px 14px 0 0; margin-bottom:0}
+
+  /* interactive demo (double-bezel) */
+  .demo{border-radius:21px; padding:24px 26px; margin:24px 0; max-width:var(--readw); background:var(--card);
+    box-shadow:0 0 0 7px var(--shell),0 0 0 7.5px var(--hair),var(--soft)}
+  .demo .dtag{display:inline-flex; align-items:center; gap:8px; margin:0 0 10px; padding:5px 12px 5px 10px;
+    border-radius:999px; background:var(--accent-soft); color:var(--accent-2); font:600 .62rem/1 var(--disp); letter-spacing:.12em; text-transform:uppercase}
+  .demo .dtag::before{content:""; width:6px; height:6px; border-radius:50%; background:var(--accent)}
+  .demo h4{margin:0 0 6px; font-size:1.12rem; font-family:var(--sans); font-weight:600; color:var(--ink)}
+  .demo .dnote{font-size:.88rem; color:var(--muted); margin:0 0 16px}
+  .demo label.fld{display:block; font:600 .74rem/1 var(--disp); letter-spacing:.08em; text-transform:uppercase; color:var(--muted); margin:0 0 7px}
+  .demo textarea,.demo input[type=text]{width:100%; padding:12px 15px; border-radius:12px; border:1px solid var(--hair);
+    background:var(--bg); color:var(--ink); font:400 .95rem/1.6 var(--mono); outline:none; resize:vertical;
+    transition:border-color .3s var(--ease)}
+  .demo textarea:focus,.demo input[type=text]:focus{border-color:var(--accent)}
+  .demo .try{display:flex; gap:8px; flex-wrap:wrap; margin:12px 0 4px}
+  .demo .try button{background:#fff; border:1px solid var(--hair); color:var(--ink-2); border-radius:999px;
+    padding:8px 14px; font:500 .82rem/1 var(--sans); cursor:pointer; transition:border-color .3s var(--ease), transform .3s var(--ease), color .3s var(--ease)}
+  .demo .try button:hover{border-color:var(--ink); color:var(--ink); transform:translateY(-1px)}
+  .demo .try .tlbl{font:600 .72rem/1 var(--disp); letter-spacing:.06em; text-transform:uppercase; color:var(--faint); align-self:center; margin-right:2px}
+  .demo .two{display:grid; grid-template-columns:1fr 1fr; gap:16px}
+  @media(max-width:640px){.demo .two{grid-template-columns:1fr}}
+  .demo-out{margin-top:18px}
+
+  /* chips */
+  .chips{display:flex; flex-wrap:wrap; gap:7px; margin-top:6px}
+  .chip{display:inline-flex; align-items:center; font:500 .88rem/1 var(--mono); padding:8px 12px; border-radius:9px;
+    background:var(--accent-soft); color:var(--accent-2); border:1px solid rgba(14,111,92,.16)}
+  .chip.p{background:var(--bg-3); color:var(--muted); border-color:var(--hair)}
+  .chip.en{background:var(--card); color:var(--ink-2); border-color:var(--hair)}
+  .chipcount{font:600 .74rem/1 var(--disp); color:var(--muted); margin-top:12px; letter-spacing:.04em}
+  .chip-legend{display:flex; gap:16px; flex-wrap:wrap; margin-top:12px; font-size:.78rem; color:var(--muted)}
+  .chip-legend i{display:inline-block; width:11px; height:11px; border-radius:3px; margin-right:6px; vertical-align:-1px}
+
+  /* tables */
+  .dtable{border-collapse:separate; border-spacing:0; margin:16px 0 0; width:100%; font-size:.86rem;
+    border-radius:12px; overflow:hidden; box-shadow:0 0 0 1px var(--hair)}
+  .dtable th,.dtable td{border-bottom:1px solid var(--line); border-right:1px solid var(--line); padding:9px 12px; text-align:right; background:var(--card); font-variant-numeric:tabular-nums; font-family:var(--disp)}
+  .dtable th{background:var(--bg-2); font-weight:600; color:var(--ink); font-family:var(--sans); text-align:right}
+  .dtable td:first-child,.dtable th:first-child{text-align:left; font-family:var(--mono); color:var(--ink)}
+  .dtable tr:last-child th,.dtable tr:last-child td{border-bottom:none}
+  .dtable td:last-child,.dtable th:last-child{border-right:none}
+  .dtable td.zero{color:var(--faint)}
+
+  /* cosine output */
+  .cos-score{display:flex; align-items:baseline; gap:12px; margin:6px 0 10px}
+  .cos-score .val{font:500 2.6rem/1 var(--disp); color:var(--accent); letter-spacing:-.03em; font-variant-numeric:tabular-nums}
+  .cos-score .lab{font-size:.9rem; color:var(--muted)}
+  .cos-bar{height:14px; border-radius:999px; background:var(--bg-3); box-shadow:inset 0 1px 2px rgba(16,19,18,.06); overflow:hidden; max-width:520px}
+  .cos-bar span{display:block; height:100%; border-radius:999px; background:linear-gradient(90deg,var(--accent-2),var(--accent)); transition:width .5s var(--ease)}
+  .cos-detail{font-size:.86rem; color:var(--muted); margin-top:12px; font-family:var(--mono)}
+  .cos-detail b{color:var(--ink-2)}
+  @media (prefers-reduced-motion:reduce){.cos-bar span{transition:none}}
+
+  /* closing lists */
+  .res-grid{display:grid; grid-template-columns:1fr 1fr; gap:16px; margin:20px 0; max-width:var(--readw)}
+  @media(max-width:640px){.res-grid{grid-template-columns:1fr}}
+  .res{border-radius:16px; padding:18px 20px; background:var(--card); box-shadow:0 0 0 6px var(--shell),0 0 0 6.5px var(--hair),var(--soft)}
+  .res h5{margin:0 0 10px; font-size:.95rem; font-family:var(--sans); font-weight:600; color:var(--accent-2)}
+  .res ul{margin:0; padding-left:0; list-style:none}
+  .res li{position:relative; padding-left:20px; margin:8px 0; font-size:.9rem; color:var(--ink-2)}
+  .res li::before{content:""; position:absolute; left:0; top:11px; width:9px; height:1.5px; background:var(--accent)}
+  .res li b{color:var(--ink); font-weight:600}
+
+  /* footer */
+  footer{border-top:1px solid var(--line); padding:68px 0 46px; background:var(--bg)}
+  footer h3{font-size:.72rem; font-weight:600; letter-spacing:.12em; text-transform:uppercase; color:var(--muted); margin:0 0 1em; font-family:var(--disp)}
+  .foot-grid{display:grid; grid-template-columns:1.5fr 1fr; gap:44px}
+  .foot-grid3{display:grid; grid-template-columns:1.3fr 1fr 1fr; gap:44px; margin-top:40px}
+  .foot-grid3 a{color:var(--ink-2)}
+  .foot-grid3 a:hover{color:var(--accent)}
+  .cite{font-size:.98rem; color:var(--ink-2); line-height:1.7; max-width:52ch}
+  .muted-s{color:var(--muted); font-size:.9rem; line-height:1.75}
+  .muted-s b{color:var(--ink); font-weight:600}
+  .muted-s a{line-height:1.9}
+  .foot-rule{height:1px; background:var(--line); margin:44px 0 20px}
+  .foot-note{color:var(--muted); font-size:.82rem}
+
+  /* crumbs */
+  .crumbs{display:flex; flex-wrap:wrap; align-items:center; gap:7px; margin:0; font-size:.8rem; font-weight:500; color:var(--muted)}
+  .crumbs a{color:var(--muted)}
+  .crumbs a:hover{color:var(--ink)}
+  .crumbs .csep{color:var(--faint)}
+  .crumbs .cur{color:var(--ink)}
+
+  @media(max-width:860px){
+    section{padding:72px 0}
+    .hero .wrap{padding-top:52px; padding-bottom:56px}
+    .wrap{padding:0 24px}
+    .grid2{grid-template-columns:1fr}
+    .foot-grid{grid-template-columns:1fr}
+    .foot-grid3{grid-template-columns:1fr; gap:30px}
+  }
+  @media(max-width:640px){
+    .bar-right .btn:not(.ink){display:none}
+    .brand{font-size:.82rem}
+    .stephead .num{font-size:2.4rem}
+  }
+
+  /* JP-only teaching page: fill content width for body text & boxes */
+  .lead,.prose,.callout,.formula,.grid2,.steps,.stephead,.steprule,
+  .diagram-wrap,.figcap,.code-wrap,.code-out,.demo,.res-grid{max-width:none !important}
+
+  /* ==================== NAV SYSTEM (from research/course template) ==================== */
+  .navlinks{display:flex; gap:4px; align-items:center}
+  .navlinks .navgroup{position:relative; display:flex}
+  .navlinks .navtop{display:inline-flex; align-items:center; gap:7px; font-size:.86rem; font-weight:500;
+    color:var(--ink-2); padding:8px 13px; border-radius:999px; white-space:nowrap;
+    transition:color .3s var(--ease), background .3s var(--ease)}
+  .navlinks .navtop:hover{color:var(--ink)}
+  .navlinks .navgroup:hover .navtop,.navlinks .navgroup:focus-within .navtop{color:var(--ink); background:var(--bg-2)}
+  .navlinks .navpanel{position:absolute; top:100%; left:50%; margin-top:9px; min-width:238px; padding:10px;
+    transform:translateX(-50%) translateY(6px); text-align:left;
+    background:var(--card); border:1px solid var(--hair); border-radius:16px; box-shadow:var(--soft);
+    opacity:0; visibility:hidden; pointer-events:none;
+    transition:opacity .25s var(--ease), transform .25s var(--ease), visibility 0s linear .25s; z-index:5}
+  .navlinks .navpanel::before{content:""; position:absolute; top:-13px; left:0; right:0; height:14px}
+  .navlinks .navgroup:hover .navpanel,.navlinks .navgroup:focus-within .navpanel{
+    opacity:1; visibility:visible; pointer-events:auto; transform:translateX(-50%) translateY(0);
+    transition:opacity .25s var(--ease), transform .25s var(--ease), visibility 0s linear 0s}
+  .navlinks .navgroup.collapsed .navpanel{opacity:0; visibility:hidden; pointer-events:none}
+  .navlinks .navpanel a{display:flex; align-items:center; gap:9px; padding:9px 12px; border-radius:11px;
+    font-size:.85rem; font-weight:500; color:var(--ink-2); white-space:nowrap;
+    transition:background .25s var(--ease), color .25s var(--ease)}
+  .navlinks .navpanel a:hover{background:var(--accent-soft); color:var(--ink)}
+  .navlinks .navpanel a.here{background:var(--accent-soft); color:var(--ink)}
+  .navlinks .navpanel a.here::before{content:""; flex:0 0 auto; width:6px; height:6px; border-radius:50%; background:var(--accent)}
+  .navlinks .navlabel{padding:8px 12px 3px; font:600 .6rem/1 var(--disp); letter-spacing:.13em;
+    text-transform:uppercase; color:var(--muted)}
+  .navlinks .navpanel hr.navdiv{border:0; border-top:1px solid var(--line); margin:8px 6px}
+  @media(max-width:860px){.navlinks{display:none}}
+
+  .lswitch{display:inline-flex; align-items:center; gap:2px; padding:3px; border-radius:999px;
+    border:1px solid var(--hair); background:#fff}
+  .lswitch button{appearance:none; -webkit-appearance:none; border:0; background:transparent; cursor:pointer;
+    font:600 .78rem/1 var(--disp); letter-spacing:.03em; color:var(--ink-2); padding:8px 13px; border-radius:999px;
+    transition:background .3s var(--ease), color .3s var(--ease)}
+  .lswitch button:hover{color:var(--ink)}
+  body.lang-ja .lswitch .ls-ja,body.lang-en .lswitch .ls-en{background:var(--ink); color:#fff}
+
+  .navtoggle{display:none; position:relative; width:42px; height:42px; flex:0 0 auto;
+    border-radius:999px; border:1px solid var(--hair); background:#fff; cursor:pointer; padding:0}
+  .navtoggle span{position:absolute; left:11px; right:11px; height:2px; background:var(--ink); border-radius:2px;
+    transition:transform .35s var(--ease), opacity .2s var(--ease)}
+  .navtoggle span:nth-child(1){top:15px}
+  .navtoggle span:nth-child(2){top:20px}
+  .navtoggle span:nth-child(3){top:25px}
+  body.navopen .navtoggle span:nth-child(1){transform:translateY(5px) rotate(45deg)}
+  body.navopen .navtoggle span:nth-child(2){opacity:0}
+  body.navopen .navtoggle span:nth-child(3){transform:translateY(-5px) rotate(-45deg)}
+
+  .mobnav{position:fixed; inset:0; z-index:80; display:flex; flex-direction:column; overflow-y:auto;
+    background:rgba(251,252,251,.9); -webkit-backdrop-filter:saturate(1.2) blur(24px); backdrop-filter:saturate(1.2) blur(24px);
+    opacity:0; visibility:hidden; pointer-events:none;
+    transition:opacity .35s var(--ease), visibility 0s linear .35s}
+  body.navopen .mobnav{opacity:1; visibility:visible; pointer-events:auto; transition:opacity .35s var(--ease), visibility 0s linear 0s}
+  body.navopen{overflow:hidden}
+  body.navopen header.bar{z-index:90}
+  .mobnav-inner{width:100%; max-width:600px; margin:0 auto; padding:104px 28px 64px;
+    display:flex; flex-direction:column; gap:24px}
+  .mobgroup{display:flex; flex-direction:column; gap:1px}
+  .moblabel{font:600 .64rem/1 var(--disp); letter-spacing:.14em; text-transform:uppercase; color:var(--muted); margin-bottom:9px}
+  .mobgroup a{font-size:1.28rem; font-weight:500; color:var(--ink); padding:7px 0; line-height:1.24}
+  .mobgroup a:hover{color:var(--accent-2)}
+  .mobgroup a.here{color:var(--accent-2)}
+  .mobgroup a.here::before{content:""; display:inline-block; width:6px; height:6px; border-radius:50%; background:var(--accent); margin-right:9px; vertical-align:middle}
+  .mobfoot{display:flex; align-items:center; justify-content:space-between; gap:16px; flex-wrap:wrap;
+    margin-top:6px; padding-top:22px; border-top:1px solid var(--line)}
+  .mobext{font-size:1rem; font-weight:500; color:var(--ink-2)}
+  .mobext:hover{color:var(--ink)}
+  .js .mobnav-inner > *{opacity:0; transform:translateY(12px);
+    transition:opacity .4s var(--ease), transform .4s var(--ease)}
+  body.navopen .mobnav-inner > *{opacity:1; transform:none}
+  body.navopen .mobnav-inner > *:nth-child(1){transition-delay:.04s}
+  body.navopen .mobnav-inner > *:nth-child(2){transition-delay:.08s}
+  body.navopen .mobnav-inner > *:nth-child(3){transition-delay:.12s}
+  body.navopen .mobnav-inner > *:nth-child(4){transition-delay:.16s}
+  body.navopen .mobnav-inner > *:nth-child(5){transition-delay:.20s}
+  .mobgroup .mobsublabel{font:600 .6rem/1 var(--disp); letter-spacing:.12em; text-transform:uppercase;
+    color:var(--faint); margin:15px 0 5px}
+  .mobgroup .mobsublabel:first-of-type{margin-top:2px}
+
+  .navlinks .navpanel.mega{min-width:568px; max-width:calc(100vw - 24px); padding:12px}
+  .navlinks .navpanel.mega .megacourses{display:grid; grid-template-columns:repeat(4,1fr); gap:1px 4px}
+  .navlinks .navpanel.mega .megagrid{display:grid; grid-template-columns:1fr 1fr; gap:2px 10px; align-items:start}
+  .navlinks .navpanel.mega .megacol{display:flex; flex-direction:column; min-width:0}
+  .navlinks .navpanel.mega a{white-space:normal; line-height:1.28}
+  .navlinks .navpanel.mega .navlabel{padding:8px 12px 4px}
+
+  /* sticky TOC bar */
+  .tocbar{position:sticky; top:84px; z-index:40; margin:8px 0 0;
+    background:rgba(255,255,255,.82); -webkit-backdrop-filter:saturate(1.4) blur(14px); backdrop-filter:saturate(1.4) blur(14px);
+    border-top:1px solid var(--hair); border-bottom:1px solid var(--hair)}
+  .tocbar-inner{max-width:var(--maxw); margin:0 auto; padding:9px 40px; display:flex; gap:8px;
+    overflow-x:auto; scrollbar-width:none; -ms-overflow-style:none}
+  .tocbar-inner::-webkit-scrollbar{display:none}
+  .tocpill{flex:0 0 auto; display:inline-flex; align-items:center; gap:7px; padding:7px 14px; border-radius:999px;
+    font-size:.8rem; font-weight:500; color:var(--ink-2); border:1px solid transparent; white-space:nowrap;
+    transition:background .25s var(--ease), color .25s var(--ease), border-color .25s var(--ease)}
+  .tocpill:hover{color:var(--ink); border-color:var(--hair)}
+  .tocpill.on{background:var(--accent-soft); color:var(--ink)}
+  .tocpill.on::before{content:""; flex:0 0 auto; width:6px; height:6px; border-radius:50%; background:var(--accent)}
+  section[id]{scroll-margin-top:150px}
+
+  .totop{position:fixed; right:22px; bottom:22px; z-index:55; width:46px; height:46px; border-radius:999px;
+    display:grid; place-items:center; background:#fff; border:1px solid var(--hair); box-shadow:var(--soft);
+    color:var(--ink); cursor:pointer; font-size:1.15rem; line-height:1;
+    opacity:0; transform:translateY(10px) scale(.9); pointer-events:none;
+    transition:opacity .35s var(--ease), transform .35s var(--ease)}
+  .totop.show{opacity:1; transform:none; pointer-events:auto}
+  .totop:hover{transform:translateY(-2px)}
+
+  @media(max-width:860px){
+    .navtoggle{display:block}
+    .bar-right .btn{display:none}
+    .tocbar{top:76px}
+  }
+  @media(max-width:430px){.bar-right .lswitch{display:none}}
+  @media (prefers-reduced-motion:reduce){
+    .navlinks .navpanel,.navtoggle span,.mobnav,.js .mobnav-inner > *,.navtop,.lswitch button,.totop,.tocpill{transition-duration:.001ms !important}
+    .js .mobnav-inner > *{transition-delay:0s !important}
+    .navtoggle:hover,.totop:hover{transform:none !important}
+  }
+</style>
+</head>
+<body class="lang-ja">
+<a class="skip" href="#main"><span lang="ja">本文へスキップ</span><span lang="en">Skip to content</span></a>
+
+<header class="bar">
+  <nav class="wrap" aria-label="メイン">
+    <a class="brand" href="../index.html">
+      <span aria-hidden="true">&lsaquo;</span>
+      <span lang="ja">木村祐太</span><span lang="en">Yuta Kimura</span>
+      <span class="sep">·</span><span lang="ja">学習コース</span><span lang="en">Learn</span>
+    </a>
+    <div class="navlinks">
+      <div class="navgroup">
+        <a class="navtop" href="../publications.html" aria-haspopup="true" aria-expanded="false"><span lang="ja">研究</span><span lang="en">Research</span></a>
+        <div class="navpanel">
+          <a href="../publications.html"><span lang="ja">業績・研究活動</span><span lang="en">Publications &amp; activity</span></a>
+          <a href="../research/technical-debt-metrics.html"><span lang="ja">技術的負債とメトリクス</span><span lang="en">Technical debt &amp; metrics</span></a>
+          <a href="../research/apr-coding-standards.html"><span lang="ja">自動生成パッチと規約</span><span lang="en">Auto-generated patches &amp; standards</span></a>
+          <a href="../research/td-repayment-refactoring.html"><span lang="ja">負債返済とリファクタリング</span><span lang="en">Debt repayment &amp; refactoring</span></a>
+          <a href="../research/satd-issue-classification.html"><span lang="ja">課題票の負債分類</span><span lang="en">Issue-ticket debt classification</span></a>
+        </div>
+      </div>
+      <div class="navgroup">
+        <a class="navtop" href="../teaching.html" aria-haspopup="true" aria-expanded="false"><span lang="ja">教育</span><span lang="en">Teaching</span></a>
+        <div class="navpanel mega">
+          <div class="navlabel"><span lang="ja">科目</span><span lang="en">Courses</span></div>
+          <div class="megacourses">
+            <a href="../teaching.html"><span lang="ja">教育・担当授業</span><span lang="en">Teaching &amp; courses</span></a>
+            <a href="../course/index.html"><span lang="ja">ソフトウェア工学</span><span lang="en">Software Engineering</span></a>
+            <a href="../course/logic-circuits.html"><span lang="ja">論理回路1</span><span lang="en">Logic Circuits I</span></a>
+            <a href="../course/intelligent-informatics-1.html"><span lang="ja">知能情報実験実習1</span><span lang="en">Intelligent Informatics Lab I</span></a>
+          </div>
+          <hr class="navdiv">
+          <div class="megagrid">
+            <div class="megacol">
+              <div class="navlabel"><span lang="ja">要求・モデリング</span><span lang="en">Requirements &amp; Modeling</span></div>
+              <a href="../course/requirements-engineering.html"><span lang="ja">要求工学</span><span lang="en">Requirements Engineering</span></a>
+              <a href="../course/system-modeling-uml.html"><span lang="ja">システムモデリング(UML)</span><span lang="en">System Modeling</span></a>
+              <a href="../course/uml-guide.html"><span lang="ja">クラス図/シーケンス図ガイド</span><span lang="en">UML Diagram Guide</span></a>
+            </div>
+            <div class="megacol">
+              <div class="navlabel"><span lang="ja">設計・実装</span><span lang="en">Design &amp; Implementation</span></div>
+              <a href="../course/software-architecture.html"><span lang="ja">アーキテクチャパターン大全</span><span lang="en">Software Architecture</span></a>
+              <a href="../course/design-patterns.html"><span lang="ja">デザインパターン学習ガイド</span><span lang="en">Design Patterns Guide</span></a>
+              <a href="../course/software-reuse-oss.html"><span lang="ja">ソフトウェア再利用とOSS</span><span lang="en">Software Reuse &amp; OSS</span></a>
+            </div>
+            <div class="megacol">
+              <div class="navlabel"><span lang="ja">計画・プロセス</span><span lang="en">Planning &amp; Process</span></div>
+              <a href="../course/agile-scrum.html"><span lang="ja">アジャイル開発とスクラム</span><span lang="en">Agile &amp; Scrum</span></a>
+              <a href="../course/project-management.html"><span lang="ja">プロジェクト管理と見積もり</span><span lang="en">Project Management</span></a>
+              <a href="../course/project-estimation-planning.html"><span lang="ja">プロジェクト計画・見積もり</span><span lang="en">Project Planning &amp; Estimation</span></a>
+            </div>
+            <div class="megacol">
+              <div class="navlabel"><span lang="ja">品質・運用</span><span lang="en">Quality &amp; Operations</span></div>
+              <a href="../course/software-testing.html"><span lang="ja">ソフトウェアテスト学習ガイド</span><span lang="en">Software Testing Guide</span></a>
+              <a href="../course/dependable-systems.html"><span lang="ja">ディペンダブルシステム</span><span lang="en">Dependable Systems</span></a>
+              <a href="../course/software-evolution.html"><span lang="ja">ソフトウェア進化と技術的負債</span><span lang="en">Software Evolution</span></a>
+              <a href="../course/version-control-cicd.html"><span lang="ja">バージョン管理とCI/CD</span><span lang="en">Version Control &amp; CI/CD</span></a>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="navgroup">
+        <a class="navtop on" href="../learn/index.html" aria-haspopup="true" aria-expanded="false"><span lang="ja">学習コース</span><span lang="en">Learn</span></a>
+        <div class="navpanel mega">
+          <div class="navlabel"><span lang="ja">学習コース</span><span lang="en">Learning course</span></div>
+          <a href="../learn/index.html"><span lang="ja">学習コースの全体像</span><span lang="en">Course overview</span></a>
+          <hr class="navdiv">
+          <div class="megagrid">
+            <div class="megacol">
+              <div class="navlabel"><span lang="ja">第1段階 · データ収集</span><span lang="en">Stage 1 · Data collection</span></div>
+              <a class="here" aria-current="page" href="../learn/repository-mining.html"><span lang="ja">リポジトリマイニング入門</span><span lang="en">Repository Mining</span></a>
+              <a href="../learn/data-preprocessing.html"><span lang="ja">開発データの前処理とデータセット構築</span><span lang="en">Data Preprocessing</span></a>
+            </div>
+            <div class="megacol">
+              <div class="navlabel"><span lang="ja">第2段階 · 分析技術</span><span lang="en">Stage 2 · Techniques</span></div>
+              <a href="../learn/nlp.html"><span lang="ja">自然言語処理（NLP）</span><span lang="en">Natural Language Processing</span></a>
+              <a href="../learn/network-analysis.html"><span lang="ja">ネットワーク分析</span><span lang="en">Network Analysis</span></a>
+              <a href="../learn/machine-learning.html"><span lang="ja">機械学習</span><span lang="en">Machine Learning</span></a>
+              <a href="../learn/deep-learning.html"><span lang="ja">深層学習</span><span lang="en">Deep Learning</span></a>
+              <a href="../learn/llm.html"><span lang="ja">大規模言語モデル（LLM）</span><span lang="en">Large Language Models</span></a>
+              <a href="../learn/program-analysis.html"><span lang="ja">プログラム解析</span><span lang="en">Program Analysis</span></a>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="navgroup">
+        <a class="navtop" href="../software-engineering.html" aria-haspopup="true" aria-expanded="false"><span lang="ja">ガイド</span><span lang="en">Guides</span></a>
+        <div class="navpanel">
+          <a href="../software-engineering.html"><span lang="ja">ソフトウェア工学とは</span><span lang="en">What is software engineering</span></a>
+          <a href="../technical-debt.html"><span lang="ja">技術的負債とは</span><span lang="en">What is technical debt</span></a>
+          <a href="../glossary.html"><span lang="ja">研究用語ミニ辞典</span><span lang="en">Research glossary</span></a>
+        </div>
+      </div>
+      <div class="navgroup">
+        <a class="navtop" href="../students.html"><span lang="ja">学生の皆さんへ</span><span lang="en">For Students</span></a>
+      </div>
+    </div>
+    <div class="bar-right">
+      <a class="btn" href="https://researchmap.jp/kimura_yuta" target="_blank" rel="noopener">researchmap</a>
+      <div class="lswitch" role="group" aria-label="言語 / Language">
+        <button type="button" class="ls-ja" onclick="setLang('ja')" aria-pressed="true">JA</button>
+        <button type="button" class="ls-en" onclick="setLang('en')" aria-pressed="false">EN</button>
+      </div>
+      <button class="navtoggle" id="navToggle" type="button" aria-label="メニュー" aria-expanded="false" aria-controls="mobnav">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </nav>
+</header>
+
+<div class="mobnav" id="mobnav" aria-hidden="true">
+  <div class="mobnav-inner">
+    <div class="mobgroup">
+      <div class="moblabel"><span lang="ja">研究</span><span lang="en">Research</span></div>
+      <a href="../publications.html"><span lang="ja">業績・研究活動</span><span lang="en">Publications &amp; activity</span></a>
+      <a href="../research/technical-debt-metrics.html"><span lang="ja">技術的負債とメトリクス</span><span lang="en">Technical debt &amp; metrics</span></a>
+      <a href="../research/apr-coding-standards.html"><span lang="ja">自動生成パッチと規約</span><span lang="en">Auto-generated patches &amp; standards</span></a>
+      <a href="../research/td-repayment-refactoring.html"><span lang="ja">負債返済とリファクタリング</span><span lang="en">Debt repayment &amp; refactoring</span></a>
+      <a href="../research/satd-issue-classification.html"><span lang="ja">課題票の負債分類</span><span lang="en">Issue-ticket debt classification</span></a>
+    </div>
+    <div class="mobgroup">
+      <div class="moblabel"><span lang="ja">教育</span><span lang="en">Teaching</span></div>
+      <div class="mobsublabel"><span lang="ja">科目</span><span lang="en">Courses</span></div>
+      <a href="../teaching.html"><span lang="ja">教育・担当授業</span><span lang="en">Teaching &amp; courses</span></a>
+      <a href="../course/index.html"><span lang="ja">ソフトウェア工学</span><span lang="en">Software Engineering</span></a>
+      <a href="../course/logic-circuits.html"><span lang="ja">論理回路1</span><span lang="en">Logic Circuits I</span></a>
+      <a href="../course/intelligent-informatics-1.html"><span lang="ja">知能情報実験実習1</span><span lang="en">Intelligent Informatics Lab I</span></a>
+      <div class="mobsublabel"><span lang="ja">要求・モデリング</span><span lang="en">Requirements &amp; Modeling</span></div>
+      <a href="../course/requirements-engineering.html"><span lang="ja">要求工学</span><span lang="en">Requirements Engineering</span></a>
+      <a href="../course/system-modeling-uml.html"><span lang="ja">システムモデリング(UML)</span><span lang="en">System Modeling</span></a>
+      <a href="../course/uml-guide.html"><span lang="ja">クラス図/シーケンス図ガイド</span><span lang="en">UML Diagram Guide</span></a>
+      <div class="mobsublabel"><span lang="ja">設計・実装</span><span lang="en">Design &amp; Implementation</span></div>
+      <a href="../course/software-architecture.html"><span lang="ja">アーキテクチャパターン大全</span><span lang="en">Software Architecture</span></a>
+      <a href="../course/design-patterns.html"><span lang="ja">デザインパターン学習ガイド</span><span lang="en">Design Patterns Guide</span></a>
+      <a href="../course/software-reuse-oss.html"><span lang="ja">ソフトウェア再利用とOSS</span><span lang="en">Software Reuse &amp; OSS</span></a>
+      <div class="mobsublabel"><span lang="ja">計画・プロセス</span><span lang="en">Planning &amp; Process</span></div>
+      <a href="../course/agile-scrum.html"><span lang="ja">アジャイル開発とスクラム</span><span lang="en">Agile &amp; Scrum</span></a>
+      <a href="../course/project-management.html"><span lang="ja">プロジェクト管理と見積もり</span><span lang="en">Project Management</span></a>
+      <a href="../course/project-estimation-planning.html"><span lang="ja">プロジェクト計画・見積もり</span><span lang="en">Project Planning &amp; Estimation</span></a>
+      <div class="mobsublabel"><span lang="ja">品質・運用</span><span lang="en">Quality &amp; Operations</span></div>
+      <a href="../course/software-testing.html"><span lang="ja">ソフトウェアテスト学習ガイド</span><span lang="en">Software Testing Guide</span></a>
+      <a href="../course/dependable-systems.html"><span lang="ja">ディペンダブルシステム</span><span lang="en">Dependable Systems</span></a>
+      <a href="../course/software-evolution.html"><span lang="ja">ソフトウェア進化と技術的負債</span><span lang="en">Software Evolution</span></a>
+      <a href="../course/version-control-cicd.html"><span lang="ja">バージョン管理とCI/CD</span><span lang="en">Version Control &amp; CI/CD</span></a>
+    </div>
+    <div class="mobgroup">
+      <div class="moblabel"><span lang="ja">学習コース</span><span lang="en">Learn</span></div>
+      <a href="../learn/index.html"><span lang="ja">学習コースの全体像</span><span lang="en">Course overview</span></a>
+      <div class="mobsublabel"><span lang="ja">第1段階 · データ収集</span><span lang="en">Stage 1 · Data collection</span></div>
+      <a class="here" aria-current="page" href="../learn/repository-mining.html"><span lang="ja">リポジトリマイニング入門</span><span lang="en">Repository Mining</span></a>
+      <a href="../learn/data-preprocessing.html"><span lang="ja">開発データの前処理とデータセット構築</span><span lang="en">Data Preprocessing</span></a>
+      <div class="mobsublabel"><span lang="ja">第2段階 · 分析技術</span><span lang="en">Stage 2 · Techniques</span></div>
+      <a href="../learn/nlp.html"><span lang="ja">自然言語処理（NLP）</span><span lang="en">Natural Language Processing</span></a>
+      <a href="../learn/network-analysis.html"><span lang="ja">ネットワーク分析</span><span lang="en">Network Analysis</span></a>
+      <a href="../learn/machine-learning.html"><span lang="ja">機械学習</span><span lang="en">Machine Learning</span></a>
+      <a href="../learn/deep-learning.html"><span lang="ja">深層学習</span><span lang="en">Deep Learning</span></a>
+      <a href="../learn/llm.html"><span lang="ja">大規模言語モデル（LLM）</span><span lang="en">Large Language Models</span></a>
+      <a href="../learn/program-analysis.html"><span lang="ja">プログラム解析</span><span lang="en">Program Analysis</span></a>
+    </div>
+    <div class="mobgroup">
+      <div class="moblabel"><span lang="ja">ガイド</span><span lang="en">Guides</span></div>
+      <a href="../software-engineering.html"><span lang="ja">ソフトウェア工学とは</span><span lang="en">What is software engineering</span></a>
+      <a href="../technical-debt.html"><span lang="ja">技術的負債とは</span><span lang="en">What is technical debt</span></a>
+      <a href="../glossary.html"><span lang="ja">研究用語ミニ辞典</span><span lang="en">Research glossary</span></a>
+    </div>
+    <div class="mobgroup">
+      <div class="moblabel"><span lang="ja">学生の皆さんへ</span><span lang="en">For Students</span></div>
+      <a href="../students.html"><span lang="ja">学生の皆さんへ</span><span lang="en">For Students</span></a>
+    </div>
+    <div class="mobfoot">
+      <a class="mobext" href="https://researchmap.jp/kimura_yuta" target="_blank" rel="noopener">researchmap</a>
+      <div class="lswitch" role="group" aria-label="言語 / Language">
+        <button type="button" class="ls-ja" onclick="setLang('ja')" aria-pressed="true">JA</button>
+        <button type="button" class="ls-en" onclick="setLang('en')" aria-pressed="false">EN</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<main id="main">
+<div class="wrap" style="padding-top:24px">
+  <nav class="crumbs" aria-label="パンくず">
+    <a href="../index.html"><span lang="ja">ホーム</span><span lang="en">Home</span></a>
+    <span class="csep" aria-hidden="true">&rsaquo;</span>
+    <span class="cur" aria-current="page"><span lang="ja">学習コース：リポジトリマイニング入門</span><span lang="en">Learn: Mining Software Repositories</span></span>
+  </nav>
+</div>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="wrap">
+    <p class="kick"><span lang="ja">学習コース</span><span lang="en">Learn</span></p>
+    <h1>リポジトリマイニング入門</h1>
+    <p class="lead">ソフトウェア開発の履歴（コミット・課題・変更）からデータを取り出し、開発の実態を定量的に読み解く技術を、概要から理論、そして実際に動かせるコードまで、順を追って学ぶモジュールです。各ステップは「概要 → 仕組み（座学）→ コードで動かす」の3層で進みます。ページ内には手を動かせるデモを3つ用意しました。</p>
+    <p class="ja-note"><span lang="ja">この教材は日本語のみで提供しています</span><span lang="en">This learning material is available in Japanese only.</span></p>
+    <div class="hero-cta">
+      <a class="btn ink" href="#intro" style="padding:12px 22px">
+        <span lang="ja">学びはじめる</span><span lang="en">Start learning</span>
+      </a>
+      <a class="tlink" href="#step2">
+        <span lang="ja">まず手を動かす（コミットログ・パーサ）</span><span lang="en">Jump to the commit-log parser demo</span>
+        <span class="ar" aria-hidden="true">&rsaquo;</span>
+      </a>
+    </div>
+  </div>
+</div>
+
+<div id="toTopSentinel" aria-hidden="true"></div>
+
+<div class="tocbar">
+  <nav class="tocbar-inner" aria-label="ページ内目次">
+    <a class="tocpill" href="#intro"><span lang="ja">はじめに</span><span lang="en">Intro</span></a>
+    <a class="tocpill" href="#step1">Step 1 <span lang="ja">MSRとは</span><span lang="en">What is MSR</span></a>
+    <a class="tocpill" href="#step2">Step 2 <span lang="ja">Gitの仕組み</span><span lang="en">Git &amp; VCS</span></a>
+    <a class="tocpill" href="#step3">Step 3 <span lang="ja">履歴の抽出</span><span lang="en">Extracting history</span></a>
+    <a class="tocpill" href="#step4">Step 4 <span lang="ja">変更指標</span><span lang="en">Change metrics</span></a>
+    <a class="tocpill" href="#step5">Step 5 <span lang="ja">課題とバグ</span><span lang="en">Issues &amp; bugs</span></a>
+    <a class="tocpill" href="#step6">Step 6 <span lang="ja">分析・可視化</span><span lang="en">Analysis</span></a>
+    <a class="tocpill" href="#closing"><span lang="ja">まとめ</span><span lang="en">Wrap-up</span></a>
+    <a class="tocpill" href="#beyond"><span lang="ja">発展トピック</span><span lang="en">Beyond</span></a>
+  </nav>
+</div>
+
+<!-- INTRO -->
+<section id="intro" style="padding-top:26px">
+  <div class="wrap reveal">
+    <p class="eyebrow"><span lang="ja">はじめに</span><span lang="en">Introduction</span></p>
+    <h2 class="big">このモジュールの全体像</h2>
+    <div class="prose" style="margin-top:22px">
+      <p><b>リポジトリマイニング（MSR: Mining Software Repositories）</b>とは、ソフトウェア開発で日々ためられていく履歴データ、たとえば Git のコミット履歴、課題管理（Issue）、プルリクエスト、コードレビュー、CI のログなどから、開発の実態を掘り出して分析する技術の総称です。「どのファイルがよく壊れるか」「誰と誰が同じ場所を触るか」「どのコミットがバグを埋め込んだか」といった問いに、記録されたデータで答えます。</p>
+      <p>開発リポジトリは、放っておくと膨大なログの山になります。そのままでは読み解けないので、多くの手法に共通する処理の流れ（パイプライン）に沿って進めます。リポジトリからデータを取り出し、指標や関係へと解析し、洞察や可視化につなげます。</p>
+    </div>
+
+    <div class="diagram-wrap reveal">
+      <p class="cap">リポジトリマイニングの基本パイプライン</p>
+      <svg viewBox="0 0 860 150" role="img" aria-label="リポジトリマイニングのパイプライン: リポジトリから抽出、解析、洞察・可視化への流れ">
+        <g>
+          <rect class="dg-box" x="12" y="46" width="176" height="58" rx="12"/>
+          <text class="dg-lbl" x="100" y="72">リポジトリ</text>
+          <text class="dg-en" x="100" y="90">Repository</text>
+        </g>
+        <g>
+          <rect class="dg-box acc" x="232" y="46" width="176" height="58" rx="12"/>
+          <text class="dg-lbl" x="320" y="72">抽出</text>
+          <text class="dg-en" x="320" y="90">Extract</text>
+        </g>
+        <g>
+          <rect class="dg-box acc" x="452" y="46" width="176" height="58" rx="12"/>
+          <text class="dg-lbl" x="540" y="72">解析</text>
+          <text class="dg-en" x="540" y="90">Analyze</text>
+        </g>
+        <g>
+          <rect class="dg-box" x="672" y="46" width="176" height="58" rx="12"/>
+          <text class="dg-lbl" x="760" y="72">洞察・可視化</text>
+          <text class="dg-en" x="760" y="90">Insight</text>
+        </g>
+        <g class="dg-line">
+          <line x1="188" y1="75" x2="228" y2="75"/><line x1="408" y1="75" x2="448" y2="75"/>
+          <line x1="628" y1="75" x2="668" y2="75"/>
+        </g>
+        <g class="dg-arrow">
+          <polygon points="228,75 220,71 220,79"/><polygon points="448,75 440,71 440,79"/>
+          <polygon points="668,75 660,71 660,79"/>
+        </g>
+        <text class="dg-note" x="320" y="130">コミット・diff・メタデータ</text>
+        <text class="dg-note" x="540" y="130">指標・共変更・傾向</text>
+        <text class="dg-note" x="760" y="130">ホットスポット・可視化</text>
+      </svg>
+    </div>
+
+    <div class="prose">
+      <p>このモジュールは、上のパイプラインを左から順にたどります。各ステップは次の3層で構成します。</p>
+      <ul>
+        <li><b>概要</b>：その技術が何のためにあるのか、あらましをつかむ。</li>
+        <li><b>仕組み（座学）</b>：背後にある理論・定義・考え方を、ていねいに理解する。</li>
+        <li><b>コードで動かす</b>：Python の定番ライブラリや、ページ内デモで実際に動かして確かめる。</li>
+      </ul>
+      <p>手を動かす題材には、実在の公開リポジトリや大規模なデータ基盤（GHTorrent、GH Archive、World of Code など）を念頭に置きつつ、実際にはページ内の小さなサンプルログだけを使います。特別な環境がなくても、読みながら試せる構成です。</p>
+    </div>
+  </div>
+</section>
+
+<!-- STEP 1 -->
+<section id="step1" class="soft-sec">
+  <div class="wrap reveal">
+    <div class="stephead">
+      <span class="num">1</span>
+      <div class="tt"><h2>リポジトリマイニングとは</h2><span class="st-en">What is repository mining</span></div>
+    </div>
+    <div class="steprule"></div>
+
+    <p class="layer first"><span lang="ja">概要</span><span lang="en">Overview</span></p>
+    <div class="prose">
+      <p>ソフトウェア開発では、コードそのもの以外にも、たくさんの記録が自然にたまっていきます。「いつ、誰が、どのファイルを、なぜ変えたのか」が履歴として残り、課題やレビューの議論もテキストとして保存されます。こうした記録の山を分析し、開発の実態を明らかにするのがリポジトリマイニング（MSR）です。おもなデータ源は次のとおりです。</p>
+      <ul>
+        <li><b>コミット履歴</b>：変更の一つひとつ。日時・作者・差分・メッセージが残る。</li>
+        <li><b>課題管理（Issue）とプルリクエスト</b>：バグ報告・要望・変更提案とその議論。</li>
+        <li><b>コードレビュー</b>：変更に対する指摘・承認のやり取り。</li>
+        <li><b>CI・ビルドのログ</b>：テストやビルドが通ったか、いつ壊れたか。</li>
+      </ul>
+    </div>
+
+    <p class="layer"><span lang="ja">仕組み</span><span lang="en">How it works</span></p>
+    <div class="prose">
+      <p>リポジトリマイニングは、<b>経験的ソフトウェア工学（empirical software engineering）</b>の一分野です。開発について「こうあるべき」と論じるのではなく、実際の開発で残されたデータを集めて、事実にもとづいて調べます。集めたデータから、たとえば次のような問いに答えられます。</p>
+      <ul>
+        <li><b>欠陥予測</b>：過去によく壊れた部分から、次に注意すべきファイルを見当づける。</li>
+        <li><b>開発者の協働</b>：誰と誰が同じコードを触るのか、知識がどこに集中しているのか。</li>
+        <li><b>ホットスポットの発見</b>：変更が集中し、複雑で壊れやすい「危険地帯」を見つける。</li>
+      </ul>
+      <p>ただし、生のログはそのままでは扱いにくいものです。そこで、まずリポジトリから必要な情報を取り出し（抽出）、それを数えて指標や関係に変え（解析）、最後に人が読み解ける形にまとめます（洞察・可視化）。このモジュールの Step&nbsp;2 以降は、まさにこの流れを一つずつ体験していきます。</p>
+    </div>
+
+    <div class="callout tip">
+      <h4>この Step のまとめ</h4>
+      <p>リポジトリマイニングは、コミット・課題・レビュー・CI といった開発の記録から実態を掘り出す技術。「あるべき論」ではなく実データで欠陥予測・協働・ホットスポットを調べる、経験的ソフトウェア工学の営みです。次からは、その最大のデータ源である Git の履歴に踏み込みます。</p>
+    </div>
+  </div>
+</section>
+
+<!-- STEP 2 -->
+<section id="step2">
+  <div class="wrap reveal">
+    <div class="stephead">
+      <span class="num">2</span>
+      <div class="tt"><h2>バージョン管理とGitの仕組み</h2><span class="st-en">Version control &amp; Git</span></div>
+    </div>
+    <div class="steprule"></div>
+
+    <p class="layer first"><span lang="ja">概要</span><span lang="en">Overview</span></p>
+    <div class="prose">
+      <p>リポジトリマイニングの最大のデータ源は、<b>バージョン管理システム（VCS）</b>が残す履歴です。中でも Git が広く使われています。Git は変更の一つひとつを<b>コミット</b>として記録し、その積み重ねがプロジェクトのまるごとの歴史になります。まずは、そこにどんな情報が、どんな形で残っているのかをつかみます。</p>
+    </div>
+
+    <p class="layer"><span lang="ja">仕組み</span><span lang="en">How it works</span></p>
+    <div class="prose">
+      <h4>1. リポジトリ・コミット・スナップショット</h4>
+      <p><b>リポジトリ</b>はプロジェクトの全履歴を収めた入れ物です。<b>コミット</b>は「ある時点のプロジェクト全体の状態（スナップショット）」への記録で、ハッシュ値（<code>a1b2c3d...</code> のような 40 桁の識別子）で一意に指し示せます。Git は変更差分だけでなく、その時点のツリー全体を参照する形で状態を保存します。</p>
+      <h4>2. コミットグラフ（DAG）</h4>
+      <p>各コミットは<b>親コミット</b>を指します。ふつうは 1 つですが、ブランチを統合する<b>マージコミット</b>は親を 2 つ以上持ちます。こうしてコミットは、時間をさかのぼる向きにつながった<b>有向非巡回グラフ（DAG: Directed Acyclic Graph）</b>を作ります。循環はしません。この構造をたどることで、どの変更がどの変更の後に来たのかを正確に追えます。</p>
+      <h4>3. diff と blame</h4>
+      <p><b>diff</b>は 2 つの状態の差分で、どの行が追加・削除されたかを表します。<b>blame</b>は、ファイルの各行が「どのコミットで最後に変更されたか」を対応づけます。あとで出てくる、バグを埋め込んだコミットをさかのぼる分析は、この blame を土台にします。</p>
+      <h4>4. コミットのメタデータ</h4>
+      <p>1 つのコミットには、次のような情報が付きます。これらがマイニングの生の材料です。</p>
+      <ul>
+        <li><b>ハッシュ</b>：コミットを一意に識別する値。</li>
+        <li><b>author と committer</b>：変更を書いた人と、実際に記録した人（リベース等で異なることがある）。</li>
+        <li><b>日時</b>：author 日時と commit 日時。</li>
+        <li><b>親コミット</b>：直前の状態への参照（マージなら複数）。</li>
+        <li><b>メッセージ</b>：変更の意図を書いた説明文。<code>fix</code>・<code>feat</code> などの規約が使われることも多い。</li>
+      </ul>
+    </div>
+
+    <!-- DEMO 1: Commit-log parser -->
+    <div class="demo reveal" id="demoParse">
+      <span class="dtag"><span lang="ja">デモ 1</span><span lang="en">Demo 1</span></span>
+      <h4>コミットログ・パーサ</h4>
+      <p class="dnote">1 行に 1 コミットを <code>ハッシュ | 著者 | 日付 | メッセージ</code> の形（縦棒区切り）で書くと、各項目に分解して表にします。さらにメッセージ先頭のキーワード（fix / feat / refactor / docs / test など）から変更の種別を推定し、色分けチップで示します。これは <code>git log --pretty=format:"%h|%an|%ad|%s"</code> の出力を読み解く処理の縮小版です。</p>
+      <label class="fld" for="parseInput">コミットログ / Commit log</label>
+      <textarea id="parseInput" rows="7" spellcheck="false">a1b2c3d | Alice | 2024-05-01 | fix: guard against null commit
+b2c3d4e | Bob | 2024-05-01 | feat: add CSV export option
+c3d4e5f | Alice | 2024-05-02 | refactor: extract parser module
+d4e5f6a | Carol | 2024-05-03 | docs: update README usage
+e5f6a7b | Bob | 2024-05-03 | fix typo in error message
+f6a7b8c | Alice | 2024-05-04 | test: add cases for the parser</textarea>
+      <div class="try">
+        <span class="tlbl">例</span>
+        <button type="button" data-log="a1b2c3d | Alice | 2024-05-01 | fix: guard against null commit&#10;b2c3d4e | Bob | 2024-05-01 | feat: add CSV export option&#10;c3d4e5f | Alice | 2024-05-02 | refactor: extract parser module&#10;d4e5f6a | Carol | 2024-05-03 | docs: update README usage&#10;e5f6a7b | Bob | 2024-05-03 | fix typo in error message&#10;f6a7b8c | Alice | 2024-05-04 | test: add cases for the parser">6コミット</button>
+        <button type="button" data-log="9f8e7d6 | Dan | 2024-06-10 | feat: initial import&#10;8e7d6c5 | Dan | 2024-06-11 | chore: add CI config&#10;7d6c5b4 | Erin | 2024-06-12 | fix: handle empty input&#10;6c5b4a3 | Erin | 2024-06-12 | perf: cache lookups">機能とバグ</button>
+        <button type="button" data-log="11aa22b | Frank | 2024-07-01 | update dependencies&#10;22bb33c | Grace | 2024-07-02 | fixes #142: crash on save&#10;33cc44d | Frank | 2024-07-03 | refactor and cleanup">種別さまざま</button>
+      </div>
+      <div class="demo-out" id="parseOut" aria-live="polite"></div>
+    </div>
+
+    <p class="layer"><span lang="ja">コードで動かす</span><span lang="en">Run the code</span></p>
+    <div class="prose">
+      <p>まずは Git 自身のコマンドで、履歴とメタデータをのぞいてみます。<code>git log</code> は整形した出力を作れるので、後段の解析に渡しやすい形にできます。</p>
+    </div>
+    <div class="code-wrap attached">
+      <div class="code-head"><span class="lbl">Shell</span><span class="lang-tag">inspect_git.sh</span><button class="copy" type="button" onclick="copyCode(this)">copy</button></div>
+      <pre><code><span class="cm"># 直近3件を「ハッシュ|著者|日付|件名」の1行形式で出す</span>
+git log -n <span class="nu">3</span> --pretty=format:<span class="st">"%h|%an|%ad|%s"</span> --date=short
+
+<span class="cm"># あるコミットの差分（diff）を見る</span>
+git show a1b2c3d
+
+<span class="cm"># ファイル各行を最後に変更したコミットを対応づける（blame）</span>
+git blame src/parser.py</code></pre>
+    </div>
+    <div class="code-out"><span class="olbl">出力例 / Output</span><pre><code>a1b2c3d|Alice|2024-05-01|fix: guard against null commit
+b2c3d4e|Bob|2024-05-01|feat: add CSV export option
+c3d4e5f|Alice|2024-05-02|refactor: extract parser module</code></pre></div>
+
+    <div class="callout tip">
+      <h4>この Step のまとめ</h4>
+      <p>Git はコミットの積み重ねで歴史を残し、コミットは親をたどると DAG を作ります。1 コミットにはハッシュ・作者・日時・親・メッセージが付き、これがマイニングの材料です。次は、この履歴を Python でまとめて取り出します。</p>
+    </div>
+  </div>
+</section>
+
+<!-- STEP 3 -->
+<section id="step3" class="soft-sec">
+  <div class="wrap reveal">
+    <div class="stephead">
+      <span class="num">3</span>
+      <div class="tt"><h2>コミット履歴を抽出する</h2><span class="st-en">Extracting commit history</span></div>
+    </div>
+    <div class="steprule"></div>
+
+    <p class="layer first"><span lang="ja">概要</span><span lang="en">Overview</span></p>
+    <div class="prose">
+      <p>データ源が分かったら、次はそれを<b>プログラムから扱える形で取り出す</b>工程です。手作業でログを眺めるのではなく、全コミットを一つずつたどり、必要な項目（作者・日時・変更ファイル・差分）を集めます。Python なら、専用ライブラリを使うと数行で書けます。</p>
+    </div>
+
+    <p class="layer"><span lang="ja">仕組み</span><span lang="en">How it works</span></p>
+    <div class="prose">
+      <h4>取り出し方は大きく2通り</h4>
+      <p>ひとつは、Git のコマンド出力を<b>整形して読む</b>方法です。<code>git log --pretty=format:</code> で決まった区切り文字の行を出し、標準ライブラリ <code>subprocess</code> で受け取って分解します。依存が少なく、どんな環境でも動くのが利点です。</p>
+      <p>もうひとつは、<b>専用ライブラリを使う</b>方法です。<b>PyDriller</b> はコミットを 1 件ずつオブジェクトとして返し、変更ファイルや追加・削除行数まで手軽に取れます。<b>GitPython</b> はより低レベルに Git を操作できます。研究や分析では、扱いやすさから PyDriller がよく使われます。</p>
+      <h4>取り出した後の形</h4>
+      <p>集めたデータは、たいてい「1 行 = 1 つの変更（あるコミットの、ある変更ファイル）」という表の形にまとめます。列は「コミット・日時・作者・ファイル名・追加行・削除行」などです。この<b>ロング形式</b>の表にしておくと、次の Step で pandas による集計がそのまま使えます。</p>
+    </div>
+
+    <p class="layer"><span lang="ja">コードで動かす</span><span lang="en">Run the code</span></p>
+    <div class="prose">
+      <p>まずは依存の少ない <code>subprocess</code> ＋ <code>git log</code> の方法です。区切り文字を決めて 1 行ずつ受け取り、分解します。</p>
+    </div>
+    <div class="code-wrap attached">
+      <div class="code-head"><span class="lbl">Python</span><span class="lang-tag">git_log_subprocess.py</span><button class="copy" type="button" onclick="copyCode(this)">copy</button></div>
+      <pre><code><span class="kw">import</span> subprocess
+
+fmt = <span class="st">"%h|%an|%ad|%s"</span>  <span class="cm"># ハッシュ|著者|日付|件名</span>
+out = subprocess.run(
+    [<span class="st">"git"</span>, <span class="st">"log"</span>, <span class="st">"--pretty=format:"</span> + fmt, <span class="st">"--date=short"</span>],
+    cwd=<span class="st">"path/to/repo"</span>, capture_output=<span class="kw">True</span>, text=<span class="kw">True</span>).stdout
+
+<span class="kw">for</span> line <span class="kw">in</span> out.splitlines():
+    h, author, date, subject = line.split(<span class="st">"|"</span>, <span class="nu">3</span>)
+    <span class="kw">print</span>(date, h, author, <span class="st">"::"</span>, subject)</code></pre>
+    </div>
+    <div class="code-out"><span class="olbl">出力例 / Output</span><pre><code>2024-05-04 f6a7b8c Alice :: test: add cases for the parser
+2024-05-03 e5f6a7b Bob :: fix typo in error message
+2024-05-03 d4e5f6a Carol :: docs: update README usage
+2024-05-02 c3d4e5f Alice :: refactor: extract parser module</code></pre></div>
+
+    <div class="prose">
+      <p>次は <b>PyDriller</b> です。<code>Repository(path).traverse_commits()</code> でコミットを 1 件ずつたどり、コミットの属性や変更ファイルにアクセスします。<code>traverse_commits</code> は生成器なので、大きなリポジトリでも 1 件ずつ処理できます。</p>
+    </div>
+    <div class="code-wrap attached">
+      <div class="code-head"><span class="lbl">Python</span><span class="lang-tag">pydriller_traverse.py</span><button class="copy" type="button" onclick="copyCode(this)">copy</button></div>
+      <pre><code><span class="cm"># pip install pydriller</span>
+<span class="kw">from</span> pydriller <span class="kw">import</span> Repository
+
+<span class="kw">for</span> commit <span class="kw">in</span> Repository(<span class="st">"path/to/repo"</span>).traverse_commits():
+    <span class="kw">print</span>(commit.hash[:<span class="nu">7</span>], commit.author.name, <span class="st">"::"</span>, commit.msg.splitlines()[<span class="nu">0</span>])
+    <span class="kw">for</span> mf <span class="kw">in</span> commit.modified_files:
+        <span class="kw">print</span>(<span class="st">"    "</span>, mf.change_type.name, mf.filename,
+              <span class="st">"+"</span> + str(mf.added_lines), <span class="st">"-"</span> + str(mf.deleted_lines))</code></pre>
+    </div>
+    <div class="code-out"><span class="olbl">出力例 / Output</span><pre><code>c3d4e5f Alice :: refactor: extract parser module
+     MODIFY src/main.py +8 -22
+     ADD src/parser.py +40 -0
+b2c3d4e Bob :: feat: add CSV export option
+     MODIFY src/cli.py +25 -3
+     MODIFY README.md +6 -0</code></pre></div>
+
+    <div class="prose">
+      <p>PyDriller のコミットからは、ほかにも <code>commit.author_date</code>（日時）、<code>commit.parents</code>（親ハッシュ）、<code>commit.merge</code>（マージか）などが取れます。変更ファイル側では <code>added_lines</code> / <code>deleted_lines</code>（追加・削除行数）や <code>change_type</code>（ADD・MODIFY・DELETE・RENAME）が使えます。これらを並べれば、次の Step の指標づくりにそのまま渡せます。</p>
+    </div>
+
+    <div class="callout tip">
+      <h4>この Step のまとめ</h4>
+      <p>履歴の抽出は「subprocess ＋ git log」か「PyDriller」で。前者は依存が少なく、後者は変更ファイルや行数まで手軽に取れます。取り出したデータは「1行 = 1変更」の表にまとめておくと、次の集計がスムーズです。</p>
+    </div>
+  </div>
+</section>
+
+<!-- STEP 4 -->
+<section id="step4">
+  <div class="wrap reveal">
+    <div class="stephead">
+      <span class="num">4</span>
+      <div class="tt"><h2>変更履歴から指標を作る</h2><span class="st-en">Metrics from change history</span></div>
+    </div>
+    <div class="steprule"></div>
+
+    <p class="layer first"><span lang="ja">概要</span><span lang="en">Overview</span></p>
+    <div class="prose">
+      <p>抽出した履歴を、そのまま眺めても全体像はつかめません。そこで、たくさんの変更を<b>数えて指標に変え</b>、比べられるようにします。ここで作る指標は、後の欠陥予測やホットスポット分析の土台になります。</p>
+    </div>
+
+    <p class="layer"><span lang="ja">仕組み</span><span lang="en">How it works</span></p>
+    <div class="prose">
+      <h4>コードチャーン（code churn）</h4>
+      <p>あるファイルが、ある期間にどれだけ書き換えられたかの量です。もっとも素朴には<b>追加行数と削除行数の合計</b>で測ります。よく変わるファイルは、それだけ手が入り、壊れる機会も多いと考えられます。</p>
+    </div>
+    <div class="formula">
+      churn(f) <span class="op">=</span> &#931; ( added(f) <span class="op">+</span> deleted(f) )
+      <small>added(f): ファイル f に加わった行数　deleted(f): 削られた行数　&#931;: 対象期間の全コミットにわたる合計</small>
+    </div>
+    <div class="prose">
+      <h4>変更頻度とホットスポット</h4>
+      <p><b>変更頻度</b>は、そのファイルが何回のコミットで触られたかです。チャーンや複雑度と組み合わせて、「よく変わり、かつ複雑で危ない場所」を<b>ホットスポット</b>と呼びます。限られたレビューやテストの労力を、どこに集中させるべきかの手がかりになります。</p>
+      <h4>共変更（co-change）</h4>
+      <p>2 つのファイルが<b>同じコミットで一緒に変更される</b>傾向を共変更と呼びます。一緒に変わりやすいファイルは、見えない依存関係でつながっている可能性があります。共変更の強さは、頻出パターン分析と同じく<b>支持度（support）</b>と<b>確信度（confidence）</b>で表せます。</p>
+    </div>
+    <div class="formula">
+      support(A, B) <span class="op">=</span> A と B を共に含むコミット数<br>
+      confidence(A &rarr; B) <span class="op">=</span> support(A, B) <span class="op">/</span> support(A)
+      <small>confidence(A&rarr;B) は「A を変えたとき、同時に B も変えた割合」。0 から 1 の値をとります。</small>
+    </div>
+    <div class="prose">
+      <h4>作者数とバス係数</h4>
+      <p>ファイルやモジュールに<b>何人の作者が関わったか</b>も重要な指標です。関連して<b>バス係数（bus factor）</b>という考え方があります。「何人が突然いなくなると、プロジェクトが立ち行かなくなるか」を表す目安で、知識が特定の人に偏っているリスクを示します。値が小さいほど危うい状態です。</p>
+    </div>
+
+    <!-- DEMO 2: Code churn -->
+    <div class="demo reveal" id="demoChurn">
+      <span class="dtag"><span lang="ja">デモ 2</span><span lang="en">Demo 2</span></span>
+      <h4>コードチャーン計算機</h4>
+      <p class="dnote">1 行に <code>ファイル名 +追加 -削除</code> の形で変更を書きます（同じファイルが複数行あれば合計します）。ファイルごとにチャーン（追加＋削除）を求め、降順に並べてバーで強調します。変更回数（何回のコミットで触られたか）も数えます。</p>
+      <label class="fld" for="churnInput">ファイル変更（1行=1変更）/ File changes</label>
+      <textarea id="churnInput" rows="6" spellcheck="false">src/parser.py +120 -30
+src/parser.py +15 -8
+src/utils.py +40 -12
+tests/test_parser.py +60 -5
+src/cli.py +25 -25
+README.md +10 -0</textarea>
+      <div class="try">
+        <span class="tlbl">例</span>
+        <button type="button" data-churn="src/parser.py +120 -30&#10;src/parser.py +15 -8&#10;src/utils.py +40 -12&#10;tests/test_parser.py +60 -5&#10;src/cli.py +25 -25&#10;README.md +10 -0">サンプルA</button>
+        <button type="button" data-churn="core/engine.py +200 -140&#10;core/engine.py +80 -60&#10;core/engine.py +30 -20&#10;ui/view.py +45 -10&#10;docs/guide.md +12 -2">1ファイル集中</button>
+        <button type="button" data-churn="a.py +10 -10&#10;b.py +10 -10&#10;c.py +10 -10&#10;d.py +10 -10">均等</button>
+      </div>
+      <div class="demo-out" id="churnOut" aria-live="polite"></div>
+    </div>
+
+    <!-- DEMO 3: Co-change matrix -->
+    <div class="demo reveal" id="demoCochange">
+      <span class="dtag"><span lang="ja">デモ 3</span><span lang="en">Demo 3</span></span>
+      <h4>共変更マトリクス</h4>
+      <p class="dnote">1 行に、あるコミットで一緒に変更されたファイルを空白区切りで書きます（1行＝1コミット）。すべてのファイル対について、同時に変更されたコミット数（支持度）と、確信度（片方を変えたとき、もう片方も変えた割合）を計算し、支持度の高い順に表にします。</p>
+      <label class="fld" for="cochangeInput">コミットごとの変更ファイル集合 / Files per commit</label>
+      <textarea id="cochangeInput" rows="6" spellcheck="false">parser.py utils.py
+parser.py tests/test_parser.py
+parser.py utils.py cli.py
+cli.py README.md
+parser.py tests/test_parser.py</textarea>
+      <div class="try">
+        <span class="tlbl">例</span>
+        <button type="button" data-cc="parser.py utils.py&#10;parser.py tests/test_parser.py&#10;parser.py utils.py cli.py&#10;cli.py README.md&#10;parser.py tests/test_parser.py">サンプルA</button>
+        <button type="button" data-cc="model.py view.py&#10;model.py view.py&#10;model.py view.py controller.py&#10;view.py style.css">強い共変更</button>
+        <button type="button" data-cc="a.py b.py&#10;c.py d.py&#10;e.py f.py">独立な変更</button>
+      </div>
+      <div class="demo-out" id="cochangeOut" aria-live="polite"></div>
+    </div>
+
+    <p class="layer"><span lang="ja">コードで動かす</span><span lang="en">Run the code</span></p>
+    <div class="prose">
+      <p>PyDriller で集めた変更を「1行=1変更」の表にすれば、あとは <b>pandas</b> の集計だけです。ファイルごとにチャーンを合計し、降順に並べます。</p>
+    </div>
+    <div class="code-wrap attached">
+      <div class="code-head"><span class="lbl">Python</span><span class="lang-tag">churn_pandas.py</span><button class="copy" type="button" onclick="copyCode(this)">copy</button></div>
+      <pre><code><span class="kw">import</span> pandas <span class="kw">as</span> pd
+<span class="kw">from</span> pydriller <span class="kw">import</span> Repository
+
+records = []
+<span class="kw">for</span> commit <span class="kw">in</span> Repository(<span class="st">"path/to/repo"</span>).traverse_commits():
+    <span class="kw">for</span> mf <span class="kw">in</span> commit.modified_files:
+        records.append({<span class="st">"file"</span>: mf.filename,
+                        <span class="st">"added"</span>: mf.added_lines,
+                        <span class="st">"deleted"</span>: mf.deleted_lines})
+
+df = pd.DataFrame(records)
+df[<span class="st">"churn"</span>] = df[<span class="st">"added"</span>] + df[<span class="st">"deleted"</span>]
+hot = df.groupby(<span class="st">"file"</span>).agg(
+    commits=(<span class="st">"file"</span>, <span class="st">"size"</span>),
+    churn=(<span class="st">"churn"</span>, <span class="st">"sum"</span>),
+).sort_values(<span class="st">"churn"</span>, ascending=<span class="kw">False</span>)
+<span class="kw">print</span>(hot.head())</code></pre>
+    </div>
+    <div class="code-out"><span class="olbl">出力例 / Output</span><pre><code>                      commits  churn
+file
+src/parser.py               8    173
+tests/test_parser.py        5     65
+src/utils.py                4     52
+src/cli.py                  6     50
+README.md                   3     10</code></pre></div>
+
+    <div class="callout tip">
+      <h4>この Step のまとめ</h4>
+      <p>変更履歴は数えて指標に変えます。チャーン（追加＋削除）でよく変わる場所を、共変更（支持度・確信度）でつながりを、作者数やバス係数で知識の偏りを測ります。集計は pandas の <code>groupby</code> ひとつで書けます。</p>
+    </div>
+  </div>
+</section>
+
+<!-- STEP 5 -->
+<section id="step5" class="soft-sec">
+  <div class="wrap reveal">
+    <div class="stephead">
+      <span class="num">5</span>
+      <div class="tt"><h2>課題とバグを追跡する</h2><span class="st-en">Issues &amp; bug tracking</span></div>
+    </div>
+    <div class="steprule"></div>
+
+    <p class="layer first"><span lang="ja">概要</span><span lang="en">Overview</span></p>
+    <div class="prose">
+      <p>コミット履歴だけでなく、<b>課題管理（Issue トラッカー）</b>もマイニングの宝庫です。バグ報告・機能要望・議論が、いつ・誰によって・どう解決されたかまで残ります。ここでは、コミットと課題をどう結びつけ、どのコミットがバグを直したのか、さらにバグを埋め込んだのはどのコミットかを、どうやって推定するかを見ます。</p>
+    </div>
+
+    <p class="layer"><span lang="ja">仕組み</span><span lang="en">How it works</span></p>
+    <div class="prose">
+      <h4>Issue トラッカーとコミットの紐付け</h4>
+      <p>GitHub Issues や JIRA などの課題管理では、それぞれの課題に番号が振られます。開発者はコミットメッセージに <code>fix #123</code> や <code>closes #142</code> のように課題番号を書く慣習があり、これを手がかりに<b>コミットと課題を機械的に結びつけ</b>られます。番号の書き方には流儀があるので、正規表現でひろうのが定番です。</p>
+      <h4>バグ修正コミットの特定</h4>
+      <p>どのコミットが「バグを直したか」を知りたい場面はよくあります。素朴には、メッセージに <code>fix</code>・<code>bug</code>・<code>patch</code> といった語が含まれるかで判定します。より確実には、バグとして分類された課題（Issue）に紐づくコミットを、バグ修正コミットとみなします。ただしメッセージだけの判定はノイズが多く、過大にも過小にも数えうる点に注意します。</p>
+      <h4>SZZ アルゴリズムの考え方</h4>
+      <p>バグを<b>直した</b>コミットが分かると、次は「そのバグを<b>埋め込んだ</b>のはどのコミットか」を知りたくなります。これを推定する古典的な手法が <b>SZZ アルゴリズム</b>です。考え方はシンプルです。</p>
+      <ul>
+        <li>バグ修正コミットの diff を見て、<b>修正で変更・削除された行</b>を特定する。</li>
+        <li>それらの行を <code>git blame</code> でさかのぼり、<b>その行を最後に変更したコミット</b>を突き止める。</li>
+        <li>そのコミットを<b>バグ混入の候補</b>とみなす。</li>
+      </ul>
+      <p>実際には、空行やコメントだけの変更を除く、修正日より後のコミットを候補から外す、といった補正を加えて精度を上げます。SZZ は欠陥予測のデータ作り（どのコミットが「バグ入り」かのラベル付け）に広く使われます。</p>
+    </div>
+
+    <p class="layer"><span lang="ja">コードで動かす</span><span lang="en">Run the code</span></p>
+    <div class="prose">
+      <p>まずは基本の一歩、コミットメッセージから課題番号を正規表現で取り出します。標準ライブラリ <code>re</code> だけで書けます。</p>
+    </div>
+    <div class="code-wrap attached">
+      <div class="code-head"><span class="lbl">Python</span><span class="lang-tag">link_issues.py</span><button class="copy" type="button" onclick="copyCode(this)">copy</button></div>
+      <pre><code><span class="kw">import</span> re
+
+messages = [
+    <span class="st">"fix login crash (fixes #142)"</span>,
+    <span class="st">"Merge pull request #56 from feature/api"</span>,
+    <span class="st">"refactor: tidy up parser, see #142 and #143"</span>,
+    <span class="st">"update docs"</span>,
+]
+issue = re.compile(<span class="st">r"#(\d+)"</span>)
+fixkw = re.compile(<span class="st">r"\b(fix|fixes|fixed|close|closes|resolve|resolves)\b"</span>, re.I)
+
+<span class="kw">for</span> msg <span class="kw">in</span> messages:
+    ids = issue.findall(msg)
+    is_fix = bool(fixkw.search(msg))
+    <span class="kw">print</span>(ids, <span class="st">"fix"</span> <span class="kw">if</span> is_fix <span class="kw">else</span> <span class="st">"-"</span>, <span class="st">"::"</span>, msg)</code></pre>
+    </div>
+    <div class="code-out"><span class="olbl">出力例 / Output</span><pre><code>['142'] fix :: fix login crash (fixes #142)
+['56'] - :: Merge pull request #56 from feature/api
+['142', '143'] - :: refactor: tidy up parser, see #142 and #143
+[] - :: update docs</code></pre></div>
+
+    <div class="prose">
+      <p>この「番号の抽出」と「fix 系キーワードの判定」を組み合わせると、バグ修正コミットと課題の対応表が作れます。そこから SZZ の考え方で <code>git blame</code> をたどれば、バグ混入コミットの候補まで手が届きます。PyDriller には SZZ を助ける機能もあり、修正コミットから変更行の最終更新コミットを取り出せます。</p>
+    </div>
+
+    <div class="callout tip">
+      <h4>この Step のまとめ</h4>
+      <p>コミットメッセージの <code>#123</code> や fix 系キーワードで、コミットと課題・バグ修正を結びつけます。バグを埋め込んだコミットは、修正の変更行を blame でさかのぼる SZZ の発想で推定します。これが欠陥予測のラベル作りの土台です。</p>
+    </div>
+  </div>
+</section>
+
+<!-- STEP 6 -->
+<section id="step6">
+  <div class="wrap reveal">
+    <div class="stephead">
+      <span class="num">6</span>
+      <div class="tt"><h2>分析・可視化とこれから</h2><span class="st-en">Analysis, visualization &amp; caveats</span></div>
+    </div>
+    <div class="steprule"></div>
+
+    <p class="layer first"><span lang="ja">概要</span><span lang="en">Overview</span></p>
+    <div class="prose">
+      <p>指標がそろったら、最後は<b>集計して人に見せる</b>工程です。数字の表をグラフにすると、傾向や外れ値が一目で分かります。ただし、掘り出したデータには落とし穴も多く、結論を急ぐと簡単に誤ります。ここでは可視化の流れと、注意すべき点、そして再現性の大切さを見ます。</p>
+    </div>
+
+    <p class="layer"><span lang="ja">仕組み</span><span lang="en">How it works</span></p>
+    <div class="prose">
+      <h4>集計とグラフ化</h4>
+      <p>ここまでで作った「1行=1変更」の表は、<b>pandas</b> の <code>groupby</code> でファイル別・作者別・月別に集計できます。集計した結果を <b>matplotlib</b> で棒グラフや折れ線にすれば、ホットスポットの順位、時間による変更量の推移、作者ごとの貢献などが見えてきます。流れとしては「PyDriller で抽出 → pandas で集計 → matplotlib で作図」の 3 段が定番です。</p>
+      <h4>マイニングの落とし穴</h4>
+      <p>リポジトリのデータは、そのままでは<b>ノイズだらけ</b>です。代表的な注意点を挙げます。</p>
+      <ul>
+        <li><b>tangled commit（もつれたコミット）</b>：1 つのコミットに、バグ修正と機能追加とリファクタが混ざっていること。指標の対応づけを狂わせます。</li>
+        <li><b>ノイズと表記ゆれ</b>：同じ人が別名のメールでコミットする、自動整形やファイル移動で大量の行が動く、といった見かけ上の変更が紛れます。</li>
+        <li><b>生存者バイアス</b>：今も残っているファイルやプロジェクトだけを見ると、途中で消えたものを見落とし、結論が偏ります。</li>
+      </ul>
+      <h4>再現性</h4>
+      <p>マイニングの結論は、抽出条件や前処理の設計に強く左右されます。だからこそ、対象リポジトリの版（コミットハッシュ）、使ったツールの版、除外したファイルの条件などを<b>記録し、他人が同じ手順をたどれる</b>ようにすることが欠かせません。再現できない分析は、主張の根拠になりません。</p>
+    </div>
+
+    <div class="callout tip">
+      <h4>この Step のまとめ</h4>
+      <p>「抽出 → 集計（pandas）→ 作図（matplotlib）」で傾向を見せます。ただし tangled commit・ノイズ・生存者バイアスといった落とし穴があり、抽出条件やツールの版を記録して再現性を保つことが、正しい結論への近道です。</p>
+    </div>
+  </div>
+</section>
+
+<!-- CLOSING -->
+<section id="closing" class="soft-sec">
+  <div class="wrap reveal">
+    <p class="eyebrow"><span lang="ja">まとめ</span><span lang="en">Wrap-up</span></p>
+    <h2 class="big">学びの振り返りと、さらに学ぶために</h2>
+    <div class="prose" style="margin-top:22px">
+      <p>このモジュールでは、開発の履歴からデータを掘り出す道具を、パイプラインに沿って順に手に入れました。</p>
+      <ul>
+        <li><b>MSRとは</b>：コミット・課題・レビュー・CI から実態を掘り出す、経験的ソフトウェア工学の営み。</li>
+        <li><b>Gitの仕組み</b>：コミットの DAG、diff・blame、メタデータという材料を理解する。</li>
+        <li><b>履歴の抽出</b>：subprocess ＋ git log、または PyDriller でプログラムから取り出す。</li>
+        <li><b>変更指標</b>：チャーン・変更頻度・共変更・作者数で、開発の傾向を数値にする。</li>
+        <li><b>課題とバグ</b>：課題番号の紐付け、バグ修正コミットの特定、SZZ でバグ混入をさかのぼる。</li>
+        <li><b>分析・可視化</b>：pandas と matplotlib で見せ、落とし穴を避け、再現性を保つ。</li>
+      </ul>
+      <p>次に進むなら、下の道具と資料が役に立ちます。</p>
+    </div>
+
+    <div class="res-grid reveal">
+      <div class="res">
+        <h5>公開データセット・基盤</h5>
+        <ul>
+          <li><b>公開 GitHub リポジトリ</b>：任意のオープンソースを clone すれば、それ自体がマイニング対象。</li>
+          <li><b>GH Archive</b>：GitHub の公開イベントを時系列で集めたアーカイブ。</li>
+          <li><b>GHTorrent</b>：GitHub の API データを収集したデータセット（歴史的資料）。</li>
+          <li><b>World of Code</b>：巨大な OSS 横断のバージョン管理データ基盤。</li>
+        </ul>
+      </div>
+      <div class="res">
+        <h5>ライブラリ</h5>
+        <ul>
+          <li><b>PyDriller</b>：コミット・変更ファイルを手軽にたどる。</li>
+          <li><b>GitPython</b>：Git を低レベルに操作する。</li>
+          <li><b>pandas</b>：抽出データの集計・整形。</li>
+          <li><b>PyGithub</b>：GitHub API 経由で Issue や PR を取得。</li>
+        </ul>
+      </div>
+      <div class="res">
+        <h5>参考書</h5>
+        <ul>
+          <li>Bird, Menzies, Zimmermann『The Art and Science of Analyzing Software Data』</li>
+          <li>Bird, Menzies, Zimmermann『Perspectives on Data Science for Software Engineering』</li>
+          <li>MSR（Mining Software Repositories）分野の解説・チュートリアル</li>
+        </ul>
+      </div>
+      <div class="res">
+        <h5>次のモジュールへ</h5>
+        <ul>
+          <li>開発データの前処理とデータセット構築</li>
+          <li>機械学習（分類・回帰・評価）</li>
+          <li>ネットワーク分析（開発者の協働）</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="callout tip">
+      <h4>おつかれさまでした</h4>
+      <p>ここで学んだ「リポジトリから取り出す → 指標に変える → 見せる」という流れは、開発データに限らず、記録が残るあらゆる現象を定量的に読み解くときに共通の考え方です。手元のサンプルを書き換えて、3 つのデモをもう一度動かしてみてください。値がどう変わるかを確かめると、理解がぐっと深まります。</p>
+    </div>
+  </div>
+</section>
+
+<section id="beyond">
+  <div class="wrap reveal">
+    <p class="eyebrow"><span lang="ja">発展トピック</span><span lang="en">Beyond this module</span></p>
+    <h2 class="big">このコースでは扱わない、関係する発展トピック</h2>
+    <div class="prose" style="margin-top:22px">
+      <p>このモジュールでは、リポジトリからデータを取り出し、指標に変えて読み解く「基礎の流れ」を扱いました。いっぽうで、実際の研究や実務では、より進んだ手法や大規模なデータ基盤が使われています。ここでは、このコースでは踏み込まないものの、知っておくと視野が広がる発展的なトピックを紹介します。深掘りは各自の興味に合わせてどうぞ。</p>
+    </div>
+
+    <div class="res-grid reveal">
+      <div class="res">
+        <h5>欠陥予測とプロセス指標</h5>
+        <ul>
+          <li><b>SZZ と欠陥予測</b>：バグ混入コミットを推定してラベルを作り、どこが壊れやすいかを予測する。</li>
+          <li><b>プロセス指標 対 コード指標</b>：変更の履歴から作る指標（プロセス指標）と、コードそのものの指標（複雑度など）の、予測力の比較。</li>
+          <li><b>バグ局在化（fault localization）</b>：バグ報告から、原因になりそうなファイルや箇所を絞り込む。</li>
+        </ul>
+      </div>
+      <div class="res">
+        <h5>社会技術ネットワーク</h5>
+        <ul>
+          <li><b>開発者協働ネットワーク</b>：誰と誰が同じコードを触るかをグラフにし、中心人物や分業構造を見る。</li>
+          <li><b>コードレビュー分析</b>：レビューの速さ・指摘の量・承認の経路から、品質やボトルネックを読み解く。</li>
+        </ul>
+      </div>
+      <div class="res">
+        <h5>大規模な鉱脈</h5>
+        <ul>
+          <li><b>World of Code</b>：OSS 全体を横断する巨大なバージョン管理データ基盤。</li>
+          <li><b>GH Archive</b>：GitHub の公開イベントを時系列に集めた大規模アーカイブ。</li>
+          <li><b>大規模横断分析</b>：多数のプロジェクトをまたいで傾向を調べる、生態系レベルの研究。</li>
+        </ul>
+      </div>
+      <div class="res">
+        <h5>コードへの機械学習</h5>
+        <ul>
+          <li><b>コード表現学習</b>：ソースコードやコミットをベクトルにして機械学習に載せる（code2vec・CodeBERT など）。</li>
+          <li><b>変更のパターン学習</b>：過去の変更から、次に必要な変更や共変更を学習して支援する。</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<button class="totop" type="button" aria-label="上へ戻る" title="上へ戻る">&uarr;</button>
+
+<!-- FOOTER -->
+<footer>
+  <div class="wrap">
+    <div class="foot-grid">
+      <div>
+        <h3><span lang="ja">この学習モジュールについて</span><span lang="en">About this module</span></h3>
+        <div class="cite">
+          <span lang="ja">「研究で使う技術を実践的に学ぶ」学習コースの1モジュールです。概要から理論、動かせるコードまでを一続きにして、リポジトリマイニングの基礎を独習できるように構成しています。内容は分野標準の一般的なもので、特定の研究や論文には紐づきません。</span>
+          <span lang="en">A module in a learning course on research skills, walking from overview to theory to runnable code so you can study the basics of mining software repositories on your own. The content is standard and general, not tied to any specific study.</span>
+        </div>
+      </div>
+      <div>
+        <h3><span lang="ja">制作</span><span lang="en">Author</span></h3>
+        <p class="muted-s">
+          <b>Yuta Kimura</b><br>
+          <span lang="ja">大阪公立大学工業高等専門学校</span><span lang="en">Osaka Metropolitan University College of Technology</span><br>
+          <a href="mailto:y.kimura@omu.ac.jp">y.kimura [at] omu.ac.jp</a>
+        </p>
+      </div>
+    </div>
+    <div class="foot-grid3">
+      <div>
+        <h3><span lang="ja">連絡先</span><span lang="en">Contact</span></h3>
+        <p class="muted-s">
+          <b>Yuta Kimura</b><br>
+          <span lang="ja">大阪公立大学工業高等専門学校</span><span lang="en">Osaka Metropolitan University College of Technology</span><br>
+          <a href="mailto:y.kimura@omu.ac.jp">y.kimura [at] omu.ac.jp</a>
+        </p>
+      </div>
+      <div>
+        <h3><span lang="ja">サイト</span><span lang="en">Site</span></h3>
+        <p class="muted-s">
+          <a href="../index.html">Home</a><br>
+          <a href="../publications.html"><span lang="ja">業績・研究活動</span><span lang="en">Publications &amp; research activities</span></a><br>
+          <a href="../teaching.html"><span lang="ja">教育</span><span lang="en">Teaching</span></a><br>
+          <a href="../software-engineering.html"><span lang="ja">ソフトウェア工学とは</span><span lang="en">What is software engineering?</span></a><br>
+          <a href="../glossary.html"><span lang="ja">研究用語ミニ辞典</span><span lang="en">Research glossary</span></a>
+        </p>
+      </div>
+      <div>
+        <h3><span lang="ja">関連教材</span><span lang="en">Related material</span></h3>
+        <p class="muted-s">
+          <a href="../course/software-testing.html"><span lang="ja">ソフトウェアテスト学習ガイド</span><span lang="en">Software Testing Guide</span></a><br>
+          <a href="../course/intelligent-informatics-1.html"><span lang="ja">知能情報実験実習1</span><span lang="en">Intelligent Informatics Lab I</span></a><br>
+          <a href="../course/index.html"><span lang="ja">ソフトウェア工学</span><span lang="en">Software Engineering</span></a><br>
+          <a href="https://researchmap.jp/kimura_yuta" target="_blank" rel="noopener">researchmap</a>
+        </p>
+      </div>
+    </div>
+    <div class="foot-rule"></div>
+    <p class="foot-note">
+      <span lang="ja">本ページは学習用のプロトタイプ教材です。コード例は分野標準のライブラリ（PyDriller・GitPython・pandas）にもとづき、出力例は実際の実行で得られる形に合わせた代表的な値です。</span>
+      <span lang="en">This page is a prototype learning material. Code examples use standard libraries (PyDriller, GitPython, pandas), and the shown outputs are representative values in the form a real run would produce.</span>
+    </p>
+  </div>
+</footer>
+
+<script>
+  /* language: setLang / toggleLang, persisted in localStorage 'site-lang' only */
+  function setLang(l){document.body.classList.remove('lang-ja','lang-en');document.body.classList.add('lang-'+l);document.documentElement.lang=l;
+    try{localStorage.setItem('site-lang',l)}catch(e){}
+    try{var q=new URLSearchParams(location.search);q.set('lang',l);history.replaceState(null,'',location.pathname+'?'+q+location.hash)}catch(e){}}
+  function toggleLang(){setLang(document.body.classList.contains('lang-ja')?'en':'ja')}
+  (function(){var u=null;try{u=new URLSearchParams(location.search).get('lang')}catch(e){}
+    var s=null;try{s=localStorage.getItem('site-lang')}catch(e){}
+    var l=(u==='en'||u==='ja')?u:((s==='en'||s==='ja')?s:'ja');if(l!=='ja')setLang(l);})();
+  if('IntersectionObserver' in window){
+    var io=new IntersectionObserver(function(es){
+      es.forEach(function(e){ if(e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target); } });
+    },{threshold:0.10, rootMargin:"0px 0px -6% 0px"});
+    document.querySelectorAll('.reveal').forEach(function(el){ io.observe(el); });
+  } else { document.querySelectorAll('.reveal').forEach(function(el){ el.classList.add('in'); }); }
+
+  /* copy code (in-memory only, no storage) */
+  function copyCode(btn){
+    var pre=btn.closest('.code-wrap').querySelector('pre code');
+    var text=pre.innerText;
+    if(navigator.clipboard&&navigator.clipboard.writeText){
+      navigator.clipboard.writeText(text).then(function(){flash(btn);},function(){});
+    }
+  }
+  function flash(btn){var o=btn.textContent;btn.textContent='copied';setTimeout(function(){btn.textContent=o;},1200);}
+</script>
+
+<script>
+/* ==================== interactive demos (vanilla JS, self-contained) ==================== */
+(function(){
+  function escapeHtml(s){ return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+  function lines(v){ return v.split('\n').map(function(s){return s.trim();}).filter(function(s){return s.length;}); }
+
+  /* ---- commit type classification (shared) ---- */
+  var TYPES = {
+    fix:      {ja:'バグ修正',   bg:'rgba(176,74,62,.14)',  fg:'#B04A3E'},
+    feat:     {ja:'機能追加',   bg:'rgba(14,111,92,.14)',  fg:'#0A5748'},
+    refactor: {ja:'リファクタ', bg:'rgba(138,109,59,.16)', fg:'#8A6D3B'},
+    docs:     {ja:'文書',       bg:'var(--bg-3)',          fg:'#3C4340'},
+    test:     {ja:'テスト',     bg:'rgba(14,111,92,.09)',  fg:'#0A5748'},
+    chore:    {ja:'雑務',       bg:'var(--bg-3)',          fg:'#6B746F'},
+    other:    {ja:'その他',     bg:'var(--bg-3)',          fg:'#6B746F'}
+  };
+  function classify(msg){
+    var m=(msg||'').trim().toLowerCase();
+    var pm=m.match(/^([a-z]+)(\([^)]*\))?!?\s*:/);
+    var map={fix:'fix',bugfix:'fix',hotfix:'fix',feat:'feat',feature:'feat',
+             refactor:'refactor',docs:'docs',doc:'docs',test:'test',tests:'test',
+             chore:'chore',build:'chore',ci:'chore',perf:'chore',style:'chore'};
+    if(pm && map[pm[1]]) return map[pm[1]];
+    if(/\b(fix|fixes|fixed|bug|hotfix|patch)\b/.test(m)) return 'fix';
+    if(/\b(feat|feature|implement)\b/.test(m)) return 'feat';
+    if(/\b(refactor|cleanup|clean up|tidy|rename|restructure)\b/.test(m)) return 'refactor';
+    if(/\b(docs?|documentation|readme)\b/.test(m)) return 'docs';
+    if(/\b(test|tests|testing|spec)\b/.test(m)) return 'test';
+    if(/\b(chore|build|ci|deps|dependencies|bump|config|perf)\b/.test(m)) return 'chore';
+    return 'other';
+  }
+  function typeChip(key){
+    var t=TYPES[key]||TYPES.other;
+    return '<span class="chip" style="background:'+t.bg+';color:'+t.fg+';border-color:transparent">'+t.ja+'</span>';
+  }
+
+  /* ---- Demo 1: commit-log parser ---- */
+  var parseInput=document.getElementById('parseInput'),
+      parseOut=document.getElementById('parseOut');
+  function renderParse(){
+    var ls=lines(parseInput.value);
+    if(!ls.length){ parseOut.innerHTML='<div class="chipcount">コミットを1行ずつ入力してください。</div>'; return; }
+    var rows=ls.map(function(l){
+      var parts=l.split('|').map(function(x){return x.trim();});
+      var h=parts[0]||'', a=parts[1]||'', d=parts[2]||'', msg=parts.slice(3).join(' | ').trim();
+      return {h:h, a:a, d:d, msg:msg, type:classify(msg)};
+    });
+    var counts={};
+    rows.forEach(function(r){ counts[r.type]=(counts[r.type]||0)+1; });
+    var head='<div style="overflow-x:auto;max-width:100%"><table class="dtable"><tr><th>ハッシュ</th><th>著者</th><th>日付</th><th>メッセージ</th><th>種別</th></tr>';
+    var body=rows.map(function(r){
+      return '<tr><td>'+escapeHtml(r.h)+'</td>'+
+        '<td style="text-align:left;font-family:var(--sans)">'+escapeHtml(r.a)+'</td>'+
+        '<td style="text-align:left">'+escapeHtml(r.d)+'</td>'+
+        '<td style="text-align:left;font-family:var(--mono)">'+escapeHtml(r.msg)+'</td>'+
+        '<td style="text-align:left">'+typeChip(r.type)+'</td></tr>';
+    }).join('');
+    var order=['fix','feat','refactor','docs','test','chore','other'];
+    var summary=order.filter(function(k){return counts[k];})
+      .map(function(k){ return typeChip(k)+' &times;'+counts[k]; }).join('　');
+    parseOut.innerHTML=head+body+'</table></div>'+
+      '<div class="chipcount">'+rows.length+' コミット / commits　'+summary+'</div>';
+  }
+  if(parseInput){
+    parseInput.addEventListener('input', renderParse);
+    document.querySelectorAll('#demoParse .try button').forEach(function(b){
+      b.addEventListener('click', function(){ parseInput.value=b.getAttribute('data-log'); renderParse(); });
+    });
+    renderParse();
+  }
+
+  /* ---- Demo 2: code churn calculator ---- */
+  var churnInput=document.getElementById('churnInput'),
+      churnOut=document.getElementById('churnOut');
+  function renderChurn(){
+    var ls=lines(churnInput.value);
+    var agg={};
+    ls.forEach(function(l){
+      var m=l.match(/^(\S+)\s+\+?(\d+)\s+-?(\d+)/);
+      if(!m) return;
+      var f=m[1], ad=parseInt(m[2],10), de=parseInt(m[3],10);
+      if(!agg[f]) agg[f]={added:0,deleted:0,commits:0};
+      agg[f].added+=ad; agg[f].deleted+=de; agg[f].commits+=1;
+    });
+    var rows=Object.keys(agg).map(function(f){
+      var o=agg[f];
+      return {file:f, added:o.added, deleted:o.deleted, commits:o.commits, churn:o.added+o.deleted};
+    });
+    if(!rows.length){ churnOut.innerHTML='<div class="chipcount">「ファイル名 +追加 -削除」の形式で入力してください。</div>'; return; }
+    rows.sort(function(a,b){ return b.churn-a.churn; });
+    var maxC=rows[0].churn||1, total=0;
+    rows.forEach(function(r){ total+=r.churn; });
+    var head='<div style="overflow-x:auto;max-width:100%"><table class="dtable"><tr><th>ファイル</th><th>変更回数</th><th>+追加</th><th>-削除</th><th>チャーン</th></tr>';
+    var body=rows.map(function(r){
+      var w=Math.max(4, Math.round(130*r.churn/maxC));
+      return '<tr><td>'+escapeHtml(r.file)+'</td>'+
+        '<td>'+r.commits+'</td><td>'+r.added+'</td><td>'+r.deleted+'</td>'+
+        '<td style="text-align:left"><span style="font-variant-numeric:tabular-nums">'+r.churn+'</span> '+
+        '<span style="display:inline-block;vertical-align:middle;height:8px;width:'+w+'px;border-radius:999px;background:linear-gradient(90deg,var(--accent-2),var(--accent))"></span></td></tr>';
+    }).join('');
+    churnOut.innerHTML=head+body+'</table></div>'+
+      '<div class="chipcount">'+rows.length+' ファイル ・ 合計チャーン '+total+' 行 ・ churn = 追加 + 削除</div>';
+  }
+  if(churnInput){
+    churnInput.addEventListener('input', renderChurn);
+    document.querySelectorAll('#demoChurn .try button').forEach(function(b){
+      b.addEventListener('click', function(){ churnInput.value=b.getAttribute('data-churn'); renderChurn(); });
+    });
+    renderChurn();
+  }
+
+  /* ---- Demo 3: co-change matrix ---- */
+  var cochangeInput=document.getElementById('cochangeInput'),
+      cochangeOut=document.getElementById('cochangeOut');
+  function renderCochange(){
+    var ls=lines(cochangeInput.value);
+    var commits=ls.map(function(l){
+      var fs=l.split(/[\s,]+/).filter(function(x){return x.length;});
+      var seen={}, uniq=[];
+      fs.forEach(function(f){ if(!seen[f]){ seen[f]=1; uniq.push(f); } });
+      return uniq;
+    }).filter(function(fs){ return fs.length; });
+    if(!commits.length){ cochangeOut.innerHTML='<div class="chipcount">コミットごとの変更ファイルを1行ずつ入力してください。</div>'; return; }
+    var fileCount={}, pairCount={};
+    commits.forEach(function(fs){
+      fs.forEach(function(f){ fileCount[f]=(fileCount[f]||0)+1; });
+      for(var i=0;i<fs.length;i++){
+        for(var j=i+1;j<fs.length;j++){
+          var a=fs[i], b=fs[j];
+          var key=(a<b?a+' '+b:b+' '+a);
+          pairCount[key]=(pairCount[key]||0)+1;
+        }
+      }
+    });
+    var pairs=Object.keys(pairCount).map(function(k){
+      var ab=k.split(' '), A=ab[0], B=ab[1], s=pairCount[k];
+      return {A:A, B:B, support:s, cab:s/fileCount[A], cba:s/fileCount[B]};
+    });
+    if(!pairs.length){ cochangeOut.innerHTML='<div class="chipcount">同時に変更されたファイル対がありません（各コミットに2つ以上のファイルを含めてください）。</div>'; return; }
+    pairs.sort(function(x,y){ return (y.support-x.support) || ((y.cab+y.cba)-(x.cab+x.cba)); });
+    var head='<div style="overflow-x:auto;max-width:100%"><table class="dtable"><tr><th>ファイル A</th><th>ファイル B</th><th>支持度</th><th>conf A&rarr;B</th><th>conf B&rarr;A</th></tr>';
+    var maxS=pairs[0].support||1;
+    var body=pairs.map(function(p){
+      var a=(0.10+0.55*(p.support/maxS)).toFixed(3);
+      return '<tr><td>'+escapeHtml(p.A)+'</td><td style="text-align:left;font-family:var(--mono)">'+escapeHtml(p.B)+'</td>'+
+        '<td style="background:rgba(14,111,92,'+a+')">'+p.support+'</td>'+
+        '<td>'+p.cab.toFixed(2)+'</td><td>'+p.cba.toFixed(2)+'</td></tr>';
+    }).join('');
+    cochangeOut.innerHTML=head+body+'</table></div>'+
+      '<div class="chipcount">'+commits.length+' コミット ・ 支持度 = 同時変更コミット数 ・ confidence(A&rarr;B) = 支持度 / A の変更コミット数</div>';
+  }
+  if(cochangeInput){
+    cochangeInput.addEventListener('input', renderCochange);
+    document.querySelectorAll('#demoCochange .try button').forEach(function(b){
+      b.addEventListener('click', function(){ cochangeInput.value=b.getAttribute('data-cc'); renderCochange(); });
+    });
+    renderCochange();
+  }
+})();
+</script>
+
+<script>
+/* ==================== nav controllers + TOC scroll-spy + back-to-top ==================== */
+(function(){
+  function syncLangUI(l){
+    var ja=l==='ja', lists=document.querySelectorAll('.lswitch');
+    for(var i=0;i<lists.length;i++){
+      var a=lists[i].querySelector('.ls-ja'), e=lists[i].querySelector('.ls-en');
+      if(a) a.setAttribute('aria-pressed', ja?'true':'false');
+      if(e) e.setAttribute('aria-pressed', ja?'false':'true');
+    }
+  }
+  window.syncLangUI=syncLangUI;
+  if(typeof window.setLang==='function'){ var _s=window.setLang; window.setLang=function(l){ _s(l); syncLangUI(l); }; }
+  syncLangUI(document.body.classList.contains('lang-en')?'en':'ja');
+
+  var groups=document.querySelectorAll('.navlinks .navgroup');
+  for(var g=0; g<groups.length; g++){ (function(grp){
+    var top=grp.querySelector('.navtop'), panel=grp.querySelector('.navpanel');
+    if(!panel||!top) return;
+    function set(x){ top.setAttribute('aria-expanded', x?'true':'false'); }
+    grp.addEventListener('mouseenter', function(){ grp.classList.remove('collapsed'); set(true); });
+    grp.addEventListener('mouseleave', function(){ set(false); });
+    grp.addEventListener('focusin', function(){ if(!grp.classList.contains('collapsed')) set(true); });
+    grp.addEventListener('focusout', function(e){ if(!grp.contains(e.relatedTarget)){ grp.classList.remove('collapsed'); set(false); } });
+    grp.addEventListener('keydown', function(e){ if(e.key==='Escape'){ grp.classList.add('collapsed'); set(false); top.focus(); } });
+  })(groups[g]); }
+
+  var tog=document.getElementById('navToggle'), ov=document.getElementById('mobnav');
+  if(tog && ov){
+    function openNav(){ document.body.classList.add('navopen'); tog.setAttribute('aria-expanded','true'); ov.setAttribute('aria-hidden','false');
+      var f=ov.querySelector('a,button'); if(f){ requestAnimationFrame(function(){ f.focus(); }); } }
+    function closeNav(){ document.body.classList.remove('navopen'); tog.setAttribute('aria-expanded','false'); ov.setAttribute('aria-hidden','true'); tog.focus(); }
+    tog.addEventListener('click', function(){ document.body.classList.contains('navopen')?closeNav():openNav(); });
+    ov.addEventListener('click', function(e){ if(e.target.closest('a')) closeNav(); });
+    document.addEventListener('keydown', function(e){ if(e.key==='Escape' && document.body.classList.contains('navopen')) closeNav(); });
+  }
+
+  /* TOC scroll-spy */
+  var bar=document.querySelector('.tocbar');
+  if(bar){
+    var pills=Array.prototype.slice.call(bar.querySelectorAll('.tocpill')), map={};
+    pills.forEach(function(p){ map[p.getAttribute('href').slice(1)]=p; });
+    if('IntersectionObserver' in window){
+      var spy=new IntersectionObserver(function(es){
+        es.forEach(function(e){
+          if(e.isIntersecting){
+            pills.forEach(function(p){ p.classList.remove('on'); });
+            var m=map[e.target.id]; if(m) m.classList.add('on');
+          }
+        });
+      },{rootMargin:'-45% 0px -50% 0px', threshold:0});
+      pills.forEach(function(p){ var s=document.getElementById(p.getAttribute('href').slice(1)); if(s) spy.observe(s); });
+    }
+  }
+
+  /* back to top */
+  var reduce=window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var bt=document.querySelector('.totop'), sen=document.getElementById('toTopSentinel');
+  if(bt && sen && 'IntersectionObserver' in window){
+    new IntersectionObserver(function(es){
+      es.forEach(function(e){ if(e.isIntersecting) bt.classList.remove('show'); else bt.classList.add('show'); });
+    },{threshold:0}).observe(sen);
+  }
+  if(bt){ bt.addEventListener('click', function(){ window.scrollTo({top:0, behavior:reduce?'auto':'smooth'}); }); }
+})();
+</script>
+</body>
+</html>

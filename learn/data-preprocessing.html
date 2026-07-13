@@ -1,0 +1,1644 @@
+<!DOCTYPE html>
+<html lang="ja" class="no-js">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>開発データの前処理とデータセット構築 - 研究の技術を実践的に学ぶ / Data Preprocessing</title>
+<meta name="description" content="A hands-on learning module on data preprocessing and dataset construction: data quality, missing values and outliers, feature engineering with encoding and scaling, labeling and class imbalance, train/test splitting and leakage prevention, and reproducibility. With interactive demos and runnable Python examples. Part of Yuta Kimura's learning course.">
+<link rel="canonical" href="https://ykimu.github.io/learn/data-preprocessing.html">
+<link rel="icon" href="../favicon.svg" type="image/svg+xml">
+<meta property="og:site_name" content="Yuta Kimura / 木村祐太">
+<meta property="og:type" content="article">
+<meta property="og:title" content="開発データの前処理とデータセット構築 - 研究の技術を実践的に学ぶ / Data Preprocessing">
+<meta property="og:description" content="A hands-on learning module on data preprocessing and dataset construction: missing values and outliers, feature engineering, encoding and scaling, class imbalance, train/test splitting and data leakage, with interactive demos and runnable Python examples.">
+<meta property="og:url" content="https://ykimu.github.io/learn/data-preprocessing.html">
+<meta property="og:image" content="https://ykimu.github.io/assets/og.png">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="color-scheme" content="light">
+<script>document.documentElement.className="js";</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&family=Noto+Sans+JP:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#FBFCFB; --bg-2:#F3F6F4; --bg-3:#EBEFED; --card:#FFFFFF;
+    --ink:#101312; --ink-2:#3C4340; --muted:#6B746F; --faint:#B7C0BB;
+    --line:#E7ECE9; --hair:rgba(16,19,18,.08); --shell:rgba(16,19,18,.035);
+    --accent:#0E6F5C; --accent-2:#0A5748; --accent-soft:rgba(14,111,92,.08);
+    --soft:0 1px 2px rgba(16,19,18,.04), 0 24px 60px -28px rgba(16,19,18,.16);
+    --inhi:inset 0 1px 0 rgba(255,255,255,.85);
+    --ease:cubic-bezier(.32,.72,0,1);
+    --sans:"Plus Jakarta Sans","Noto Sans JP",-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+    --disp:"Space Grotesk","Plus Jakarta Sans","Noto Sans JP",sans-serif;
+    --mono:ui-monospace,SFMono-Regular,Menlo,Consolas,"Liberation Mono",monospace;
+    --maxw:1440px; --readw:clamp(680px, 62vw, 1060px);
+    --kw:#0A5748; --ty:#3C4340; --st:#7A5C34; --cm:#87918C; --nu:#7A5C34;
+    --good:#0E6F5C; --bad:#B04A3E; --warn:#8A6D3B;
+  }
+  html{color-scheme:light}
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth; -webkit-text-size-adjust:100%}
+  body{margin:0; background:var(--bg); color:var(--ink); font-family:var(--sans);
+    font-size:17px; line-height:1.75; font-weight:400; -webkit-font-smoothing:antialiased; text-rendering:optimizeLegibility}
+  body.lang-ja [lang=en]{display:none}
+  body.lang-en [lang=ja]{display:none}
+  ::selection{background:rgba(14,111,92,.16)}
+  h1,h2,h3{margin:0; color:var(--ink); font-weight:500; line-height:1.16; letter-spacing:-.02em; font-family:var(--disp); text-wrap:balance}
+  body.lang-ja h1,body.lang-ja h2,body.lang-ja h3{letter-spacing:0; font-family:var(--sans)}
+  p,.lead,.cite,.muted-s{text-wrap:pretty}
+  [lang="en"]{line-break:auto}
+  [lang="ja"]{line-break:strict; word-break:normal}
+  h1 [lang="ja"],h2 [lang="ja"],h3 [lang="ja"]{word-break:auto-phrase}
+  p{margin:0 0 1em}
+  a{color:var(--accent-2); text-decoration:none; transition:color .3s var(--ease)}
+  a:hover{color:var(--accent)}
+  a:focus-visible,button:focus-visible,.btn:focus-visible,[tabindex]:focus-visible{outline:2px solid var(--accent); outline-offset:3px; border-radius:8px}
+  .wrap{max-width:var(--maxw); margin:0 auto; padding:0 40px}
+  [id]{scroll-margin-top:96px}
+  section{padding:96px 0}
+
+  .skip{position:fixed; top:10px; left:10px; padding:10px 16px; background:var(--ink); color:#fff; border-radius:999px; transform:translateY(-200%); transition:none; z-index:100; font:500 .85rem/1 var(--sans); text-decoration:none}
+  .skip:focus{transform:none}
+
+  /* film grain overlay */
+  body::after{content:""; position:fixed; inset:0; z-index:1; pointer-events:none; opacity:.02;
+    background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='g'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23g)'/%3E%3C/svg%3E")}
+
+  h2.big{font-size:clamp(1.9rem,3.2vw,2.7rem); font-weight:500; letter-spacing:-.025em; max-width:26ch}
+  body.lang-ja h2.big{letter-spacing:-.01em; max-width:none}
+  .eyebrow,.kick{display:inline-flex; align-items:center; gap:8px; width:max-content; max-width:100%;
+    padding:5px 13px 5px 11px; border-radius:999px; border:1px solid var(--hair); background:#fff;
+    font:600 .66rem/1 var(--disp); letter-spacing:.14em; text-transform:uppercase; color:var(--ink-2); margin:0 0 18px}
+  .eyebrow::before,.kick::before{content:""; flex:0 0 auto; width:6px; height:6px; border-radius:50%; background:var(--accent)}
+  .lead{font-size:1.14rem; color:var(--ink-2); line-height:1.78; font-weight:400}
+
+  /* motion */
+  .js .reveal{opacity:0; transform:translateY(18px); filter:blur(6px); transition:opacity .9s var(--ease), transform .9s var(--ease), filter .9s var(--ease)}
+  .js .reveal.in{opacity:1; transform:none; filter:none}
+  @media (prefers-reduced-motion:reduce){
+    .js .reveal{opacity:1!important; transform:none!important; filter:none!important}
+    .btn:active,.btn.ink:hover .ic,.pill:hover,.totop:hover,.tocpill{transform:none!important}
+    html{scroll-behavior:auto}
+  }
+
+  /* floating island nav */
+  header.bar{position:sticky; top:18px; z-index:60; background:transparent; border-bottom:none}
+  .bar .wrap{display:flex; align-items:center; justify-content:space-between;
+    width:max-content; max-width:calc(100% - 32px); margin:0 auto; height:auto;
+    padding:9px 12px 9px 20px; gap:20px; border-radius:999px;
+    background:rgba(255,255,255,.72); -webkit-backdrop-filter:saturate(1.4) blur(18px); backdrop-filter:saturate(1.4) blur(18px);
+    border:1px solid var(--hair); box-shadow:var(--soft)}
+  .brand{font-weight:600; font-size:.92rem; letter-spacing:-.01em; color:var(--ink); display:inline-flex; align-items:center; gap:8px}
+  .brand span.sep{color:var(--muted); font-weight:400; margin:0 2px}
+  .bar-right{display:flex; align-items:center; gap:8px}
+
+  /* buttons */
+  .btn{display:inline-flex; align-items:center; gap:10px; font:500 .85rem/1 var(--sans); padding:10px 18px;
+    border-radius:999px; border:1px solid var(--hair); background:#fff; color:var(--ink); cursor:pointer;
+    transition:transform .4s var(--ease), box-shadow .4s var(--ease), border-color .3s var(--ease), background .3s var(--ease), color .3s var(--ease)}
+  .btn:hover{border-color:var(--ink); transform:translateY(-1px); color:var(--ink)}
+  .btn:active{transform:scale(.98)}
+  .btn.ink{background:var(--ink); border-color:var(--ink); color:#fff; padding:10px 10px 10px 22px;
+    box-shadow:0 12px 26px -14px rgba(16,19,18,.5)}
+  .btn.ink:not(:has(.ic)){padding:10px 22px}
+  .btn.ink:hover{box-shadow:0 16px 32px -14px rgba(16,19,18,.55); color:#fff}
+  .btn .ic{width:32px; height:32px; border-radius:999px; background:rgba(255,255,255,.18); display:grid; place-items:center;
+    transition:transform .45s var(--ease); flex:0 0 auto}
+  .btn.ink:hover .ic{transform:translate(3px,-1px)}
+  .tlink{display:inline-flex; align-items:center; gap:8px; font-weight:500; font-size:.95rem; color:var(--ink)}
+  .tlink .ar{transition:transform .4s var(--ease)}
+  .tlink:hover .ar{transform:translateX(4px)}
+
+  /* hero */
+  .hero{position:relative; overflow:hidden}
+  .hero > .wrap{position:relative; z-index:1}
+  .hero::before{content:""; position:absolute; z-index:0; width:640px; height:640px; right:-150px; top:-240px;
+    border-radius:50%; pointer-events:none; opacity:.55;
+    background:radial-gradient(circle, var(--accent-soft), transparent 62%); filter:blur(20px)}
+  .hero .wrap{padding-top:72px; padding-bottom:64px}
+  .hero h1{font-size:clamp(2.6rem,5vw,4.2rem); font-weight:500; letter-spacing:-.03em; line-height:1.08; color:var(--ink); max-width:none}
+  body.lang-ja .hero h1{font-size:clamp(2rem,4.2vw,3.1rem); font-weight:500; letter-spacing:0; line-height:1.24}
+  .hero h1 em{font-style:normal; color:var(--accent)}
+  .hero .lead{max-width:var(--readw); margin-top:24px}
+  .ja-note{display:inline-flex; align-items:center; gap:8px; margin-top:22px; padding:7px 15px; border-radius:999px;
+    border:1px solid var(--hair); background:var(--accent-soft); font-size:.8rem; font-weight:500; color:var(--accent-2)}
+  .ja-note::before{content:""; width:6px; height:6px; border-radius:50%; background:var(--accent); flex:0 0 auto}
+  .hero-meta{display:flex; gap:10px; flex-wrap:wrap; margin-top:16px}
+  .hero-meta span{font-size:.82rem; color:var(--muted); background:#fff; border:1px solid var(--hair);
+    border-radius:999px; padding:6px 14px}
+  .hero-cta{display:flex; gap:20px; align-items:center; flex-wrap:wrap; margin-top:28px}
+
+  .soft-sec{background:var(--bg-2); border-top:1px solid var(--line); border-bottom:1px solid var(--line)}
+
+  /* prose */
+  .prose{max-width:var(--readw)}
+  .prose p{margin:0 0 1em; color:var(--ink-2)}
+  .prose h4{font-family:var(--sans); font-size:1.1rem; font-weight:600; letter-spacing:0; color:var(--ink); margin:1.5em 0 .5em}
+  .prose ul{margin:0 0 1.2em; padding-left:0; list-style:none}
+  .prose ul li{position:relative; padding-left:22px; margin:11px 0; color:var(--ink-2)}
+  .prose ul li::before{content:""; position:absolute; left:0; top:13px; width:11px; height:1.5px; background:var(--accent)}
+  .prose ul li b,.prose b{color:var(--ink); font-weight:600}
+  .prose i{color:var(--ink-2)}
+  code{font-family:var(--mono); font-size:.86em; background:var(--shell); border:1px solid var(--hair); border-radius:6px; padding:.08em .4em; color:var(--accent-2)}
+  .formula{font-family:var(--mono); font-size:.98rem; color:var(--ink); background:var(--card); text-align:center;
+    border-radius:14px; padding:18px 20px; margin:18px 0; max-width:var(--readw);
+    box-shadow:0 0 0 6px var(--shell),0 0 0 6.5px var(--hair),var(--soft); line-height:1.9}
+  .formula .op{color:var(--accent-2); font-weight:600}
+  .formula small{display:block; font-family:var(--sans); font-size:.82rem; color:var(--muted); margin-top:8px; line-height:1.6}
+
+  .callout{border-radius:16px; padding:18px 22px; margin:20px 0; max-width:var(--readw);
+    background:var(--card); box-shadow:0 0 0 6px var(--shell),0 0 0 6.5px var(--hair),var(--soft)}
+  .callout h4{margin:0 0 6px; font-size:1rem; font-family:var(--sans); font-weight:600; letter-spacing:0; color:var(--ink)}
+  .callout.tip{background:var(--accent-soft)}
+  .callout.warn{background:rgba(138,109,59,.08)}
+  .callout p{margin:0; color:var(--ink-2); font-size:.96rem}
+  .callout a{font-weight:600}
+
+  .grid2{display:grid; grid-template-columns:1fr 1fr; gap:16px; margin:20px 0; max-width:var(--readw)}
+  .box{border-radius:16px; padding:16px 20px; background:var(--card);
+    box-shadow:0 0 0 6px var(--shell),0 0 0 6.5px var(--hair),var(--soft)}
+  .box h5{margin:0 0 10px; font-size:.92rem; font-family:var(--sans); font-weight:600; letter-spacing:0; color:var(--accent-2); display:flex; align-items:center; gap:7px}
+  .box.lim h5{color:var(--warn)}
+  .box ul{margin:0; padding-left:18px}
+  .box li{margin:6px 0; font-size:.92rem; color:var(--ink-2)}
+
+  .steps{border-radius:16px; padding:16px 20px; margin:20px 0; max-width:var(--readw); background:var(--card);
+    box-shadow:0 0 0 6px var(--shell),0 0 0 6.5px var(--hair),var(--soft)}
+  .steps h5{margin:0 0 10px; font-size:.92rem; font-family:var(--sans); font-weight:600; letter-spacing:0; color:var(--accent-2)}
+  .steps ol{margin:0; padding:0; list-style:none; counter-reset:st}
+  .steps ol li{counter-increment:st; position:relative; padding-left:36px; margin:9px 0; font-size:.94rem; color:var(--ink-2)}
+  .steps ol li::before{content:counter(st); position:absolute; left:0; top:2px; width:23px; height:23px; border-radius:50%;
+    background:var(--accent-soft); color:var(--accent-2); font:600 .74rem/23px var(--disp); text-align:center}
+  .steps ol li b{color:var(--ink); font-weight:600}
+
+  /* step headers */
+  .stephead{display:flex; align-items:baseline; gap:20px; max-width:var(--readw)}
+  .stephead .num{font-family:var(--disp); font-size:clamp(2.6rem,5.4vw,3.8rem); font-weight:500; color:var(--accent);
+    letter-spacing:-.04em; line-height:.9; flex:0 0 auto; font-variant-numeric:tabular-nums}
+  .stephead .tt h2{font-size:clamp(1.5rem,2.6vw,2rem)}
+  .stephead .tt .st-en{display:block; font:600 .68rem/1 var(--disp); letter-spacing:.13em; text-transform:uppercase; color:var(--muted); margin-top:8px}
+  body.lang-en .stephead .tt .st-en{display:none}
+  .steprule{height:2px; background:var(--ink); max-width:var(--readw); margin:16px 0 26px}
+  .layer{display:inline-flex; align-items:center; gap:8px; margin:34px 0 12px; padding:5px 13px 5px 11px;
+    border-radius:999px; border:1px solid var(--hair); background:#fff;
+    font:600 .64rem/1 var(--disp); letter-spacing:.13em; text-transform:uppercase; color:var(--ink-2)}
+  .layer::before{content:""; width:6px; height:6px; border-radius:50%; background:var(--accent); flex:0 0 auto}
+  .layer.first{margin-top:6px}
+
+  /* diagrams */
+  .diagram-wrap{margin:22px 0; max-width:var(--readw)}
+  .diagram-wrap .cap{margin:0 0 10px; font-size:.9rem; font-family:var(--sans); font-weight:600; letter-spacing:0; color:var(--accent-2)}
+  .diagram-wrap svg{display:block; width:100%; height:auto; background:var(--card);
+    border-radius:16px; padding:12px; box-shadow:0 0 0 7px var(--shell),0 0 0 7.5px var(--hair),var(--soft)}
+  .dg-box{fill:var(--card); stroke:var(--line); stroke-width:1.3}
+  .dg-box.acc{fill:var(--accent-soft); stroke:var(--accent)}
+  .dg-lbl{fill:var(--ink); font-size:13px; font-weight:600; text-anchor:middle; font-family:var(--sans)}
+  .dg-en{fill:var(--muted); font-size:10.5px; text-anchor:middle; font-family:var(--disp)}
+  .dg-line{stroke:var(--muted); stroke-width:1.5; fill:none}
+  .dg-arrow{fill:var(--muted)}
+  .dg-note{fill:var(--muted); font-size:11.5px; text-anchor:middle; font-style:italic}
+  .dg-ax{stroke:var(--faint); stroke-width:1.2}
+  .dg-vec{stroke:var(--accent); stroke-width:2; fill:none}
+  .dg-vec2{stroke:var(--ink-2); stroke-width:2; fill:none}
+  .dg-pt{fill:var(--accent)}
+  .dg-ptl{fill:var(--ink); font-size:11px; font-family:var(--sans)}
+  .figcap{font-size:.88rem; color:var(--muted); margin:12px 2px 0; max-width:var(--readw); line-height:1.6}
+  .figcap b{color:var(--ink); font-weight:600}
+
+  /* code blocks */
+  .code-wrap{margin:16px 0 0; border:1px solid var(--hair); border-radius:14px; overflow:hidden; background:var(--shell); max-width:var(--readw)}
+  .code-head{display:flex; align-items:center; gap:10px; background:var(--bg-2); border-bottom:1px solid var(--hair); padding:9px 16px}
+  .code-head .lbl{margin-right:auto; font:600 .74rem/1 var(--disp); letter-spacing:.06em; text-transform:uppercase; color:var(--muted)}
+  .code-head .lang-tag{font:500 .74rem/1 var(--sans); color:var(--muted)}
+  .code-head .copy{background:#fff; border:1px solid var(--hair); color:var(--ink-2); border-radius:999px;
+    padding:5px 12px; font:500 .74rem/1 var(--sans); cursor:pointer; transition:border-color .3s var(--ease), color .3s var(--ease)}
+  .code-head .copy:hover{border-color:var(--ink); color:var(--ink)}
+  pre{margin:0; background:var(--shell); padding:16px 18px; overflow-x:auto; font-size:.82rem; line-height:1.65}
+  pre code{font-family:var(--mono); color:#2F3A33; white-space:pre; background:none; border:none; padding:0; font-size:1em}
+  .kw{color:var(--kw); font-weight:600} .st{color:var(--st)} .cm{color:var(--cm); font-style:italic} .nu{color:var(--nu)}
+  .code-out{max-width:var(--readw); margin:0 0 8px; border:1px solid var(--hair); border-top:none;
+    border-radius:0 0 14px 14px; background:var(--bg-2); padding:12px 18px}
+  .code-out .olbl{font:600 .66rem/1 var(--disp); letter-spacing:.1em; text-transform:uppercase; color:var(--muted); display:block; margin-bottom:8px}
+  .code-out pre{background:transparent; padding:0; font-size:.8rem}
+  .code-out pre code{color:var(--ink-2)}
+  .code-wrap.attached{border-radius:14px 14px 0 0; margin-bottom:0}
+
+  /* interactive demo (double-bezel) */
+  .demo{border-radius:21px; padding:24px 26px; margin:24px 0; max-width:var(--readw); background:var(--card);
+    box-shadow:0 0 0 7px var(--shell),0 0 0 7.5px var(--hair),var(--soft)}
+  .demo .dtag{display:inline-flex; align-items:center; gap:8px; margin:0 0 10px; padding:5px 12px 5px 10px;
+    border-radius:999px; background:var(--accent-soft); color:var(--accent-2); font:600 .62rem/1 var(--disp); letter-spacing:.12em; text-transform:uppercase}
+  .demo .dtag::before{content:""; width:6px; height:6px; border-radius:50%; background:var(--accent)}
+  .demo h4{margin:0 0 6px; font-size:1.12rem; font-family:var(--sans); font-weight:600; color:var(--ink)}
+  .demo .dnote{font-size:.88rem; color:var(--muted); margin:0 0 16px}
+  .demo label.fld{display:block; font:600 .74rem/1 var(--disp); letter-spacing:.08em; text-transform:uppercase; color:var(--muted); margin:0 0 7px}
+  .demo textarea,.demo input[type=text]{width:100%; padding:12px 15px; border-radius:12px; border:1px solid var(--hair);
+    background:var(--bg); color:var(--ink); font:400 .95rem/1.6 var(--mono); outline:none; resize:vertical;
+    transition:border-color .3s var(--ease)}
+  .demo textarea:focus,.demo input[type=text]:focus{border-color:var(--accent)}
+  .demo .try{display:flex; gap:8px; flex-wrap:wrap; margin:12px 0 4px}
+  .demo .try button{background:#fff; border:1px solid var(--hair); color:var(--ink-2); border-radius:999px;
+    padding:8px 14px; font:500 .82rem/1 var(--sans); cursor:pointer; transition:border-color .3s var(--ease), transform .3s var(--ease), color .3s var(--ease)}
+  .demo .try button:hover{border-color:var(--ink); color:var(--ink); transform:translateY(-1px)}
+  .demo .try .tlbl{font:600 .72rem/1 var(--disp); letter-spacing:.06em; text-transform:uppercase; color:var(--faint); align-self:center; margin-right:2px}
+  .demo .two{display:grid; grid-template-columns:1fr 1fr; gap:16px}
+  @media(max-width:640px){.demo .two{grid-template-columns:1fr}}
+  .demo-out{margin-top:18px}
+
+  /* chips */
+  .chips{display:flex; flex-wrap:wrap; gap:7px; margin-top:6px}
+  .chip{display:inline-flex; align-items:center; font:500 .88rem/1 var(--mono); padding:8px 12px; border-radius:9px;
+    background:var(--accent-soft); color:var(--accent-2); border:1px solid rgba(14,111,92,.16)}
+  .chip.p{background:var(--bg-3); color:var(--muted); border-color:var(--hair)}
+  .chip.en{background:var(--card); color:var(--ink-2); border-color:var(--hair)}
+  .chipcount{font:600 .74rem/1 var(--disp); color:var(--muted); margin-top:12px; letter-spacing:.04em}
+  .chip-legend{display:flex; gap:16px; flex-wrap:wrap; margin-top:12px; font-size:.78rem; color:var(--muted)}
+  .chip-legend i{display:inline-block; width:11px; height:11px; border-radius:3px; margin-right:6px; vertical-align:-1px}
+
+  /* tables */
+  .dtable{border-collapse:separate; border-spacing:0; margin:16px 0 0; width:100%; font-size:.86rem;
+    border-radius:12px; overflow:hidden; box-shadow:0 0 0 1px var(--hair)}
+  .dtable th,.dtable td{border-bottom:1px solid var(--line); border-right:1px solid var(--line); padding:9px 12px; text-align:right; background:var(--card); font-variant-numeric:tabular-nums; font-family:var(--disp)}
+  .dtable th{background:var(--bg-2); font-weight:600; color:var(--ink); font-family:var(--sans); text-align:right}
+  .dtable td:first-child,.dtable th:first-child{text-align:left; font-family:var(--mono); color:var(--ink)}
+  .dtable tr:last-child th,.dtable tr:last-child td{border-bottom:none}
+  .dtable td:last-child,.dtable th:last-child{border-right:none}
+  .dtable td.zero{color:var(--faint)}
+
+  /* cosine output */
+  .cos-score{display:flex; align-items:baseline; gap:12px; margin:6px 0 10px}
+  .cos-score .val{font:500 2.6rem/1 var(--disp); color:var(--accent); letter-spacing:-.03em; font-variant-numeric:tabular-nums}
+  .cos-score .lab{font-size:.9rem; color:var(--muted)}
+  .cos-bar{height:14px; border-radius:999px; background:var(--bg-3); box-shadow:inset 0 1px 2px rgba(16,19,18,.06); overflow:hidden; max-width:520px}
+  .cos-bar span{display:block; height:100%; border-radius:999px; background:linear-gradient(90deg,var(--accent-2),var(--accent)); transition:width .5s var(--ease)}
+  .cos-detail{font-size:.86rem; color:var(--muted); margin-top:12px; font-family:var(--mono)}
+  .cos-detail b{color:var(--ink-2)}
+  @media (prefers-reduced-motion:reduce){.cos-bar span{transition:none}}
+
+  /* closing lists */
+  .res-grid{display:grid; grid-template-columns:1fr 1fr; gap:16px; margin:20px 0; max-width:var(--readw)}
+  @media(max-width:640px){.res-grid{grid-template-columns:1fr}}
+  .res{border-radius:16px; padding:18px 20px; background:var(--card); box-shadow:0 0 0 6px var(--shell),0 0 0 6.5px var(--hair),var(--soft)}
+  .res h5{margin:0 0 10px; font-size:.95rem; font-family:var(--sans); font-weight:600; color:var(--accent-2)}
+  .res ul{margin:0; padding-left:0; list-style:none}
+  .res li{position:relative; padding-left:20px; margin:8px 0; font-size:.9rem; color:var(--ink-2)}
+  .res li::before{content:""; position:absolute; left:0; top:11px; width:9px; height:1.5px; background:var(--accent)}
+  .res li b{color:var(--ink); font-weight:600}
+
+  /* footer */
+  footer{border-top:1px solid var(--line); padding:68px 0 46px; background:var(--bg)}
+  footer h3{font-size:.72rem; font-weight:600; letter-spacing:.12em; text-transform:uppercase; color:var(--muted); margin:0 0 1em; font-family:var(--disp)}
+  .foot-grid{display:grid; grid-template-columns:1.5fr 1fr; gap:44px}
+  .foot-grid3{display:grid; grid-template-columns:1.3fr 1fr 1fr; gap:44px; margin-top:40px}
+  .foot-grid3 a{color:var(--ink-2)}
+  .foot-grid3 a:hover{color:var(--accent)}
+  .cite{font-size:.98rem; color:var(--ink-2); line-height:1.7; max-width:52ch}
+  .muted-s{color:var(--muted); font-size:.9rem; line-height:1.75}
+  .muted-s b{color:var(--ink); font-weight:600}
+  .muted-s a{line-height:1.9}
+  .foot-rule{height:1px; background:var(--line); margin:44px 0 20px}
+  .foot-note{color:var(--muted); font-size:.82rem}
+
+  /* crumbs */
+  .crumbs{display:flex; flex-wrap:wrap; align-items:center; gap:7px; margin:0; font-size:.8rem; font-weight:500; color:var(--muted)}
+  .crumbs a{color:var(--muted)}
+  .crumbs a:hover{color:var(--ink)}
+  .crumbs .csep{color:var(--faint)}
+  .crumbs .cur{color:var(--ink)}
+
+  @media(max-width:860px){
+    section{padding:72px 0}
+    .hero .wrap{padding-top:52px; padding-bottom:56px}
+    .wrap{padding:0 24px}
+    .grid2{grid-template-columns:1fr}
+    .foot-grid{grid-template-columns:1fr}
+    .foot-grid3{grid-template-columns:1fr; gap:30px}
+  }
+  @media(max-width:640px){
+    .bar-right .btn:not(.ink){display:none}
+    .brand{font-size:.82rem}
+    .stephead .num{font-size:2.4rem}
+  }
+
+  /* JP-only teaching page: fill content width for body text & boxes */
+  .lead,.prose,.callout,.formula,.grid2,.steps,.stephead,.steprule,
+  .diagram-wrap,.figcap,.code-wrap,.code-out,.demo,.res-grid{max-width:none !important}
+
+  /* ==================== NAV SYSTEM (from research/course template) ==================== */
+  .navlinks{display:flex; gap:4px; align-items:center}
+  .navlinks .navgroup{position:relative; display:flex}
+  .navlinks .navtop{display:inline-flex; align-items:center; gap:7px; font-size:.86rem; font-weight:500;
+    color:var(--ink-2); padding:8px 13px; border-radius:999px; white-space:nowrap;
+    transition:color .3s var(--ease), background .3s var(--ease)}
+  .navlinks .navtop:hover{color:var(--ink)}
+  .navlinks .navgroup:hover .navtop,.navlinks .navgroup:focus-within .navtop{color:var(--ink); background:var(--bg-2)}
+  .navlinks .navpanel{position:absolute; top:100%; left:50%; margin-top:9px; min-width:238px; padding:10px;
+    transform:translateX(-50%) translateY(6px); text-align:left;
+    background:var(--card); border:1px solid var(--hair); border-radius:16px; box-shadow:var(--soft);
+    opacity:0; visibility:hidden; pointer-events:none;
+    transition:opacity .25s var(--ease), transform .25s var(--ease), visibility 0s linear .25s; z-index:5}
+  .navlinks .navpanel::before{content:""; position:absolute; top:-13px; left:0; right:0; height:14px}
+  .navlinks .navgroup:hover .navpanel,.navlinks .navgroup:focus-within .navpanel{
+    opacity:1; visibility:visible; pointer-events:auto; transform:translateX(-50%) translateY(0);
+    transition:opacity .25s var(--ease), transform .25s var(--ease), visibility 0s linear 0s}
+  .navlinks .navgroup.collapsed .navpanel{opacity:0; visibility:hidden; pointer-events:none}
+  .navlinks .navpanel a{display:flex; align-items:center; gap:9px; padding:9px 12px; border-radius:11px;
+    font-size:.85rem; font-weight:500; color:var(--ink-2); white-space:nowrap;
+    transition:background .25s var(--ease), color .25s var(--ease)}
+  .navlinks .navpanel a:hover{background:var(--accent-soft); color:var(--ink)}
+  .navlinks .navpanel a.here{background:var(--accent-soft); color:var(--ink)}
+  .navlinks .navpanel a.here::before{content:""; flex:0 0 auto; width:6px; height:6px; border-radius:50%; background:var(--accent)}
+  .navlinks .navlabel{padding:8px 12px 3px; font:600 .6rem/1 var(--disp); letter-spacing:.13em;
+    text-transform:uppercase; color:var(--muted)}
+  .navlinks .navpanel hr.navdiv{border:0; border-top:1px solid var(--line); margin:8px 6px}
+  @media(max-width:860px){.navlinks{display:none}}
+
+  .lswitch{display:inline-flex; align-items:center; gap:2px; padding:3px; border-radius:999px;
+    border:1px solid var(--hair); background:#fff}
+  .lswitch button{appearance:none; -webkit-appearance:none; border:0; background:transparent; cursor:pointer;
+    font:600 .78rem/1 var(--disp); letter-spacing:.03em; color:var(--ink-2); padding:8px 13px; border-radius:999px;
+    transition:background .3s var(--ease), color .3s var(--ease)}
+  .lswitch button:hover{color:var(--ink)}
+  body.lang-ja .lswitch .ls-ja,body.lang-en .lswitch .ls-en{background:var(--ink); color:#fff}
+
+  .navtoggle{display:none; position:relative; width:42px; height:42px; flex:0 0 auto;
+    border-radius:999px; border:1px solid var(--hair); background:#fff; cursor:pointer; padding:0}
+  .navtoggle span{position:absolute; left:11px; right:11px; height:2px; background:var(--ink); border-radius:2px;
+    transition:transform .35s var(--ease), opacity .2s var(--ease)}
+  .navtoggle span:nth-child(1){top:15px}
+  .navtoggle span:nth-child(2){top:20px}
+  .navtoggle span:nth-child(3){top:25px}
+  body.navopen .navtoggle span:nth-child(1){transform:translateY(5px) rotate(45deg)}
+  body.navopen .navtoggle span:nth-child(2){opacity:0}
+  body.navopen .navtoggle span:nth-child(3){transform:translateY(-5px) rotate(-45deg)}
+
+  .mobnav{position:fixed; inset:0; z-index:80; display:flex; flex-direction:column; overflow-y:auto;
+    background:rgba(251,252,251,.9); -webkit-backdrop-filter:saturate(1.2) blur(24px); backdrop-filter:saturate(1.2) blur(24px);
+    opacity:0; visibility:hidden; pointer-events:none;
+    transition:opacity .35s var(--ease), visibility 0s linear .35s}
+  body.navopen .mobnav{opacity:1; visibility:visible; pointer-events:auto; transition:opacity .35s var(--ease), visibility 0s linear 0s}
+  body.navopen{overflow:hidden}
+  body.navopen header.bar{z-index:90}
+  .mobnav-inner{width:100%; max-width:600px; margin:0 auto; padding:104px 28px 64px;
+    display:flex; flex-direction:column; gap:24px}
+  .mobgroup{display:flex; flex-direction:column; gap:1px}
+  .moblabel{font:600 .64rem/1 var(--disp); letter-spacing:.14em; text-transform:uppercase; color:var(--muted); margin-bottom:9px}
+  .mobgroup a{font-size:1.28rem; font-weight:500; color:var(--ink); padding:7px 0; line-height:1.24}
+  .mobgroup a:hover{color:var(--accent-2)}
+  .mobgroup a.here{color:var(--accent-2)}
+  .mobgroup a.here::before{content:""; display:inline-block; width:6px; height:6px; border-radius:50%; background:var(--accent); margin-right:9px; vertical-align:middle}
+  .mobfoot{display:flex; align-items:center; justify-content:space-between; gap:16px; flex-wrap:wrap;
+    margin-top:6px; padding-top:22px; border-top:1px solid var(--line)}
+  .mobext{font-size:1rem; font-weight:500; color:var(--ink-2)}
+  .mobext:hover{color:var(--ink)}
+  .js .mobnav-inner > *{opacity:0; transform:translateY(12px);
+    transition:opacity .4s var(--ease), transform .4s var(--ease)}
+  body.navopen .mobnav-inner > *{opacity:1; transform:none}
+  body.navopen .mobnav-inner > *:nth-child(1){transition-delay:.04s}
+  body.navopen .mobnav-inner > *:nth-child(2){transition-delay:.08s}
+  body.navopen .mobnav-inner > *:nth-child(3){transition-delay:.12s}
+  body.navopen .mobnav-inner > *:nth-child(4){transition-delay:.16s}
+  body.navopen .mobnav-inner > *:nth-child(5){transition-delay:.20s}
+  .mobgroup .mobsublabel{font:600 .6rem/1 var(--disp); letter-spacing:.12em; text-transform:uppercase;
+    color:var(--faint); margin:15px 0 5px}
+  .mobgroup .mobsublabel:first-of-type{margin-top:2px}
+
+  .navlinks .navpanel.mega{min-width:568px; max-width:calc(100vw - 24px); padding:12px}
+  .navlinks .navpanel.mega .megacourses{display:grid; grid-template-columns:repeat(4,1fr); gap:1px 4px}
+  .navlinks .navpanel.mega .megagrid{display:grid; grid-template-columns:1fr 1fr; gap:2px 10px; align-items:start}
+  .navlinks .navpanel.mega .megacol{display:flex; flex-direction:column; min-width:0}
+  .navlinks .navpanel.mega a{white-space:normal; line-height:1.28}
+  .navlinks .navpanel.mega .navlabel{padding:8px 12px 4px}
+
+  /* sticky TOC bar */
+  .tocbar{position:sticky; top:84px; z-index:40; margin:8px 0 0;
+    background:rgba(255,255,255,.82); -webkit-backdrop-filter:saturate(1.4) blur(14px); backdrop-filter:saturate(1.4) blur(14px);
+    border-top:1px solid var(--hair); border-bottom:1px solid var(--hair)}
+  .tocbar-inner{max-width:var(--maxw); margin:0 auto; padding:9px 40px; display:flex; gap:8px;
+    overflow-x:auto; scrollbar-width:none; -ms-overflow-style:none}
+  .tocbar-inner::-webkit-scrollbar{display:none}
+  .tocpill{flex:0 0 auto; display:inline-flex; align-items:center; gap:7px; padding:7px 14px; border-radius:999px;
+    font-size:.8rem; font-weight:500; color:var(--ink-2); border:1px solid transparent; white-space:nowrap;
+    transition:background .25s var(--ease), color .25s var(--ease), border-color .25s var(--ease)}
+  .tocpill:hover{color:var(--ink); border-color:var(--hair)}
+  .tocpill.on{background:var(--accent-soft); color:var(--ink)}
+  .tocpill.on::before{content:""; flex:0 0 auto; width:6px; height:6px; border-radius:50%; background:var(--accent)}
+  section[id]{scroll-margin-top:150px}
+
+  .totop{position:fixed; right:22px; bottom:22px; z-index:55; width:46px; height:46px; border-radius:999px;
+    display:grid; place-items:center; background:#fff; border:1px solid var(--hair); box-shadow:var(--soft);
+    color:var(--ink); cursor:pointer; font-size:1.15rem; line-height:1;
+    opacity:0; transform:translateY(10px) scale(.9); pointer-events:none;
+    transition:opacity .35s var(--ease), transform .35s var(--ease)}
+  .totop.show{opacity:1; transform:none; pointer-events:auto}
+  .totop:hover{transform:translateY(-2px)}
+
+  @media(max-width:860px){
+    .navtoggle{display:block}
+    .bar-right .btn{display:none}
+    .tocbar{top:76px}
+  }
+  @media(max-width:430px){.bar-right .lswitch{display:none}}
+  @media (prefers-reduced-motion:reduce){
+    .navlinks .navpanel,.navtoggle span,.mobnav,.js .mobnav-inner > *,.navtop,.lswitch button,.totop,.tocpill{transition-duration:.001ms !important}
+    .js .mobnav-inner > *{transition-delay:0s !important}
+    .navtoggle:hover,.totop:hover{transform:none !important}
+  }
+</style>
+</head>
+<body class="lang-ja">
+<a class="skip" href="#main"><span lang="ja">本文へスキップ</span><span lang="en">Skip to content</span></a>
+
+<header class="bar">
+  <nav class="wrap" aria-label="メイン">
+    <a class="brand" href="../index.html">
+      <span aria-hidden="true">&lsaquo;</span>
+      <span lang="ja">木村祐太</span><span lang="en">Yuta Kimura</span>
+      <span class="sep">·</span><span lang="ja">学習コース</span><span lang="en">Learn</span>
+    </a>
+    <div class="navlinks">
+      <div class="navgroup">
+        <a class="navtop" href="../publications.html" aria-haspopup="true" aria-expanded="false"><span lang="ja">研究</span><span lang="en">Research</span></a>
+        <div class="navpanel">
+          <a href="../publications.html"><span lang="ja">業績・研究活動</span><span lang="en">Publications &amp; activity</span></a>
+          <a href="../research/technical-debt-metrics.html"><span lang="ja">技術的負債とメトリクス</span><span lang="en">Technical debt &amp; metrics</span></a>
+          <a href="../research/apr-coding-standards.html"><span lang="ja">自動生成パッチと規約</span><span lang="en">Auto-generated patches &amp; standards</span></a>
+          <a href="../research/td-repayment-refactoring.html"><span lang="ja">負債返済とリファクタリング</span><span lang="en">Debt repayment &amp; refactoring</span></a>
+          <a href="../research/satd-issue-classification.html"><span lang="ja">課題票の負債分類</span><span lang="en">Issue-ticket debt classification</span></a>
+        </div>
+      </div>
+      <div class="navgroup">
+        <a class="navtop" href="../teaching.html" aria-haspopup="true" aria-expanded="false"><span lang="ja">教育</span><span lang="en">Teaching</span></a>
+        <div class="navpanel mega">
+          <div class="navlabel"><span lang="ja">科目</span><span lang="en">Courses</span></div>
+          <div class="megacourses">
+            <a href="../teaching.html"><span lang="ja">教育・担当授業</span><span lang="en">Teaching &amp; courses</span></a>
+            <a href="../course/index.html"><span lang="ja">ソフトウェア工学</span><span lang="en">Software Engineering</span></a>
+            <a href="../course/logic-circuits.html"><span lang="ja">論理回路1</span><span lang="en">Logic Circuits I</span></a>
+            <a href="../course/intelligent-informatics-1.html"><span lang="ja">知能情報実験実習1</span><span lang="en">Intelligent Informatics Lab I</span></a>
+          </div>
+          <hr class="navdiv">
+          <div class="megagrid">
+            <div class="megacol">
+              <div class="navlabel"><span lang="ja">要求・モデリング</span><span lang="en">Requirements &amp; Modeling</span></div>
+              <a href="../course/requirements-engineering.html"><span lang="ja">要求工学</span><span lang="en">Requirements Engineering</span></a>
+              <a href="../course/system-modeling-uml.html"><span lang="ja">システムモデリング(UML)</span><span lang="en">System Modeling</span></a>
+              <a href="../course/uml-guide.html"><span lang="ja">クラス図/シーケンス図ガイド</span><span lang="en">UML Diagram Guide</span></a>
+            </div>
+            <div class="megacol">
+              <div class="navlabel"><span lang="ja">設計・実装</span><span lang="en">Design &amp; Implementation</span></div>
+              <a href="../course/software-architecture.html"><span lang="ja">アーキテクチャパターン大全</span><span lang="en">Software Architecture</span></a>
+              <a href="../course/design-patterns.html"><span lang="ja">デザインパターン学習ガイド</span><span lang="en">Design Patterns Guide</span></a>
+              <a href="../course/software-reuse-oss.html"><span lang="ja">ソフトウェア再利用とOSS</span><span lang="en">Software Reuse &amp; OSS</span></a>
+            </div>
+            <div class="megacol">
+              <div class="navlabel"><span lang="ja">計画・プロセス</span><span lang="en">Planning &amp; Process</span></div>
+              <a href="../course/agile-scrum.html"><span lang="ja">アジャイル開発とスクラム</span><span lang="en">Agile &amp; Scrum</span></a>
+              <a href="../course/project-management.html"><span lang="ja">プロジェクト管理と見積もり</span><span lang="en">Project Management</span></a>
+              <a href="../course/project-estimation-planning.html"><span lang="ja">プロジェクト計画・見積もり</span><span lang="en">Project Planning &amp; Estimation</span></a>
+            </div>
+            <div class="megacol">
+              <div class="navlabel"><span lang="ja">品質・運用</span><span lang="en">Quality &amp; Operations</span></div>
+              <a href="../course/software-testing.html"><span lang="ja">ソフトウェアテスト学習ガイド</span><span lang="en">Software Testing Guide</span></a>
+              <a href="../course/dependable-systems.html"><span lang="ja">ディペンダブルシステム</span><span lang="en">Dependable Systems</span></a>
+              <a href="../course/software-evolution.html"><span lang="ja">ソフトウェア進化と技術的負債</span><span lang="en">Software Evolution</span></a>
+              <a href="../course/version-control-cicd.html"><span lang="ja">バージョン管理とCI/CD</span><span lang="en">Version Control &amp; CI/CD</span></a>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="navgroup">
+        <a class="navtop on" href="../learn/index.html" aria-haspopup="true" aria-expanded="false"><span lang="ja">学習コース</span><span lang="en">Learn</span></a>
+        <div class="navpanel mega">
+          <div class="navlabel"><span lang="ja">学習コース</span><span lang="en">Learning course</span></div>
+          <a href="../learn/index.html"><span lang="ja">学習コースの全体像</span><span lang="en">Course overview</span></a>
+          <hr class="navdiv">
+          <div class="megagrid">
+            <div class="megacol">
+              <div class="navlabel"><span lang="ja">第1段階 · データ収集</span><span lang="en">Stage 1 · Data collection</span></div>
+              <a href="../learn/repository-mining.html"><span lang="ja">リポジトリマイニング入門</span><span lang="en">Repository Mining</span></a>
+              <a class="here" aria-current="page" href="../learn/data-preprocessing.html"><span lang="ja">開発データの前処理とデータセット構築</span><span lang="en">Data Preprocessing</span></a>
+            </div>
+            <div class="megacol">
+              <div class="navlabel"><span lang="ja">第2段階 · 分析技術</span><span lang="en">Stage 2 · Techniques</span></div>
+              <a href="../learn/nlp.html"><span lang="ja">自然言語処理（NLP）</span><span lang="en">Natural Language Processing</span></a>
+              <a href="../learn/network-analysis.html"><span lang="ja">ネットワーク分析</span><span lang="en">Network Analysis</span></a>
+              <a href="../learn/machine-learning.html"><span lang="ja">機械学習</span><span lang="en">Machine Learning</span></a>
+              <a href="../learn/deep-learning.html"><span lang="ja">深層学習</span><span lang="en">Deep Learning</span></a>
+              <a href="../learn/llm.html"><span lang="ja">大規模言語モデル（LLM）</span><span lang="en">Large Language Models</span></a>
+              <a href="../learn/program-analysis.html"><span lang="ja">プログラム解析</span><span lang="en">Program Analysis</span></a>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="navgroup">
+        <a class="navtop" href="../software-engineering.html" aria-haspopup="true" aria-expanded="false"><span lang="ja">ガイド</span><span lang="en">Guides</span></a>
+        <div class="navpanel">
+          <a href="../software-engineering.html"><span lang="ja">ソフトウェア工学とは</span><span lang="en">What is software engineering</span></a>
+          <a href="../technical-debt.html"><span lang="ja">技術的負債とは</span><span lang="en">What is technical debt</span></a>
+          <a href="../glossary.html"><span lang="ja">研究用語ミニ辞典</span><span lang="en">Research glossary</span></a>
+        </div>
+      </div>
+      <div class="navgroup">
+        <a class="navtop" href="../students.html"><span lang="ja">学生の皆さんへ</span><span lang="en">For Students</span></a>
+      </div>
+    </div>
+    <div class="bar-right">
+      <a class="btn" href="https://researchmap.jp/kimura_yuta" target="_blank" rel="noopener">researchmap</a>
+      <div class="lswitch" role="group" aria-label="言語 / Language">
+        <button type="button" class="ls-ja" onclick="setLang('ja')" aria-pressed="true">JA</button>
+        <button type="button" class="ls-en" onclick="setLang('en')" aria-pressed="false">EN</button>
+      </div>
+      <button class="navtoggle" id="navToggle" type="button" aria-label="メニュー" aria-expanded="false" aria-controls="mobnav">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </nav>
+</header>
+
+<div class="mobnav" id="mobnav" aria-hidden="true">
+  <div class="mobnav-inner">
+    <div class="mobgroup">
+      <div class="moblabel"><span lang="ja">研究</span><span lang="en">Research</span></div>
+      <a href="../publications.html"><span lang="ja">業績・研究活動</span><span lang="en">Publications &amp; activity</span></a>
+      <a href="../research/technical-debt-metrics.html"><span lang="ja">技術的負債とメトリクス</span><span lang="en">Technical debt &amp; metrics</span></a>
+      <a href="../research/apr-coding-standards.html"><span lang="ja">自動生成パッチと規約</span><span lang="en">Auto-generated patches &amp; standards</span></a>
+      <a href="../research/td-repayment-refactoring.html"><span lang="ja">負債返済とリファクタリング</span><span lang="en">Debt repayment &amp; refactoring</span></a>
+      <a href="../research/satd-issue-classification.html"><span lang="ja">課題票の負債分類</span><span lang="en">Issue-ticket debt classification</span></a>
+    </div>
+    <div class="mobgroup">
+      <div class="moblabel"><span lang="ja">教育</span><span lang="en">Teaching</span></div>
+      <div class="mobsublabel"><span lang="ja">科目</span><span lang="en">Courses</span></div>
+      <a href="../teaching.html"><span lang="ja">教育・担当授業</span><span lang="en">Teaching &amp; courses</span></a>
+      <a href="../course/index.html"><span lang="ja">ソフトウェア工学</span><span lang="en">Software Engineering</span></a>
+      <a href="../course/logic-circuits.html"><span lang="ja">論理回路1</span><span lang="en">Logic Circuits I</span></a>
+      <a href="../course/intelligent-informatics-1.html"><span lang="ja">知能情報実験実習1</span><span lang="en">Intelligent Informatics Lab I</span></a>
+      <div class="mobsublabel"><span lang="ja">要求・モデリング</span><span lang="en">Requirements &amp; Modeling</span></div>
+      <a href="../course/requirements-engineering.html"><span lang="ja">要求工学</span><span lang="en">Requirements Engineering</span></a>
+      <a href="../course/system-modeling-uml.html"><span lang="ja">システムモデリング(UML)</span><span lang="en">System Modeling</span></a>
+      <a href="../course/uml-guide.html"><span lang="ja">クラス図/シーケンス図ガイド</span><span lang="en">UML Diagram Guide</span></a>
+      <div class="mobsublabel"><span lang="ja">設計・実装</span><span lang="en">Design &amp; Implementation</span></div>
+      <a href="../course/software-architecture.html"><span lang="ja">アーキテクチャパターン大全</span><span lang="en">Software Architecture</span></a>
+      <a href="../course/design-patterns.html"><span lang="ja">デザインパターン学習ガイド</span><span lang="en">Design Patterns Guide</span></a>
+      <a href="../course/software-reuse-oss.html"><span lang="ja">ソフトウェア再利用とOSS</span><span lang="en">Software Reuse &amp; OSS</span></a>
+      <div class="mobsublabel"><span lang="ja">計画・プロセス</span><span lang="en">Planning &amp; Process</span></div>
+      <a href="../course/agile-scrum.html"><span lang="ja">アジャイル開発とスクラム</span><span lang="en">Agile &amp; Scrum</span></a>
+      <a href="../course/project-management.html"><span lang="ja">プロジェクト管理と見積もり</span><span lang="en">Project Management</span></a>
+      <a href="../course/project-estimation-planning.html"><span lang="ja">プロジェクト計画・見積もり</span><span lang="en">Project Planning &amp; Estimation</span></a>
+      <div class="mobsublabel"><span lang="ja">品質・運用</span><span lang="en">Quality &amp; Operations</span></div>
+      <a href="../course/software-testing.html"><span lang="ja">ソフトウェアテスト学習ガイド</span><span lang="en">Software Testing Guide</span></a>
+      <a href="../course/dependable-systems.html"><span lang="ja">ディペンダブルシステム</span><span lang="en">Dependable Systems</span></a>
+      <a href="../course/software-evolution.html"><span lang="ja">ソフトウェア進化と技術的負債</span><span lang="en">Software Evolution</span></a>
+      <a href="../course/version-control-cicd.html"><span lang="ja">バージョン管理とCI/CD</span><span lang="en">Version Control &amp; CI/CD</span></a>
+    </div>
+    <div class="mobgroup">
+      <div class="moblabel"><span lang="ja">学習コース</span><span lang="en">Learn</span></div>
+      <a href="../learn/index.html"><span lang="ja">学習コースの全体像</span><span lang="en">Course overview</span></a>
+      <div class="mobsublabel"><span lang="ja">第1段階 · データ収集</span><span lang="en">Stage 1 · Data collection</span></div>
+      <a href="../learn/repository-mining.html"><span lang="ja">リポジトリマイニング入門</span><span lang="en">Repository Mining</span></a>
+      <a class="here" aria-current="page" href="../learn/data-preprocessing.html"><span lang="ja">開発データの前処理とデータセット構築</span><span lang="en">Data Preprocessing</span></a>
+      <div class="mobsublabel"><span lang="ja">第2段階 · 分析技術</span><span lang="en">Stage 2 · Techniques</span></div>
+      <a href="../learn/nlp.html"><span lang="ja">自然言語処理（NLP）</span><span lang="en">Natural Language Processing</span></a>
+      <a href="../learn/network-analysis.html"><span lang="ja">ネットワーク分析</span><span lang="en">Network Analysis</span></a>
+      <a href="../learn/machine-learning.html"><span lang="ja">機械学習</span><span lang="en">Machine Learning</span></a>
+      <a href="../learn/deep-learning.html"><span lang="ja">深層学習</span><span lang="en">Deep Learning</span></a>
+      <a href="../learn/llm.html"><span lang="ja">大規模言語モデル（LLM）</span><span lang="en">Large Language Models</span></a>
+      <a href="../learn/program-analysis.html"><span lang="ja">プログラム解析</span><span lang="en">Program Analysis</span></a>
+    </div>
+    <div class="mobgroup">
+      <div class="moblabel"><span lang="ja">ガイド</span><span lang="en">Guides</span></div>
+      <a href="../software-engineering.html"><span lang="ja">ソフトウェア工学とは</span><span lang="en">What is software engineering</span></a>
+      <a href="../technical-debt.html"><span lang="ja">技術的負債とは</span><span lang="en">What is technical debt</span></a>
+      <a href="../glossary.html"><span lang="ja">研究用語ミニ辞典</span><span lang="en">Research glossary</span></a>
+    </div>
+    <div class="mobgroup">
+      <div class="moblabel"><span lang="ja">学生の皆さんへ</span><span lang="en">For Students</span></div>
+      <a href="../students.html"><span lang="ja">学生の皆さんへ</span><span lang="en">For Students</span></a>
+    </div>
+    <div class="mobfoot">
+      <a class="mobext" href="https://researchmap.jp/kimura_yuta" target="_blank" rel="noopener">researchmap</a>
+      <div class="lswitch" role="group" aria-label="言語 / Language">
+        <button type="button" class="ls-ja" onclick="setLang('ja')" aria-pressed="true">JA</button>
+        <button type="button" class="ls-en" onclick="setLang('en')" aria-pressed="false">EN</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<main id="main">
+<div class="wrap" style="padding-top:24px">
+  <nav class="crumbs" aria-label="パンくず">
+    <a href="../index.html"><span lang="ja">ホーム</span><span lang="en">Home</span></a>
+    <span class="csep" aria-hidden="true">&rsaquo;</span>
+    <span class="cur" aria-current="page"><span lang="ja">学習コース：開発データの前処理とデータセット構築</span><span lang="en">Learn: Data Preprocessing &amp; Dataset Construction</span></span>
+  </nav>
+</div>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="wrap">
+    <p class="kick"><span lang="ja">学習コース</span><span lang="en">Learn</span></p>
+    <h1>開発データの前処理とデータセット構築</h1>
+    <p class="lead">生のデータを洗浄・変換し、分析や機械学習に使えるデータセットへ仕立てる工程を、概要から理論、そして実際に動かせるコードまで、順を追って学ぶモジュールです。各ステップは「概要 → 仕組み（座学）→ コードで動かす」の3層で進みます。ページ内には手を動かせるデモを3つ用意しました。</p>
+    <p class="ja-note"><span lang="ja">この教材は日本語のみで提供しています</span><span lang="en">This learning material is available in Japanese only.</span></p>
+    <div class="hero-cta">
+      <a class="btn ink" href="#intro" style="padding:12px 22px">
+        <span lang="ja">学びはじめる</span><span lang="en">Start learning</span>
+      </a>
+      <a class="tlink" href="#step2">
+        <span lang="ja">まず手を動かす（欠損値ハンドリング体験）</span><span lang="en">Jump to the missing-value demo</span>
+        <span class="ar" aria-hidden="true">&rsaquo;</span>
+      </a>
+    </div>
+  </div>
+</div>
+
+<div id="toTopSentinel" aria-hidden="true"></div>
+
+<div class="tocbar">
+  <nav class="tocbar-inner" aria-label="ページ内目次">
+    <a class="tocpill" href="#intro"><span lang="ja">はじめに</span><span lang="en">Intro</span></a>
+    <a class="tocpill" href="#step1">Step 1 <span lang="ja">データセット構築とは</span><span lang="en">Dataset building</span></a>
+    <a class="tocpill" href="#step2">Step 2 <span lang="ja">欠損値と外れ値</span><span lang="en">Missing &amp; outliers</span></a>
+    <a class="tocpill" href="#step3">Step 3 <span lang="ja">特徴量エンジニアリング</span><span lang="en">Feature engineering</span></a>
+    <a class="tocpill" href="#step4">Step 4 <span lang="ja">ラベルと不均衡</span><span lang="en">Labels &amp; imbalance</span></a>
+    <a class="tocpill" href="#step5">Step 5 <span lang="ja">分割とリーク防止</span><span lang="en">Split &amp; leakage</span></a>
+    <a class="tocpill" href="#step6">Step 6 <span lang="ja">再現性とデータ管理</span><span lang="en">Reproducibility</span></a>
+    <a class="tocpill" href="#closing"><span lang="ja">まとめ</span><span lang="en">Wrap-up</span></a>
+    <a class="tocpill" href="#beyond"><span lang="ja">発展トピック</span><span lang="en">Beyond</span></a>
+  </nav>
+</div>
+
+<!-- INTRO -->
+<section id="intro" style="padding-top:26px">
+  <div class="wrap reveal">
+    <p class="eyebrow"><span lang="ja">はじめに</span><span lang="en">Introduction</span></p>
+    <h2 class="big">このモジュールの全体像</h2>
+    <div class="prose" style="margin-top:22px">
+      <p><b>データの前処理（data preprocessing）</b>とは、集めたばかりの生のデータを洗浄・変換し、分析や機械学習でそのまま使える<b>データセット</b>へ仕立てる工程の総称です。現場では、モデルづくりにかける時間の大半が、実はこの前処理に費やされると言われます。地味に見えて、成果の質を最も大きく左右する工程です。</p>
+      <p>その理由を端的に表すのが「<b>garbage in, garbage out</b>（ゴミを入れればゴミが出る）」という言葉です。どれほど高度なモデルでも、入力するデータが汚れていれば、出てくる結果も信頼できません。多くの分析に共通するのが、次のような処理の流れ（パイプライン）です。生のデータを洗い、数値の特徴量へ変換し、学習用と評価用に分けて、はじめてデータセットが完成します。</p>
+    </div>
+
+    <div class="diagram-wrap reveal">
+      <p class="cap">前処理の基本パイプライン</p>
+      <svg viewBox="0 0 940 150" role="img" aria-label="前処理パイプライン: 生データから洗浄、変換と特徴量化、分割を経てデータセットへ至る流れ">
+        <g>
+          <rect class="dg-box" x="12" y="46" width="150" height="58" rx="12"/>
+          <text class="dg-lbl" x="87" y="72">生データ</text>
+          <text class="dg-en" x="87" y="90">Raw data</text>
+        </g>
+        <g>
+          <rect class="dg-box acc" x="204" y="46" width="150" height="58" rx="12"/>
+          <text class="dg-lbl" x="279" y="72">洗浄</text>
+          <text class="dg-en" x="279" y="90">Clean</text>
+        </g>
+        <g>
+          <rect class="dg-box acc" x="396" y="46" width="150" height="58" rx="12"/>
+          <text class="dg-lbl" x="471" y="72">変換・特徴量化</text>
+          <text class="dg-en" x="471" y="90">Transform</text>
+        </g>
+        <g>
+          <rect class="dg-box acc" x="588" y="46" width="150" height="58" rx="12"/>
+          <text class="dg-lbl" x="663" y="72">分割</text>
+          <text class="dg-en" x="663" y="90">Split</text>
+        </g>
+        <g>
+          <rect class="dg-box" x="780" y="46" width="148" height="58" rx="12"/>
+          <text class="dg-lbl" x="854" y="72">データセット</text>
+          <text class="dg-en" x="854" y="90">Dataset</text>
+        </g>
+        <g class="dg-line">
+          <line x1="162" y1="75" x2="196" y2="75"/><line x1="354" y1="75" x2="388" y2="75"/>
+          <line x1="546" y1="75" x2="580" y2="75"/><line x1="738" y1="75" x2="772" y2="75"/>
+        </g>
+        <g class="dg-arrow">
+          <polygon points="196,75 188,71 188,79"/><polygon points="388,75 380,71 380,79"/>
+          <polygon points="580,75 572,71 572,79"/><polygon points="772,75 764,71 764,79"/>
+        </g>
+        <text class="dg-note" x="279" y="130">欠損・重複・外れ値</text>
+        <text class="dg-note" x="471" y="130">エンコード・スケーリング</text>
+        <text class="dg-note" x="663" y="130">train / test に分ける</text>
+      </svg>
+    </div>
+
+    <div class="prose">
+      <p>このモジュールは、上のパイプラインを左から順にたどります。各ステップは次の3層で構成します。</p>
+      <ul>
+        <li><b>概要</b>：その工程が何のためにあるのか、あらましをつかむ。</li>
+        <li><b>仕組み（座学）</b>：背後にある考え方・定義・式を、ていねいに理解する。</li>
+        <li><b>コードで動かす</b>：pandas や scikit-learn の定番 API や、ページ内デモで実際に動かして確かめる。</li>
+      </ul>
+      <p>手を動かす題材には、実在の公開データセット（Titanic、UCI Adult、Iris など）や、ページ内の小さなサンプル表だけを使います。特別な環境がなくても、読みながら試せる構成です。</p>
+    </div>
+  </div>
+</section>
+
+<!-- STEP 1 -->
+<section id="step1" class="soft-sec">
+  <div class="wrap reveal">
+    <div class="stephead">
+      <span class="num">1</span>
+      <div class="tt"><h2>データセット構築とは</h2><span class="st-en">Building a dataset</span></div>
+    </div>
+    <div class="steprule"></div>
+
+    <p class="layer first"><span lang="ja">概要</span><span lang="en">Overview</span></p>
+    <div class="prose">
+      <p>分析や機械学習を始めるとき、いきなりモデルに取りかかることはできません。まず、手元の生データを「整った表」に仕立てる必要があります。この工程が<b>前処理</b>であり、その成果物が<b>データセット</b>です。前処理をおろそかにしたまま高度なモデルを使っても、良い結果は得られません。次のような場面で、前処理は成果を左右します。</p>
+      <ul>
+        <li><b>欠損があるまま学習</b>：値が抜けたセルをそのまま渡すと、多くのアルゴリズムはエラーになるか、偏った学習をします。</li>
+        <li><b>単位や尺度がばらばら</b>：年齢（0〜100）と年収（数百万）を混ぜると、大きな値の特徴量ばかりが効いてしまいます。</li>
+        <li><b>カテゴリが文字列のまま</b>：「男/女」「東京/大阪」といった文字は、数値を前提とするモデルにそのまま入れられません。</li>
+        <li><b>評価用データの混入</b>：前処理の手順を誤ると、答えを盗み見た「ずるい」評価になり、実力を過大評価します。</li>
+      </ul>
+    </div>
+
+    <p class="layer"><span lang="ja">仕組み</span><span lang="en">How it works</span></p>
+    <div class="prose">
+      <h4>表形式データの基本</h4>
+      <p>もっとも基本的なデータの形が<b>表形式（tabular）データ</b>です。多くの分析はこの形を前提にします。用語を押さえておきましょう。</p>
+      <ul>
+        <li><b>行（row）＝サンプル</b>：1件のデータ点。1人の顧客、1つの計測、1件の記事など。</li>
+        <li><b>列（column）＝特徴量</b>：サンプルを説明する属性。年齢・年収・カテゴリなど。特徴量は<b>数値型</b>（連続・離散）と<b>カテゴリ型</b>（順序あり・なし）に大別されます。</li>
+        <li><b>目的変数（target / label）</b>：予測したい列。分類なら「クラス」、回帰なら「連続値」。教師なし学習ではこれがありません。</li>
+      </ul>
+      <h4>データ品質の観点</h4>
+      <p>生データには、さまざまな汚れが混じっています。前処理は、これらを見つけて手当てする作業でもあります。代表的な観点は次の4つです。</p>
+      <ul>
+        <li><b>欠損（missing）</b>：値が入っていないセル。測定漏れ、無回答、システムの都合などで生じます。</li>
+        <li><b>重複（duplicate）</b>：同じサンプルが複数回入っている。件数や統計をゆがめます。</li>
+        <li><b>ノイズ・外れ値（noise / outlier）</b>：誤入力や異常な値。「年齢 999」のような明らかな誤りから、本物の極端値まで幅があります。</li>
+        <li><b>不整合（inconsistency）</b>：表記ゆれや単位違い。「東京 / 東京都」「kg / g」のように、同じ意味が違う形で現れます。</li>
+      </ul>
+      <p>このモジュールの Step&nbsp;2 以降は、これらの汚れを一つずつ手当てし、モデルに渡せる数値のデータセットへと仕上げる流れを、実際に体験していきます。</p>
+    </div>
+
+    <div class="callout tip">
+      <h4>この Step のまとめ</h4>
+      <p>前処理は生データを「整った表」に仕立てる工程で、その成果物がデータセットです。行＝サンプル・列＝特徴量・目的変数という基本を押さえ、欠損・重複・ノイズ・不整合という品質の観点で汚れを見つけて手当てします。「garbage in, garbage out」を避けることが、良い分析の第一歩です。</p>
+    </div>
+  </div>
+</section>
+
+<!-- STEP 2 -->
+<section id="step2">
+  <div class="wrap reveal">
+    <div class="stephead">
+      <span class="num">2</span>
+      <div class="tt"><h2>欠損値と外れ値</h2><span class="st-en">Missing values &amp; outliers</span></div>
+    </div>
+    <div class="steprule"></div>
+
+    <p class="layer first"><span lang="ja">概要</span><span lang="en">Overview</span></p>
+    <div class="prose">
+      <p>現実のデータには、ほぼ必ず<b>欠損値</b>（値が抜けたセル）と<b>外れ値</b>（極端に大きい/小さい値）が混じっています。ここをどう手当てするかで、後段の分析の質が大きく変わります。まずは、この2つを「見つけて、決めて、処理する」流れをつかみましょう。</p>
+    </div>
+
+    <p class="layer"><span lang="ja">仕組み</span><span lang="en">How it works</span></p>
+    <div class="prose">
+      <h4>1. 欠損の種類</h4>
+      <p>欠損は、なぜ抜けたかによって性質が変わります。統計学では次の3つに分けて考えます。処理方針を選ぶうえで大切な視点です。</p>
+      <ul>
+        <li><b>完全にランダムな欠損（MCAR）</b>：欠損がどの変数とも無関係。単純な削除でも偏りが出にくい。</li>
+        <li><b>観測値に依存する欠損（MAR）</b>：他の観測できている列で欠損の起こりやすさが説明できる。補完が有効。</li>
+        <li><b>欠損自体に依存する欠損（MNAR）</b>：抜けた値そのものが原因（高所得者ほど収入を答えない等）。単純な補完では偏りが残る。</li>
+      </ul>
+      <h4>2. 除去するか、補完するか</h4>
+      <p>欠損への対処は、大きく<b>除去</b>と<b>補完（imputation）</b>に分かれます。</p>
+      <ul>
+        <li><b>行削除（listwise deletion）</b>：欠損を含む行を丸ごと落とす。手軽ですが、欠損が多いとサンプルが激減し、情報を捨てすぎることがあります。</li>
+        <li><b>列削除</b>：欠損だらけの列を落とす。その特徴量をあきらめる判断です。</li>
+        <li><b>補完</b>：欠けたセルを代表値で埋める。数値列は<b>平均</b>や<b>中央値</b>、カテゴリ列は<b>最頻値</b>が定番です。外れ値の影響を受けにくい<b>中央値</b>は、分布が偏ったデータで特に有効です。時系列では前後の値で埋める<b>前方/後方補完</b>もあります。</li>
+      </ul>
+      <h4>3. 外れ値の検出</h4>
+      <p>外れ値は、誤入力（年齢 999 など）の場合もあれば、本物の極端値の場合もあります。まずは検出してから、除去・上限打ち切り（クリッピング）・そのまま残すのいずれかを選びます。定番の検出法が2つあります。</p>
+      <ul>
+        <li><b>IQR 法</b>：四分位範囲 <code>IQR = Q3 - Q1</code> を使い、下限・上限からはみ出す点を外れ値とみなします。分布の形を仮定しない頑健な方法です。</li>
+        <li><b>z スコア法</b>：平均からの外れ具合を標準偏差で測り、<code>|z| &gt; 3</code> などを外れ値とします。おおむね正規分布に近いデータ向きです。</li>
+      </ul>
+    </div>
+    <div class="formula">
+      IQR <span class="op">=</span> Q3 <span class="op">&minus;</span> Q1<br>
+      下限 <span class="op">=</span> Q1 <span class="op">&minus;</span> 1.5 <span class="op">&times;</span> IQR　　上限 <span class="op">=</span> Q3 <span class="op">+</span> 1.5 <span class="op">&times;</span> IQR
+      <small>Q1: 第1四分位数（下から25%）　Q3: 第3四分位数（下から75%）<br>この下限・上限の外にある値を外れ値の候補とみなします。</small>
+    </div>
+
+    <!-- DEMO 1: Missing value handling -->
+    <div class="demo reveal" id="demoImpute">
+      <span class="dtag"><span lang="ja">デモ 1</span><span lang="en">Demo 1</span></span>
+      <h4>欠損値ハンドリング</h4>
+      <p class="dnote">欠損セル（<code>NaN</code> と表示）を含む小さな表です。処理方式を選ぶと、結果の表を更新します。「行削除」は欠損を含む行を丸ごと落とし、「平均補完」「中央値補完」は各特徴量の平均・中央値で欠けたセルを埋めます。補完・変更されたセルは緑で示します。<code>id</code> は識別子なので補完の対象にしません。</p>
+      <div class="try">
+        <span class="tlbl">方式</span>
+        <button type="button" data-method="raw">元データ</button>
+        <button type="button" data-method="drop">行削除</button>
+        <button type="button" data-method="mean">平均で補完</button>
+        <button type="button" data-method="median">中央値で補完</button>
+      </div>
+      <div class="demo-out" id="imputeOut" aria-live="polite"></div>
+    </div>
+
+    <p class="layer"><span lang="ja">コードで動かす</span><span lang="en">Run the code</span></p>
+    <div class="prose">
+      <p>pandas なら、欠損の把握は <code>isna()</code> ひとつで済みます。まず、どの列にいくつ欠損があるかを数えてみましょう。</p>
+    </div>
+    <div class="code-wrap attached">
+      <div class="code-head"><span class="lbl">Python</span><span class="lang-tag">count_missing.py</span><button class="copy" type="button" onclick="copyCode(this)">copy</button></div>
+      <pre><code><span class="kw">import</span> pandas <span class="kw">as</span> pd
+
+df = pd.DataFrame({
+    <span class="st">"age"</span>:    [<span class="nu">25</span>, <span class="nu">32</span>, <span class="kw">None</span>, <span class="nu">45</span>, <span class="nu">29</span>, <span class="nu">38</span>],
+    <span class="st">"income"</span>: [<span class="nu">350</span>, <span class="kw">None</span>, <span class="nu">520</span>, <span class="nu">610</span>, <span class="nu">410</span>, <span class="kw">None</span>],
+    <span class="st">"score"</span>:  [<span class="nu">68</span>, <span class="nu">74</span>, <span class="nu">81</span>, <span class="kw">None</span>, <span class="nu">70</span>, <span class="nu">88</span>],
+})
+<span class="kw">print</span>(df.isna().sum())   <span class="cm"># 列ごとの欠損数</span></code></pre>
+    </div>
+    <div class="code-out"><span class="olbl">出力例 / Output</span><pre><code>age       1
+income    2
+score     1
+dtype: int64</code></pre></div>
+
+    <div class="prose">
+      <p>scikit-learn の <code>SimpleImputer</code> を使うと、方式を指定して一括で補完できます。ここでは外れ値に強い<b>中央値</b>で埋めます（<code>strategy</code> を <code>"mean"</code> や <code>"most_frequent"</code> に変えれば平均・最頻値になります）。</p>
+    </div>
+    <div class="code-wrap attached">
+      <div class="code-head"><span class="lbl">Python</span><span class="lang-tag">simple_imputer.py</span><button class="copy" type="button" onclick="copyCode(this)">copy</button></div>
+      <pre><code><span class="kw">from</span> sklearn.impute <span class="kw">import</span> SimpleImputer
+
+imp = SimpleImputer(strategy=<span class="st">"median"</span>)
+filled = pd.DataFrame(imp.fit_transform(df), columns=df.columns)
+<span class="kw">print</span>(filled)</code></pre>
+    </div>
+    <div class="code-out"><span class="olbl">出力例 / Output</span><pre><code>    age  income  score
+0  25.0   350.0   68.0
+1  32.0   465.0   74.0
+2  32.0   520.0   81.0
+3  45.0   610.0   74.0
+4  29.0   410.0   70.0
+5  38.0   465.0   88.0</code></pre></div>
+    <div class="prose">
+      <p>欠けていた <code>income</code> の 2 セルは中央値 465、<code>age</code> は 32、<code>score</code> は 74 で埋まりました。中央値は、並べたときの真ん中の値です（<code>income</code> の観測値 350・410・520・610 の中央は (410+520)/2＝465）。</p>
+    </div>
+
+    <div class="prose">
+      <p>外れ値の検出は、先ほどの IQR 法をそのまま書けます。明らかな誤入力（年齢 120）を見つけてみましょう。</p>
+    </div>
+    <div class="code-wrap attached">
+      <div class="code-head"><span class="lbl">Python</span><span class="lang-tag">iqr_outlier.py</span><button class="copy" type="button" onclick="copyCode(this)">copy</button></div>
+      <pre><code><span class="kw">import</span> pandas <span class="kw">as</span> pd
+
+ages = pd.Series([<span class="nu">25</span>, <span class="nu">32</span>, <span class="nu">45</span>, <span class="nu">29</span>, <span class="nu">38</span>, <span class="nu">120</span>])  <span class="cm"># 120 は誤入力の疑い</span>
+q1, q3 = ages.quantile(<span class="nu">0.25</span>), ages.quantile(<span class="nu">0.75</span>)
+iqr = q3 - q1
+low, high = q1 - <span class="nu">1.5</span> * iqr, q3 + <span class="nu">1.5</span> * iqr
+<span class="kw">print</span>(<span class="st">f"下限={low:.1f} 上限={high:.1f}"</span>)
+<span class="kw">print</span>(ages[(ages &lt; low) | (ages &gt; high)].tolist())</code></pre>
+    </div>
+    <div class="code-out"><span class="olbl">出力例 / Output</span><pre><code>下限=9.5 上限=63.5
+[120]</code></pre></div>
+
+    <div class="callout tip">
+      <h4>この Step のまとめ</h4>
+      <p>欠損は「除去するか、補完するか」を、欠損の起こり方を踏まえて決めます。数値は平均や中央値、カテゴリは最頻値が定番で、外れ値に強いのは中央値です。外れ値は IQR 法や z スコアで検出してから、除去・打ち切り・保持を選びます。次は、整えたデータを数値の特徴量へ変換します。</p>
+    </div>
+  </div>
+</section>
+
+<!-- STEP 3 -->
+<section id="step3" class="soft-sec">
+  <div class="wrap reveal">
+    <div class="stephead">
+      <span class="num">3</span>
+      <div class="tt"><h2>特徴量エンジニアリング</h2><span class="st-en">Feature engineering</span></div>
+    </div>
+    <div class="steprule"></div>
+
+    <p class="layer first"><span lang="ja">概要</span><span lang="en">Overview</span></p>
+    <div class="prose">
+      <p>欠損や外れ値を手当てしても、そのままではモデルに渡せない列が残ります。文字列のカテゴリ、尺度のばらばらな数値、日時のような複合的な値です。これらを、モデルが扱える良い特徴量へと作り直す工程が<b>特徴量エンジニアリング（feature engineering）</b>です。代表的な作業は、カテゴリのエンコーディング・数値のスケーリング・ビン化・日時の分解です。</p>
+    </div>
+
+    <p class="layer"><span lang="ja">仕組み</span><span lang="en">How it works</span></p>
+    <div class="prose">
+      <h4>1. カテゴリ変数のエンコーディング</h4>
+      <p>「東京 / 大阪」「S / M / L」のような文字のカテゴリは、数値に変換します。カテゴリの性質で使い分けます。</p>
+      <ul>
+        <li><b>ラベルエンコーディング</b>：各カテゴリに整数を割り当てる（S=0, M=1, L=2）。<b>順序に意味がある</b>（順序尺度）ときに向きます。名義尺度に使うと、本来ない大小関係をモデルに誤解させます。</li>
+        <li><b>One-Hot エンコーディング</b>：カテゴリごとに 0/1 の列を作る。「東京」→ <code>[1,0,0]</code> のように、<b>順序のない</b>名義尺度の定番です。カテゴリ数が多いと列が増える（次元の増加）点に注意します。</li>
+      </ul>
+      <h4>2. スケーリング（正規化・標準化）</h4>
+      <p>数値特徴量は、列ごとに値の範囲が大きく異なります。年齢（0〜100）と年収（数百万）をそのまま混ぜると、大きな値の列ばかりが効いてしまいます。距離や勾配を使う手法（k近傍法・SVM・ニューラルネット等）では特に、スケールをそろえるのが大切です。代表的な方法が2つあります。</p>
+      <ul>
+        <li><b>Min-Max 正規化</b>：最小を 0、最大を 1 に線形変換し、<b>0〜1 の範囲</b>に収めます。範囲が決まっているのが利点ですが、外れ値に引っぱられやすい弱点があります。</li>
+        <li><b>標準化（z スコア）</b>：平均 0・標準偏差 1 になるよう変換します。分布の形は保たれ、外れ値の影響も Min-Max より穏やかです。多くの場面での既定の選択です。</li>
+      </ul>
+    </div>
+    <div class="formula">
+      Min-Max: x&prime; <span class="op">=</span> ( x <span class="op">&minus;</span> min ) <span class="op">/</span> ( max <span class="op">&minus;</span> min )<br>
+      標準化: z <span class="op">=</span> ( x <span class="op">&minus;</span> mean ) <span class="op">/</span> std
+      <small>min / max: 列の最小・最大　mean: 平均　std: 標準偏差<br>Min-Max は 0〜1 に収め、標準化は平均 0・標準偏差 1 にそろえます。</small>
+    </div>
+    <div class="prose">
+      <h4>3. ビン化（binning）</h4>
+      <p>連続値を区間に区切って、カテゴリに変える処理です。年齢を「10代・20代・30代」に、点数を「低・中・高」にまとめるなど。非線形な関係を単純化でき、外れ値の影響もやわらぎます。等幅で区切る方法と、件数が等しくなるよう区切る方法（等頻度）があります。</p>
+      <h4>4. 日時特徴の分解</h4>
+      <p>日時（タイムスタンプ）は、そのままでは扱いにくい値です。<b>年・月・日・曜日・時刻</b>などに分解すると、意味のある特徴量になります。たとえば「曜日」や「休日かどうか」は、売上や交通量の予測で強く効くことがあります。周期性（月・曜日・時刻）を意識するのがコツです。</p>
+    </div>
+
+    <!-- DEMO 2: Normalization vs standardization -->
+    <div class="demo reveal" id="demoScale">
+      <span class="dtag"><span lang="ja">デモ 2</span><span lang="en">Demo 2</span></span>
+      <h4>正規化 vs 標準化</h4>
+      <p class="dnote">数値をカンマか空白で区切って入力すると、<b>Min-Max 正規化</b>と<b>標準化（z スコア）</b>の両方を計算し、表とミニバーで比較します。Min-Max は 0〜1 に収まり、z スコアは平均 0（中央の縦線）を基準に左右へ広がります。標準偏差は scikit-learn の <code>StandardScaler</code> と同じ母標準偏差（ddof=0）で計算します。</p>
+      <label class="fld" for="scaleInput">数値の列 / Numbers</label>
+      <textarea id="scaleInput" rows="2" spellcheck="false">12, 18, 22, 35, 60, 80</textarea>
+      <div class="try">
+        <span class="tlbl">例</span>
+        <button type="button" data-sc="12, 18, 22, 35, 60, 80">年収レンジ</button>
+        <button type="button" data-sc="20, 22, 24, 25, 27, 90">外れ値あり</button>
+        <button type="button" data-sc="1, 2, 3, 4, 5, 6, 7, 8, 9, 10">等間隔</button>
+      </div>
+      <div class="demo-out" id="scaleOut" aria-live="polite"></div>
+    </div>
+
+    <p class="layer"><span lang="ja">コードで動かす</span><span lang="en">Run the code</span></p>
+    <div class="prose">
+      <p>まずカテゴリの One-Hot 化です。scikit-learn の <code>OneHotEncoder</code> を使います。カテゴリはアルファベット順に並び、それぞれが 0/1 の列になります。</p>
+    </div>
+    <div class="code-wrap attached">
+      <div class="code-head"><span class="lbl">Python</span><span class="lang-tag">onehot_encoder.py</span><button class="copy" type="button" onclick="copyCode(this)">copy</button></div>
+      <pre><code><span class="kw">from</span> sklearn.preprocessing <span class="kw">import</span> OneHotEncoder
+<span class="kw">import</span> numpy <span class="kw">as</span> np
+
+cities = np.array([[<span class="st">"Tokyo"</span>], [<span class="st">"Osaka"</span>], [<span class="st">"Tokyo"</span>], [<span class="st">"Kyoto"</span>]])
+enc = OneHotEncoder(sparse_output=<span class="kw">False</span>)
+onehot = enc.fit_transform(cities)
+<span class="kw">print</span>(enc.categories_[<span class="nu">0</span>])
+<span class="kw">print</span>(onehot)</code></pre>
+    </div>
+    <div class="code-out"><span class="olbl">出力例 / Output</span><pre><code>['Kyoto' 'Osaka' 'Tokyo']
+[[0. 0. 1.]
+ [0. 1. 0.]
+ [0. 0. 1.]
+ [1. 0. 0.]]</code></pre></div>
+
+    <div class="prose">
+      <p>次に数値の標準化です。<code>StandardScaler</code> は各列を平均 0・標準偏差 1 にそろえます。学習した平均と標準偏差は <code>mean_</code>・<code>scale_</code> で確認できます（標準偏差は母標準偏差）。0〜1 に収めたいときは <code>MinMaxScaler</code> を同じ使い方で呼べます。</p>
+    </div>
+    <div class="code-wrap attached">
+      <div class="code-head"><span class="lbl">Python</span><span class="lang-tag">standard_scaler.py</span><button class="copy" type="button" onclick="copyCode(this)">copy</button></div>
+      <pre><code><span class="kw">from</span> sklearn.preprocessing <span class="kw">import</span> StandardScaler
+<span class="kw">import</span> numpy <span class="kw">as</span> np
+
+X = np.array([[<span class="nu">12.</span>], [<span class="nu">18.</span>], [<span class="nu">22.</span>], [<span class="nu">35.</span>], [<span class="nu">60.</span>], [<span class="nu">80.</span>]])
+scaler = StandardScaler()
+z = scaler.fit_transform(X)
+<span class="kw">print</span>(<span class="st">"mean ="</span>, round(scaler.mean_[<span class="nu">0</span>], <span class="nu">3</span>), <span class="st">"std ="</span>, round(scaler.scale_[<span class="nu">0</span>], <span class="nu">3</span>))
+np.set_printoptions(precision=<span class="nu">3</span>, suppress=<span class="kw">True</span>)
+<span class="kw">print</span>(z.ravel())</code></pre>
+    </div>
+    <div class="code-out"><span class="olbl">出力例 / Output</span><pre><code>mean = 37.833 std = 24.457
+[-1.056 -0.811 -0.647 -0.116  0.906  1.724]</code></pre></div>
+    <div class="prose">
+      <p>上のデモに同じ <code>12, 18, 22, 35, 60, 80</code> を入れると、z スコアの列がこの出力と一致します。手計算・デモ・ライブラリの3つで、同じ式が同じ値を出すことを確かめられます。</p>
+    </div>
+
+    <div class="callout tip">
+      <h4>この Step のまとめ</h4>
+      <p>カテゴリは順序尺度ならラベル、名義尺度なら One-Hot でエンコードします。数値は Min-Max（0〜1）か標準化（平均0・標準偏差1）でスケールをそろえます。さらにビン化や日時分解で、意味のある特徴量を作れます。次は、目的変数（ラベル）側の課題を見ます。</p>
+    </div>
+  </div>
+</section>
+
+<!-- STEP 4 -->
+<section id="step4">
+  <div class="wrap reveal">
+    <div class="stephead">
+      <span class="num">4</span>
+      <div class="tt"><h2>ラベル付けとクラス不均衡</h2><span class="st-en">Labeling &amp; class imbalance</span></div>
+    </div>
+    <div class="steprule"></div>
+
+    <p class="layer first"><span lang="ja">概要</span><span lang="en">Overview</span></p>
+    <div class="prose">
+      <p>教師あり学習では、各サンプルに正解の<b>ラベル（目的変数）</b>が必要です。このラベルをどう付け、どんな偏りに気をつけるかが、データセットの質を決めます。とりわけ実務でよく問題になるのが、クラスの件数が大きく偏る<b>クラス不均衡（class imbalance）</b>です。</p>
+    </div>
+
+    <p class="layer"><span lang="ja">仕組み</span><span lang="en">How it works</span></p>
+    <div class="prose">
+      <h4>1. ラベル付け（アノテーション）</h4>
+      <p>正解ラベルは、人手でのアノテーション、既存の記録（購入した/しなかった等）、あるいはルールによる自動付与などで用意します。人手の場合は、複数人で付けて一致度を測る（アノテータ間一致）と品質を確認できます。付け方の基準がぶれると<b>ノイズラベル</b>（誤った正解）が混じり、モデルの上限を下げてしまいます。</p>
+      <h4>2. クラス不均衡という問題</h4>
+      <p>不正検知や病気の判定のように、<b>片方のクラスが極端に少ない</b>データはよくあります。たとえば 99% が正常・1% が異常のデータでは、すべて「正常」と答えるだけで正解率 99% になります。数字は高いのに、肝心の異常をまったく拾えていません。<b>正解率だけを見てはいけない</b>典型例で、少数派クラスの再現率や F 値を確認する必要があります（評価指標は Step&nbsp;5 でも触れます）。</p>
+      <h4>3. 不均衡への対処</h4>
+      <p>不均衡をやわらげる代表的な手立てが4つあります。</p>
+      <ul>
+        <li><b>アンダーサンプリング</b>：多数派を間引いて件数をそろえる。手軽ですが情報を捨てます。</li>
+        <li><b>オーバーサンプリング</b>：少数派を複製・水増しして件数をそろえる。単純な複製は過学習を招きやすいです。</li>
+        <li><b>クラス重み付け</b>：学習時に少数派の誤りを重く扱う。多くの分類器で <code>class_weight="balanced"</code> のように指定できます。</li>
+        <li><b>SMOTE</b>：少数派サンプルの<b>間を補間して</b>新しい合成サンプルを作るオーバーサンプリング法。単純複製より多様性が出ます。<code>imbalanced-learn</code> で使えます。</li>
+      </ul>
+      <p>いずれの手立ても、<b>学習データにだけ</b>適用します。評価用データにサンプリングをかけると、現実の分布と食い違い、評価がゆがみます。この「学習側だけに閉じる」考え方は、次の Step のデータリークとも深くつながります。</p>
+    </div>
+
+    <!-- DEMO 3: Stratified split visualizer -->
+    <div class="demo reveal" id="demoStratify">
+      <span class="dtag"><span lang="ja">デモ 3</span><span lang="en">Demo 3</span></span>
+      <h4>層化分割ビジュアライザ</h4>
+      <p class="dnote">2 クラス（A・B）の件数と、テストの割合を決めると、<b>通常のランダム分割</b>と<b>層化分割</b>で、クラスの構成がどう保たれるかを棒で比較します。層化分割は、各クラスを同じ割合で分けるので、元のクラス比が train・test の両方で保たれます。不均衡なデータほど、ランダム分割のずれが目立ちます。</p>
+      <div class="two">
+        <div>
+          <label class="fld" for="clsA">クラス A 件数 / Class A</label>
+          <input type="text" id="clsA" inputmode="numeric" spellcheck="false" value="80">
+        </div>
+        <div>
+          <label class="fld" for="clsB">クラス B 件数 / Class B</label>
+          <input type="text" id="clsB" inputmode="numeric" spellcheck="false" value="20">
+        </div>
+      </div>
+      <label class="fld" for="ratio" style="margin-top:14px">テストの割合 / Test ratio：<span id="ratioVal" style="color:var(--accent-2)">25%</span></label>
+      <input type="range" id="ratio" min="10" max="50" step="5" value="25" style="width:100%;max-width:420px;accent-color:var(--accent);cursor:pointer">
+      <div class="try">
+        <span class="tlbl">例</span>
+        <button type="button" data-a="80" data-b="20">80 : 20（不均衡）</button>
+        <button type="button" data-a="95" data-b="5">95 : 5（強い不均衡）</button>
+        <button type="button" data-a="50" data-b="50">50 : 50（均衡）</button>
+      </div>
+      <div class="demo-out" id="stratOut" aria-live="polite"></div>
+    </div>
+
+    <p class="layer"><span lang="ja">コードで動かす</span><span lang="en">Run the code</span></p>
+    <div class="prose">
+      <p>SMOTE で少数派を合成し、件数をそろえてみます。<code>imbalanced-learn</code> の <code>fit_resample</code> で、特徴量 <code>X</code> とラベル <code>y</code> をまとめて増やせます。<code>Counter</code> で前後の件数を確認します。</p>
+    </div>
+    <div class="code-wrap attached">
+      <div class="code-head"><span class="lbl">Python</span><span class="lang-tag">smote_resample.py</span><button class="copy" type="button" onclick="copyCode(this)">copy</button></div>
+      <pre><code><span class="cm"># pip install imbalanced-learn</span>
+<span class="kw">from</span> imblearn.over_sampling <span class="kw">import</span> SMOTE
+<span class="kw">from</span> collections <span class="kw">import</span> Counter
+
+<span class="cm"># X: 特徴量, y: ラベル（0 が多数派 90 件, 1 が少数派 10 件）</span>
+<span class="kw">print</span>(<span class="st">"before:"</span>, Counter(y))
+X_res, y_res = SMOTE(random_state=<span class="nu">0</span>).fit_resample(X, y)
+<span class="kw">print</span>(<span class="st">"after :"</span>, Counter(y_res))</code></pre>
+    </div>
+    <div class="code-out"><span class="olbl">出力例 / Output</span><pre><code>before: Counter({0: 90, 1: 10})
+after : Counter({0: 90, 1: 90})</code></pre></div>
+    <div class="prose">
+      <p>少数派クラス 1 が、多数派と同じ 90 件まで合成されました。なお SMOTE は<b>学習データにだけ</b>かけます。評価用データには適用しない、というのが鉄則です。</p>
+    </div>
+
+    <div class="callout tip">
+      <h4>この Step のまとめ</h4>
+      <p>ラベルは付け方の基準がぶれるとノイズになります。クラス不均衡があると正解率はあてになりにくく、少数派の再現率・F 値を見ます。対処はアンダー/オーバーサンプリング・クラス重み・SMOTE などで、いずれも学習データにだけ適用します。次は、その「学習側に閉じる」設計を、データ分割とリーク防止として体系立てます。</p>
+    </div>
+  </div>
+</section>
+
+<!-- STEP 5 -->
+<section id="step5" class="soft-sec">
+  <div class="wrap reveal">
+    <div class="stephead">
+      <span class="num">5</span>
+      <div class="tt"><h2>データ分割とリーク防止</h2><span class="st-en">Splitting &amp; leakage</span></div>
+    </div>
+    <div class="steprule"></div>
+
+    <p class="layer first"><span lang="ja">概要</span><span lang="en">Overview</span></p>
+    <div class="prose">
+      <p>モデルの本当の実力は、<b>学習に使っていないデータ</b>で測ります。そのためにデータを分割します。ここで手順を誤ると、答えを盗み見た「ずるい」評価になり、実力を過大評価してしまいます。これが<b>データリーク（data leakage）</b>で、前処理でもっとも気をつけたい落とし穴です。</p>
+    </div>
+
+    <p class="layer"><span lang="ja">仕組み</span><span lang="en">How it works</span></p>
+    <div class="prose">
+      <h4>train / validation / test</h4>
+      <p>データは役割で3つに分けます。<b>学習用（train）</b>でモデルを学習し、<b>検証用（validation）</b>でハイパーパラメータを調整し、<b>テスト用（test）</b>で最後に一度だけ実力を測ります。テストは「本番の代役」なので、調整には決して使いません。</p>
+    </div>
+
+    <div class="diagram-wrap reveal">
+      <p class="cap">データ分割の役割分担（一例）</p>
+      <svg viewBox="0 0 940 120" role="img" aria-label="データを学習用60パーセント、検証用20パーセント、テスト用20パーセントに分ける帯グラフ">
+        <rect class="dg-box acc" x="20" y="30" width="535" height="54" rx="12"/>
+        <text class="dg-lbl" x="287" y="54">学習用（train）</text>
+        <text class="dg-en" x="287" y="72">60%</text>
+        <rect class="dg-box" x="559" y="30" width="178" height="54" rx="12" style="fill:var(--bg-3)"/>
+        <text class="dg-lbl" x="648" y="54">検証</text>
+        <text class="dg-en" x="648" y="72">valid 20%</text>
+        <rect class="dg-box" x="741" y="30" width="179" height="54" rx="12"/>
+        <text class="dg-lbl" x="830" y="54">テスト</text>
+        <text class="dg-en" x="830" y="72">test 20%</text>
+      </svg>
+      <p class="figcap"><b>学習用</b>で学び、<b>検証用</b>で調整し、<b>テスト用</b>で最後に一度だけ評価します。割合はデータ量に応じて変えます（交差検証を使えば、検証用を別に取らずに済みます）。</p>
+    </div>
+
+    <div class="prose">
+      <h4>層化抽出と交差検証</h4>
+      <p>分割のときも、クラス比を保つ<b>層化抽出（stratified sampling）</b>が基本です（Step&nbsp;4 のデモで見たとおり）。データが少ないときは、分割を変えながら繰り返し評価する<b>交差検証（cross-validation）</b>が有効です。データを k 個に分け、順番に 1 個を検証、残りを学習に使い、k 回の平均で性能を評価します（k-分割交差検証）。偶然のばらつきをならせます。</p>
+      <h4>データリークの正体</h4>
+      <p>データリークは、<b>本来知り得ない情報が学習に混ざる</b>ことです。前処理でよくやってしまうのが次の誤りです。</p>
+      <ul>
+        <li><b>前処理を分割前に全体へ適用する</b>：標準化の平均・標準偏差や、補完の中央値を<b>データ全体</b>から計算すると、テストの情報が学習に漏れます。これらの統計量は<b>学習データだけ</b>から求め、同じ変換をテストに当てるのが正解です。</li>
+        <li><b>目的変数のリーク</b>：結果を知ってからでないと得られない特徴量（例：退会後にしか付かないフラグ）を入れてしまう。</li>
+        <li><b>時系列リーク</b>：未来のデータで過去を予測してしまう。時系列では時間順に分割し、シャッフルしません（過去で学習し、未来で評価）。</li>
+      </ul>
+      <p>この漏れを防ぐ強力な道具が <code>Pipeline</code> です。前処理と学習を1つにまとめると、交差検証や分割のたびに前処理が<b>学習側だけで fit</b>され、テストには変換だけが当たります。手作業での漏れを構造的に防げます。</p>
+    </div>
+
+    <p class="layer"><span lang="ja">コードで動かす</span><span lang="en">Run the code</span></p>
+    <div class="prose">
+      <p>実在データセット <b>Iris</b>（アヤメ 150 件を 3 品種に分類）で、層化分割・パイプライン・交差検証をまとめて体験します。<code>stratify=y</code> でクラス比を保ち、<code>Pipeline</code> で標準化を学習側に閉じ込めます。</p>
+    </div>
+    <div class="code-wrap attached">
+      <div class="code-head"><span class="lbl">Python</span><span class="lang-tag">split_pipeline.py</span><button class="copy" type="button" onclick="copyCode(this)">copy</button></div>
+      <pre><code><span class="kw">from</span> sklearn.datasets <span class="kw">import</span> load_iris
+<span class="kw">from</span> sklearn.model_selection <span class="kw">import</span> train_test_split, cross_val_score
+<span class="kw">from</span> sklearn.preprocessing <span class="kw">import</span> StandardScaler
+<span class="kw">from</span> sklearn.pipeline <span class="kw">import</span> Pipeline
+<span class="kw">from</span> sklearn.linear_model <span class="kw">import</span> LogisticRegression
+
+X, y = load_iris(return_X_y=<span class="kw">True</span>)
+
+<span class="cm"># 層化して分割：train と test でクラス比を保つ</span>
+X_tr, X_te, y_tr, y_te = train_test_split(
+    X, y, test_size=<span class="nu">0.3</span>, random_state=<span class="nu">0</span>, stratify=y)
+
+<span class="cm"># 前処理を学習に閉じ込める：標準化は train でだけ fit される</span>
+pipe = Pipeline([
+    (<span class="st">"scaler"</span>, StandardScaler()),
+    (<span class="st">"clf"</span>, LogisticRegression(max_iter=<span class="nu">1000</span>)),
+])
+pipe.fit(X_tr, y_tr)
+<span class="kw">print</span>(<span class="st">"test accuracy:"</span>, round(pipe.score(X_te, y_te), <span class="nu">3</span>))
+
+<span class="cm"># 交差検証：分割を変えながら平均性能を見る</span>
+scores = cross_val_score(pipe, X, y, cv=<span class="nu">5</span>)
+<span class="kw">print</span>(<span class="st">"CV mean:"</span>, round(scores.mean(), <span class="nu">3</span>))</code></pre>
+    </div>
+    <div class="code-out"><span class="olbl">出力例 / Output</span><pre><code>test accuracy: 0.978
+CV mean: 0.973</code></pre></div>
+
+    <div class="prose">
+      <p>もし <code>StandardScaler</code> をパイプラインに入れず、分割前にデータ全体へ <code>fit_transform</code> していたら、それがデータリークです。<code>Pipeline</code> にまとめておけば、<code>cross_val_score</code> が内部で分割を切り替えるたびに、標準化はその都度の学習側だけで学び直されます。数値がわずかに変わるだけに見えて、評価の正しさを守る大切な違いです。</p>
+    </div>
+
+    <div class="callout tip">
+      <h4>この Step のまとめ</h4>
+      <p>データは train / validation / test に、クラス比を保って（層化）分けます。前処理の統計量は必ず学習データだけから求め、テストには変換だけを当てます。この漏れ防止を <code>Pipeline</code> で構造化すれば、交差検証でも安全です。時系列では時間順に分割し、シャッフルしません。</p>
+    </div>
+  </div>
+</section>
+
+<!-- STEP 6 -->
+<section id="step6">
+  <div class="wrap reveal">
+    <div class="stephead">
+      <span class="num">6</span>
+      <div class="tt"><h2>再現性とデータ管理・これから</h2><span class="st-en">Reproducibility &amp; data management</span></div>
+    </div>
+    <div class="steprule"></div>
+
+    <p class="layer first"><span lang="ja">概要</span><span lang="en">Overview</span></p>
+    <div class="prose">
+      <p>前処理は一度きりの作業ではありません。データが増えたり、手順を見直したりするたびに、同じ処理をやり直します。このとき「<b>同じデータに同じ手順を通せば、いつでも同じ結果になる</b>」こと、つまり<b>再現性（reproducibility）</b>が保てるかどうかが、地味ですが決定的に重要です。再現できない前処理は、あとで検証も改善もできません。</p>
+    </div>
+
+    <p class="layer"><span lang="ja">仕組み</span><span lang="en">How it works</span></p>
+    <div class="prose">
+      <h4>パイプライン化</h4>
+      <p>前処理の一つひとつを手作業で回すと、順番の取り違えや当て忘れが起こります。補完・スケーリング・エンコーディングといった工程を<b>パイプライン（Pipeline）</b>として1本にまとめておけば、同じ手順を確実に、同じ順で再実行できます。Step&nbsp;5 で見たように、リーク防止にもつながります。</p>
+      <h4>乱数シードの固定</h4>
+      <p>データ分割、シャッフル、SMOTE のような処理には乱数が関わります。<code>random_state</code>（シード）を固定すると、乱数の並びが毎回同じになり、結果を再現できます。実験の比較や、不具合の追跡に欠かせません。</p>
+      <h4>データのバージョン管理</h4>
+      <p>コードだけでなく、<b>データそのもののバージョン</b>も記録します。「どの時点のデータで、どの前処理を通したモデルか」をたどれるようにするのが目的です。データにハッシュ（内容の指紋）を付けて管理する専用ツール（DVC など）もあります。生データ・中間データ・最終データセットを区別して保存する習慣も有効です。</p>
+      <h4>記録（データシート）</h4>
+      <p>データセットには、その<b>出所・収集方法・前処理・既知の偏りや制限</b>を文書として添えます。こうした説明書は<b>データシート（datasheets for datasets）</b>と呼ばれ、他者が（そして未来の自分が）安全に使うための土台になります。どんな加工をしたかを残すことは、研究でも実務でも基本の作法です。</p>
+    </div>
+
+    <div class="callout tip">
+      <h4>この Step のまとめ</h4>
+      <p>良い前処理は「もう一度同じ結果を出せる」ことまで含みます。工程をパイプライン化し、乱数シードを固定し、データとコードのバージョンをそろえ、加工の記録（データシート）を残す。これで、作ったデータセットを安心して使い回せます。次のモジュールで、このデータセットを実際にモデルへ渡していきます。</p>
+    </div>
+  </div>
+</section>
+
+<!-- CLOSING -->
+<section id="closing" class="soft-sec">
+  <div class="wrap reveal">
+    <p class="eyebrow"><span lang="ja">まとめ</span><span lang="en">Wrap-up</span></p>
+    <h2 class="big">学びの振り返りと、さらに学ぶために</h2>
+    <div class="prose" style="margin-top:22px">
+      <p>このモジュールでは、生データをデータセットへ仕立てる基本の道具を、パイプラインに沿って順に手に入れました。</p>
+      <ul>
+        <li><b>データセット構築</b>：行＝サンプル・列＝特徴量・目的変数。品質の観点（欠損・重複・ノイズ・不整合）で汚れを見つける。</li>
+        <li><b>欠損値と外れ値</b>：除去と補完（平均・中央値・最頻値）を使い分ける。外れ値は IQR や z スコアで検出する。</li>
+        <li><b>特徴量エンジニアリング</b>：カテゴリを One-Hot 化し、数値を Min-Max か標準化でスケールする。ビン化・日時分解も。</li>
+        <li><b>ラベルと不均衡</b>：クラス不均衡は正解率をあてにせず、サンプリングや重み・SMOTE で対処する。</li>
+        <li><b>分割とリーク防止</b>：層化して train / test に分け、前処理を <code>Pipeline</code> で学習側に閉じ込める。</li>
+        <li><b>再現性</b>：パイプライン化・乱数シード・データのバージョン管理・記録で、同じ結果を再現できるようにする。</li>
+      </ul>
+      <p>次に進むなら、下の道具と資料が役に立ちます。</p>
+    </div>
+
+    <div class="res-grid reveal">
+      <div class="res">
+        <h5>公開データセット</h5>
+        <ul>
+          <li><b>Titanic</b>：乗客の生存予測。欠損・カテゴリ・不均衡がそろう前処理の練習台（OpenML から取得可能）。</li>
+          <li><b>UCI Adult</b>：国勢調査から年収を分類。カテゴリ変数のエンコーディングの定番（UCI / OpenML）。</li>
+          <li><b>Iris</b>：アヤメ 3 品種の分類。scikit-learn 内蔵で、分割・評価の練習に最適。</li>
+        </ul>
+      </div>
+      <div class="res">
+        <h5>ライブラリ</h5>
+        <ul>
+          <li><b>pandas</b>：表形式データの読み込み・洗浄・変換。</li>
+          <li><b>NumPy</b>：数値配列と数学演算の土台。</li>
+          <li><b>scikit-learn</b>：補完・スケーリング・エンコーディング・分割・パイプライン。</li>
+          <li><b>imbalanced-learn</b>：SMOTE などクラス不均衡への対処。</li>
+        </ul>
+      </div>
+      <div class="res">
+        <h5>参考書</h5>
+        <ul>
+          <li>本橋智光『前処理大全』技術評論社</li>
+          <li>Alice Zheng, Amanda Casari『Feature Engineering for Machine Learning』O'Reilly</li>
+        </ul>
+      </div>
+      <div class="res">
+        <h5>次のモジュールへ</h5>
+        <ul>
+          <li>機械学習の基礎（分類・回帰・評価）</li>
+          <li>ネットワーク分析（グラフとしてのデータ）</li>
+          <li>自然言語処理（テキストの前処理と特徴量化）</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="callout tip">
+      <h4>おつかれさまでした</h4>
+      <p>ここで学んだ「洗って → 数値にして → 学習側に閉じて分ける」という流れは、どんなデータを扱うときも共通の土台になります。3 つのデモの数値や件数を書き換えて、もう一度動かしてみてください。補完で表がどう変わるか、スケーリングで値がどう並び直すか、層化がクラス比をどう守るか。手を動かすと、理解がぐっと深まります。</p>
+    </div>
+  </div>
+</section>
+
+<section id="beyond">
+  <div class="wrap reveal">
+    <p class="eyebrow"><span lang="ja">発展トピック</span><span lang="en">Beyond this module</span></p>
+    <h2 class="big">このコースでは扱わない、関係する発展トピック</h2>
+    <div class="prose" style="margin-top:22px">
+      <p>このモジュールでは、生データをデータセットへ仕立てる「基礎の流れ」を扱いました。いっぽうで近年は、前処理そのものを自動化・体系化する道具立てが急速に広がっています。ここでは、このコースでは踏み込まないものの、知っておくと視野が広がる発展的なトピックを、特に近年の主流を中心に紹介します。深掘りは各自の興味に合わせてどうぞ。</p>
+    </div>
+
+    <div class="res-grid reveal">
+      <div class="res">
+        <h5>不均衡と自動特徴量生成</h5>
+        <ul>
+          <li><b>不均衡対策の発展</b>：SMOTE の派生（Borderline-SMOTE・ADASYN）やアンダーサンプリングとの組み合わせ。<code>imbalanced-learn</code> にまとまっている。</li>
+          <li><b>自動特徴量生成</b>：関係のある複数の表から特徴量を自動で作る（Featuretools の深層特徴量合成）。</li>
+        </ul>
+      </div>
+      <div class="res">
+        <h5>データ検証と品質保証</h5>
+        <ul>
+          <li><b>データ検証</b>：期待するスキーマや値の範囲を宣言し、逸脱を自動で検出する（Great Expectations・pandera）。</li>
+          <li><b>データドリフト監視</b>：運用中に入力分布が学習時とずれていないかを継続的に確かめる。</li>
+        </ul>
+      </div>
+      <div class="res">
+        <h5>データ管理の基盤</h5>
+        <ul>
+          <li><b>データバージョン管理</b>：データセットと前処理の来歴を Git のように追跡する（DVC）。</li>
+          <li><b>特徴量ストア（feature store）</b>：作った特徴量を一元管理し、学習と推論で同じ定義を再利用する仕組み。</li>
+        </ul>
+      </div>
+      <div class="res">
+        <h5>ラベルづくりの発展</h5>
+        <ul>
+          <li><b>弱教師あり学習・能動学習</b>：ルールや少量の注釈からラベルを効率よく用意する（弱教師：Snorkel、能動学習：不確実なサンプルを優先注釈）。</li>
+          <li><b>合成データ</b>：本物に近い人工データを生成して不足やプライバシーを補う。</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<button class="totop" type="button" aria-label="上へ戻る" title="上へ戻る">&uarr;</button>
+
+<!-- FOOTER -->
+<footer>
+  <div class="wrap">
+    <div class="foot-grid">
+      <div>
+        <h3><span lang="ja">この学習モジュールについて</span><span lang="en">About this module</span></h3>
+        <div class="cite">
+          <span lang="ja">「研究で使う技術を実践的に学ぶ」学習コースの1モジュールです。概要から理論、動かせるコードまでを一続きにして、データの前処理とデータセット構築の基礎を独習できるように構成しています。内容は分野標準の一般的なもので、特定の研究や論文には紐づきません。</span>
+          <span lang="en">A module in a learning course on research skills, walking from overview to theory to runnable code so you can study the basics of data preprocessing and dataset construction on your own. The content is standard and general, not tied to any specific study.</span>
+        </div>
+      </div>
+      <div>
+        <h3><span lang="ja">制作</span><span lang="en">Author</span></h3>
+        <p class="muted-s">
+          <b>Yuta Kimura</b><br>
+          <span lang="ja">大阪公立大学工業高等専門学校</span><span lang="en">Osaka Metropolitan University College of Technology</span><br>
+          <a href="mailto:y.kimura@omu.ac.jp">y.kimura [at] omu.ac.jp</a>
+        </p>
+      </div>
+    </div>
+    <div class="foot-grid3">
+      <div>
+        <h3><span lang="ja">連絡先</span><span lang="en">Contact</span></h3>
+        <p class="muted-s">
+          <b>Yuta Kimura</b><br>
+          <span lang="ja">大阪公立大学工業高等専門学校</span><span lang="en">Osaka Metropolitan University College of Technology</span><br>
+          <a href="mailto:y.kimura@omu.ac.jp">y.kimura [at] omu.ac.jp</a>
+        </p>
+      </div>
+      <div>
+        <h3><span lang="ja">サイト</span><span lang="en">Site</span></h3>
+        <p class="muted-s">
+          <a href="../index.html">Home</a><br>
+          <a href="../publications.html"><span lang="ja">業績・研究活動</span><span lang="en">Publications &amp; research activities</span></a><br>
+          <a href="../teaching.html"><span lang="ja">教育</span><span lang="en">Teaching</span></a><br>
+          <a href="../software-engineering.html"><span lang="ja">ソフトウェア工学とは</span><span lang="en">What is software engineering?</span></a><br>
+          <a href="../glossary.html"><span lang="ja">研究用語ミニ辞典</span><span lang="en">Research glossary</span></a>
+        </p>
+      </div>
+      <div>
+        <h3><span lang="ja">関連教材</span><span lang="en">Related material</span></h3>
+        <p class="muted-s">
+          <a href="../course/software-testing.html"><span lang="ja">ソフトウェアテスト学習ガイド</span><span lang="en">Software Testing Guide</span></a><br>
+          <a href="../course/intelligent-informatics-1.html"><span lang="ja">知能情報実験実習1</span><span lang="en">Intelligent Informatics Lab I</span></a><br>
+          <a href="../course/index.html"><span lang="ja">ソフトウェア工学</span><span lang="en">Software Engineering</span></a><br>
+          <a href="https://researchmap.jp/kimura_yuta" target="_blank" rel="noopener">researchmap</a>
+        </p>
+      </div>
+    </div>
+    <div class="foot-rule"></div>
+    <p class="foot-note">
+      <span lang="ja">本ページは学習用のプロトタイプ教材です。コード例は分野標準のライブラリ（pandas・scikit-learn・imbalanced-learn）にもとづき、出力例は実際の実行結果に一致させています。</span>
+      <span lang="en">This page is a prototype learning material. Code examples use standard libraries (pandas, scikit-learn, imbalanced-learn), and the shown outputs match real runs.</span>
+    </p>
+  </div>
+</footer>
+
+<script>
+  /* language: setLang / toggleLang, persisted in localStorage 'site-lang' only */
+  function setLang(l){document.body.classList.remove('lang-ja','lang-en');document.body.classList.add('lang-'+l);document.documentElement.lang=l;
+    try{localStorage.setItem('site-lang',l)}catch(e){}
+    try{var q=new URLSearchParams(location.search);q.set('lang',l);history.replaceState(null,'',location.pathname+'?'+q+location.hash)}catch(e){}}
+  function toggleLang(){setLang(document.body.classList.contains('lang-ja')?'en':'ja')}
+  (function(){var u=null;try{u=new URLSearchParams(location.search).get('lang')}catch(e){}
+    var s=null;try{s=localStorage.getItem('site-lang')}catch(e){}
+    var l=(u==='en'||u==='ja')?u:((s==='en'||s==='ja')?s:'ja');if(l!=='ja')setLang(l);})();
+  if('IntersectionObserver' in window){
+    var io=new IntersectionObserver(function(es){
+      es.forEach(function(e){ if(e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target); } });
+    },{threshold:0.10, rootMargin:"0px 0px -6% 0px"});
+    document.querySelectorAll('.reveal').forEach(function(el){ io.observe(el); });
+  } else { document.querySelectorAll('.reveal').forEach(function(el){ el.classList.add('in'); }); }
+
+  /* copy code (in-memory only, no storage) */
+  function copyCode(btn){
+    var pre=btn.closest('.code-wrap').querySelector('pre code');
+    var text=pre.innerText;
+    if(navigator.clipboard&&navigator.clipboard.writeText){
+      navigator.clipboard.writeText(text).then(function(){flash(btn);},function(){});
+    }
+  }
+  function flash(btn){var o=btn.textContent;btn.textContent='copied';setTimeout(function(){btn.textContent=o;},1200);}
+</script>
+
+<script>
+/* ==================== interactive demos (vanilla JS, self-contained) ==================== */
+(function(){
+  function esc(s){ return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+  function isInt(x){ return Math.abs(x-Math.round(x))<1e-9; }
+  function fmtN(x){ return isInt(x)? String(Math.round(x)) : String(Math.round(x*1000)/1000); }
+  function fmt1(x){ return isInt(x)? String(Math.round(x)) : (Math.round(x*10)/10).toFixed(1); }
+  function r3(x){ return String(Math.round(x*1000)/1000); }
+
+  /* ---- Demo 1: missing value handling ---- */
+  var IMP_COLS = ['id','年齢','年収(万円)','スコア'];
+  var IMP_FEATS = [1,2,3];
+  var IMP_ROWS = [
+    [1, 25, 350, 68],
+    [2, 32, null, 74],
+    [3, null, 520, 81],
+    [4, 45, 610, null],
+    [5, 29, 410, 70],
+    [6, 38, null, 88]
+  ];
+  var impOut = document.getElementById('imputeOut');
+  var impMethod = 'raw';
+  function colValues(ci){ var v=[]; IMP_ROWS.forEach(function(r){ if(r[ci]!==null) v.push(r[ci]); }); return v; }
+  function mean(a){ return a.reduce(function(s,x){return s+x;},0)/a.length; }
+  function median(a){ var s=a.slice().sort(function(x,y){return x-y;}); var n=s.length, m=Math.floor(n/2); return n%2? s[m] : (s[m-1]+s[m])/2; }
+  function markActive(sel, btn){
+    document.querySelectorAll(sel+' .try button').forEach(function(b){
+      b.style.borderColor=''; b.style.color=''; b.style.background='';
+    });
+    if(btn){ btn.style.borderColor='var(--accent)'; btn.style.color='var(--accent-2)'; btn.style.background='var(--accent-soft)'; }
+  }
+  function renderImpute(){
+    var fill={};
+    if(impMethod==='mean' || impMethod==='median'){
+      IMP_FEATS.forEach(function(ci){ var vals=colValues(ci); fill[ci]= impMethod==='mean'? mean(vals) : median(vals); });
+    }
+    var rows = IMP_ROWS;
+    if(impMethod==='drop'){
+      rows = IMP_ROWS.filter(function(r){ return IMP_FEATS.every(function(ci){ return r[ci]!==null; }); });
+    }
+    var head='<table class="dtable"><tr>'+IMP_COLS.map(function(c){return '<th>'+esc(c)+'</th>';}).join('')+'</tr>';
+    var body=rows.map(function(r){
+      var cells=r.map(function(v,ci){
+        if(ci===0) return '<td>'+v+'</td>';
+        if(v===null){
+          if(impMethod==='mean'||impMethod==='median'){
+            return '<td style="background:var(--accent-soft);color:var(--accent-2);font-weight:600">'+fmt1(fill[ci])+'</td>';
+          }
+          return '<td class="zero">NaN</td>';
+        }
+        return '<td>'+v+'</td>';
+      }).join('');
+      return '<tr>'+cells+'</tr>';
+    }).join('');
+    var note;
+    if(impMethod==='raw') note='元データ：欠損セルは NaN（薄い文字）で表示。行数 '+rows.length+'。';
+    else if(impMethod==='drop') note='行削除：欠損を含む行を除外 → '+IMP_ROWS.length+' 行から '+rows.length+' 行に（'+(IMP_ROWS.length-rows.length)+' 行を損失）。';
+    else {
+      var parts=IMP_FEATS.map(function(ci){ return IMP_COLS[ci]+'='+fmt1(fill[ci]); });
+      note=(impMethod==='mean'?'平均':'中央値')+'で補完（緑のセル）：'+parts.join(' ・ ')+'。行数は保たれる。';
+    }
+    impOut.innerHTML='<div style="overflow-x:auto;-webkit-overflow-scrolling:touch">'+head+body+'</table></div><div class="chipcount">'+esc(note)+'</div>';
+  }
+  if(impOut){
+    var impBtns=document.querySelectorAll('#demoImpute .try button');
+    impBtns.forEach(function(b){
+      b.addEventListener('click', function(){ impMethod=b.getAttribute('data-method'); markActive('#demoImpute', b); renderImpute(); });
+    });
+    if(impBtns[0]) markActive('#demoImpute', impBtns[0]);
+    renderImpute();
+  }
+
+  /* ---- Demo 2: normalization vs standardization ---- */
+  var scIn=document.getElementById('scaleInput'), scOut=document.getElementById('scaleOut');
+  function parseNums(s){ return (String(s).match(/-?\d+(?:\.\d+)?/g)||[]).map(Number); }
+  function renderScale(){
+    var xs=parseNums(scIn.value);
+    if(xs.length<2){ scOut.innerHTML='<div class="chipcount">数値を2つ以上、カンマか空白で区切って入力してください。</div>'; return; }
+    var mn=Math.min.apply(null,xs), mx=Math.max.apply(null,xs);
+    var mu=xs.reduce(function(s,x){return s+x;},0)/xs.length;
+    var variance=xs.reduce(function(s,x){return s+(x-mu)*(x-mu);},0)/xs.length; /* population std, ddof=0 */
+    var sd=Math.sqrt(variance);
+    var range=mx-mn;
+    var zs=xs.map(function(x){ return sd? (x-mu)/sd : 0; });
+    var maxAbsZ=0; zs.forEach(function(z){ if(Math.abs(z)>maxAbsZ) maxAbsZ=Math.abs(z); }); if(maxAbsZ===0) maxAbsZ=1;
+    var rows=xs.map(function(x,i){
+      var mm = range? (x-mn)/range : 0;
+      var z=zs[i];
+      var mmBar='<span style="display:inline-block;width:74px;height:8px;border-radius:999px;background:var(--bg-3);vertical-align:middle;overflow:hidden"><span style="display:block;height:100%;width:'+(mm*100).toFixed(1)+'%;background:var(--accent)"></span></span>';
+      var half=(Math.abs(z)/maxAbsZ)*50;
+      var zBar;
+      if(z>=0){
+        zBar='<span style="position:relative;display:inline-block;width:88px;height:8px;border-radius:999px;background:var(--bg-3);vertical-align:middle"><span style="position:absolute;left:50%;top:0;bottom:0;width:1px;background:var(--faint)"></span><span style="position:absolute;left:50%;top:0;height:100%;width:'+half.toFixed(1)+'%;background:var(--accent)"></span></span>';
+      } else {
+        zBar='<span style="position:relative;display:inline-block;width:88px;height:8px;border-radius:999px;background:var(--bg-3);vertical-align:middle"><span style="position:absolute;left:50%;top:0;bottom:0;width:1px;background:var(--faint)"></span><span style="position:absolute;right:50%;top:0;height:100%;width:'+half.toFixed(1)+'%;background:var(--ink-2)"></span></span>';
+      }
+      return '<tr><td>'+fmtN(x)+'</td><td>'+mm.toFixed(3)+'</td><td>'+mmBar+'</td><td>'+(z>=0?'+':'')+z.toFixed(3)+'</td><td>'+zBar+'</td></tr>';
+    }).join('');
+    var head='<table class="dtable"><tr><th>元の値 x</th><th>Min-Max</th><th>0〜1</th><th>z スコア</th><th>平均±</th></tr>';
+    scOut.innerHTML='<div style="overflow-x:auto;-webkit-overflow-scrolling:touch">'+head+rows+'</table></div>'+
+      '<div class="chipcount">min='+fmtN(mn)+' ・ max='+fmtN(mx)+' ・ mean='+r3(mu)+' ・ std='+r3(sd)+'（母標準偏差, ddof=0）・ N='+xs.length+'　|　Min-Max=(x&minus;min)/(max&minus;min), z=(x&minus;mean)/std</div>';
+  }
+  if(scIn){
+    scIn.addEventListener('input', renderScale);
+    document.querySelectorAll('#demoScale .try button').forEach(function(b){
+      b.addEventListener('click', function(){ scIn.value=b.getAttribute('data-sc'); renderScale(); });
+    });
+    renderScale();
+  }
+
+  /* ---- Demo 3: stratified split visualizer ---- */
+  var clsA=document.getElementById('clsA'), clsB=document.getElementById('clsB'),
+      ratio=document.getElementById('ratio'), ratioVal=document.getElementById('ratioVal'),
+      stratOut=document.getElementById('stratOut');
+  function mulberry32(a){ return function(){ a|=0; a=a+0x6D2B79F5|0; var t=Math.imul(a^a>>>15,1|a); t=t+Math.imul(t^t>>>7,61|t)^t; return ((t^t>>>14)>>>0)/4294967296; }; }
+  function clampInt(v,lo,hi){ v=parseInt(v,10); if(isNaN(v)) v=0; return Math.max(lo,Math.min(hi,v)); }
+  function bar(a,b,label){
+    var tot=a+b, pa= tot? a/tot*100:0, pb=100-pa;
+    return '<div style="margin:4px 0 12px">'
+      +'<div style="display:flex;justify-content:space-between;gap:10px;font-size:.8rem;color:var(--muted);margin-bottom:5px"><span style="font-weight:600;color:var(--ink-2)">'+label+'</span><span>A '+a+' ・ B '+b+' ・ A比 <b style="color:var(--accent-2)">'+pa.toFixed(1)+'%</b></span></div>'
+      +'<div style="height:20px;border-radius:999px;overflow:hidden;display:flex;background:var(--bg-3);box-shadow:inset 0 1px 2px rgba(16,19,18,.06)">'
+      +'<span style="width:'+pa+'%;background:var(--accent);display:block"></span>'
+      +'<span style="width:'+pb+'%;background:var(--faint);display:block"></span>'
+      +'</div></div>';
+  }
+  function sectlabel(t){ return '<div style="font-family:var(--disp);font-weight:600;font-size:.72rem;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);margin:16px 0 6px">'+t+'</div>'; }
+  function renderStrat(){
+    var A=clampInt(clsA.value,0,1000), B=clampInt(clsB.value,0,1000);
+    var r=parseInt(ratio.value,10)/100;
+    if(ratioVal) ratioVal.textContent=Math.round(r*100)+'%';
+    var total=A+B;
+    if(total<2){ stratOut.innerHTML='<div class="chipcount">クラス A・B の件数を入力してください（合計2件以上）。</div>'; return; }
+    var teA=Math.round(r*A), teB=Math.round(r*B);
+    var trA=A-teA, trB=B-teB;
+    var labels=[]; var i;
+    for(i=0;i<A;i++) labels.push('A');
+    for(i=0;i<B;i++) labels.push('B');
+    var rng=mulberry32(2);
+    for(i=labels.length-1;i>0;i--){ var m=Math.floor(rng()*(i+1)); var t=labels[i]; labels[i]=labels[m]; labels[m]=t; }
+    var nTest=Math.round(r*total);
+    var rTeA=0; for(i=0;i<nTest;i++){ if(labels[i]==='A') rTeA++; }
+    var rTeB=nTest-rTeA;
+    var rTrA=A-rTeA, rTrB=B-rTeB;
+    var origPa= total? (A/total*100):0;
+    var html=sectlabel('元データ / Original')+bar(A,B,'全体 / all');
+    html+=sectlabel('通常のランダム分割 / Random split')+bar(rTrA,rTrB,'train')+bar(rTeA,rTeB,'test');
+    html+=sectlabel('層化分割 / Stratified split')+bar(trA,trB,'train')+bar(teA,teB,'test');
+    var rTestPa = nTest? (rTeA/nTest*100):0;
+    var sTot=teA+teB;
+    var sTestPa = sTot? (teA/sTot*100):0;
+    html+='<div class="chipcount">元の A 比 '+origPa.toFixed(1)+'%　→　ランダム分割の test は A '+rTestPa.toFixed(1)+'%（ずれ '+Math.abs(rTestPa-origPa).toFixed(1)+' pt）／ 層化分割の test は A '+sTestPa.toFixed(1)+'%（元の比を保持）</div>';
+    stratOut.innerHTML=html;
+  }
+  if(stratOut){
+    [clsA,clsB].forEach(function(el){ if(el) el.addEventListener('input', renderStrat); });
+    if(ratio) ratio.addEventListener('input', renderStrat);
+    document.querySelectorAll('#demoStratify .try button').forEach(function(b){
+      b.addEventListener('click', function(){ clsA.value=b.getAttribute('data-a'); clsB.value=b.getAttribute('data-b'); renderStrat(); });
+    });
+    renderStrat();
+  }
+})();
+</script>
+
+<script>
+/* ==================== nav controllers + TOC scroll-spy + back-to-top ==================== */
+(function(){
+  function syncLangUI(l){
+    var ja=l==='ja', lists=document.querySelectorAll('.lswitch');
+    for(var i=0;i<lists.length;i++){
+      var a=lists[i].querySelector('.ls-ja'), e=lists[i].querySelector('.ls-en');
+      if(a) a.setAttribute('aria-pressed', ja?'true':'false');
+      if(e) e.setAttribute('aria-pressed', ja?'false':'true');
+    }
+  }
+  window.syncLangUI=syncLangUI;
+  if(typeof window.setLang==='function'){ var _s=window.setLang; window.setLang=function(l){ _s(l); syncLangUI(l); }; }
+  syncLangUI(document.body.classList.contains('lang-en')?'en':'ja');
+
+  var groups=document.querySelectorAll('.navlinks .navgroup');
+  for(var g=0; g<groups.length; g++){ (function(grp){
+    var top=grp.querySelector('.navtop'), panel=grp.querySelector('.navpanel');
+    if(!panel||!top) return;
+    function set(x){ top.setAttribute('aria-expanded', x?'true':'false'); }
+    grp.addEventListener('mouseenter', function(){ grp.classList.remove('collapsed'); set(true); });
+    grp.addEventListener('mouseleave', function(){ set(false); });
+    grp.addEventListener('focusin', function(){ if(!grp.classList.contains('collapsed')) set(true); });
+    grp.addEventListener('focusout', function(e){ if(!grp.contains(e.relatedTarget)){ grp.classList.remove('collapsed'); set(false); } });
+    grp.addEventListener('keydown', function(e){ if(e.key==='Escape'){ grp.classList.add('collapsed'); set(false); top.focus(); } });
+  })(groups[g]); }
+
+  var tog=document.getElementById('navToggle'), ov=document.getElementById('mobnav');
+  if(tog && ov){
+    function openNav(){ document.body.classList.add('navopen'); tog.setAttribute('aria-expanded','true'); ov.setAttribute('aria-hidden','false');
+      var f=ov.querySelector('a,button'); if(f){ requestAnimationFrame(function(){ f.focus(); }); } }
+    function closeNav(){ document.body.classList.remove('navopen'); tog.setAttribute('aria-expanded','false'); ov.setAttribute('aria-hidden','true'); tog.focus(); }
+    tog.addEventListener('click', function(){ document.body.classList.contains('navopen')?closeNav():openNav(); });
+    ov.addEventListener('click', function(e){ if(e.target.closest('a')) closeNav(); });
+    document.addEventListener('keydown', function(e){ if(e.key==='Escape' && document.body.classList.contains('navopen')) closeNav(); });
+  }
+
+  /* TOC scroll-spy */
+  var bar=document.querySelector('.tocbar');
+  if(bar){
+    var pills=Array.prototype.slice.call(bar.querySelectorAll('.tocpill')), map={};
+    pills.forEach(function(p){ map[p.getAttribute('href').slice(1)]=p; });
+    if('IntersectionObserver' in window){
+      var spy=new IntersectionObserver(function(es){
+        es.forEach(function(e){
+          if(e.isIntersecting){
+            pills.forEach(function(p){ p.classList.remove('on'); });
+            var m=map[e.target.id]; if(m) m.classList.add('on');
+          }
+        });
+      },{rootMargin:'-45% 0px -50% 0px', threshold:0});
+      pills.forEach(function(p){ var s=document.getElementById(p.getAttribute('href').slice(1)); if(s) spy.observe(s); });
+    }
+  }
+
+  /* back to top */
+  var reduce=window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var bt=document.querySelector('.totop'), sen=document.getElementById('toTopSentinel');
+  if(bt && sen && 'IntersectionObserver' in window){
+    new IntersectionObserver(function(es){
+      es.forEach(function(e){ if(e.isIntersecting) bt.classList.remove('show'); else bt.classList.add('show'); });
+    },{threshold:0}).observe(sen);
+  }
+  if(bt){ bt.addEventListener('click', function(){ window.scrollTo({top:0, behavior:reduce?'auto':'smooth'}); }); }
+})();
+</script>
+</body>
+</html>

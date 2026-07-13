@@ -1,0 +1,1650 @@
+<!DOCTYPE html>
+<html lang="ja" class="no-js">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>プログラム解析 - 研究の技術を実践的に学ぶ / Program Analysis</title>
+<meta name="description" content="A hands-on learning module on program analysis: lexing and parsing into an abstract syntax tree, static analysis with control and data flow, code metrics and cyclomatic complexity, dynamic analysis with coverage and profiling, and token-based code clone detection. With interactive demos and runnable Python examples. Part of Yuta Kimura's learning course.">
+<link rel="canonical" href="https://ykimu.github.io/learn/program-analysis.html">
+<link rel="icon" href="../favicon.svg" type="image/svg+xml">
+<meta property="og:site_name" content="Yuta Kimura / 木村祐太">
+<meta property="og:type" content="article">
+<meta property="og:title" content="プログラム解析 - 研究の技術を実践的に学ぶ / Program Analysis">
+<meta property="og:description" content="A hands-on learning module on program analysis: parsing to an AST, static analysis, code metrics and cyclomatic complexity, dynamic analysis, and code clone detection, with interactive demos and runnable Python examples.">
+<meta property="og:url" content="https://ykimu.github.io/learn/program-analysis.html">
+<meta property="og:image" content="https://ykimu.github.io/assets/og.png">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="color-scheme" content="light">
+<script>document.documentElement.className="js";</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&family=Noto+Sans+JP:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#FBFCFB; --bg-2:#F3F6F4; --bg-3:#EBEFED; --card:#FFFFFF;
+    --ink:#101312; --ink-2:#3C4340; --muted:#6B746F; --faint:#B7C0BB;
+    --line:#E7ECE9; --hair:rgba(16,19,18,.08); --shell:rgba(16,19,18,.035);
+    --accent:#0E6F5C; --accent-2:#0A5748; --accent-soft:rgba(14,111,92,.08);
+    --soft:0 1px 2px rgba(16,19,18,.04), 0 24px 60px -28px rgba(16,19,18,.16);
+    --inhi:inset 0 1px 0 rgba(255,255,255,.85);
+    --ease:cubic-bezier(.32,.72,0,1);
+    --sans:"Plus Jakarta Sans","Noto Sans JP",-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+    --disp:"Space Grotesk","Plus Jakarta Sans","Noto Sans JP",sans-serif;
+    --mono:ui-monospace,SFMono-Regular,Menlo,Consolas,"Liberation Mono",monospace;
+    --maxw:1440px; --readw:clamp(680px, 62vw, 1060px);
+    --kw:#0A5748; --ty:#3C4340; --st:#7A5C34; --cm:#87918C; --nu:#7A5C34;
+    --good:#0E6F5C; --bad:#B04A3E; --warn:#8A6D3B;
+  }
+  html{color-scheme:light}
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth; -webkit-text-size-adjust:100%}
+  body{margin:0; background:var(--bg); color:var(--ink); font-family:var(--sans);
+    font-size:17px; line-height:1.75; font-weight:400; -webkit-font-smoothing:antialiased; text-rendering:optimizeLegibility}
+  body.lang-ja [lang=en]{display:none}
+  body.lang-en [lang=ja]{display:none}
+  ::selection{background:rgba(14,111,92,.16)}
+  h1,h2,h3{margin:0; color:var(--ink); font-weight:500; line-height:1.16; letter-spacing:-.02em; font-family:var(--disp); text-wrap:balance}
+  body.lang-ja h1,body.lang-ja h2,body.lang-ja h3{letter-spacing:0; font-family:var(--sans)}
+  p,.lead,.cite,.muted-s{text-wrap:pretty}
+  [lang="en"]{line-break:auto}
+  [lang="ja"]{line-break:strict; word-break:normal}
+  h1 [lang="ja"],h2 [lang="ja"],h3 [lang="ja"]{word-break:auto-phrase}
+  p{margin:0 0 1em}
+  a{color:var(--accent-2); text-decoration:none; transition:color .3s var(--ease)}
+  a:hover{color:var(--accent)}
+  a:focus-visible,button:focus-visible,.btn:focus-visible,[tabindex]:focus-visible{outline:2px solid var(--accent); outline-offset:3px; border-radius:8px}
+  .wrap{max-width:var(--maxw); margin:0 auto; padding:0 40px}
+  [id]{scroll-margin-top:96px}
+  section{padding:96px 0}
+
+  .skip{position:fixed; top:10px; left:10px; padding:10px 16px; background:var(--ink); color:#fff; border-radius:999px; transform:translateY(-200%); transition:none; z-index:100; font:500 .85rem/1 var(--sans); text-decoration:none}
+  .skip:focus{transform:none}
+
+  /* film grain overlay */
+  body::after{content:""; position:fixed; inset:0; z-index:1; pointer-events:none; opacity:.02;
+    background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='g'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23g)'/%3E%3C/svg%3E")}
+
+  h2.big{font-size:clamp(1.9rem,3.2vw,2.7rem); font-weight:500; letter-spacing:-.025em; max-width:26ch}
+  body.lang-ja h2.big{letter-spacing:-.01em; max-width:none}
+  .eyebrow,.kick{display:inline-flex; align-items:center; gap:8px; width:max-content; max-width:100%;
+    padding:5px 13px 5px 11px; border-radius:999px; border:1px solid var(--hair); background:#fff;
+    font:600 .66rem/1 var(--disp); letter-spacing:.14em; text-transform:uppercase; color:var(--ink-2); margin:0 0 18px}
+  .eyebrow::before,.kick::before{content:""; flex:0 0 auto; width:6px; height:6px; border-radius:50%; background:var(--accent)}
+  .lead{font-size:1.14rem; color:var(--ink-2); line-height:1.78; font-weight:400}
+
+  /* motion */
+  .js .reveal{opacity:0; transform:translateY(18px); filter:blur(6px); transition:opacity .9s var(--ease), transform .9s var(--ease), filter .9s var(--ease)}
+  .js .reveal.in{opacity:1; transform:none; filter:none}
+  @media (prefers-reduced-motion:reduce){
+    .js .reveal{opacity:1!important; transform:none!important; filter:none!important}
+    .btn:active,.btn.ink:hover .ic,.pill:hover,.totop:hover,.tocpill{transform:none!important}
+    html{scroll-behavior:auto}
+  }
+
+  /* floating island nav */
+  header.bar{position:sticky; top:18px; z-index:60; background:transparent; border-bottom:none}
+  .bar .wrap{display:flex; align-items:center; justify-content:space-between;
+    width:max-content; max-width:calc(100% - 32px); margin:0 auto; height:auto;
+    padding:9px 12px 9px 20px; gap:20px; border-radius:999px;
+    background:rgba(255,255,255,.72); -webkit-backdrop-filter:saturate(1.4) blur(18px); backdrop-filter:saturate(1.4) blur(18px);
+    border:1px solid var(--hair); box-shadow:var(--soft)}
+  .brand{font-weight:600; font-size:.92rem; letter-spacing:-.01em; color:var(--ink); display:inline-flex; align-items:center; gap:8px}
+  .brand span.sep{color:var(--muted); font-weight:400; margin:0 2px}
+  .bar-right{display:flex; align-items:center; gap:8px}
+
+  /* buttons */
+  .btn{display:inline-flex; align-items:center; gap:10px; font:500 .85rem/1 var(--sans); padding:10px 18px;
+    border-radius:999px; border:1px solid var(--hair); background:#fff; color:var(--ink); cursor:pointer;
+    transition:transform .4s var(--ease), box-shadow .4s var(--ease), border-color .3s var(--ease), background .3s var(--ease), color .3s var(--ease)}
+  .btn:hover{border-color:var(--ink); transform:translateY(-1px); color:var(--ink)}
+  .btn:active{transform:scale(.98)}
+  .btn.ink{background:var(--ink); border-color:var(--ink); color:#fff; padding:10px 10px 10px 22px;
+    box-shadow:0 12px 26px -14px rgba(16,19,18,.5)}
+  .btn.ink:not(:has(.ic)){padding:10px 22px}
+  .btn.ink:hover{box-shadow:0 16px 32px -14px rgba(16,19,18,.55); color:#fff}
+  .btn .ic{width:32px; height:32px; border-radius:999px; background:rgba(255,255,255,.18); display:grid; place-items:center;
+    transition:transform .45s var(--ease); flex:0 0 auto}
+  .btn.ink:hover .ic{transform:translate(3px,-1px)}
+  .tlink{display:inline-flex; align-items:center; gap:8px; font-weight:500; font-size:.95rem; color:var(--ink)}
+  .tlink .ar{transition:transform .4s var(--ease)}
+  .tlink:hover .ar{transform:translateX(4px)}
+
+  /* hero */
+  .hero{position:relative; overflow:hidden}
+  .hero > .wrap{position:relative; z-index:1}
+  .hero::before{content:""; position:absolute; z-index:0; width:640px; height:640px; right:-150px; top:-240px;
+    border-radius:50%; pointer-events:none; opacity:.55;
+    background:radial-gradient(circle, var(--accent-soft), transparent 62%); filter:blur(20px)}
+  .hero .wrap{padding-top:72px; padding-bottom:64px}
+  .hero h1{font-size:clamp(2.6rem,5vw,4.2rem); font-weight:500; letter-spacing:-.03em; line-height:1.08; color:var(--ink); max-width:none}
+  body.lang-ja .hero h1{font-size:clamp(2rem,4.2vw,3.1rem); font-weight:500; letter-spacing:0; line-height:1.24}
+  .hero h1 em{font-style:normal; color:var(--accent)}
+  .hero .lead{max-width:var(--readw); margin-top:24px}
+  .ja-note{display:inline-flex; align-items:center; gap:8px; margin-top:22px; padding:7px 15px; border-radius:999px;
+    border:1px solid var(--hair); background:var(--accent-soft); font-size:.8rem; font-weight:500; color:var(--accent-2)}
+  .ja-note::before{content:""; width:6px; height:6px; border-radius:50%; background:var(--accent); flex:0 0 auto}
+  .hero-meta{display:flex; gap:10px; flex-wrap:wrap; margin-top:16px}
+  .hero-meta span{font-size:.82rem; color:var(--muted); background:#fff; border:1px solid var(--hair);
+    border-radius:999px; padding:6px 14px}
+  .hero-cta{display:flex; gap:20px; align-items:center; flex-wrap:wrap; margin-top:28px}
+
+  .soft-sec{background:var(--bg-2); border-top:1px solid var(--line); border-bottom:1px solid var(--line)}
+
+  /* prose */
+  .prose{max-width:var(--readw)}
+  .prose p{margin:0 0 1em; color:var(--ink-2)}
+  .prose h4{font-family:var(--sans); font-size:1.1rem; font-weight:600; letter-spacing:0; color:var(--ink); margin:1.5em 0 .5em}
+  .prose ul{margin:0 0 1.2em; padding-left:0; list-style:none}
+  .prose ul li{position:relative; padding-left:22px; margin:11px 0; color:var(--ink-2)}
+  .prose ul li::before{content:""; position:absolute; left:0; top:13px; width:11px; height:1.5px; background:var(--accent)}
+  .prose ul li b,.prose b{color:var(--ink); font-weight:600}
+  .prose i{color:var(--ink-2)}
+  code{font-family:var(--mono); font-size:.86em; background:var(--shell); border:1px solid var(--hair); border-radius:6px; padding:.08em .4em; color:var(--accent-2)}
+  .formula{font-family:var(--mono); font-size:.98rem; color:var(--ink); background:var(--card); text-align:center;
+    border-radius:14px; padding:18px 20px; margin:18px 0; max-width:var(--readw);
+    box-shadow:0 0 0 6px var(--shell),0 0 0 6.5px var(--hair),var(--soft); line-height:1.9}
+  .formula .op{color:var(--accent-2); font-weight:600}
+  .formula small{display:block; font-family:var(--sans); font-size:.82rem; color:var(--muted); margin-top:8px; line-height:1.6}
+
+  .callout{border-radius:16px; padding:18px 22px; margin:20px 0; max-width:var(--readw);
+    background:var(--card); box-shadow:0 0 0 6px var(--shell),0 0 0 6.5px var(--hair),var(--soft)}
+  .callout h4{margin:0 0 6px; font-size:1rem; font-family:var(--sans); font-weight:600; letter-spacing:0; color:var(--ink)}
+  .callout.tip{background:var(--accent-soft)}
+  .callout.warn{background:rgba(138,109,59,.08)}
+  .callout p{margin:0; color:var(--ink-2); font-size:.96rem}
+  .callout a{font-weight:600}
+
+  .grid2{display:grid; grid-template-columns:1fr 1fr; gap:16px; margin:20px 0; max-width:var(--readw)}
+  .box{border-radius:16px; padding:16px 20px; background:var(--card);
+    box-shadow:0 0 0 6px var(--shell),0 0 0 6.5px var(--hair),var(--soft)}
+  .box h5{margin:0 0 10px; font-size:.92rem; font-family:var(--sans); font-weight:600; letter-spacing:0; color:var(--accent-2); display:flex; align-items:center; gap:7px}
+  .box.lim h5{color:var(--warn)}
+  .box ul{margin:0; padding-left:18px}
+  .box li{margin:6px 0; font-size:.92rem; color:var(--ink-2)}
+
+  .steps{border-radius:16px; padding:16px 20px; margin:20px 0; max-width:var(--readw); background:var(--card);
+    box-shadow:0 0 0 6px var(--shell),0 0 0 6.5px var(--hair),var(--soft)}
+  .steps h5{margin:0 0 10px; font-size:.92rem; font-family:var(--sans); font-weight:600; letter-spacing:0; color:var(--accent-2)}
+  .steps ol{margin:0; padding:0; list-style:none; counter-reset:st}
+  .steps ol li{counter-increment:st; position:relative; padding-left:36px; margin:9px 0; font-size:.94rem; color:var(--ink-2)}
+  .steps ol li::before{content:counter(st); position:absolute; left:0; top:2px; width:23px; height:23px; border-radius:50%;
+    background:var(--accent-soft); color:var(--accent-2); font:600 .74rem/23px var(--disp); text-align:center}
+  .steps ol li b{color:var(--ink); font-weight:600}
+
+  /* step headers */
+  .stephead{display:flex; align-items:baseline; gap:20px; max-width:var(--readw)}
+  .stephead .num{font-family:var(--disp); font-size:clamp(2.6rem,5.4vw,3.8rem); font-weight:500; color:var(--accent);
+    letter-spacing:-.04em; line-height:.9; flex:0 0 auto; font-variant-numeric:tabular-nums}
+  .stephead .tt h2{font-size:clamp(1.5rem,2.6vw,2rem)}
+  .stephead .tt .st-en{display:block; font:600 .68rem/1 var(--disp); letter-spacing:.13em; text-transform:uppercase; color:var(--muted); margin-top:8px}
+  body.lang-en .stephead .tt .st-en{display:none}
+  .steprule{height:2px; background:var(--ink); max-width:var(--readw); margin:16px 0 26px}
+  .layer{display:inline-flex; align-items:center; gap:8px; margin:34px 0 12px; padding:5px 13px 5px 11px;
+    border-radius:999px; border:1px solid var(--hair); background:#fff;
+    font:600 .64rem/1 var(--disp); letter-spacing:.13em; text-transform:uppercase; color:var(--ink-2)}
+  .layer::before{content:""; width:6px; height:6px; border-radius:50%; background:var(--accent); flex:0 0 auto}
+  .layer.first{margin-top:6px}
+
+  /* diagrams */
+  .diagram-wrap{margin:22px 0; max-width:var(--readw)}
+  .diagram-wrap .cap{margin:0 0 10px; font-size:.9rem; font-family:var(--sans); font-weight:600; letter-spacing:0; color:var(--accent-2)}
+  .diagram-wrap svg{display:block; width:100%; height:auto; background:var(--card);
+    border-radius:16px; padding:12px; box-shadow:0 0 0 7px var(--shell),0 0 0 7.5px var(--hair),var(--soft)}
+  .dg-box{fill:var(--card); stroke:var(--line); stroke-width:1.3}
+  .dg-box.acc{fill:var(--accent-soft); stroke:var(--accent)}
+  .dg-lbl{fill:var(--ink); font-size:13px; font-weight:600; text-anchor:middle; font-family:var(--sans)}
+  .dg-en{fill:var(--muted); font-size:10.5px; text-anchor:middle; font-family:var(--disp)}
+  .dg-line{stroke:var(--muted); stroke-width:1.5; fill:none}
+  .dg-arrow{fill:var(--muted)}
+  .dg-note{fill:var(--muted); font-size:11.5px; text-anchor:middle; font-style:italic}
+  .dg-ax{stroke:var(--faint); stroke-width:1.2}
+  .dg-vec{stroke:var(--accent); stroke-width:2; fill:none}
+  .dg-vec2{stroke:var(--ink-2); stroke-width:2; fill:none}
+  .dg-pt{fill:var(--accent)}
+  .dg-ptl{fill:var(--ink); font-size:11px; font-family:var(--sans)}
+  .figcap{font-size:.88rem; color:var(--muted); margin:12px 2px 0; max-width:var(--readw); line-height:1.6}
+  .figcap b{color:var(--ink); font-weight:600}
+
+  /* code blocks */
+  .code-wrap{margin:16px 0 0; border:1px solid var(--hair); border-radius:14px; overflow:hidden; background:var(--shell); max-width:var(--readw)}
+  .code-head{display:flex; align-items:center; gap:10px; background:var(--bg-2); border-bottom:1px solid var(--hair); padding:9px 16px}
+  .code-head .lbl{margin-right:auto; font:600 .74rem/1 var(--disp); letter-spacing:.06em; text-transform:uppercase; color:var(--muted)}
+  .code-head .lang-tag{font:500 .74rem/1 var(--sans); color:var(--muted)}
+  .code-head .copy{background:#fff; border:1px solid var(--hair); color:var(--ink-2); border-radius:999px;
+    padding:5px 12px; font:500 .74rem/1 var(--sans); cursor:pointer; transition:border-color .3s var(--ease), color .3s var(--ease)}
+  .code-head .copy:hover{border-color:var(--ink); color:var(--ink)}
+  pre{margin:0; background:var(--shell); padding:16px 18px; overflow-x:auto; font-size:.82rem; line-height:1.65}
+  pre code{font-family:var(--mono); color:#2F3A33; white-space:pre; background:none; border:none; padding:0; font-size:1em}
+  .kw{color:var(--kw); font-weight:600} .st{color:var(--st)} .cm{color:var(--cm); font-style:italic} .nu{color:var(--nu)}
+  .code-out{max-width:var(--readw); margin:0 0 8px; border:1px solid var(--hair); border-top:none;
+    border-radius:0 0 14px 14px; background:var(--bg-2); padding:12px 18px}
+  .code-out .olbl{font:600 .66rem/1 var(--disp); letter-spacing:.1em; text-transform:uppercase; color:var(--muted); display:block; margin-bottom:8px}
+  .code-out pre{background:transparent; padding:0; font-size:.8rem}
+  .code-out pre code{color:var(--ink-2)}
+  .code-wrap.attached{border-radius:14px 14px 0 0; margin-bottom:0}
+
+  /* interactive demo (double-bezel) */
+  .demo{border-radius:21px; padding:24px 26px; margin:24px 0; max-width:var(--readw); background:var(--card);
+    box-shadow:0 0 0 7px var(--shell),0 0 0 7.5px var(--hair),var(--soft)}
+  .demo .dtag{display:inline-flex; align-items:center; gap:8px; margin:0 0 10px; padding:5px 12px 5px 10px;
+    border-radius:999px; background:var(--accent-soft); color:var(--accent-2); font:600 .62rem/1 var(--disp); letter-spacing:.12em; text-transform:uppercase}
+  .demo .dtag::before{content:""; width:6px; height:6px; border-radius:50%; background:var(--accent)}
+  .demo h4{margin:0 0 6px; font-size:1.12rem; font-family:var(--sans); font-weight:600; color:var(--ink)}
+  .demo .dnote{font-size:.88rem; color:var(--muted); margin:0 0 16px}
+  .demo label.fld{display:block; font:600 .74rem/1 var(--disp); letter-spacing:.08em; text-transform:uppercase; color:var(--muted); margin:0 0 7px}
+  .demo textarea,.demo input[type=text]{width:100%; padding:12px 15px; border-radius:12px; border:1px solid var(--hair);
+    background:var(--bg); color:var(--ink); font:400 .95rem/1.6 var(--mono); outline:none; resize:vertical;
+    transition:border-color .3s var(--ease)}
+  .demo textarea:focus,.demo input[type=text]:focus{border-color:var(--accent)}
+  .demo .try{display:flex; gap:8px; flex-wrap:wrap; margin:12px 0 4px}
+  .demo .try button{background:#fff; border:1px solid var(--hair); color:var(--ink-2); border-radius:999px;
+    padding:8px 14px; font:500 .82rem/1 var(--sans); cursor:pointer; transition:border-color .3s var(--ease), transform .3s var(--ease), color .3s var(--ease)}
+  .demo .try button:hover{border-color:var(--ink); color:var(--ink); transform:translateY(-1px)}
+  .demo .try .tlbl{font:600 .72rem/1 var(--disp); letter-spacing:.06em; text-transform:uppercase; color:var(--faint); align-self:center; margin-right:2px}
+  .demo .two{display:grid; grid-template-columns:1fr 1fr; gap:16px}
+  @media(max-width:640px){.demo .two{grid-template-columns:1fr}}
+  .demo-out{margin-top:18px}
+
+  /* chips */
+  .chips{display:flex; flex-wrap:wrap; gap:7px; margin-top:6px}
+  .chip{display:inline-flex; align-items:center; font:500 .88rem/1 var(--mono); padding:8px 12px; border-radius:9px;
+    background:var(--accent-soft); color:var(--accent-2); border:1px solid rgba(14,111,92,.16)}
+  .chip.p{background:var(--bg-3); color:var(--muted); border-color:var(--hair)}
+  .chip.en{background:var(--card); color:var(--ink-2); border-color:var(--hair)}
+  .chipcount{font:600 .74rem/1 var(--disp); color:var(--muted); margin-top:12px; letter-spacing:.04em}
+  .chip-legend{display:flex; gap:16px; flex-wrap:wrap; margin-top:12px; font-size:.78rem; color:var(--muted)}
+  .chip-legend i{display:inline-block; width:11px; height:11px; border-radius:3px; margin-right:6px; vertical-align:-1px}
+
+  /* tables */
+  .dtable{border-collapse:separate; border-spacing:0; margin:16px 0 0; width:100%; font-size:.86rem;
+    border-radius:12px; overflow:hidden; box-shadow:0 0 0 1px var(--hair)}
+  .dtable th,.dtable td{border-bottom:1px solid var(--line); border-right:1px solid var(--line); padding:9px 12px; text-align:right; background:var(--card); font-variant-numeric:tabular-nums; font-family:var(--disp)}
+  .dtable th{background:var(--bg-2); font-weight:600; color:var(--ink); font-family:var(--sans); text-align:right}
+  .dtable td:first-child,.dtable th:first-child{text-align:left; font-family:var(--mono); color:var(--ink)}
+  .dtable tr:last-child th,.dtable tr:last-child td{border-bottom:none}
+  .dtable td:last-child,.dtable th:last-child{border-right:none}
+  .dtable td.zero{color:var(--faint)}
+
+  /* cosine output */
+  .cos-score{display:flex; align-items:baseline; gap:12px; margin:6px 0 10px}
+  .cos-score .val{font:500 2.6rem/1 var(--disp); color:var(--accent); letter-spacing:-.03em; font-variant-numeric:tabular-nums}
+  .cos-score .lab{font-size:.9rem; color:var(--muted)}
+  .cos-bar{height:14px; border-radius:999px; background:var(--bg-3); box-shadow:inset 0 1px 2px rgba(16,19,18,.06); overflow:hidden; max-width:520px}
+  .cos-bar span{display:block; height:100%; border-radius:999px; background:linear-gradient(90deg,var(--accent-2),var(--accent)); transition:width .5s var(--ease)}
+  .cos-detail{font-size:.86rem; color:var(--muted); margin-top:12px; font-family:var(--mono)}
+  .cos-detail b{color:var(--ink-2)}
+  @media (prefers-reduced-motion:reduce){.cos-bar span{transition:none}}
+
+  /* closing lists */
+  .res-grid{display:grid; grid-template-columns:1fr 1fr; gap:16px; margin:20px 0; max-width:var(--readw)}
+  @media(max-width:640px){.res-grid{grid-template-columns:1fr}}
+  .res{border-radius:16px; padding:18px 20px; background:var(--card); box-shadow:0 0 0 6px var(--shell),0 0 0 6.5px var(--hair),var(--soft)}
+  .res h5{margin:0 0 10px; font-size:.95rem; font-family:var(--sans); font-weight:600; color:var(--accent-2)}
+  .res ul{margin:0; padding-left:0; list-style:none}
+  .res li{position:relative; padding-left:20px; margin:8px 0; font-size:.9rem; color:var(--ink-2)}
+  .res li::before{content:""; position:absolute; left:0; top:11px; width:9px; height:1.5px; background:var(--accent)}
+  .res li b{color:var(--ink); font-weight:600}
+
+  /* footer */
+  footer{border-top:1px solid var(--line); padding:68px 0 46px; background:var(--bg)}
+  footer h3{font-size:.72rem; font-weight:600; letter-spacing:.12em; text-transform:uppercase; color:var(--muted); margin:0 0 1em; font-family:var(--disp)}
+  .foot-grid{display:grid; grid-template-columns:1.5fr 1fr; gap:44px}
+  .foot-grid3{display:grid; grid-template-columns:1.3fr 1fr 1fr; gap:44px; margin-top:40px}
+  .foot-grid3 a{color:var(--ink-2)}
+  .foot-grid3 a:hover{color:var(--accent)}
+  .cite{font-size:.98rem; color:var(--ink-2); line-height:1.7; max-width:52ch}
+  .muted-s{color:var(--muted); font-size:.9rem; line-height:1.75}
+  .muted-s b{color:var(--ink); font-weight:600}
+  .muted-s a{line-height:1.9}
+  .foot-rule{height:1px; background:var(--line); margin:44px 0 20px}
+  .foot-note{color:var(--muted); font-size:.82rem}
+
+  /* crumbs */
+  .crumbs{display:flex; flex-wrap:wrap; align-items:center; gap:7px; margin:0; font-size:.8rem; font-weight:500; color:var(--muted)}
+  .crumbs a{color:var(--muted)}
+  .crumbs a:hover{color:var(--ink)}
+  .crumbs .csep{color:var(--faint)}
+  .crumbs .cur{color:var(--ink)}
+
+  @media(max-width:860px){
+    section{padding:72px 0}
+    .hero .wrap{padding-top:52px; padding-bottom:56px}
+    .wrap{padding:0 24px}
+    .grid2{grid-template-columns:1fr}
+    .foot-grid{grid-template-columns:1fr}
+    .foot-grid3{grid-template-columns:1fr; gap:30px}
+  }
+  @media(max-width:640px){
+    .bar-right .btn:not(.ink){display:none}
+    .brand{font-size:.82rem}
+    .stephead .num{font-size:2.4rem}
+  }
+
+  /* JP-only teaching page: fill content width for body text & boxes */
+  .lead,.prose,.callout,.formula,.grid2,.steps,.stephead,.steprule,
+  .diagram-wrap,.figcap,.code-wrap,.code-out,.demo,.res-grid{max-width:none !important}
+
+  /* ==================== NAV SYSTEM (from research/course template) ==================== */
+  .navlinks{display:flex; gap:4px; align-items:center}
+  .navlinks .navgroup{position:relative; display:flex}
+  .navlinks .navtop{display:inline-flex; align-items:center; gap:7px; font-size:.86rem; font-weight:500;
+    color:var(--ink-2); padding:8px 13px; border-radius:999px; white-space:nowrap;
+    transition:color .3s var(--ease), background .3s var(--ease)}
+  .navlinks .navtop:hover{color:var(--ink)}
+  .navlinks .navgroup:hover .navtop,.navlinks .navgroup:focus-within .navtop{color:var(--ink); background:var(--bg-2)}
+  .navlinks .navpanel{position:absolute; top:100%; left:50%; margin-top:9px; min-width:238px; padding:10px;
+    transform:translateX(-50%) translateY(6px); text-align:left;
+    background:var(--card); border:1px solid var(--hair); border-radius:16px; box-shadow:var(--soft);
+    opacity:0; visibility:hidden; pointer-events:none;
+    transition:opacity .25s var(--ease), transform .25s var(--ease), visibility 0s linear .25s; z-index:5}
+  .navlinks .navpanel::before{content:""; position:absolute; top:-13px; left:0; right:0; height:14px}
+  .navlinks .navgroup:hover .navpanel,.navlinks .navgroup:focus-within .navpanel{
+    opacity:1; visibility:visible; pointer-events:auto; transform:translateX(-50%) translateY(0);
+    transition:opacity .25s var(--ease), transform .25s var(--ease), visibility 0s linear 0s}
+  .navlinks .navgroup.collapsed .navpanel{opacity:0; visibility:hidden; pointer-events:none}
+  .navlinks .navpanel a{display:flex; align-items:center; gap:9px; padding:9px 12px; border-radius:11px;
+    font-size:.85rem; font-weight:500; color:var(--ink-2); white-space:nowrap;
+    transition:background .25s var(--ease), color .25s var(--ease)}
+  .navlinks .navpanel a:hover{background:var(--accent-soft); color:var(--ink)}
+  .navlinks .navpanel a.here{background:var(--accent-soft); color:var(--ink)}
+  .navlinks .navpanel a.here::before{content:""; flex:0 0 auto; width:6px; height:6px; border-radius:50%; background:var(--accent)}
+  .navlinks .navlabel{padding:8px 12px 3px; font:600 .6rem/1 var(--disp); letter-spacing:.13em;
+    text-transform:uppercase; color:var(--muted)}
+  .navlinks .navpanel hr.navdiv{border:0; border-top:1px solid var(--line); margin:8px 6px}
+  @media(max-width:860px){.navlinks{display:none}}
+
+  .lswitch{display:inline-flex; align-items:center; gap:2px; padding:3px; border-radius:999px;
+    border:1px solid var(--hair); background:#fff}
+  .lswitch button{appearance:none; -webkit-appearance:none; border:0; background:transparent; cursor:pointer;
+    font:600 .78rem/1 var(--disp); letter-spacing:.03em; color:var(--ink-2); padding:8px 13px; border-radius:999px;
+    transition:background .3s var(--ease), color .3s var(--ease)}
+  .lswitch button:hover{color:var(--ink)}
+  body.lang-ja .lswitch .ls-ja,body.lang-en .lswitch .ls-en{background:var(--ink); color:#fff}
+
+  .navtoggle{display:none; position:relative; width:42px; height:42px; flex:0 0 auto;
+    border-radius:999px; border:1px solid var(--hair); background:#fff; cursor:pointer; padding:0}
+  .navtoggle span{position:absolute; left:11px; right:11px; height:2px; background:var(--ink); border-radius:2px;
+    transition:transform .35s var(--ease), opacity .2s var(--ease)}
+  .navtoggle span:nth-child(1){top:15px}
+  .navtoggle span:nth-child(2){top:20px}
+  .navtoggle span:nth-child(3){top:25px}
+  body.navopen .navtoggle span:nth-child(1){transform:translateY(5px) rotate(45deg)}
+  body.navopen .navtoggle span:nth-child(2){opacity:0}
+  body.navopen .navtoggle span:nth-child(3){transform:translateY(-5px) rotate(-45deg)}
+
+  .mobnav{position:fixed; inset:0; z-index:80; display:flex; flex-direction:column; overflow-y:auto;
+    background:rgba(251,252,251,.9); -webkit-backdrop-filter:saturate(1.2) blur(24px); backdrop-filter:saturate(1.2) blur(24px);
+    opacity:0; visibility:hidden; pointer-events:none;
+    transition:opacity .35s var(--ease), visibility 0s linear .35s}
+  body.navopen .mobnav{opacity:1; visibility:visible; pointer-events:auto; transition:opacity .35s var(--ease), visibility 0s linear 0s}
+  body.navopen{overflow:hidden}
+  body.navopen header.bar{z-index:90}
+  .mobnav-inner{width:100%; max-width:600px; margin:0 auto; padding:104px 28px 64px;
+    display:flex; flex-direction:column; gap:24px}
+  .mobgroup{display:flex; flex-direction:column; gap:1px}
+  .moblabel{font:600 .64rem/1 var(--disp); letter-spacing:.14em; text-transform:uppercase; color:var(--muted); margin-bottom:9px}
+  .mobgroup a{font-size:1.28rem; font-weight:500; color:var(--ink); padding:7px 0; line-height:1.24}
+  .mobgroup a:hover{color:var(--accent-2)}
+  .mobgroup a.here{color:var(--accent-2)}
+  .mobgroup a.here::before{content:""; display:inline-block; width:6px; height:6px; border-radius:50%; background:var(--accent); margin-right:9px; vertical-align:middle}
+  .mobfoot{display:flex; align-items:center; justify-content:space-between; gap:16px; flex-wrap:wrap;
+    margin-top:6px; padding-top:22px; border-top:1px solid var(--line)}
+  .mobext{font-size:1rem; font-weight:500; color:var(--ink-2)}
+  .mobext:hover{color:var(--ink)}
+  .js .mobnav-inner > *{opacity:0; transform:translateY(12px);
+    transition:opacity .4s var(--ease), transform .4s var(--ease)}
+  body.navopen .mobnav-inner > *{opacity:1; transform:none}
+  body.navopen .mobnav-inner > *:nth-child(1){transition-delay:.04s}
+  body.navopen .mobnav-inner > *:nth-child(2){transition-delay:.08s}
+  body.navopen .mobnav-inner > *:nth-child(3){transition-delay:.12s}
+  body.navopen .mobnav-inner > *:nth-child(4){transition-delay:.16s}
+  body.navopen .mobnav-inner > *:nth-child(5){transition-delay:.20s}
+  .mobgroup .mobsublabel{font:600 .6rem/1 var(--disp); letter-spacing:.12em; text-transform:uppercase;
+    color:var(--faint); margin:15px 0 5px}
+  .mobgroup .mobsublabel:first-of-type{margin-top:2px}
+
+  .navlinks .navpanel.mega{min-width:568px; max-width:calc(100vw - 24px); padding:12px}
+  .navlinks .navpanel.mega .megacourses{display:grid; grid-template-columns:repeat(4,1fr); gap:1px 4px}
+  .navlinks .navpanel.mega .megagrid{display:grid; grid-template-columns:1fr 1fr; gap:2px 10px; align-items:start}
+  .navlinks .navpanel.mega .megacol{display:flex; flex-direction:column; min-width:0}
+  .navlinks .navpanel.mega a{white-space:normal; line-height:1.28}
+  .navlinks .navpanel.mega .navlabel{padding:8px 12px 4px}
+
+  /* sticky TOC bar */
+  .tocbar{position:sticky; top:84px; z-index:40; margin:8px 0 0;
+    background:rgba(255,255,255,.82); -webkit-backdrop-filter:saturate(1.4) blur(14px); backdrop-filter:saturate(1.4) blur(14px);
+    border-top:1px solid var(--hair); border-bottom:1px solid var(--hair)}
+  .tocbar-inner{max-width:var(--maxw); margin:0 auto; padding:9px 40px; display:flex; gap:8px;
+    overflow-x:auto; scrollbar-width:none; -ms-overflow-style:none}
+  .tocbar-inner::-webkit-scrollbar{display:none}
+  .tocpill{flex:0 0 auto; display:inline-flex; align-items:center; gap:7px; padding:7px 14px; border-radius:999px;
+    font-size:.8rem; font-weight:500; color:var(--ink-2); border:1px solid transparent; white-space:nowrap;
+    transition:background .25s var(--ease), color .25s var(--ease), border-color .25s var(--ease)}
+  .tocpill:hover{color:var(--ink); border-color:var(--hair)}
+  .tocpill.on{background:var(--accent-soft); color:var(--ink)}
+  .tocpill.on::before{content:""; flex:0 0 auto; width:6px; height:6px; border-radius:50%; background:var(--accent)}
+  section[id]{scroll-margin-top:150px}
+
+  .totop{position:fixed; right:22px; bottom:22px; z-index:55; width:46px; height:46px; border-radius:999px;
+    display:grid; place-items:center; background:#fff; border:1px solid var(--hair); box-shadow:var(--soft);
+    color:var(--ink); cursor:pointer; font-size:1.15rem; line-height:1;
+    opacity:0; transform:translateY(10px) scale(.9); pointer-events:none;
+    transition:opacity .35s var(--ease), transform .35s var(--ease)}
+  .totop.show{opacity:1; transform:none; pointer-events:auto}
+  .totop:hover{transform:translateY(-2px)}
+
+  @media(max-width:860px){
+    .navtoggle{display:block}
+    .bar-right .btn{display:none}
+    .tocbar{top:76px}
+  }
+  @media(max-width:430px){.bar-right .lswitch{display:none}}
+  @media (prefers-reduced-motion:reduce){
+    .navlinks .navpanel,.navtoggle span,.mobnav,.js .mobnav-inner > *,.navtop,.lswitch button,.totop,.tocpill{transition-duration:.001ms !important}
+    .js .mobnav-inner > *{transition-delay:0s !important}
+    .navtoggle:hover,.totop:hover{transform:none !important}
+  }
+</style>
+</head>
+<body class="lang-ja">
+<a class="skip" href="#main"><span lang="ja">本文へスキップ</span><span lang="en">Skip to content</span></a>
+
+<header class="bar">
+  <nav class="wrap" aria-label="メイン">
+    <a class="brand" href="../index.html">
+      <span aria-hidden="true">&lsaquo;</span>
+      <span lang="ja">木村祐太</span><span lang="en">Yuta Kimura</span>
+      <span class="sep">·</span><span lang="ja">学習コース</span><span lang="en">Learn</span>
+    </a>
+    <div class="navlinks">
+      <div class="navgroup">
+        <a class="navtop" href="../publications.html" aria-haspopup="true" aria-expanded="false"><span lang="ja">研究</span><span lang="en">Research</span></a>
+        <div class="navpanel">
+          <a href="../publications.html"><span lang="ja">業績・研究活動</span><span lang="en">Publications &amp; activity</span></a>
+          <a href="../research/technical-debt-metrics.html"><span lang="ja">技術的負債とメトリクス</span><span lang="en">Technical debt &amp; metrics</span></a>
+          <a href="../research/apr-coding-standards.html"><span lang="ja">自動生成パッチと規約</span><span lang="en">Auto-generated patches &amp; standards</span></a>
+          <a href="../research/td-repayment-refactoring.html"><span lang="ja">負債返済とリファクタリング</span><span lang="en">Debt repayment &amp; refactoring</span></a>
+          <a href="../research/satd-issue-classification.html"><span lang="ja">課題票の負債分類</span><span lang="en">Issue-ticket debt classification</span></a>
+        </div>
+      </div>
+      <div class="navgroup">
+        <a class="navtop" href="../teaching.html" aria-haspopup="true" aria-expanded="false"><span lang="ja">教育</span><span lang="en">Teaching</span></a>
+        <div class="navpanel mega">
+          <div class="navlabel"><span lang="ja">科目</span><span lang="en">Courses</span></div>
+          <div class="megacourses">
+            <a href="../teaching.html"><span lang="ja">教育・担当授業</span><span lang="en">Teaching &amp; courses</span></a>
+            <a href="../course/index.html"><span lang="ja">ソフトウェア工学</span><span lang="en">Software Engineering</span></a>
+            <a href="../course/logic-circuits.html"><span lang="ja">論理回路1</span><span lang="en">Logic Circuits I</span></a>
+            <a href="../course/intelligent-informatics-1.html"><span lang="ja">知能情報実験実習1</span><span lang="en">Intelligent Informatics Lab I</span></a>
+          </div>
+          <hr class="navdiv">
+          <div class="megagrid">
+            <div class="megacol">
+              <div class="navlabel"><span lang="ja">要求・モデリング</span><span lang="en">Requirements &amp; Modeling</span></div>
+              <a href="../course/requirements-engineering.html"><span lang="ja">要求工学</span><span lang="en">Requirements Engineering</span></a>
+              <a href="../course/system-modeling-uml.html"><span lang="ja">システムモデリング(UML)</span><span lang="en">System Modeling</span></a>
+              <a href="../course/uml-guide.html"><span lang="ja">クラス図/シーケンス図ガイド</span><span lang="en">UML Diagram Guide</span></a>
+            </div>
+            <div class="megacol">
+              <div class="navlabel"><span lang="ja">設計・実装</span><span lang="en">Design &amp; Implementation</span></div>
+              <a href="../course/software-architecture.html"><span lang="ja">アーキテクチャパターン大全</span><span lang="en">Software Architecture</span></a>
+              <a href="../course/design-patterns.html"><span lang="ja">デザインパターン学習ガイド</span><span lang="en">Design Patterns Guide</span></a>
+              <a href="../course/software-reuse-oss.html"><span lang="ja">ソフトウェア再利用とOSS</span><span lang="en">Software Reuse &amp; OSS</span></a>
+            </div>
+            <div class="megacol">
+              <div class="navlabel"><span lang="ja">計画・プロセス</span><span lang="en">Planning &amp; Process</span></div>
+              <a href="../course/agile-scrum.html"><span lang="ja">アジャイル開発とスクラム</span><span lang="en">Agile &amp; Scrum</span></a>
+              <a href="../course/project-management.html"><span lang="ja">プロジェクト管理と見積もり</span><span lang="en">Project Management</span></a>
+              <a href="../course/project-estimation-planning.html"><span lang="ja">プロジェクト計画・見積もり</span><span lang="en">Project Planning &amp; Estimation</span></a>
+            </div>
+            <div class="megacol">
+              <div class="navlabel"><span lang="ja">品質・運用</span><span lang="en">Quality &amp; Operations</span></div>
+              <a href="../course/software-testing.html"><span lang="ja">ソフトウェアテスト学習ガイド</span><span lang="en">Software Testing Guide</span></a>
+              <a href="../course/dependable-systems.html"><span lang="ja">ディペンダブルシステム</span><span lang="en">Dependable Systems</span></a>
+              <a href="../course/software-evolution.html"><span lang="ja">ソフトウェア進化と技術的負債</span><span lang="en">Software Evolution</span></a>
+              <a href="../course/version-control-cicd.html"><span lang="ja">バージョン管理とCI/CD</span><span lang="en">Version Control &amp; CI/CD</span></a>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="navgroup">
+        <a class="navtop on" href="../learn/index.html" aria-haspopup="true" aria-expanded="false"><span lang="ja">学習コース</span><span lang="en">Learn</span></a>
+        <div class="navpanel mega">
+          <div class="navlabel"><span lang="ja">学習コース</span><span lang="en">Learning course</span></div>
+          <a href="../learn/index.html"><span lang="ja">学習コースの全体像</span><span lang="en">Course overview</span></a>
+          <hr class="navdiv">
+          <div class="megagrid">
+            <div class="megacol">
+              <div class="navlabel"><span lang="ja">第1段階 · データ収集</span><span lang="en">Stage 1 · Data collection</span></div>
+              <a href="../learn/repository-mining.html"><span lang="ja">リポジトリマイニング入門</span><span lang="en">Repository Mining</span></a>
+              <a href="../learn/data-preprocessing.html"><span lang="ja">開発データの前処理とデータセット構築</span><span lang="en">Data Preprocessing</span></a>
+            </div>
+            <div class="megacol">
+              <div class="navlabel"><span lang="ja">第2段階 · 分析技術</span><span lang="en">Stage 2 · Techniques</span></div>
+              <a href="../learn/nlp.html"><span lang="ja">自然言語処理（NLP）</span><span lang="en">Natural Language Processing</span></a>
+              <a href="../learn/network-analysis.html"><span lang="ja">ネットワーク分析</span><span lang="en">Network Analysis</span></a>
+              <a href="../learn/machine-learning.html"><span lang="ja">機械学習</span><span lang="en">Machine Learning</span></a>
+              <a href="../learn/deep-learning.html"><span lang="ja">深層学習</span><span lang="en">Deep Learning</span></a>
+              <a href="../learn/llm.html"><span lang="ja">大規模言語モデル（LLM）</span><span lang="en">Large Language Models</span></a>
+              <a class="here" aria-current="page" href="../learn/program-analysis.html"><span lang="ja">プログラム解析</span><span lang="en">Program Analysis</span></a>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="navgroup">
+        <a class="navtop" href="../software-engineering.html" aria-haspopup="true" aria-expanded="false"><span lang="ja">ガイド</span><span lang="en">Guides</span></a>
+        <div class="navpanel">
+          <a href="../software-engineering.html"><span lang="ja">ソフトウェア工学とは</span><span lang="en">What is software engineering</span></a>
+          <a href="../technical-debt.html"><span lang="ja">技術的負債とは</span><span lang="en">What is technical debt</span></a>
+          <a href="../glossary.html"><span lang="ja">研究用語ミニ辞典</span><span lang="en">Research glossary</span></a>
+        </div>
+      </div>
+      <div class="navgroup">
+        <a class="navtop" href="../students.html"><span lang="ja">学生の皆さんへ</span><span lang="en">For Students</span></a>
+      </div>
+    </div>
+    <div class="bar-right">
+      <a class="btn" href="https://researchmap.jp/kimura_yuta" target="_blank" rel="noopener">researchmap</a>
+      <div class="lswitch" role="group" aria-label="言語 / Language">
+        <button type="button" class="ls-ja" onclick="setLang('ja')" aria-pressed="true">JA</button>
+        <button type="button" class="ls-en" onclick="setLang('en')" aria-pressed="false">EN</button>
+      </div>
+      <button class="navtoggle" id="navToggle" type="button" aria-label="メニュー" aria-expanded="false" aria-controls="mobnav">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </nav>
+</header>
+
+<div class="mobnav" id="mobnav" aria-hidden="true">
+  <div class="mobnav-inner">
+    <div class="mobgroup">
+      <div class="moblabel"><span lang="ja">研究</span><span lang="en">Research</span></div>
+      <a href="../publications.html"><span lang="ja">業績・研究活動</span><span lang="en">Publications &amp; activity</span></a>
+      <a href="../research/technical-debt-metrics.html"><span lang="ja">技術的負債とメトリクス</span><span lang="en">Technical debt &amp; metrics</span></a>
+      <a href="../research/apr-coding-standards.html"><span lang="ja">自動生成パッチと規約</span><span lang="en">Auto-generated patches &amp; standards</span></a>
+      <a href="../research/td-repayment-refactoring.html"><span lang="ja">負債返済とリファクタリング</span><span lang="en">Debt repayment &amp; refactoring</span></a>
+      <a href="../research/satd-issue-classification.html"><span lang="ja">課題票の負債分類</span><span lang="en">Issue-ticket debt classification</span></a>
+    </div>
+    <div class="mobgroup">
+      <div class="moblabel"><span lang="ja">教育</span><span lang="en">Teaching</span></div>
+      <div class="mobsublabel"><span lang="ja">科目</span><span lang="en">Courses</span></div>
+      <a href="../teaching.html"><span lang="ja">教育・担当授業</span><span lang="en">Teaching &amp; courses</span></a>
+      <a href="../course/index.html"><span lang="ja">ソフトウェア工学</span><span lang="en">Software Engineering</span></a>
+      <a href="../course/logic-circuits.html"><span lang="ja">論理回路1</span><span lang="en">Logic Circuits I</span></a>
+      <a href="../course/intelligent-informatics-1.html"><span lang="ja">知能情報実験実習1</span><span lang="en">Intelligent Informatics Lab I</span></a>
+      <div class="mobsublabel"><span lang="ja">要求・モデリング</span><span lang="en">Requirements &amp; Modeling</span></div>
+      <a href="../course/requirements-engineering.html"><span lang="ja">要求工学</span><span lang="en">Requirements Engineering</span></a>
+      <a href="../course/system-modeling-uml.html"><span lang="ja">システムモデリング(UML)</span><span lang="en">System Modeling</span></a>
+      <a href="../course/uml-guide.html"><span lang="ja">クラス図/シーケンス図ガイド</span><span lang="en">UML Diagram Guide</span></a>
+      <div class="mobsublabel"><span lang="ja">設計・実装</span><span lang="en">Design &amp; Implementation</span></div>
+      <a href="../course/software-architecture.html"><span lang="ja">アーキテクチャパターン大全</span><span lang="en">Software Architecture</span></a>
+      <a href="../course/design-patterns.html"><span lang="ja">デザインパターン学習ガイド</span><span lang="en">Design Patterns Guide</span></a>
+      <a href="../course/software-reuse-oss.html"><span lang="ja">ソフトウェア再利用とOSS</span><span lang="en">Software Reuse &amp; OSS</span></a>
+      <div class="mobsublabel"><span lang="ja">計画・プロセス</span><span lang="en">Planning &amp; Process</span></div>
+      <a href="../course/agile-scrum.html"><span lang="ja">アジャイル開発とスクラム</span><span lang="en">Agile &amp; Scrum</span></a>
+      <a href="../course/project-management.html"><span lang="ja">プロジェクト管理と見積もり</span><span lang="en">Project Management</span></a>
+      <a href="../course/project-estimation-planning.html"><span lang="ja">プロジェクト計画・見積もり</span><span lang="en">Project Planning &amp; Estimation</span></a>
+      <div class="mobsublabel"><span lang="ja">品質・運用</span><span lang="en">Quality &amp; Operations</span></div>
+      <a href="../course/software-testing.html"><span lang="ja">ソフトウェアテスト学習ガイド</span><span lang="en">Software Testing Guide</span></a>
+      <a href="../course/dependable-systems.html"><span lang="ja">ディペンダブルシステム</span><span lang="en">Dependable Systems</span></a>
+      <a href="../course/software-evolution.html"><span lang="ja">ソフトウェア進化と技術的負債</span><span lang="en">Software Evolution</span></a>
+      <a href="../course/version-control-cicd.html"><span lang="ja">バージョン管理とCI/CD</span><span lang="en">Version Control &amp; CI/CD</span></a>
+    </div>
+    <div class="mobgroup">
+      <div class="moblabel"><span lang="ja">学習コース</span><span lang="en">Learn</span></div>
+      <a href="../learn/index.html"><span lang="ja">学習コースの全体像</span><span lang="en">Course overview</span></a>
+      <div class="mobsublabel"><span lang="ja">第1段階 · データ収集</span><span lang="en">Stage 1 · Data collection</span></div>
+      <a href="../learn/repository-mining.html"><span lang="ja">リポジトリマイニング入門</span><span lang="en">Repository Mining</span></a>
+      <a href="../learn/data-preprocessing.html"><span lang="ja">開発データの前処理とデータセット構築</span><span lang="en">Data Preprocessing</span></a>
+      <div class="mobsublabel"><span lang="ja">第2段階 · 分析技術</span><span lang="en">Stage 2 · Techniques</span></div>
+      <a href="../learn/nlp.html"><span lang="ja">自然言語処理（NLP）</span><span lang="en">Natural Language Processing</span></a>
+      <a href="../learn/network-analysis.html"><span lang="ja">ネットワーク分析</span><span lang="en">Network Analysis</span></a>
+      <a href="../learn/machine-learning.html"><span lang="ja">機械学習</span><span lang="en">Machine Learning</span></a>
+      <a href="../learn/deep-learning.html"><span lang="ja">深層学習</span><span lang="en">Deep Learning</span></a>
+      <a href="../learn/llm.html"><span lang="ja">大規模言語モデル（LLM）</span><span lang="en">Large Language Models</span></a>
+      <a class="here" aria-current="page" href="../learn/program-analysis.html"><span lang="ja">プログラム解析</span><span lang="en">Program Analysis</span></a>
+    </div>
+    <div class="mobgroup">
+      <div class="moblabel"><span lang="ja">ガイド</span><span lang="en">Guides</span></div>
+      <a href="../software-engineering.html"><span lang="ja">ソフトウェア工学とは</span><span lang="en">What is software engineering</span></a>
+      <a href="../technical-debt.html"><span lang="ja">技術的負債とは</span><span lang="en">What is technical debt</span></a>
+      <a href="../glossary.html"><span lang="ja">研究用語ミニ辞典</span><span lang="en">Research glossary</span></a>
+    </div>
+    <div class="mobgroup">
+      <div class="moblabel"><span lang="ja">学生の皆さんへ</span><span lang="en">For Students</span></div>
+      <a href="../students.html"><span lang="ja">学生の皆さんへ</span><span lang="en">For Students</span></a>
+    </div>
+    <div class="mobfoot">
+      <a class="mobext" href="https://researchmap.jp/kimura_yuta" target="_blank" rel="noopener">researchmap</a>
+      <div class="lswitch" role="group" aria-label="言語 / Language">
+        <button type="button" class="ls-ja" onclick="setLang('ja')" aria-pressed="true">JA</button>
+        <button type="button" class="ls-en" onclick="setLang('en')" aria-pressed="false">EN</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<main id="main">
+<div class="wrap" style="padding-top:24px">
+  <nav class="crumbs" aria-label="パンくず">
+    <a href="../index.html"><span lang="ja">ホーム</span><span lang="en">Home</span></a>
+    <span class="csep" aria-hidden="true">&rsaquo;</span>
+    <span class="cur" aria-current="page"><span lang="ja">学習コース：プログラム解析</span><span lang="en">Learn: Program Analysis</span></span>
+  </nav>
+</div>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="wrap">
+    <p class="kick"><span lang="ja">学習コース</span><span lang="en">Learn</span></p>
+    <h1>プログラム解析</h1>
+    <p class="lead">プログラムを実行せずに、あるいは実行しながら解析し、コードの構造・品質・振る舞いを読み解く技術を、概要から理論、そして実際に動かせるコードまで、順を追って学ぶモジュールです。各ステップは「概要 → 仕組み（座学）→ コードで動かす」の3層で進みます。ページ内には手を動かせるデモを3つ用意しました。</p>
+    <p class="ja-note"><span lang="ja">この教材は日本語のみで提供しています</span><span lang="en">This learning material is available in Japanese only.</span></p>
+    <div class="hero-cta">
+      <a class="btn ink" href="#intro" style="padding:12px 22px">
+        <span lang="ja">学びはじめる</span><span lang="en">Start learning</span>
+      </a>
+      <a class="tlink" href="#step2">
+        <span lang="ja">まず手を動かす（構文木デモ）</span><span lang="en">Jump to the syntax-tree demo</span>
+        <span class="ar" aria-hidden="true">&rsaquo;</span>
+      </a>
+    </div>
+  </div>
+</div>
+
+<div id="toTopSentinel" aria-hidden="true"></div>
+
+<div class="tocbar">
+  <nav class="tocbar-inner" aria-label="ページ内目次">
+    <a class="tocpill" href="#intro"><span lang="ja">はじめに</span><span lang="en">Intro</span></a>
+    <a class="tocpill" href="#step1">Step 1 <span lang="ja">プログラム解析とは</span><span lang="en">What is program analysis</span></a>
+    <a class="tocpill" href="#step2">Step 2 <span lang="ja">構文解析とAST</span><span lang="en">Parsing &amp; AST</span></a>
+    <a class="tocpill" href="#step3">Step 3 <span lang="ja">静的解析</span><span lang="en">Static analysis</span></a>
+    <a class="tocpill" href="#step4">Step 4 <span lang="ja">コードメトリクス</span><span lang="en">Code metrics</span></a>
+    <a class="tocpill" href="#step5">Step 5 <span lang="ja">動的解析</span><span lang="en">Dynamic analysis</span></a>
+    <a class="tocpill" href="#step6">Step 6 <span lang="ja">応用とこれから</span><span lang="en">Applications</span></a>
+    <a class="tocpill" href="#closing"><span lang="ja">まとめ</span><span lang="en">Wrap-up</span></a>
+    <a class="tocpill" href="#beyond"><span lang="ja">発展トピック</span><span lang="en">Beyond</span></a>
+  </nav>
+</div>
+
+<!-- INTRO -->
+<section id="intro" style="padding-top:26px">
+  <div class="wrap reveal">
+    <p class="eyebrow"><span lang="ja">はじめに</span><span lang="en">Introduction</span></p>
+    <h2 class="big">このモジュールの全体像</h2>
+    <div class="prose" style="margin-top:22px">
+      <p><b>プログラム解析（program analysis）</b>とは、ソースコードやプログラムそのものを対象に、その構造・品質・振る舞いを機械的に読み解く技術の総称です。コンパイラの最適化、統合開発環境（IDE）のエラー表示や補完、リンタによるスタイル指摘、セキュリティ検査、そしてリファクタリング支援まで、私たちが日々使う開発ツールの多くが、この技術の上に成り立っています。</p>
+      <p>プログラム解析には大きく2つの立場があります。プログラムを<b>実行せずに</b>コードそのものから性質を調べる<b>静的解析</b>と、実際に<b>実行して</b>その様子を観測する<b>動的解析</b>です。どちらの場合も、まず生のソースコードを機械が扱える構造へ変換することから始まります。次のような流れ（パイプライン）が基本です。</p>
+    </div>
+
+    <div class="diagram-wrap reveal">
+      <p class="cap">プログラム解析の基本パイプライン</p>
+      <svg viewBox="0 0 940 150" role="img" aria-label="プログラム解析のパイプライン: ソースコードから字句・構文解析（AST）、解析、結果への流れ">
+        <g>
+          <rect class="dg-box" x="30" y="46" width="166" height="58" rx="12"/>
+          <text class="dg-lbl" x="113" y="72">ソースコード</text>
+          <text class="dg-en" x="113" y="90">Source code</text>
+        </g>
+        <g>
+          <rect class="dg-box acc" x="268" y="46" width="166" height="58" rx="12"/>
+          <text class="dg-lbl" x="351" y="72">構文解析（AST）</text>
+          <text class="dg-en" x="351" y="90">Parse</text>
+        </g>
+        <g>
+          <rect class="dg-box acc" x="506" y="46" width="166" height="58" rx="12"/>
+          <text class="dg-lbl" x="589" y="72">解析</text>
+          <text class="dg-en" x="589" y="90">Analyze</text>
+        </g>
+        <g>
+          <rect class="dg-box" x="744" y="46" width="166" height="58" rx="12"/>
+          <text class="dg-lbl" x="827" y="72">結果</text>
+          <text class="dg-en" x="827" y="90">Result</text>
+        </g>
+        <g class="dg-line">
+          <line x1="196" y1="75" x2="262" y2="75"/><line x1="434" y1="75" x2="500" y2="75"/>
+          <line x1="672" y1="75" x2="738" y2="75"/>
+        </g>
+        <g class="dg-arrow">
+          <polygon points="262,75 254,71 254,79"/><polygon points="500,75 492,71 492,79"/>
+          <polygon points="738,75 730,71 730,79"/>
+        </g>
+        <text class="dg-note" x="351" y="130">字句解析・構文木</text>
+        <text class="dg-note" x="589" y="130">静的解析・動的解析</text>
+        <text class="dg-note" x="827" y="130">指標・警告・クローン</text>
+      </svg>
+    </div>
+
+    <div class="prose">
+      <p>このモジュールは、上のパイプラインを左から順にたどります。各ステップは次の3層で構成します。</p>
+      <ul>
+        <li><b>概要</b>：その技術が何のためにあるのか、あらましをつかむ。</li>
+        <li><b>仕組み（座学）</b>：背後にある考え方・定義・式を、ていねいに理解する。</li>
+        <li><b>コードで動かす</b>：Python の標準ライブラリや定番ツール、ページ内デモで実際に動かして確かめる。</li>
+      </ul>
+      <p>手を動かす題材には、特別なデータは使いません。Python の標準ライブラリのソースや任意の公開 Python コード、そしてページ内の小さなコード片やサンプルだけを使います。特別な環境がなくても、読みながら試せる構成です。</p>
+    </div>
+  </div>
+</section>
+
+<!-- STEP 1 -->
+<section id="step1" class="soft-sec">
+  <div class="wrap reveal">
+    <div class="stephead">
+      <span class="num">1</span>
+      <div class="tt"><h2>プログラム解析とは</h2><span class="st-en">What is program analysis</span></div>
+    </div>
+    <div class="steprule"></div>
+
+    <p class="layer first"><span lang="ja">概要</span><span lang="en">Overview</span></p>
+    <div class="prose">
+      <p>プログラム解析は「プログラムについて、プログラムで調べる」技術です。人が目で追うには大きすぎるコードから、機械的に情報を引き出します。おもな用途を挙げます。</p>
+      <ul>
+        <li><b>バグ発見</b>：未定義の変数、到達しないコード、型の不一致などを、実行前に見つける。</li>
+        <li><b>品質評価</b>：複雑さや重複を数値化し、保守しにくい箇所を可視化する。</li>
+        <li><b>セキュリティ</b>：外部入力が危険な場所に届く経路（脆弱性）を検出する。</li>
+        <li><b>リファクタリング支援</b>：安全に名前を変える、関数を抽出する、といった変換を機械的に助ける。</li>
+        <li><b>最適化</b>：コンパイラが、意味を変えずに速く・小さくコードを書き換える。</li>
+      </ul>
+    </div>
+
+    <p class="layer"><span lang="ja">仕組み</span><span lang="en">How it works</span></p>
+    <div class="prose">
+      <p>解析には、実行するかどうかで大きく2つの立場があります。</p>
+      <h4>静的解析（static analysis）</h4>
+      <p>プログラムを<b>実行せずに</b>、ソースコードやコンパイル後のバイトコードそのものを調べます。あらゆる入力・あらゆる経路を（近似的に）まとめて扱えるのが強みです。いっぽう、実行時にしか決まらない値（利用者の入力やファイルの中身など）は分からないため、結果はどうしても<b>近似</b>になります。安全側に倒すと、実際には問題ない箇所まで警告する<b>偽陽性</b>が増えがちです。</p>
+      <h4>動的解析（dynamic analysis）</h4>
+      <p>プログラムを<b>実際に実行して</b>、その振る舞いを観測します。実行した具体的な値や経路について正確な情報が得られます。ただし、観測できるのは<b>実行した経路だけ</b>で、試さなかった入力の挙動は分かりません。見逃し（<b>偽陰性</b>）が起きやすいのが弱点です。テストカバレッジやプロファイリングが代表例です。</p>
+      <h4>解析の限界</h4>
+      <p>「このプログラムは必ず停止するか」「この2つのプログラムは同じ振る舞いか」といった、プログラムの<b>意味に関する非自明な性質</b>は、一般には機械的に完全に判定できないことが知られています（ライスの定理・停止性問題）。だからこそ実務の解析は、安全な近似・ヒューリスティック・限定した範囲での判定を組み合わせて、役に立つ答えを返すよう設計されています。静的と動的は対立するものではなく、互いの弱点を補い合う道具だと考えるのがよいでしょう。</p>
+    </div>
+
+    <div class="callout tip">
+      <h4>この Step のまとめ</h4>
+      <p>プログラム解析はコードから機械的に情報を引き出す技術。実行しない<b>静的解析</b>は網羅的だが近似的、実行する<b>動的解析</b>は正確だが観測した経路だけ。両者を組み合わせて、バグ発見・品質評価・セキュリティに役立てます。</p>
+    </div>
+  </div>
+</section>
+
+<!-- STEP 2 -->
+<section id="step2">
+  <div class="wrap reveal">
+    <div class="stephead">
+      <span class="num">2</span>
+      <div class="tt"><h2>字句・構文解析とAST</h2><span class="st-en">Lexing, parsing &amp; the AST</span></div>
+    </div>
+    <div class="steprule"></div>
+
+    <p class="layer first"><span lang="ja">概要</span><span lang="en">Overview</span></p>
+    <div class="prose">
+      <p>コードを解析する第一歩は、ただの文字の並びを<b>構造</b>に変えることです。人間が「2 + 3 * 4」を見て「掛け算が先」と読み取るように、機械にも文の骨組みを理解させます。この骨組みが<b>抽象構文木（AST: Abstract Syntax Tree）</b>で、ほとんどの解析はこの木の上で行われます。</p>
+    </div>
+
+    <p class="layer"><span lang="ja">仕組み</span><span lang="en">How it works</span></p>
+    <div class="prose">
+      <h4>1. 字句解析（lexing / tokenization）</h4>
+      <p>文字列を、意味のある最小単位である<b>トークン</b>に区切ります。<code>y = 2 + 3</code> なら、<code>y</code>（識別子）・<code>=</code>（記号）・<code>2</code>（数値）・<code>+</code>（記号）・<code>3</code>（数値）に分けます。空白やコメントはここで落とします。Python では標準ライブラリ <code>tokenize</code> がこの役目を担います。</p>
+      <h4>2. 構文解析（parsing）</h4>
+      <p>トークンの並びを、文法規則に従って木に組み立てます。ここで<b>演算子の優先順位</b>と<b>結合性</b>が効きます。<code>2 + 3 * 4</code> では、掛け算が足し算より優先されるので、<code>3 * 4</code> がひとつのまとまりになり、その結果と <code>2</code> を足す、という入れ子の木になります。同じ優先順位の <code>10 - 4 - 2</code> は左から結合し、<code>(10 - 4) - 2</code> と解釈されます。</p>
+      <h4>3. 抽象構文木（AST）</h4>
+      <p>できあがった木からは、括弧やセミコロンといった「書き方の飾り」を落とし、<b>構造の本質だけ</b>を残します。これが AST です。各ノードは「代入」「二項演算」「関数呼び出し」などの構文要素に対応します。木になっていれば、深さ優先でたどって特定のパターンを探す、といった処理が素直に書けます。</p>
+      <p>なお、Python はソースを<b>バイトコード</b>にコンパイルしてから仮想マシンで実行します。標準ライブラリ <code>dis</code> を使うと、この中間表現（どんな命令に落ちるか）を覗くことができます。字句解析・構文解析・AST は、その手前の「意味を組み立てる」段階だと考えるとよいでしょう。</p>
+    </div>
+
+    <!-- DEMO 1: expression syntax tree -->
+    <div class="demo reveal" id="demoAst">
+      <span class="dtag"><span lang="ja">デモ 1</span><span lang="en">Demo 1</span></span>
+      <h4>式の構文木</h4>
+      <p class="dnote">算術式（<code>+ - * /</code> と括弧、整数）を入力すると、簡易パーサが演算子の優先順位に従って構文木を組み立て、SVG のツリーで表示します。掛け算・割り算は足し算・引き算より先に、括弧が最優先です。木の下には、その優先順位で計算した結果も表示します。</p>
+      <label class="fld" for="astInput">式 / Expression</label>
+      <input type="text" id="astInput" spellcheck="false" value="2 + 3 * 4">
+      <div class="try">
+        <span class="tlbl">例</span>
+        <button type="button" data-ex="2 + 3 * 4">2 + 3 * 4</button>
+        <button type="button" data-ex="(2 + 3) * 4">(2 + 3) * 4</button>
+        <button type="button" data-ex="10 - 4 - 2">10 - 4 - 2</button>
+        <button type="button" data-ex="2 * 3 + 4 * 5">2 * 3 + 4 * 5</button>
+        <button type="button" data-ex="8 / 2 + 1">8 / 2 + 1</button>
+      </div>
+      <div class="demo-out" id="astOut" aria-live="polite"></div>
+    </div>
+
+    <p class="layer"><span lang="ja">コードで動かす</span><span lang="en">Run the code</span></p>
+    <div class="prose">
+      <p>まず字句解析です。標準ライブラリ <code>tokenize</code> で、文字列がどんなトークンに分かれるかを見てみます。</p>
+    </div>
+    <div class="code-wrap attached">
+      <div class="code-head"><span class="lbl">Python</span><span class="lang-tag">lex_tokenize.py</span><button class="copy" type="button" onclick="copyCode(this)">copy</button></div>
+      <pre><code><span class="kw">import</span> tokenize, io
+
+src = <span class="st">"y = 2 + 3 * 4\n"</span>
+<span class="kw">for</span> tok <span class="kw">in</span> tokenize.generate_tokens(io.StringIO(src).readline):
+    <span class="kw">if</span> tok.string.strip():          <span class="cm"># 空白・改行トークンは省く</span>
+        <span class="kw">print</span>(tokenize.tok_name[tok.type], repr(tok.string))</code></pre>
+    </div>
+    <div class="code-out"><span class="olbl">出力例 / Output</span><pre><code>NAME 'y'
+OP '='
+NUMBER '2'
+OP '+'
+NUMBER '3'
+OP '*'
+NUMBER '4'</code></pre></div>
+
+    <div class="prose">
+      <p>次に構文解析です。標準ライブラリ <code>ast</code> の <code>ast.parse</code> でソースを AST に変換し、<code>ast.dump</code> で構造を文字列にして眺めます。<code>2 + 3 * 4</code> が、掛け算を内側に持つ入れ子の <code>BinOp</code> になっている点に注目してください。</p>
+    </div>
+    <div class="code-wrap attached">
+      <div class="code-head"><span class="lbl">Python</span><span class="lang-tag">ast_dump.py</span><button class="copy" type="button" onclick="copyCode(this)">copy</button></div>
+      <pre><code><span class="kw">import</span> ast
+
+tree = ast.parse(<span class="st">"y = 2 + 3 * 4"</span>)
+<span class="kw">print</span>(ast.dump(tree, indent=<span class="nu">2</span>))</code></pre>
+    </div>
+    <div class="code-out"><span class="olbl">出力例 / Output</span><pre><code>Module(
+  body=[
+    Assign(
+      targets=[
+        Name(id='y', ctx=Store())],
+      value=BinOp(
+        left=Constant(value=2),
+        op=Add(),
+        right=BinOp(
+          left=Constant(value=3),
+          op=Mult(),
+          right=Constant(value=4))))],
+  type_ignores=[])</code></pre></div>
+
+    <div class="prose">
+      <p><code>ast.walk</code> を使うと、木のすべてのノードを順にたどれます。ここでは二項演算（<code>BinOp</code>）のノードだけを拾い、その演算子の種類を表示してみます。</p>
+    </div>
+    <div class="code-wrap attached">
+      <div class="code-head"><span class="lbl">Python</span><span class="lang-tag">ast_walk.py</span><button class="copy" type="button" onclick="copyCode(this)">copy</button></div>
+      <pre><code><span class="kw">import</span> ast
+
+tree = ast.parse(<span class="st">"y = 2 + 3 * 4"</span>)
+<span class="kw">for</span> node <span class="kw">in</span> ast.walk(tree):
+    <span class="kw">if</span> isinstance(node, ast.BinOp):
+        <span class="kw">print</span>(type(node.op).__name__)</code></pre>
+    </div>
+    <div class="code-out"><span class="olbl">出力例 / Output</span><pre><code>Add
+Mult</code></pre></div>
+
+    <div class="callout tip">
+      <h4>この Step のまとめ</h4>
+      <p>解析は「文字列 → トークン → 構文木（AST）」という変換から始まります。演算子の優先順位はこの木の形に現れます。Python では <code>tokenize</code> で字句解析、<code>ast</code> で構文解析ができ、以降の解析はすべてこの木の上で行われます。</p>
+    </div>
+  </div>
+</section>
+
+<!-- STEP 3 -->
+<section id="step3" class="soft-sec">
+  <div class="wrap reveal">
+    <div class="stephead">
+      <span class="num">3</span>
+      <div class="tt"><h2>静的解析</h2><span class="st-en">Static analysis</span></div>
+    </div>
+    <div class="steprule"></div>
+
+    <p class="layer first"><span lang="ja">概要</span><span lang="en">Overview</span></p>
+    <div class="prose">
+      <p>AST が手に入れば、プログラムを実行せずにさまざまな性質を調べられます。これが<b>静的解析</b>です。処理の流れ（制御フロー）やデータの流れ（データフロー）を追い、あやしい箇所を機械的に指摘します。リンタや型検査器、IDE の警告は、みなこの技術の応用です。</p>
+    </div>
+
+    <p class="layer"><span lang="ja">仕組み</span><span lang="en">How it works</span></p>
+    <div class="prose">
+      <h4>制御フローグラフ（CFG）</h4>
+      <p>プログラムの「どこからどこへ進みうるか」をグラフで表したものが<b>制御フローグラフ（Control Flow Graph）</b>です。分岐のない一続きの命令列を<b>基本ブロック</b>としてノードにまとめ、条件分岐やループによる遷移をエッジで結びます。「この行に到達できるか」「ここから抜け出せるか」といった問いは、このグラフ上の到達可能性の問題になります。</p>
+      <h4>データフロー解析</h4>
+      <p>変数の値がプログラム中をどう流れるかを追うのが<b>データフロー解析</b>です。ある地点で「どの代入の結果が生きているか（到達定義）」「この先で使われる変数はどれか（生存変数）」などを、CFG に沿って伝播させて求めます。応用として、<b>定義・使用連鎖（def-use chain）</b>を作れば、「代入したのに一度も使われない変数」や「使う前に値が入っていない変数」を検出できます。</p>
+      <h4>リンタの仕組み</h4>
+      <p><b>リンタ（linter）</b>は、AST を走査してあらかじめ決めたパターン（アンチパターン）に一致する箇所を警告するツールです。未使用の変数・インポート、比較演算子の誤用、命名規約からの逸脱などを指摘します。Python では <b>pylint</b> や <b>flake8</b> が定番で、内部では <code>ast</code> のような構文木の走査を行っています。次のコードは、その「未使用変数の検出」を <code>ast</code> だけでミニチュア実装した例です。</p>
+    </div>
+
+    <div class="code-wrap attached">
+      <div class="code-head"><span class="lbl">Python</span><span class="lang-tag">unused_vars.py</span><button class="copy" type="button" onclick="copyCode(this)">copy</button></div>
+      <pre><code><span class="kw">import</span> ast
+
+source = <span class="st">'''
+def f(x):
+    y = x + 1
+    z = x * 2      # z は使われない
+    return y
+'''</span>
+
+fn = ast.parse(source).body[<span class="nu">0</span>]          <span class="cm"># 関数定義ノード</span>
+assigned, used = set(), set()
+<span class="kw">for</span> node <span class="kw">in</span> ast.walk(fn):
+    <span class="kw">if</span> isinstance(node, ast.Name):
+        <span class="kw">if</span> isinstance(node.ctx, ast.Store):    <span class="cm"># 代入されている名前</span>
+            assigned.add(node.id)
+        <span class="kw">elif</span> isinstance(node.ctx, ast.Load):  <span class="cm"># 読み出されている名前</span>
+            used.add(node.id)
+
+<span class="kw">print</span>(<span class="st">"assigned:"</span>, sorted(assigned))
+<span class="kw">print</span>(<span class="st">"used:    "</span>, sorted(used))
+<span class="kw">print</span>(<span class="st">"unused:  "</span>, sorted(assigned - used))</code></pre>
+    </div>
+    <div class="code-out"><span class="olbl">出力例 / Output</span><pre><code>assigned: ['y', 'z']
+used:     ['x', 'y']
+unused:   ['z']</code></pre></div>
+
+    <div class="prose">
+      <p>ノードの <code>ctx</code>（コンテキスト）が <code>Store</code> なら代入、<code>Load</code> なら読み出しです。代入された名前の集合から使われた名前の集合を引けば、「代入したのに使われていない」変数が求まります。これは静的解析の考え方そのもので、本物のリンタは、これに<b>スコープ</b>や<b>制御フロー</b>の情報を加えて精度を高めています。</p>
+    </div>
+
+    <div class="callout tip">
+      <h4>この Step のまとめ</h4>
+      <p>静的解析は AST の上で、制御フロー（CFG）とデータフローを追う技術です。定義・使用の関係を調べれば、未使用変数のような問題を実行前に見つけられます。pylint や flake8 は、この考え方を体系化したツールです。</p>
+    </div>
+  </div>
+</section>
+
+<!-- STEP 4 -->
+<section id="step4">
+  <div class="wrap reveal">
+    <div class="stephead">
+      <span class="num">4</span>
+      <div class="tt"><h2>コードメトリクスと品質</h2><span class="st-en">Code metrics &amp; quality</span></div>
+    </div>
+    <div class="steprule"></div>
+
+    <p class="layer first"><span lang="ja">概要</span><span lang="en">Overview</span></p>
+    <div class="prose">
+      <p>「このコードは複雑すぎないか」「テストしにくくないか」を、感覚ではなく数字で語るための道具が<b>コードメトリクス</b>です。規模・複雑さ・重複などを測り、保守しにくい箇所を客観的に浮かび上がらせます。品質のすべてを数字で表せるわけではありませんが、注意を向けるべき場所の目印になります。</p>
+    </div>
+
+    <p class="layer"><span lang="ja">仕組み</span><span lang="en">How it works</span></p>
+    <div class="prose">
+      <h4>行数（LOC）</h4>
+      <p>もっとも素朴な指標が<b>行数（Lines of Code）</b>です。空行やコメントを除いた実行文の行数（論理行数）を数えるのが一般的です。単純ですが、規模の当たりをつけるのに役立ちます。</p>
+      <h4>循環的複雑度（cyclomatic complexity）</h4>
+      <p>McCabe が提案した<b>循環的複雑度</b>は、制御フローグラフをもとに「独立した経路の数」を測る指標です。分岐が多いほど値が大きく、テストすべき経路も増えます。CFG のエッジ数を E、ノード数を N、連結成分の数を P とすると、次の式で定義されます。</p>
+    </div>
+    <div class="formula">
+      M <span class="op">=</span> E <span class="op">-</span> N <span class="op">+</span> 2P
+      <small>E: 制御フローグラフのエッジ数　N: ノード数　P: 連結成分の数（1つの関数なら P = 1）<br>これは、判定点（if・for・while・and・or・case など）が d 個ある構造化プログラムでは M = d + 1 と一致します。</small>
+    </div>
+    <div class="prose">
+      <p>実務では、この「判定点を数えて 1 を足す」やり方で手早く見積もります。分岐が 0 なら M = 1（一本道）、分岐が増えるほど M も増えます。目安として、M が小さいほど理解・テストしやすく、大きくなるほど分割を検討する合図になります。次のデモは、まさにこの数え方で複雑度を計算します。</p>
+      <h4>その他の指標</h4>
+      <ul>
+        <li><b>Halstead 指標</b>：コード中の演算子・オペランドの種類数と総数から、プログラムの語彙・規模・難しさ（difficulty）・労力（effort）などを見積もる。</li>
+        <li><b>保守性指数（Maintainability Index）</b>：Halstead 体積・循環的複雑度・行数を組み合わせ、保守のしやすさを一つの数値にまとめたもの。</li>
+        <li><b>コードスメル</b>：長すぎる関数、巨大なクラス、重複コードなど、設計上の「におい」。バグそのものではないが、改善の候補。</li>
+        <li><b>コードクローン</b>：コピー＆ペーストなどで生まれた、よく似たコード片。片方を直すともう片方が直し忘れられる、といったリスクの温床（Step 5 で検出を体験します）。</li>
+      </ul>
+    </div>
+
+    <!-- DEMO 2: cyclomatic complexity -->
+    <div class="demo reveal" id="demoCc">
+      <span class="dtag"><span lang="ja">デモ 2</span><span lang="en">Demo 2</span></span>
+      <h4>循環的複雑度</h4>
+      <p class="dnote">疑似コード（Python 風）を入力すると、<code>if</code>・<code>elif</code>・<code>for</code>・<code>while</code>・<code>case</code>・<code>and</code>・<code>or</code>（<code>&amp;&amp;</code>・<code>||</code> も）といった判定点を数え、循環的複雑度 <b>M = 判定数 + 1</b> を計算します。内訳の表と、簡単・やや複雑・複雑の目安も表示します。</p>
+      <label class="fld" for="ccInput">疑似コード / Pseudocode</label>
+      <textarea id="ccInput" rows="9" spellcheck="false">def grade(s):
+    if s >= 90:
+        return "A"
+    elif s >= 80:
+        return "B"
+    elif s >= 70:
+        return "C"
+    else:
+        return "F"</textarea>
+      <div class="try">
+        <span class="tlbl">例</span>
+        <button type="button" data-cc="def f(x):&#10;    return x + 1">一本道（M=1）</button>
+        <button type="button" data-cc="def grade(s):&#10;    if s >= 90:&#10;        return &quot;A&quot;&#10;    elif s >= 80:&#10;        return &quot;B&quot;&#10;    elif s >= 70:&#10;        return &quot;C&quot;&#10;    else:&#10;        return &quot;F&quot;">grade 関数</button>
+        <button type="button" data-cc="def check(items):&#10;    total = 0&#10;    for x in items:&#10;        if x > 0 and x < 100:&#10;            total = total + x&#10;        elif x >= 100 or x == -1:&#10;            total = total - x&#10;    while total > 1000:&#10;        total = total / 2&#10;    return total">分岐とループ</button>
+      </div>
+      <div class="demo-out" id="ccOut" aria-live="polite"></div>
+    </div>
+
+    <p class="layer"><span lang="ja">コードで動かす</span><span lang="en">Run the code</span></p>
+    <div class="prose">
+      <p>Python では <b>radon</b> が定番です。次の <code>example.py</code>（先ほどの grade 関数）を測ってみます。この関数は <code>if</code> と <code>elif</code> が2つ、合わせて判定点が3つなので、複雑度は M = 3 + 1 = 4 です。コマンドラインの <code>radon cc</code> で確認します。</p>
+    </div>
+    <div class="code-wrap attached">
+      <div class="code-head"><span class="lbl">Shell</span><span class="lang-tag">radon_cc.sh</span><button class="copy" type="button" onclick="copyCode(this)">copy</button></div>
+      <pre><code><span class="cm"># pip install radon</span>
+$ radon cc example.py -s</code></pre>
+    </div>
+    <div class="code-out"><span class="olbl">出力例 / Output</span><pre><code>example.py
+    F 1:0 grade - A (4)</code></pre></div>
+
+    <div class="prose">
+      <p><code>F</code> は関数（Function）、<code>1:0</code> は行:列、<code>grade</code> は名前、<code>A</code> はランク、<code>(4)</code> が循環的複雑度です。radon はランクを A（1〜5）から F（41 以上）で表します。同じことを Python から行うには <code>radon.complexity.cc_visit</code> を使います。</p>
+    </div>
+    <div class="code-wrap attached">
+      <div class="code-head"><span class="lbl">Python</span><span class="lang-tag">radon_api.py</span><button class="copy" type="button" onclick="copyCode(this)">copy</button></div>
+      <pre><code><span class="kw">from</span> radon.complexity <span class="kw">import</span> cc_visit
+
+source = open(<span class="st">"example.py"</span>).read()
+<span class="kw">for</span> block <span class="kw">in</span> cc_visit(source):
+    <span class="kw">print</span>(block.name, block.complexity)</code></pre>
+    </div>
+    <div class="code-out"><span class="olbl">出力例 / Output</span><pre><code>grade 4</code></pre></div>
+
+    <div class="callout tip">
+      <h4>この Step のまとめ</h4>
+      <p>コードメトリクスは品質を数値化する道具。<b>循環的複雑度</b>は M = E - N + 2P（判定点 + 1）で分岐の多さを測ります。radon の <code>cc</code> で簡単に計測でき、テストしにくい複雑な関数の目印になります。</p>
+    </div>
+  </div>
+</section>
+
+<!-- STEP 5 -->
+<section id="step5" class="soft-sec">
+  <div class="wrap reveal">
+    <div class="stephead">
+      <span class="num">5</span>
+      <div class="tt"><h2>動的解析</h2><span class="st-en">Dynamic analysis</span></div>
+    </div>
+    <div class="steprule"></div>
+
+    <p class="layer first"><span lang="ja">概要</span><span lang="en">Overview</span></p>
+    <div class="prose">
+      <p>ここまでは実行せずに調べる静的解析でした。いっぽう<b>動的解析</b>は、プログラムを実際に動かして、その様子を観測します。「どの行が実行されたか」「どこで時間がかかったか」といった、実行時にしか分からない情報が得られます。テストカバレッジ・プロファイリング・トレースが代表的な道具です。</p>
+    </div>
+
+    <p class="layer"><span lang="ja">仕組み</span><span lang="en">How it works</span></p>
+    <div class="prose">
+      <h4>テストカバレッジ</h4>
+      <p><b>カバレッジ</b>は、テストがコードのどれだけを実行したかを測る指標です。<b>行カバレッジ</b>は実行された行の割合、<b>分岐カバレッジ</b>は条件分岐の真・偽の両方を通ったかを見ます。カバレッジが低い箇所は「テストで一度も動かしていない場所」であり、バグが潜みやすい要注意ゾーンです。Python では <b>coverage.py</b> が定番です。</p>
+      <h4>プロファイリング</h4>
+      <p><b>プロファイリング</b>は、どの関数がどれだけ呼ばれ、どれだけ時間を使ったかを計測します。「速くしたい」ときに、当てずっぽうで直すのではなく、実測にもとづいてボトルネックを特定するために使います。Python 標準の <b>cProfile</b> が手軽です。</p>
+      <h4>トレースと限界</h4>
+      <p><b>トレース</b>は、実行の経路や関数の呼び出し順を時系列で記録します。動的解析に共通する限界は、<b>観測できるのは実際に実行した経路だけ</b>という点です。与えた入力しだいで結果が変わるため、静的解析のような網羅性はありません。だからこそ、両者を組み合わせるのが実務の基本になります。</p>
+    </div>
+
+    <p class="layer"><span lang="ja">コードで動かす</span><span lang="en">Run the code</span></p>
+    <div class="prose">
+      <p>まずカバレッジです。テストを <code>coverage</code> 経由で実行し、レポートを出します。<code>-m</code> を付けると、実行されなかった行番号（Missing）も表示されます。</p>
+    </div>
+    <div class="code-wrap attached">
+      <div class="code-head"><span class="lbl">Shell</span><span class="lang-tag">coverage.sh</span><button class="copy" type="button" onclick="copyCode(this)">copy</button></div>
+      <pre><code><span class="cm"># pip install coverage</span>
+$ coverage run -m pytest
+$ coverage report -m</code></pre>
+    </div>
+    <div class="code-out"><span class="olbl">出力例 / Output</span><pre><code>Name          Stmts   Miss  Cover   Missing
+-------------------------------------------
+mymodule.py      20      3    85%   12-14
+-------------------------------------------
+TOTAL            20      3    85%</code></pre></div>
+
+    <div class="prose">
+      <p>全 20 文のうち 3 文（12〜14 行目）が未実行で、行カバレッジは 85% です。次はプロファイリングです。<code>cProfile.run</code> に測りたい処理を渡します。</p>
+    </div>
+    <div class="code-wrap attached">
+      <div class="code-head"><span class="lbl">Python</span><span class="lang-tag">profile_example.py</span><button class="copy" type="button" onclick="copyCode(this)">copy</button></div>
+      <pre><code><span class="kw">import</span> cProfile
+
+<span class="kw">def</span> slow():
+    <span class="kw">return</span> sum(i * i <span class="kw">for</span> i <span class="kw">in</span> range(<span class="nu">100000</span>))
+
+cProfile.run(<span class="st">"slow()"</span>)</code></pre>
+    </div>
+    <div class="code-out"><span class="olbl">出力例 / Output</span><pre><code>         100005 function calls in 0.012 seconds
+
+   Ordered by: standard name
+
+   ncalls  tottime  percall  cumtime  percall filename:lineno(function)
+        1    0.001    0.001    0.011    0.011 profile_example.py:3(slow)
+   100001    0.005    0.000    0.005    0.000 profile_example.py:4(&lt;genexpr&gt;)
+        1    0.000    0.000    0.012    0.012 {built-in method builtins.exec}
+        1    0.005    0.005    0.010    0.010 {built-in method builtins.sum}
+        1    0.000    0.000    0.000    0.000 {method 'disable' of '_lsprof.Profiler' objects}</code></pre></div>
+
+    <div class="prose">
+      <p>ジェネレータ式が 100001 回呼ばれ（10 万個の値と、最後の停止で 1 回）、そこと <code>sum</code> に時間が集中しているのが読み取れます。どこを直せば速くなるかが、実測から分かります。</p>
+      <h4>実践：コードの重複を測る（クローン検出）</h4>
+      <p>最後に、品質評価の実践として<b>コードクローン検出</b>を体験します。これはコードを実行せずトークン列を比べる手法ですが、コピー＆ペーストで増えた重複を見つけ、保守性の問題を洗い出すのに使われます。よくある手法は、コードを正規化してトークン列にし、その<b>類似度</b>を測るものです。空白やコメントを無視するだけの一致（Type-1）に加え、<b>変数名や定数の違いを吸収</b>すると、名前だけ変えた複製（Type-2）も見つかります。次のデモは、正規化したトークンの並びから類似度を計算します。</p>
+    </div>
+
+    <!-- DEMO 3: code clone detection -->
+    <div class="demo reveal" id="demoClone">
+      <span class="dtag"><span lang="ja">デモ 3</span><span lang="en">Demo 3</span></span>
+      <h4>コードクローン検出</h4>
+      <p class="dnote">2つのコード片を入力すると、空白とコメントを除き、変数名を <code>ID</code>・数値を <code>NUM</code>・文字列を <code>STR</code> に正規化してトークン列にします。トークンの2-gram（隣り合う2つ組）の集合どうしの <b>Jaccard 係数</b>で類似度を測り、クローンかどうかを判定します。<code>Jaccard = |共通| / |和集合|</code> です。</p>
+      <div class="two">
+        <div>
+          <label class="fld" for="clA">コード A / Code A</label>
+          <textarea id="clA" rows="7" spellcheck="false">def sum_list(nums):
+    total = 0
+    for n in nums:
+        total = total + n
+    return total</textarea>
+        </div>
+        <div>
+          <label class="fld" for="clB">コード B / Code B</label>
+          <textarea id="clB" rows="7" spellcheck="false">def add_all(values):
+    acc = 0
+    for v in values:
+        acc = acc + v
+    return acc</textarea>
+        </div>
+      </div>
+      <div class="try">
+        <span class="tlbl">例</span>
+        <button type="button" data-a="def sum_list(nums):&#10;    total = 0&#10;    for n in nums:&#10;        total = total + n&#10;    return total" data-b="def add_all(values):&#10;    acc = 0&#10;    for v in values:&#10;        acc = acc + v&#10;    return acc">名前だけ違う複製（Type-2）</button>
+        <button type="button" data-a="def sum_list(nums):&#10;    total = 0&#10;    for n in nums:&#10;        total = total + n&#10;    return total" data-b="def is_even(x):&#10;    if x % 2 == 0:&#10;        return True&#10;    return False">別のコード</button>
+        <button type="button" data-a="def area(w, h):&#10;    return w * h" data-b="def area(w, h):  # 面積&#10;    return w * h">空白・コメントだけ違う（Type-1）</button>
+      </div>
+      <div class="demo-out" id="clOut" aria-live="polite"></div>
+    </div>
+
+    <div class="callout tip">
+      <h4>この Step のまとめ</h4>
+      <p>動的解析は、実行して観測する技術です。<code>coverage</code> でテストの網羅度を、<code>cProfile</code> で性能のボトルネックを測れます。観測できるのは通った経路だけという限界を、静的解析が補います。トークンを正規化して比べれば、コードクローンも検出できます。</p>
+    </div>
+  </div>
+</section>
+
+<!-- STEP 6 -->
+<section id="step6">
+  <div class="wrap reveal">
+    <div class="stephead">
+      <span class="num">6</span>
+      <div class="tt"><h2>応用とこれから</h2><span class="st-en">Applications &amp; what comes next</span></div>
+    </div>
+    <div class="steprule"></div>
+
+    <p class="layer first"><span lang="ja">概要</span><span lang="en">Overview</span></p>
+    <div class="prose">
+      <p>ここまでで、構文解析・静的解析・メトリクス・動的解析という基本の道具がそろいました。これらは単独でも役立ちますが、組み合わせると、より実践的な課題に応用できます。最後に、その広がりと、この先の学びへの橋渡しを見ておきましょう。</p>
+    </div>
+
+    <p class="layer"><span lang="ja">仕組み</span><span lang="en">How it works</span></p>
+    <div class="prose">
+      <h4>バグ検出と欠陥予測</h4>
+      <p>静的解析のパターン照合で「ぬるぽ（null 参照）になりうる」「例外が握りつぶされている」といった典型的な欠陥を見つけられます。さらに、過去の変更履歴やメトリクスを組み合わせ、どのファイルがバグを含みやすいかを見積もる<b>欠陥予測</b>という研究分野もあります。</p>
+      <h4>セキュリティ解析</h4>
+      <p>脆弱性を見つける解析には、コードを実行せず調べる<b>SAST（静的アプリケーションセキュリティテスト）</b>と、動かして試す<b>DAST（動的〜）</b>があります。中核となる考え方の一つが<b>テイント解析</b>で、外部からの入力（汚染源）が、データベース問い合わせやコマンド実行などの危険な地点（シンク）まで、無害化されずに届く経路を追跡します。</p>
+      <h4>コードへの機械学習</h4>
+      <p>近年は、コードを<b>データ</b>として機械学習にかける流れが広がっています。AST やトークン列を数値ベクトルに変換する<b>コード表現・埋め込み</b>を作り、バグ検出・コード補完・要約などに使います。テキストを数値にする自然言語処理の発想が、そのままコードにも応用されているのです。ここは、このコースの機械学習・大規模言語モデル（LLM）のモジュールへとつながっていきます。</p>
+    </div>
+
+    <div class="callout tip">
+      <h4>この Step のまとめ</h4>
+      <p>基本の道具は、バグ検出・欠陥予測・セキュリティ解析（SAST/DAST・テイント解析）へ応用できます。さらにコードを機械学習の対象とみなす流れが、コード表現・埋め込みを通じて機械学習や LLM のモジュールへつながります。</p>
+    </div>
+  </div>
+</section>
+
+<!-- CLOSING -->
+<section id="closing" class="soft-sec">
+  <div class="wrap reveal">
+    <p class="eyebrow"><span lang="ja">まとめ</span><span lang="en">Wrap-up</span></p>
+    <h2 class="big">学びの振り返りと、さらに学ぶために</h2>
+    <div class="prose" style="margin-top:22px">
+      <p>このモジュールでは、プログラムを読み解く基本の道具を、パイプラインに沿って順に手に入れました。</p>
+      <ul>
+        <li><b>構文解析とAST</b>：文字列をトークンに区切り、優先順位を反映した構文木に組み立てる。</li>
+        <li><b>静的解析</b>：実行せずに制御フロー・データフローを追い、未使用変数などを見つける。</li>
+        <li><b>コードメトリクス</b>：循環的複雑度などで複雑さ・品質を数値化する。</li>
+        <li><b>動的解析</b>：実行して観測し、カバレッジやプロファイルを測る。</li>
+        <li><b>応用</b>：バグ検出・セキュリティ解析、そしてコードへの機械学習へ。</li>
+      </ul>
+      <p>次に進むなら、下の道具と資料が役に立ちます。</p>
+    </div>
+
+    <div class="res-grid reveal">
+      <div class="res">
+        <h5>解析の対象・データ</h5>
+        <ul>
+          <li><b>任意の公開 Python ソース</b>：手元のスクリプトや OSS のコードをそのまま解析対象にできる。</li>
+          <li><b>Python 標準ライブラリのコード</b>：<code>ast</code> や <code>tokenize</code> で読み込み、実在するコードで練習できる。</li>
+        </ul>
+      </div>
+      <div class="res">
+        <h5>ライブラリ・ツール</h5>
+        <ul>
+          <li><b>Python 標準 ast・dis・tokenize</b>：構文木・バイトコード・トークン列。</li>
+          <li><b>radon</b>：循環的複雑度・保守性指数などの計測。</li>
+          <li><b>coverage</b>：テストカバレッジの計測。</li>
+          <li><b>pylint / flake8</b>：静的解析にもとづくリンタ。</li>
+          <li><b>tree-sitter</b>：多言語対応の高速な構文解析ライブラリ。</li>
+        </ul>
+      </div>
+      <div class="res">
+        <h5>参考書</h5>
+        <ul>
+          <li>Aho ほか『コンパイラ 原理・技法・ツール』（通称ドラゴンブック）</li>
+          <li>Nielson ほか『Principles of Program Analysis』</li>
+          <li>Møller, Schwartzbach『Static Program Analysis』（公開講義ノート）</li>
+        </ul>
+      </div>
+      <div class="res">
+        <h5>次のモジュールへ</h5>
+        <ul>
+          <li>機械学習の基礎（分類・回帰・評価）</li>
+          <li>大規模言語モデル（LLM）とコード生成</li>
+          <li>リポジトリマイニング（変更履歴の分析）</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="callout tip">
+      <h4>おつかれさまでした</h4>
+      <p>ここで学んだ「コードを構造にして、静的・動的に調べる」という流れは、言語や規模を問わず通用する考え方です。手元の Python ファイルを題材に、3 つのデモを動かしてみてください。式を変え、疑似コードの分岐を増やし、コードを少しずつ書き換えると、構文木・複雑度・類似度がどう変わるかを確かめられ、理解がぐっと深まります。</p>
+    </div>
+  </div>
+</section>
+
+<section id="beyond">
+  <div class="wrap reveal">
+    <p class="eyebrow"><span lang="ja">発展トピック</span><span lang="en">Beyond this module</span></p>
+    <h2 class="big">このコースでは扱わない、関係する発展トピック</h2>
+    <div class="prose" style="margin-top:22px">
+      <p>このモジュールでは、コードを構造にして静的・動的に調べる「基礎の流れ」を扱いました。いっぽうでプログラム解析は、より厳密な理論から最新の機械学習まで、幅広く発展しています。ここでは、このコースでは踏み込まないものの、知っておくと視野が広がる発展的なトピックを紹介します。深掘りは各自の興味に合わせてどうぞ。</p>
+    </div>
+
+    <div class="res-grid reveal">
+      <div class="res">
+        <h5>高度な静的解析</h5>
+        <ul>
+          <li><b>記号実行（symbolic execution）</b>：変数を具体値ではなく記号のまま実行し、どんな入力でどの経路を通るかを論理的に解く。</li>
+          <li><b>抽象解釈（abstract interpretation）</b>：値を「符号」「区間」などの抽象領域で近似し、健全に性質を証明する理論的枠組み。</li>
+        </ul>
+      </div>
+      <div class="res">
+        <h5>セキュリティと検証</h5>
+        <ul>
+          <li><b>テイント解析</b>：外部入力が危険な地点に届く経路を追跡し、脆弱性を見つける。</li>
+          <li><b>ファジング（fuzzing）</b>：大量のランダム・変異入力を与えてクラッシュを探す動的手法。</li>
+          <li><b>形式検証</b>：仕様に対する正しさを、モデル検査や定理証明で数学的に確かめる。</li>
+        </ul>
+      </div>
+      <div class="res">
+        <h5>コードの機械学習</h5>
+        <ul>
+          <li><b>コード表現学習</b>：AST やトークン列を数値ベクトルに変換する（code2vec など）。</li>
+          <li><b>事前学習モデル</b>：大量のコードで学習したモデル（CodeBERT など）を、バグ検出や要約に応用する。</li>
+        </ul>
+      </div>
+      <div class="res">
+        <h5>生成と合成</h5>
+        <ul>
+          <li><b>プログラム合成</b>：入出力例や仕様から、条件を満たすプログラムを自動生成する。</li>
+          <li><b>LLM によるコード生成・解析</b>：大規模言語モデルがコードを書き、説明し、レビューを支援する最新の広がり。別モジュールで扱う予定。</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<button class="totop" type="button" aria-label="上へ戻る" title="上へ戻る">&uarr;</button>
+
+<!-- FOOTER -->
+<footer>
+  <div class="wrap">
+    <div class="foot-grid">
+      <div>
+        <h3><span lang="ja">この学習モジュールについて</span><span lang="en">About this module</span></h3>
+        <div class="cite">
+          <span lang="ja">「研究で使う技術を実践的に学ぶ」学習コースの1モジュールです。概要から理論、動かせるコードまでを一続きにして、プログラム解析の基礎を独習できるように構成しています。内容は分野標準の一般的なもので、特定の研究や論文には紐づきません。</span>
+          <span lang="en">A module in a learning course on research skills, walking from overview to theory to runnable code so you can study the basics of program analysis on your own. The content is standard and general, not tied to any specific study.</span>
+        </div>
+      </div>
+      <div>
+        <h3><span lang="ja">制作</span><span lang="en">Author</span></h3>
+        <p class="muted-s">
+          <b>Yuta Kimura</b><br>
+          <span lang="ja">大阪公立大学工業高等専門学校</span><span lang="en">Osaka Metropolitan University College of Technology</span><br>
+          <a href="mailto:y.kimura@omu.ac.jp">y.kimura [at] omu.ac.jp</a>
+        </p>
+      </div>
+    </div>
+    <div class="foot-grid3">
+      <div>
+        <h3><span lang="ja">連絡先</span><span lang="en">Contact</span></h3>
+        <p class="muted-s">
+          <b>Yuta Kimura</b><br>
+          <span lang="ja">大阪公立大学工業高等専門学校</span><span lang="en">Osaka Metropolitan University College of Technology</span><br>
+          <a href="mailto:y.kimura@omu.ac.jp">y.kimura [at] omu.ac.jp</a>
+        </p>
+      </div>
+      <div>
+        <h3><span lang="ja">サイト</span><span lang="en">Site</span></h3>
+        <p class="muted-s">
+          <a href="../index.html">Home</a><br>
+          <a href="../publications.html"><span lang="ja">業績・研究活動</span><span lang="en">Publications &amp; research activities</span></a><br>
+          <a href="../teaching.html"><span lang="ja">教育</span><span lang="en">Teaching</span></a><br>
+          <a href="../software-engineering.html"><span lang="ja">ソフトウェア工学とは</span><span lang="en">What is software engineering?</span></a><br>
+          <a href="../glossary.html"><span lang="ja">研究用語ミニ辞典</span><span lang="en">Research glossary</span></a>
+        </p>
+      </div>
+      <div>
+        <h3><span lang="ja">関連教材</span><span lang="en">Related material</span></h3>
+        <p class="muted-s">
+          <a href="../course/software-testing.html"><span lang="ja">ソフトウェアテスト学習ガイド</span><span lang="en">Software Testing Guide</span></a><br>
+          <a href="../course/intelligent-informatics-1.html"><span lang="ja">知能情報実験実習1</span><span lang="en">Intelligent Informatics Lab I</span></a><br>
+          <a href="../course/index.html"><span lang="ja">ソフトウェア工学</span><span lang="en">Software Engineering</span></a><br>
+          <a href="https://researchmap.jp/kimura_yuta" target="_blank" rel="noopener">researchmap</a>
+        </p>
+      </div>
+    </div>
+    <div class="foot-rule"></div>
+    <p class="foot-note">
+      <span lang="ja">本ページは学習用のプロトタイプ教材です。コード例は分野標準のライブラリ（Python 標準の ast・dis・tokenize、radon、coverage）にもとづき、出力例は実際の実行結果に一致させています。</span>
+      <span lang="en">This page is a prototype learning material. Code examples use standard libraries (Python's ast, dis, tokenize, radon, coverage), and the shown outputs match real runs.</span>
+    </p>
+  </div>
+</footer>
+
+<script>
+  /* language: setLang / toggleLang, persisted in localStorage 'site-lang' only */
+  function setLang(l){document.body.classList.remove('lang-ja','lang-en');document.body.classList.add('lang-'+l);document.documentElement.lang=l;
+    try{localStorage.setItem('site-lang',l)}catch(e){}
+    try{var q=new URLSearchParams(location.search);q.set('lang',l);history.replaceState(null,'',location.pathname+'?'+q+location.hash)}catch(e){}}
+  function toggleLang(){setLang(document.body.classList.contains('lang-ja')?'en':'ja')}
+  (function(){var u=null;try{u=new URLSearchParams(location.search).get('lang')}catch(e){}
+    var s=null;try{s=localStorage.getItem('site-lang')}catch(e){}
+    var l=(u==='en'||u==='ja')?u:((s==='en'||s==='ja')?s:'ja');if(l!=='ja')setLang(l);})();
+  if('IntersectionObserver' in window){
+    var io=new IntersectionObserver(function(es){
+      es.forEach(function(e){ if(e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target); } });
+    },{threshold:0.10, rootMargin:"0px 0px -6% 0px"});
+    document.querySelectorAll('.reveal').forEach(function(el){ io.observe(el); });
+  } else { document.querySelectorAll('.reveal').forEach(function(el){ el.classList.add('in'); }); }
+
+  /* copy code (in-memory only, no storage) */
+  function copyCode(btn){
+    var pre=btn.closest('.code-wrap').querySelector('pre code');
+    var text=pre.innerText;
+    if(navigator.clipboard&&navigator.clipboard.writeText){
+      navigator.clipboard.writeText(text).then(function(){flash(btn);},function(){});
+    }
+  }
+  function flash(btn){var o=btn.textContent;btn.textContent='copied';setTimeout(function(){btn.textContent=o;},1200);}
+</script>
+
+<script>
+/* ==================== interactive demos (vanilla JS, self-contained) ==================== */
+(function(){
+  function escapeHtml(s){ return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+
+  /* ---- Demo 1: expression syntax tree ---- */
+  var astInput=document.getElementById('astInput'),
+      astOut=document.getElementById('astOut');
+
+  function parseExpr(src){
+    var toks=[], i=0, s=src, n=s.length;
+    while(i<n){
+      var c=s[i];
+      if(/\s/.test(c)){ i++; continue; }
+      if(/[0-9]/.test(c)){ var j=i; while(j<n && /[0-9.]/.test(s[j])) j++; toks.push({t:'num', v:s.slice(i,j)}); i=j; continue; }
+      if('+-*/()'.indexOf(c)>=0){ toks.push({t:c}); i++; continue; }
+      throw new Error('使えない文字があります: "'+c+'"');
+    }
+    var p=0;
+    function peek(){ return toks[p]; }
+    function next(){ return toks[p++]; }
+    function parseE(){
+      var node=parseT();
+      while(peek() && (peek().t==='+'||peek().t==='-')){
+        var op=next().t; var right=parseT();
+        node={op:op, left:node, right:right};
+      }
+      return node;
+    }
+    function parseT(){
+      var node=parseF();
+      while(peek() && (peek().t==='*'||peek().t==='/')){
+        var op=next().t; var right=parseF();
+        node={op:op, left:node, right:right};
+      }
+      return node;
+    }
+    function parseF(){
+      var tk=peek();
+      if(!tk) throw new Error('式が途中で終わっています');
+      if(tk.t==='('){ next(); var e=parseE(); if(!peek()||peek().t!==')') throw new Error('閉じ括弧 ) がありません'); next(); return e; }
+      if(tk.t==='-'){ next(); return {op:'u-', left:parseF()}; }
+      if(tk.t==='+'){ next(); return parseF(); }
+      if(tk.t==='num'){ next(); return {num:tk.v}; }
+      throw new Error('予期しない記号: "'+tk.t+'"');
+    }
+    if(!toks.length) throw new Error('式を入力してください');
+    var tree=parseE();
+    if(p<toks.length) throw new Error('余分な入力があります: "'+(toks[p].v||toks[p].t)+'"');
+    return tree;
+  }
+
+  function evalNode(nd){
+    if('num' in nd) return parseFloat(nd.num);
+    if(nd.op==='u-') return -evalNode(nd.left);
+    var a=evalNode(nd.left), b=evalNode(nd.right);
+    if(nd.op==='+') return a+b;
+    if(nd.op==='-') return a-b;
+    if(nd.op==='*') return a*b;
+    if(nd.op==='/') return b===0? NaN : a/b;
+  }
+
+  function layout(root){
+    var nodes=[], col=0, maxd=0;
+    function rec(nd, depth){
+      nd.depth=depth; if(depth>maxd) maxd=depth;
+      if(nd.left) rec(nd.left, depth+1);
+      nd.col=col++;
+      if(nd.right) rec(nd.right, depth+1);
+      nodes.push(nd);
+    }
+    rec(root,0);
+    return {nodes:nodes, cols:col, depth:maxd};
+  }
+
+  function renderAst(){
+    var src=astInput.value;
+    var tree;
+    try{ tree=parseExpr(src); }
+    catch(err){
+      astOut.innerHTML='<div class="cos-detail" style="color:var(--bad)">解析できませんでした: '+escapeHtml(err.message)+'</div>';
+      return;
+    }
+    var info=layout(tree);
+    var colW=64, rowH=78, r=20;
+    var W=Math.max(info.cols*colW, colW), H=(info.depth+1)*rowH;
+    function cx(nd){ return nd.col*colW + colW/2; }
+    function cy(nd){ return nd.depth*rowH + rowH/2; }
+    var edges='';
+    info.nodes.forEach(function(nd){
+      [nd.left, nd.right].forEach(function(ch){
+        if(ch) edges+='<line x1="'+cx(nd)+'" y1="'+cy(nd)+'" x2="'+cx(ch)+'" y2="'+cy(ch)+'" stroke="var(--faint)" stroke-width="1.6"/>';
+      });
+    });
+    var circ='';
+    info.nodes.forEach(function(nd){
+      var isOp=!('num' in nd);
+      var label=isOp?(nd.op==='u-'?'-':nd.op):nd.num;
+      var fs=label.length<=2?15:(label.length===3?13:11);
+      circ+='<circle cx="'+cx(nd)+'" cy="'+cy(nd)+'" r="'+r+'" fill="var(--card)" stroke="none"/>'+
+        '<circle cx="'+cx(nd)+'" cy="'+cy(nd)+'" r="'+r+'" fill="'+(isOp?'var(--accent-soft)':'var(--card)')+'" stroke="'+(isOp?'var(--accent)':'var(--line)')+'" stroke-width="1.6"/>'+
+        '<text x="'+cx(nd)+'" y="'+(cy(nd)+fs*0.35)+'" text-anchor="middle" font-family="ui-monospace,monospace" font-size="'+fs+'" font-weight="600" fill="'+(isOp?'var(--accent-2)':'var(--ink)')+'">'+escapeHtml(label)+'</text>';
+    });
+    var svg='<svg viewBox="0 0 '+W+' '+H+'" role="img" aria-label="式の構文木" style="display:block;width:100%;max-width:'+Math.min(W,760)+'px;height:auto;background:var(--card);border-radius:14px;padding:10px;box-shadow:0 0 0 6px var(--shell),0 0 0 6.5px var(--hair),var(--soft)">'+edges+circ+'</svg>';
+    var val=evalNode(tree);
+    var valStr=isNaN(val)?'計算できません（0 除算）':(Number.isInteger(val)?String(val):String(Math.round(val*1000)/1000));
+    astOut.innerHTML=svg+
+      '<div class="cos-detail" style="margin-top:14px">式 <b>'+escapeHtml(src.trim())+'</b> の木は '+info.nodes.length+' ノード ・ 深さ '+info.depth+'　|　計算結果 = <b>'+valStr+'</b></div>'+
+      '<div class="chipcount">緑のノードが演算子、白のノードが数値。掛け算・割り算ほど木の下（先に計算される側）に入ります。</div>';
+  }
+  if(astInput){
+    astInput.addEventListener('input', renderAst);
+    document.querySelectorAll('#demoAst .try button').forEach(function(b){
+      b.addEventListener('click', function(){ astInput.value=b.getAttribute('data-ex'); renderAst(); });
+    });
+    renderAst();
+  }
+
+  /* ---- Demo 2: cyclomatic complexity ---- */
+  var ccIn=document.getElementById('ccInput'), ccOut=document.getElementById('ccOut');
+  function countMatches(re, str){ var m=str.match(re); return m?m.length:0; }
+  function renderCc(){
+    var code=ccIn.value;
+    var rows=[
+      {name:'if', label:'if', c:countMatches(/\bif\b/g, code)},
+      {name:'elif', label:'elif', c:countMatches(/\belif\b/g, code)},
+      {name:'for', label:'for', c:countMatches(/\bfor\b/g, code)},
+      {name:'while', label:'while', c:countMatches(/\bwhile\b/g, code)},
+      {name:'case', label:'case', c:countMatches(/\bcase\b/g, code)},
+      {name:'and', label:'and / &&', c:countMatches(/\band\b/g, code)+countMatches(/&&/g, code)},
+      {name:'or', label:'or / ||', c:countMatches(/\bor\b/g, code)+countMatches(/\|\|/g, code)}
+    ];
+    var D=rows.reduce(function(s,r){ return s+r.c; }, 0);
+    var M=D+1;
+    var verdict, vcolor;
+    if(M<=5){ verdict='簡単（テストしやすい）'; vcolor='var(--good)'; }
+    else if(M<=10){ verdict='やや複雑'; vcolor='var(--warn)'; }
+    else { verdict='複雑（分割を検討）'; vcolor='var(--bad)'; }
+    var body=rows.map(function(r){
+      var z=r.c===0?' class="zero"':'';
+      return '<tr><td>'+escapeHtml(r.label)+'</td><td'+z+'>'+r.c+'</td></tr>';
+    }).join('');
+    ccOut.innerHTML=
+      '<div class="cos-score"><span class="val">'+M+'</span><span class="lab">循環的複雑度 M = 判定数 '+D+' + 1</span></div>'+
+      '<div class="cos-detail" style="color:'+vcolor+';font-family:var(--sans);font-weight:600">目安: '+verdict+'</div>'+
+      '<table class="dtable" style="max-width:340px"><tr><th>判定点 / decision</th><th>回数</th></tr>'+body+
+      '<tr><td>判定点の合計</td><td>'+D+'</td></tr></table>'+
+      '<div class="chipcount">M = 判定数 + 1。分岐が無ければ M = 1（一本道）。目安: 1〜5 簡単, 6〜10 やや複雑, 11 以上 複雑。</div>';
+  }
+  if(ccIn){
+    ccIn.addEventListener('input', renderCc);
+    document.querySelectorAll('#demoCc .try button').forEach(function(b){
+      b.addEventListener('click', function(){ ccIn.value=b.getAttribute('data-cc'); renderCc(); });
+    });
+    renderCc();
+  }
+
+  /* ---- Demo 3: code clone detection (token normalization + Jaccard) ---- */
+  var clA=document.getElementById('clA'), clB=document.getElementById('clB'), clOut=document.getElementById('clOut');
+  var KW={"def":1,"return":1,"if":1,"elif":1,"else":1,"for":1,"while":1,"in":1,"and":1,"or":1,
+    "not":1,"is":1,"None":1,"True":1,"False":1,"break":1,"continue":1,"pass":1,"import":1,
+    "from":1,"class":1,"lambda":1,"with":1,"as":1,"try":1,"except":1,"finally":1,"raise":1,
+    "print":1,"range":1,"len":1,"int":1,"float":1,"str":1};
+  var MULTI=['==','!=','<=','>=','//','**','&&','||','+=','-=','*=','/=','->'];
+  function tokenizeCode(src){
+    var toks=[], i=0, s=src, n=s.length;
+    while(i<n){
+      var c=s[i];
+      if(/\s/.test(c)){ i++; continue; }
+      if(c==='#'){ while(i<n && s[i]!=='\n') i++; continue; }
+      if(/[A-Za-z_]/.test(c)){ var j=i; while(j<n && /[A-Za-z0-9_]/.test(s[j])) j++; var w=s.slice(i,j); toks.push(KW[w]?w:'ID'); i=j; continue; }
+      if(/[0-9]/.test(c)){ var j2=i; while(j2<n && /[0-9.]/.test(s[j2])) j2++; toks.push('NUM'); i=j2; continue; }
+      if(c==='"'||c==="'"){ var q=c; var j3=i+1; while(j3<n && s[j3]!==q) j3++; toks.push('STR'); i=j3+1; continue; }
+      var two=s.substr(i,2);
+      if(MULTI.indexOf(two)>=0){ toks.push(two); i+=2; continue; }
+      toks.push(c); i++;
+    }
+    return toks;
+  }
+  function bigrams(arr){ var b={}; for(var i=0;i<arr.length-1;i++){ b[arr[i]+' '+arr[i+1]]=1; } return b; }
+  function jaccard(a,b){
+    var ka=Object.keys(a), inter=0;
+    ka.forEach(function(k){ if(b[k]) inter++; });
+    var uni=ka.length+Object.keys(b).length-inter;
+    return {j: uni? inter/uni : 0, inter:inter, uni:uni};
+  }
+  function renderClone(){
+    var ta=tokenizeCode(clA.value), tb=tokenizeCode(clB.value);
+    if(!ta.length || !tb.length){ clOut.innerHTML='<div class="chipcount">2つのコード片を入力してください。</div>'; return; }
+    var ba=bigrams(ta), bb=bigrams(tb);
+    var jr=jaccard(ba,bb);
+    var same=(ta.join(' ')===tb.join(' '));
+    var pct=(jr.j*100).toFixed(0);
+    var verdict, vcolor;
+    if(same){ verdict='正規化後のトークン列が完全一致（Type-1 / Type-2 クローン）'; vcolor='var(--bad)'; }
+    else if(jr.j>=0.8){ verdict='クローンの可能性が高い'; vcolor='var(--bad)'; }
+    else if(jr.j>=0.5){ verdict='部分的に類似（要確認）'; vcolor='var(--warn)'; }
+    else { verdict='クローンではない'; vcolor='var(--good)'; }
+    function seq(arr){ var s=arr.join(' '); return s.length>140? escapeHtml(s.slice(0,140))+' …' : escapeHtml(s); }
+    clOut.innerHTML=
+      '<div class="cos-score"><span class="val">'+jr.j.toFixed(3)+'</span><span class="lab">Jaccard 類似度（2-gram 集合, 0 から 1）</span></div>'+
+      '<div class="cos-bar"><span style="width:'+Math.max(0,Math.min(100,pct))+'%"></span></div>'+
+      '<div class="cos-detail" style="color:'+vcolor+';font-family:var(--sans);font-weight:600;margin-top:12px">判定: '+verdict+'</div>'+
+      '<div class="cos-detail">正規化 A（'+ta.length+' トークン）: '+seq(ta)+'<br>'+
+      '正規化 B（'+tb.length+' トークン）: '+seq(tb)+'<br>'+
+      '共通の 2-gram = <b>'+jr.inter+'</b> / 和集合 = <b>'+jr.uni+'</b></div>'+
+      '<div class="chipcount">変数名 → ID, 数値 → NUM, 文字列 → STR に正規化。名前だけ変えた複製も同じ列になり、高い類似度になります。</div>';
+  }
+  if(clA){
+    clA.addEventListener('input', renderClone);
+    clB.addEventListener('input', renderClone);
+    document.querySelectorAll('#demoClone .try button').forEach(function(b){
+      b.addEventListener('click', function(){ clA.value=b.getAttribute('data-a'); clB.value=b.getAttribute('data-b'); renderClone(); });
+    });
+    renderClone();
+  }
+})();
+</script>
+
+<script>
+/* ==================== nav controllers + TOC scroll-spy + back-to-top ==================== */
+(function(){
+  function syncLangUI(l){
+    var ja=l==='ja', lists=document.querySelectorAll('.lswitch');
+    for(var i=0;i<lists.length;i++){
+      var a=lists[i].querySelector('.ls-ja'), e=lists[i].querySelector('.ls-en');
+      if(a) a.setAttribute('aria-pressed', ja?'true':'false');
+      if(e) e.setAttribute('aria-pressed', ja?'false':'true');
+    }
+  }
+  window.syncLangUI=syncLangUI;
+  if(typeof window.setLang==='function'){ var _s=window.setLang; window.setLang=function(l){ _s(l); syncLangUI(l); }; }
+  syncLangUI(document.body.classList.contains('lang-en')?'en':'ja');
+
+  var groups=document.querySelectorAll('.navlinks .navgroup');
+  for(var g=0; g<groups.length; g++){ (function(grp){
+    var top=grp.querySelector('.navtop'), panel=grp.querySelector('.navpanel');
+    if(!panel||!top) return;
+    function set(x){ top.setAttribute('aria-expanded', x?'true':'false'); }
+    grp.addEventListener('mouseenter', function(){ grp.classList.remove('collapsed'); set(true); });
+    grp.addEventListener('mouseleave', function(){ set(false); });
+    grp.addEventListener('focusin', function(){ if(!grp.classList.contains('collapsed')) set(true); });
+    grp.addEventListener('focusout', function(e){ if(!grp.contains(e.relatedTarget)){ grp.classList.remove('collapsed'); set(false); } });
+    grp.addEventListener('keydown', function(e){ if(e.key==='Escape'){ grp.classList.add('collapsed'); set(false); top.focus(); } });
+  })(groups[g]); }
+
+  var tog=document.getElementById('navToggle'), ov=document.getElementById('mobnav');
+  if(tog && ov){
+    function openNav(){ document.body.classList.add('navopen'); tog.setAttribute('aria-expanded','true'); ov.setAttribute('aria-hidden','false');
+      var f=ov.querySelector('a,button'); if(f){ requestAnimationFrame(function(){ f.focus(); }); } }
+    function closeNav(){ document.body.classList.remove('navopen'); tog.setAttribute('aria-expanded','false'); ov.setAttribute('aria-hidden','true'); tog.focus(); }
+    tog.addEventListener('click', function(){ document.body.classList.contains('navopen')?closeNav():openNav(); });
+    ov.addEventListener('click', function(e){ if(e.target.closest('a')) closeNav(); });
+    document.addEventListener('keydown', function(e){ if(e.key==='Escape' && document.body.classList.contains('navopen')) closeNav(); });
+  }
+
+  /* TOC scroll-spy */
+  var bar=document.querySelector('.tocbar');
+  if(bar){
+    var pills=Array.prototype.slice.call(bar.querySelectorAll('.tocpill')), map={};
+    pills.forEach(function(p){ map[p.getAttribute('href').slice(1)]=p; });
+    if('IntersectionObserver' in window){
+      var spy=new IntersectionObserver(function(es){
+        es.forEach(function(e){
+          if(e.isIntersecting){
+            pills.forEach(function(p){ p.classList.remove('on'); });
+            var m=map[e.target.id]; if(m) m.classList.add('on');
+          }
+        });
+      },{rootMargin:'-45% 0px -50% 0px', threshold:0});
+      pills.forEach(function(p){ var s=document.getElementById(p.getAttribute('href').slice(1)); if(s) spy.observe(s); });
+    }
+  }
+
+  /* back to top */
+  var reduce=window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var bt=document.querySelector('.totop'), sen=document.getElementById('toTopSentinel');
+  if(bt && sen && 'IntersectionObserver' in window){
+    new IntersectionObserver(function(es){
+      es.forEach(function(e){ if(e.isIntersecting) bt.classList.remove('show'); else bt.classList.add('show'); });
+    },{threshold:0}).observe(sen);
+  }
+  if(bt){ bt.addEventListener('click', function(){ window.scrollTo({top:0, behavior:reduce?'auto':'smooth'}); }); }
+})();
+</script>
+</body>
+</html>

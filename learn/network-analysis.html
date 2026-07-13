@@ -1,0 +1,1647 @@
+<!DOCTYPE html>
+<html lang="ja" class="no-js">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ネットワーク分析 - 研究の技術を実践的に学ぶ / Network Analysis</title>
+<meta name="description" content="A hands-on learning module on network analysis: graphs and degree, centrality measures (degree, betweenness, closeness, PageRank), community detection, shortest paths and small-world structure. With interactive demos and runnable Python (NetworkX) examples. Part of Yuta Kimura's learning course.">
+<link rel="canonical" href="https://ykimu.github.io/learn/network-analysis.html">
+<link rel="icon" href="../favicon.svg" type="image/svg+xml">
+<meta property="og:site_name" content="Yuta Kimura / 木村祐太">
+<meta property="og:type" content="article">
+<meta property="og:title" content="ネットワーク分析 - 研究の技術を実践的に学ぶ / Network Analysis">
+<meta property="og:description" content="A hands-on learning module on network analysis: graphs and degree, centrality measures, community detection, and shortest paths, with interactive demos and runnable Python (NetworkX) examples.">
+<meta property="og:url" content="https://ykimu.github.io/learn/network-analysis.html">
+<meta property="og:image" content="https://ykimu.github.io/assets/og.png">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="color-scheme" content="light">
+<script>document.documentElement.className="js";</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&family=Noto+Sans+JP:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#FBFCFB; --bg-2:#F3F6F4; --bg-3:#EBEFED; --card:#FFFFFF;
+    --ink:#101312; --ink-2:#3C4340; --muted:#6B746F; --faint:#B7C0BB;
+    --line:#E7ECE9; --hair:rgba(16,19,18,.08); --shell:rgba(16,19,18,.035);
+    --accent:#0E6F5C; --accent-2:#0A5748; --accent-soft:rgba(14,111,92,.08);
+    --soft:0 1px 2px rgba(16,19,18,.04), 0 24px 60px -28px rgba(16,19,18,.16);
+    --inhi:inset 0 1px 0 rgba(255,255,255,.85);
+    --ease:cubic-bezier(.32,.72,0,1);
+    --sans:"Plus Jakarta Sans","Noto Sans JP",-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+    --disp:"Space Grotesk","Plus Jakarta Sans","Noto Sans JP",sans-serif;
+    --mono:ui-monospace,SFMono-Regular,Menlo,Consolas,"Liberation Mono",monospace;
+    --maxw:1440px; --readw:clamp(680px, 62vw, 1060px);
+    --kw:#0A5748; --ty:#3C4340; --st:#7A5C34; --cm:#87918C; --nu:#7A5C34;
+    --good:#0E6F5C; --bad:#B04A3E; --warn:#8A6D3B;
+  }
+  html{color-scheme:light}
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth; -webkit-text-size-adjust:100%}
+  body{margin:0; background:var(--bg); color:var(--ink); font-family:var(--sans);
+    font-size:17px; line-height:1.75; font-weight:400; -webkit-font-smoothing:antialiased; text-rendering:optimizeLegibility}
+  body.lang-ja [lang=en]{display:none}
+  body.lang-en [lang=ja]{display:none}
+  ::selection{background:rgba(14,111,92,.16)}
+  h1,h2,h3{margin:0; color:var(--ink); font-weight:500; line-height:1.16; letter-spacing:-.02em; font-family:var(--disp); text-wrap:balance}
+  body.lang-ja h1,body.lang-ja h2,body.lang-ja h3{letter-spacing:0; font-family:var(--sans)}
+  p,.lead,.cite,.muted-s{text-wrap:pretty}
+  [lang="en"]{line-break:auto}
+  [lang="ja"]{line-break:strict; word-break:normal}
+  h1 [lang="ja"],h2 [lang="ja"],h3 [lang="ja"]{word-break:auto-phrase}
+  p{margin:0 0 1em}
+  a{color:var(--accent-2); text-decoration:none; transition:color .3s var(--ease)}
+  a:hover{color:var(--accent)}
+  a:focus-visible,button:focus-visible,.btn:focus-visible,[tabindex]:focus-visible{outline:2px solid var(--accent); outline-offset:3px; border-radius:8px}
+  .wrap{max-width:var(--maxw); margin:0 auto; padding:0 40px}
+  [id]{scroll-margin-top:96px}
+  section{padding:96px 0}
+
+  .skip{position:fixed; top:10px; left:10px; padding:10px 16px; background:var(--ink); color:#fff; border-radius:999px; transform:translateY(-200%); transition:none; z-index:100; font:500 .85rem/1 var(--sans); text-decoration:none}
+  .skip:focus{transform:none}
+
+  /* film grain overlay */
+  body::after{content:""; position:fixed; inset:0; z-index:1; pointer-events:none; opacity:.02;
+    background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='g'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23g)'/%3E%3C/svg%3E")}
+
+  h2.big{font-size:clamp(1.9rem,3.2vw,2.7rem); font-weight:500; letter-spacing:-.025em; max-width:26ch}
+  body.lang-ja h2.big{letter-spacing:-.01em; max-width:none}
+  .eyebrow,.kick{display:inline-flex; align-items:center; gap:8px; width:max-content; max-width:100%;
+    padding:5px 13px 5px 11px; border-radius:999px; border:1px solid var(--hair); background:#fff;
+    font:600 .66rem/1 var(--disp); letter-spacing:.14em; text-transform:uppercase; color:var(--ink-2); margin:0 0 18px}
+  .eyebrow::before,.kick::before{content:""; flex:0 0 auto; width:6px; height:6px; border-radius:50%; background:var(--accent)}
+  .lead{font-size:1.14rem; color:var(--ink-2); line-height:1.78; font-weight:400}
+
+  /* motion */
+  .js .reveal{opacity:0; transform:translateY(18px); filter:blur(6px); transition:opacity .9s var(--ease), transform .9s var(--ease), filter .9s var(--ease)}
+  .js .reveal.in{opacity:1; transform:none; filter:none}
+  @media (prefers-reduced-motion:reduce){
+    .js .reveal{opacity:1!important; transform:none!important; filter:none!important}
+    .btn:active,.btn.ink:hover .ic,.pill:hover,.totop:hover,.tocpill{transform:none!important}
+    html{scroll-behavior:auto}
+  }
+
+  /* floating island nav */
+  header.bar{position:sticky; top:18px; z-index:60; background:transparent; border-bottom:none}
+  .bar .wrap{display:flex; align-items:center; justify-content:space-between;
+    width:max-content; max-width:calc(100% - 32px); margin:0 auto; height:auto;
+    padding:9px 12px 9px 20px; gap:20px; border-radius:999px;
+    background:rgba(255,255,255,.72); -webkit-backdrop-filter:saturate(1.4) blur(18px); backdrop-filter:saturate(1.4) blur(18px);
+    border:1px solid var(--hair); box-shadow:var(--soft)}
+  .brand{font-weight:600; font-size:.92rem; letter-spacing:-.01em; color:var(--ink); display:inline-flex; align-items:center; gap:8px}
+  .brand span.sep{color:var(--muted); font-weight:400; margin:0 2px}
+  .bar-right{display:flex; align-items:center; gap:8px}
+
+  /* buttons */
+  .btn{display:inline-flex; align-items:center; gap:10px; font:500 .85rem/1 var(--sans); padding:10px 18px;
+    border-radius:999px; border:1px solid var(--hair); background:#fff; color:var(--ink); cursor:pointer;
+    transition:transform .4s var(--ease), box-shadow .4s var(--ease), border-color .3s var(--ease), background .3s var(--ease), color .3s var(--ease)}
+  .btn:hover{border-color:var(--ink); transform:translateY(-1px); color:var(--ink)}
+  .btn:active{transform:scale(.98)}
+  .btn.ink{background:var(--ink); border-color:var(--ink); color:#fff; padding:10px 10px 10px 22px;
+    box-shadow:0 12px 26px -14px rgba(16,19,18,.5)}
+  .btn.ink:not(:has(.ic)){padding:10px 22px}
+  .btn.ink:hover{box-shadow:0 16px 32px -14px rgba(16,19,18,.55); color:#fff}
+  .btn .ic{width:32px; height:32px; border-radius:999px; background:rgba(255,255,255,.18); display:grid; place-items:center;
+    transition:transform .45s var(--ease); flex:0 0 auto}
+  .btn.ink:hover .ic{transform:translate(3px,-1px)}
+  .tlink{display:inline-flex; align-items:center; gap:8px; font-weight:500; font-size:.95rem; color:var(--ink)}
+  .tlink .ar{transition:transform .4s var(--ease)}
+  .tlink:hover .ar{transform:translateX(4px)}
+
+  /* hero */
+  .hero{position:relative; overflow:hidden}
+  .hero > .wrap{position:relative; z-index:1}
+  .hero::before{content:""; position:absolute; z-index:0; width:640px; height:640px; right:-150px; top:-240px;
+    border-radius:50%; pointer-events:none; opacity:.55;
+    background:radial-gradient(circle, var(--accent-soft), transparent 62%); filter:blur(20px)}
+  .hero .wrap{padding-top:72px; padding-bottom:64px}
+  .hero h1{font-size:clamp(2.6rem,5vw,4.2rem); font-weight:500; letter-spacing:-.03em; line-height:1.08; color:var(--ink); max-width:none}
+  body.lang-ja .hero h1{font-size:clamp(2rem,4.2vw,3.1rem); font-weight:500; letter-spacing:0; line-height:1.24}
+  .hero h1 em{font-style:normal; color:var(--accent)}
+  .hero .lead{max-width:var(--readw); margin-top:24px}
+  .ja-note{display:inline-flex; align-items:center; gap:8px; margin-top:22px; padding:7px 15px; border-radius:999px;
+    border:1px solid var(--hair); background:var(--accent-soft); font-size:.8rem; font-weight:500; color:var(--accent-2)}
+  .ja-note::before{content:""; width:6px; height:6px; border-radius:50%; background:var(--accent); flex:0 0 auto}
+  .hero-meta{display:flex; gap:10px; flex-wrap:wrap; margin-top:16px}
+  .hero-meta span{font-size:.82rem; color:var(--muted); background:#fff; border:1px solid var(--hair);
+    border-radius:999px; padding:6px 14px}
+  .hero-cta{display:flex; gap:20px; align-items:center; flex-wrap:wrap; margin-top:28px}
+
+  .soft-sec{background:var(--bg-2); border-top:1px solid var(--line); border-bottom:1px solid var(--line)}
+
+  /* prose */
+  .prose{max-width:var(--readw)}
+  .prose p{margin:0 0 1em; color:var(--ink-2)}
+  .prose h4{font-family:var(--sans); font-size:1.1rem; font-weight:600; letter-spacing:0; color:var(--ink); margin:1.5em 0 .5em}
+  .prose ul{margin:0 0 1.2em; padding-left:0; list-style:none}
+  .prose ul li{position:relative; padding-left:22px; margin:11px 0; color:var(--ink-2)}
+  .prose ul li::before{content:""; position:absolute; left:0; top:13px; width:11px; height:1.5px; background:var(--accent)}
+  .prose ul li b,.prose b{color:var(--ink); font-weight:600}
+  .prose i{color:var(--ink-2)}
+  code{font-family:var(--mono); font-size:.86em; background:var(--shell); border:1px solid var(--hair); border-radius:6px; padding:.08em .4em; color:var(--accent-2)}
+  .formula{font-family:var(--mono); font-size:.98rem; color:var(--ink); background:var(--card); text-align:center;
+    border-radius:14px; padding:18px 20px; margin:18px 0; max-width:var(--readw);
+    box-shadow:0 0 0 6px var(--shell),0 0 0 6.5px var(--hair),var(--soft); line-height:1.9}
+  .formula .op{color:var(--accent-2); font-weight:600}
+  .formula small{display:block; font-family:var(--sans); font-size:.82rem; color:var(--muted); margin-top:8px; line-height:1.6}
+
+  .callout{border-radius:16px; padding:18px 22px; margin:20px 0; max-width:var(--readw);
+    background:var(--card); box-shadow:0 0 0 6px var(--shell),0 0 0 6.5px var(--hair),var(--soft)}
+  .callout h4{margin:0 0 6px; font-size:1rem; font-family:var(--sans); font-weight:600; letter-spacing:0; color:var(--ink)}
+  .callout.tip{background:var(--accent-soft)}
+  .callout.warn{background:rgba(138,109,59,.08)}
+  .callout p{margin:0; color:var(--ink-2); font-size:.96rem}
+  .callout a{font-weight:600}
+
+  .grid2{display:grid; grid-template-columns:1fr 1fr; gap:16px; margin:20px 0; max-width:var(--readw)}
+  .box{border-radius:16px; padding:16px 20px; background:var(--card);
+    box-shadow:0 0 0 6px var(--shell),0 0 0 6.5px var(--hair),var(--soft)}
+  .box h5{margin:0 0 10px; font-size:.92rem; font-family:var(--sans); font-weight:600; letter-spacing:0; color:var(--accent-2); display:flex; align-items:center; gap:7px}
+  .box.lim h5{color:var(--warn)}
+  .box ul{margin:0; padding-left:18px}
+  .box li{margin:6px 0; font-size:.92rem; color:var(--ink-2)}
+
+  .steps{border-radius:16px; padding:16px 20px; margin:20px 0; max-width:var(--readw); background:var(--card);
+    box-shadow:0 0 0 6px var(--shell),0 0 0 6.5px var(--hair),var(--soft)}
+  .steps h5{margin:0 0 10px; font-size:.92rem; font-family:var(--sans); font-weight:600; letter-spacing:0; color:var(--accent-2)}
+  .steps ol{margin:0; padding:0; list-style:none; counter-reset:st}
+  .steps ol li{counter-increment:st; position:relative; padding-left:36px; margin:9px 0; font-size:.94rem; color:var(--ink-2)}
+  .steps ol li::before{content:counter(st); position:absolute; left:0; top:2px; width:23px; height:23px; border-radius:50%;
+    background:var(--accent-soft); color:var(--accent-2); font:600 .74rem/23px var(--disp); text-align:center}
+  .steps ol li b{color:var(--ink); font-weight:600}
+
+  /* step headers */
+  .stephead{display:flex; align-items:baseline; gap:20px; max-width:var(--readw)}
+  .stephead .num{font-family:var(--disp); font-size:clamp(2.6rem,5.4vw,3.8rem); font-weight:500; color:var(--accent);
+    letter-spacing:-.04em; line-height:.9; flex:0 0 auto; font-variant-numeric:tabular-nums}
+  .stephead .tt h2{font-size:clamp(1.5rem,2.6vw,2rem)}
+  .stephead .tt .st-en{display:block; font:600 .68rem/1 var(--disp); letter-spacing:.13em; text-transform:uppercase; color:var(--muted); margin-top:8px}
+  body.lang-en .stephead .tt .st-en{display:none}
+  .steprule{height:2px; background:var(--ink); max-width:var(--readw); margin:16px 0 26px}
+  .layer{display:inline-flex; align-items:center; gap:8px; margin:34px 0 12px; padding:5px 13px 5px 11px;
+    border-radius:999px; border:1px solid var(--hair); background:#fff;
+    font:600 .64rem/1 var(--disp); letter-spacing:.13em; text-transform:uppercase; color:var(--ink-2)}
+  .layer::before{content:""; width:6px; height:6px; border-radius:50%; background:var(--accent); flex:0 0 auto}
+  .layer.first{margin-top:6px}
+
+  /* diagrams */
+  .diagram-wrap{margin:22px 0; max-width:var(--readw)}
+  .diagram-wrap .cap{margin:0 0 10px; font-size:.9rem; font-family:var(--sans); font-weight:600; letter-spacing:0; color:var(--accent-2)}
+  .diagram-wrap svg{display:block; width:100%; height:auto; background:var(--card);
+    border-radius:16px; padding:12px; box-shadow:0 0 0 7px var(--shell),0 0 0 7.5px var(--hair),var(--soft)}
+  .dg-box{fill:var(--card); stroke:var(--line); stroke-width:1.3}
+  .dg-box.acc{fill:var(--accent-soft); stroke:var(--accent)}
+  .dg-lbl{fill:var(--ink); font-size:13px; font-weight:600; text-anchor:middle; font-family:var(--sans)}
+  .dg-en{fill:var(--muted); font-size:10.5px; text-anchor:middle; font-family:var(--disp)}
+  .dg-line{stroke:var(--muted); stroke-width:1.5; fill:none}
+  .dg-arrow{fill:var(--muted)}
+  .dg-note{fill:var(--muted); font-size:11.5px; text-anchor:middle; font-style:italic}
+  .dg-ax{stroke:var(--faint); stroke-width:1.2}
+  .dg-vec{stroke:var(--accent); stroke-width:2; fill:none}
+  .dg-vec2{stroke:var(--ink-2); stroke-width:2; fill:none}
+  .dg-pt{fill:var(--accent)}
+  .dg-ptl{fill:var(--ink); font-size:11px; font-family:var(--sans)}
+  .figcap{font-size:.88rem; color:var(--muted); margin:12px 2px 0; max-width:var(--readw); line-height:1.6}
+  .figcap b{color:var(--ink); font-weight:600}
+
+  /* code blocks */
+  .code-wrap{margin:16px 0 0; border:1px solid var(--hair); border-radius:14px; overflow:hidden; background:var(--shell); max-width:var(--readw)}
+  .code-head{display:flex; align-items:center; gap:10px; background:var(--bg-2); border-bottom:1px solid var(--hair); padding:9px 16px}
+  .code-head .lbl{margin-right:auto; font:600 .74rem/1 var(--disp); letter-spacing:.06em; text-transform:uppercase; color:var(--muted)}
+  .code-head .lang-tag{font:500 .74rem/1 var(--sans); color:var(--muted)}
+  .code-head .copy{background:#fff; border:1px solid var(--hair); color:var(--ink-2); border-radius:999px;
+    padding:5px 12px; font:500 .74rem/1 var(--sans); cursor:pointer; transition:border-color .3s var(--ease), color .3s var(--ease)}
+  .code-head .copy:hover{border-color:var(--ink); color:var(--ink)}
+  pre{margin:0; background:var(--shell); padding:16px 18px; overflow-x:auto; font-size:.82rem; line-height:1.65}
+  pre code{font-family:var(--mono); color:#2F3A33; white-space:pre; background:none; border:none; padding:0; font-size:1em}
+  .kw{color:var(--kw); font-weight:600} .st{color:var(--st)} .cm{color:var(--cm); font-style:italic} .nu{color:var(--nu)}
+  .code-out{max-width:var(--readw); margin:0 0 8px; border:1px solid var(--hair); border-top:none;
+    border-radius:0 0 14px 14px; background:var(--bg-2); padding:12px 18px}
+  .code-out .olbl{font:600 .66rem/1 var(--disp); letter-spacing:.1em; text-transform:uppercase; color:var(--muted); display:block; margin-bottom:8px}
+  .code-out pre{background:transparent; padding:0; font-size:.8rem}
+  .code-out pre code{color:var(--ink-2)}
+  .code-wrap.attached{border-radius:14px 14px 0 0; margin-bottom:0}
+
+  /* interactive demo (double-bezel) */
+  .demo{border-radius:21px; padding:24px 26px; margin:24px 0; max-width:var(--readw); background:var(--card);
+    box-shadow:0 0 0 7px var(--shell),0 0 0 7.5px var(--hair),var(--soft)}
+  .demo .dtag{display:inline-flex; align-items:center; gap:8px; margin:0 0 10px; padding:5px 12px 5px 10px;
+    border-radius:999px; background:var(--accent-soft); color:var(--accent-2); font:600 .62rem/1 var(--disp); letter-spacing:.12em; text-transform:uppercase}
+  .demo .dtag::before{content:""; width:6px; height:6px; border-radius:50%; background:var(--accent)}
+  .demo h4{margin:0 0 6px; font-size:1.12rem; font-family:var(--sans); font-weight:600; color:var(--ink)}
+  .demo .dnote{font-size:.88rem; color:var(--muted); margin:0 0 16px}
+  .demo label.fld{display:block; font:600 .74rem/1 var(--disp); letter-spacing:.08em; text-transform:uppercase; color:var(--muted); margin:0 0 7px}
+  .demo textarea,.demo input[type=text]{width:100%; padding:12px 15px; border-radius:12px; border:1px solid var(--hair);
+    background:var(--bg); color:var(--ink); font:400 .95rem/1.6 var(--mono); outline:none; resize:vertical;
+    transition:border-color .3s var(--ease)}
+  .demo textarea:focus,.demo input[type=text]:focus{border-color:var(--accent)}
+  .demo .try{display:flex; gap:8px; flex-wrap:wrap; margin:12px 0 4px}
+  .demo .try button{background:#fff; border:1px solid var(--hair); color:var(--ink-2); border-radius:999px;
+    padding:8px 14px; font:500 .82rem/1 var(--sans); cursor:pointer; transition:border-color .3s var(--ease), transform .3s var(--ease), color .3s var(--ease)}
+  .demo .try button:hover{border-color:var(--ink); color:var(--ink); transform:translateY(-1px)}
+  .demo .try .tlbl{font:600 .72rem/1 var(--disp); letter-spacing:.06em; text-transform:uppercase; color:var(--faint); align-self:center; margin-right:2px}
+  .demo .two{display:grid; grid-template-columns:1fr 1fr; gap:16px}
+  @media(max-width:640px){.demo .two{grid-template-columns:1fr}}
+  .demo-out{margin-top:18px}
+
+  /* chips */
+  .chips{display:flex; flex-wrap:wrap; gap:7px; margin-top:6px}
+  .chip{display:inline-flex; align-items:center; font:500 .88rem/1 var(--mono); padding:8px 12px; border-radius:9px;
+    background:var(--accent-soft); color:var(--accent-2); border:1px solid rgba(14,111,92,.16)}
+  .chip.p{background:var(--bg-3); color:var(--muted); border-color:var(--hair)}
+  .chip.en{background:var(--card); color:var(--ink-2); border-color:var(--hair)}
+  .chipcount{font:600 .74rem/1 var(--disp); color:var(--muted); margin-top:12px; letter-spacing:.04em}
+  .chip-legend{display:flex; gap:16px; flex-wrap:wrap; margin-top:12px; font-size:.78rem; color:var(--muted)}
+  .chip-legend i{display:inline-block; width:11px; height:11px; border-radius:3px; margin-right:6px; vertical-align:-1px}
+
+  /* tables */
+  .dtable{border-collapse:separate; border-spacing:0; margin:16px 0 0; width:100%; font-size:.86rem;
+    border-radius:12px; overflow:hidden; box-shadow:0 0 0 1px var(--hair)}
+  .dtable th,.dtable td{border-bottom:1px solid var(--line); border-right:1px solid var(--line); padding:9px 12px; text-align:right; background:var(--card); font-variant-numeric:tabular-nums; font-family:var(--disp)}
+  .dtable th{background:var(--bg-2); font-weight:600; color:var(--ink); font-family:var(--sans); text-align:right}
+  .dtable td:first-child,.dtable th:first-child{text-align:left; font-family:var(--mono); color:var(--ink)}
+  .dtable tr:last-child th,.dtable tr:last-child td{border-bottom:none}
+  .dtable td:last-child,.dtable th:last-child{border-right:none}
+  .dtable td.zero{color:var(--faint)}
+
+  /* cosine output */
+  .cos-score{display:flex; align-items:baseline; gap:12px; margin:6px 0 10px}
+  .cos-score .val{font:500 2.6rem/1 var(--disp); color:var(--accent); letter-spacing:-.03em; font-variant-numeric:tabular-nums}
+  .cos-score .lab{font-size:.9rem; color:var(--muted)}
+  .cos-bar{height:14px; border-radius:999px; background:var(--bg-3); box-shadow:inset 0 1px 2px rgba(16,19,18,.06); overflow:hidden; max-width:520px}
+  .cos-bar span{display:block; height:100%; border-radius:999px; background:linear-gradient(90deg,var(--accent-2),var(--accent)); transition:width .5s var(--ease)}
+  .cos-detail{font-size:.86rem; color:var(--muted); margin-top:12px; font-family:var(--mono)}
+  .cos-detail b{color:var(--ink-2)}
+  @media (prefers-reduced-motion:reduce){.cos-bar span{transition:none}}
+
+  /* closing lists */
+  .res-grid{display:grid; grid-template-columns:1fr 1fr; gap:16px; margin:20px 0; max-width:var(--readw)}
+  @media(max-width:640px){.res-grid{grid-template-columns:1fr}}
+  .res{border-radius:16px; padding:18px 20px; background:var(--card); box-shadow:0 0 0 6px var(--shell),0 0 0 6.5px var(--hair),var(--soft)}
+  .res h5{margin:0 0 10px; font-size:.95rem; font-family:var(--sans); font-weight:600; color:var(--accent-2)}
+  .res ul{margin:0; padding-left:0; list-style:none}
+  .res li{position:relative; padding-left:20px; margin:8px 0; font-size:.9rem; color:var(--ink-2)}
+  .res li::before{content:""; position:absolute; left:0; top:11px; width:9px; height:1.5px; background:var(--accent)}
+  .res li b{color:var(--ink); font-weight:600}
+
+  /* footer */
+  footer{border-top:1px solid var(--line); padding:68px 0 46px; background:var(--bg)}
+  footer h3{font-size:.72rem; font-weight:600; letter-spacing:.12em; text-transform:uppercase; color:var(--muted); margin:0 0 1em; font-family:var(--disp)}
+  .foot-grid{display:grid; grid-template-columns:1.5fr 1fr; gap:44px}
+  .foot-grid3{display:grid; grid-template-columns:1.3fr 1fr 1fr; gap:44px; margin-top:40px}
+  .foot-grid3 a{color:var(--ink-2)}
+  .foot-grid3 a:hover{color:var(--accent)}
+  .cite{font-size:.98rem; color:var(--ink-2); line-height:1.7; max-width:52ch}
+  .muted-s{color:var(--muted); font-size:.9rem; line-height:1.75}
+  .muted-s b{color:var(--ink); font-weight:600}
+  .muted-s a{line-height:1.9}
+  .foot-rule{height:1px; background:var(--line); margin:44px 0 20px}
+  .foot-note{color:var(--muted); font-size:.82rem}
+
+  /* crumbs */
+  .crumbs{display:flex; flex-wrap:wrap; align-items:center; gap:7px; margin:0; font-size:.8rem; font-weight:500; color:var(--muted)}
+  .crumbs a{color:var(--muted)}
+  .crumbs a:hover{color:var(--ink)}
+  .crumbs .csep{color:var(--faint)}
+  .crumbs .cur{color:var(--ink)}
+
+  @media(max-width:860px){
+    section{padding:72px 0}
+    .hero .wrap{padding-top:52px; padding-bottom:56px}
+    .wrap{padding:0 24px}
+    .grid2{grid-template-columns:1fr}
+    .foot-grid{grid-template-columns:1fr}
+    .foot-grid3{grid-template-columns:1fr; gap:30px}
+  }
+  @media(max-width:640px){
+    .bar-right .btn:not(.ink){display:none}
+    .brand{font-size:.82rem}
+    .stephead .num{font-size:2.4rem}
+  }
+
+  /* JP-only teaching page: fill content width for body text & boxes */
+  .lead,.prose,.callout,.formula,.grid2,.steps,.stephead,.steprule,
+  .diagram-wrap,.figcap,.code-wrap,.code-out,.demo,.res-grid{max-width:none !important}
+
+  /* ==================== NAV SYSTEM (from research/course template) ==================== */
+  .navlinks{display:flex; gap:4px; align-items:center}
+  .navlinks .navgroup{position:relative; display:flex}
+  .navlinks .navtop{display:inline-flex; align-items:center; gap:7px; font-size:.86rem; font-weight:500;
+    color:var(--ink-2); padding:8px 13px; border-radius:999px; white-space:nowrap;
+    transition:color .3s var(--ease), background .3s var(--ease)}
+  .navlinks .navtop:hover{color:var(--ink)}
+  .navlinks .navgroup:hover .navtop,.navlinks .navgroup:focus-within .navtop{color:var(--ink); background:var(--bg-2)}
+  .navlinks .navpanel{position:absolute; top:100%; left:50%; margin-top:9px; min-width:238px; padding:10px;
+    transform:translateX(-50%) translateY(6px); text-align:left;
+    background:var(--card); border:1px solid var(--hair); border-radius:16px; box-shadow:var(--soft);
+    opacity:0; visibility:hidden; pointer-events:none;
+    transition:opacity .25s var(--ease), transform .25s var(--ease), visibility 0s linear .25s; z-index:5}
+  .navlinks .navpanel::before{content:""; position:absolute; top:-13px; left:0; right:0; height:14px}
+  .navlinks .navgroup:hover .navpanel,.navlinks .navgroup:focus-within .navpanel{
+    opacity:1; visibility:visible; pointer-events:auto; transform:translateX(-50%) translateY(0);
+    transition:opacity .25s var(--ease), transform .25s var(--ease), visibility 0s linear 0s}
+  .navlinks .navgroup.collapsed .navpanel{opacity:0; visibility:hidden; pointer-events:none}
+  .navlinks .navpanel a{display:flex; align-items:center; gap:9px; padding:9px 12px; border-radius:11px;
+    font-size:.85rem; font-weight:500; color:var(--ink-2); white-space:nowrap;
+    transition:background .25s var(--ease), color .25s var(--ease)}
+  .navlinks .navpanel a:hover{background:var(--accent-soft); color:var(--ink)}
+  .navlinks .navpanel a.here{background:var(--accent-soft); color:var(--ink)}
+  .navlinks .navpanel a.here::before{content:""; flex:0 0 auto; width:6px; height:6px; border-radius:50%; background:var(--accent)}
+  .navlinks .navlabel{padding:8px 12px 3px; font:600 .6rem/1 var(--disp); letter-spacing:.13em;
+    text-transform:uppercase; color:var(--muted)}
+  .navlinks .navpanel hr.navdiv{border:0; border-top:1px solid var(--line); margin:8px 6px}
+  @media(max-width:860px){.navlinks{display:none}}
+
+  .lswitch{display:inline-flex; align-items:center; gap:2px; padding:3px; border-radius:999px;
+    border:1px solid var(--hair); background:#fff}
+  .lswitch button{appearance:none; -webkit-appearance:none; border:0; background:transparent; cursor:pointer;
+    font:600 .78rem/1 var(--disp); letter-spacing:.03em; color:var(--ink-2); padding:8px 13px; border-radius:999px;
+    transition:background .3s var(--ease), color .3s var(--ease)}
+  .lswitch button:hover{color:var(--ink)}
+  body.lang-ja .lswitch .ls-ja,body.lang-en .lswitch .ls-en{background:var(--ink); color:#fff}
+
+  .navtoggle{display:none; position:relative; width:42px; height:42px; flex:0 0 auto;
+    border-radius:999px; border:1px solid var(--hair); background:#fff; cursor:pointer; padding:0}
+  .navtoggle span{position:absolute; left:11px; right:11px; height:2px; background:var(--ink); border-radius:2px;
+    transition:transform .35s var(--ease), opacity .2s var(--ease)}
+  .navtoggle span:nth-child(1){top:15px}
+  .navtoggle span:nth-child(2){top:20px}
+  .navtoggle span:nth-child(3){top:25px}
+  body.navopen .navtoggle span:nth-child(1){transform:translateY(5px) rotate(45deg)}
+  body.navopen .navtoggle span:nth-child(2){opacity:0}
+  body.navopen .navtoggle span:nth-child(3){transform:translateY(-5px) rotate(-45deg)}
+
+  .mobnav{position:fixed; inset:0; z-index:80; display:flex; flex-direction:column; overflow-y:auto;
+    background:rgba(251,252,251,.9); -webkit-backdrop-filter:saturate(1.2) blur(24px); backdrop-filter:saturate(1.2) blur(24px);
+    opacity:0; visibility:hidden; pointer-events:none;
+    transition:opacity .35s var(--ease), visibility 0s linear .35s}
+  body.navopen .mobnav{opacity:1; visibility:visible; pointer-events:auto; transition:opacity .35s var(--ease), visibility 0s linear 0s}
+  body.navopen{overflow:hidden}
+  body.navopen header.bar{z-index:90}
+  .mobnav-inner{width:100%; max-width:600px; margin:0 auto; padding:104px 28px 64px;
+    display:flex; flex-direction:column; gap:24px}
+  .mobgroup{display:flex; flex-direction:column; gap:1px}
+  .moblabel{font:600 .64rem/1 var(--disp); letter-spacing:.14em; text-transform:uppercase; color:var(--muted); margin-bottom:9px}
+  .mobgroup a{font-size:1.28rem; font-weight:500; color:var(--ink); padding:7px 0; line-height:1.24}
+  .mobgroup a:hover{color:var(--accent-2)}
+  .mobgroup a.here{color:var(--accent-2)}
+  .mobgroup a.here::before{content:""; display:inline-block; width:6px; height:6px; border-radius:50%; background:var(--accent); margin-right:9px; vertical-align:middle}
+  .mobfoot{display:flex; align-items:center; justify-content:space-between; gap:16px; flex-wrap:wrap;
+    margin-top:6px; padding-top:22px; border-top:1px solid var(--line)}
+  .mobext{font-size:1rem; font-weight:500; color:var(--ink-2)}
+  .mobext:hover{color:var(--ink)}
+  .js .mobnav-inner > *{opacity:0; transform:translateY(12px);
+    transition:opacity .4s var(--ease), transform .4s var(--ease)}
+  body.navopen .mobnav-inner > *{opacity:1; transform:none}
+  body.navopen .mobnav-inner > *:nth-child(1){transition-delay:.04s}
+  body.navopen .mobnav-inner > *:nth-child(2){transition-delay:.08s}
+  body.navopen .mobnav-inner > *:nth-child(3){transition-delay:.12s}
+  body.navopen .mobnav-inner > *:nth-child(4){transition-delay:.16s}
+  body.navopen .mobnav-inner > *:nth-child(5){transition-delay:.20s}
+  .mobgroup .mobsublabel{font:600 .6rem/1 var(--disp); letter-spacing:.12em; text-transform:uppercase;
+    color:var(--faint); margin:15px 0 5px}
+  .mobgroup .mobsublabel:first-of-type{margin-top:2px}
+
+  .navlinks .navpanel.mega{min-width:568px; max-width:calc(100vw - 24px); padding:12px}
+  .navlinks .navpanel.mega .megacourses{display:grid; grid-template-columns:repeat(4,1fr); gap:1px 4px}
+  .navlinks .navpanel.mega .megagrid{display:grid; grid-template-columns:1fr 1fr; gap:2px 10px; align-items:start}
+  .navlinks .navpanel.mega .megacol{display:flex; flex-direction:column; min-width:0}
+  .navlinks .navpanel.mega a{white-space:normal; line-height:1.28}
+  .navlinks .navpanel.mega .navlabel{padding:8px 12px 4px}
+
+  /* sticky TOC bar */
+  .tocbar{position:sticky; top:84px; z-index:40; margin:8px 0 0;
+    background:rgba(255,255,255,.82); -webkit-backdrop-filter:saturate(1.4) blur(14px); backdrop-filter:saturate(1.4) blur(14px);
+    border-top:1px solid var(--hair); border-bottom:1px solid var(--hair)}
+  .tocbar-inner{max-width:var(--maxw); margin:0 auto; padding:9px 40px; display:flex; gap:8px;
+    overflow-x:auto; scrollbar-width:none; -ms-overflow-style:none}
+  .tocbar-inner::-webkit-scrollbar{display:none}
+  .tocpill{flex:0 0 auto; display:inline-flex; align-items:center; gap:7px; padding:7px 14px; border-radius:999px;
+    font-size:.8rem; font-weight:500; color:var(--ink-2); border:1px solid transparent; white-space:nowrap;
+    transition:background .25s var(--ease), color .25s var(--ease), border-color .25s var(--ease)}
+  .tocpill:hover{color:var(--ink); border-color:var(--hair)}
+  .tocpill.on{background:var(--accent-soft); color:var(--ink)}
+  .tocpill.on::before{content:""; flex:0 0 auto; width:6px; height:6px; border-radius:50%; background:var(--accent)}
+  section[id]{scroll-margin-top:150px}
+
+  .totop{position:fixed; right:22px; bottom:22px; z-index:55; width:46px; height:46px; border-radius:999px;
+    display:grid; place-items:center; background:#fff; border:1px solid var(--hair); box-shadow:var(--soft);
+    color:var(--ink); cursor:pointer; font-size:1.15rem; line-height:1;
+    opacity:0; transform:translateY(10px) scale(.9); pointer-events:none;
+    transition:opacity .35s var(--ease), transform .35s var(--ease)}
+  .totop.show{opacity:1; transform:none; pointer-events:auto}
+  .totop:hover{transform:translateY(-2px)}
+
+  @media(max-width:860px){
+    .navtoggle{display:block}
+    .bar-right .btn{display:none}
+    .tocbar{top:76px}
+  }
+  @media(max-width:430px){.bar-right .lswitch{display:none}}
+  @media (prefers-reduced-motion:reduce){
+    .navlinks .navpanel,.navtoggle span,.mobnav,.js .mobnav-inner > *,.navtop,.lswitch button,.totop,.tocpill{transition-duration:.001ms !important}
+    .js .mobnav-inner > *{transition-delay:0s !important}
+    .navtoggle:hover,.totop:hover{transform:none !important}
+  }
+</style>
+</head>
+<body class="lang-ja">
+<a class="skip" href="#main"><span lang="ja">本文へスキップ</span><span lang="en">Skip to content</span></a>
+
+<header class="bar">
+  <nav class="wrap" aria-label="メイン">
+    <a class="brand" href="../index.html">
+      <span aria-hidden="true">&lsaquo;</span>
+      <span lang="ja">木村祐太</span><span lang="en">Yuta Kimura</span>
+      <span class="sep">·</span><span lang="ja">学習コース</span><span lang="en">Learn</span>
+    </a>
+    <div class="navlinks">
+      <div class="navgroup">
+        <a class="navtop" href="../publications.html" aria-haspopup="true" aria-expanded="false"><span lang="ja">研究</span><span lang="en">Research</span></a>
+        <div class="navpanel">
+          <a href="../publications.html"><span lang="ja">業績・研究活動</span><span lang="en">Publications &amp; activity</span></a>
+          <a href="../research/technical-debt-metrics.html"><span lang="ja">技術的負債とメトリクス</span><span lang="en">Technical debt &amp; metrics</span></a>
+          <a href="../research/apr-coding-standards.html"><span lang="ja">自動生成パッチと規約</span><span lang="en">Auto-generated patches &amp; standards</span></a>
+          <a href="../research/td-repayment-refactoring.html"><span lang="ja">負債返済とリファクタリング</span><span lang="en">Debt repayment &amp; refactoring</span></a>
+          <a href="../research/satd-issue-classification.html"><span lang="ja">課題票の負債分類</span><span lang="en">Issue-ticket debt classification</span></a>
+        </div>
+      </div>
+      <div class="navgroup">
+        <a class="navtop" href="../teaching.html" aria-haspopup="true" aria-expanded="false"><span lang="ja">教育</span><span lang="en">Teaching</span></a>
+        <div class="navpanel mega">
+          <div class="navlabel"><span lang="ja">科目</span><span lang="en">Courses</span></div>
+          <div class="megacourses">
+            <a href="../teaching.html"><span lang="ja">教育・担当授業</span><span lang="en">Teaching &amp; courses</span></a>
+            <a href="../course/index.html"><span lang="ja">ソフトウェア工学</span><span lang="en">Software Engineering</span></a>
+            <a href="../course/logic-circuits.html"><span lang="ja">論理回路1</span><span lang="en">Logic Circuits I</span></a>
+            <a href="../course/intelligent-informatics-1.html"><span lang="ja">知能情報実験実習1</span><span lang="en">Intelligent Informatics Lab I</span></a>
+          </div>
+          <hr class="navdiv">
+          <div class="megagrid">
+            <div class="megacol">
+              <div class="navlabel"><span lang="ja">要求・モデリング</span><span lang="en">Requirements &amp; Modeling</span></div>
+              <a href="../course/requirements-engineering.html"><span lang="ja">要求工学</span><span lang="en">Requirements Engineering</span></a>
+              <a href="../course/system-modeling-uml.html"><span lang="ja">システムモデリング(UML)</span><span lang="en">System Modeling</span></a>
+              <a href="../course/uml-guide.html"><span lang="ja">クラス図/シーケンス図ガイド</span><span lang="en">UML Diagram Guide</span></a>
+            </div>
+            <div class="megacol">
+              <div class="navlabel"><span lang="ja">設計・実装</span><span lang="en">Design &amp; Implementation</span></div>
+              <a href="../course/software-architecture.html"><span lang="ja">アーキテクチャパターン大全</span><span lang="en">Software Architecture</span></a>
+              <a href="../course/design-patterns.html"><span lang="ja">デザインパターン学習ガイド</span><span lang="en">Design Patterns Guide</span></a>
+              <a href="../course/software-reuse-oss.html"><span lang="ja">ソフトウェア再利用とOSS</span><span lang="en">Software Reuse &amp; OSS</span></a>
+            </div>
+            <div class="megacol">
+              <div class="navlabel"><span lang="ja">計画・プロセス</span><span lang="en">Planning &amp; Process</span></div>
+              <a href="../course/agile-scrum.html"><span lang="ja">アジャイル開発とスクラム</span><span lang="en">Agile &amp; Scrum</span></a>
+              <a href="../course/project-management.html"><span lang="ja">プロジェクト管理と見積もり</span><span lang="en">Project Management</span></a>
+              <a href="../course/project-estimation-planning.html"><span lang="ja">プロジェクト計画・見積もり</span><span lang="en">Project Planning &amp; Estimation</span></a>
+            </div>
+            <div class="megacol">
+              <div class="navlabel"><span lang="ja">品質・運用</span><span lang="en">Quality &amp; Operations</span></div>
+              <a href="../course/software-testing.html"><span lang="ja">ソフトウェアテスト学習ガイド</span><span lang="en">Software Testing Guide</span></a>
+              <a href="../course/dependable-systems.html"><span lang="ja">ディペンダブルシステム</span><span lang="en">Dependable Systems</span></a>
+              <a href="../course/software-evolution.html"><span lang="ja">ソフトウェア進化と技術的負債</span><span lang="en">Software Evolution</span></a>
+              <a href="../course/version-control-cicd.html"><span lang="ja">バージョン管理とCI/CD</span><span lang="en">Version Control &amp; CI/CD</span></a>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="navgroup">
+        <a class="navtop on" href="../learn/index.html" aria-haspopup="true" aria-expanded="false"><span lang="ja">学習コース</span><span lang="en">Learn</span></a>
+        <div class="navpanel mega">
+          <div class="navlabel"><span lang="ja">学習コース</span><span lang="en">Learning course</span></div>
+          <a href="../learn/index.html"><span lang="ja">学習コースの全体像</span><span lang="en">Course overview</span></a>
+          <hr class="navdiv">
+          <div class="megagrid">
+            <div class="megacol">
+              <div class="navlabel"><span lang="ja">第1段階 · データ収集</span><span lang="en">Stage 1 · Data collection</span></div>
+              <a href="../learn/repository-mining.html"><span lang="ja">リポジトリマイニング入門</span><span lang="en">Repository Mining</span></a>
+              <a href="../learn/data-preprocessing.html"><span lang="ja">開発データの前処理とデータセット構築</span><span lang="en">Data Preprocessing</span></a>
+            </div>
+            <div class="megacol">
+              <div class="navlabel"><span lang="ja">第2段階 · 分析技術</span><span lang="en">Stage 2 · Techniques</span></div>
+              <a href="../learn/nlp.html"><span lang="ja">自然言語処理（NLP）</span><span lang="en">Natural Language Processing</span></a>
+              <a class="here" aria-current="page" href="../learn/network-analysis.html"><span lang="ja">ネットワーク分析</span><span lang="en">Network Analysis</span></a>
+              <a href="../learn/machine-learning.html"><span lang="ja">機械学習</span><span lang="en">Machine Learning</span></a>
+              <a href="../learn/deep-learning.html"><span lang="ja">深層学習</span><span lang="en">Deep Learning</span></a>
+              <a href="../learn/llm.html"><span lang="ja">大規模言語モデル（LLM）</span><span lang="en">Large Language Models</span></a>
+              <a href="../learn/program-analysis.html"><span lang="ja">プログラム解析</span><span lang="en">Program Analysis</span></a>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="navgroup">
+        <a class="navtop" href="../software-engineering.html" aria-haspopup="true" aria-expanded="false"><span lang="ja">ガイド</span><span lang="en">Guides</span></a>
+        <div class="navpanel">
+          <a href="../software-engineering.html"><span lang="ja">ソフトウェア工学とは</span><span lang="en">What is software engineering</span></a>
+          <a href="../technical-debt.html"><span lang="ja">技術的負債とは</span><span lang="en">What is technical debt</span></a>
+          <a href="../glossary.html"><span lang="ja">研究用語ミニ辞典</span><span lang="en">Research glossary</span></a>
+        </div>
+      </div>
+      <div class="navgroup">
+        <a class="navtop" href="../students.html"><span lang="ja">学生の皆さんへ</span><span lang="en">For Students</span></a>
+      </div>
+    </div>
+    <div class="bar-right">
+      <a class="btn" href="https://researchmap.jp/kimura_yuta" target="_blank" rel="noopener">researchmap</a>
+      <div class="lswitch" role="group" aria-label="言語 / Language">
+        <button type="button" class="ls-ja" onclick="setLang('ja')" aria-pressed="true">JA</button>
+        <button type="button" class="ls-en" onclick="setLang('en')" aria-pressed="false">EN</button>
+      </div>
+      <button class="navtoggle" id="navToggle" type="button" aria-label="メニュー" aria-expanded="false" aria-controls="mobnav">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </nav>
+</header>
+
+<div class="mobnav" id="mobnav" aria-hidden="true">
+  <div class="mobnav-inner">
+    <div class="mobgroup">
+      <div class="moblabel"><span lang="ja">研究</span><span lang="en">Research</span></div>
+      <a href="../publications.html"><span lang="ja">業績・研究活動</span><span lang="en">Publications &amp; activity</span></a>
+      <a href="../research/technical-debt-metrics.html"><span lang="ja">技術的負債とメトリクス</span><span lang="en">Technical debt &amp; metrics</span></a>
+      <a href="../research/apr-coding-standards.html"><span lang="ja">自動生成パッチと規約</span><span lang="en">Auto-generated patches &amp; standards</span></a>
+      <a href="../research/td-repayment-refactoring.html"><span lang="ja">負債返済とリファクタリング</span><span lang="en">Debt repayment &amp; refactoring</span></a>
+      <a href="../research/satd-issue-classification.html"><span lang="ja">課題票の負債分類</span><span lang="en">Issue-ticket debt classification</span></a>
+    </div>
+    <div class="mobgroup">
+      <div class="moblabel"><span lang="ja">教育</span><span lang="en">Teaching</span></div>
+      <div class="mobsublabel"><span lang="ja">科目</span><span lang="en">Courses</span></div>
+      <a href="../teaching.html"><span lang="ja">教育・担当授業</span><span lang="en">Teaching &amp; courses</span></a>
+      <a href="../course/index.html"><span lang="ja">ソフトウェア工学</span><span lang="en">Software Engineering</span></a>
+      <a href="../course/logic-circuits.html"><span lang="ja">論理回路1</span><span lang="en">Logic Circuits I</span></a>
+      <a href="../course/intelligent-informatics-1.html"><span lang="ja">知能情報実験実習1</span><span lang="en">Intelligent Informatics Lab I</span></a>
+      <div class="mobsublabel"><span lang="ja">要求・モデリング</span><span lang="en">Requirements &amp; Modeling</span></div>
+      <a href="../course/requirements-engineering.html"><span lang="ja">要求工学</span><span lang="en">Requirements Engineering</span></a>
+      <a href="../course/system-modeling-uml.html"><span lang="ja">システムモデリング(UML)</span><span lang="en">System Modeling</span></a>
+      <a href="../course/uml-guide.html"><span lang="ja">クラス図/シーケンス図ガイド</span><span lang="en">UML Diagram Guide</span></a>
+      <div class="mobsublabel"><span lang="ja">設計・実装</span><span lang="en">Design &amp; Implementation</span></div>
+      <a href="../course/software-architecture.html"><span lang="ja">アーキテクチャパターン大全</span><span lang="en">Software Architecture</span></a>
+      <a href="../course/design-patterns.html"><span lang="ja">デザインパターン学習ガイド</span><span lang="en">Design Patterns Guide</span></a>
+      <a href="../course/software-reuse-oss.html"><span lang="ja">ソフトウェア再利用とOSS</span><span lang="en">Software Reuse &amp; OSS</span></a>
+      <div class="mobsublabel"><span lang="ja">計画・プロセス</span><span lang="en">Planning &amp; Process</span></div>
+      <a href="../course/agile-scrum.html"><span lang="ja">アジャイル開発とスクラム</span><span lang="en">Agile &amp; Scrum</span></a>
+      <a href="../course/project-management.html"><span lang="ja">プロジェクト管理と見積もり</span><span lang="en">Project Management</span></a>
+      <a href="../course/project-estimation-planning.html"><span lang="ja">プロジェクト計画・見積もり</span><span lang="en">Project Planning &amp; Estimation</span></a>
+      <div class="mobsublabel"><span lang="ja">品質・運用</span><span lang="en">Quality &amp; Operations</span></div>
+      <a href="../course/software-testing.html"><span lang="ja">ソフトウェアテスト学習ガイド</span><span lang="en">Software Testing Guide</span></a>
+      <a href="../course/dependable-systems.html"><span lang="ja">ディペンダブルシステム</span><span lang="en">Dependable Systems</span></a>
+      <a href="../course/software-evolution.html"><span lang="ja">ソフトウェア進化と技術的負債</span><span lang="en">Software Evolution</span></a>
+      <a href="../course/version-control-cicd.html"><span lang="ja">バージョン管理とCI/CD</span><span lang="en">Version Control &amp; CI/CD</span></a>
+    </div>
+    <div class="mobgroup">
+      <div class="moblabel"><span lang="ja">学習コース</span><span lang="en">Learn</span></div>
+      <a href="../learn/index.html"><span lang="ja">学習コースの全体像</span><span lang="en">Course overview</span></a>
+      <div class="mobsublabel"><span lang="ja">第1段階 · データ収集</span><span lang="en">Stage 1 · Data collection</span></div>
+      <a href="../learn/repository-mining.html"><span lang="ja">リポジトリマイニング入門</span><span lang="en">Repository Mining</span></a>
+      <a href="../learn/data-preprocessing.html"><span lang="ja">開発データの前処理とデータセット構築</span><span lang="en">Data Preprocessing</span></a>
+      <div class="mobsublabel"><span lang="ja">第2段階 · 分析技術</span><span lang="en">Stage 2 · Techniques</span></div>
+      <a href="../learn/nlp.html"><span lang="ja">自然言語処理（NLP）</span><span lang="en">Natural Language Processing</span></a>
+      <a class="here" aria-current="page" href="../learn/network-analysis.html"><span lang="ja">ネットワーク分析</span><span lang="en">Network Analysis</span></a>
+      <a href="../learn/machine-learning.html"><span lang="ja">機械学習</span><span lang="en">Machine Learning</span></a>
+      <a href="../learn/deep-learning.html"><span lang="ja">深層学習</span><span lang="en">Deep Learning</span></a>
+      <a href="../learn/llm.html"><span lang="ja">大規模言語モデル（LLM）</span><span lang="en">Large Language Models</span></a>
+      <a href="../learn/program-analysis.html"><span lang="ja">プログラム解析</span><span lang="en">Program Analysis</span></a>
+    </div>
+    <div class="mobgroup">
+      <div class="moblabel"><span lang="ja">ガイド</span><span lang="en">Guides</span></div>
+      <a href="../software-engineering.html"><span lang="ja">ソフトウェア工学とは</span><span lang="en">What is software engineering</span></a>
+      <a href="../technical-debt.html"><span lang="ja">技術的負債とは</span><span lang="en">What is technical debt</span></a>
+      <a href="../glossary.html"><span lang="ja">研究用語ミニ辞典</span><span lang="en">Research glossary</span></a>
+    </div>
+    <div class="mobgroup">
+      <div class="moblabel"><span lang="ja">学生の皆さんへ</span><span lang="en">For Students</span></div>
+      <a href="../students.html"><span lang="ja">学生の皆さんへ</span><span lang="en">For Students</span></a>
+    </div>
+    <div class="mobfoot">
+      <a class="mobext" href="https://researchmap.jp/kimura_yuta" target="_blank" rel="noopener">researchmap</a>
+      <div class="lswitch" role="group" aria-label="言語 / Language">
+        <button type="button" class="ls-ja" onclick="setLang('ja')" aria-pressed="true">JA</button>
+        <button type="button" class="ls-en" onclick="setLang('en')" aria-pressed="false">EN</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<main id="main">
+<div class="wrap" style="padding-top:24px">
+  <nav class="crumbs" aria-label="パンくず">
+    <a href="../index.html"><span lang="ja">ホーム</span><span lang="en">Home</span></a>
+    <span class="csep" aria-hidden="true">&rsaquo;</span>
+    <span class="cur" aria-current="page"><span lang="ja">学習コース：ネットワーク分析</span><span lang="en">Learn: Network Analysis</span></span>
+  </nav>
+</div>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="wrap">
+    <p class="kick"><span lang="ja">学習コース</span><span lang="en">Learn</span></p>
+    <h1>ネットワーク分析</h1>
+    <p class="lead">人・モノ・要素の「つながり」をグラフとして表し、その構造や重要な要素を定量的に読み解く技術を、概要から理論、そして実際に動かせるコードまで、順を追って学ぶモジュールです。各ステップは「概要 → 仕組み（座学）→ コードで動かす」の3層で進みます。ページ内には手を動かせるデモを3つ用意しました。</p>
+    <p class="ja-note"><span lang="ja">この教材は日本語のみで提供しています</span><span lang="en">This learning material is available in Japanese only.</span></p>
+    <div class="hero-cta">
+      <a class="btn ink" href="#intro" style="padding:12px 22px">
+        <span lang="ja">学びはじめる</span><span lang="en">Start learning</span>
+      </a>
+      <a class="tlink" href="#step2">
+        <span lang="ja">まず手を動かす（グラフと次数を体験）</span><span lang="en">Jump to the graph demo</span>
+        <span class="ar" aria-hidden="true">&rsaquo;</span>
+      </a>
+    </div>
+  </div>
+</div>
+
+<div id="toTopSentinel" aria-hidden="true"></div>
+
+<div class="tocbar">
+  <nav class="tocbar-inner" aria-label="ページ内目次">
+    <a class="tocpill" href="#intro"><span lang="ja">はじめに</span><span lang="en">Intro</span></a>
+    <a class="tocpill" href="#step1">Step 1 <span lang="ja">分析とは</span><span lang="en">What is it</span></a>
+    <a class="tocpill" href="#step2">Step 2 <span lang="ja">グラフの基礎</span><span lang="en">Graph basics</span></a>
+    <a class="tocpill" href="#step3">Step 3 <span lang="ja">中心性</span><span lang="en">Centrality</span></a>
+    <a class="tocpill" href="#step4">Step 4 <span lang="ja">コミュニティ検出</span><span lang="en">Communities</span></a>
+    <a class="tocpill" href="#step5">Step 5 <span lang="ja">経路と構造</span><span lang="en">Paths</span></a>
+    <a class="tocpill" href="#step6">Step 6 <span lang="ja">可視化とこれから</span><span lang="en">What is next</span></a>
+    <a class="tocpill" href="#closing"><span lang="ja">まとめ</span><span lang="en">Wrap-up</span></a>
+    <a class="tocpill" href="#beyond"><span lang="ja">発展トピック</span><span lang="en">Beyond</span></a>
+  </nav>
+</div>
+
+<!-- INTRO -->
+<section id="intro" style="padding-top:26px">
+  <div class="wrap reveal">
+    <p class="eyebrow"><span lang="ja">はじめに</span><span lang="en">Introduction</span></p>
+    <h2 class="big">このモジュールの全体像</h2>
+    <div class="prose" style="margin-top:22px">
+      <p><b>ネットワーク分析（network analysis）</b>とは、要素どうしの「つながり」を<b>グラフ（graph）</b>として表し、その構造や、どの要素が重要かを定量的に読み解く技術です。友人関係のような社会ネットワーク、論文の引用、Web のリンク、ソフトウェアの依存関係、道路や鉄道の交通網まで、世の中の多くのものは「つながりの網」として捉えられます。</p>
+      <p>ネットワーク分析では、要素を<b>ノード（頂点）</b>、つながりを<b>エッジ（辺）</b>として表します。この単純な枠組みに、次のような流れ（パイプライン）で数値的な道具を当てていきます。データからグラフを組み立て、指標を計算し、可視化して解釈します。</p>
+    </div>
+
+    <div class="diagram-wrap reveal">
+      <p class="cap">ネットワーク分析の基本パイプライン</p>
+      <svg viewBox="0 0 940 150" role="img" aria-label="ネットワーク分析のパイプライン: データからグラフ構築、指標計算、可視化・解釈への流れ">
+        <g>
+          <rect class="dg-box" x="15" y="46" width="190" height="58" rx="12"/>
+          <text class="dg-lbl" x="110" y="72">データ</text>
+          <text class="dg-en" x="110" y="90">Data</text>
+        </g>
+        <g>
+          <rect class="dg-box acc" x="255" y="46" width="190" height="58" rx="12"/>
+          <text class="dg-lbl" x="350" y="72">グラフ構築</text>
+          <text class="dg-en" x="350" y="90">Build graph</text>
+        </g>
+        <g>
+          <rect class="dg-box acc" x="495" y="46" width="190" height="58" rx="12"/>
+          <text class="dg-lbl" x="590" y="72">指標計算</text>
+          <text class="dg-en" x="590" y="90">Metrics</text>
+        </g>
+        <g>
+          <rect class="dg-box" x="735" y="46" width="190" height="58" rx="12"/>
+          <text class="dg-lbl" x="830" y="72">可視化・解釈</text>
+          <text class="dg-en" x="830" y="90">Interpret</text>
+        </g>
+        <g class="dg-line">
+          <line x1="205" y1="75" x2="251" y2="75"/><line x1="445" y1="75" x2="491" y2="75"/>
+          <line x1="685" y1="75" x2="731" y2="75"/>
+        </g>
+        <g class="dg-arrow">
+          <polygon points="251,75 243,71 243,79"/><polygon points="491,75 483,71 483,79"/>
+          <polygon points="731,75 723,71 723,79"/>
+        </g>
+        <text class="dg-note" x="350" y="130">ノード・エッジで表現</text>
+        <text class="dg-note" x="590" y="130">次数・中心性・経路</text>
+        <text class="dg-note" x="830" y="130">コミュニティ・構造</text>
+      </svg>
+    </div>
+
+    <div class="diagram-wrap reveal">
+      <p class="cap">ノードとエッジ</p>
+      <svg viewBox="0 0 480 190" role="img" aria-label="ノードとエッジからなる小さなグラフの概念図">
+        <g class="dg-line">
+          <line x1="80" y1="100" x2="190" y2="55"/>
+          <line x1="80" y1="100" x2="190" y2="150"/>
+          <line x1="190" y1="55" x2="190" y2="150"/>
+          <line x1="190" y1="55" x2="310" y2="100"/>
+          <line x1="190" y1="150" x2="310" y2="100"/>
+          <line x1="310" y1="100" x2="410" y2="150"/>
+        </g>
+        <g>
+          <circle cx="80" cy="100" r="15" style="fill:var(--card)"/>
+          <circle cx="190" cy="55" r="15" style="fill:var(--card)"/>
+          <circle cx="190" cy="150" r="15" style="fill:var(--card)"/>
+          <circle cx="310" cy="100" r="15" style="fill:var(--card)"/>
+          <circle cx="410" cy="150" r="15" style="fill:var(--card)"/>
+          <circle cx="80" cy="100" r="15" style="fill:var(--accent-soft);stroke:var(--accent);stroke-width:2"/>
+          <circle cx="190" cy="55" r="15" style="fill:var(--accent-soft);stroke:var(--accent);stroke-width:2"/>
+          <circle cx="190" cy="150" r="15" style="fill:var(--accent-soft);stroke:var(--accent);stroke-width:2"/>
+          <circle cx="310" cy="100" r="15" style="fill:var(--accent-soft);stroke:var(--accent);stroke-width:2"/>
+          <circle cx="410" cy="150" r="15" style="fill:var(--accent-soft);stroke:var(--accent);stroke-width:2"/>
+        </g>
+        <line x1="190" y1="30" x2="190" y2="40" class="dg-line"/>
+        <text class="dg-note" x="190" y="24">ノード / node</text>
+        <line x1="378" y1="126" x2="360" y2="125" class="dg-line"/>
+        <text class="dg-note" x="430" y="122" text-anchor="end">エッジ / edge</text>
+      </svg>
+      <p class="figcap">ネットワークは<b>ノード（頂点）</b>と、それらをつなぐ<b>エッジ（辺）</b>で表します。この「つながりの構造」そのものを数値で読み解くのがネットワーク分析です。</p>
+    </div>
+
+    <div class="prose">
+      <p>このモジュールは、上のパイプラインを左から順にたどります。各ステップは次の3層で構成します。</p>
+      <ul>
+        <li><b>概要</b>：その技術が何のためにあるのか、あらましをつかむ。</li>
+        <li><b>仕組み（座学）</b>：背後にある理論・定義・式を、ていねいに理解する。</li>
+        <li><b>コードで動かす</b>：Python の定番ライブラリ NetworkX や、ページ内デモで実際に動かして確かめる。</li>
+      </ul>
+      <p>手を動かす題材には、実在の公開データセット（Zachary の空手クラブ、Les&nbsp;Misérables の共起ネットワークなど）や、ページ内の小さなサンプルグラフだけを使います。特別な環境がなくても、読みながら試せる構成です。</p>
+    </div>
+  </div>
+</section>
+
+<!-- STEP 1 -->
+<section id="step1" class="soft-sec">
+  <div class="wrap reveal">
+    <div class="stephead">
+      <span class="num">1</span>
+      <div class="tt"><h2>ネットワーク分析とは</h2><span class="st-en">What is network analysis</span></div>
+    </div>
+    <div class="steprule"></div>
+
+    <p class="layer first"><span lang="ja">概要</span><span lang="en">Overview</span></p>
+    <div class="prose">
+      <p>ネットワーク分析は「関係」を主役に据える見方です。個々の要素の性質だけでなく、<b>要素どうしがどうつながっているか</b>に注目します。同じデータでも、表の1行ずつを別々に見るのと、行と行の関係を網として見るのとでは、見えてくるものが違います。ネットワークはあらゆる場所に現れます。</p>
+      <ul>
+        <li><b>社会ネットワーク</b>：人を点、友人関係やフォロー関係を線とする。</li>
+        <li><b>引用・参照</b>：論文を点、引用を線とする。Web ページとリンクも同じ形。</li>
+        <li><b>依存関係</b>：ソフトウェアのモジュールやパッケージを点、依存を線とする。</li>
+        <li><b>協働</b>：開発者を点、同じファイルを一緒に触った関係を線とする。</li>
+        <li><b>インフラ</b>：駅や交差点を点、路線や道路を線とする。</li>
+      </ul>
+    </div>
+
+    <p class="layer"><span lang="ja">仕組み</span><span lang="en">How it works</span></p>
+    <div class="prose">
+      <p>ノードとエッジという共通の言葉で表すと、分野が違っても<b>同じ道具で分析できる</b>のがネットワーク分析の強みです。このモジュールでは、次のような問いに答える道具を順に手に入れます。</p>
+      <ul>
+        <li><b>どのノードが重要か</b>：つながりの多さや、橋渡しの役割を数値で測る（中心性）。</li>
+        <li><b>まとまりはあるか</b>：密につながった集団（コミュニティ）を見つける。</li>
+        <li><b>どれくらい近いか</b>：ノード間の最短経路や、ネットワーク全体の広がりを測る。</li>
+        <li><b>全体はどんな形か</b>：スモールワールド性やスケールフリー性といった、大きな構造の特徴を捉える。</li>
+      </ul>
+      <p>これらはすべて、グラフという同じ土台の上で計算できます。まずは、その土台となるグラフの基礎から始めましょう。</p>
+    </div>
+
+    <div class="callout tip">
+      <h4>この Step のまとめ</h4>
+      <p>ネットワーク分析は「関係」を主役にする見方。要素をノード、つながりをエッジとして表すと、社会・引用・依存・交通など分野をまたいで同じ道具が使えます。「重要なノード・まとまり・近さ・全体の形」を数値で読み解いていきます。</p>
+    </div>
+  </div>
+</section>
+
+<!-- STEP 2 -->
+<section id="step2">
+  <div class="wrap reveal">
+    <div class="stephead">
+      <span class="num">2</span>
+      <div class="tt"><h2>グラフの基礎</h2><span class="st-en">Graph basics</span></div>
+    </div>
+    <div class="steprule"></div>
+
+    <p class="layer first"><span lang="ja">概要</span><span lang="en">Overview</span></p>
+    <div class="prose">
+      <p>グラフは、ノードの集合とエッジの集合の組です。とても単純ですが、表し方にいくつかの選択肢があり、そこから分析の第一歩となる基本的な指標が決まります。まずは用語と、もっとも基本的な量である「次数」をおさえます。</p>
+    </div>
+
+    <p class="layer"><span lang="ja">仕組み</span><span lang="en">How it works</span></p>
+    <div class="prose">
+      <h4>有向グラフと無向グラフ</h4>
+      <p>エッジに向きがないものを<b>無向グラフ</b>と呼びます。友人関係のように「たがいに」つながる関係です。いっぽう、向きがあるものを<b>有向グラフ</b>と呼びます。フォロー関係や引用のように「AからBへ」という一方向の関係です。エッジに数値（距離・重み・回数など）を付けたものは<b>重み付きグラフ</b>です。</p>
+      <h4>隣接行列と隣接リスト</h4>
+      <p>グラフをコンピュータで表す代表的な方法が2つあります。<b>隣接行列</b>は、ノード数を n として n×n の表を作り、ノード i とノード j がつながっていれば 1（重み付きなら重み）を書きます。<b>隣接リスト</b>は、各ノードについて「つながっている相手の一覧」を持ちます。エッジが少ない（疎な）グラフでは、隣接リストのほうが省メモリで効率的です。</p>
+      <h4>次数（degree）</h4>
+      <p>あるノードにつながっているエッジの本数を<b>次数</b>と呼びます。無向グラフでは単に本数ですが、有向グラフでは、入ってくるエッジの数を<b>入次数（in-degree）</b>、出ていくエッジの数を<b>出次数（out-degree）</b>と区別します。次数は「そのノードが何本の線を持つか」という、もっとも素朴な重要度の目安になります。</p>
+      <h4>密度（density）</h4>
+      <p>ネットワーク全体が「どれくらい密につながっているか」を表すのが<b>密度</b>です。実際にあるエッジ数を、あり得る最大のエッジ数で割った値で、0（線がまったくない）から 1（すべてのノードが互いにつながる完全グラフ）までの範囲を取ります。無向グラフでは次の式です。</p>
+    </div>
+    <div class="formula">
+      density <span class="op">=</span> 2m <span class="op">/</span> ( n ( n <span class="op">-</span> 1 ) )
+      <small>m: エッジ数　n: ノード数（無向グラフの場合）<br>あり得る最大エッジ数 n(n-1)/2 のうち、実際に何本あるかの割合です。</small>
+    </div>
+
+    <!-- DEMO 1: graph & degree -->
+    <div class="demo reveal" id="demoDeg">
+      <span class="dtag"><span lang="ja">デモ 1</span><span lang="en">Demo 1</span></span>
+      <h4>グラフと次数</h4>
+      <p class="dnote">プリセットのグラフを表示します。ノードをクリックすると、そのノードにつながるエッジ（次数）と隣接ノードを強調し、次数中心性を計算します。上のボタンでグラフを切り替えられます。もう一度クリックすると選択が解除されます。</p>
+      <div class="try">
+        <span class="tlbl">グラフ</span>
+        <button type="button" data-graph="friends">交友グラフ（7ノード）</button>
+        <button type="button" data-graph="star">スターグラフ（6ノード）</button>
+      </div>
+      <div id="d1graph" style="margin-top:14px"></div>
+      <div class="demo-out" id="d1out" aria-live="polite"></div>
+    </div>
+
+    <p class="layer"><span lang="ja">コードで動かす</span><span lang="en">Run the code</span></p>
+    <div class="prose">
+      <p>Python では <code>NetworkX</code> が定番です。ノードとエッジを足していくだけでグラフができ、次数や密度もすぐに取れます。デモと同じ7ノードのグラフ（A から G）を作ってみましょう。</p>
+    </div>
+    <div class="code-wrap attached">
+      <div class="code-head"><span class="lbl">Python</span><span class="lang-tag">build_graph.py</span><button class="copy" type="button" onclick="copyCode(this)">copy</button></div>
+      <pre><code><span class="kw">import</span> networkx <span class="kw">as</span> nx
+
+G = nx.Graph()
+<span class="kw">for</span> u, v <span class="kw">in</span> [(<span class="st">"A"</span>, <span class="st">"B"</span>), (<span class="st">"A"</span>, <span class="st">"C"</span>), (<span class="st">"B"</span>, <span class="st">"C"</span>), (<span class="st">"C"</span>, <span class="st">"D"</span>),
+             (<span class="st">"D"</span>, <span class="st">"E"</span>), (<span class="st">"D"</span>, <span class="st">"F"</span>), (<span class="st">"E"</span>, <span class="st">"F"</span>), (<span class="st">"F"</span>, <span class="st">"G"</span>)]:
+    G.add_edge(u, v)
+
+<span class="kw">print</span>(G.number_of_nodes(), G.number_of_edges())
+<span class="kw">print</span>(dict(G.degree()))
+<span class="kw">print</span>(round(nx.density(G), <span class="nu">3</span>))</code></pre>
+    </div>
+    <div class="code-out"><span class="olbl">出力例 / Output</span><pre><code>7 8
+{'A': 2, 'B': 2, 'C': 3, 'D': 3, 'E': 2, 'F': 3, 'G': 1}
+0.381</code></pre></div>
+
+    <div class="prose">
+      <p>有向グラフでは <code>DiGraph</code> を使い、入次数と出次数を区別できます。</p>
+    </div>
+    <div class="code-wrap attached">
+      <div class="code-head"><span class="lbl">Python</span><span class="lang-tag">directed.py</span><button class="copy" type="button" onclick="copyCode(this)">copy</button></div>
+      <pre><code><span class="cm"># 有向グラフでは入次数と出次数を区別する</span>
+D = nx.DiGraph()
+D.add_edges_from([(<span class="st">"A"</span>, <span class="st">"B"</span>), (<span class="st">"B"</span>, <span class="st">"C"</span>), (<span class="st">"A"</span>, <span class="st">"C"</span>)])
+<span class="kw">print</span>(dict(D.in_degree()))
+<span class="kw">print</span>(dict(D.out_degree()))</code></pre>
+    </div>
+    <div class="code-out"><span class="olbl">出力例 / Output</span><pre><code>{'A': 0, 'B': 1, 'C': 2}
+{'A': 2, 'B': 1, 'C': 0}</code></pre></div>
+
+    <div class="callout tip">
+      <h4>この Step のまとめ</h4>
+      <p>グラフはノードとエッジの組。有向/無向・重みの有無で表し方が変わり、隣接行列や隣接リストで保持します。もっとも基本の量が<b>次数</b>で、そこから全体の<b>密度</b>もわかります。次はこの上で「どのノードが重要か」を測ります。</p>
+    </div>
+  </div>
+</section>
+
+<!-- STEP 3 -->
+<section id="step3" class="soft-sec">
+  <div class="wrap reveal">
+    <div class="stephead">
+      <span class="num">3</span>
+      <div class="tt"><h2>重要なノードを測る（中心性）</h2><span class="st-en">Centrality</span></div>
+    </div>
+    <div class="steprule"></div>
+
+    <p class="layer first"><span lang="ja">概要</span><span lang="en">Overview</span></p>
+    <div class="prose">
+      <p>ネットワークで「どのノードが重要か」を数値化するのが<b>中心性（centrality）</b>です。ただし「重要」の意味は一通りではありません。つながりの多さが大事な場面もあれば、集団と集団の橋渡しをする役割が大事な場面もあります。目的に応じて指標を使い分けます。代表的な4つを見ていきましょう。</p>
+    </div>
+
+    <p class="layer"><span lang="ja">仕組み</span><span lang="en">How it works</span></p>
+    <div class="prose">
+      <h4>次数中心性（degree centrality）</h4>
+      <p>もっとも単純で、<b>つながっている相手の多さ</b>をそのまま重要度とします。比較しやすいよう、次数を「あり得る最大の次数 n-1」で割って 0 から 1 に正規化します。SNS でフォロワーが多い人、といったイメージです。</p>
+    </div>
+    <div class="formula">
+      C<sub>D</sub>(v) <span class="op">=</span> deg(v) <span class="op">/</span> ( n <span class="op">-</span> 1 )
+      <small>deg(v): ノード v の次数　n: ノード数</small>
+    </div>
+    <div class="prose">
+      <h4>媒介中心性（betweenness centrality）</h4>
+      <p>ノードが<b>どれだけ「橋渡し」をしているか</b>を測ります。すべてのノード対の最短経路を考え、そのうち何割が自分を通るかを合計します。集団と集団をつなぐ位置にあるノードは、次数が少なくても媒介中心性が高くなります。情報や物の流れの「関所」にあたる重要な役割です。</p>
+    </div>
+    <div class="formula">
+      C<sub>B</sub>(v) <span class="op">=</span> &Sigma;<sub>s&ne;v&ne;t</sub> &sigma;<sub>st</sub>(v) <span class="op">/</span> &sigma;<sub>st</sub>
+      <small>&sigma;<sub>st</sub>: ノード s と t の間の最短経路の数　&sigma;<sub>st</sub>(v): そのうち v を通る本数</small>
+    </div>
+    <div class="prose">
+      <h4>近接中心性（closeness centrality）</h4>
+      <p>あるノードから<b>他のすべてのノードへ、どれだけ近いか</b>を測ります。最短距離の合計が小さいほど、ネットワークの「中心」に近いと考えます。全体へ素早く到達できる位置にあるノードほど高くなります。</p>
+    </div>
+    <div class="formula">
+      C<sub>C</sub>(v) <span class="op">=</span> ( n <span class="op">-</span> 1 ) <span class="op">/</span> &Sigma;<sub>u</sub> d(v, u)
+      <small>d(v, u): ノード v から u への最短距離　合計は v 以外のすべての u について取る</small>
+    </div>
+    <div class="prose">
+      <h4>固有ベクトル中心性と PageRank</h4>
+      <p>「重要なノードにつながっているノードは重要」という再帰的な考え方が<b>固有ベクトル中心性</b>です。つながりの数だけでなく、<b>つながる相手の重要度</b>まで考慮します。これを有向グラフ（Web のリンクなど）向けに改良し、実用的にしたのが <b>PageRank</b> です。Google の初期の検索順位づけで有名になりました。多くの重要なページからリンクされるページほど、高いスコアになります。</p>
+      <p>これらの指標は、同じグラフでも「誰が重要か」の答えが変わります。次のデモで、指標を切り替えながらその違いを体感してみましょう。</p>
+    </div>
+
+    <!-- DEMO 2: centrality ranking -->
+    <div class="demo reveal" id="demoCent">
+      <span class="dtag"><span lang="ja">デモ 2</span><span lang="en">Demo 2</span></span>
+      <h4>中心性ランキング</h4>
+      <p class="dnote">Step 2 と同じ交友グラフ（7ノード）に対して、指標を選ぶと各ノードの中心性スコアを計算し、高い順にランキングします。グラフ上のノードは、色が濃いほどスコアが高いことを表します。指標によって「重要なノード」が入れ替わることに注目してください。</p>
+      <div class="try">
+        <span class="tlbl">指標</span>
+        <button type="button" data-metric="degree">次数中心性</button>
+        <button type="button" data-metric="betweenness">媒介中心性</button>
+        <button type="button" data-metric="closeness">近接中心性</button>
+      </div>
+      <div id="d2graph" style="margin-top:14px"></div>
+      <div class="demo-out" id="d2out" aria-live="polite"></div>
+    </div>
+
+    <p class="layer"><span lang="ja">コードで動かす</span><span lang="en">Run the code</span></p>
+    <div class="prose">
+      <p>NetworkX には主要な中心性がひととおり用意されています。同じグラフに対して4つの指標を計算し、見やすいよう小数第3位で丸めて表示します。</p>
+    </div>
+    <div class="code-wrap attached">
+      <div class="code-head"><span class="lbl">Python</span><span class="lang-tag">centrality.py</span><button class="copy" type="button" onclick="copyCode(this)">copy</button></div>
+      <pre><code><span class="kw">import</span> networkx <span class="kw">as</span> nx
+
+G = nx.Graph()
+G.add_edges_from([(<span class="st">"A"</span>, <span class="st">"B"</span>), (<span class="st">"A"</span>, <span class="st">"C"</span>), (<span class="st">"B"</span>, <span class="st">"C"</span>), (<span class="st">"C"</span>, <span class="st">"D"</span>),
+                  (<span class="st">"D"</span>, <span class="st">"E"</span>), (<span class="st">"D"</span>, <span class="st">"F"</span>), (<span class="st">"E"</span>, <span class="st">"F"</span>), (<span class="st">"F"</span>, <span class="st">"G"</span>)])
+
+<span class="kw">def</span> show(d):
+    <span class="kw">return</span> {k: round(v, <span class="nu">3</span>) <span class="kw">for</span> k, v <span class="kw">in</span> d.items()}
+
+<span class="kw">print</span>(show(nx.degree_centrality(G)))
+<span class="kw">print</span>(show(nx.betweenness_centrality(G)))
+<span class="kw">print</span>(show(nx.closeness_centrality(G)))
+<span class="kw">print</span>(show(nx.pagerank(G)))</code></pre>
+    </div>
+    <div class="code-out"><span class="olbl">出力例 / Output</span><pre><code>{'A': 0.333, 'B': 0.333, 'C': 0.5, 'D': 0.5, 'E': 0.333, 'F': 0.5, 'G': 0.167}
+{'A': 0.0, 'B': 0.0, 'C': 0.533, 'D': 0.6, 'E': 0.0, 'F': 0.333, 'G': 0.0}
+{'A': 0.429, 'B': 0.429, 'C': 0.6, 'D': 0.667, 'E': 0.5, 'F': 0.545, 'G': 0.375}
+{'A': 0.125, 'B': 0.125, 'C': 0.179, 'D': 0.179, 'E': 0.126, 'F': 0.19, 'G': 0.075}</code></pre></div>
+    <div class="prose">
+      <p>結果を見比べると面白いことがわかります。次数では C・D・F が同点ですが、<b>媒介中心性では D が最大</b>（左右の集団をつなぐ橋渡し）、<b>近接中心性でも D が最大</b>（全体の中心）です。いっぽう PageRank では、末端の G から流れ込むぶんだけ <b>F が少し高く</b>なります。「重要さ」は測り方しだいなのです。</p>
+    </div>
+
+    <div class="callout tip">
+      <h4>この Step のまとめ</h4>
+      <p>中心性は「重要なノード」を数値化する道具。次数は多さ、媒介は橋渡し、近接は全体への近さ、PageRank は重要な相手からのつながりを重く見ます。目的に合った指標を選ぶことが肝心です。</p>
+    </div>
+  </div>
+</section>
+
+<!-- STEP 4 -->
+<section id="step4">
+  <div class="wrap reveal">
+    <div class="stephead">
+      <span class="num">4</span>
+      <div class="tt"><h2>まとまりを見つける（コミュニティ検出）</h2><span class="st-en">Community detection</span></div>
+    </div>
+    <div class="steprule"></div>
+
+    <p class="layer first"><span lang="ja">概要</span><span lang="en">Overview</span></p>
+    <div class="prose">
+      <p>大きなネットワークには、<b>内部が密につながった集団</b>がしばしば潜んでいます。友人グループ、研究分野、機能ごとのモジュール群などです。こうしたまとまりを見つけ出すのが<b>コミュニティ検出（community detection）</b>です。全体をいくつかのグループに分け、構造を理解しやすくします。</p>
+    </div>
+
+    <p class="layer"><span lang="ja">仕組み</span><span lang="en">How it works</span></p>
+    <div class="prose">
+      <h4>連結成分</h4>
+      <p>もっとも素朴なまとまりが<b>連結成分（connected component）</b>です。エッジをたどって互いに行き来できるノードの集まりで、グラフが「いくつの島に分かれているか」を表します。まず全体がひとつながりかどうかを確かめるのが出発点です。</p>
+      <h4>モジュラリティ</h4>
+      <p>連結成分よりも細かく「密なまとまり」を見つけるには、分割の良さを測るものさしが要ります。定番が<b>モジュラリティ（modularity）</b>です。コミュニティの内部にエッジが多く、コミュニティ間のエッジが少ないほど値が大きくなります。よい分割ほどモジュラリティが高い、という考え方です。</p>
+    </div>
+    <div class="formula">
+      Q <span class="op">=</span> &Sigma;<sub>c</sub> ( e<sub>cc</sub> <span class="op">-</span> a<sub>c</sub><sup>2</sup> )
+      <small>e<sub>cc</sub>: コミュニティ c の内部にあるエッジの割合　a<sub>c</sub>: c につながるエッジ端の割合<br>実際の内部エッジが、ランダムな場合の期待値をどれだけ上回るかを足し合わせます。</small>
+    </div>
+    <div class="prose">
+      <h4>コミュニティ検出の手法</h4>
+      <p>モジュラリティを手がかりに分割を探す代表的な手法があります。<b>ガーバン・ニューマン法</b>は、橋渡しをするエッジ（媒介の高いエッジ）を少しずつ取り除いてコミュニティを浮かび上がらせます。<b>Louvain 法</b>は、モジュラリティが上がるようにノードをまとめていく高速な手法で、大規模なネットワークでもよく使われます。NetworkX の <code>greedy_modularity_communities</code> は、モジュラリティを貪欲に最大化する手法です。</p>
+      <h4>クラスタリング係数</h4>
+      <p>「友達の友達は友達か」という、まとまりやすさの局所的な指標が<b>クラスタリング係数</b>です。あるノードの隣どうしが、実際にどれだけ互いにつながっているかの割合で、社会ネットワークでは高くなりがちです。ネットワーク全体で平均したものを平均クラスタリング係数と呼びます。</p>
+    </div>
+
+    <p class="layer"><span lang="ja">コードで動かす</span><span lang="en">Run the code</span></p>
+    <div class="prose">
+      <p>まず、島が2つに分かれた小さなグラフで連結成分を確かめます。</p>
+    </div>
+    <div class="code-wrap attached">
+      <div class="code-head"><span class="lbl">Python</span><span class="lang-tag">components.py</span><button class="copy" type="button" onclick="copyCode(this)">copy</button></div>
+      <pre><code><span class="kw">import</span> networkx <span class="kw">as</span> nx
+
+H = nx.Graph()
+H.add_edges_from([(<span class="st">"A"</span>, <span class="st">"B"</span>), (<span class="st">"B"</span>, <span class="st">"C"</span>), (<span class="st">"D"</span>, <span class="st">"E"</span>)])
+<span class="kw">print</span>(nx.number_connected_components(H))
+<span class="kw">print</span>([sorted(c) <span class="kw">for</span> c <span class="kw">in</span> nx.connected_components(H)])</code></pre>
+    </div>
+    <div class="code-out"><span class="olbl">出力例 / Output</span><pre><code>2
+[['A', 'B', 'C'], ['D', 'E']]</code></pre></div>
+
+    <div class="prose">
+      <p>次に、実在の公開データ <b>Zachary の空手クラブ</b>（34人の会員と、その交友関係からなる有名なネットワーク）で、コミュニティ検出とクラスタリング係数を試します。NetworkX に内蔵されているので、ダウンロード不要です。</p>
+    </div>
+    <div class="code-wrap attached">
+      <div class="code-head"><span class="lbl">Python</span><span class="lang-tag">communities.py</span><button class="copy" type="button" onclick="copyCode(this)">copy</button></div>
+      <pre><code>G = nx.karate_club_graph()          <span class="cm"># 実在の空手クラブ・ネットワーク</span>
+<span class="kw">print</span>(nx.number_connected_components(G))   <span class="cm"># 全体はひとつながり</span>
+
+comms = nx.community.greedy_modularity_communities(G)
+<span class="kw">print</span>(len(comms))                          <span class="cm"># 見つかったコミュニティ数</span>
+<span class="kw">print</span>(round(nx.community.modularity(G, comms), <span class="nu">4</span>))
+<span class="kw">print</span>(round(nx.average_clustering(G), <span class="nu">4</span>))</code></pre>
+    </div>
+    <div class="code-out"><span class="olbl">出力例 / Output</span><pre><code>1
+3
+0.3807
+0.5706</code></pre></div>
+    <div class="prose">
+      <p>34人のネットワークが3つのコミュニティに分かれ、その分割のモジュラリティは約 0.38、平均クラスタリング係数は約 0.57 でした。空手クラブは実際に2つの派閥に分裂した歴史があり、こうした構造がデータからも読み取れます。</p>
+    </div>
+
+    <div class="callout tip">
+      <h4>この Step のまとめ</h4>
+      <p>コミュニティ検出は「密なまとまり」を見つける道具。連結成分でまず島の数を数え、モジュラリティを手がかりに Louvain 法などで細かく分割します。クラスタリング係数は「友達の友達は友達か」という局所的なまとまりやすさを表します。</p>
+    </div>
+  </div>
+</section>
+
+<!-- STEP 5 -->
+<section id="step5" class="soft-sec">
+  <div class="wrap reveal">
+    <div class="stephead">
+      <span class="num">5</span>
+      <div class="tt"><h2>経路と全体の構造</h2><span class="st-en">Paths &amp; structure</span></div>
+    </div>
+    <div class="steprule"></div>
+
+    <p class="layer first"><span lang="ja">概要</span><span lang="en">Overview</span></p>
+    <div class="prose">
+      <p>ネットワークの「近さ」や「広がり」は、ノードからノードへたどる<b>経路</b>で測ります。とくに大切なのが、あいだのエッジ数が最小の<b>最短経路</b>です。最短経路がわかると、ネットワーク全体がどれくらいコンパクトか、どんな大きな構造を持つかまで見えてきます。</p>
+    </div>
+
+    <p class="layer"><span lang="ja">仕組み</span><span lang="en">How it works</span></p>
+    <div class="prose">
+      <h4>最短経路（BFS とダイクストラ）</h4>
+      <p>重みのないグラフでは、<b>幅優先探索（BFS: breadth-first search）</b>で最短経路を求められます。始点から近い順に、波が広がるようにノードを訪れていくので、初めて終点に届いたときの経路が最短です。エッジに重み（距離など）があるグラフでは、<b>ダイクストラ法</b>を使います。次のデモは BFS で、始点から終点までの最短経路をたどります。</p>
+      <h4>直径と平均経路長</h4>
+      <p>すべてのノード対について最短距離を求めると、ネットワーク全体の広がりがわかります。最短距離の最大値を<b>直径（diameter）</b>、平均を<b>平均経路長</b>と呼びます。直径が小さいほど、ネットワークは「どこからどこへも近い」コンパクトな形です。</p>
+      <h4>スモールワールドとスケールフリー</h4>
+      <p>現実の多くのネットワークには、共通する2つの性質が見られます。ひとつは<b>スモールワールド性</b>で、巨大なネットワークでも、ごく少ないステップで任意の2ノードがつながります。「六次の隔たり」で知られる性質です。もうひとつは<b>スケールフリー性</b>で、次数の分布が<b>べき則（power law）</b>に従い、ごく一部の「ハブ」が飛び抜けて多くのつながりを持ちます。SNS や Web、引用ネットワークなどで観察されます。</p>
+    </div>
+
+    <!-- DEMO 3: shortest path -->
+    <div class="demo reveal" id="demoPath">
+      <span class="dtag"><span lang="ja">デモ 3</span><span lang="en">Demo 3</span></span>
+      <h4>最短経路（BFS）</h4>
+      <p class="dnote">Step 2 と同じ交友グラフで、始点と終点を選ぶと、BFS（幅優先探索）で最短経路を求め、グラフ上に太い線で示します。始点と終点は濃い緑、経路上のノードは薄い緑で表示します。経路の長さ（エッジの数）が最短距離です。</p>
+      <div class="two">
+        <div>
+          <label class="fld" for="pathStart">始点 / Start</label>
+          <select id="pathStart" style="width:100%;padding:11px 14px;border-radius:12px;border:1px solid var(--hair);background:var(--bg);color:var(--ink);font:500 .95rem/1 var(--mono);cursor:pointer">
+            <option value="A" selected>A</option><option value="B">B</option><option value="C">C</option>
+            <option value="D">D</option><option value="E">E</option><option value="F">F</option><option value="G">G</option>
+          </select>
+        </div>
+        <div>
+          <label class="fld" for="pathEnd">終点 / End</label>
+          <select id="pathEnd" style="width:100%;padding:11px 14px;border-radius:12px;border:1px solid var(--hair);background:var(--bg);color:var(--ink);font:500 .95rem/1 var(--mono);cursor:pointer">
+            <option value="A">A</option><option value="B">B</option><option value="C">C</option>
+            <option value="D">D</option><option value="E">E</option><option value="F">F</option><option value="G" selected>G</option>
+          </select>
+        </div>
+      </div>
+      <div id="d3graph" style="margin-top:16px"></div>
+      <div class="demo-out" id="d3out" aria-live="polite"></div>
+    </div>
+
+    <p class="layer"><span lang="ja">コードで動かす</span><span lang="en">Run the code</span></p>
+    <div class="prose">
+      <p>NetworkX なら、最短経路も全体の構造も一行ずつで求まります。デモと同じグラフで確かめましょう。</p>
+    </div>
+    <div class="code-wrap attached">
+      <div class="code-head"><span class="lbl">Python</span><span class="lang-tag">paths.py</span><button class="copy" type="button" onclick="copyCode(this)">copy</button></div>
+      <pre><code><span class="kw">import</span> networkx <span class="kw">as</span> nx
+
+G = nx.Graph()
+G.add_edges_from([(<span class="st">"A"</span>, <span class="st">"B"</span>), (<span class="st">"A"</span>, <span class="st">"C"</span>), (<span class="st">"B"</span>, <span class="st">"C"</span>), (<span class="st">"C"</span>, <span class="st">"D"</span>),
+                  (<span class="st">"D"</span>, <span class="st">"E"</span>), (<span class="st">"D"</span>, <span class="st">"F"</span>), (<span class="st">"E"</span>, <span class="st">"F"</span>), (<span class="st">"F"</span>, <span class="st">"G"</span>)])
+
+<span class="kw">print</span>(nx.shortest_path(G, <span class="st">"A"</span>, <span class="st">"G"</span>))
+<span class="kw">print</span>(nx.shortest_path_length(G, <span class="st">"A"</span>, <span class="st">"G"</span>))
+<span class="kw">print</span>(nx.diameter(G))
+<span class="kw">print</span>(round(nx.average_shortest_path_length(G), <span class="nu">3</span>))</code></pre>
+    </div>
+    <div class="code-out"><span class="olbl">出力例 / Output</span><pre><code>['A', 'C', 'D', 'F', 'G']
+4
+4
+2.048</code></pre></div>
+    <div class="prose">
+      <p>A から G への最短経路は A → C → D → F → G の4ステップ、ネットワークの直径も4、平均経路長は約2.05でした。橋渡しの役割を担う C と D を必ず通っていることに注目してください。Step 3 で C と D の媒介中心性が高かったのは、まさにこのためです。</p>
+    </div>
+
+    <div class="callout tip">
+      <h4>この Step のまとめ</h4>
+      <p>ネットワークの「近さ」は最短経路で測り、重みがなければ BFS で求まります。全体の広がりは直径や平均経路長で表します。現実のネットワークには、少ないステップでつながる<b>スモールワールド性</b>と、一部のハブが偏って多くつながる<b>スケールフリー性</b>がよく見られます。</p>
+    </div>
+  </div>
+</section>
+
+<!-- STEP 6 -->
+<section id="step6">
+  <div class="wrap reveal">
+    <div class="stephead">
+      <span class="num">6</span>
+      <div class="tt"><h2>可視化とこれから</h2><span class="st-en">Visualization &amp; what is next</span></div>
+    </div>
+    <div class="steprule"></div>
+
+    <p class="layer first"><span lang="ja">概要</span><span lang="en">Overview</span></p>
+    <div class="prose">
+      <p>数値だけでなく、ネットワークは<b>絵</b>にすると理解が一気に進みます。ただし、ノードをどこに置くかで見え方が大きく変わります。よい配置（レイアウト）と、大規模なネットワークをどう扱うかが、可視化の鍵になります。</p>
+    </div>
+
+    <p class="layer"><span lang="ja">仕組み</span><span lang="en">How it works</span></p>
+    <div class="prose">
+      <h4>レイアウト</h4>
+      <p>グラフ描画で広く使われるのが<b>力学モデル（force-directed layout）</b>です。エッジをばね、ノードどうしを反発する電荷に見立て、力がつり合う位置へノードを配置します。密につながったノードは近くに、そうでないノードは遠くに集まるので、コミュニティ構造が自然と見えてきます。</p>
+      <h4>大規模ネットワークと動的ネットワーク</h4>
+      <p>ノードが数万・数百万になると、すべてを描くと「毛玉」のようになり、かえって読み取れません。重要な部分だけを抜き出す、集約する、対話的に拡大縮小するといった工夫が要ります。専用ツールの <b>Gephi</b> や、Python の <b>igraph</b>・<b>graph-tool</b> は大きなグラフに向いています。また、つながりが時間とともに変わる<b>動的ネットワーク</b>を扱う研究も進んでいます。</p>
+      <h4>描画のコード</h4>
+      <p>小さなグラフなら、NetworkX と matplotlib で手軽に描けます。レイアウトを計算し、ノード・エッジ・ラベルを重ねて描画します。</p>
+    </div>
+    <div class="code-wrap attached">
+      <div class="code-head"><span class="lbl">Python</span><span class="lang-tag">draw_graph.py</span><button class="copy" type="button" onclick="copyCode(this)">copy</button></div>
+      <pre><code><span class="kw">import</span> networkx <span class="kw">as</span> nx
+<span class="kw">import</span> matplotlib.pyplot <span class="kw">as</span> plt
+
+G = nx.karate_club_graph()
+pos = nx.spring_layout(G, seed=<span class="nu">42</span>)     <span class="cm"># 力学モデル（force-directed）で配置</span>
+nx.draw_networkx_nodes(G, pos, node_size=<span class="nu">300</span>)
+nx.draw_networkx_edges(G, pos, alpha=<span class="nu">0.4</span>)
+nx.draw_networkx_labels(G, pos, font_size=<span class="nu">8</span>)
+plt.axis(<span class="st">"off"</span>)
+plt.savefig(<span class="st">"karate.png"</span>, dpi=<span class="nu">150</span>)</code></pre>
+    </div>
+
+    <div class="callout tip">
+      <h4>この Step のまとめ</h4>
+      <p>可視化はレイアウトしだいで見え方が変わり、力学モデルはコミュニティ構造を自然に浮かび上がらせます。大規模・動的なネットワークには専用の道具と工夫が必要です。ここまでの「グラフ構築 → 指標 → まとまり → 経路 → 可視化」が、ネットワーク分析の基本の一巡です。</p>
+    </div>
+  </div>
+</section>
+
+<!-- CLOSING -->
+<section id="closing" class="soft-sec">
+  <div class="wrap reveal">
+    <p class="eyebrow"><span lang="ja">まとめ</span><span lang="en">Wrap-up</span></p>
+    <h2 class="big">学びの振り返りと、さらに学ぶために</h2>
+    <div class="prose" style="margin-top:22px">
+      <p>このモジュールでは、つながりを読み解く基本の道具を、パイプラインに沿って順に手に入れました。</p>
+      <ul>
+        <li><b>グラフの基礎</b>：ノードとエッジ、有向/無向・重み、次数と密度。</li>
+        <li><b>中心性</b>：次数・媒介・近接・PageRank で「重要なノード」を測る。</li>
+        <li><b>コミュニティ検出</b>：連結成分とモジュラリティで「密なまとまり」を見つける。</li>
+        <li><b>経路と構造</b>：BFS で最短経路を求め、直径や平均経路長で全体の広がりを測る。</li>
+        <li><b>可視化</b>：力学モデルで構造を絵にし、大規模・動的なネットワークへ広げる。</li>
+      </ul>
+      <p>次に進むなら、下の道具と資料が役に立ちます。</p>
+    </div>
+
+    <div class="res-grid reveal">
+      <div class="res">
+        <h5>公開データセット</h5>
+        <ul>
+          <li><b>Zachary の空手クラブ</b>：34人の交友ネットワーク。<code>nx.karate_club_graph()</code> で内蔵。</li>
+          <li><b>Les Misérables 共起ネットワーク</b>：小説の登場人物の共起関係。ネットワーク可視化の定番。</li>
+          <li><b>SNAP</b>：スタンフォード大学が公開する大規模グラフ集（SNS・道路・引用など）。</li>
+        </ul>
+      </div>
+      <div class="res">
+        <h5>ライブラリ</h5>
+        <ul>
+          <li><b>NetworkX</b>：Python の定番。学習・中小規模に最適。</li>
+          <li><b>igraph</b>：C 実装で高速、Python から使える。</li>
+          <li><b>graph-tool</b>：大規模グラフ向けの高速ライブラリ。</li>
+          <li><b>Gephi</b>：対話的なネットワーク可視化ツール。</li>
+        </ul>
+      </div>
+      <div class="res">
+        <h5>参考書</h5>
+        <ul>
+          <li>Mark Newman『Networks』（Oxford University Press）</li>
+          <li>Albert-László Barabási『Network Science』（邦訳『ネットワーク科学』）</li>
+          <li>Easley, Kleinberg『Networks, Crowds, and Markets』</li>
+        </ul>
+      </div>
+      <div class="res">
+        <h5>次のモジュールへ</h5>
+        <ul>
+          <li>機械学習の基礎（分類・回帰・評価）</li>
+          <li>深層学習とニューラルネット</li>
+          <li>グラフニューラルネットワークへの橋渡し</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="callout tip">
+      <h4>おつかれさまでした</h4>
+      <p>ここで学んだ「グラフにする → 指標で測る → まとまりや経路を読む」という流れは、関係を持つあらゆるデータに共通する考え方です。3つのデモのノードやグラフを切り替えたり、始点・終点を変えたりして、値がどう変わるかを確かめてみてください。指標ごとに「重要なノード」が入れ替わる感覚がつかめると、理解がぐっと深まります。</p>
+    </div>
+  </div>
+</section>
+
+<section id="beyond">
+  <div class="wrap reveal">
+    <p class="eyebrow"><span lang="ja">発展トピック</span><span lang="en">Beyond this module</span></p>
+    <h2 class="big">このコースでは扱わない、関係する発展トピック</h2>
+    <div class="prose" style="margin-top:22px">
+      <p>このモジュールでは、グラフを組み立て、指標で測り、構造を読み解く「基礎の流れ」を扱いました。いっぽうで近年のネットワーク分析は、機械学習や深層学習と結びつき、急速に広がっています。ここでは、このコースでは踏み込まないものの、知っておくと視野が広がる発展的なトピックを、特に近年の主流を中心に紹介します。深掘りは各自の興味に合わせてどうぞ。グラフニューラルネットワークまわりは、深層学習のモジュールで改めて扱う予定です。</p>
+    </div>
+
+    <div class="res-grid reveal">
+      <div class="res">
+        <h5>グラフの表現学習</h5>
+        <ul>
+          <li><b>グラフ埋め込み</b>：ノードを密なベクトルに変換し、機械学習に使えるようにする手法（node2vec・DeepWalk）。ランダムウォークと word2vec の考え方を組み合わせます。</li>
+          <li><b>スペクトラルクラスタリング</b>：グラフのラプラシアン行列の固有ベクトルを使って分割する、数理的なコミュニティ検出。</li>
+        </ul>
+      </div>
+      <div class="res">
+        <h5>グラフニューラルネットワーク</h5>
+        <ul>
+          <li><b>GNN</b>：隣接ノードの情報を集約しながら学習する深層モデル（GCN・GraphSAGE・GAT）。ノード分類やグラフ分類に強力。深層学習のモジュールで扱う予定。</li>
+          <li><b>メッセージパッシング</b>：GNN に共通する、近傍から情報を伝え合う枠組み。</li>
+        </ul>
+      </div>
+      <div class="res">
+        <h5>予測と動的ネットワーク</h5>
+        <ul>
+          <li><b>リンク予測</b>：まだ存在しないつながりを予測する（友人推薦・共著予測など）。</li>
+          <li><b>動的・時系列ネットワーク</b>：時間とともに変化するつながりをモデル化し、成長や消滅を捉える。</li>
+        </ul>
+      </div>
+      <div class="res">
+        <h5>大規模グラフと拡散</h5>
+        <ul>
+          <li><b>大規模グラフ処理</b>：数億ノード規模を扱う分散処理や近似アルゴリズム（graph-tool・分散グラフ基盤）。</li>
+          <li><b>拡散・伝播</b>：情報や感染がネットワーク上をどう広がるかのモデル（感染症モデル・影響最大化）。</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<button class="totop" type="button" aria-label="上へ戻る" title="上へ戻る">&uarr;</button>
+
+<!-- FOOTER -->
+<footer>
+  <div class="wrap">
+    <div class="foot-grid">
+      <div>
+        <h3><span lang="ja">この学習モジュールについて</span><span lang="en">About this module</span></h3>
+        <div class="cite">
+          <span lang="ja">「研究で使う技術を実践的に学ぶ」学習コースの1モジュールです。概要から理論、動かせるコードまでを一続きにして、ネットワーク分析の基礎を独習できるように構成しています。内容は分野標準の一般的なもので、特定の研究や論文には紐づきません。</span>
+          <span lang="en">A module in a learning course on research skills, walking from overview to theory to runnable code so you can study the basics of network analysis on your own. The content is standard and general, not tied to any specific study.</span>
+        </div>
+      </div>
+      <div>
+        <h3><span lang="ja">制作</span><span lang="en">Author</span></h3>
+        <p class="muted-s">
+          <b>Yuta Kimura</b><br>
+          <span lang="ja">大阪公立大学工業高等専門学校</span><span lang="en">Osaka Metropolitan University College of Technology</span><br>
+          <a href="mailto:y.kimura@omu.ac.jp">y.kimura [at] omu.ac.jp</a>
+        </p>
+      </div>
+    </div>
+    <div class="foot-grid3">
+      <div>
+        <h3><span lang="ja">連絡先</span><span lang="en">Contact</span></h3>
+        <p class="muted-s">
+          <b>Yuta Kimura</b><br>
+          <span lang="ja">大阪公立大学工業高等専門学校</span><span lang="en">Osaka Metropolitan University College of Technology</span><br>
+          <a href="mailto:y.kimura@omu.ac.jp">y.kimura [at] omu.ac.jp</a>
+        </p>
+      </div>
+      <div>
+        <h3><span lang="ja">サイト</span><span lang="en">Site</span></h3>
+        <p class="muted-s">
+          <a href="../index.html">Home</a><br>
+          <a href="../publications.html"><span lang="ja">業績・研究活動</span><span lang="en">Publications &amp; research activities</span></a><br>
+          <a href="../teaching.html"><span lang="ja">教育</span><span lang="en">Teaching</span></a><br>
+          <a href="../software-engineering.html"><span lang="ja">ソフトウェア工学とは</span><span lang="en">What is software engineering?</span></a><br>
+          <a href="../glossary.html"><span lang="ja">研究用語ミニ辞典</span><span lang="en">Research glossary</span></a>
+        </p>
+      </div>
+      <div>
+        <h3><span lang="ja">関連教材</span><span lang="en">Related material</span></h3>
+        <p class="muted-s">
+          <a href="../course/software-testing.html"><span lang="ja">ソフトウェアテスト学習ガイド</span><span lang="en">Software Testing Guide</span></a><br>
+          <a href="../course/intelligent-informatics-1.html"><span lang="ja">知能情報実験実習1</span><span lang="en">Intelligent Informatics Lab I</span></a><br>
+          <a href="../course/index.html"><span lang="ja">ソフトウェア工学</span><span lang="en">Software Engineering</span></a><br>
+          <a href="https://researchmap.jp/kimura_yuta" target="_blank" rel="noopener">researchmap</a>
+        </p>
+      </div>
+    </div>
+    <div class="foot-rule"></div>
+    <p class="foot-note">
+      <span lang="ja">本ページは学習用のプロトタイプ教材です。コード例は分野標準のライブラリ（NetworkX・matplotlib）にもとづき、出力例は実際の実行結果に一致させています。</span>
+      <span lang="en">This page is a prototype learning material. Code examples use standard libraries (NetworkX, matplotlib), and the shown outputs match real runs.</span>
+    </p>
+  </div>
+</footer>
+
+<script>
+  /* language: setLang / toggleLang, persisted in localStorage 'site-lang' only */
+  function setLang(l){document.body.classList.remove('lang-ja','lang-en');document.body.classList.add('lang-'+l);document.documentElement.lang=l;
+    try{localStorage.setItem('site-lang',l)}catch(e){}
+    try{var q=new URLSearchParams(location.search);q.set('lang',l);history.replaceState(null,'',location.pathname+'?'+q+location.hash)}catch(e){}}
+  function toggleLang(){setLang(document.body.classList.contains('lang-ja')?'en':'ja')}
+  (function(){var u=null;try{u=new URLSearchParams(location.search).get('lang')}catch(e){}
+    var s=null;try{s=localStorage.getItem('site-lang')}catch(e){}
+    var l=(u==='en'||u==='ja')?u:((s==='en'||s==='ja')?s:'ja');if(l!=='ja')setLang(l);})();
+  if('IntersectionObserver' in window){
+    var io=new IntersectionObserver(function(es){
+      es.forEach(function(e){ if(e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target); } });
+    },{threshold:0.10, rootMargin:"0px 0px -6% 0px"});
+    document.querySelectorAll('.reveal').forEach(function(el){ io.observe(el); });
+  } else { document.querySelectorAll('.reveal').forEach(function(el){ el.classList.add('in'); }); }
+
+  /* copy code (in-memory only, no storage) */
+  function copyCode(btn){
+    var pre=btn.closest('.code-wrap').querySelector('pre code');
+    var text=pre.innerText;
+    if(navigator.clipboard&&navigator.clipboard.writeText){
+      navigator.clipboard.writeText(text).then(function(){flash(btn);},function(){});
+    }
+  }
+  function flash(btn){var o=btn.textContent;btn.textContent='copied';setTimeout(function(){btn.textContent=o;},1200);}
+</script>
+
+<script>
+/* ==================== interactive demos (vanilla JS, self-contained) ==================== */
+(function(){
+  /* ---- preset graphs (node positions in a 600x300 viewBox) ---- */
+  var GRAPHS = {
+    friends: {
+      nodes: {A:{x:80,y:70}, B:{x:80,y:210}, C:{x:200,y:140}, D:{x:350,y:140},
+              E:{x:470,y:70}, F:{x:470,y:210}, G:{x:560,y:250}},
+      edges: [["A","B"],["A","C"],["B","C"],["C","D"],["D","E"],["D","F"],["E","F"],["F","G"]]
+    },
+    star: {
+      nodes: {H:{x:300,y:150}, "1":{x:110,y:70}, "2":{x:110,y:230},
+              "3":{x:300,y:45}, "4":{x:490,y:70}, "5":{x:490,y:230}},
+      edges: [["H","1"],["H","2"],["H","3"],["H","4"],["H","5"]]
+    }
+  };
+
+  function adj(g){
+    var a={}; Object.keys(g.nodes).forEach(function(n){ a[n]=[]; });
+    g.edges.forEach(function(e){ a[e[0]].push(e[1]); a[e[1]].push(e[0]); });
+    return a;
+  }
+  function edgeKey(a,b){ return a<b ? a+'|'+b : b+'|'+a; }
+
+  /* BFS shortest path (unweighted) */
+  function bfsPath(g,s,t){
+    if(s===t) return [s];
+    var a=adj(g), prev={}, seen={}; seen[s]=1; var q=[s];
+    while(q.length){
+      var u=q.shift();
+      for(var i=0;i<a[u].length;i++){
+        var v=a[u][i];
+        if(!seen[v]){
+          seen[v]=1; prev[v]=u;
+          if(v===t){ var path=[t], x=t; while(x!==s){ x=prev[x]; path.unshift(x); } return path; }
+          q.push(v);
+        }
+      }
+    }
+    return null;
+  }
+  /* BFS distances from a source to all nodes */
+  function bfsDist(g,s){
+    var a=adj(g), dist={}; dist[s]=0; var q=[s];
+    while(q.length){
+      var u=q.shift();
+      for(var i=0;i<a[u].length;i++){ var v=a[u][i]; if(dist[v]===undefined){ dist[v]=dist[u]+1; q.push(v); } }
+    }
+    return dist;
+  }
+  /* Brandes betweenness centrality, normalized (undirected) */
+  function betweenness(g){
+    var nodes=Object.keys(g.nodes), a=adj(g), CB={};
+    nodes.forEach(function(n){ CB[n]=0; });
+    nodes.forEach(function(s){
+      var S=[], P={}, sigma={}, dist={};
+      nodes.forEach(function(w){ P[w]=[]; sigma[w]=0; dist[w]=-1; });
+      sigma[s]=1; dist[s]=0; var Q=[s];
+      while(Q.length){
+        var v=Q.shift(); S.push(v);
+        a[v].forEach(function(w){
+          if(dist[w]<0){ dist[w]=dist[v]+1; Q.push(w); }
+          if(dist[w]===dist[v]+1){ sigma[w]+=sigma[v]; P[w].push(v); }
+        });
+      }
+      var delta={}; nodes.forEach(function(w){ delta[w]=0; });
+      while(S.length){
+        var w=S.pop();
+        P[w].forEach(function(v){ delta[v]+=(sigma[v]/sigma[w])*(1+delta[w]); });
+        if(w!==s) CB[w]+=delta[w];
+      }
+    });
+    var n=nodes.length, scale=(n>2)?1/((n-1)*(n-2)):1;
+    nodes.forEach(function(v){ CB[v]=CB[v]*scale; });
+    return CB;
+  }
+  function degreeCent(g){
+    var nodes=Object.keys(g.nodes), n=nodes.length, a=adj(g), r={};
+    nodes.forEach(function(v){ r[v]=(n>1)?a[v].length/(n-1):0; });
+    return r;
+  }
+  function closenessCent(g){
+    var nodes=Object.keys(g.nodes), n=nodes.length, r={};
+    nodes.forEach(function(v){
+      var d=bfsDist(g,v), s=0, reach=0;
+      nodes.forEach(function(u){ if(d[u]!==undefined){ s+=d[u]; if(u!==v) reach++; } });
+      r[v]=(s>0)?reach/s:0;
+    });
+    return r;
+  }
+
+  /* ---- shared SVG renderer ---- */
+  function drawGraph(g, o){
+    o=o||{};
+    var hiEdge=o.hiEdge||{}, hiNode=o.hiNode||{}, strong=o.strong||{}, score=o.score||null, mx=o.maxScore||1;
+    var s='<svg viewBox="0 0 600 300" role="img" aria-label="'+(o.aria||'ネットワークグラフ')+'" style="width:100%;height:auto;display:block">';
+    g.edges.forEach(function(e){
+      var on=hiEdge[edgeKey(e[0],e[1])], p1=g.nodes[e[0]], p2=g.nodes[e[1]];
+      s+='<line x1="'+p1.x+'" y1="'+p1.y+'" x2="'+p2.x+'" y2="'+p2.y+'" style="stroke:'+(on?'var(--accent)':'var(--line)')+';stroke-width:'+(on?3.4:1.6)+'"/>';
+    });
+    Object.keys(g.nodes).forEach(function(n){
+      var p=g.nodes[n], fill='var(--card)', stroke='var(--line)', tcol='var(--ink)';
+      if(score){
+        var r=mx? (score[n]/mx):0;
+        fill='rgba(14,111,92,'+(0.08+0.80*r).toFixed(3)+')'; stroke='var(--accent)';
+        tcol = r>0.55 ? '#fff' : 'var(--ink)';
+      } else if(n===o.sel || strong[n]){
+        fill='var(--accent)'; stroke='var(--accent)'; tcol='#fff';
+      } else if(hiNode[n]){
+        fill='var(--accent-soft)'; stroke='var(--accent)';
+      }
+      s+='<g data-node="'+n+'"'+(o.clickable?' style="cursor:pointer"':'')+'>';
+      s+='<circle cx="'+p.x+'" cy="'+p.y+'" r="19" style="fill:var(--card)"/>';
+      s+='<circle cx="'+p.x+'" cy="'+p.y+'" r="19" style="fill:'+fill+';stroke:'+stroke+';stroke-width:2"/>';
+      s+='<text x="'+p.x+'" y="'+(p.y+5)+'" style="text-anchor:middle;font-family:var(--disp);font-size:15px;font-weight:600;fill:'+tcol+'">'+n+'</text>';
+      s+='</g>';
+    });
+    s+='</svg>';
+    return s;
+  }
+  function bindNodes(wrap, cb){
+    var els=wrap.querySelectorAll('[data-node]');
+    for(var i=0;i<els.length;i++){ (function(el){ el.addEventListener('click', function(){ cb(el.getAttribute('data-node')); }); })(els[i]); }
+  }
+
+  /* ---- Demo 1: graph & degree ---- */
+  var d1graph=document.getElementById('d1graph'), d1out=document.getElementById('d1out');
+  var d1key='friends', d1sel=null;
+  function d1render(){
+    var g=GRAPHS[d1key], a=adj(g), hiNode={}, hiEdge={};
+    if(d1sel && g.nodes[d1sel]){
+      hiNode[d1sel]=1;
+      a[d1sel].forEach(function(v){ hiNode[v]=1; hiEdge[edgeKey(d1sel,v)]=1; });
+    } else { d1sel=null; }
+    d1graph.innerHTML=drawGraph(g,{hiNode:hiNode,hiEdge:hiEdge,sel:d1sel,clickable:true,aria:'クリックでノードを選ぶネットワークグラフ'});
+    bindNodes(d1graph, function(n){ d1sel=(d1sel===n?null:n); d1render(); });
+    var n=Object.keys(g.nodes).length;
+    if(d1sel){
+      var deg=a[d1sel].length, dc=(n>1)?deg/(n-1):0;
+      d1out.innerHTML='<div class="cos-score"><span class="val">'+deg+'</span><span class="lab">ノード '+d1sel+' の次数 / degree</span></div>'+
+        '<div class="cos-detail">次数中心性 = 次数 / (ノード数 - 1) = '+deg+' / '+(n-1)+' = <b>'+dc.toFixed(3)+'</b><br>隣接ノード: <b>'+a[d1sel].slice().sort().join(', ')+'</b></div>';
+    } else {
+      d1out.innerHTML='<div class="chipcount">ノードをクリックすると、そのノードの次数（つながっているエッジの数）と次数中心性を表示します。</div>';
+    }
+  }
+  if(d1graph){
+    document.querySelectorAll('#demoDeg .try button').forEach(function(b){
+      b.addEventListener('click', function(){ d1key=b.getAttribute('data-graph'); d1sel=null; d1render(); });
+    });
+    d1render();
+  }
+
+  /* ---- Demo 2: centrality ranking ---- */
+  var d2graph=document.getElementById('d2graph'), d2out=document.getElementById('d2out'), d2metric='degree';
+  function d2render(){
+    var g=GRAPHS.friends, res;
+    if(d2metric==='degree') res=degreeCent(g);
+    else if(d2metric==='closeness') res=closenessCent(g);
+    else res=betweenness(g);
+    var arr=Object.keys(res).map(function(k){ return {n:k, v:res[k]}; });
+    arr.sort(function(a,b){ return b.v-a.v || (a.n<b.n?-1:1); });
+    var mx=arr[0].v || 1;
+    d2graph.innerHTML=drawGraph(g,{score:res,maxScore:mx,aria:'中心性スコアで色分けしたネットワークグラフ'});
+    var label={degree:'次数中心性 / degree', betweenness:'媒介中心性 / betweenness', closeness:'近接中心性 / closeness'}[d2metric];
+    var rows=arr.map(function(o,i){
+      var w=(mx? o.v/mx:0)*100;
+      return '<tr><td>'+(i+1)+'</td><td>'+o.n+'</td><td>'+o.v.toFixed(3)+'</td>'+
+        '<td><div class="cos-bar" style="max-width:none"><span style="width:'+w.toFixed(1)+'%"></span></div></td></tr>';
+    }).join('');
+    d2out.innerHTML='<table class="dtable"><tr><th>順位</th><th>ノード</th><th>'+label+'</th><th>分布</th></tr>'+rows+'</table>'+
+      '<div class="chipcount">色が濃いノードほどスコアが高いことを表します。指標を切り替えると順位が変わります。</div>';
+  }
+  if(d2graph){
+    document.querySelectorAll('#demoCent .try button').forEach(function(b){
+      b.addEventListener('click', function(){ d2metric=b.getAttribute('data-metric'); d2render(); });
+    });
+    d2render();
+  }
+
+  /* ---- Demo 3: shortest path (BFS) ---- */
+  var d3graph=document.getElementById('d3graph'), d3out=document.getElementById('d3out'),
+      d3s=document.getElementById('pathStart'), d3t=document.getElementById('pathEnd');
+  function d3render(){
+    var g=GRAPHS.friends, s=d3s.value, t=d3t.value, hiNode={}, hiEdge={}, strong={};
+    var path=bfsPath(g,s,t);
+    if(path){
+      path.forEach(function(x){ hiNode[x]=1; });
+      for(var i=0;i<path.length-1;i++){ hiEdge[edgeKey(path[i],path[i+1])]=1; }
+    }
+    strong[s]=1; strong[t]=1;
+    d3graph.innerHTML=drawGraph(g,{hiNode:hiNode,hiEdge:hiEdge,strong:strong,aria:'最短経路をハイライトしたネットワークグラフ'});
+    if(s===t){ d3out.innerHTML='<div class="chipcount">始点と終点が同じです。別のノードを選んでください。</div>'; return; }
+    if(path){
+      d3out.innerHTML='<div class="cos-score"><span class="val">'+(path.length-1)+'</span><span class="lab">最短距離（エッジ数）/ shortest-path distance</span></div>'+
+        '<div class="cos-detail">最短経路: <b>'+path.join(' &rarr; ')+'</b><br>BFS（幅優先探索）で '+s+' から '+t+' への最短経路を求めました。</div>';
+    } else {
+      d3out.innerHTML='<div class="chipcount">'+s+' から '+t+' へは到達できません。</div>';
+    }
+  }
+  if(d3graph){
+    d3s.addEventListener('change', d3render);
+    d3t.addEventListener('change', d3render);
+    d3render();
+  }
+})();
+</script>
+
+<script>
+/* ==================== nav controllers + TOC scroll-spy + back-to-top ==================== */
+(function(){
+  function syncLangUI(l){
+    var ja=l==='ja', lists=document.querySelectorAll('.lswitch');
+    for(var i=0;i<lists.length;i++){
+      var a=lists[i].querySelector('.ls-ja'), e=lists[i].querySelector('.ls-en');
+      if(a) a.setAttribute('aria-pressed', ja?'true':'false');
+      if(e) e.setAttribute('aria-pressed', ja?'false':'true');
+    }
+  }
+  window.syncLangUI=syncLangUI;
+  if(typeof window.setLang==='function'){ var _s=window.setLang; window.setLang=function(l){ _s(l); syncLangUI(l); }; }
+  syncLangUI(document.body.classList.contains('lang-en')?'en':'ja');
+
+  var groups=document.querySelectorAll('.navlinks .navgroup');
+  for(var g=0; g<groups.length; g++){ (function(grp){
+    var top=grp.querySelector('.navtop'), panel=grp.querySelector('.navpanel');
+    if(!panel||!top) return;
+    function set(x){ top.setAttribute('aria-expanded', x?'true':'false'); }
+    grp.addEventListener('mouseenter', function(){ grp.classList.remove('collapsed'); set(true); });
+    grp.addEventListener('mouseleave', function(){ set(false); });
+    grp.addEventListener('focusin', function(){ if(!grp.classList.contains('collapsed')) set(true); });
+    grp.addEventListener('focusout', function(e){ if(!grp.contains(e.relatedTarget)){ grp.classList.remove('collapsed'); set(false); } });
+    grp.addEventListener('keydown', function(e){ if(e.key==='Escape'){ grp.classList.add('collapsed'); set(false); top.focus(); } });
+  })(groups[g]); }
+
+  var tog=document.getElementById('navToggle'), ov=document.getElementById('mobnav');
+  if(tog && ov){
+    function openNav(){ document.body.classList.add('navopen'); tog.setAttribute('aria-expanded','true'); ov.setAttribute('aria-hidden','false');
+      var f=ov.querySelector('a,button'); if(f){ requestAnimationFrame(function(){ f.focus(); }); } }
+    function closeNav(){ document.body.classList.remove('navopen'); tog.setAttribute('aria-expanded','false'); ov.setAttribute('aria-hidden','true'); tog.focus(); }
+    tog.addEventListener('click', function(){ document.body.classList.contains('navopen')?closeNav():openNav(); });
+    ov.addEventListener('click', function(e){ if(e.target.closest('a')) closeNav(); });
+    document.addEventListener('keydown', function(e){ if(e.key==='Escape' && document.body.classList.contains('navopen')) closeNav(); });
+  }
+
+  /* TOC scroll-spy */
+  var bar=document.querySelector('.tocbar');
+  if(bar){
+    var pills=Array.prototype.slice.call(bar.querySelectorAll('.tocpill')), map={};
+    pills.forEach(function(p){ map[p.getAttribute('href').slice(1)]=p; });
+    if('IntersectionObserver' in window){
+      var spy=new IntersectionObserver(function(es){
+        es.forEach(function(e){
+          if(e.isIntersecting){
+            pills.forEach(function(p){ p.classList.remove('on'); });
+            var m=map[e.target.id]; if(m) m.classList.add('on');
+          }
+        });
+      },{rootMargin:'-45% 0px -50% 0px', threshold:0});
+      pills.forEach(function(p){ var s=document.getElementById(p.getAttribute('href').slice(1)); if(s) spy.observe(s); });
+    }
+  }
+
+  /* back to top */
+  var reduce=window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var bt=document.querySelector('.totop'), sen=document.getElementById('toTopSentinel');
+  if(bt && sen && 'IntersectionObserver' in window){
+    new IntersectionObserver(function(es){
+      es.forEach(function(e){ if(e.isIntersecting) bt.classList.remove('show'); else bt.classList.add('show'); });
+    },{threshold:0}).observe(sen);
+  }
+  if(bt){ bt.addEventListener('click', function(){ window.scrollTo({top:0, behavior:reduce?'auto':'smooth'}); }); }
+})();
+</script>
+</body>
+</html>
