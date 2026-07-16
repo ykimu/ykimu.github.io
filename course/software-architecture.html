@@ -1371,7 +1371,7 @@ function _svg(inner,ac){
     `<marker id="dAhA" markerWidth="9" markerHeight="9" refX="7" refY="3.2" orient="auto"><path d="M0,0 L7,3.2 L0,6.4 Z" fill="${ac}"/></marker>`+
     `<marker id="dAhAs" markerWidth="9" markerHeight="9" refX="2" refY="3.2" orient="auto-start-reverse"><path d="M0,0 L7,3.2 L0,6.4 Z" fill="${ac}"/></marker>`+
   `</defs>`;
-  return `<svg viewBox="0 0 ${VB_W} ${VB_H}" xmlns="http://www.w3.org/2000/svg" style="max-height:280px;font-family:inherit">${defs}${inner}</svg>`;
+  return `<svg viewBox="0 0 ${VB_W} ${VB_H}" role="img" aria-label="アーキテクチャパターンの構成図" xmlns="http://www.w3.org/2000/svg" style="max-height:280px;font-family:inherit">${defs}${inner}</svg>`;
 }
 function _label(cx,cy,text,o={}){
   const{fs=12,color="#101312",weight="600",anchor="middle",sub="",subc="#6B746F",subfs=9.5}=o;
