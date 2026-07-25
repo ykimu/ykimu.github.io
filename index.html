@@ -268,30 +268,32 @@
   .foot-rule{height:1px; background:var(--line); margin:48px 0 22px}
   .foot-note{color:var(--muted); font-size:.82rem}
 
-  /* ---------- site map ---------- */
-  .sitemap-shell{margin-top:36px; background:var(--shell); border:1px solid var(--hair);
-    border-radius:28px; padding:7px; box-shadow:var(--soft)}
-  .sitemap-core{background:var(--card); border-radius:21px; box-shadow:var(--inhi); padding:14px}
-  .sm-grid{display:grid; grid-template-columns:repeat(auto-fit,minmax(212px,1fr)); gap:6px}
-  .sm-group{padding:22px 22px 12px}
-  .sm-head{display:block; font:600 .7rem/1 var(--disp); letter-spacing:.14em; text-transform:uppercase;
-    color:var(--accent-2); margin:0 0 4px}
-  .sm-sublabel{display:block; font:600 .6rem/1 var(--disp); letter-spacing:.1em; text-transform:uppercase;
-    color:var(--muted); margin:16px 0 2px}
-  .sm-group.wide{grid-column:span 2}
-  .sm-cols{columns:2; column-gap:26px}
-  .sm-cols > div{break-inside:avoid; margin-bottom:14px}
-  .sm-cols .sm-sublabel{margin-top:0}
-  @media(max-width:700px){.sm-group.wide{grid-column:auto} .sm-cols{columns:1}}
-  .sm-list{list-style:none; padding:0; margin:0}
-  .sm-item{display:flex; flex-wrap:wrap; align-items:baseline; gap:6px 10px;
-    border-top:1px solid var(--line); padding:10px 2px}
-  .sm-link{font-size:.92rem; font-weight:500; color:var(--ink-2); line-height:1.4; transition:color .3s var(--ease)}
-  .sm-link:hover{color:var(--accent)}
-  .sm-sub{display:inline-flex; align-items:center; gap:3px; font-size:.7rem; font-weight:600; color:var(--muted);
-    border:1px solid var(--hair); border-radius:999px; padding:2px 9px;
-    transition:border-color .3s var(--ease), color .3s var(--ease)}
-  .sm-sub:hover{border-color:var(--accent); color:var(--accent)}
+  /* ---------- site map (condensed, adopted from the 案C proposal) ---------- */
+  #sitemap .sec-grid{display:grid; grid-template-columns:minmax(220px,270px) 1fr; gap:80px; align-items:start}
+  #sitemap .sec-head{position:sticky; top:calc(var(--navh) + 44px)}
+  #sitemap .sec-head h2.big{max-width:14ch}
+  #sitemap .sec-note{margin-top:20px; font-size:.86rem; color:var(--muted); line-height:1.7; max-width:34ch}
+  @media(max-width:1000px){
+    #sitemap .sec-grid{grid-template-columns:1fr; gap:34px}
+    #sitemap .sec-head{position:static}
+    #sitemap .sec-head h2.big{max-width:none}
+  }
+  .smgrid{display:grid; grid-template-columns:repeat(4,1fr); gap:0 40px; align-items:stretch}
+  .smgroup{border-top:1px solid var(--ink); padding-top:20px; display:flex; flex-direction:column; min-width:0}
+  .smhead{display:block; font:600 .7rem/1.5 var(--disp); letter-spacing:.16em; text-transform:uppercase;
+    color:var(--ink); margin:0 0 2px}
+  .smcount{display:block; font-size:.78rem; color:var(--faint); margin-bottom:12px; font-variant-numeric:tabular-nums}
+  .smlist{list-style:none; padding:0; margin:0}
+  .smlist li{border-bottom:1px solid var(--line)}
+  .smlist a{display:block; padding:13px 0; font-size:.92rem; color:var(--ink-2); line-height:1.5;
+    transition:color .3s var(--ease), padding-left .4s var(--ease)}
+  .smlist a:hover{color:var(--ink); padding-left:8px}
+  .small-more{display:inline-flex; align-items:center; gap:8px; margin-top:auto; padding-top:18px;
+    font-size:.84rem; font-weight:500; color:var(--accent-2)}
+  .small-more .ar{color:var(--faint); transition:transform .5s var(--ease)}
+  .small-more:hover .ar{transform:translateX(4px)}
+  @media(max-width:1100px){.smgrid{grid-template-columns:1fr 1fr; gap:44px 40px}}
+  @media(max-width:620px){.smgrid{grid-template-columns:1fr; gap:40px}}
 
   @media(max-width:860px){
     section{padding:72px 0}
@@ -433,6 +435,36 @@
   .mobgroup .mobsublabel{font:600 .6rem/1 var(--disp); letter-spacing:.12em; text-transform:uppercase;
     color:var(--faint); margin:15px 0 5px}
   .mobgroup .mobsublabel:first-of-type{margin-top:2px}
+
+  /* ==================== BAR CHROME v6: full width quiet bar ==================== */
+  /* Adopted from the 案C proposal. The hierarchical dropdown menus below are    */
+  /* unchanged; only the chrome around them is replaced. The bar stays in normal */
+  /* flow (sticky, not fixed), so no page needs top padding compensation.        */
+  :root{--navh:70px}
+  header.bar{position:sticky; top:0; z-index:90; height:var(--navh);
+    background:transparent; border-bottom:1px solid transparent;
+    transition:background .55s var(--ease), border-color .55s var(--ease)}
+  header.bar.stuck{background:rgba(255,255,255,.72); border-bottom-color:var(--hair);
+    -webkit-backdrop-filter:saturate(1.4) blur(18px); backdrop-filter:saturate(1.4) blur(18px)}
+  header.bar .wrap{width:auto; max-width:var(--maxw); margin:0 auto; height:100%;
+    display:flex; flex-direction:row; flex-wrap:nowrap; align-items:center; justify-content:space-between;
+    gap:24px; padding:0 40px; text-align:left;
+    background:transparent; border:0; border-radius:0; box-shadow:none;
+    -webkit-backdrop-filter:none; backdrop-filter:none}
+  header.bar .brand{flex:0 1 auto; min-width:0; text-align:left}
+  header.bar .navlinks{flex:0 1 auto; min-width:0}
+  header.bar .bar-right{flex:0 0 auto}
+  @media(max-width:1000px){
+    header.bar .navlinks{display:none}
+    header.bar .navtoggle{display:block}
+    header.bar .bar-right .btn{display:none}
+  }
+  @media(max-width:860px){
+    header.bar .wrap{padding:0 24px}
+  }
+  @media (prefers-reduced-motion:reduce){
+    header.bar{transition-duration:.001ms !important}
+  }
 </style>
 <script type="application/ld+json">
 {
@@ -455,7 +487,7 @@
 
 <header class="bar">
   <div class="wrap">
-    <div class="brand">Yuta&nbsp;Kimura<span>·</span>木村祐太</div>
+    <a class="brand" href="index.html">Yuta&nbsp;Kimura<span>·</span>木村祐太</a>
     <nav class="navlinks" aria-label="メイン">
       <div class="navgroup">
         <a class="navtop" href="publications.html" aria-haspopup="true" aria-expanded="false"><span lang="ja">研究</span><span lang="en">Research</span></a>
@@ -1092,150 +1124,63 @@
   </div>
 </section>
 
-<!-- SITE MAP -->
+<!-- SITE MAP (condensed) -->
 <section id="sitemap">
-  <div class="wrap reveal">
-    <p class="eyebrow"><span lang="ja">サイトマップ</span><span lang="en">Site Map</span></p>
-    <h2 class="big"><span lang="ja">サイトの全コンテンツ</span><span lang="en">Everything on this site</span></h2>
-    <div class="sitemap-shell">
-      <div class="sitemap-core">
-        <div class="sm-grid">
+  <div class="wrap">
+    <div class="sec-grid">
+      <div class="sec-head reveal">
+        <p class="eyebrow"><span lang="ja">サイトマップ</span><span lang="en">Site Map</span></p>
+        <h2 class="big"><span lang="ja">サイトの歩き方</span><span lang="en">Where to go next</span></h2>
+        <p class="sec-note"><span lang="ja">主要な入口だけをまとめています。各グループの一覧ページから、すべてのページに辿れます。</span><span lang="en">Only the main entry points are listed here. Each group's index page leads to everything else.</span></p>
+      </div>
+      <div class="reveal">
+        <div class="smgrid">
 
-          <div class="sm-group">
-            <span class="sm-head"><span lang="ja">研究</span><span lang="en">Research</span></span>
-            <ul class="sm-list">
-              <li class="sm-item">
-                <a class="sm-link" href="research/technical-debt-metrics.html"><span lang="ja">技術的負債とメトリクス</span><span lang="en">Tech debt &amp; metrics</span></a>
-                <a class="sm-sub" href="research/detail.html"><span lang="ja">詳細</span><span lang="en">Detail</span><span aria-hidden="true">&rsaquo;</span></a>
-              </li>
-              <li class="sm-item">
-                <a class="sm-link" href="research/apr-coding-standards.html"><span lang="ja">自動生成パッチと規約</span><span lang="en">APR &amp; coding standards</span></a>
-                <a class="sm-sub" href="research/apr-coding-standards-detail.html"><span lang="ja">詳細</span><span lang="en">Detail</span><span aria-hidden="true">&rsaquo;</span></a>
-              </li>
-              <li class="sm-item">
-                <a class="sm-link" href="research/td-repayment-refactoring.html"><span lang="ja">負債返済とリファクタリング</span><span lang="en">TD repayment &amp; refactoring</span></a>
-                <a class="sm-sub" href="research/td-repayment-refactoring-detail.html"><span lang="ja">詳細</span><span lang="en">Detail</span><span aria-hidden="true">&rsaquo;</span></a>
-              </li>
-              <li class="sm-item">
-                <a class="sm-link" href="research/satd-issue-classification.html"><span lang="ja">課題票の負債分類</span><span lang="en">SATD issue classification</span></a>
-                <a class="sm-sub" href="research/satd-issue-classification-detail.html"><span lang="ja">詳細</span><span lang="en">Detail</span><span aria-hidden="true">&rsaquo;</span></a>
-              </li>
+          <div class="smgroup">
+            <span class="smhead"><span lang="ja">研究</span><span lang="en">Research</span></span>
+            <span class="smcount"><span lang="ja">代表研究 4件</span><span lang="en">4 featured studies</span></span>
+            <ul class="smlist">
+              <li><a href="research/technical-debt-metrics.html"><span lang="ja">技術的負債とメトリクス</span><span lang="en">Tech debt &amp; metrics</span></a></li>
+              <li><a href="research/apr-coding-standards.html"><span lang="ja">自動生成パッチと規約</span><span lang="en">APR &amp; coding standards</span></a></li>
+              <li><a href="research/td-repayment-refactoring.html"><span lang="ja">負債返済とリファクタリング</span><span lang="en">TD repayment &amp; refactoring</span></a></li>
+              <li><a href="research/satd-issue-classification.html"><span lang="ja">課題票の負債分類</span><span lang="en">SATD issue classification</span></a></li>
             </ul>
+            <a class="small-more" href="publications.html"><span lang="ja">業績・研究活動をすべて見る</span><span lang="en">All publications &amp; activity</span><span class="ar" aria-hidden="true">&rsaquo;</span></a>
           </div>
 
-          <div class="sm-group">
-            <span class="sm-head"><span lang="ja">教育・科目</span><span lang="en">Teaching</span></span>
-            <ul class="sm-list">
-              <li class="sm-item">
-                <a class="sm-link" href="students.html"><span lang="ja">学生の皆さんへ</span><span lang="en">For students</span></a>
-              </li>
-              <li class="sm-item">
-                <a class="sm-link" href="course/index.html"><span lang="ja">ソフトウェア工学 科目ページ</span><span lang="en">Software engineering (course)</span></a>
-              </li>
-              <li class="sm-item">
-                <a class="sm-link" href="course/logic-circuits.html"><span lang="ja">論理回路1 科目ページ</span><span lang="en">Logic circuits 1 (course)</span></a>
-              </li>
-              <li class="sm-item">
-                <a class="sm-link" href="course/intelligent-informatics-1.html"><span lang="ja">知能情報実験実習1 科目ページ</span><span lang="en">Intelligent informatics lab 1 (course)</span></a>
-              </li>
+          <div class="smgroup">
+            <span class="smhead"><span lang="ja">教育</span><span lang="en">Teaching</span></span>
+            <span class="smcount"><span lang="ja">科目3件＋教材13件</span><span lang="en">3 courses, 13 materials</span></span>
+            <ul class="smlist">
+              <li><a href="course/index.html"><span lang="ja">ソフトウェア工学 科目ページ</span><span lang="en">Software engineering (course)</span></a></li>
+              <li><a href="course/logic-circuits.html"><span lang="ja">論理回路1 科目ページ</span><span lang="en">Logic circuits 1 (course)</span></a></li>
+              <li><a href="course/intelligent-informatics-1.html"><span lang="ja">知能情報実験実習1 科目ページ</span><span lang="en">Intelligent informatics lab 1</span></a></li>
+              <li><a href="students.html"><span lang="ja">学生の皆さんへ</span><span lang="en">For students</span></a></li>
             </ul>
+            <a class="small-more" href="teaching.html"><span lang="ja">教育・授業教材の一覧</span><span lang="en">All teaching &amp; materials</span><span class="ar" aria-hidden="true">&rsaquo;</span></a>
           </div>
 
-          <div class="sm-group wide">
-            <span class="sm-head"><span lang="ja">授業教材</span><span lang="en">Course materials</span></span>
-            <div class="sm-cols">
-              <div>
-                <span class="sm-sublabel"><span lang="ja">要求・モデリング</span><span lang="en">Requirements &amp; Modeling</span></span>
-                <ul class="sm-list">
-                  <li class="sm-item"><a class="sm-link" href="course/requirements-engineering.html"><span lang="ja">要求工学</span><span lang="en">Requirements Engineering</span></a></li>
-                  <li class="sm-item"><a class="sm-link" href="course/system-modeling-uml.html"><span lang="ja">システムモデリング(UML)</span><span lang="en">System Modeling</span></a></li>
-                  <li class="sm-item"><a class="sm-link" href="course/uml-guide.html"><span lang="ja">クラス図・シーケンス図 作成ガイド</span><span lang="en">UML diagrams guide</span></a></li>
-                </ul>
-              </div>
-              <div>
-                <span class="sm-sublabel"><span lang="ja">設計・実装</span><span lang="en">Design &amp; Implementation</span></span>
-                <ul class="sm-list">
-                  <li class="sm-item"><a class="sm-link" href="course/software-architecture.html"><span lang="ja">アーキテクチャパターン大全</span><span lang="en">Architecture patterns</span></a></li>
-                  <li class="sm-item"><a class="sm-link" href="course/design-patterns.html"><span lang="ja">デザインパターン学習ガイド</span><span lang="en">Design patterns guide</span></a></li>
-                  <li class="sm-item"><a class="sm-link" href="course/software-reuse-oss.html"><span lang="ja">ソフトウェア再利用とOSS</span><span lang="en">Software Reuse &amp; OSS</span></a></li>
-                </ul>
-              </div>
-              <div>
-                <span class="sm-sublabel"><span lang="ja">計画・プロセス</span><span lang="en">Planning &amp; Process</span></span>
-                <ul class="sm-list">
-                  <li class="sm-item"><a class="sm-link" href="course/agile-scrum.html"><span lang="ja">アジャイル開発とスクラム</span><span lang="en">Agile &amp; Scrum</span></a></li>
-                  <li class="sm-item"><a class="sm-link" href="course/project-management.html"><span lang="ja">プロジェクト管理と見積もり</span><span lang="en">Project Management</span></a></li>
-                  <li class="sm-item"><a class="sm-link" href="course/project-estimation-planning.html"><span lang="ja">プロジェクト計画・見積もり</span><span lang="en">Project Planning &amp; Estimation</span></a></li>
-                </ul>
-              </div>
-              <div>
-                <span class="sm-sublabel"><span lang="ja">品質・運用</span><span lang="en">Quality &amp; Operations</span></span>
-                <ul class="sm-list">
-                  <li class="sm-item"><a class="sm-link" href="course/software-testing.html"><span lang="ja">ソフトウェアテスト学習ガイド</span><span lang="en">Software testing guide</span></a></li>
-                  <li class="sm-item"><a class="sm-link" href="course/dependable-systems.html"><span lang="ja">ディペンダブルシステム</span><span lang="en">Dependable Systems</span></a></li>
-                  <li class="sm-item"><a class="sm-link" href="course/software-evolution.html"><span lang="ja">ソフトウェア進化と技術的負債</span><span lang="en">Software Evolution</span></a></li>
-                  <li class="sm-item"><a class="sm-link" href="course/version-control-cicd.html"><span lang="ja">バージョン管理とCI/CD</span><span lang="en">Version Control &amp; CI/CD</span></a></li>
-                </ul>
-              </div>
-            </div>
+          <div class="smgroup">
+            <span class="smhead"><span lang="ja">学習コース</span><span lang="en">Learn</span></span>
+            <span class="smcount"><span lang="ja">技術12件＋実践7件</span><span lang="en">12 topics, 7 practices</span></span>
+            <ul class="smlist">
+              <li><a href="learn/repository-mining.html"><span lang="ja">リポジトリマイニング入門</span><span lang="en">Repository mining</span></a></li>
+              <li><a href="learn/machine-learning.html"><span lang="ja">機械学習</span><span lang="en">Machine learning</span></a></li>
+              <li><a href="learn/llm.html"><span lang="ja">大規模言語モデル（LLM）</span><span lang="en">Large language models</span></a></li>
+              <li><a href="learn/practice-oss-health.html"><span lang="ja">OSSプロジェクトの健康診断</span><span lang="en">OSS health check</span></a></li>
+            </ul>
+            <a class="small-more" href="learn/index.html"><span lang="ja">学習コースの全体像</span><span lang="en">Full course overview</span><span class="ar" aria-hidden="true">&rsaquo;</span></a>
           </div>
 
-          <div class="sm-group wide">
-            <span class="sm-head"><span lang="ja">学習コース</span><span lang="en">Learning course</span></span>
-            <ul class="sm-list">
-              <li class="sm-item"><a class="sm-link" href="learn/index.html"><span lang="ja">学習コースの全体像</span><span lang="en">Course overview</span></a></li>
+          <div class="smgroup">
+            <span class="smhead"><span lang="ja">ガイド</span><span lang="en">Guides</span></span>
+            <span class="smcount"><span lang="ja">分野の入門 3件</span><span lang="en">3 introductions</span></span>
+            <ul class="smlist">
+              <li><a href="software-engineering.html"><span lang="ja">ソフトウェア工学とは</span><span lang="en">What is software engineering</span></a></li>
+              <li><a href="technical-debt.html"><span lang="ja">技術的負債とは</span><span lang="en">What is technical debt</span></a></li>
+              <li><a href="glossary.html"><span lang="ja">研究用語ミニ辞典</span><span lang="en">Research glossary</span></a></li>
             </ul>
-            <div class="sm-cols" style="margin-top:14px">
-              <div>
-                <span class="sm-sublabel"><span lang="ja">分析技術</span><span lang="en">Techniques</span></span>
-                <ul class="sm-list">
-                  <li class="sm-item"><a class="sm-link" href="learn/nlp.html"><span lang="ja">自然言語処理（NLP）</span><span lang="en">Natural language processing</span></a></li>
-                  <li class="sm-item"><a class="sm-link" href="learn/network-analysis.html"><span lang="ja">ネットワーク分析</span><span lang="en">Network analysis</span></a></li>
-                  <li class="sm-item"><a class="sm-link" href="learn/machine-learning.html"><span lang="ja">機械学習</span><span lang="en">Machine learning</span></a></li>
-                  <li class="sm-item"><a class="sm-link" href="learn/deep-learning.html"><span lang="ja">深層学習</span><span lang="en">Deep learning</span></a></li>
-                  <li class="sm-item"><a class="sm-link" href="learn/llm.html"><span lang="ja">大規模言語モデル（LLM）</span><span lang="en">Large language models</span></a></li>
-                  <li class="sm-item"><a class="sm-link" href="learn/program-analysis.html"><span lang="ja">プログラム解析</span><span lang="en">Program analysis</span></a></li>
-                </ul>
-              </div>
-              <div>
-                <span class="sm-sublabel"><span lang="ja">データ収集</span><span lang="en">Data collection</span></span>
-                <ul class="sm-list">
-                  <li class="sm-item"><a class="sm-link" href="learn/repository-mining.html"><span lang="ja">リポジトリマイニング入門</span><span lang="en">Repository mining</span></a></li>
-                  <li class="sm-item"><a class="sm-link" href="learn/data-preprocessing.html"><span lang="ja">開発データの前処理とデータセット構築</span><span lang="en">Data preprocessing</span></a></li>
-                </ul>
-                <span class="sm-sublabel"><span lang="ja">統計とデータ分析</span><span lang="en">Statistics &amp; data analysis</span></span>
-                <ul class="sm-list">
-                  <li class="sm-item"><a class="sm-link" href="learn/statistics.html"><span lang="ja">統計分析</span><span lang="en">Statistical analysis</span></a></li>
-                  <li class="sm-item"><a class="sm-link" href="learn/data-visualization.html"><span lang="ja">データ可視化</span><span lang="en">Data visualization</span></a></li>
-                  <li class="sm-item"><a class="sm-link" href="learn/causal-inference.html"><span lang="ja">因果推論</span><span lang="en">Causal inference</span></a></li>
-                  <li class="sm-item"><a class="sm-link" href="learn/time-series.html"><span lang="ja">時系列分析</span><span lang="en">Time series analysis</span></a></li>
-                </ul>
-              </div>
-            </div>
-          </div>
-
-          <div class="sm-group">
-            <span class="sm-head"><span lang="ja">学習コース・実践編</span><span lang="en">Practice</span></span>
-            <ul class="sm-list">
-              <li class="sm-item"><a class="sm-link" href="learn/practice-oss-health.html"><span lang="ja">OSSプロジェクトの健康診断</span><span lang="en">OSS health check</span></a></li>
-              <li class="sm-item"><a class="sm-link" href="learn/practice-text-classifier.html"><span lang="ja">テキスト分類器を作る</span><span lang="en">Text classifier</span></a></li>
-              <li class="sm-item"><a class="sm-link" href="learn/practice-code-metrics.html"><span lang="ja">ソースコードを測って読み解く</span><span lang="en">Measuring source code</span></a></li>
-              <li class="sm-item"><a class="sm-link" href="learn/practice-semantic-search.html"><span lang="ja">意味で検索する</span><span lang="en">Semantic search</span></a></li>
-              <li class="sm-item"><a class="sm-link" href="learn/practice-cnn-endtoend.html"><span lang="ja">深層学習の一気通貫</span><span lang="en">CNN end-to-end</span></a></li>
-              <li class="sm-item"><a class="sm-link" href="learn/practice-dev-timeseries.html"><span lang="ja">開発活動の時系列を読み解く</span><span lang="en">Dev activity time series</span></a></li>
-              <li class="sm-item"><a class="sm-link" href="learn/practice-ab-test.html"><span lang="ja">A/Bテストで効果を検証する</span><span lang="en">A/B test analysis</span></a></li>
-            </ul>
-          </div>
-
-          <div class="sm-group">
-            <span class="sm-head"><span lang="ja">ガイド・プロフィール</span><span lang="en">Guides &amp; about</span></span>
-            <ul class="sm-list">
-              <li class="sm-item"><a class="sm-link" href="software-engineering.html"><span lang="ja">ソフトウェア工学とは</span><span lang="en">What is software engineering</span></a></li>
-              <li class="sm-item"><a class="sm-link" href="technical-debt.html"><span lang="ja">技術的負債とは</span><span lang="en">What is technical debt</span></a></li>
-              <li class="sm-item"><a class="sm-link" href="glossary.html"><span lang="ja">研究用語ミニ辞典</span><span lang="en">Glossary</span></a></li>
-              <li class="sm-item"><a class="sm-link" href="publications.html"><span lang="ja">業績・研究活動</span><span lang="en">Publications &amp; research activities</span></a></li>
-              <li class="sm-item"><a class="sm-link" href="teaching.html"><span lang="ja">教育</span><span lang="en">Teaching</span></a></li>
-            </ul>
+            <a class="small-more" href="#about"><span lang="ja">研究者プロフィールを見る</span><span lang="en">About the researcher</span><span class="ar" aria-hidden="true">&rsaquo;</span></a>
           </div>
 
         </div>
@@ -1412,6 +1357,29 @@
     ov.addEventListener('click', function(e){ if(e.target.closest('a')) closeNav(); });
     document.addEventListener('keydown', function(e){ if(e.key==='Escape' && document.body.classList.contains('navopen')) closeNav(); });
   }
+})();
+</script>
+
+<script>
+/* bar chrome v6: the quiet bar gains its hairline once the page is scrolled */
+(function(){
+  var bar = document.querySelector('header.bar');
+  if (!bar) return;
+  var ticking = false, on = false;
+  function apply(){
+    ticking = false;
+    var y = window.pageYOffset || document.documentElement.scrollTop || 0;
+    var s = y > 8;
+    if (s !== on){ on = s; bar.classList.toggle('stuck', s); }
+  }
+  function onScroll(){
+    if (ticking) return;
+    ticking = true;
+    if (window.requestAnimationFrame) requestAnimationFrame(apply); else apply();
+  }
+  window.addEventListener('scroll', onScroll, {passive:true});
+  window.addEventListener('resize', onScroll, {passive:true});
+  apply();
 })();
 </script>
 </body>
