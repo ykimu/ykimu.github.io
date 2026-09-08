@@ -622,8 +622,8 @@
         <span lang="en">Technical debt likens low-quality design or implementation chosen under constraints such as time pressure to the "principal", and the extra maintenance cost that accrues while it is left unaddressed to the "interest". Teams increasingly report and manage it by attaching a <b>debt</b> label to issue reports (TD&nbsp;Issues). To act before debt is reported, however, we want to capture it from the source code itself, without presupposing an issue report.</span>
       </p>
       <p>
-        <span lang="ja">先行研究は大きく二つの流れに分けられます。研究者が定義する負債（コードスメルなど）を静的解析やメトリクスで<b>コードから検出</b>する系と、開発者が明示した負債（SATDやTD Issue）を<b>テキストから同定</b>する系です。本研究は、開発者が課題として報告した負債を、それを構成する<b>コードから捉える</b>という、これまで手薄だった領域に位置づけられます。</span>
-        <span lang="en">Prior work splits into two lines: detecting researcher-defined debt (such as code smells) <b>from code</b> via static analysis and metrics, and identifying developer-explicit debt (SATD, TD Issues) <b>from text</b>. This study occupies the underexamined space of capturing the debt developers reported as issues <b>from the code that constitutes it</b>.</span>
+        <span lang="ja">先行研究は大きく二つの流れに分けられます。研究者が定義する負債（コードスメルなど）を静的解析やメトリクスで<b>コードから検出</b>する系と、開発者が明示した負債（SATDやTD-Issue）を<b>テキストから同定</b>する系です。本研究は、開発者が課題として報告した負債を、それを構成する<b>コードから捉える</b>という、これまで手薄だった領域に位置づけられます。</span>
+        <span lang="en">Prior work splits into two lines: detecting researcher-defined debt (such as code smells) <b>from code</b> via static analysis and metrics, and identifying developer-explicit debt (SATD, TD-Issues) <b>from text</b>. This study occupies the underexamined space of capturing the debt developers reported as issues <b>from the code that constitutes it</b>.</span>
       </p>
     </div>
 
@@ -636,7 +636,7 @@
       <div class="cell this"><b><span lang="ja">本研究</span><span lang="en">This study</span></b><span lang="ja">開発者報告の負債をコードから</span><span lang="en">issue-reported debt, from code</span><span class="tag"><span lang="ja">この間隙</span><span lang="en">the gap</span></span></div>
       <div class="mh"><span lang="ja">テキストから</span><span lang="en">From text</span></div>
       <div class="cell"><span lang="ja">（事例は少ない）</span><span lang="en">(uncommon)</span></div>
-      <div class="cell"><b><span lang="ja">SATD / TD Issue 同定</span><span lang="en">SATD / TD Issue identification</span></b><span lang="ja">自然言語処理</span><span lang="en">natural language processing</span></div>
+      <div class="cell"><b><span lang="ja">SATD / TD-Issue 同定</span><span lang="en">SATD / TD-Issue identification</span></b><span lang="ja">自然言語処理</span><span lang="en">natural language processing</span></div>
     </div>
     <p class="tcap"><span lang="ja">「誰が負債を定義するか」×「何から同定するか」の2軸による位置づけ。</span><span lang="en">Positioning along two axes: who defines the debt, and what it is identified from.</span></p>
   </div>
@@ -649,13 +649,13 @@
     <div class="prose reveal">
       <h3><span lang="ja">データセット</span><span lang="en">Dataset</span></h3>
       <p>
-        <span lang="ja">Skryseth らが公開した55,600件のTD Issueを出発点に、(1)公開リポジトリ、(2)Java、(3)負債を解消するコード変更が存在する、の3条件で絞り込み、140プロジェクト・5,229件のTD Issueを得ました。欠損メトリクスのあるファイルを除外した最終的な実験データは72,952ファイルです。</span>
-        <span lang="en">Starting from the 55,600 TD Issues released by Skryseth et al., we kept (1) public repositories, (2) Java, and (3) issues resolved by a code change, yielding 140 projects and 5,229 TD Issues. After excluding files with incomplete metrics, the experimental dataset contains 72,952 files.</span>
+        <span lang="ja">Skryseth らが公開した55,600件のTD-Issueを出発点に、(1)公開リポジトリ、(2)Java、(3)負債を解消するコード変更が存在する、の3条件で絞り込み、140プロジェクト・5,229件のTD-Issueを得ました。欠損メトリクスのあるファイルを除外した最終的な実験データは72,952ファイルです。</span>
+        <span lang="en">Starting from the 55,600 TD-Issues released by Skryseth et al., we kept (1) public repositories, (2) Java, and (3) issues resolved by a code change, yielding 140 projects and 5,229 TD-Issues. After excluding files with incomplete metrics, the experimental dataset contains 72,952 files.</span>
       </p>
       <h3><span lang="ja">ラベルの定義</span><span lang="en">Labeling</span></h3>
       <p>
-        <span lang="ja">TD Issueの解消時に変更されたファイルの<b>変更直前版</b>をTDファイル、TD解消に一度も関与しなかったファイルの<b>最新変更の直前版</b>をNon-TDファイルとします。ファイル単位で分類します。</span>
-        <span lang="en">A <b>TD file</b> is the version just before a file was changed to resolve a TD Issue; a <b>Non-TD file</b> is the version before the latest change of a file never involved in resolving a TD Issue. Classification is at the file level.</span>
+        <span lang="ja">TD-Issueの解消時に変更されたファイルの<b>変更直前版</b>をTDファイル、TD解消に一度も関与しなかったファイルの<b>最新変更の直前版</b>をNon-TDファイルとします。ファイル単位で分類します。</span>
+        <span lang="en">A <b>TD file</b> is the version just before a file was changed to resolve a TD-Issue; a <b>Non-TD file</b> is the version before the latest change of a file never involved in resolving a TD-Issue. Classification is at the file level.</span>
       </p>
       <h3><span lang="ja">特徴量とモデル</span><span lang="en">Features and model</span></h3>
       <p>
@@ -665,7 +665,7 @@
     </div>
     <div class="defs reveal">
       <div class="row"><div class="k"><span lang="ja">プロジェクト</span><span lang="en">Projects</span></div><div class="v">140</div></div>
-      <div class="row"><div class="k"><span lang="ja">TD Issue</span><span lang="en">TD Issues</span></div><div class="v">5,229</div></div>
+      <div class="row"><div class="k"><span lang="ja">TD-Issue</span><span lang="en">TD-Issues</span></div><div class="v">5,229</div></div>
       <div class="row"><div class="k"><span lang="ja">ファイル</span><span lang="en">Files</span></div><div class="v">72,952&nbsp; <span class="num">(TD 25,948 / Non-TD 47,004)</span></div></div>
       <div class="row"><div class="k"><span lang="ja">特徴量</span><span lang="en">Features</span></div><div class="v"><span lang="ja">72 ソースコード ＋ 5 ファイル ＝ 77</span><span lang="en">72 source-code + 5 file = 77</span></div></div>
     </div>
@@ -847,7 +847,7 @@
     <div class="foot-grid">
       <div>
         <h3><span lang="ja">論文</span><span lang="en">Paper</span></h3>
-        <div class="cite">Y. Kimura and M. Ohira, "Classifying and Characterizing Technical Debt Reported in Issue Tracking Systems Using Software Metrics," IEICE Transactions on Information and Systems.</div>
+        <div class="cite">Y. Kimura and M. Ohira, "Classifying and Characterizing Technical Debt Reported in Issue Tracking Systems Using Software Metrics," <span lang="ja">IEICE Transactions on Information and Systems に投稿中（2026年9月時点・査読中）。</span><span lang="en">under review at IEICE Transactions on Information and Systems (as of Sep. 2026).</span></div>
       </div>
       <div>
         <h3><span lang="ja">著者</span><span lang="en">Authors</span></h3>
@@ -879,7 +879,7 @@
         <p class="muted-s">
           <a href="technical-debt-metrics.html"><span lang="ja">技術的負債 × メトリクス</span><span lang="en">Technical Debt × Metrics</span></a><br>
           <a href="apr-coding-standards.html"><span lang="ja">自動生成パッチとコーディング規約</span><span lang="en">APR &amp; Coding Standards</span></a><br>
-          <a href="satd-issue-classification.html"><span lang="ja">技術的負債の課題票分類手法</span><span lang="en">SATD Issue Classification</span></a><br>
+          <a href="satd-issue-classification.html"><span lang="ja">技術的負債の課題票分類手法</span><span lang="en">SATD-Issue Classification</span></a><br>
           <a href="td-repayment-refactoring.html"><span lang="ja">負債の返済とリファクタリング</span><span lang="en">Repayment &amp; Refactoring</span></a><br>
           <a href="https://researchmap.jp/kimura_yuta" target="_blank" rel="noopener">researchmap</a>
         </p>

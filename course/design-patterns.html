@@ -139,7 +139,7 @@
   /* prose (intro / closing reused HTML) */
   .prose{max-width:var(--readw)}
   .prose p{margin:0 0 1em; color:var(--ink-2)}
-  .prose h4{font-family:var(--sans); font-size:1.12rem; font-weight:600; letter-spacing:0; color:var(--ink); margin:1.6em 0 .6em}
+  .prose h3{font-family:var(--sans); font-size:1.12rem; font-weight:600; letter-spacing:0; color:var(--ink); margin:1.6em 0 .6em; line-height:inherit; text-wrap:wrap}
   .prose ul{margin:0 0 1.2em; padding-left:0; list-style:none}
   .prose ul li{position:relative; padding-left:22px; margin:12px 0; color:var(--ink-2)}
   .prose ul li::before{content:""; position:absolute; left:0; top:13px; width:11px; height:1.5px; background:var(--accent)}
@@ -150,7 +150,7 @@
 
   .callout{border-radius:16px; padding:18px 22px; margin:18px 0; max-width:var(--readw);
     background:var(--card); box-shadow:0 0 0 6px var(--shell),0 0 0 6.5px var(--hair),var(--soft)}
-  .callout h4{margin:0 0 6px; font-size:1rem; font-family:var(--sans); font-weight:600; letter-spacing:0; color:var(--ink)}
+  .callout h3{margin:0 0 6px; font-size:1rem; font-family:var(--sans); font-weight:600; letter-spacing:0; color:var(--ink); line-height:inherit; text-wrap:wrap}
   .callout.tip{background:var(--accent-soft)}
   .callout.warn{background:rgba(138,109,59,.08)}
   .callout a{font-weight:600}
@@ -229,14 +229,14 @@
   .grid2{display:grid; grid-template-columns:1fr 1fr; gap:16px; margin:18px 0}
   .box{border-radius:16px; padding:16px 18px; background:var(--card);
     box-shadow:0 0 0 6px var(--shell),0 0 0 6.5px var(--hair),var(--soft)}
-  .box h5{margin:0 0 10px; font-size:.92rem; font-family:var(--sans); font-weight:600; letter-spacing:0; display:flex; align-items:center; gap:7px}
-  .box.pros h5{color:var(--accent-2)}
-  .box.cons h5{color:var(--bad)}
+  .box h4{margin:0 0 10px; font-size:.92rem; font-family:var(--sans); font-weight:600; letter-spacing:0; display:flex; align-items:center; gap:7px}
+  .box.pros h4{color:var(--accent-2)}
+  .box.cons h4{color:var(--bad)}
   .box ul{margin:0; padding-left:18px}
   .box li{margin:6px 0; font-size:.9rem; color:var(--ink-2)}
 
   .meta-row{display:grid; grid-template-columns:1fr 1fr; gap:16px; margin:16px 0}
-  .meta h5{margin:0 0 8px; font-size:.92rem; font-family:var(--sans); font-weight:600; letter-spacing:0; color:var(--accent-2)}
+  .meta h4{margin:0 0 8px; font-size:.92rem; font-family:var(--sans); font-weight:600; letter-spacing:0; color:var(--accent-2)}
   .meta p,.meta li{font-size:.92rem; color:var(--ink-2)}
   .meta ul{margin:0; padding-left:18px}
   .meta p{margin:0}
@@ -244,7 +244,7 @@
 
   /* class diagram */
   .diagram-wrap{margin:18px 0}
-  .diagram-wrap h5{margin:0 0 8px; font-size:.92rem; font-family:var(--sans); font-weight:600; letter-spacing:0; color:var(--accent-2)}
+  .diagram-wrap h4{margin:0 0 8px; font-size:.92rem; font-family:var(--sans); font-weight:600; letter-spacing:0; color:var(--accent-2)}
   .diagram-wrap svg{display:block; width:100%; height:auto; background:var(--shell);
     border:1px solid var(--hair); border-radius:12px; padding:8px}
   .dg-box{fill:var(--card); stroke:var(--line); stroke-width:1.2}
@@ -566,7 +566,7 @@
             <div class="megacol">
               <div class="navlabel"><span lang="ja">計画・プロセス</span><span lang="en">Planning &amp; Process</span></div>
               <a href="agile-scrum.html"><span lang="ja">アジャイル開発とスクラム</span><span lang="en">Agile &amp; Scrum</span></a>
-              <a href="project-management.html"><span lang="ja">プロジェクト管理と見積もり</span><span lang="en">Project Management</span></a>
+              <a href="project-management.html"><span lang="ja">プロジェクト管理</span><span lang="en">Project Management</span></a>
               <a href="project-estimation-planning.html"><span lang="ja">プロジェクト計画・見積もり</span><span lang="en">Project Planning &amp; Estimation</span></a>
             </div>
             <div class="megacol">
@@ -672,7 +672,7 @@
       <a href="software-reuse-oss.html"><span lang="ja">ソフトウェア再利用とOSS</span><span lang="en">Software Reuse &amp; OSS</span></a>
       <div class="mobsublabel"><span lang="ja">計画・プロセス</span><span lang="en">Planning &amp; Process</span></div>
       <a href="agile-scrum.html"><span lang="ja">アジャイル開発とスクラム</span><span lang="en">Agile &amp; Scrum</span></a>
-      <a href="project-management.html"><span lang="ja">プロジェクト管理と見積もり</span><span lang="en">Project Management</span></a>
+      <a href="project-management.html"><span lang="ja">プロジェクト管理</span><span lang="en">Project Management</span></a>
       <a href="project-estimation-planning.html"><span lang="ja">プロジェクト計画・見積もり</span><span lang="en">Project Planning &amp; Estimation</span></a>
       <div class="mobsublabel"><span lang="ja">品質・運用</span><span lang="en">Quality &amp; Operations</span></div>
       <a href="software-testing.html"><span lang="ja">ソフトウェアテスト学習ガイド</span><span lang="en">Software Testing Guide</span></a>
@@ -728,6 +728,9 @@
 </div>
 
 <main id="main">
+<noscript><div class="wrap" style="padding-top:24px"><p role="alert" style="margin:0; padding:14px 18px; border:1px solid var(--hair, #ddd); border-radius:12px; background:var(--bg-2, #f4f4f2); color:var(--ink, #222); font-size:.95rem">
+  <span lang="ja">この教材はJavaScriptを有効にすると表示されます。</span><span lang="en">This learning material is displayed when JavaScript is enabled.</span>
+</p></div></noscript>
 
 <button class="totop" type="button" aria-label="上へ戻る" title="上へ戻る">&uarr;</button>
 
@@ -890,12 +893,12 @@ const INTRO_HTML = `
 それぞれに名前・目的・構造・適用場面を与えました。</p>
 
 <div class="callout">
-  <h4>建築家クリストファー・アレグザンダーの影響</h4>
+  <h3>建築家クリストファー・アレグザンダーの影響</h3>
   「パターン」という発想の源流は建築にあります。建築家アレグザンダーは
   「良い設計には繰り返し現れる型がある」と説き、その考え方をソフトウェアに持ち込んだのがGoFです。
 </div>
 
-<h4 style="margin-top:22px">なぜデザインパターンを学ぶのか</h4>
+<h3 style="margin-top:22px">なぜデザインパターンを学ぶのか</h3>
 <div class="principles">
   <div class="p"><b>共通言語になる</b><br><span>「ここはObserverで」と一言で設計意図が伝わり、チームの会話が速くなる。</span></div>
   <div class="p"><b>車輪の再発明を防ぐ</b><br><span>検証済みの解法を使うことで、設計の質と速度が上がる。</span></div>
@@ -903,7 +906,7 @@ const INTRO_HTML = `
   <div class="p"><b>設計力が上がる</b><br><span>良い設計の発想パターンが身につき、応用が利くようになる。</span></div>
 </div>
 
-<h4 style="margin-top:22px">3つのカテゴリ</h4>
+<h3 style="margin-top:22px">3つのカテゴリ</h3>
 <p>GoFの23パターンは、その<strong>目的</strong>によって3つに分類されます。</p>
 <div class="principles">
   <div class="p"><b style="color:var(--creational)">生成 (Creational)：5種</b><br>
@@ -914,7 +917,7 @@ const INTRO_HTML = `
     <span>オブジェクト間の<strong>責務の分担と通信</strong>。アルゴリズムや相互作用を整理する。</span></div>
 </div>
 
-<h4 style="margin-top:22px">土台となる設計原則</h4>
+<h3 style="margin-top:22px">土台となる設計原則</h3>
 <p>多くのパターンは、次のような原則を実現する手段でもあります。これらを意識すると、
 パターンが「なぜそういう形をしているのか」が腑に落ちます。</p>
 <ul>
@@ -924,24 +927,24 @@ const INTRO_HTML = `
   <li><b>開放閉鎖の原則（OCP）</b>：拡張に対して開き、修正に対して閉じる。</li>
 </ul>
 
-<h4 style="margin-top:22px">学習ロードマップ：どの順で学ぶか</h4>
+<h3 style="margin-top:22px">学習ロードマップ：どの順で学ぶか</h3>
 <p>23パターンには実務での使用頻度に大きな差があり、<strong>全部を一度に覚える必要はありません</strong>。
 次の3ステップで進めるのがおすすめです。各パターンの見出しに付けた
 <b>必修 / 頻出 / 発展</b> のバッジと <b>★の難易度</b> も目安にしてください。</p>
 <div class="callout tip">
-  <h4>STEP 1｜まずこの6つ（最頻出・考え方の核になる）</h4>
+  <h3>STEP 1｜まずこの6つ（最頻出・考え方の核になる）</h3>
   <a href="#strategy">Strategy</a> → <a href="#observer">Observer</a> →
   <a href="#factory-method">Factory Method</a> → <a href="#singleton">Singleton</a> →
   <a href="#adapter">Adapter</a> → <a href="#facade">Facade</a>
 </div>
 <div class="callout">
-  <h4>STEP 2｜次の8つ（実務でよく出会う）</h4>
+  <h3>STEP 2｜次の8つ（実務でよく出会う）</h3>
   <a href="#decorator">Decorator</a>、<a href="#template-method">Template Method</a>、
   <a href="#state">State</a>、<a href="#command">Command</a>、<a href="#builder">Builder</a>、
   <a href="#composite">Composite</a>、<a href="#iterator">Iterator</a>、<a href="#proxy">Proxy</a>
 </div>
 <div class="callout warn">
-  <h4>STEP 3｜残りの9つ（必要になったときに引く）</h4>
+  <h3>STEP 3｜残りの9つ（必要になったときに引く）</h3>
   <a href="#abstract-factory">Abstract Factory</a>、<a href="#prototype">Prototype</a>、
   <a href="#bridge">Bridge</a>、<a href="#chain">Chain of Responsibility</a>、
   <a href="#mediator">Mediator</a>、<a href="#memento">Memento</a>、
@@ -955,13 +958,13 @@ const CLOSING_HTML = `
 <p>デザインパターンは強力ですが、<strong>使うこと自体が目的になっては本末転倒</strong>です。
 最後に実務での向き合い方をまとめます。</p>
 <div class="callout warn">
-  <h4>パターンの過剰適用（オーバーエンジニアリング）に注意</h4>
+  <h3>パターンの過剰適用（オーバーエンジニアリング）に注意</h3>
   単純な問題に複雑なパターンを当てはめると、かえって読みにくく保守しにくいコードになります。
   「このパターンで何の変更に強くなるのか？」を常に自問しましょう。本当にその変更が起きるのか、
   まだ起きていない要求のために複雑さを抱え込んでいないかを見極めることが大切です。
 </div>
 <div class="callout tip">
-  <h4>まずは問題から出発する</h4>
+  <h3>まずは問題から出発する</h3>
   「Strategyを使いたい」ではなく「アルゴリズムを実行時に差し替えたい」という<strong>問題</strong>から考え、
   その解としてパターンにたどり着くのが健全な順序です。パターンは答えの引き出しであって、出発点ではありません。
 </div>
@@ -969,7 +972,7 @@ const CLOSING_HTML = `
 第一級関数があるためStrategyを関数オブジェクトで簡潔に書け、Iteratorはジェネレータで置き換えられます。
 パターンの<strong>意図</strong>を理解し、自分の道具立てに合わせて柔軟に応用してください。</p>
 
-<h4 style="margin-top:26px">混同しやすいパターンの見分け方</h4>
+<h3 style="margin-top:26px">混同しやすいパターンの見分け方</h3>
 <p>構造がよく似たパターンは、<strong>目的（意図）</strong>で見分けます。試験でも実務でも問われるポイントです。</p>
 <table class="cmp-table">
   <tr><th>似ているパターン</th><th>見分けるポイント</th></tr>
@@ -989,9 +992,9 @@ const CLOSING_HTML = `
     <td>どちらも再帰的な合成。Compositeは<b>木構造</b>を作って集約し、Decoratorは<b>一本の鎖</b>で機能を積み増す。</td></tr>
 </table>
 
-<h4 style="margin-top:26px">研究者の視点：パターンへの批判も知っておく</h4>
+<h3 style="margin-top:26px">研究者の視点：パターンへの批判も知っておく</h3>
 <div class="callout">
-  <h4>「パターンは言語の限界の裏返し」という指摘</h4>
+  <h3>「パターンは言語の限界の裏返し」という指摘</h3>
   Peter Norvigは1996年の講演 “Design Patterns in Dynamic Programming” で、LispやDylanのような動的言語では
   <strong>GoF 23パターンのうち16個が不要になるか大幅に簡素化される</strong>と指摘しました。
   実際、本ページのPython例でもStrategyは関数で、Iteratorはジェネレータで置き換えています。
@@ -1000,7 +1003,7 @@ const CLOSING_HTML = `
   コードに敷き詰めるための装飾ではありません。
 </div>
 
-<h4 style="margin-top:26px">さらに学ぶための文献・資料</h4>
+<h3 style="margin-top:26px">さらに学ぶための文献・資料</h3>
 <ul>
   <li>E. Gamma, R. Helm, R. Johnson, J. Vlissides『オブジェクト指向における再利用のためのデザインパターン（改訂版）』SBクリエイティブ：原典（GoF本、原著1994年）</li>
   <li>結城浩『Java言語で学ぶデザインパターン入門 第3版』SBクリエイティブ、2021年：日本語で定評のある入門書</li>
@@ -1486,7 +1489,7 @@ print(drink.cost())               # 370`
   ],
   usage:"多数のクラス連携が必要な処理（注文確定、動画変換など）を、外部には一つの簡単な操作として見せたいとき。",
   examples:[
-    "Java の <code>javax.faces</code> や各種フレームワークの高レベルAPI",
+    "Java の <code>javax.swing.JOptionPane</code>（ダイアログ生成の複雑な手順を1メソッドで隠す）や <code>java.net.URL</code>",
     "SLF4J（多様なロギング実装への統一窓口）",
     "「注文する」一発で在庫・決済・配送の各サービスを束ねる処理"
   ],
@@ -1835,7 +1838,7 @@ for n in NumberCollection([1, 2, 3]):
   ],
   usage:"多くの部品が複雑に連動するとき（フォームの入力部品同士、チャットの参加者間など）。",
   examples:[
-    "Java の <code>java.util.Timer</code> 的な調停、Swingのイベント調停",
+    "Swing の <code>JFrame</code>／ダイアログクラスがボタン・入力欄などの部品間の連携を一手に引き受ける構造",
     "航空管制（各機が管制塔を介して通信）",
     "ダイアログ内で各UI部品の有効/無効を相互制御する処理"
   ],
@@ -1926,7 +1929,7 @@ PATTERNS.push(
 {
   id:"observer", name:"Observer", jp:"オブザーバー", category:"behavioral",
   tags:["通知","発行-購読"],
-  summary:"あるオブジェクト（被験者）の<strong>状態変化を、登録された複数のオブザーバーに自動通知</strong>するパターンです。発行-購読（Pub/Sub）の基礎で、対象と観測者を疎結合に保ちます。",
+  summary:"あるオブジェクト（観測対象（Subject））の<strong>状態変化を、登録された複数のオブザーバーに自動通知</strong>するパターンです。発行-購読（Pub/Sub）の基礎で、対象と観測者を疎結合に保ちます。",
   pros:[
     "通知元と通知先を疎結合に保てる。",
     "オブザーバーを実行時に自由に追加・削除できる。",
@@ -2923,12 +2926,12 @@ function renderPattern(p, idx){
   const analogyH = ex.analogy ? `<div class="analogy"><span><b>たとえるなら</b> ${ex.analogy}</span></div>` : '';
   const dgSvg = renderDiagram(p.id);
   const diagramH = dgSvg ? `
-    <div class="diagram-wrap"><h5>構造（クラス図）</h5>${dgSvg}
+    <div class="diagram-wrap"><h4>構造（クラス図）</h4>${dgSvg}
       <div class="dg-legend">実線△＝継承　破線△＝実装　→＝参照・委譲　破線→＝生成・依存</div></div>` : '';
   const relatedH = (ex.related||ex.modern) ? `
     <div class="meta-row">
-      <div class="meta"><h5>関連パターンとの違い</h5><p>${ex.related||''}</p></div>
-      <div class="meta"><h5>現代の実務では</h5><p>${ex.modern||''}</p></div>
+      <div class="meta"><h4>関連パターンとの違い</h4><p>${ex.related||''}</p></div>
+      <div class="meta"><h4>現代の実務では</h4><p>${ex.modern||''}</p></div>
     </div>` : '';
   const searchText = (p.name+' '+p.jp+' '+p.summary+' '+(ex.analogy||'')+' '+(p.tags||[]).join(' ')).toLowerCase();
   const catColor = CAT_META[p.category].color;
@@ -2946,12 +2949,12 @@ function renderPattern(p, idx){
       ${analogyH}
       ${diagramH}
       <div class="grid2">
-        <div class="box pros"><h5>✓ 利点</h5><ul>${prosLi}</ul></div>
-        <div class="box cons"><h5>✕ 欠点</h5><ul>${consLi}</ul></div>
+        <div class="box pros"><h4>✓ 利点</h4><ul>${prosLi}</ul></div>
+        <div class="box cons"><h4>✕ 欠点</h4><ul>${consLi}</ul></div>
       </div>
       <div class="meta-row">
-        <div class="meta"><h5>利用される場面</h5><p>${p.usage}</p></div>
-        <div class="meta"><h5>実際の適用事例</h5><ul>${exLi}</ul></div>
+        <div class="meta"><h4>利用される場面</h4><p>${p.usage}</p></div>
+        <div class="meta"><h4>実際の適用事例</h4><ul>${exLi}</ul></div>
       </div>
       ${relatedH}
       <div class="code-wrap">

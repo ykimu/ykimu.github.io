@@ -133,7 +133,7 @@
   /* prose */
   .prose{max-width:var(--readw)}
   .prose p{margin:0 0 1em; color:var(--ink-2)}
-  .prose h4{font-family:var(--sans); font-size:1.1rem; font-weight:600; letter-spacing:0; color:var(--ink); margin:1.5em 0 .5em}
+  .prose h3{font-family:var(--sans); font-size:1.1rem; font-weight:600; letter-spacing:0; line-height:inherit; text-wrap:wrap; color:var(--ink); margin:1.5em 0 .5em}
   .prose ul{margin:0 0 1.2em; padding-left:0; list-style:none}
   .prose ul li{position:relative; padding-left:22px; margin:11px 0; color:var(--ink-2)}
   .prose ul li::before{content:""; position:absolute; left:0; top:13px; width:11px; height:1.5px; background:var(--accent)}
@@ -148,7 +148,7 @@
 
   .callout{border-radius:16px; padding:18px 22px; margin:20px 0; max-width:var(--readw);
     background:var(--card); box-shadow:0 0 0 6px var(--shell),0 0 0 6.5px var(--hair),var(--soft)}
-  .callout h4{margin:0 0 6px; font-size:1rem; font-family:var(--sans); font-weight:600; letter-spacing:0; color:var(--ink)}
+  .callout h3{margin:0 0 6px; font-size:1rem; font-family:var(--sans); font-weight:600; letter-spacing:0; line-height:inherit; text-wrap:wrap; color:var(--ink)}
   .callout.tip{background:var(--accent-soft)}
   .callout.warn{background:rgba(138,109,59,.08)}
   .callout p{margin:0; color:var(--ink-2); font-size:.96rem}
@@ -157,14 +157,14 @@
   .grid2{display:grid; grid-template-columns:1fr 1fr; gap:16px; margin:20px 0; max-width:var(--readw)}
   .box{border-radius:16px; padding:16px 20px; background:var(--card);
     box-shadow:0 0 0 6px var(--shell),0 0 0 6.5px var(--hair),var(--soft)}
-  .box h5{margin:0 0 10px; font-size:.92rem; font-family:var(--sans); font-weight:600; letter-spacing:0; color:var(--accent-2); display:flex; align-items:center; gap:7px}
-  .box.lim h5{color:var(--warn)}
+  .box h3{margin:0 0 10px; font-size:.92rem; font-family:var(--sans); font-weight:600; letter-spacing:0; line-height:inherit; text-wrap:wrap; color:var(--accent-2); display:flex; align-items:center; gap:7px}
+  .box.lim h3{color:var(--warn)}
   .box ul{margin:0; padding-left:18px}
   .box li{margin:6px 0; font-size:.92rem; color:var(--ink-2)}
 
   .steps{border-radius:16px; padding:16px 20px; margin:20px 0; max-width:var(--readw); background:var(--card);
     box-shadow:0 0 0 6px var(--shell),0 0 0 6.5px var(--hair),var(--soft)}
-  .steps h5{margin:0 0 10px; font-size:.92rem; font-family:var(--sans); font-weight:600; letter-spacing:0; color:var(--accent-2)}
+  .steps h3{margin:0 0 10px; font-size:.92rem; font-family:var(--sans); font-weight:600; letter-spacing:0; line-height:inherit; text-wrap:wrap; color:var(--accent-2)}
   .steps ol{margin:0; padding:0; list-style:none; counter-reset:st}
   .steps ol li{counter-increment:st; position:relative; padding-left:36px; margin:9px 0; font-size:.94rem; color:var(--ink-2)}
   .steps ol li::before{content:counter(st); position:absolute; left:0; top:2px; width:23px; height:23px; border-radius:50%;
@@ -229,7 +229,7 @@
   .demo .dtag{display:inline-flex; align-items:center; gap:8px; margin:0 0 10px; padding:5px 12px 5px 10px;
     border-radius:999px; background:var(--accent-soft); color:var(--accent-2); font:600 .62rem/1 var(--disp); letter-spacing:.12em; text-transform:uppercase}
   .demo .dtag::before{content:""; width:6px; height:6px; border-radius:50%; background:var(--accent)}
-  .demo h4{margin:0 0 6px; font-size:1.12rem; font-family:var(--sans); font-weight:600; color:var(--ink)}
+  .demo h3{margin:0 0 6px; font-size:1.12rem; font-family:var(--sans); font-weight:600; letter-spacing:0; line-height:inherit; text-wrap:wrap; color:var(--ink)}
   .demo .dnote{font-size:.88rem; color:var(--muted); margin:0 0 16px}
   .demo label.fld{display:block; font:600 .74rem/1 var(--disp); letter-spacing:.08em; text-transform:uppercase; color:var(--muted); margin:0 0 7px}
   .demo textarea,.demo input[type=text]{width:100%; padding:12px 15px; border-radius:12px; border:1px solid var(--hair);
@@ -279,7 +279,8 @@
   .res-grid{display:grid; grid-template-columns:1fr 1fr; gap:16px; margin:20px 0; max-width:var(--readw)}
   @media(max-width:640px){.res-grid{grid-template-columns:1fr}}
   .res{border-radius:16px; padding:18px 20px; background:var(--card); box-shadow:0 0 0 6px var(--shell),0 0 0 6.5px var(--hair),var(--soft)}
-  .res h5{margin:0 0 10px; font-size:.95rem; font-family:var(--sans); font-weight:600; color:var(--accent-2)}
+  .res h3{margin:0 0 10px; font-size:.95rem; font-family:var(--sans); font-weight:600; letter-spacing:0; line-height:inherit; text-wrap:wrap; color:var(--accent-2)}
+  .prose h3 [lang="ja"],.callout h3 [lang="ja"],.box h3 [lang="ja"],.steps h3 [lang="ja"],.demo h3 [lang="ja"],.res h3 [lang="ja"]{word-break:normal}
   .res ul{margin:0; padding-left:0; list-style:none}
   .res li{position:relative; padding-left:20px; margin:8px 0; font-size:.9rem; color:var(--ink-2)}
   .res li::before{content:""; position:absolute; left:0; top:11px; width:9px; height:1.5px; background:var(--accent)}
@@ -289,7 +290,7 @@
   footer{border-top:1px solid var(--line); padding:68px 0 46px; background:var(--bg)}
   footer h3{font-size:.72rem; font-weight:600; letter-spacing:.12em; text-transform:uppercase; color:var(--muted); margin:0 0 1em; font-family:var(--disp)}
   .foot-grid{display:grid; grid-template-columns:1.5fr 1fr; gap:44px}
-  .foot-grid3{display:grid; grid-template-columns:1.3fr 1fr 1fr; gap:44px; margin-top:40px}
+  .foot-grid3{display:grid; grid-template-columns:1.5fr 1fr; gap:44px; margin-top:40px}
   .foot-grid3 a{color:var(--ink-2)}
   .foot-grid3 a:hover{color:var(--accent)}
   .cite{font-size:.98rem; color:var(--ink-2); line-height:1.7; max-width:52ch}
@@ -701,7 +702,9 @@
   <nav class="crumbs" aria-label="パンくず">
     <a href="../index.html"><span lang="ja">ホーム</span><span lang="en">Home</span></a>
     <span class="csep" aria-hidden="true">&rsaquo;</span>
-    <span class="cur" aria-current="page"><span lang="ja">学習コース：時系列分析</span><span lang="en">Learn: Time Series Analysis</span></span>
+    <a href="index.html"><span lang="ja">学習コース</span><span lang="en">Learn</span></a>
+    <span class="csep" aria-hidden="true">&rsaquo;</span>
+    <span class="cur" aria-current="page"><span lang="ja">時系列分析</span><span lang="en">Time Series Analysis</span></span>
   </nav>
 </div>
 
@@ -836,7 +839,7 @@
     </div>
 
     <div class="callout tip">
-      <h4>この Step のまとめ</h4>
+      <h3>この Step のまとめ</h3>
       <p>時系列は「時間順に並んだ観測値」。順序に意味があり、自己相関・トレンド・季節性という性質を持ちます。行を並べ替えてはいけない点が、ふつうの表データとの大きな違いです。次から「成分に分ける → 定常化する → モデルにかける」という流れを一つずつたどります。</p>
     </div>
   </div>
@@ -858,14 +861,14 @@
 
     <p class="layer"><span lang="ja">仕組み</span><span lang="en">How it works</span></p>
     <div class="prose">
-      <h4>3つの成分</h4>
+      <h3>3つの成分</h3>
       <p>古典的な分解では、時系列を次の3成分に分けます。</p>
       <ul>
         <li><b>トレンド（trend）</b>：長期的に上がる・下がるという、ゆるやかな傾向。</li>
         <li><b>季節性（seasonal）</b>：1年・1週間・1日など、決まった周期で繰り返すパターン。</li>
         <li><b>残差（residual）</b>：トレンドと季節性で説明しきれない、残りの不規則な変動。</li>
       </ul>
-      <h4>加法モデルと乗法モデル</h4>
+      <h3>加法モデルと乗法モデル</h3>
       <p>成分の組み合わせ方には2通りあります。季節変動の大きさが水準によらずほぼ一定なら<b>加法モデル</b>、水準が上がるほど季節変動も大きくなるなら<b>乗法モデル</b>が向いています。</p>
     </div>
     <div class="formula">
@@ -879,7 +882,7 @@
     <!-- DEMO 1: decomposition -->
     <div class="demo reveal" id="demoDecomp">
       <span class="dtag"><span lang="ja">デモ 1</span><span lang="en">Demo 1</span></span>
-      <h4>時系列の成分分解</h4>
+      <h3>時系列の成分分解</h3>
       <p class="dnote">トレンド・季節・ノイズの大きさをスライダで変えると、それらを足し合わせた合成波形と、各成分を別々のグラフで表示します。加法モデル y(t) = トレンド + 季節 + ノイズ を、逆向きに「作って」体感するデモです。ノイズは再現できるよう固定パターンを使います。</p>
       <div class="two">
         <div>
@@ -923,7 +926,7 @@ result = seasonal_decompose(s, model=<span class="st">"multiplicative"</span>, p
     </div>
 
     <div class="callout tip">
-      <h4>この Step のまとめ</h4>
+      <h3>この Step のまとめ</h3>
       <p>時系列はトレンド・季節・残差の重ね合わせとして眺められます。季節変動が水準によらず一定なら加法モデル、水準に比例するなら乗法モデル。移動平均でトレンドをならし、<code>seasonal_decompose</code> で成分を取り出せます。次は、モデル化の前提となる「定常性」を見ます。</p>
     </div>
   </div>
@@ -945,11 +948,11 @@ result = seasonal_decompose(s, model=<span class="st">"multiplicative"</span>, p
 
     <p class="layer"><span lang="ja">仕組み</span><span lang="en">How it works</span></p>
     <div class="prose">
-      <h4>定常性とは</h4>
+      <h3>定常性とは</h3>
       <p><b>定常（stationary）</b>とは、時系列の統計的な性質が時間によって変わらないことを指します。実務では、<b>平均</b>と<b>分散</b>が一定で、2時点の関係（自己共分散）が時点の差だけで決まる、という<b>弱定常</b>を考えます。トレンドがある系列は平均が動くので非定常、季節性が強い系列も非定常です。</p>
-      <h4>差分による定常化</h4>
+      <h3>差分による定常化</h3>
       <p>非定常な系列は、<b>差分</b>をとると定常に近づくことがよくあります。差分とは、隣り合う値の引き算 Δy(t) = y(t) − y(t−1) です。1階差分でトレンドが消え、季節性には周期ぶんずらした<b>季節差分</b> y(t) − y(t−12) が効きます。この「何階の差分が必要か」が、あとで出てくる ARIMA の d にあたります。</p>
-      <h4>自己相関 ACF と偏自己相関 PACF</h4>
+      <h3>自己相関 ACF と偏自己相関 PACF</h3>
       <p><b>自己相関（ACF）</b>は、系列を k 時点ずらした自分自身との相関です。ラグ k を横軸に ACF を並べた図（コレログラム）を見ると、周期やトレンドの名残がわかります。標準的な定義は次のとおりです。</p>
     </div>
     <div class="formula">
@@ -958,14 +961,14 @@ result = seasonal_decompose(s, model=<span class="st">"multiplicative"</span>, p
     </div>
     <div class="prose">
       <p><b>偏自己相関（PACF）</b>は、ラグ k の相関から、途中のラグを通じた間接的な影響を取り除いた「純粋な」相関です。ACF と PACF のどこで急に小さくなるか（裾切れ・減衰）を見て、AR や MA の次数の目安を立てます。</p>
-      <h4>ADF検定</h4>
+      <h3>ADF検定</h3>
       <p>定常かどうかを数値で判定するのが<b>ADF検定（拡張ディッキー・フラー検定）</b>です。帰無仮説は「単位根がある（＝非定常）」で、p値が小さい（目安 0.05 未満）ときに帰無仮説を棄却し、定常とみなします。トレンドのある生の系列では p値が大きく、差分をとると小さくなる、という動きがよく見られます。</p>
     </div>
 
     <!-- DEMO 2: autocorrelation -->
     <div class="demo reveal" id="demoAcf">
       <span class="dtag"><span lang="ja">デモ 2</span><span lang="en">Demo 2</span></span>
-      <h4>自己相関（ACF）</h4>
+      <h3>自己相関（ACF）</h3>
       <p class="dnote">数列を入力すると、各ラグの自己相関 r(k) を計算してバーで表示します（上の式と同じ、標準的な推定量）。周期のある系列はその周期でバーが大きく、トレンドのある系列は右へゆっくり減衰します。破線は目安の信頼区間 &plusmn;1.96/&radic;n です。</p>
       <label class="fld" for="acfInput">数列（空白・カンマ・改行区切り）/ Series</label>
       <textarea id="acfInput" rows="2" spellcheck="false">1 3 5 3 1 3 5 3 1 3 5 3 1 3 5 3</textarea>
@@ -1007,7 +1010,7 @@ diff : stat=-2.829 p=0.0542
     </div>
 
     <div class="callout tip">
-      <h4>この Step のまとめ</h4>
+      <h3>この Step のまとめ</h3>
       <p>定常とは統計的性質が時間で変わらないこと。差分でトレンドや季節性を取り除いて定常化します。ACF と PACF は次数選びの手がかり、ADF検定は定常性の数値的な判定（p値が小さいほど定常）。この準備が、次の ARIMA に直結します。</p>
     </div>
   </div>
@@ -1029,7 +1032,7 @@ diff : stat=-2.829 p=0.0542
 
     <p class="layer"><span lang="ja">仕組み</span><span lang="en">How it works</span></p>
     <div class="prose">
-      <h4>AR・MA・ARMA</h4>
+      <h3>AR・MA・ARMA</h3>
       <p>まず定常な系列を表す2つの部品があります。</p>
       <ul>
         <li><b>AR(p)（自己回帰）</b>：現在の値を、<b>過去の値</b>の線形結合で説明する。</li>
@@ -1043,7 +1046,7 @@ diff : stat=-2.829 p=0.0542
       <small>&phi;: 自己回帰係数　&theta;: 移動平均係数　&epsilon;: 予測誤差（白色雑音）　c, &mu;: 定数</small>
     </div>
     <div class="prose">
-      <h4>ARIMA と SARIMA</h4>
+      <h3>ARIMA と SARIMA</h3>
       <p><b>ARIMA(p, d, q)</b> は、d 階の差分をとって定常にした系列に ARMA(p, q) をあてはめるモデルです。3つの次数の意味は次のとおりです。</p>
       <ul>
         <li><b>p</b>：自己回帰の次数（いくつ前までの値を使うか）。PACF の裾切れが目安。</li>
@@ -1056,7 +1059,7 @@ diff : stat=-2.829 p=0.0542
     <!-- DEMO 3: simple forecast -->
     <div class="demo reveal" id="demoForecast">
       <span class="dtag"><span lang="ja">デモ 3</span><span lang="en">Demo 3</span></span>
-      <h4>単純な予測（移動平均・指数平滑）</h4>
+      <h3>単純な予測（移動平均・指数平滑）</h3>
       <p class="dnote">系列を入力し、<b>移動平均</b>（直近の窓幅ぶんの平均）と<b>指数平滑</b>（新しい値を重く見る加重平均）で、数期先を予測します。窓幅と平滑係数 &alpha; のスライダを動かすと、予測線が更新されます。ARIMA より素朴ですが、予測の考え方の土台になる方法です。</p>
       <label class="fld" for="fcInput">系列（空白・カンマ・改行区切り）/ Series</label>
       <textarea id="fcInput" rows="2" spellcheck="false">30 45 60 40 32 47 62 42 34 49 64 44</textarea>
@@ -1100,14 +1103,15 @@ res = model.fit()
 <span class="kw">print</span>(<span class="st">"AIC = %.1f"</span> % res.aic)
 <span class="kw">print</span>(res.forecast(steps=<span class="nu">3</span>).round(<span class="nu">1</span>).tolist())  <span class="cm"># 次の3か月</span></code></pre>
     </div>
-    <div class="code-out"><span class="olbl">出力例 / Output</span><pre><code>AIC = 1021.9
+    <div class="code-out"><span class="olbl">出力例 / Output</span><pre><code>AIC = 1353.3
 [439.9, 465.3, 500.7]</code></pre></div>
+    <p class="muted-s">※ AIC の値は statsmodels のバージョンによって変わります（上は statsmodels 0.15 で実行した結果）。</p>
     <div class="prose">
       <p>次の3か月の旅客数が予測できました。季節性を明示的に扱うなら <code>ARIMA(s, order=(2,1,1), seasonal_order=(0,1,1,12))</code> のように季節次数を加えます。次数選びを自動化したいときは、AIC を最小にする組み合わせを探す <code>pmdarima</code> の <code>auto_arima</code> が便利です。</p>
     </div>
 
     <div class="callout tip">
-      <h4>この Step のまとめ</h4>
+      <h3>この Step のまとめ</h3>
       <p>ARIMA(p, d, q) は、自己回帰(AR)・差分(I)・移動平均(MA)を一つにまとめた古典的な予測モデル。p は過去の値、q は過去の誤差、d は差分の階数で、ACF・PACF・AIC を手がかりに決めます。季節性には SARIMA。<code>fit</code> と <code>forecast</code> で予測が作れます。次は、その予測の良さをどう測るかです。</p>
     </div>
   </div>
@@ -1129,9 +1133,9 @@ res = model.fit()
 
     <p class="layer"><span lang="ja">仕組み</span><span lang="en">How it works</span></p>
     <div class="prose">
-      <h4>時間を守ったデータ分割</h4>
+      <h3>時間を守ったデータ分割</h3>
       <p>時系列では、データをランダムに分けてはいけません。<b>未来の情報を学習に混ぜてはならない</b>からです。過去の区間を学習用（train）、その後の区間を検証用（test）にします。これを破って未来のデータで学習してしまうことを<b>データリーク</b>と呼び、評価を実力より甘くしてしまいます。</p>
-      <h4>予測誤差の指標</h4>
+      <h3>予測誤差の指標</h3>
       <p>予測値と実測値のずれは、次の3つでよく測ります。いずれも小さいほど良い指標です。</p>
       <ul>
         <li><b>MAE（平均絶対誤差）</b>：誤差の絶対値の平均。単位が元データと同じで直感的。</li>
@@ -1144,7 +1148,7 @@ res = model.fit()
       <small>y: 実測値　&#x177;: 予測値　n: 検証データ数　MAPE は百分率（%）</small>
     </div>
     <div class="prose">
-      <h4>ローリング予測と指数平滑法</h4>
+      <h3>ローリング予測と指数平滑法</h3>
       <p>1回の分割では評価がぶれることがあります。そこで、学習区間を1歩ずつ前に伸ばしながら予測と評価を繰り返す<b>ローリング予測（walk-forward validation）</b>で、安定した評価を得ます。また、実務で強い定番が<b>指数平滑法</b>で、レベル・トレンド・季節を指数的な加重平均で更新します。3成分をまとめて扱う <b>Holt-Winters 法</b>は、季節性のある系列で ARIMA に匹敵する精度を、少ない手間で出せます。</p>
     </div>
 
@@ -1179,7 +1183,7 @@ mape = np.mean(np.abs((y - pred) / y)) * <span class="nu">100</span>
     </div>
 
     <div class="callout tip">
-      <h4>この Step のまとめ</h4>
+      <h3>この Step のまとめ</h3>
       <p>時系列の評価は「時間を守る」が鉄則。未来を学習に混ぜない分割で、MAE・RMSE・MAPE を見ます。ローリング予測で評価を安定させ、Holt-Winters のような指数平滑法は少ない手間で高い精度を出します。</p>
     </div>
   </div>
@@ -1201,16 +1205,16 @@ mape = np.mean(np.abs((y - pred) / y)) * <span class="nu">100</span>
 
     <p class="layer"><span lang="ja">仕組み</span><span lang="en">How it works</span></p>
     <div class="prose">
-      <h4>柔軟なモデルと状態空間</h4>
+      <h3>柔軟なモデルと状態空間</h3>
       <p><b>Prophet</b>（Meta が公開）は、トレンド・季節性・祝日効果を加法的に組み合わせる実務向けのモデルで、欠測や外れ値に強く、設定が少なくて済みます。より一般的な枠組みが<b>状態空間モデル</b>で、目に見えない「状態」の時間変化と、それを観測する仕組みを分けて記述します。状態を逐次的に推定する<b>カルマンフィルタ</b>は、その代表的な計算法です。</p>
-      <h4>機械学習・深層学習による時系列</h4>
+      <h3>機械学習・深層学習による時系列</h3>
       <p>近年は、機械学習・深層学習を時系列に応用する流れが盛んです。系列を扱う <b>RNN・LSTM</b> や、注意機構にもとづく <b>Transformer</b> は、長期の依存関係や複雑なパターンを捉えられます。勾配ブースティングに時系列の特徴量（ラグ・移動統計など）を与える実務的な手法も広く使われます。</p>
-      <h4>多変量への広がり</h4>
+      <h3>多変量への広がり</h3>
       <p>ここまでは1本の系列（単変量）を扱いましたが、複数の系列が互いに影響し合う<b>多変量時系列</b>もあります。相互に自己回帰させる <b>VAR（ベクトル自己回帰）</b>などが基本で、経済や気象のように連動する指標の分析に使われます。</p>
     </div>
 
     <div class="callout tip">
-      <h4>この Step のまとめ</h4>
+      <h3>この Step のまとめ</h3>
       <p>ARIMA の先には、実務向けの Prophet、一般的な状態空間モデルとカルマンフィルタ、そして LSTM や Transformer による深層学習、複数系列を扱う多変量時系列(VAR)があります。ここで身につけた「成分・定常性・自己相関・予測誤差」という基礎は、そのどれを学ぶうえでも土台になります。</p>
     </div>
   </div>
@@ -1235,7 +1239,7 @@ mape = np.mean(np.abs((y - pred) / y)) * <span class="nu">100</span>
 
     <div class="res-grid reveal">
       <div class="res">
-        <h5>公開データセット</h5>
+        <h3>公開データセット</h3>
         <ul>
           <li><b>AirPassengers</b>：1949年から1960年の月次航空旅客数。トレンドと季節性を持つ、時系列分析の定番。</li>
           <li><b>Sunspots</b>：太陽黒点数の年次データ。周期性の例として有名（statsmodels に内蔵）。</li>
@@ -1243,7 +1247,7 @@ mape = np.mean(np.abs((y - pred) / y)) * <span class="nu">100</span>
         </ul>
       </div>
       <div class="res">
-        <h5>ライブラリ</h5>
+        <h3>ライブラリ</h3>
         <ul>
           <li><b>statsmodels</b>：ARIMA・分解・ACF/PACF・検定の定番。</li>
           <li><b>pandas</b>：日付インデックス・リサンプリング・移動統計。</li>
@@ -1253,24 +1257,24 @@ mape = np.mean(np.abs((y - pred) / y)) * <span class="nu">100</span>
         </ul>
       </div>
       <div class="res">
-        <h5>参考書</h5>
+        <h3>参考書</h3>
         <ul>
           <li>沖本竜義『経済・ファイナンスデータの計量時系列分析』朝倉書店</li>
           <li>Rob J. Hyndman, George Athanasopoulos『Forecasting: Principles and Practice』（無料オンライン版あり）</li>
         </ul>
       </div>
       <div class="res">
-        <h5>次のモジュールへ</h5>
+        <h3>次のモジュールへ</h3>
         <ul>
-          <li>統計分析（推定・検定・回帰の基礎）</li>
-          <li>機械学習の基礎（特徴量・評価）</li>
-          <li>深層学習とニューラルネット</li>
+          <li><a href="practice-oss-health.html">OSSプロジェクトの健康診断</a>（第3段階・実践演習へ。<a href="index.html#stage3">演習一覧</a>）</li>
+          <li><a href="statistics.html">統計分析</a>（推定・検定・回帰の基礎）</li>
+          <li><a href="machine-learning.html">機械学習</a>（特徴量・評価）</li>
         </ul>
       </div>
     </div>
 
     <div class="callout tip">
-      <h4>おつかれさまでした</h4>
+      <h3>おつかれさまでした</h3>
       <p>ここで学んだ「成分に分ける → 定常化する → モデルにかけて予測する → 時間を守って評価する」という流れは、時間の順序を持つデータを扱う多くの場面で共通の考え方です。手元のサンプル系列を書き換えて、3つのデモをもう一度動かしてみてください。値がどう変わるかを確かめると、理解がぐっと深まります。</p>
     </div>
   </div>
@@ -1286,21 +1290,21 @@ mape = np.mean(np.abs((y - pred) / y)) * <span class="nu">100</span>
 
     <div class="res-grid reveal">
       <div class="res">
-        <h5>状態空間モデルと確率的手法</h5>
+        <h3>状態空間モデルと確率的手法</h3>
         <ul>
           <li><b>状態空間モデルとカルマンフィルタ</b>：見えない状態の時間変化と観測を分けて記述し、逐次的に推定する一般的な枠組み。</li>
           <li><b>ベイズ的時系列</b>：不確実性を分布として扱い、予測区間を自然に得る。</li>
         </ul>
       </div>
       <div class="res">
-        <h5>機械学習・深層学習による時系列</h5>
+        <h3>機械学習・深層学習による時系列</h3>
         <ul>
           <li><b>LSTM・Transformer による予測</b>：長期の依存関係や複雑なパターンを捉える深層学習モデル。</li>
           <li><b>勾配ブースティングと特徴量</b>：ラグや移動統計を特徴量にして、汎用の機械学習で予測する実務的な手法。</li>
         </ul>
       </div>
       <div class="res">
-        <h5>実務向けツールと多変量</h5>
+        <h3>実務向けツールと多変量</h3>
         <ul>
           <li><b>Prophet</b>：トレンド・季節・祝日効果を加法的に組み合わせる、設定の少ない実務向けモデル。</li>
           <li><b>多変量時系列（VAR）</b>：複数の系列を相互に自己回帰させ、連動する指標を分析する。</li>
@@ -1308,7 +1312,7 @@ mape = np.mean(np.abs((y - pred) / y)) * <span class="nu">100</span>
         </ul>
       </div>
       <div class="res">
-        <h5>異常検知とその先</h5>
+        <h3>異常検知とその先</h3>
         <ul>
           <li><b>時系列の異常検知</b>：いつもと違う動きを見つける。予測との差や、分布の変化点検出を使う。</li>
           <li><b>変化点検出</b>：系列の性質が切り替わる時点を推定し、構造の変化をとらえる。</li>
@@ -1342,14 +1346,6 @@ mape = np.mean(np.abs((y - pred) / y)) * <span class="nu">100</span>
       </div>
     </div>
     <div class="foot-grid3">
-      <div>
-        <h3><span lang="ja">連絡先</span><span lang="en">Contact</span></h3>
-        <p class="muted-s">
-          <b>Yuta Kimura</b><br>
-          <span lang="ja">大阪公立大学工業高等専門学校</span><span lang="en">Osaka Metropolitan University College of Technology</span><br>
-          <a href="mailto:y.kimura@omu.ac.jp">y.kimura [at] omu.ac.jp</a>
-        </p>
-      </div>
       <div>
         <h3><span lang="ja">サイト</span><span lang="en">Site</span></h3>
         <p class="muted-s">

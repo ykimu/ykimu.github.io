@@ -139,7 +139,7 @@
   /* prose */
   .prose{max-width:var(--readw)}
   .prose p{margin:0 0 1em; color:var(--ink-2)}
-  .prose h4{font-family:var(--sans); font-size:1.12rem; font-weight:600; letter-spacing:0; color:var(--ink); margin:1.6em 0 .6em}
+  .prose h3{font-family:var(--sans); font-size:1.12rem; font-weight:600; letter-spacing:0; color:var(--ink); margin:1.6em 0 .6em; line-height:inherit; text-wrap:wrap}
   .prose ul{margin:0 0 1.2em; padding-left:0; list-style:none}
   .prose ul li{position:relative; padding-left:22px; margin:12px 0; color:var(--ink-2)}
   .prose ul li::before{content:""; position:absolute; left:0; top:13px; width:11px; height:1.5px; background:var(--accent)}
@@ -150,7 +150,7 @@
 
   .callout{border-radius:16px; padding:18px 22px; margin:18px 0; max-width:var(--readw);
     background:var(--card); box-shadow:0 0 0 6px var(--shell),0 0 0 6.5px var(--hair),var(--soft)}
-  .callout h4{margin:0 0 6px; font-size:1rem; font-family:var(--sans); font-weight:600; letter-spacing:0; color:var(--ink)}
+  .callout h3{margin:0 0 6px; font-size:1rem; font-family:var(--sans); font-weight:600; letter-spacing:0; color:var(--ink); line-height:inherit; text-wrap:wrap}
   .callout.tip{background:var(--accent-soft)}
   .callout.warn{background:rgba(138,109,59,.08)}
   .callout a{font-weight:600}
@@ -228,14 +228,14 @@
   .grid2{display:grid; grid-template-columns:1fr 1fr; gap:16px; margin:18px 0}
   .box{border-radius:16px; padding:16px 18px; background:var(--card);
     box-shadow:0 0 0 6px var(--shell),0 0 0 6.5px var(--hair),var(--soft)}
-  .box h5{margin:0 0 10px; font-size:.92rem; font-family:var(--sans); font-weight:600; letter-spacing:0; display:flex; align-items:center; gap:7px}
-  .box.pros h5{color:var(--accent-2)}
-  .box.cons h5{color:var(--bad)}
+  .box h4{margin:0 0 10px; font-size:.92rem; font-family:var(--sans); font-weight:600; letter-spacing:0; display:flex; align-items:center; gap:7px}
+  .box.pros h4{color:var(--accent-2)}
+  .box.cons h4{color:var(--bad)}
   .box ul{margin:0; padding-left:18px}
   .box li{margin:6px 0; font-size:.9rem; color:var(--ink-2)}
 
   .meta-row{display:grid; grid-template-columns:1fr 1fr; gap:16px; margin:16px 0}
-  .meta h5{margin:0 0 8px; font-size:.92rem; font-family:var(--sans); font-weight:600; letter-spacing:0; color:var(--accent-2)}
+  .meta h4{margin:0 0 8px; font-size:.92rem; font-family:var(--sans); font-weight:600; letter-spacing:0; color:var(--accent-2)}
   .meta p,.meta li{font-size:.92rem; color:var(--ink-2)}
   .meta ul{margin:0; padding-left:18px}
   .meta p{margin:0}
@@ -244,7 +244,7 @@
   /* numbered procedure steps */
   .steps{border-radius:16px; padding:16px 18px; margin:16px 0; background:var(--card);
     box-shadow:0 0 0 6px var(--shell),0 0 0 6.5px var(--hair),var(--soft)}
-  .steps h5{margin:0 0 10px; font-size:.92rem; font-family:var(--sans); font-weight:600; letter-spacing:0; color:var(--accent-2)}
+  .steps h4{margin:0 0 10px; font-size:.92rem; font-family:var(--sans); font-weight:600; letter-spacing:0; color:var(--accent-2)}
   .steps ol{margin:0; padding:0; list-style:none; counter-reset:st}
   .steps ol li{counter-increment:st; position:relative; padding-left:36px; margin:9px 0; font-size:.92rem; color:var(--ink-2)}
   .steps ol li::before{content:counter(st); position:absolute; left:0; top:3px; width:23px; height:23px; border-radius:50%;
@@ -253,7 +253,7 @@
 
   /* diagrams */
   .diagram-wrap{margin:18px 0; max-width:var(--readw)}
-  .diagram-wrap h5{margin:0 0 8px; font-size:.92rem; font-family:var(--sans); font-weight:600; letter-spacing:0; color:var(--accent-2)}
+  .diagram-wrap h4{margin:0 0 8px; font-size:.92rem; font-family:var(--sans); font-weight:600; letter-spacing:0; color:var(--accent-2)}
   .diagram-wrap svg{display:block; width:100%; height:auto; background:var(--shell);
     border:1px solid var(--hair); border-radius:12px; padding:8px}
   .dg-box{fill:var(--card); stroke:var(--line); stroke-width:1.2}
@@ -286,7 +286,7 @@
   /* equivalence-partition demo */
   .demo{border-radius:16px; padding:20px 22px; margin:22px 0; max-width:var(--readw); background:var(--card);
     box-shadow:0 0 0 6px var(--shell),0 0 0 6.5px var(--hair),var(--soft)}
-  .demo h4{margin:0 0 6px; font-size:1rem; font-family:var(--sans); font-weight:600; color:var(--ink)}
+  .demo h3{margin:0 0 6px; font-size:1rem; font-family:var(--sans); font-weight:600; color:var(--ink); line-height:inherit; text-wrap:wrap; letter-spacing:normal}
   .demo .spec{font-size:.9rem; color:var(--muted); margin:0 0 14px}
   .demo-row{display:flex; gap:10px; flex-wrap:wrap; align-items:center}
   .demo input[type=text]{width:min(220px,100%); padding:10px 16px; border-radius:999px; border:1px solid var(--hair);
@@ -603,7 +603,7 @@
             <div class="megacol">
               <div class="navlabel"><span lang="ja">計画・プロセス</span><span lang="en">Planning &amp; Process</span></div>
               <a href="agile-scrum.html"><span lang="ja">アジャイル開発とスクラム</span><span lang="en">Agile &amp; Scrum</span></a>
-              <a href="project-management.html"><span lang="ja">プロジェクト管理と見積もり</span><span lang="en">Project Management</span></a>
+              <a href="project-management.html"><span lang="ja">プロジェクト管理</span><span lang="en">Project Management</span></a>
               <a href="project-estimation-planning.html"><span lang="ja">プロジェクト計画・見積もり</span><span lang="en">Project Planning &amp; Estimation</span></a>
             </div>
             <div class="megacol">
@@ -709,7 +709,7 @@
       <a href="software-reuse-oss.html"><span lang="ja">ソフトウェア再利用とOSS</span><span lang="en">Software Reuse &amp; OSS</span></a>
       <div class="mobsublabel"><span lang="ja">計画・プロセス</span><span lang="en">Planning &amp; Process</span></div>
       <a href="agile-scrum.html"><span lang="ja">アジャイル開発とスクラム</span><span lang="en">Agile &amp; Scrum</span></a>
-      <a href="project-management.html"><span lang="ja">プロジェクト管理と見積もり</span><span lang="en">Project Management</span></a>
+      <a href="project-management.html"><span lang="ja">プロジェクト管理</span><span lang="en">Project Management</span></a>
       <a href="project-estimation-planning.html"><span lang="ja">プロジェクト計画・見積もり</span><span lang="en">Project Planning &amp; Estimation</span></a>
       <div class="mobsublabel"><span lang="ja">品質・運用</span><span lang="en">Quality &amp; Operations</span></div>
       <a href="software-testing.html"><span lang="ja">ソフトウェアテスト学習ガイド</span><span lang="en">Software Testing Guide</span></a>
@@ -765,6 +765,9 @@
 </div>
 
 <main id="main">
+<noscript><div class="wrap" style="padding-top:24px"><p role="alert" style="margin:0; padding:14px 18px; border:1px solid var(--hair, #ddd); border-radius:12px; background:var(--bg-2, #f4f4f2); color:var(--ink, #222); font-size:.95rem">
+  <span lang="ja">この教材はJavaScriptを有効にすると表示されます。</span><span lang="en">This learning material is displayed when JavaScript is enabled.</span>
+</p></div></noscript>
 
 <button class="totop" type="button" aria-label="上へ戻る" title="上へ戻る">&uarr;</button>
 
@@ -849,7 +852,7 @@
     <h2 class="big reveal"><span lang="ja">曖昧な要求を、検証できる要求へ</span><span lang="en">From vague to verifiable</span></h2>
     <div class="prose reveal" id="techProse" style="margin-top:22px"></div>
     <div class="demo reveal" id="ambDemo">
-      <h4>体験デモ：あいまい要求チェッカー</h4>
+      <h3>体験デモ：あいまい要求チェッカー</h3>
       <p class="spec">要求文を入力すると、<b>曖昧語</b>（「高速に」「使いやすい」「適切に」「〜など」…）を検出してハイライトし、<b>計量化のヒント</b>を提示します。レビューで曖昧語を探す「レビューアの目」を体験してみましょう。</p>
       <div class="demo-row" style="width:100%">
         <textarea id="ambInput" aria-label="検査する要求文" placeholder="例：システムは大量のアクセスに対しても高速に応答し、使いやすい画面を提供すること。" oninput="ambCheck()"></textarea>
@@ -944,7 +947,7 @@ const INTRO_HTML = `
 そして、この要求を<strong>発見（抽出）し、分析し、文書化し、妥当性を確認する</strong>一連の活動を<b>要求工学（Requirements Engineering; RE）</b>と呼びます。</p>
 
 <div class="callout warn">
-  <h4>なぜ要求が大事なのか ： プロジェクト失敗の統計</h4>
+  <h3>なぜ要求が大事なのか ： プロジェクト失敗の統計</h3>
   米 Standish Group が世界の IT プロジェクトを調査した <b>CHAOS レポート</b>の初回（1994年）では、
   「成功（期限・予算・機能を満たして完了）」はわずか <strong>16.2%</strong>。そして計画超過に陥ったプロジェクトの要因の上位には
   <strong>「不完全な要求」（13.1%）</strong>と<strong>「ユーザの巻き込み不足」（12.4%）</strong>が並びました。
@@ -954,7 +957,7 @@ const INTRO_HTML = `
   コードの誤りは直せますが、<strong>「作るものを間違えた」ことはテストでは直せません</strong>。
 </div>
 
-<h4>利用者要求とシステム要求 ： 同じ要求を、2つの抽象度で書く</h4>
+<h3>利用者要求とシステム要求 ： 同じ要求を、2つの抽象度で書く</h3>
 <p>要求には<strong>抽象的な記述と具体的な記述</strong>があり、読み手と記述のタイミングによって使い分けます。
 <b>利用者要求（user requirements）</b>は「顧客が欲しい機能・サービス」を自然言語で書いた抽象的な記述（日本の実務では「要求」、文書は要求仕様書）。
 <b>システム要求（system requirements）</b>は「機能・制約を実装できるレベルまで明確化した」具体的な記述（日本の実務では「要件」、文書は要件定義書）です。
@@ -990,7 +993,7 @@ const INTRO_HTML = `
 <div class="dg-legend">Sommerville の Mentcare（メンタルヘルスケア支援システム）の例。1つの抽象的な利用者要求が、実装・テストの基準になる複数の具体的なシステム要求へ展開される。</div>
 </div>
 
-<h4>機能要求と非機能要求</h4>
+<h3>機能要求と非機能要求</h3>
 <div class="principles">
   <div class="p"><b>機能要求（Functional requirements）</b><br>
     <span>システムが<strong>「何をするのか」</strong>：提供すべきサービス・入力への反応・振る舞いの記述。例：「利用者はすべての診療所の予約一覧を検索できなければならない」。</span></div>
@@ -1002,7 +1005,7 @@ const INTRO_HTML = `
 （信頼性が未達なら航空機ソフトウェアは認証されず、性能が未達なら制御システムは正しく動作しません）。</p>
 
 <div class="callout tip">
-  <h4>非機能要求は「目標」ではなく「測定可能」に書く</h4>
+  <h3>非機能要求は「目標」ではなく「測定可能」に書く</h3>
   「使いやすいこと」「応答が速いこと」は<strong>検証しようがない目標</strong>です。メトリクスを使って書き直します：
   <b>速度</b>：処理トランザクション数/秒、応答時間、画面更新時間　
   <b>使用性</b>：トレーニング時間、ヘルプ参照回数　
@@ -1013,7 +1016,7 @@ const INTRO_HTML = `
   ただし保守性のように単純な指標が存在しない特性や、測定可能でも検証コストが高すぎるケースがあることには注意（詳しくは下の<a href="#nfr-writing">非機能要求の書き方</a>のカードへ）。
 </div>
 
-<h4>要求工学のプロセス ： 4つの活動と、それを支える管理</h4>
+<h3>要求工学のプロセス ： 4つの活動と、それを支える管理</h3>
 <p>要求工学は<b>要求抽出／分析 → 仕様化 → 妥当性確認</b>という活動から構成されますが、
 実際には各活動が独立して順番に進むのではなく、<strong>反復的・相互依存的なスパイラル</strong>として入り組みながら進みます。
 初期の反復では高レベルのビジネス要求・利用者要求の理解に、後期の反復では詳細なシステム要求の抽出に重点が移り、
@@ -1055,7 +1058,7 @@ const INTRO_HTML = `
 </div>
 
 <div class="callout">
-  <h4>ステークホルダの多様性と実現可能性</h4>
+  <h3>ステークホルダの多様性と実現可能性</h3>
   <b>ステークホルダ</b>とは、開発するシステムの影響を受ける利害関係者のこと。医療情報システムなら、患者・医師・看護師・受付・IT部門・経営者・規制当局：
   それぞれが異なる（ときに衝突する）要求を持ちます。また要求工学は開発の最初期に行われるため、概念レベルの要求を整理して
   <strong>実現可能性を評価する（フィジビリティ・スタディ）</strong>ことも重要な仕事です：市場（需要と競合）・技術（必要な技術とインフラ）・財務（投資額と利益）・運用と法律（体制・法的リスク）。
@@ -1085,28 +1088,28 @@ const TECH_HTML = `
 const CLOSING_HTML = `
 <p>最後に、個々の技法の知識を「使える判断力」に変えるための視点をまとめます。</p>
 <div class="callout warn">
-  <h4>要求の誤りは、下流に行くほど高くつく</h4>
+  <h3>要求の誤りは、下流に行くほど高くつく</h3>
   要求の誤りが設計・実装・テストを経て運用まで生き延びると、修正には
   「要求変更 → 設計・実装の変更 → 再テスト」という連鎖が必要になります。NASA の調査では、要求段階で直せば「1」のコストが、
   運用段階では数十倍〜百倍以上に膨らむと報告されています（膨張率には諸説ありますが、「早いほど安い」という傾向自体は繰り返し確認されています）。
   だからこそ要求の<strong>妥当性確認</strong>：レビュー・プロトタイピング・テストケース作成可能性の検討：に早期投資する価値があるのです。
 </div>
 <div class="callout tip">
-  <h4>顧客の「言葉」ではなく「仕事」を理解する</h4>
+  <h3>顧客の「言葉」ではなく「仕事」を理解する</h3>
   ステークホルダは自分の要求を明確に言語化できません。それは怠慢ではなく、<strong>暗黙知は言語化できない</strong>からです。
   インタビューで聞き、エスノグラフィで観察し、ストーリーとシナリオで具体化し、プロトタイプで確かめる：
   複数の道具を組み合わせて「本当の要求」に迫るのが要求工学の実践です。
   「ドリルが欲しい」という言葉の奥にある「穴を開けたい」というジョブを見つけましょう。
 </div>
 <div class="callout">
-  <h4>要求は「凍結」できない ： 変化を前提に設計する</h4>
+  <h3>要求は「凍結」できない ： 変化を前提に設計する</h3>
   ビジネス環境は変わり、理解は深まり、ステークホルダは入れ替わる。要求の変化は<strong>失敗ではなく前提</strong>です。
   だから一意のID・トレーサビリティ・変更管理プロセスを最初から用意する（要求管理）、
   あるいは反復のたびに要求を見直す（アジャイル）：どちらの道でも、「変化にどう向き合うか」の設計が要求工学の一部です。
   ただし無秩序な膨張（<strong>要求クリープ</strong>）は別物。変更は歓迎しつつ、影響とコストを評価して意思決定する規律が要ります。
 </div>
 
-<h4 style="margin-top:26px">混同しやすい用語の見分け方</h4>
+<h3 style="margin-top:26px">混同しやすい用語の見分け方</h3>
 <p>似ている用語は、<strong>「誰のための記述か」「何を確かめるのか」</strong>で見分けます。試験でも実務でも問われるポイントです。</p>
 <table class="cmp-table">
   <tr><th>似ている用語</th><th>見分けるポイント</th></tr>
@@ -1128,16 +1131,16 @@ const CLOSING_HTML = `
     <td>どちらも「作るものの一覧」。SRS は合意済み要求の<b>公式文書</b>（外注・分担開発・規制対応で必須）。バックログは<b>優先順位付きの生きたリスト</b>で、反復のたびに追加・削除・並べ替えされる。</td></tr>
 </table>
 
-<h4 style="margin-top:26px">研究者の視点：要求工学はいま、研究の最前線でもある</h4>
+<h3 style="margin-top:26px">研究者の視点：要求工学はいま、研究の最前線でもある</h3>
 <div class="callout">
-  <h4>自然言語処理と要求工学</h4>
+  <h3>自然言語処理と要求工学</h3>
   要求のほとんどは自然言語で書かれるため、<strong>NLP（自然言語処理）による要求の品質チェック</strong>：曖昧語の検出、矛盾の発見、
   要求とテストのトレーサビリティリンクの自動回復：は要求工学研究（RE 国際会議など）の定番テーマです。
   近年は大規模言語モデル（LLM）でユーザーストーリーの生成・受入れ基準の下書き・要求文書の一貫性チェックを支援する研究と製品が急増しています。
   このページの「あいまい要求チェッカー」は、その最も素朴な形（辞書ベースの検出）を体験するものです。
 </div>
 
-<h4 style="margin-top:26px">さらに学ぶための文献・資料</h4>
+<h3 style="margin-top:26px">さらに学ぶための文献・資料</h3>
 <ul>
   <li>I. Sommerville『Software Engineering (10th ed.)』Pearson, 2016年, 第4章：本教材の底本</li>
   <li>K. Wiegers・J. Beatty『ソフトウェア要求 第3版』日経BP, 2014年：要求工学の実務の定番書（曖昧語のチェックリストも充実）</li>
@@ -1727,7 +1730,7 @@ function renderTest(t, idx){
   const badgeH = `<span class="badge-imp ${BADGE_CLS[t.badge]||'imp1'}">${t.badge}</span>`;
   const analogyH = t.analogy ? `<div class="analogy"><span><b>たとえるなら</b> ${t.analogy}</span></div>` : '';
   const dg = DIAGRAMS[t.id];
-  const diagramH = dg ? `<div class="diagram-wrap"><h5>図解イメージ</h5>${dg}</div>` : '';
+  const diagramH = dg ? `<div class="diagram-wrap"><h4>図解イメージ</h4>${dg}</div>` : '';
   let codeH = '';
   if(t.hasCode && CODE[t.id]){
     codeH = `
@@ -1756,20 +1759,20 @@ function renderTest(t, idx){
     <div class="pdetail">
       ${analogyH}
       <div class="meta-row">
-        <div class="meta"><h5>実施の目的</h5><p>${t.purpose}</p></div>
-        <div class="meta"><h5>誰が・いつ実施するか</h5><p>${t.who}</p></div>
+        <div class="meta"><h4>実施の目的</h4><p>${t.purpose}</p></div>
+        <div class="meta"><h4>誰が・いつ実施するか</h4><p>${t.who}</p></div>
       </div>
-      <div class="steps"><h5>実施の仕方（進め方）</h5><ol>${stepsLi}</ol></div>
+      <div class="steps"><h4>実施の仕方（進め方）</h4><ol>${stepsLi}</ol></div>
       ${diagramH}
       <div class="grid2">
-        <div class="box pros"><h5>✓ 意識するポイント</h5><ul>${pointsLi}</ul></div>
-        <div class="box cons"><h5>！ 注意点・落とし穴</h5><ul>${cautionsLi}</ul></div>
+        <div class="box pros"><h4>✓ 意識するポイント</h4><ul>${pointsLi}</ul></div>
+        <div class="box cons"><h4>！ 注意点・落とし穴</h4><ul>${cautionsLi}</ul></div>
       </div>
       <div class="meta-row">
-        <div class="meta"><h5>具体例</h5><ul>${exLi}</ul></div>
-        <div class="meta"><h5>混同しやすいものとの違い</h5><p>${t.related}</p></div>
+        <div class="meta"><h4>具体例</h4><ul>${exLi}</ul></div>
+        <div class="meta"><h4>混同しやすいものとの違い</h4><p>${t.related}</p></div>
       </div>
-      <div class="meta" style="margin:16px 0"><h5>現場では（ツール・現代的な実践）</h5><p>${t.modern}</p></div>
+      <div class="meta" style="margin:16px 0"><h4>現場では（ツール・現代的な実践）</h4><p>${t.modern}</p></div>
       ${codeH}
       <label class="learn"><input type="checkbox" onchange="toggleLearned('${t.id}',this)">
         この活動を理解した（習得チェック）</label>

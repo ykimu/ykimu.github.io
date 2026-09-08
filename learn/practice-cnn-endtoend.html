@@ -133,7 +133,7 @@
   /* prose */
   .prose{max-width:var(--readw)}
   .prose p{margin:0 0 1em; color:var(--ink-2)}
-  .prose h4{font-family:var(--sans); font-size:1.1rem; font-weight:600; letter-spacing:0; color:var(--ink); margin:1.5em 0 .5em}
+  .prose h3{font-family:var(--sans); font-size:1.1rem; font-weight:600; letter-spacing:0; line-height:inherit; text-wrap:wrap; color:var(--ink); margin:1.5em 0 .5em}
   .prose ul{margin:0 0 1.2em; padding-left:0; list-style:none}
   .prose ul li{position:relative; padding-left:22px; margin:11px 0; color:var(--ink-2)}
   .prose ul li::before{content:""; position:absolute; left:0; top:13px; width:11px; height:1.5px; background:var(--accent)}
@@ -148,7 +148,7 @@
 
   .callout{border-radius:16px; padding:18px 22px; margin:20px 0; max-width:var(--readw);
     background:var(--card); box-shadow:0 0 0 6px var(--shell),0 0 0 6.5px var(--hair),var(--soft)}
-  .callout h4{margin:0 0 6px; font-size:1rem; font-family:var(--sans); font-weight:600; letter-spacing:0; color:var(--ink)}
+  .callout h3{margin:0 0 6px; font-size:1rem; font-family:var(--sans); font-weight:600; letter-spacing:0; line-height:inherit; text-wrap:wrap; color:var(--ink)}
   .callout.tip{background:var(--accent-soft)}
   .callout.warn{background:rgba(138,109,59,.08)}
   .callout p{margin:0; color:var(--ink-2); font-size:.96rem}
@@ -157,14 +157,14 @@
   .grid2{display:grid; grid-template-columns:1fr 1fr; gap:16px; margin:20px 0; max-width:var(--readw)}
   .box{border-radius:16px; padding:16px 20px; background:var(--card);
     box-shadow:0 0 0 6px var(--shell),0 0 0 6.5px var(--hair),var(--soft)}
-  .box h5{margin:0 0 10px; font-size:.92rem; font-family:var(--sans); font-weight:600; letter-spacing:0; color:var(--accent-2); display:flex; align-items:center; gap:7px}
-  .box.lim h5{color:var(--warn)}
+  .box h3{margin:0 0 10px; font-size:.92rem; font-family:var(--sans); font-weight:600; letter-spacing:0; line-height:inherit; text-wrap:wrap; color:var(--accent-2); display:flex; align-items:center; gap:7px}
+  .box.lim h3{color:var(--warn)}
   .box ul{margin:0; padding-left:18px}
   .box li{margin:6px 0; font-size:.92rem; color:var(--ink-2)}
 
   .steps{border-radius:16px; padding:16px 20px; margin:20px 0; max-width:var(--readw); background:var(--card);
     box-shadow:0 0 0 6px var(--shell),0 0 0 6.5px var(--hair),var(--soft)}
-  .steps h5{margin:0 0 10px; font-size:.92rem; font-family:var(--sans); font-weight:600; letter-spacing:0; color:var(--accent-2)}
+  .steps h3{margin:0 0 10px; font-size:.92rem; font-family:var(--sans); font-weight:600; letter-spacing:0; line-height:inherit; text-wrap:wrap; color:var(--accent-2)}
   .steps ol{margin:0; padding:0; list-style:none; counter-reset:st}
   .steps ol li{counter-increment:st; position:relative; padding-left:36px; margin:9px 0; font-size:.94rem; color:var(--ink-2)}
   .steps ol li::before{content:counter(st); position:absolute; left:0; top:2px; width:23px; height:23px; border-radius:50%;
@@ -229,7 +229,7 @@
   .demo .dtag{display:inline-flex; align-items:center; gap:8px; margin:0 0 10px; padding:5px 12px 5px 10px;
     border-radius:999px; background:var(--accent-soft); color:var(--accent-2); font:600 .62rem/1 var(--disp); letter-spacing:.12em; text-transform:uppercase}
   .demo .dtag::before{content:""; width:6px; height:6px; border-radius:50%; background:var(--accent)}
-  .demo h4{margin:0 0 6px; font-size:1.12rem; font-family:var(--sans); font-weight:600; color:var(--ink)}
+  .demo h3{margin:0 0 6px; font-size:1.12rem; font-family:var(--sans); font-weight:600; letter-spacing:0; line-height:inherit; text-wrap:wrap; color:var(--ink)}
   .demo .dnote{font-size:.88rem; color:var(--muted); margin:0 0 16px}
   .demo label.fld{display:block; font:600 .74rem/1 var(--disp); letter-spacing:.08em; text-transform:uppercase; color:var(--muted); margin:0 0 7px}
   .demo textarea,.demo input[type=text]{width:100%; padding:12px 15px; border-radius:12px; border:1px solid var(--hair);
@@ -279,7 +279,8 @@
   .res-grid{display:grid; grid-template-columns:1fr 1fr; gap:16px; margin:20px 0; max-width:var(--readw)}
   @media(max-width:640px){.res-grid{grid-template-columns:1fr}}
   .res{border-radius:16px; padding:18px 20px; background:var(--card); box-shadow:0 0 0 6px var(--shell),0 0 0 6.5px var(--hair),var(--soft)}
-  .res h5{margin:0 0 10px; font-size:.95rem; font-family:var(--sans); font-weight:600; color:var(--accent-2)}
+  .res h3{margin:0 0 10px; font-size:.95rem; font-family:var(--sans); font-weight:600; letter-spacing:0; line-height:inherit; text-wrap:wrap; color:var(--accent-2)}
+  .prose h3 [lang="ja"],.callout h3 [lang="ja"],.box h3 [lang="ja"],.steps h3 [lang="ja"],.demo h3 [lang="ja"],.res h3 [lang="ja"]{word-break:normal}
   .res ul{margin:0; padding-left:0; list-style:none}
   .res li{position:relative; padding-left:20px; margin:8px 0; font-size:.9rem; color:var(--ink-2)}
   .res li::before{content:""; position:absolute; left:0; top:11px; width:9px; height:1.5px; background:var(--accent)}
@@ -289,7 +290,7 @@
   footer{border-top:1px solid var(--line); padding:68px 0 46px; background:var(--bg)}
   footer h3{font-size:.72rem; font-weight:600; letter-spacing:.12em; text-transform:uppercase; color:var(--muted); margin:0 0 1em; font-family:var(--disp)}
   .foot-grid{display:grid; grid-template-columns:1.5fr 1fr; gap:44px}
-  .foot-grid3{display:grid; grid-template-columns:1.3fr 1fr 1fr; gap:44px; margin-top:40px}
+  .foot-grid3{display:grid; grid-template-columns:1.5fr 1fr; gap:44px; margin-top:40px}
   .foot-grid3 a{color:var(--ink-2)}
   .foot-grid3 a:hover{color:var(--accent)}
   .cite{font-size:.98rem; color:var(--ink-2); line-height:1.7; max-width:52ch}
@@ -815,19 +816,19 @@
     </div>
     <div class="res-grid reveal">
       <div class="res">
-        <h5><a href="deep-learning.html">深層学習</a></h5>
+        <h3><a href="deep-learning.html">深層学習</a></h3>
         <ul>
           <li>畳み込み・プーリング・活性化関数・誤差逆伝播の考え方。CNNを PyTorch で組む<b>Step 3・Step 4</b>の土台。</li>
         </ul>
       </div>
       <div class="res">
-        <h5><a href="data-preprocessing.html">開発データの前処理</a></h5>
+        <h3><a href="data-preprocessing.html">開発データの前処理</a></h3>
         <ul>
           <li>正規化・形状変換・学習用とテスト用への分割。モデルに入れる前の下ごしらえで、<b>Step 2</b>で使う。</li>
         </ul>
       </div>
       <div class="res">
-        <h5><a href="machine-learning.html">機械学習</a></h5>
+        <h3><a href="machine-learning.html">機械学習</a></h3>
         <ul>
           <li>正解率・混同行列・適合率・再現率・F値による評価と、過学習の考え方。<b>Step 5・Step 6</b>で使う。</li>
         </ul>
@@ -843,7 +844,7 @@
     <h2 class="big">このページのコードを、そのまま動かす</h2>
     <div class="demo reveal" style="margin-top:22px">
       <span class="dtag"><span lang="ja">Colab / Jupyter</span><span lang="en">Colab / Jupyter</span></span>
-      <h4>深層学習の一気通貫（CNN）ノートブック</h4>
+      <h3>深層学習の一気通貫（CNN）ノートブック</h3>
       <p class="dnote">このページで読むコードと同じ内容を、上から順に実行できるノートブックにまとめてあります。Colab で開けば、インストール込みで環境構築なしにそのまま動かせます。手元の Jupyter で動かしたい場合は .ipynb をダウンロードしてください。</p>
       <div class="hero-cta" style="margin-top:6px">
         <a class="btn ink" href="https://colab.research.google.com/github/ykimu/ykimu.github.io/blob/main/learn/notebooks/practice-cnn-endtoend.ipynb" target="_blank" rel="noopener" style="padding:12px 22px">
@@ -904,7 +905,7 @@ plt.show()</code></pre>
     </div>
 
     <div class="callout tip">
-      <h4>この Step のまとめ</h4>
+      <h3>この Step のまとめ</h3>
       <p><code>load_digits</code> で 1797 枚の 8×8 手描き数字を読み込みました。入力は <code>(枚数, 高さ, 幅)</code> の3次元配列、画素値は 0 から 16。次の Step で、これをCNNが受け取れる形に整えて分割します。</p>
     </div>
   </div>
@@ -954,7 +955,7 @@ Xte = torch.tensor(X_te); yte = torch.tensor(y_te)
     <div class="code-out"><span class="olbl">出力例 / Output</span><pre><code>train: 1149 val: 288 test: 360</code></pre></div>
 
     <div class="callout tip">
-      <h4>この Step のまとめ</h4>
+      <h3>この Step のまとめ</h3>
       <p>画素を 0 から 1 に正規化し、<code>(N, 1, 8, 8)</code> の形に整え、学習1149・検証288・テスト360 に分けました。<code>stratify</code> で各数字の比率は3分割後も保たれます。下ごしらえが済んだので、いよいよモデルを組みます。</p>
     </div>
   </div>
@@ -1015,7 +1016,7 @@ n_params = sum(p.numel() <span class="kw">for</span> p <span class="kw">in</span
     <div class="code-out"><span class="olbl">出力例 / Output</span><pre><code>params: 3658</code></pre></div>
 
     <div class="callout tip">
-      <h4>この Step のまとめ</h4>
+      <h3>この Step のまとめ</h3>
       <p>畳み込み2層・プーリング2層・全結合2層の小さなCNNを組みました。学習するパラメータはわずか 3,658 個で、これでも digits なら十分に働きます。プーリングで <code>8×8 → 4×4 → 2×2</code> と縮み、最後の全結合層の入力が <code>16×2×2=64</code> になる点が形合わせの要です。</p>
     </div>
   </div>
@@ -1085,7 +1086,7 @@ epoch 30  train_loss 0.1983  val_acc 0.948</code></pre></div>
     </div>
 
     <div class="callout tip">
-      <h4>この Step のまとめ</h4>
+      <h3>この Step のまとめ</h3>
       <p>順伝播・損失計算・誤差逆伝播・重み更新という基本のループを回し、損失が下がり検証正解率が上がる様子を確認しました。この4手順は、どんなに大きな深層学習モデルでも変わらない中心の仕組みです。</p>
     </div>
   </div>
@@ -1164,7 +1165,7 @@ index  22  true 8  pred 9
 index  25  true 5  pred 9</code></pre></div>
 
     <div class="callout tip">
-      <h4>この Step のまとめ</h4>
+      <h3>この Step のまとめ</h3>
       <p>正解率・混同行列・分類レポートで、モデルの実力と取り違えの癖を確かめました。数字の「8」と「1」、「9」と「4」のように形の似たクラスで誤りが出やすい、という具体的な傾向が読み取れます。次はこの結果をどう解釈するかを考えます。</p>
     </div>
   </div>
@@ -1187,7 +1188,7 @@ index  25  true 5  pred 9</code></pre></div>
     <p class="layer"><span lang="ja">注意点</span><span lang="en">Caveats</span></p>
     <div class="grid2">
       <div class="box lim">
-        <h5><span lang="ja">気をつけること</span><span lang="en">Limits</span></h5>
+        <h3><span lang="ja">気をつけること</span><span lang="en">Limits</span></h3>
         <ul>
           <li><b>過学習</b>：学習を長く回しすぎると、学習データには強いのに新しいデータで精度が落ちることがあります。学習と検証の正解率の差を見張るのが目安です。</li>
           <li><b>データ量</b>：digits は1797枚と小さく、簡単な課題です。難しい画像ではもっと多くのデータと大きなモデルが要ります。</li>
@@ -1195,7 +1196,7 @@ index  25  true 5  pred 9</code></pre></div>
         </ul>
       </div>
       <div class="box">
-        <h5><span lang="ja">次に試すこと</span><span lang="en">Toward more</span></h5>
+        <h3><span lang="ja">次に試すこと</span><span lang="en">Toward more</span></h3>
         <ul>
           <li>層やチャネルを増やして、精度がどう変わるかを見る。</li>
           <li><code>Dropout</code> やデータ拡張で過学習を抑える。</li>
@@ -1205,7 +1206,7 @@ index  25  true 5  pred 9</code></pre></div>
     </div>
 
     <div class="callout warn">
-      <h4>精度の数字を鵜呑みにしない</h4>
+      <h3>精度の数字を鵜呑みにしない</h3>
       <p>正解率が高くても、それは今回のデータでの話です。実際に使う場面のデータが学習データと違えば、性能は変わります。混同行列で「どこを間違えるか」まで見て、用途に照らして十分かを判断することが大切です。数字は出発点であって、結論ではありません。</p>
     </div>
   </div>
@@ -1221,25 +1222,25 @@ index  25  true 5  pred 9</code></pre></div>
     </div>
     <div class="res-grid reveal">
       <div class="res">
-        <h5>MNIST・Fashion-MNIST に広げる</h5>
+        <h3>MNIST・Fashion-MNIST に広げる</h3>
         <ul>
           <li>28×28の MNIST（手書き数字）や Fashion-MNIST（衣類画像）に同じ流れを当てはめる。入力の大きさが変わるので、プーリング後の形と全結合層の入力サイズを合わせ直す。<code>torchvision.datasets</code> から取得できます。</li>
         </ul>
       </div>
       <div class="res">
-        <h5>ネットワークを深くする</h5>
+        <h3>ネットワークを深くする</h3>
         <ul>
           <li>畳み込み層やチャネル数を増やし、精度と学習時間がどう変わるかを比べる。大きくすれば必ず良くなるわけではない点にも注目。</li>
         </ul>
       </div>
       <div class="res">
-        <h5>過学習を抑える</h5>
+        <h3>過学習を抑える</h3>
         <ul>
           <li><code>nn.Dropout</code> を全結合層の前に入れる、あるいは画像を少し回転・平行移動するデータ拡張を加えて、検証・テストの精度が上がるかを見る。</li>
         </ul>
       </div>
       <div class="res">
-        <h5>学習曲線を描く</h5>
+        <h3>学習曲線を描く</h3>
         <ul>
           <li>エポックごとの学習損失と検証正解率を記録し、<code>matplotlib</code> で折れ線に描く。過学習が始まる点（検証が頭打ちになる時期）を目で確かめる。</li>
         </ul>
@@ -1265,7 +1266,7 @@ index  25  true 5  pred 9</code></pre></div>
 
     <div class="res-grid reveal">
       <div class="res">
-        <h5>使ったモジュール</h5>
+        <h3>使ったモジュール</h3>
         <ul>
           <li><a href="deep-learning.html">深層学習</a></li>
           <li><a href="data-preprocessing.html">開発データの前処理</a></li>
@@ -1273,8 +1274,9 @@ index  25  true 5  pred 9</code></pre></div>
         </ul>
       </div>
       <div class="res">
-        <h5>次の演習・段階へ</h5>
+        <h3>次の演習・段階へ</h3>
         <ul>
+          <li>次の演習：<a href="practice-dev-timeseries.html">開発活動の時系列を読み解く</a>（<a href="index.html#stage3">演習一覧</a>）</li>
           <li>MNIST や Fashion-MNIST で、より本格的な画像分類に挑む。</li>
           <li>層やハイパーパラメータを差し替えて、精度がどう動くかを体で覚える。</li>
         </ul>
@@ -1282,7 +1284,7 @@ index  25  true 5  pred 9</code></pre></div>
     </div>
 
     <div class="callout tip">
-      <h4>おつかれさまでした</h4>
+      <h3>おつかれさまでした</h3>
       <p>ノートブックを開き、エポック数や層の構成を少し変えて、もう一度上から実行してみてください。検証正解率の伸び方や、混同行列の取り違えの場所がどう動くかを見ると、深層学習のパイプライン全体の勘所がつかめます。参考書としては、斎藤康毅『ゼロから作る Deep Learning』が、畳み込みや誤差逆伝播を手を動かして理解するのに向いています。</p>
     </div>
   </div>
@@ -1312,14 +1314,6 @@ index  25  true 5  pred 9</code></pre></div>
       </div>
     </div>
     <div class="foot-grid3">
-      <div>
-        <h3><span lang="ja">連絡先</span><span lang="en">Contact</span></h3>
-        <p class="muted-s">
-          <b>Yuta Kimura</b><br>
-          <span lang="ja">大阪公立大学工業高等専門学校</span><span lang="en">Osaka Metropolitan University College of Technology</span><br>
-          <a href="mailto:y.kimura@omu.ac.jp">y.kimura [at] omu.ac.jp</a>
-        </p>
-      </div>
       <div>
         <h3><span lang="ja">サイト</span><span lang="en">Site</span></h3>
         <p class="muted-s">
@@ -1389,9 +1383,9 @@ index  25  true 5  pred 9</code></pre></div>
     "から":1,"まで":1,"ね":1,"よ":1,"た":1,"だ":1,"です":1,"ます":1,"ている":1,"いる":1,"のが":1};
   var DICT = {}; JP_DICT.forEach(function(w){ DICT[w]=1; });
   var MAXL = 5;
-  function isJP(ch){ return /[぀-ヿ㐀-䶿一-鿿ｦ-ﾟ]/.test(ch); }
+  function isJP(ch){ return /[\u3040-ヿ㐀-䶿一-鿿ｦ-ﾟ]/.test(ch); }
   function jtype(ch){
-    if(/[぀-ゟ]/.test(ch)) return 'hira';
+    if(/[\u3040-ゟ]/.test(ch)) return 'hira';
     if(/[゠-ヿｦ-ﾟ]/.test(ch)) return 'kata';
     if(/[一-鿿㐀-䶿]/.test(ch)) return 'kanji';
     return 'other';

@@ -139,7 +139,7 @@
   /* prose */
   .prose{max-width:var(--readw)}
   .prose p{margin:0 0 1em; color:var(--ink-2)}
-  .prose h4{font-family:var(--sans); font-size:1.12rem; font-weight:600; letter-spacing:0; color:var(--ink); margin:1.6em 0 .6em}
+  .prose h3{font-family:var(--sans); font-size:1.12rem; font-weight:600; letter-spacing:0; color:var(--ink); margin:1.6em 0 .6em; line-height:inherit; text-wrap:wrap}
   .prose ul{margin:0 0 1.2em; padding-left:0; list-style:none}
   .prose ul li{position:relative; padding-left:22px; margin:12px 0; color:var(--ink-2)}
   .prose ul li::before{content:""; position:absolute; left:0; top:13px; width:11px; height:1.5px; background:var(--accent)}
@@ -150,7 +150,7 @@
 
   .callout{border-radius:16px; padding:18px 22px; margin:18px 0; max-width:var(--readw);
     background:var(--card); box-shadow:0 0 0 6px var(--shell),0 0 0 6.5px var(--hair),var(--soft)}
-  .callout h4{margin:0 0 6px; font-size:1rem; font-family:var(--sans); font-weight:600; letter-spacing:0; color:var(--ink)}
+  .callout h3{margin:0 0 6px; font-size:1rem; font-family:var(--sans); font-weight:600; letter-spacing:0; color:var(--ink); line-height:inherit; text-wrap:wrap}
   .callout.tip{background:var(--accent-soft)}
   .callout.warn{background:rgba(138,109,59,.08)}
   .callout a{font-weight:600}
@@ -228,14 +228,14 @@
   .grid2{display:grid; grid-template-columns:1fr 1fr; gap:16px; margin:18px 0}
   .box{border-radius:16px; padding:16px 18px; background:var(--card);
     box-shadow:0 0 0 6px var(--shell),0 0 0 6.5px var(--hair),var(--soft)}
-  .box h5{margin:0 0 10px; font-size:.92rem; font-family:var(--sans); font-weight:600; letter-spacing:0; display:flex; align-items:center; gap:7px}
-  .box.pros h5{color:var(--accent-2)}
-  .box.cons h5{color:var(--bad)}
+  .box h4{margin:0 0 10px; font-size:.92rem; font-family:var(--sans); font-weight:600; letter-spacing:0; display:flex; align-items:center; gap:7px}
+  .box.pros h4{color:var(--accent-2)}
+  .box.cons h4{color:var(--bad)}
   .box ul{margin:0; padding-left:18px}
   .box li{margin:6px 0; font-size:.9rem; color:var(--ink-2)}
 
   .meta-row{display:grid; grid-template-columns:1fr 1fr; gap:16px; margin:16px 0}
-  .meta h5{margin:0 0 8px; font-size:.92rem; font-family:var(--sans); font-weight:600; letter-spacing:0; color:var(--accent-2)}
+  .meta h4{margin:0 0 8px; font-size:.92rem; font-family:var(--sans); font-weight:600; letter-spacing:0; color:var(--accent-2)}
   .meta p,.meta li{font-size:.92rem; color:var(--ink-2)}
   .meta ul{margin:0; padding-left:18px}
   .meta p{margin:0}
@@ -244,7 +244,7 @@
   /* numbered procedure steps */
   .steps{border-radius:16px; padding:16px 18px; margin:16px 0; background:var(--card);
     box-shadow:0 0 0 6px var(--shell),0 0 0 6.5px var(--hair),var(--soft)}
-  .steps h5{margin:0 0 10px; font-size:.92rem; font-family:var(--sans); font-weight:600; letter-spacing:0; color:var(--accent-2)}
+  .steps h4{margin:0 0 10px; font-size:.92rem; font-family:var(--sans); font-weight:600; letter-spacing:0; color:var(--accent-2)}
   .steps ol{margin:0; padding:0; list-style:none; counter-reset:st}
   .steps ol li{counter-increment:st; position:relative; padding-left:36px; margin:9px 0; font-size:.92rem; color:var(--ink-2)}
   .steps ol li::before{content:counter(st); position:absolute; left:0; top:3px; width:23px; height:23px; border-radius:50%;
@@ -253,7 +253,7 @@
 
   /* diagrams */
   .diagram-wrap{margin:18px 0; max-width:var(--readw)}
-  .diagram-wrap h5{margin:0 0 8px; font-size:.92rem; font-family:var(--sans); font-weight:600; letter-spacing:0; color:var(--accent-2)}
+  .diagram-wrap h4{margin:0 0 8px; font-size:.92rem; font-family:var(--sans); font-weight:600; letter-spacing:0; color:var(--accent-2)}
   .diagram-wrap svg{display:block; width:100%; height:auto; background:var(--shell);
     border:1px solid var(--hair); border-radius:12px; padding:8px}
   .dg-box{fill:var(--card); stroke:var(--line); stroke-width:1.2}
@@ -286,7 +286,7 @@
   /* equivalence-partition demo */
   .demo{border-radius:16px; padding:20px 22px; margin:22px 0; max-width:var(--readw); background:var(--card);
     box-shadow:0 0 0 6px var(--shell),0 0 0 6.5px var(--hair),var(--soft)}
-  .demo h4{margin:0 0 6px; font-size:1rem; font-family:var(--sans); font-weight:600; color:var(--ink)}
+  .demo h3{margin:0 0 6px; font-size:1rem; font-family:var(--sans); font-weight:600; color:var(--ink); line-height:inherit; text-wrap:wrap; letter-spacing:normal}
   .demo .spec{font-size:.9rem; color:var(--muted); margin:0 0 14px}
   .demo-row{display:flex; gap:10px; flex-wrap:wrap; align-items:center}
   .demo input[type=text]{width:min(220px,100%); padding:10px 16px; border-radius:999px; border:1px solid var(--hair);
@@ -592,7 +592,7 @@
             <div class="megacol">
               <div class="navlabel"><span lang="ja">計画・プロセス</span><span lang="en">Planning &amp; Process</span></div>
               <a class="here" href="agile-scrum.html" aria-current="page"><span lang="ja">アジャイル開発とスクラム</span><span lang="en">Agile &amp; Scrum</span></a>
-              <a href="project-management.html"><span lang="ja">プロジェクト管理と見積もり</span><span lang="en">Project Management</span></a>
+              <a href="project-management.html"><span lang="ja">プロジェクト管理</span><span lang="en">Project Management</span></a>
               <a href="project-estimation-planning.html"><span lang="ja">プロジェクト計画・見積もり</span><span lang="en">Project Planning &amp; Estimation</span></a>
             </div>
             <div class="megacol">
@@ -698,7 +698,7 @@
       <a href="software-reuse-oss.html"><span lang="ja">ソフトウェア再利用とOSS</span><span lang="en">Software Reuse &amp; OSS</span></a>
       <div class="mobsublabel"><span lang="ja">計画・プロセス</span><span lang="en">Planning &amp; Process</span></div>
       <a class="here" href="agile-scrum.html" aria-current="page"><span lang="ja">アジャイル開発とスクラム</span><span lang="en">Agile &amp; Scrum</span></a>
-      <a href="project-management.html"><span lang="ja">プロジェクト管理と見積もり</span><span lang="en">Project Management</span></a>
+      <a href="project-management.html"><span lang="ja">プロジェクト管理</span><span lang="en">Project Management</span></a>
       <a href="project-estimation-planning.html"><span lang="ja">プロジェクト計画・見積もり</span><span lang="en">Project Planning &amp; Estimation</span></a>
       <div class="mobsublabel"><span lang="ja">品質・運用</span><span lang="en">Quality &amp; Operations</span></div>
       <a href="software-testing.html"><span lang="ja">ソフトウェアテスト学習ガイド</span><span lang="en">Software Testing Guide</span></a>
@@ -754,6 +754,9 @@
 </div>
 
 <main id="main">
+<noscript><div class="wrap" style="padding-top:24px"><p role="alert" style="margin:0; padding:14px 18px; border:1px solid var(--hair, #ddd); border-radius:12px; background:var(--bg-2, #f4f4f2); color:var(--ink, #222); font-size:.95rem">
+  <span lang="ja">この教材はJavaScriptを有効にすると表示されます。</span><span lang="en">This learning material is displayed when JavaScript is enabled.</span>
+</p></div></noscript>
 
 <button class="totop" type="button" aria-label="上へ戻る" title="上へ戻る">&uarr;</button>
 
@@ -814,7 +817,7 @@
   <div class="wrap">
     <p class="eyebrow reveal"><span lang="ja">プラクティスカタログ</span><span lang="en">Practice catalog</span></p>
     <h2 class="big reveal"><span lang="ja">10の手法・プラクティスカタログ</span><span lang="en">Ten agile methods and practices</span></h2>
-    <p class="lead reveal" style="max-width:var(--readw); margin-top:18px">XPが生んだ開発技法（講義3.2）、スクラムというプロジェクトマネジメントの枠組み（講義3.3）、そしてカンバン・大規模化・現実の批判（講義3.4＋現代の議論）：3つのカテゴリに分けて整理しました。カテゴリで絞り込み、各カードをクリックすると、ねらい・進め方・意識するポイント・注意点・具体例が開きます。</p>
+    <p class="lead reveal" style="max-width:var(--readw); margin-top:18px">XPが生んだ開発技法（教科書3.2節）、スクラムというプロジェクトマネジメントの枠組み（教科書3.3節）、そしてカンバン・大規模化・現実の批判（教科書3.4節＋現代の議論）：3つのカテゴリに分けて整理しました。カテゴリで絞り込み、各カードをクリックすると、ねらい・進め方・意識するポイント・注意点・具体例が開きます。</p>
     <div class="controls reveal" style="margin-top:26px">
       <div class="pills" role="tablist" aria-label="カテゴリ切替">
         <button class="pill active" onclick="filterCat('all',this)">すべて<span>10</span></button>
@@ -838,7 +841,7 @@
     <h2 class="big reveal"><span lang="ja">進捗をどう「見える化」するか</span><span lang="en">Making progress visible</span></h2>
     <div class="prose reveal" id="techProse" style="margin-top:22px"></div>
     <div class="demo reveal" id="bdDemo">
-      <h4>体験デモ：バーンダウンチャート・シミュレーター</h4>
+      <h3>体験デモ：バーンダウンチャート・シミュレーター</h3>
       <p class="spec">設定：スプリントは <b>10営業日</b>、スプリントバックログの合計は <b>40ストーリーポイント</b>（変更できます）。「1日の終わりに完成したポイント」をボタンで入力していくと、<b>実績線</b>が描かれ、<b>理想線</b>と比べた完了予測コメントが表示されます。順調な日・停滞する日を混ぜて、チャートの形がどう変わるか試してみてください。</p>
       <div class="demo-row">
         <label for="bdTotal" style="font:500 .85rem/1 var(--sans); color:var(--muted)">合計ポイント</label>
@@ -939,7 +942,7 @@ const INTRO_HTML = `
 他システムとどう相互作用するか、どこまで自動化すべきかを事前に正確には予測できず、
 <strong>本当の要求は、導入後に使ってみて初めて明確になる</strong>からです。</p>
 
-<h4>復習：プロセスモデルとその限界（第2回より）</h4>
+<h3>復習：プロセスモデルとその限界（第2回より）</h3>
 <p>第2回で学んだとおり、ソフトウェアプロセスモデルには大きく<strong>計画駆動型</strong>と<strong>反復型</strong>の系譜があります。</p>
 <div class="principles">
   <div class="p"><b>ウォーターフォールモデル（計画駆動型）</b><br>
@@ -992,7 +995,7 @@ const INTRO_HTML = `
 <div class="dg-legend">左：工程を直列に進める計画駆動型。右：仕様・設計・実装を分離せず並行的に進め、複数のインクリメントに分けて段階的に開発するアジャイル。</div>
 </div>
 
-<h4>アジャイルマニフェスト（2001年）： 4つの価値</h4>
+<h3>アジャイルマニフェスト（2001年）： 4つの価値</h3>
 <p>2001年、Kent Beck・Martin Fowler・Ken Schwaber・Jeff Sutherland ら17名の技術者が米ユタ州スノーバードに集まり、
 <b>「アジャイルソフトウェア開発宣言（アジャイルマニフェスト）」</b>を発表しました。
 アジャイルの哲学を明文化したもので、<strong>4つの価値</strong>が「AよりもBを」という対比の形で書かれています。
@@ -1009,7 +1012,7 @@ const INTRO_HTML = `
     <span>Responding to change <i>over</i> following a plan：計画は大切だが、計画を守ること自体が目的化してはいけない。</span></div>
 </div>
 <div class="callout">
-  <h4>4つの価値の背後には「12の原則」がある</h4>
+  <h3>4つの価値の背後には「12の原則」がある</h3>
   マニフェストには価値を具体化した<strong>12の原則</strong>が付属しています。たとえば
   「顧客満足を最優先し、価値のあるソフトウェアを<strong>早く継続的に</strong>提供します」
   「<strong>動くソフトウェアこそが進捗の最も重要な尺度</strong>です」
@@ -1017,7 +1020,7 @@ const INTRO_HTML = `
   原文と日本語訳は<a href="https://agilemanifesto.org/iso/ja/manifesto.html" target="_blank" rel="noopener">agilemanifesto.org</a>で無料で読めます（教科書 Sommerville はこの価値観を5つの原則：顧客の関与・インクリメンタルな提供・人がプロセスに優先・変化の受容・シンプルさの維持：に整理しています）。
 </div>
 
-<h4>プラン駆動とアジャイル ： どちらに寄せるかを決める要因（Boehm の問い）</h4>
+<h3>プラン駆動とアジャイル ： どちらに寄せるかを決める要因（Boehm の問い）</h3>
 <p>アジャイルは万能ではありません。Barry Boehm らは、<strong>プラン駆動（計画駆動）とアジャイルは二者択一ではなく連続的なスペクトラム</strong>であり、
 プロジェクトの性質に応じてバランスを決めるべきだと論じました。判断材料となる問いは、大きく3つのグループに分かれます。</p>
 <ul>
@@ -1045,7 +1048,7 @@ const INTRO_HTML = `
 </svg>
 </div>
 <div class="callout tip">
-  <h4>アジャイルが有効に機能しやすい条件（Sommerville）</h4>
+  <h3>アジャイルが有効に機能しやすい条件（Sommerville）</h3>
   ①顧客と開発チームの<strong>継続的なコミュニケーション</strong>が可能　②システムが比較的<strong>独立</strong>している（他システムとの複雑な連携が少ない）
   ③<strong>小〜中規模で同一場所のチーム</strong>による開発が可能：この3条件がそろう「小・中規模の製品開発」や「組織内カスタム製品」で、アジャイルは最も力を発揮します。
   逆に条件が崩れる大規模開発では、<a href="#scaling">スケーリング</a>の工夫と計画駆動型との統合が必要になります。
@@ -1064,13 +1067,13 @@ const TECH_HTML = `
 作業はプロダクトバックログとして一覧化され、デイリースクラムで毎日情報が共有され、
 2〜4週間ごとにインクリメントという「動く証拠」が届き、顧客との信頼関係が築かれていきます。</p>
 
-<h4>ベロシティ ： チームの「実測された速度」</h4>
+<h3>ベロシティ ： チームの「実測された速度」</h3>
 <p>可視化の鍵になる数字が<b>ベロシティ（velocity）</b>です。チームが1スプリントで完成させられるバックログ作業量の見積もりで、
 実績から測定します。単位には<a href="#velocity">ストーリーポイント</a>（相対見積もり）を使うのが一般的です。
 ベロシティが分かると、「残り120ポイント ÷ ベロシティ20ポイント＝あと6スプリント」という
 <strong>実績にもとづく予測</strong>ができるようになります。</p>
 
-<h4>バーンダウンチャートの読み方</h4>
+<h3>バーンダウンチャートの読み方</h3>
 <p><b>バーンダウンチャート（burndown chart）</b>は、縦軸に<strong>残り作業量（ポイント）</strong>、横軸に<strong>経過日数</strong>を取り、
 残作業が「燃え尽きて」いく様子を描くグラフです。読み方のポイントは3つ。</p>
 <ul>
@@ -1085,26 +1088,26 @@ const TECH_HTML = `
 const CLOSING_HTML = `
 <p>最後に、個々の手法の知識を「使える判断力」に変えるための視点をまとめます。</p>
 <div class="callout warn">
-  <h4>アジャイルは「速く雑に作る」ことではない</h4>
+  <h3>アジャイルは「速く雑に作る」ことではない</h3>
   「アジャイル＝文書を書かない・計画しない・とにかく速い」は典型的な誤解です。
   アジャイルが速くするのは<strong>学びのループ</strong>：「作って、見せて、フィードバックを得て、直す」の一周です。
   それを支えるのは自動テスト・継続的インテグレーション・リファクタリングといった<strong>技術的な規律</strong>であり、
   規律を省いた「速いだけ」の開発は、コードの劣化（技術的負債）でむしろ遅くなっていきます。
 </div>
 <div class="callout tip">
-  <h4>手法の名前ではなく、価値と原則で判断する</h4>
+  <h3>手法の名前ではなく、価値と原則で判断する</h3>
   スクラムのイベントを全部やっていても、変化への対応が許されず、チームに自己管理がなければ、それはアジャイルではありません。
   逆にスクラムという名前を使っていなくても、短いフィードバックループと改善のサイクルが回っていれば、それは十分アジャイルです。
   迷ったら<strong>マニフェストの4つの価値と12の原則</strong>という「原典」に戻って判断しましょう。「アジャイルを<b>やる</b>（do agile）」ではなく「アジャイルで<b>ある</b>（be agile）」。
 </div>
 <div class="callout">
-  <h4>プラン駆動かアジャイルかは、二者択一ではない</h4>
+  <h3>プラン駆動かアジャイルかは、二者択一ではない</h3>
   Boehm が示したとおり、両者は連続的なスペクトラムです。安全性が重要なシステムや外部規制のある開発では計画駆動が今も合理的であり、
   実務の多くは「要求工学・契約はプラン駆動寄り、実装はアジャイル」といった<strong>混合（ハイブリッド）</strong>で動いています。
   大切なのは、流行や号令ではなく、<strong>システムの種類・チーム・組織文化という要因から意図的に選ぶ</strong>ことです。
 </div>
 
-<h4 style="margin-top:26px">混同しやすい用語の見分け方</h4>
+<h3 style="margin-top:26px">混同しやすい用語の見分け方</h3>
 <p>似ている用語は、<strong>「何を対象に」「誰が」「何のために」</strong>で見分けます。試験でも実務でも問われるポイントです。</p>
 <table class="cmp-table">
   <tr><th>似ている用語</th><th>見分けるポイント</th></tr>
@@ -1130,9 +1133,9 @@ const CLOSING_HTML = `
     <td>どちらもアジャイルのスケーリング。アップは<b>大規模システム</b>（複数チーム体制）への適用、アウトは<b>組織全体</b>（長年の文化を持つ大企業）への普及。</td></tr>
 </table>
 
-<h4 style="margin-top:26px">研究と実務の現在地</h4>
+<h3 style="margin-top:26px">研究と実務の現在地</h3>
 <div class="callout">
-  <h4>データで見るアジャイルのいま</h4>
+  <h3>データで見るアジャイルのいま</h3>
   業界調査「State of Agile」（Digital.ai、年次）によれば、アジャイルは主流になった一方で、
   第18版（2025年）では<strong>「アジャイルが組織に深く根付いている」と答えたのは13%</strong>にとどまり、
   スケーリングでは<strong>74%が特定フレームワークをそのまま使わずハイブリッド・自組織流</strong>を選んでいます（フレームワークではSAFeが最多）。
@@ -1141,7 +1144,7 @@ const CLOSING_HTML = `
   <strong>自分たちの文脈に合わせて検査と適応を続けること</strong>：それ自体がアジャイルの原則です。
 </div>
 
-<h4 style="margin-top:26px">さらに学ぶための文献・資料</h4>
+<h3 style="margin-top:26px">さらに学ぶための文献・資料</h3>
 <ul>
   <li>I. Sommerville『Software Engineering (10th ed.)』Pearson, 2016年, 第3章（アジャイルソフトウェア開発）・第2章（ソフトウェアプロセス）：本教材の底本</li>
   <li><a href="https://scrumguides.org/docs/scrumguide/v2020/2020-Scrum-Guide-Japanese.pdf" target="_blank" rel="noopener">スクラムガイド（2020年版・日本語）</a>：K. Schwaber &amp; J. Sutherland。約13ページ・無料。スクラムの一次情報はまずこれ</li>
@@ -1158,11 +1161,11 @@ const CLOSING_HTML = `
 const CAT_ORDER = ['xp','scrum','beyond'];
 const CAT_META = {
   xp:{ label:'アジャイル開発技法', en:'Agile development techniques', color:'var(--xp)',
-    desc:'XP（エクストリームプログラミング）が導入し、いまや現代開発の標準装備になった技法群。「どう作るか」の側面。講義3.2（ユーザーストーリー・リファクタリング・テストファースト・ペアプログラミング）に対応。'},
+    desc:'XP（エクストリームプログラミング）が導入し、いまや現代開発の標準装備になった技法群。「どう作るか」の側面。教科書3.2節（ユーザーストーリー・リファクタリング・テストファースト・ペアプログラミング）に対応。'},
   scrum:{ label:'スクラム', en:'Scrum', color:'var(--scrum)',
-    desc:'アジャイルプロジェクトマネジメントの事実上の標準。特定の開発技法を義務付けず、プロジェクトを組織化して外部からの可視性を確保する枠組み。用語はスクラムガイド2020に準拠して整理する。講義3.3に対応。'},
+    desc:'アジャイルプロジェクトマネジメントの事実上の標準。特定の開発技法を義務付けず、プロジェクトを組織化して外部からの可視性を確保する枠組み。用語はスクラムガイド2020に準拠して整理する。教科書3.3節に対応。'},
   beyond:{ label:'スクラムの外へ：現実世界のアジャイル', en:'Beyond Scrum', color:'var(--beyond)',
-    desc:'カンバンという別のアプローチ、大規模組織へのスケーリング、そして「名ばかりアジャイル」への批判。教科書（講義3.4）と現代の議論をつなぐ。'}
+    desc:'カンバンという別のアプローチ、大規模組織へのスケーリング、そして「名ばかりアジャイル」への批判。教科書（3.4節）と現代の議論をつなぐ。'}
 };
 const BADGE_CLS = {'技法の原点':'imp3','枠組み':'imp3','要求の技法':'imp2','イベント':'imp2','作成物':'imp2','計画の技法':'imp2','改善の技法':'imp2','別のアプローチ':'imp1','大規模化':'imp1','批判的視点':'imp1'};
 
@@ -1198,7 +1201,7 @@ const CARDS = [
   examples:[
     'XP発祥のプロジェクト：Chrysler の給与計算システム C3（1990年代後半、Kent Beck が参画）',
     'JUnit・pytest などの自動テストフレームワークは、XPのテストファースト開発を支える道具として普及した',
-    'リファクタリング技法のカタログ：<code>refactoring.guru</code>（講義でも紹介）'
+    'リファクタリング技法のカタログ：<code>refactoring.guru</code>'
   ],
   related:'<b>スクラム</b>との違い：XPは「どう作るか」の開発技法のセット、スクラムは「どう組織化・管理するか」の枠組み。XPの実践（ユーザーストーリー・リファクタリング・テストファースト・ペアプロ）は、手法の枠を超えてアジャイル開発の基盤になった。',
   modern:'XPを名乗るチームは減ったが、中身は現代開発の標準になった：TDD、CI/CD（GitHub Actions・Jenkins）、リファクタリング支援（IDE内蔵）、ペアプロの発展形のモブプログラミングやリモートペア（VS Code Live Share）。AIコーディング支援を「常時レビューしてくれるペア」と捉える見方もある。',
@@ -1255,7 +1258,7 @@ const CARDS = [
   ],
   points:[
     '土台は<b>経験主義</b>（empiricism）：<b>透明性・検査・適応</b>の3本柱。「やってみて、見て、直す」を制度化したもの',
-    '<b>スクラムマスター≠管理職</b>：進捗管理や作業割り当てはしない。スクラムガイド2020では「スクラムチームと組織に奉仕する<b>真のリーダー（true leader）</b>」と定義される（講義スライドの「≒プロジェクトマネージャ？」は、PMの権限：人事・予算・指示：を持たない点で別物）',
+    '<b>スクラムマスター≠管理職</b>：進捗管理や作業割り当てはしない。スクラムガイド2020では「スクラムチームと組織に奉仕する<b>真のリーダー（true leader）</b>」と定義される（「≒プロジェクトマネージャ」と理解しがちだが、PMの権限：人事・予算・指示：を持たない点で別物）',
     '<b>スクラムガイド2020の要点</b>：「自己組織化」→「<b>自己管理</b>」へ、「開発チーム」というチーム内チームを廃止して<b>1つのスクラムチーム</b>に、<b>プロダクトゴール</b>を新設、3つの作成物それぞれに「確約」（プロダクトゴール／スプリントゴール／完成の定義）を対応付け',
     '作成物は3つ：<b>プロダクトバックログ・スプリントバックログ・インクリメント</b>（スプリントに対応した、追加作業の必要ない完成状態のソフトウェア）'
   ],
@@ -1267,7 +1270,7 @@ const CARDS = [
   examples:[
     '一次情報は<b>スクラムガイド</b>（Schwaber &amp; Sutherland、約13ページ・無料・日本語版あり）',
     '認定制度：Scrum Alliance の CSM、Scrum.org の PSM',
-    '分散スクラム：OSS開発や国際チームで、タイムゾーンを活用した24時間開発に応用（講義3.3）'
+    '分散スクラム：OSS開発や国際チームで、タイムゾーンを活用した24時間開発に応用（教科書3.3節）'
   ],
   related:'<b>XP</b>との違い：スクラムは管理の枠組み、XPは技術プラクティス。<b>カンバン</b>との違いは<a href="#kanban">カンバン</a>のカードへ。5つのイベントの中身は<a href="#sprint">スプリント</a>のカードで詳しく。',
   modern:'現行版はスクラムガイド2020。State of Agile 調査ではチームレベルの手法としてスクラム系が最多派を占め続ける一方、形骸化への反省から「イベントの形ではなく経験主義という中身に戻ろう」という議論が活発。ソフトウェア以外（マーケティング・教育）への適用も広がる。',
@@ -1291,7 +1294,7 @@ const CARDS = [
   points:[
     '<b>期間は固定・延長しない</b>。品質（完成の定義）も落とさない。調整するのは<b>スコープ</b>：この優先順位がタイムボックスの本質',
     '<b>スプリントゴール</b>が「なぜこのスプリントをやるのか」の一貫性を守る。個々の項目はゴールを危うくしない範囲でPOと交渉・入れ替え可能',
-    '未完了項目は<b>バックログへ戻して再評価</b>する：不安定な要求が進捗を止めない、というスクラムの利点（講義3.3）はこの仕組みから生まれる',
+    '未完了項目は<b>バックログへ戻して再評価</b>する：不安定な要求が進捗を止めない、というスクラムの利点（教科書3.3節）はこの仕組みから生まれる',
     '2〜4週間ごとの定期的なインクリメント納品が、顧客が実物を確認する機会と信頼関係をつくる'
   ],
   cautions:[
@@ -1305,7 +1308,7 @@ const CARDS = [
     'スプリントの成果物例：ECサイトの「カート機能が使える状態のインクリメント」：動かないモックや設計書はインクリメントではない',
     '授業のチーム演習を1週間スプリントで回し、毎週金曜に動くものをデモする、という教育適用も多い'
   ],
-  related:'<b>イテレーション</b>は反復一般を指す言葉で、スプリントはスクラムでの呼び名。XPのイテレーション（1〜2週間）とほぼ同じ発想。<b>スプリントレビューとレトロスペクティブの違い</b>は closing の比較表も参照。',
+  related:'<b>イテレーション</b>は反復一般を指す言葉で、スプリントはスクラムでの呼び名。XPのイテレーション（1〜2週間）とほぼ同じ発想。<b>スプリントレビューとレトロスペクティブの違い</b>は「おわりに」の比較表も参照。',
   modern:'実務では2週間スプリントが最多派。継続的デリバリーの普及で「リリースはスプリント末」という縛りは薄れ、リリースは随時行い、スプリントは「検査と適応のリズム」として保つ運用が主流になっている。',
   hasCode:false
 },
@@ -1314,7 +1317,7 @@ const CARDS = [
   badge:'作成物', tags:['優先順位付け','DEEP','プロダクトオーナー'],
   summary:'プロダクトの改善に必要なものをすべて集め、<strong>優先順位順に一列に並べた</strong>創発的なリスト。スクラムチームが行う作業の<strong>唯一の源泉</strong>で、プロダクトオーナーが並び順に責任を持つ。',
   analogy:'人気店の「順番待ちリスト」。ただの「やることメモ」と違い、順番に意味がある：先頭の客（項目）ほど席に案内される直前で、名前も人数も確認済み（詳細化済み）。後ろの方はまだ「3人くらい・たぶん来る」程度の粗さでよい。',
-  purpose:'要求を1本のリストに透明化し、価値・リスク・依存関係を考えた順序で開発を導く。要求変更は「項目の追加と並べ替え」として自然に扱えるため、変化に強い（講義：チームが取り組む「to do」のリストであり、機能定義や要件、補足タスクの説明を含む）。',
+  purpose:'要求を1本のリストに透明化し、価値・リスク・依存関係を考えた順序で開発を導く。要求変更は「項目の追加と並べ替え」として自然に扱えるため、変化に強い（教科書：チームが取り組む「to do」のリストであり、機能定義や要件、補足タスクの説明を含む）。',
   who:'並び順の最終決定は<b>プロダクトオーナー（1名）</b>。リファインメント（分割・詳細化・見積もり）は開発者を含むチーム全体の継続的な活動。',
   steps:[
     'あらゆる要望・アイデア・修正・技術課題を<b>バックログ項目</b>として1本のリストに集める',
@@ -1331,7 +1334,7 @@ const CARDS = [
   ],
   cautions:[
     '<b>バックログのブラックホール化</b>：何百件も溜め込んで誰も読まない状態。古い項目は定期的に捨てる勇気を持つ',
-    '全項目を最初から詳細化するのは<b>ウォーターフォールへの逆戻り</b>：詳細な完全仕様を作らないのがアジャイルの特徴（講義3.0）',
+    '全項目を最初から詳細化するのは<b>ウォーターフォールへの逆戻り</b>：詳細な完全仕様を作らないのがアジャイルの特徴（教科書第3章）',
     'POが多忙で並べ替えや質問対応が滞ると、チーム全体が待ち状態になる：POの時間確保は組織の責任',
     'リファインメント不足のまま Planning に臨むと、見積もりも計画も当てずっぽうになる'
   ],
@@ -1349,7 +1352,7 @@ const CARDS = [
   badge:'計画の技法', tags:['ストーリーポイント','プランニングポーカー','バーンダウン'],
   summary:'作業量を<strong>相対値（ストーリーポイント）</strong>で見積もり、チームが1スプリントで完成できる量＝<strong>ベロシティ</strong>を実績から測って、先の計画と予測に使う技法。',
   analogy:'引っ越しの荷物を「重さ何kg」ではなく「みかん箱いくつ分」で数えるイメージ。絶対値は分からなくても「あの部屋は箱10個分、この部屋は5個分」という相対比較なら素早く合意でき、「1日に運べる箱数」（ベロシティ）さえ実測すれば完了日を予測できる。',
-  purpose:'不確実性の高い作業を素早く相対見積もりし、実測値にもとづいてスプリント計画・リリース計画の予測可能性を高める。ベロシティは「チームが1スプリントでどれだけのバックログ作業をカバーできるかの見積もり」（講義3.3）。',
+  purpose:'不確実性の高い作業を素早く相対見積もりし、実測値にもとづいてスプリント計画・リリース計画の予測可能性を高める。ベロシティは「チームが1スプリントでどれだけのバックログ作業をカバーできるかの見積もり」（教科書3.3節）。',
   who:'見積もりは<b>実際に作業する開発者全員</b>で行う（POは項目の価値と内容を説明する役）。ベロシティの測定と利用はチーム自身のため：管理者の監視のためではない。',
   steps:[
     '基準になるストーリーを決める（「これを2ポイントとする」）',
@@ -1376,7 +1379,7 @@ const CARDS = [
     'Jira のベロシティチャート・バーンダウンチャートは標準機能',
     'Tシャツサイズ見積もり（S/M/L/XL）：ポーカーより粗い代替。初期の大まかなリリース計画に使う'
   ],
-  related:'<b>人時間との違い</b>：絶対時間の見積もりは個人差と不確実性で外れやすい。相対ポイント×実測ベロシティは「外れ方も込み」で較正されていく。<b>ベロシティと生産性の違い</b>は closing の比較表へ。',
+  related:'<b>人時間との違い</b>：絶対時間の見積もりは個人差と不確実性で外れやすい。相対ポイント×実測ベロシティは「外れ方も込み」で較正されていく。<b>ベロシティと生産性の違い</b>は「おわりに」の比較表へ。',
   modern:'カンバン系では、見積もりをやめてフローメトリクス（サイクルタイム・スループット）とモンテカルロシミュレーションで確率的に予測する流れも有力。「#NoEstimates」論争：見積もりに時間をかけるより項目を小さく切って早く出すことに投資せよという主張：も知っておきたい。',
   hasCode:false
 },
@@ -1457,7 +1460,7 @@ const CARDS = [
   summary:'同じ部屋の小規模チーム向けに生まれたアジャイルを、<strong>複数チーム・大規模システム・大企業</strong>に広げる試み。計画駆動型の実践との統合が避けられなくなる。',
   analogy:'行列のできる屋台がチェーン展開するようなもの。1店舗の「あうんの呼吸」は100店舗には通用せず、マニュアル・研修・本部（＝事前の要求定義・設計文書・チーム間調整）が必要になる。ただしマニュアルだけを増やすと、屋台の良さ（自律性と速さ）が死ぬ。',
   purpose:'多数のチームが1つの大きなシステムを開発するときの、要求の事前定義・アーキテクチャの整合・チーム間コミュニケーション・リリースの同期という課題に応える。スケーリングには<b>スケールアップ</b>（大規模システムへの適用）と<b>スケールアウト</b>（組織全体への普及）の2側面がある（Sommerville）。',
-  who:'複数チームで大規模製品を開発する組織。大企業への導入では、未経験の管理者のリスク懸念・既存の品質標準との衝突・技能のばらつき・文化的抵抗が壁になる（講義3.4）。',
+  who:'複数チームで大規模製品を開発する組織。大企業への導入では、未経験の管理者のリスク懸念・既存の品質標準との衝突・技能のばらつき・文化的抵抗が壁になる（教科書3.4節）。',
   steps:[
     '<b>ロールの複製</b>：各チームにPOとスクラムマスターを置き、全体にはチーフPO・チーフスクラムマスターを置くことがある',
     '<b>プロダクトアーキテクト</b>：各チームから選出し、協力してシステム全体のアーキテクチャを設計・発展させる',
@@ -1474,14 +1477,14 @@ const CARDS = [
     '<b>SAFe への批判</b>は根強い：階層と役割が多く官僚的で、「アジャイルの語彙をまとったウォーターフォール」になりがちだという指摘。フレームワーク導入＝アジャイル化ではない',
     '<b>Spotifyモデルの罠</b>：2012年の紹介資料が「モデル」として輸入されがちだが、Spotify 自身が「当時のスナップショットであり、うちも今はこの通りではない」と述べている。構造だけコピーしても文化は移植できない',
     'フレームワーク導入が目的化すると、現場の自律性（アジャイルの核）が失われる本末転倒が起きる',
-    '大企業の変更管理・独立テストプロセスは、アジャイルの自由なリファクタリングや開発者主導のテストと衝突する（講義3.4）：調整には経営層の理解が必要'
+    '大企業の変更管理・独立テストプロセスは、アジャイルの自由なリファクタリングや開発者主導のテストと衝突する（教科書3.4節）：調整には経営層の理解が必要'
   ],
   examples:[
     'SAFe：Scaled Agile 社が提供。ART（Agile Release Train）という複数チームの同期リズムが中核',
     'LeSS：Craig Larman &amp; Bas Vodde。「スクラムをそのまま大きくする」思想で、役割の追加を最小限に抑える',
-    '分散スクラム：OSS開発や多国籍チームで、タイムゾーンを活かした24時間開発（講義3.3）'
+    '分散スクラム：OSS開発や多国籍チームで、タイムゾーンを活かした24時間開発（教科書3.3節）'
   ],
-  related:'<b>単一チームのスクラム</b>との違い：調整・文書・事前設計という「計画駆動のコスト」を意図的に払う点。プラン駆動とアジャイルの混合が前提になる（Boehm の問い・講義3.4.2）。',
+  related:'<b>単一チームのスクラム</b>との違い：調整・文書・事前設計という「計画駆動のコスト」を意図的に払う点。プラン駆動とアジャイルの混合が前提になる（Boehm の問い・教科書3.4.2節）。',
   modern:'18th State of Agile（2025）では、スケーリングの<b>74%がハイブリッド・自組織流</b>のアプローチで、特定フレームワークの教科書どおりの導入は少数派。フレームワークでは SAFe が最多（44%）だが、LeSS・Scrum@Scale は減少傾向。「フレームワークを買う」から「自分たちで設計する」への移行が進む。',
   hasCode:false
 },
@@ -1691,7 +1694,7 @@ function renderCard(t, idx){
   const badgeH = `<span class="badge-imp ${BADGE_CLS[t.badge]||'imp1'}">${t.badge}</span>`;
   const analogyH = t.analogy ? `<div class="analogy"><span><b>たとえるなら</b> ${t.analogy}</span></div>` : '';
   const dg = DIAGRAMS[t.id];
-  const diagramH = dg ? `<div class="diagram-wrap"><h5>進め方のイメージ</h5>${dg}</div>` : '';
+  const diagramH = dg ? `<div class="diagram-wrap"><h4>進め方のイメージ</h4>${dg}</div>` : '';
   let codeH = '';
   if(t.hasCode && CODE[t.id]){
     codeH = `
@@ -1720,20 +1723,20 @@ function renderCard(t, idx){
     <div class="pdetail">
       ${analogyH}
       <div class="meta-row">
-        <div class="meta"><h5>ねらい・位置づけ</h5><p>${t.purpose}</p></div>
-        <div class="meta"><h5>誰が・どんな場面で</h5><p>${t.who}</p></div>
+        <div class="meta"><h4>ねらい・位置づけ</h4><p>${t.purpose}</p></div>
+        <div class="meta"><h4>誰が・どんな場面で</h4><p>${t.who}</p></div>
       </div>
-      <div class="steps"><h5>実施の仕方（進め方）</h5><ol>${stepsLi}</ol></div>
+      <div class="steps"><h4>実施の仕方（進め方）</h4><ol>${stepsLi}</ol></div>
       ${diagramH}
       <div class="grid2">
-        <div class="box pros"><h5>✓ 意識するポイント</h5><ul>${pointsLi}</ul></div>
-        <div class="box cons"><h5>！ 注意点・落とし穴</h5><ul>${cautionsLi}</ul></div>
+        <div class="box pros"><h4>✓ 意識するポイント</h4><ul>${pointsLi}</ul></div>
+        <div class="box cons"><h4>！ 注意点・落とし穴</h4><ul>${cautionsLi}</ul></div>
       </div>
       <div class="meta-row">
-        <div class="meta"><h5>具体例</h5><ul>${exLi}</ul></div>
-        <div class="meta"><h5>混同しやすいものとの違い</h5><p>${t.related}</p></div>
+        <div class="meta"><h4>具体例</h4><ul>${exLi}</ul></div>
+        <div class="meta"><h4>混同しやすいものとの違い</h4><p>${t.related}</p></div>
       </div>
-      <div class="meta" style="margin:16px 0"><h5>現場では（ツール・現代的な実践）</h5><p>${t.modern}</p></div>
+      <div class="meta" style="margin:16px 0"><h4>現場では（ツール・現代的な実践）</h4><p>${t.modern}</p></div>
       ${codeH}
       <label class="learn"><input type="checkbox" onchange="toggleLearned('${t.id}',this)">
         この項目を理解した（習得チェック）</label>

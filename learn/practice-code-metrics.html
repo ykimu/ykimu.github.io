@@ -133,7 +133,7 @@
   /* prose */
   .prose{max-width:var(--readw)}
   .prose p{margin:0 0 1em; color:var(--ink-2)}
-  .prose h4{font-family:var(--sans); font-size:1.1rem; font-weight:600; letter-spacing:0; color:var(--ink); margin:1.5em 0 .5em}
+  .prose h3{font-family:var(--sans); font-size:1.1rem; font-weight:600; letter-spacing:0; line-height:inherit; text-wrap:wrap; color:var(--ink); margin:1.5em 0 .5em}
   .prose ul{margin:0 0 1.2em; padding-left:0; list-style:none}
   .prose ul li{position:relative; padding-left:22px; margin:11px 0; color:var(--ink-2)}
   .prose ul li::before{content:""; position:absolute; left:0; top:13px; width:11px; height:1.5px; background:var(--accent)}
@@ -148,7 +148,7 @@
 
   .callout{border-radius:16px; padding:18px 22px; margin:20px 0; max-width:var(--readw);
     background:var(--card); box-shadow:0 0 0 6px var(--shell),0 0 0 6.5px var(--hair),var(--soft)}
-  .callout h4{margin:0 0 6px; font-size:1rem; font-family:var(--sans); font-weight:600; letter-spacing:0; color:var(--ink)}
+  .callout h3{margin:0 0 6px; font-size:1rem; font-family:var(--sans); font-weight:600; letter-spacing:0; line-height:inherit; text-wrap:wrap; color:var(--ink)}
   .callout.tip{background:var(--accent-soft)}
   .callout.warn{background:rgba(138,109,59,.08)}
   .callout p{margin:0; color:var(--ink-2); font-size:.96rem}
@@ -157,14 +157,14 @@
   .grid2{display:grid; grid-template-columns:1fr 1fr; gap:16px; margin:20px 0; max-width:var(--readw)}
   .box{border-radius:16px; padding:16px 20px; background:var(--card);
     box-shadow:0 0 0 6px var(--shell),0 0 0 6.5px var(--hair),var(--soft)}
-  .box h5{margin:0 0 10px; font-size:.92rem; font-family:var(--sans); font-weight:600; letter-spacing:0; color:var(--accent-2); display:flex; align-items:center; gap:7px}
-  .box.lim h5{color:var(--warn)}
+  .box h3{margin:0 0 10px; font-size:.92rem; font-family:var(--sans); font-weight:600; letter-spacing:0; line-height:inherit; text-wrap:wrap; color:var(--accent-2); display:flex; align-items:center; gap:7px}
+  .box.lim h3{color:var(--warn)}
   .box ul{margin:0; padding-left:18px}
   .box li{margin:6px 0; font-size:.92rem; color:var(--ink-2)}
 
   .steps{border-radius:16px; padding:16px 20px; margin:20px 0; max-width:var(--readw); background:var(--card);
     box-shadow:0 0 0 6px var(--shell),0 0 0 6.5px var(--hair),var(--soft)}
-  .steps h5{margin:0 0 10px; font-size:.92rem; font-family:var(--sans); font-weight:600; letter-spacing:0; color:var(--accent-2)}
+  .steps h3{margin:0 0 10px; font-size:.92rem; font-family:var(--sans); font-weight:600; letter-spacing:0; line-height:inherit; text-wrap:wrap; color:var(--accent-2)}
   .steps ol{margin:0; padding:0; list-style:none; counter-reset:st}
   .steps ol li{counter-increment:st; position:relative; padding-left:36px; margin:9px 0; font-size:.94rem; color:var(--ink-2)}
   .steps ol li::before{content:counter(st); position:absolute; left:0; top:2px; width:23px; height:23px; border-radius:50%;
@@ -229,7 +229,7 @@
   .demo .dtag{display:inline-flex; align-items:center; gap:8px; margin:0 0 10px; padding:5px 12px 5px 10px;
     border-radius:999px; background:var(--accent-soft); color:var(--accent-2); font:600 .62rem/1 var(--disp); letter-spacing:.12em; text-transform:uppercase}
   .demo .dtag::before{content:""; width:6px; height:6px; border-radius:50%; background:var(--accent)}
-  .demo h4{margin:0 0 6px; font-size:1.12rem; font-family:var(--sans); font-weight:600; color:var(--ink)}
+  .demo h3{margin:0 0 6px; font-size:1.12rem; font-family:var(--sans); font-weight:600; letter-spacing:0; line-height:inherit; text-wrap:wrap; color:var(--ink)}
   .demo .dnote{font-size:.88rem; color:var(--muted); margin:0 0 16px}
   .demo label.fld{display:block; font:600 .74rem/1 var(--disp); letter-spacing:.08em; text-transform:uppercase; color:var(--muted); margin:0 0 7px}
   .demo textarea,.demo input[type=text]{width:100%; padding:12px 15px; border-radius:12px; border:1px solid var(--hair);
@@ -279,7 +279,8 @@
   .res-grid{display:grid; grid-template-columns:1fr 1fr; gap:16px; margin:20px 0; max-width:var(--readw)}
   @media(max-width:640px){.res-grid{grid-template-columns:1fr}}
   .res{border-radius:16px; padding:18px 20px; background:var(--card); box-shadow:0 0 0 6px var(--shell),0 0 0 6.5px var(--hair),var(--soft)}
-  .res h5{margin:0 0 10px; font-size:.95rem; font-family:var(--sans); font-weight:600; color:var(--accent-2)}
+  .res h3{margin:0 0 10px; font-size:.95rem; font-family:var(--sans); font-weight:600; letter-spacing:0; line-height:inherit; text-wrap:wrap; color:var(--accent-2)}
+  .prose h3 [lang="ja"],.callout h3 [lang="ja"],.box h3 [lang="ja"],.steps h3 [lang="ja"],.demo h3 [lang="ja"],.res h3 [lang="ja"]{word-break:normal}
   .res ul{margin:0; padding-left:0; list-style:none}
   .res li{position:relative; padding-left:20px; margin:8px 0; font-size:.9rem; color:var(--ink-2)}
   .res li::before{content:""; position:absolute; left:0; top:11px; width:9px; height:1.5px; background:var(--accent)}
@@ -289,7 +290,7 @@
   footer{border-top:1px solid var(--line); padding:68px 0 46px; background:var(--bg)}
   footer h3{font-size:.72rem; font-weight:600; letter-spacing:.12em; text-transform:uppercase; color:var(--muted); margin:0 0 1em; font-family:var(--disp)}
   .foot-grid{display:grid; grid-template-columns:1.5fr 1fr; gap:44px}
-  .foot-grid3{display:grid; grid-template-columns:1.3fr 1fr 1fr; gap:44px; margin-top:40px}
+  .foot-grid3{display:grid; grid-template-columns:1.5fr 1fr; gap:44px; margin-top:40px}
   .foot-grid3 a{color:var(--ink-2)}
   .foot-grid3 a:hover{color:var(--accent)}
   .cite{font-size:.98rem; color:var(--ink-2); line-height:1.7; max-width:52ch}
@@ -815,21 +816,21 @@
     </div>
     <div class="res-grid reveal">
       <div class="res">
-        <h5><span lang="ja">プログラム解析</span><span lang="en">Program analysis</span></h5>
+        <h3><span lang="ja">プログラム解析</span><span lang="en">Program analysis</span></h3>
         <ul>
           <li><b>ソースを構文木として読む</b>。<code>ast</code> と <code>radon</code> で行数・複雑度・関数数を測る土台。</li>
           <li><a href="program-analysis.html"><span lang="ja">プログラム解析のモジュールへ</span><span lang="en">Go to Program Analysis</span></a></li>
         </ul>
       </div>
       <div class="res">
-        <h5><span lang="ja">データの前処理</span><span lang="en">Data preprocessing</span></h5>
+        <h3><span lang="ja">データの前処理</span><span lang="en">Data preprocessing</span></h3>
         <ul>
           <li><b>表の整形と標準化</b>。pandas での集計、外れ値の確認、<code>StandardScaler</code> による尺度そろえ。</li>
           <li><a href="data-preprocessing.html"><span lang="ja">前処理のモジュールへ</span><span lang="en">Go to Data Preprocessing</span></a></li>
         </ul>
       </div>
       <div class="res">
-        <h5><span lang="ja">機械学習（教師なし）</span><span lang="en">Machine learning</span></h5>
+        <h3><span lang="ja">機械学習（教師なし）</span><span lang="en">Machine learning</span></h3>
         <ul>
           <li><b>ラベルなしで構造を見つける</b>。<code>KMeans</code> によるクラスタリングと <code>PCA</code> による可視化。</li>
           <li><a href="machine-learning.html"><span lang="ja">機械学習のモジュールへ</span><span lang="en">Go to Machine Learning</span></a></li>
@@ -846,7 +847,7 @@
     <h2 class="big">このページのコードを、そのまま動かす</h2>
     <div class="demo reveal" style="margin-top:22px">
       <span class="dtag"><span lang="ja">ノートブック</span><span lang="en">Notebook</span></span>
-      <h4>practice-code-metrics.ipynb</h4>
+      <h3>practice-code-metrics.ipynb</h3>
       <p class="dnote">下のステップで読むコードと同じ内容のノートブックです。Colab で開けば、ライブラリのインストールも含めて上から順に実行できます。手元の Jupyter で動かしたい場合はダウンロードしてください。</p>
       <div class="hero-cta" style="margin-top:6px">
         <a class="btn ink" href="https://colab.research.google.com/github/ykimu/ykimu.github.io/blob/main/learn/notebooks/practice-code-metrics.ipynb" target="_blank" rel="noopener" style="padding:12px 22px">
@@ -856,7 +857,7 @@
           <span lang="ja">ノートブックをダウンロード（.ipynb）</span><span lang="en">Download the notebook (.ipynb)</span>
         </a>
       </div>
-      <p class="dnote" style="margin:16px 0 0">先頭のセルで <code>!pip install radon scikit-learn pandas matplotlib</code> を実行します。解析対象は Colab に最初から入っている標準ライブラリのソースなので、追加のデータ取得は不要です。表示される件数や数値は Python のバージョンによって多少変わります。</p>
+      <p class="dnote" style="margin:16px 0 0">先頭のセルで <code>!pip install radon scikit-learn pandas matplotlib japanize-matplotlib</code> を実行します（<code>japanize-matplotlib</code> はグラフの日本語ラベルを正しく表示するためのものです）。解析対象は Colab に最初から入っている標準ライブラリのソースなので、追加のデータ取得は不要です。表示される件数や数値は Python のバージョンによって多少変わります。</p>
     </div>
   </div>
 </section>
@@ -895,7 +896,7 @@ paths = [p <span class="kw">for</span> p <span class="kw">in</span> paths <span 
 例: ['abc.py', 'aifc.py', 'antigravity.py', 'argparse.py', 'ast.py', 'asynchat.py']</code></pre></div>
 
     <div class="callout tip">
-      <h4>この Step のねらい</h4>
+      <h3>この Step のねらい</h3>
       <p>解析対象を「手に入りやすく、量があり、多様」なものにすると、後の分析が安定します。標準ライブラリはその条件をすべて満たす、身近で自己完結したデータ源です。</p>
     </div>
   </div>
@@ -974,7 +975,7 @@ untokenize       cc=12
 compat           cc=11</code></pre></div>
 
     <div class="callout tip">
-      <h4>この Step のまとめ</h4>
+      <h3>この Step のまとめ</h3>
       <p><code>ast</code> は構造（何がいくつあるか）を、<code>radon</code> は量（行数）と複雑さ（分岐の多さ）を教えてくれます。両者を組み合わせると、1 ファイルを数個の数字で表せます。</p>
     </div>
   </div>
@@ -1038,7 +1039,7 @@ X = StandardScaler().fit_transform(df[features])
 標準化後の標準偏差: [1. 1. 1. 1. 1. 1.]</code></pre></div>
 
     <div class="callout tip">
-      <h4>この Step のまとめ</h4>
+      <h3>この Step のまとめ</h3>
       <p>生の計測値を「表に整える → 外れ値を確認する → 尺度をそろえる」の 3 手で、分析に使える形にしました。特に標準化は、距離にもとづく KMeans や PCA の前では欠かせません。</p>
     </div>
   </div>
@@ -1075,7 +1076,9 @@ X = StandardScaler().fit_transform(df[features])
     </div>
     <div class="code-wrap attached">
       <div class="code-head"><span class="lbl">Python</span><span class="lang-tag">step4_scatter.py</span><button class="copy" type="button" onclick="copyCode(this)">copy</button></div>
-      <pre><code><span class="kw">import</span> matplotlib.pyplot <span class="kw">as</span> plt
+      <pre><code><span class="cm"># 日本語ラベルの豆腐（□）を防ぐ：Colab では先頭のセルで !pip install japanize-matplotlib</span>
+<span class="kw">import</span> matplotlib.pyplot <span class="kw">as</span> plt
+<span class="kw">import</span> japanize_matplotlib  <span class="cm"># noqa: F401（import するだけで日本語フォントが有効になる）</span>
 
 plt.figure(figsize=(<span class="nu">6</span>, <span class="nu">4</span>))
 plt.scatter(df[<span class="st">"sloc"</span>], df[<span class="st">"max_cc"</span>], s=<span class="nu">18</span>, alpha=<span class="nu">0.6</span>)
@@ -1089,7 +1092,7 @@ plt.show()</code></pre>
 # 右へ行くほど点はまばらになる。同じ sloc でも max_cc は上下に大きくばらつく。</code></pre></div>
 
     <div class="callout tip">
-      <h4>この Step のまとめ</h4>
+      <h3>この Step のまとめ</h3>
       <p>相関は「全体の傾向」を 1 つの数字にまとめます。規模と複雑さはある程度連動しますが、完全ではありません。この「ずれ」を持つファイルたちを、次は群として捉えます。</p>
     </div>
   </div>
@@ -1179,7 +1182,7 @@ plt.show()
     </div>
 
     <div class="callout tip">
-      <h4>この Step のまとめ</h4>
+      <h3>この Step のまとめ</h3>
       <p>KMeans はラベルなしで「似たもの集め」をします。分けること自体より、<b>各群の平均を読み、名前を付ける</b>解釈の作業が本番です。PCA は、その結果を目で確かめるための窓になります。</p>
     </div>
   </div>
@@ -1202,7 +1205,7 @@ plt.show()
 
     <div class="grid2">
       <div class="box">
-        <h5><span lang="ja">この分析で言えること</span><span lang="en">What holds</span></h5>
+        <h3><span lang="ja">この分析で言えること</span><span lang="en">What holds</span></h3>
         <ul>
           <li>多数のファイルを同じ尺度で並べ、外れて見えるコードを機械的に見つけられる。</li>
           <li>規模と複雑さは連動するが、完全ではない。ずれを持つコードが群として存在する。</li>
@@ -1210,7 +1213,7 @@ plt.show()
         </ul>
       </div>
       <div class="box lim">
-        <h5><span lang="ja">限界と注意</span><span lang="en">Limits</span></h5>
+        <h3><span lang="ja">限界と注意</span><span lang="en">Limits</span></h3>
         <ul>
           <li>メトリクスは表面的な形だけを測り、設計の良さや正しさは測れない。</li>
           <li>循環的複雑度は分岐の数であって、読みやすさそのものではない。</li>
@@ -1221,7 +1224,7 @@ plt.show()
     </div>
 
     <div class="callout tip">
-      <h4>この Step のまとめ</h4>
+      <h3>この Step のまとめ</h3>
       <p>数値は判断を置き換えるものではなく、判断を助ける道具です。「どこを詳しく読むか」を絞り込むために使い、最後は人間がコードを読んで確かめる。この順番を忘れないことが、メトリクスと上手に付き合うコツです。</p>
     </div>
   </div>
@@ -1238,28 +1241,28 @@ plt.show()
 
     <div class="res-grid reveal">
       <div class="res">
-        <h5><span lang="ja">1. 別のコードを対象にする</span><span lang="en">Analyze other code</span></h5>
+        <h3><span lang="ja">1. 別のコードを対象にする</span><span lang="en">Analyze other code</span></h3>
         <ul>
           <li>解析対象を、<code>pip</code> で入れた小さな公開パッケージのソース（そのインストール先ディレクトリ）に差し替えてみる。</li>
           <li>ヒント：<code>パッケージ名.__path__</code> でソースの場所が分かります。標準ライブラリと群の分かれ方が変わるか観察を。</li>
         </ul>
       </div>
       <div class="res">
-        <h5><span lang="ja">2. 特徴量を足す</span><span lang="en">Add features</span></h5>
+        <h3><span lang="ja">2. 特徴量を足す</span><span lang="en">Add features</span></h3>
         <ul>
           <li><code>radon</code> の <code>h_visit</code>（Halstead 指標）や、コメント行と実行行の比を特徴量に加える。</li>
           <li>ヒント：軸が増えると群の意味づけがどう細かくなるかを見ます。標準化を忘れずに。</li>
         </ul>
       </div>
       <div class="res">
-        <h5><span lang="ja">3. クラスタ数を変える</span><span lang="en">Change k</span></h5>
+        <h3><span lang="ja">3. クラスタ数を変える</span><span lang="en">Change k</span></h3>
         <ul>
           <li><code>k</code> を 3 や 6 に変えて、群の分かれ方を比べる。</li>
           <li>ヒント：<code>k</code> ごとに <code>km.inertia_</code> を記録してエルボー法で「ほどよい <code>k</code>」を探すのも定番です。</li>
         </ul>
       </div>
       <div class="res">
-        <h5><span lang="ja">4. 保守性の指標を計算する</span><span lang="en">Maintainability index</span></h5>
+        <h3><span lang="ja">4. 保守性の指標を計算する</span><span lang="en">Maintainability index</span></h3>
         <ul>
           <li><code>radon.metrics.mi_visit</code> で保守性指数（Maintainability Index）を出し、群ごとに比べる。</li>
           <li>ヒント：規模・複雑度・コメント量を 1 つにまとめた指標です。群の性格と一致するか確かめましょう。</li>
@@ -1288,7 +1291,7 @@ plt.show()
 
     <div class="res-grid reveal">
       <div class="res">
-        <h5><span lang="ja">使った技術に戻る</span><span lang="en">Revisit the techniques</span></h5>
+        <h3><span lang="ja">使った技術に戻る</span><span lang="en">Revisit the techniques</span></h3>
         <ul>
           <li><a href="program-analysis.html"><span lang="ja">プログラム解析</span><span lang="en">Program Analysis</span></a>：ast と構文木の基礎。</li>
           <li><a href="data-preprocessing.html"><span lang="ja">データの前処理</span><span lang="en">Data Preprocessing</span></a>：表の整形と標準化。</li>
@@ -1296,8 +1299,9 @@ plt.show()
         </ul>
       </div>
       <div class="res">
-        <h5><span lang="ja">次に向けて</span><span lang="en">What is next</span></h5>
+        <h3><span lang="ja">次の演習・段階へ</span><span lang="en">Next exercise</span></h3>
         <ul>
+          <li><span lang="ja">次の演習：</span><span lang="en">Next: </span><a href="practice-semantic-search.html"><span lang="ja">意味で検索する（TF-IDF vs 埋め込み）</span><span lang="en">Semantic search (TF-IDF vs embeddings)</span></a>（<a href="index.html#stage3"><span lang="ja">演習一覧</span><span lang="en">All exercises</span></a>）</li>
           <li>クラスタ数や特徴量を変え、群の分かれ方の変化を観察する。</li>
           <li>Halstead 指標や保守性指数を足して、測れる側面を広げる。</li>
           <li>解析対象を実プロジェクトに変え、注意して読むべき箇所を絞り込む。</li>
@@ -1306,7 +1310,7 @@ plt.show()
     </div>
 
     <div class="callout tip">
-      <h4>おつかれさまでした</h4>
+      <h3>おつかれさまでした</h3>
       <p>プログラム解析・前処理・機械学習という別々に学んだ技術が、1 本のパイプラインでつながりました。ノートブックを開いて、<code>k</code> の値や特徴量、外れ値の基準を書き換えてみてください。群の分かれ方がどう動くかを確かめると、それぞれの手法が結果に与える影響が体で分かります。</p>
     </div>
   </div>
@@ -1338,14 +1342,6 @@ plt.show()
       </div>
     </div>
     <div class="foot-grid3">
-      <div>
-        <h3><span lang="ja">連絡先</span><span lang="en">Contact</span></h3>
-        <p class="muted-s">
-          <b>Yuta Kimura</b><br>
-          <span lang="ja">大阪公立大学工業高等専門学校</span><span lang="en">Osaka Metropolitan University College of Technology</span><br>
-          <a href="mailto:y.kimura@omu.ac.jp">y.kimura [at] omu.ac.jp</a>
-        </p>
-      </div>
       <div>
         <h3><span lang="ja">サイト</span><span lang="en">Site</span></h3>
         <p class="muted-s">
@@ -1415,9 +1411,9 @@ plt.show()
     "から":1,"まで":1,"ね":1,"よ":1,"た":1,"だ":1,"です":1,"ます":1,"ている":1,"いる":1,"のが":1};
   var DICT = {}; JP_DICT.forEach(function(w){ DICT[w]=1; });
   var MAXL = 5;
-  function isJP(ch){ return /[぀-ヿ㐀-䶿一-鿿ｦ-ﾟ]/.test(ch); }
+  function isJP(ch){ return /[\u3040-ヿ㐀-䶿一-鿿ｦ-ﾟ]/.test(ch); }
   function jtype(ch){
-    if(/[぀-ゟ]/.test(ch)) return 'hira';
+    if(/[\u3040-ゟ]/.test(ch)) return 'hira';
     if(/[゠-ヿｦ-ﾟ]/.test(ch)) return 'kata';
     if(/[一-鿿㐀-䶿]/.test(ch)) return 'kanji';
     return 'other';

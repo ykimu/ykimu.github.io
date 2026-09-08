@@ -139,7 +139,7 @@
   /* prose */
   .prose{max-width:var(--readw)}
   .prose p{margin:0 0 1em; color:var(--ink-2)}
-  .prose h4{font-family:var(--sans); font-size:1.12rem; font-weight:600; letter-spacing:0; color:var(--ink); margin:1.6em 0 .6em}
+  .prose h3{font-family:var(--sans); font-size:1.12rem; font-weight:600; letter-spacing:0; color:var(--ink); margin:1.6em 0 .6em; line-height:inherit; text-wrap:wrap}
   .prose ul{margin:0 0 1.2em; padding-left:0; list-style:none}
   .prose ul li{position:relative; padding-left:22px; margin:12px 0; color:var(--ink-2)}
   .prose ul li::before{content:""; position:absolute; left:0; top:13px; width:11px; height:1.5px; background:var(--accent)}
@@ -150,7 +150,7 @@
 
   .callout{border-radius:16px; padding:18px 22px; margin:18px 0; max-width:var(--readw);
     background:var(--card); box-shadow:0 0 0 6px var(--shell),0 0 0 6.5px var(--hair),var(--soft)}
-  .callout h4{margin:0 0 6px; font-size:1rem; font-family:var(--sans); font-weight:600; letter-spacing:0; color:var(--ink)}
+  .callout h3{margin:0 0 6px; font-size:1rem; font-family:var(--sans); font-weight:600; letter-spacing:0; color:var(--ink); line-height:inherit; text-wrap:wrap}
   .callout.tip{background:var(--accent-soft)}
   .callout.warn{background:rgba(138,109,59,.08)}
   .callout a{font-weight:600}
@@ -228,14 +228,14 @@
   .grid2{display:grid; grid-template-columns:1fr 1fr; gap:16px; margin:18px 0}
   .box{border-radius:16px; padding:16px 18px; background:var(--card);
     box-shadow:0 0 0 6px var(--shell),0 0 0 6.5px var(--hair),var(--soft)}
-  .box h5{margin:0 0 10px; font-size:.92rem; font-family:var(--sans); font-weight:600; letter-spacing:0; display:flex; align-items:center; gap:7px}
-  .box.pros h5{color:var(--accent-2)}
-  .box.cons h5{color:var(--bad)}
+  .box h4{margin:0 0 10px; font-size:.92rem; font-family:var(--sans); font-weight:600; letter-spacing:0; display:flex; align-items:center; gap:7px}
+  .box.pros h4{color:var(--accent-2)}
+  .box.cons h4{color:var(--bad)}
   .box ul{margin:0; padding-left:18px}
   .box li{margin:6px 0; font-size:.9rem; color:var(--ink-2)}
 
   .meta-row{display:grid; grid-template-columns:1fr 1fr; gap:16px; margin:16px 0}
-  .meta h5{margin:0 0 8px; font-size:.92rem; font-family:var(--sans); font-weight:600; letter-spacing:0; color:var(--accent-2)}
+  .meta h4{margin:0 0 8px; font-size:.92rem; font-family:var(--sans); font-weight:600; letter-spacing:0; color:var(--accent-2)}
   .meta p,.meta li{font-size:.92rem; color:var(--ink-2)}
   .meta ul{margin:0; padding-left:18px}
   .meta p{margin:0}
@@ -244,7 +244,7 @@
   /* numbered procedure steps */
   .steps{border-radius:16px; padding:16px 18px; margin:16px 0; background:var(--card);
     box-shadow:0 0 0 6px var(--shell),0 0 0 6.5px var(--hair),var(--soft)}
-  .steps h5{margin:0 0 10px; font-size:.92rem; font-family:var(--sans); font-weight:600; letter-spacing:0; color:var(--accent-2)}
+  .steps h4{margin:0 0 10px; font-size:.92rem; font-family:var(--sans); font-weight:600; letter-spacing:0; color:var(--accent-2)}
   .steps ol{margin:0; padding:0; list-style:none; counter-reset:st}
   .steps ol li{counter-increment:st; position:relative; padding-left:36px; margin:9px 0; font-size:.92rem; color:var(--ink-2)}
   .steps ol li::before{content:counter(st); position:absolute; left:0; top:3px; width:23px; height:23px; border-radius:50%;
@@ -253,7 +253,7 @@
 
   /* diagrams */
   .diagram-wrap{margin:18px 0; max-width:var(--readw)}
-  .diagram-wrap h5{margin:0 0 8px; font-size:.92rem; font-family:var(--sans); font-weight:600; letter-spacing:0; color:var(--accent-2)}
+  .diagram-wrap h4{margin:0 0 8px; font-size:.92rem; font-family:var(--sans); font-weight:600; letter-spacing:0; color:var(--accent-2)}
   .diagram-wrap svg{display:block; width:100%; height:auto; background:var(--shell);
     border:1px solid var(--hair); border-radius:12px; padding:8px}
   .dg-box{fill:var(--card); stroke:var(--line); stroke-width:1.2}
@@ -286,7 +286,7 @@
   /* equivalence-partition demo */
   .demo{border-radius:16px; padding:20px 22px; margin:22px 0; max-width:var(--readw); background:var(--card);
     box-shadow:0 0 0 6px var(--shell),0 0 0 6.5px var(--hair),var(--soft)}
-  .demo h4{margin:0 0 6px; font-size:1rem; font-family:var(--sans); font-weight:600; color:var(--ink)}
+  .demo h3{margin:0 0 6px; font-size:1rem; font-family:var(--sans); font-weight:600; color:var(--ink); line-height:inherit; text-wrap:wrap; letter-spacing:normal}
   .demo .spec{font-size:.9rem; color:var(--muted); margin:0 0 14px}
   .demo-row{display:flex; gap:10px; flex-wrap:wrap; align-items:center}
   .demo input[type=text]{width:min(220px,100%); padding:10px 16px; border-radius:999px; border:1px solid var(--hair);
@@ -539,7 +539,7 @@
 {"@type":"ListItem","position":1,"name":"ホーム","item":"https://ykimu.github.io/"},
 {"@type":"ListItem","position":2,"name":"教育","item":"https://ykimu.github.io/teaching.html"},
 {"@type":"ListItem","position":3,"name":"ソフトウェア工学","item":"https://ykimu.github.io/course/index.html"},
-{"@type":"ListItem","position":4,"name":"プロジェクト管理と見積もり","item":"https://ykimu.github.io/course/project-management.html"}
+{"@type":"ListItem","position":4,"name":"プロジェクト管理","item":"https://ykimu.github.io/course/project-management.html"}
 ]}
 </script>
 </head>
@@ -592,7 +592,7 @@
             <div class="megacol">
               <div class="navlabel"><span lang="ja">計画・プロセス</span><span lang="en">Planning &amp; Process</span></div>
               <a href="agile-scrum.html"><span lang="ja">アジャイル開発とスクラム</span><span lang="en">Agile &amp; Scrum</span></a>
-              <a class="here" href="project-management.html" aria-current="page"><span lang="ja">プロジェクト管理と見積もり</span><span lang="en">Project Management</span></a>
+              <a class="here" href="project-management.html" aria-current="page"><span lang="ja">プロジェクト管理</span><span lang="en">Project Management</span></a>
               <a href="project-estimation-planning.html"><span lang="ja">プロジェクト計画・見積もり</span><span lang="en">Project Planning &amp; Estimation</span></a>
             </div>
             <div class="megacol">
@@ -698,7 +698,7 @@
       <a href="software-reuse-oss.html"><span lang="ja">ソフトウェア再利用とOSS</span><span lang="en">Software Reuse &amp; OSS</span></a>
       <div class="mobsublabel"><span lang="ja">計画・プロセス</span><span lang="en">Planning &amp; Process</span></div>
       <a href="agile-scrum.html"><span lang="ja">アジャイル開発とスクラム</span><span lang="en">Agile &amp; Scrum</span></a>
-      <a class="here" href="project-management.html" aria-current="page"><span lang="ja">プロジェクト管理と見積もり</span><span lang="en">Project Management</span></a>
+      <a class="here" href="project-management.html" aria-current="page"><span lang="ja">プロジェクト管理</span><span lang="en">Project Management</span></a>
       <a href="project-estimation-planning.html"><span lang="ja">プロジェクト計画・見積もり</span><span lang="en">Project Planning &amp; Estimation</span></a>
       <div class="mobsublabel"><span lang="ja">品質・運用</span><span lang="en">Quality &amp; Operations</span></div>
       <a href="software-testing.html"><span lang="ja">ソフトウェアテスト学習ガイド</span><span lang="en">Software Testing Guide</span></a>
@@ -754,6 +754,9 @@
 </div>
 
 <main id="main">
+<noscript><div class="wrap" style="padding-top:24px"><p role="alert" style="margin:0; padding:14px 18px; border:1px solid var(--hair, #ddd); border-radius:12px; background:var(--bg-2, #f4f4f2); color:var(--ink, #222); font-size:.95rem">
+  <span lang="ja">この教材はJavaScriptを有効にすると表示されます。</span><span lang="en">This learning material is displayed when JavaScript is enabled.</span>
+</p></div></noscript>
 
 <button class="totop" type="button" aria-label="上へ戻る" title="上へ戻る">&uarr;</button>
 
@@ -765,7 +768,7 @@
     <span class="csep" aria-hidden="true">&rsaquo;</span>
     <a href="index.html"><span lang="ja">ソフトウェア工学</span><span lang="en">Software Engineering</span></a>
     <span class="csep" aria-hidden="true">&rsaquo;</span>
-    <span class="cur" aria-current="page"><span lang="ja">プロジェクト管理と見積もり</span><span lang="en">Project Management</span></span>
+    <span class="cur" aria-current="page"><span lang="ja">プロジェクト管理</span><span lang="en">Project Management</span></span>
   </nav>
 </div>
 
@@ -838,8 +841,8 @@
     <div class="prose reveal" style="margin-top:22px">
       <p>このガイドは<strong>リスク・人・チーム・進捗のマネジメント</strong>に集中しています。プロジェクト計画、スケジューリング、経験ベースの見積もり、アルゴリズム的コストモデリング（COCOMO II・ファンクションポイント法）、アジャイルの計画と予測、そして三点見積もり（PERT）の計算ツールは、姉妹教材<b>「プロジェクト計画・見積もり」</b>に集約しました。定量的な見積もり技法と手を動かす計算ツールは、そちらで詳しく学べます。</p>
       <div class="callout tip">
-        <h4>プロジェクト計画・見積もり（姉妹教材）</h4>
-        計画・スケジューリング・見積もり（三点見積もり／プランニングポーカー／COCOMO II／ファンクションポイント）・アジャイルの確率的予測を、3つの計算ツール（COCOMO工数計算機・クリティカルパス／ガント可視化・ベロシティ・プランナー）つきで扱います。
+        <h3>プロジェクト計画・見積もり（姉妹教材）</h3>
+        計画・スケジューリング・見積もり（三点見積もり／プランニングポーカー／COCOMO II／ファンクションポイント）・アジャイルの計画と予測を、4つの計算ツール（COCOMO II 工数計算機・クリティカルパス／ガント可視化・ベロシティ・プランナー・三点見積もり（PERT）計算機）つきで扱います。
         <p style="margin:12px 0 0"><a class="tlink" href="project-estimation-planning.html"><span lang="ja">「プロジェクト計画・見積もり」を開く</span><span lang="en">Open the Planning &amp; Estimation guide</span><span class="ar" aria-hidden="true" style="margin-left:6px">&rsaquo;</span></a></p>
       </div>
     </div>
@@ -874,8 +877,8 @@
 <footer>
   <div class="wrap">
     <div class="cite">
-      <span lang="ja">ソフトウェアプロジェクトマネジメントの全体像（リスクマネジメント・人とチームのマネジメント・計画とスケジューリング・見積もり技法）を、これから学ぶ方向けにまとめた学習ガイドです。木村祐太のソフトウェア工学の授業教材の一部としてご覧いただけます。授業の詳細（評価方法・日程等）は最新のシラバスを確認してください。</span>
-      <span lang="en">A study guide to software project management and estimation (risk management, managing people and teams, planning and scheduling, and estimation techniques), for those new to it. Part of Yuta Kimura's software engineering course materials. For course details such as assessment and schedule, please refer to the latest syllabus.</span>
+      <span lang="ja">ソフトウェアプロジェクトマネジメントの基本（リスクマネジメント・人とチームのマネジメント・進捗と健全性のメトリクス）を、これから学ぶ方向けにまとめた学習ガイドです。計画・スケジューリング・見積もり技法は姉妹教材「プロジェクト計画・見積もり」で扱います。木村祐太のソフトウェア工学の授業教材の一部としてご覧いただけます。授業の詳細（評価方法・日程等）は最新のシラバスを確認してください。</span>
+      <span lang="en">A study guide to software project management (risk management, managing people and teams, and progress and health metrics), for those new to it. Planning, scheduling, and estimation are covered in the companion guide, Project Planning &amp; Estimation. Part of Yuta Kimura's software engineering course materials. For course details such as assessment and schedule, please refer to the latest syllabus.</span>
     </div>
     <div class="foot-grid">
       <div>
@@ -911,8 +914,8 @@
     </div>
     <div class="foot-rule"></div>
     <p class="foot-note">
-      <span lang="ja">© 2026 Yuta Kimura. プロジェクトマネジメントと計画・見積もりの解説は Ian Sommerville『Software Engineering (10th ed.)』第22章・第23章に基づく概説です。心理的安全性（Google re:Work）・DORA / SPACE・モンテカルロ予測など現代的トピックの解説は、各分野の公開資料と実務慣行に基づきます。</span>
-      <span lang="en">© 2026 Yuta Kimura. This overview of project management, planning, and estimation follows Chapters 22 and 23 of Ian Sommerville, <i>Software Engineering</i> (10th ed.). Sections on modern topics (psychological safety, DORA / SPACE, Monte Carlo forecasting, etc.) draw on publicly available industry sources.</span>
+      <span lang="ja">© 2026 Yuta Kimura. プロジェクトマネジメントの解説は Ian Sommerville『Software Engineering (10th ed.)』第22章に基づく概説です。心理的安全性（Google re:Work）・DORA / SPACE・モンテカルロ予測など現代的トピックの解説は、各分野の公開資料と実務慣行に基づきます。</span>
+      <span lang="en">© 2026 Yuta Kimura. This overview of project management follows Chapter 22 of Ian Sommerville, <i>Software Engineering</i> (10th ed.). Sections on modern topics (psychological safety, DORA / SPACE, Monte Carlo forecasting, etc.) draw on publicly available industry sources.</span>
     </p>
   </div>
 </footer>
@@ -925,7 +928,7 @@ const INTRO_HTML = `
 <strong>良い管理はプロジェクトの成功を保証しません。しかし悪い管理は、ほぼ確実に失敗を生みます</strong>。
 納期は遅れ、コストは超過し、チームは疲弊する：その多くは技術の失敗ではなく、マネジメントの失敗です。</p>
 
-<h4>ソフトウェアのマネジメントはなぜ特別に難しいのか</h4>
+<h3>ソフトウェアのマネジメントはなぜ特別に難しいのか</h3>
 <div class="principles">
   <div class="p"><b>① 成果物が無形（intangible）</b><br>
     <span>進捗が目に見えない。橋の建設なら「半分架かった」ことが誰の目にも見えるが、ソフトウェアの進捗はドキュメントと申告を信じるしかない。だから「90%完成」という言葉が危険になる。</span></div>
@@ -935,7 +938,7 @@ const INTRO_HTML = `
     <span>開発プロセスは組織ごとに多様で、機械工学や土木のような成熟した「これに従えば大丈夫」という標準がまだない。プロセスと問題の切り分け自体が難しい。</span></div>
 </div>
 
-<h4>プロジェクトマネージャの4つの重要活動</h4>
+<h3>プロジェクトマネージャの4つの重要活動</h3>
 <p>Sommerville は、ほとんどのプロジェクトマネージャに共通する仕事として次を挙げています。
 このページのカタログは、この活動の全体を順にカバーします。</p>
 <div class="principles">
@@ -952,44 +955,17 @@ const INTRO_HTML = `
 技術情報を要約して伝える能力は、プロジェクトマネージャの必須スキルです。</p>
 
 <div class="callout warn">
-  <h4>この難しさの共通点：不確実性こそがマネジメントの主戦場</h4>
+  <h3>この難しさの共通点：不確実性こそがマネジメントの主戦場</h3>
   見えない成果物・一点物・多様なプロセス。3つの難しさに共通するのは<strong>不確実性</strong>です。
   プロジェクトマネジメントの本質は、不確実性をゼロにすること（それは不可能です）ではなく、
   <strong>識別し、測り、減らし、残った分に備える</strong>こと。
   リスクマネジメントも、見積もり技法も、アジャイルの計画も、すべてこの一点に向かっています。
 </div>
 
-<h4>見積もりはどれくらいブレるのか：不確実性のコーン</h4>
-<p>プロジェクトの<strong>初期ほど見積もりは大きくブレます</strong>。Boehm らの古典的な分析によれば、
-初期構想の段階での規模・工数の見積もりは、実績に対して<strong>4倍〜1/4倍</strong>の幅でブレえます。
-要求が決まり、設計が進むにつれて幅は狭まっていく：この漏斗型の図を、McConnell は
-<b>不確実性のコーン（Cone of Uncertainty）</b>と名付けました。</p>
-<div class="diagram-wrap">
-<svg viewBox="0 0 760 320" role="img" aria-label="不確実性のコーン：プロジェクトが進むほど見積もりのブレ幅が狭まる">
-  <path d="M70 30 L70 272 L730 272" class="dg-line"/>
-  <path d="M70 155 L730 155" class="dg-line dg-dash" opacity=".5"/>
-  <polygon points="90,45 240,100 400,123 560,137 700,155 560,173 400,187 240,210 90,265"
-    fill="rgba(14,111,92,.10)" stroke="#0E6F5C" stroke-width="1.4"/>
-  <text x="62" y="49" class="dg-el" style="text-anchor:end">4倍</text>
-  <text x="62" y="104" class="dg-el" style="text-anchor:end">2倍</text>
-  <text x="62" y="159" class="dg-el" style="text-anchor:end">等倍</text>
-  <text x="62" y="214" class="dg-el" style="text-anchor:end">1/2</text>
-  <text x="62" y="269" class="dg-el" style="text-anchor:end">1/4</text>
-  <text x="90" y="292" class="dg-el">初期構想</text>
-  <text x="240" y="292" class="dg-el">要求定義</text>
-  <text x="400" y="292" class="dg-el">設計</text>
-  <text x="560" y="292" class="dg-el">実装</text>
-  <text x="700" y="292" class="dg-el">完了</text>
-  <text x="240" y="160" class="dg-lbl" fill="#0A5748">見積もりのブレ幅</text>
-  <text x="380" y="314" class="dg-note">縦軸：実績に対する見積もりの比（対数目盛のイメージ）</text>
-</svg>
-<div class="dg-legend">Boehm（1981）が示し、McConnell『ソフトウェア見積り』（2006）が広めた古典的知見。
-重要な注意が2つ：①コーンは<b>放っておいても狭まらない</b>：要求を確定し、リスクを潰す「仕事」によってのみ狭まる。
-②実証研究には「実際のプロジェクトはこんなにきれいに収束しない」という批判もある。図は法則ではなく「初期の見積もりを断言するな」という警告として読むこと。</div>
-</div>
+<p>見積もりが初期ほど大きくブレること（不確実性のコーン）、三点見積もり・COCOMO II などの見積もり技法、スケジューリングの詳細は、姉妹教材<a href="project-estimation-planning.html">「プロジェクト計画・見積もり」</a>で扱います。</p>
 
 <div class="callout tip">
-  <h4>このページの歩き方</h4>
+  <h3>このページの歩き方</h3>
   まず下の<a href="#topics">カタログ</a>で、リスク → 人とチーム → 進捗の順に読み進めてください。
   計画・スケジューリング・見積もりの詳細は<a href="#related">関連教材</a>（姉妹ガイド「プロジェクト計画・見積もり」）にまとめています。
   最後に<a href="#quiz">理解度クイズ</a>で定着を確認しましょう。
@@ -1004,29 +980,21 @@ const INTRO_HTML = `
 const CLOSING_HTML = `
 <p>最後に、個々の技法の知識を「使える判断力」に変えるための視点をまとめます。</p>
 <div class="callout warn">
-  <h4>不確実性を隠さない：「幅と確率」で語る勇気</h4>
+  <h3>不確実性を隠さない：「幅と確率」で語る勇気</h3>
   断言は頼もしく聞こえますが、不確実な段階での断言は誠実さではなく、無知の表明です。
   「85%の確率で4月末まで。50%なら4月中旬」という語り方は歯切れが悪いのではなく、
   <strong>知っていることと知らないことを正確に伝える</strong>専門家の仕事です。
   相手が1つの数字を求めてきたら、その数字が「見積もり・目標・コミットメント」のどれなのかを確認すること。
 </div>
 <div class="callout tip">
-  <h4>人を「資源」と呼ばない</h4>
+  <h3>人を「資源」と呼ばない</h3>
   人月という単位の便利さは、「人は交換可能な部品だ」という錯覚を招きます。
   しかしソフトウェアは頭脳労働の産物であり、生産性の個人差は数倍規模、
   チームの凝集性・心理的安全性は「ソフトな話」ではなく<strong>生産性の一次要因</strong>です
   （『ピープルウェア』の古典的主張と、Google Project Aristotle の実証が同じ結論を指しています）。
   ブルックスの法則もコンウェイの法則も、突き詰めれば「ソフトウェア開発の律速はコミュニケーションだ」と言っています。
 </div>
-<div class="callout">
-  <h4>計画は無価値、計画づくりがすべて</h4>
-  アイゼンハワーの言葉「Plans are worthless, but planning is everything」。
-  計画の価値は文書そのものではなく、<strong>作る過程で得た理解・洗い出した依存関係・考え抜いた選択肢</strong>にあります。
-  だから初期計画が崩れても（必ず崩れます）計画づくりは無駄ではないし、
-  計画は「作って終わり」ではなく「更新し続ける活動」なのです。
-</div>
-
-<h4 style="margin-top:26px">混同しやすい用語の見分け方</h4>
+<h3 style="margin-top:26px">混同しやすい用語の見分け方</h3>
 <p>似ている用語は、<strong>「何に影響するか」「何を測っているか」</strong>で見分けます。試験でも実務でも問われるポイントです。</p>
 <table class="cmp-table">
   <tr><th>似ている用語</th><th>見分けるポイント</th></tr>
@@ -1034,27 +1002,20 @@ const CLOSING_HTML = `
     <td>何に影響するかで分ける。<b>スケジュール・資源</b>（例：熟練者の離職）／<b>成果物の品質・性能</b>（例：購入部品の性能不足）／<b>開発組織・事業</b>（例：競合の先行リリース）。同じ出来事が複数に該当することもある。</td></tr>
   <tr><td><b>ガントチャート</b> と <b>バーンダウンチャート</b></td>
     <td>ガントは<b>タスクと依存関係</b>をカレンダーに配置する（計画駆動）。バーンダウンは<b>残作業量の推移</b>だけを見る（アジャイル）。前者は「何をいつ」、後者は「いつ終わりそうか」に答える。</td></tr>
-  <tr><td><b>絶対見積もり</b> と <b>相対見積もり</b></td>
-    <td>「3人日」と絶対時間で見積もるか、「あのストーリーの2倍」と<b>比較</b>で見積もるか。人間は絶対値より比較が得意。相対値（ストーリーポイント）は実測ベロシティと組み合わせて初めて時間に変換できる。</td></tr>
   <tr><td><b>精度（accuracy）</b> と <b>確度（precision）</b></td>
     <td>accuracy は「実際の値にどれだけ<b>近いか</b>」、precision は「数字がどれだけ<b>細かいか</b>」。「247.5人日」は precise だが accurate とは限らない。不確実な段階で細かい数字を出すのは確実さの偽装。</td></tr>
-  <tr><td><b>工数（人月）</b> と <b>期間（カレンダー月）</b></td>
-    <td>工数は<b>コスト</b>の単位（人数×時間）、期間は<b>暦</b>。両者は交換できない：12人月の仕事は12人でも1か月では終わらない（ブルックスの法則）。</td></tr>
-  <tr><td><b>マイルストーン</b> と <b>成果物（deliverable）</b></td>
-    <td>マイルストーンは活動の<b>予測可能な結果</b>＝進捗確認点（例：要求仕様の承認）。成果物は<b>顧客に引き渡す</b>作業産物。成果物は通常マイルストーンでもあるが、逆は成り立たない。</td></tr>
   <tr><td><b>ベロシティ</b> と <b>スループット</b></td>
     <td>ベロシティは<b>ストーリーポイントの消化量</b>／スプリント（見積もりが前提）。スループットは<b>完了アイテム数</b>／期間（見積もり不要）。#NoEstimates 系のモンテカルロ予測は後者を使う。</td></tr>
   <tr><td><b>マネジメント</b> と <b>リーダーシップ</b></td>
     <td>Kotter の古典的整理では、マネジメントは<b>複雑さに対処する</b>（計画・組織化・統制）、リーダーシップは<b>変化に対処する</b>（方向づけ・動機づけ）。プロジェクトには両方必要で、役職と機能は別物。</td></tr>
-  <tr><td><b>見積もり</b> と <b>目標</b> と <b>コミットメント</b></td>
-    <td>確率的な<b>予測</b>／実現したい<b>願望</b>／相手との<b>約束</b>。この3つを言葉として区別するだけで、見積もりをめぐる衝突の多くは消える（McConnell）。</td></tr>
   <tr><td><b>リスク</b> と <b>イシュー（問題）</b></td>
     <td>リスクは「<b>まだ起きていない</b>」不確実な事象、イシューは「<b>すでに起きた</b>」問題。リスクが現実化した瞬間にイシューになり、コンティンジェンシー計画の出番になる。</td></tr>
 </table>
+<p style="font-size:.9rem;color:var(--muted)">工数と期間、絶対見積もりと相対見積もり、マイルストーンと成果物、見積もり・目標・コミットメントの見分け方は、姉妹教材<a href="project-estimation-planning.html">「プロジェクト計画・見積もり」</a>で扱います。</p>
 
-<h4 style="margin-top:26px">研究者の視点：見積もりと生産性は、いまも研究の最前線</h4>
+<h3 style="margin-top:26px">研究者の視点：見積もりと生産性は、いまも研究の最前線</h3>
 <div class="callout">
-  <h4>実証的ソフトウェア工学とプロジェクトデータ</h4>
+  <h3>実証的ソフトウェア工学とプロジェクトデータ</h3>
   「工数をどう予測するか」は実証的ソフトウェア工学の古典テーマで、ISBSG などのプロジェクト実績データベースを使った
   機械学習ベースの工数予測、見積もりの認知バイアス（楽観・アンカリング）の実験研究が続いています。
   開発者の生産性測定も、単一指標批判（<strong>SPACE フレームワーク</strong>）や DORA の年次大規模調査など、
@@ -1062,9 +1023,9 @@ const CLOSING_HTML = `
   まさにいま測定が進んでいる問いです。
 </div>
 
-<h4 style="margin-top:26px">さらに学ぶための文献・資料</h4>
+<h3 style="margin-top:26px">さらに学ぶための文献・資料</h3>
 <ul>
-  <li>I. Sommerville『Software Engineering (10th ed.)』Pearson, 2016年, 第22章・第23章：本教材の底本</li>
+  <li>I. Sommerville『Software Engineering (10th ed.)』Pearson, 2016年, 第22章：本教材の底本（第23章は姉妹教材「プロジェクト計画・見積もり」で扱う）</li>
   <li>F. P. Brooks, Jr.『人月の神話【新装版】』丸善出版, 2014年（原著 1975 / 1995）：ブルックスの法則と「銀の弾丸はない」の原典。ソフトウェア工学でもっとも読み継がれている本</li>
   <li>T. DeMarco & T. Lister『ピープルウェア 第3版』日経BP, 2013年：「われわれの仕事の主要な問題は、技術的というより社会学的なものだ」</li>
   <li>S. McConnell『ソフトウェア見積り』日経BP, 2006年：不確実性のコーン、見積もり・目標・コミットメントの区別など、見積もり実務の定番書</li>
@@ -1269,102 +1230,8 @@ const TOPICS = [
 ];
 </script>
 <script>
-/* ============== コード例（COCOMO / モンテカルロ） ============== */
+/* ============== コード例（このガイドのトピックでは未使用：hasCode:true の項目で利用） ============== */
 const CODE = {
-'algorithmic-estimation':{
-python:`# COCOMO II（ポストアーキテクチャ）の考え方を単純化した計算例
-# 工数 PM = A × (KLOC)^E × M   （E > 1 なら「規模の不経済」）
-
-A = 2.94
-SF = [3.72, 3.04, 4.24, 3.29, 4.68]   # スケール要因（先例性・チーム結束・成熟度など）
-E = 0.91 + 0.01 * sum(SF)             # 指数 E は約 1.10 → 規模の不経済
-
-EM = [1.10, 0.88, 1.15]               # コストドライバ（信頼性要求・ツール・スケジュール等）
-M = 1.0
-for em in EM:
-    M *= em
-
-def cocomo_pm(kloc):
-    return A * (kloc ** E) * M
-
-for kloc in [10, 50, 100]:
-    print(kloc, "KLOC ->", round(cocomo_pm(kloc)), "人月")
-
-# 10 KLOC -> 約41人月 / 50 KLOC -> 約242人月 / 100 KLOC -> 約518人月
-# 規模10倍で工数は約12.6倍 - 線形（10倍）では増えない`,
-java:`// COCOMO II（ポストアーキテクチャ）の考え方を単純化した計算例
-// 工数 PM = A × (KLOC)^E × M   （E > 1 なら「規模の不経済」）
-public class CocomoDemo {
-    public static void main(String[] args) {
-        double A = 2.94;
-        double[] sf = {3.72, 3.04, 4.24, 3.29, 4.68}; // スケール要因
-        double sum = 0;
-        for (double f : sf) sum += f;
-        double E = 0.91 + 0.01 * sum;                 // 指数 E は約 1.10
-
-        double[] em = {1.10, 0.88, 1.15};             // コストドライバ（乗数）
-        double M = 1.0;
-        for (double m : em) M *= m;
-
-        for (int kloc : new int[]{10, 50, 100}) {
-            double pm = A * Math.pow(kloc, E) * M;
-            System.out.println(kloc + " KLOC -> 約" + Math.round(pm) + "人月");
-        }
-        // 10 KLOC -> 約41人月 / 100 KLOC -> 約518人月
-        // 規模10倍で工数は約12.6倍 - 線形では増えない
-    }
-}`
-},
-'agile-planning':{
-python:`# ベロシティの実績から「いつ終わるか」を確率で予測する
-# モンテカルロ・シミュレーション
-import random
-
-velocity_history = [18, 23, 15, 21, 25, 17, 20, 22]  # 過去スプリントの実績
-backlog = 120                                         # 残作業（ストーリーポイント）
-
-def simulate_once():
-    done, sprints = 0, 0
-    while done < backlog:
-        done += random.choice(velocity_history)  # 実績からランダムに1つ引く
-        sprints += 1
-    return sprints
-
-results = sorted(simulate_once() for _ in range(10000))
-print("50%の確率で:", results[5000], "スプリント以内")
-print("85%の確率で:", results[8500], "スプリント以内")
-print("95%の確率で:", results[9500], "スプリント以内")
-
-# 答えは1つの数字ではなく「確率つきの範囲」で出てくる
-# 「85%の信頼度で7スプリント以内」のように語れる`,
-java:`// ベロシティの実績から「いつ終わるか」を確率で予測する
-// モンテカルロ・シミュレーション
-import java.util.Arrays;
-import java.util.Random;
-
-public class ForecastDemo {
-    public static void main(String[] args) {
-        int[] history = {18, 23, 15, 21, 25, 17, 20, 22}; // 過去の実績
-        int backlog = 120;                                 // 残ポイント
-        int trials = 10000;
-        int[] results = new int[trials];
-        Random rnd = new Random();
-
-        for (int t = 0; t < trials; t++) {
-            int done = 0, sprints = 0;
-            while (done < backlog) {
-                done += history[rnd.nextInt(history.length)];
-                sprints++;
-            }
-            results[t] = sprints;
-        }
-        Arrays.sort(results);
-        System.out.println("50%の確率で: " + results[5000] + " スプリント以内");
-        System.out.println("85%の確率で: " + results[8500] + " スプリント以内");
-        System.out.println("95%の確率で: " + results[9500] + " スプリント以内");
-    }
-}`
-}
 };
 
 /* ============== カード内ダイアグラム ============== */
@@ -1409,39 +1276,6 @@ const DIAGRAMS = {
   <text x="380" y="235" class="dg-lbl">5人 → 10本</text>
   <text x="630" y="235" class="dg-lbl">8人 → 28本</text>
   <text x="380" y="260" class="dg-note">人数を2倍にすると経路は約4倍：「伝える・すり合わせる」コストは人数の2乗のオーダーで効いてくる。</text>
-</svg>`,
-'scheduling': `
-<svg viewBox="0 0 760 322" role="img" aria-label="ガントチャートの例（クリティカルパスつき）">
-  <text x="380" y="24" class="dg-lbl">ガントチャート（アクティビティバーチャート）の例</text>
-  <path d="M140 40 L140 260 M198 40 L198 260 M256 40 L256 260 M314 40 L314 260 M372 40 L372 260 M430 40 L430 260 M488 40 L488 260 M546 40 L546 260 M604 40 L604 260 M662 40 L662 260 M720 40 L720 260" stroke="#E7ECE9" stroke-width="1" fill="none"/>
-  <text x="140" y="278" class="dg-el">0週</text>
-  <text x="256" y="278" class="dg-el">2週</text>
-  <text x="372" y="278" class="dg-el">4週</text>
-  <text x="488" y="278" class="dg-el">6週</text>
-  <text x="604" y="278" class="dg-el">8週</text>
-  <text x="720" y="278" class="dg-el">10週</text>
-  <text x="132" y="65" class="dg-el" style="text-anchor:end">T1 要求定義</text>
-  <text x="132" y="100" class="dg-el" style="text-anchor:end">T2 UI設計</text>
-  <text x="132" y="135" class="dg-el" style="text-anchor:end">T3 DB・API設計</text>
-  <text x="132" y="170" class="dg-el" style="text-anchor:end">T4 画面実装</text>
-  <text x="132" y="205" class="dg-el" style="text-anchor:end">T5 サーバ実装</text>
-  <text x="132" y="240" class="dg-el" style="text-anchor:end">T6 統合テスト</text>
-  <rect x="140" y="50" width="116" height="22" rx="5" fill="rgba(14,111,92,.16)" stroke="#0E6F5C" stroke-width="1.6"/>
-  <rect x="256" y="85" width="116" height="22" rx="5" fill="rgba(107,116,111,.12)" stroke="#6B746F" stroke-width="1.2"/>
-  <rect x="256" y="120" width="174" height="22" rx="5" fill="rgba(14,111,92,.16)" stroke="#0E6F5C" stroke-width="1.6"/>
-  <rect x="372" y="155" width="174" height="22" rx="5" fill="rgba(107,116,111,.12)" stroke="#6B746F" stroke-width="1.2"/>
-  <rect x="430" y="190" width="174" height="22" rx="5" fill="rgba(14,111,92,.16)" stroke="#0E6F5C" stroke-width="1.6"/>
-  <rect x="604" y="225" width="116" height="22" rx="5" fill="rgba(14,111,92,.16)" stroke="#0E6F5C" stroke-width="1.6"/>
-  <path d="M372 96 L372 151" class="dg-line dg-dash" marker-end="url(#ahg)"/>
-  <path d="M430 131 L430 186" class="dg-line dg-dash" marker-end="url(#ahg)"/>
-  <path d="M546 166 L546 236 L600 236" class="dg-line dg-dash" marker-end="url(#ahg)"/>
-  <path d="M604 201 L604 221" class="dg-line dg-dash" marker-end="url(#ahg)"/>
-  <polygon points="728,228 736,236 728,244 720,236" fill="#8A6D3B"/>
-  <text x="728" y="222" class="dg-el">M1</text>
-  <text x="380" y="300" class="dg-note">緑＝クリティカルパス（T1→T3→T5→T6）：この鎖の遅れがそのまま全体の遅れになる。</text>
-  <text x="380" y="316" class="dg-note">灰色のT2・T4には余裕（フロート）がある。破線＝依存関係、菱形＝マイルストーン（リリース判定）。</text>
-  <defs><marker id="ahg" markerWidth="9" markerHeight="9" refX="8" refY="4.5" orient="auto">
-    <path d="M0,0 L9,4.5 L0,9 z" fill="#6B746F"/></marker></defs>
 </svg>`
 };
 </script>
@@ -1532,7 +1366,7 @@ function renderTopic(t, idx){
   const badgeH = `<span class="badge-imp ${BADGE_CLS[t.badge]||'imp1'}">${t.badge}</span>`;
   const analogyH = t.analogy ? `<div class="analogy"><span><b>たとえるなら</b> ${t.analogy}</span></div>` : '';
   const dg = DIAGRAMS[t.id];
-  const diagramH = dg ? `<div class="diagram-wrap"><h5>図解</h5>${dg}</div>` : '';
+  const diagramH = dg ? `<div class="diagram-wrap"><h4>図解</h4>${dg}</div>` : '';
   let codeH = '';
   if(t.hasCode && CODE[t.id]){
     codeH = `
@@ -1561,20 +1395,20 @@ function renderTopic(t, idx){
     <div class="pdetail">
       ${analogyH}
       <div class="meta-row">
-        <div class="meta"><h5>実施の目的</h5><p>${t.purpose}</p></div>
-        <div class="meta"><h5>誰が・いつ実施するか</h5><p>${t.who}</p></div>
+        <div class="meta"><h4>実施の目的</h4><p>${t.purpose}</p></div>
+        <div class="meta"><h4>誰が・いつ実施するか</h4><p>${t.who}</p></div>
       </div>
-      <div class="steps"><h5>実施の仕方（進め方）</h5><ol>${stepsLi}</ol></div>
+      <div class="steps"><h4>実施の仕方（進め方）</h4><ol>${stepsLi}</ol></div>
       ${diagramH}
       <div class="grid2">
-        <div class="box pros"><h5>&#10003; 意識するポイント</h5><ul>${pointsLi}</ul></div>
-        <div class="box cons"><h5>&#65281; 注意点・落とし穴</h5><ul>${cautionsLi}</ul></div>
+        <div class="box pros"><h4>&#10003; 意識するポイント</h4><ul>${pointsLi}</ul></div>
+        <div class="box cons"><h4>&#65281; 注意点・落とし穴</h4><ul>${cautionsLi}</ul></div>
       </div>
       <div class="meta-row">
-        <div class="meta"><h5>具体例</h5><ul>${exLi}</ul></div>
-        <div class="meta"><h5>混同しやすいものとの違い</h5><p>${t.related}</p></div>
+        <div class="meta"><h4>具体例</h4><ul>${exLi}</ul></div>
+        <div class="meta"><h4>混同しやすいものとの違い</h4><p>${t.related}</p></div>
       </div>
-      <div class="meta" style="margin:16px 0"><h5>現場では（ツール・現代的な実践）</h5><p>${t.modern}</p></div>
+      <div class="meta" style="margin:16px 0"><h4>現場では（ツール・現代的な実践）</h4><p>${t.modern}</p></div>
       ${codeH}
       <label class="learn"><input type="checkbox" onchange="toggleLearned('${t.id}',this)">
         このトピックを理解した（習得チェック）</label>
@@ -1624,114 +1458,6 @@ function applyFilter(){
     });
     g.classList.toggle('hidden', shown===0);
   });
-}
-
-/* ============== 三点見積もり（PERT）デモ ============== */
-function pertTry(o,m,p){
-  document.getElementById('pertO').value = o;
-  document.getElementById('pertM').value = m;
-  document.getElementById('pertP').value = p;
-  pertCheck();
-}
-function r1(v){ return Math.round(v*10)/10; }
-function pertCheck(){
-  const rawO = document.getElementById('pertO').value.trim();
-  const rawM = document.getElementById('pertM').value.trim();
-  const rawP = document.getElementById('pertP').value.trim();
-  const out = document.getElementById('pertOut');
-  const viz = document.getElementById('pertViz');
-  if(!rawO && !rawM && !rawP){
-    out.className = 'demo-out';
-    out.innerHTML = '3つの値を入力するか、上のボタンで代表例を試してください。「4 / 7 / 16」は悲観側に裾が長い典型的なタスクの例です。';
-    viz.innerHTML = '';
-    return;
-  }
-  const o = parseFloat(rawO), m = parseFloat(rawM), p = parseFloat(rawP);
-  if(!isFinite(o) || !isFinite(m) || !isFinite(p)){
-    out.className = 'demo-out ng';
-    out.innerHTML = '<span class="pl">入力エラー</span>3つとも<b>数値</b>で入力してください（例：O=4, M=7, P=16）。';
-    viz.innerHTML = '';
-    return;
-  }
-  if(o < 0 || m < 0 || p < 0){
-    out.className = 'demo-out ng';
-    out.innerHTML = '<span class="pl">入力エラー</span>負の作業時間はありません。0以上の値を入力してください。';
-    viz.innerHTML = '';
-    return;
-  }
-  if(!(o <= m && m <= p)){
-    out.className = 'demo-out ng';
-    out.innerHTML = '<span class="pl">矛盾</span><b>O ≤ M ≤ P</b> になるように入力してください。「楽観値が悲観値より大きい」見積もりは定義上あり得ません：実際の見積もり会議でも、この種の入力ミス・認識ズレはよく起こります。';
-    viz.innerHTML = '';
-    return;
-  }
-  const e = (o + 4*m + p) / 6;
-  const s = (p - o) / 6;
-  if(s === 0){
-    out.className = 'demo-out ok';
-    out.innerHTML = '<span class="pl">計算結果</span>期待値 <b>E = ' + r1(e) + '人日</b>、標準偏差 <b>σ = 0</b>。3つの値がすべて同じ＝不確実性ゼロの見積もりです。現実のタスクでまずあり得ない、という点にこそ意味があります：OとPの幅を正直に見積もることから始めましょう。';
-    viz.innerHTML = '';
-    return;
-  }
-  const lo68 = r1(e - s), hi68 = r1(e + s);
-  const lo95 = r1(Math.max(0, e - 2*s)), hi95 = r1(e + 2*s);
-  let skew = '';
-  if((p - m) > (m - o)){
-    skew = ' 悲観側の裾が長いため、期待値 E（' + r1(e) + '）は最頻値 M（' + r1(m) + '）より<b>大きく</b>なっています。「いちばんありそうな値」で約束すると五分五分より高い確率で遅れる：三点見積もりの最重要の教訓です。';
-  } else if((p - m) < (m - o)){
-    skew = ' この例では珍しく楽観側の裾が長いため、期待値 E は最頻値 M より小さくなっています。';
-  } else {
-    skew = ' 楽観・悲観が対称なので、期待値 E は最頻値 M と一致します。';
-  }
-  out.className = 'demo-out ok';
-  out.innerHTML = '<span class="pl">計算結果</span>期待値 <b>E = ' + r1(e) + '人日</b>、標準偏差 <b>σ = ' + r1(s) + '</b>。'
-    + '<b>68%信頼区間：' + lo68 + '〜' + hi68 + '人日</b>／<b>95%信頼区間：' + lo95 + '〜' + hi95 + '人日</b>（正規分布近似）。'
-    + skew;
-  viz.innerHTML = pertSvg(o, m, p, e, s);
-}
-function pertSvg(o, m, p, e, s){
-  const lo = Math.min(o, e - 3.2*s);
-  const hi = Math.max(p, e + 3.2*s);
-  const X = v => 40 + (v - lo) / (hi - lo) * 680;
-  const y0 = 160, amp = 112;
-  const Y = v => y0 - amp * Math.exp(-((v - e)*(v - e)) / (2*s*s));
-  const N = 120;
-  const pts = [];
-  for(let i = 0; i <= N; i++){
-    const v = lo + (hi - lo) * i / N;
-    pts.push([X(v), Y(v)]);
-  }
-  const curve = 'M' + pts.map(q => r1(q[0]) + ' ' + r1(q[1])).join(' L');
-  function region(a, b){
-    const seg = [];
-    const steps = 60;
-    for(let i = 0; i <= steps; i++){
-      const v = a + (b - a) * i / steps;
-      seg.push(r1(X(v)) + ',' + r1(Y(v)));
-    }
-    return 'M' + r1(X(a)) + ' ' + y0 + ' L' + seg.join(' L') + ' L' + r1(X(b)) + ' ' + y0 + ' Z';
-  }
-  const svg = `
-<div class="diagram-wrap" style="margin:14px 0 0">
-<svg viewBox="0 0 760 215" role="img" aria-label="三点見積もりの分布イメージ">
-  <path d="${region(e-2*s, e+2*s)}" fill="rgba(14,111,92,.07)"/>
-  <path d="${region(e-s, e+s)}" fill="rgba(14,111,92,.18)"/>
-  <path d="${curve}" fill="none" stroke="#0E6F5C" stroke-width="1.8"/>
-  <path d="M40 ${y0} L720 ${y0}" class="dg-line"/>
-  <path d="M${r1(X(e))} ${y0} L${r1(X(e))} ${Y(e)-4}" stroke="#0A5748" stroke-width="1.6"/>
-  <path d="M${r1(X(e-s))} ${y0} L${r1(X(e-s))} ${r1(Y(e-s))} M${r1(X(e+s))} ${y0} L${r1(X(e+s))} ${r1(Y(e+s))}" class="dg-line dg-dash"/>
-  <circle cx="${r1(X(o))}" cy="${y0}" r="5" fill="#8A6D3B"/>
-  <circle cx="${r1(X(m))}" cy="${y0}" r="5" fill="#3E5C50"/>
-  <circle cx="${r1(X(p))}" cy="${y0}" r="5" fill="#B04A3E"/>
-  <text x="${r1(X(o))}" y="${y0+20}" class="dg-el">O=${r1(o)}</text>
-  <text x="${r1(X(m))}" y="${y0+34}" class="dg-el">M=${r1(m)}</text>
-  <text x="${r1(X(p))}" y="${y0+20}" class="dg-el">P=${r1(p)}</text>
-  <text x="${r1(X(e))}" y="30" class="dg-lbl" fill="#0A5748">E=${r1(e)}</text>
-  <text x="${r1(X(e))}" y="${y0-14}" class="dg-el">68%</text>
-  <text x="380" y="211" class="dg-note">濃い緑＝E±1σ（約68%）、薄い緑＝E±2σ（約95%）。悲観側に裾が長いほど、E は M より右にずれる。</text>
-</svg>
-</div>`;
-  return svg;
 }
 
 /* ============== クイズ（in-memory） ============== */

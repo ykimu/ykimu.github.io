@@ -133,7 +133,7 @@
   /* prose */
   .prose{max-width:var(--readw)}
   .prose p{margin:0 0 1em; color:var(--ink-2)}
-  .prose h4{font-family:var(--sans); font-size:1.1rem; font-weight:600; letter-spacing:0; color:var(--ink); margin:1.5em 0 .5em}
+  .prose h3{font-family:var(--sans); font-size:1.1rem; font-weight:600; letter-spacing:0; line-height:inherit; text-wrap:wrap; color:var(--ink); margin:1.5em 0 .5em}
   .prose ul{margin:0 0 1.2em; padding-left:0; list-style:none}
   .prose ul li{position:relative; padding-left:22px; margin:11px 0; color:var(--ink-2)}
   .prose ul li::before{content:""; position:absolute; left:0; top:13px; width:11px; height:1.5px; background:var(--accent)}
@@ -148,7 +148,7 @@
 
   .callout{border-radius:16px; padding:18px 22px; margin:20px 0; max-width:var(--readw);
     background:var(--card); box-shadow:0 0 0 6px var(--shell),0 0 0 6.5px var(--hair),var(--soft)}
-  .callout h4{margin:0 0 6px; font-size:1rem; font-family:var(--sans); font-weight:600; letter-spacing:0; color:var(--ink)}
+  .callout h3{margin:0 0 6px; font-size:1rem; font-family:var(--sans); font-weight:600; letter-spacing:0; line-height:inherit; text-wrap:wrap; color:var(--ink)}
   .callout.tip{background:var(--accent-soft)}
   .callout.warn{background:rgba(138,109,59,.08)}
   .callout p{margin:0; color:var(--ink-2); font-size:.96rem}
@@ -157,14 +157,14 @@
   .grid2{display:grid; grid-template-columns:1fr 1fr; gap:16px; margin:20px 0; max-width:var(--readw)}
   .box{border-radius:16px; padding:16px 20px; background:var(--card);
     box-shadow:0 0 0 6px var(--shell),0 0 0 6.5px var(--hair),var(--soft)}
-  .box h5{margin:0 0 10px; font-size:.92rem; font-family:var(--sans); font-weight:600; letter-spacing:0; color:var(--accent-2); display:flex; align-items:center; gap:7px}
-  .box.lim h5{color:var(--warn)}
+  .box h3{margin:0 0 10px; font-size:.92rem; font-family:var(--sans); font-weight:600; letter-spacing:0; line-height:inherit; text-wrap:wrap; color:var(--accent-2); display:flex; align-items:center; gap:7px}
+  .box.lim h3{color:var(--warn)}
   .box ul{margin:0; padding-left:18px}
   .box li{margin:6px 0; font-size:.92rem; color:var(--ink-2)}
 
   .steps{border-radius:16px; padding:16px 20px; margin:20px 0; max-width:var(--readw); background:var(--card);
     box-shadow:0 0 0 6px var(--shell),0 0 0 6.5px var(--hair),var(--soft)}
-  .steps h5{margin:0 0 10px; font-size:.92rem; font-family:var(--sans); font-weight:600; letter-spacing:0; color:var(--accent-2)}
+  .steps h3{margin:0 0 10px; font-size:.92rem; font-family:var(--sans); font-weight:600; letter-spacing:0; line-height:inherit; text-wrap:wrap; color:var(--accent-2)}
   .steps ol{margin:0; padding:0; list-style:none; counter-reset:st}
   .steps ol li{counter-increment:st; position:relative; padding-left:36px; margin:9px 0; font-size:.94rem; color:var(--ink-2)}
   .steps ol li::before{content:counter(st); position:absolute; left:0; top:2px; width:23px; height:23px; border-radius:50%;
@@ -229,7 +229,7 @@
   .demo .dtag{display:inline-flex; align-items:center; gap:8px; margin:0 0 10px; padding:5px 12px 5px 10px;
     border-radius:999px; background:var(--accent-soft); color:var(--accent-2); font:600 .62rem/1 var(--disp); letter-spacing:.12em; text-transform:uppercase}
   .demo .dtag::before{content:""; width:6px; height:6px; border-radius:50%; background:var(--accent)}
-  .demo h4{margin:0 0 6px; font-size:1.12rem; font-family:var(--sans); font-weight:600; color:var(--ink)}
+  .demo h3{margin:0 0 6px; font-size:1.12rem; font-family:var(--sans); font-weight:600; letter-spacing:0; line-height:inherit; text-wrap:wrap; color:var(--ink)}
   .demo .dnote{font-size:.88rem; color:var(--muted); margin:0 0 16px}
   .demo label.fld{display:block; font:600 .74rem/1 var(--disp); letter-spacing:.08em; text-transform:uppercase; color:var(--muted); margin:0 0 7px}
   .demo textarea,.demo input[type=text]{width:100%; padding:12px 15px; border-radius:12px; border:1px solid var(--hair);
@@ -279,7 +279,8 @@
   .res-grid{display:grid; grid-template-columns:1fr 1fr; gap:16px; margin:20px 0; max-width:var(--readw)}
   @media(max-width:640px){.res-grid{grid-template-columns:1fr}}
   .res{border-radius:16px; padding:18px 20px; background:var(--card); box-shadow:0 0 0 6px var(--shell),0 0 0 6.5px var(--hair),var(--soft)}
-  .res h5{margin:0 0 10px; font-size:.95rem; font-family:var(--sans); font-weight:600; color:var(--accent-2)}
+  .res h3{margin:0 0 10px; font-size:.95rem; font-family:var(--sans); font-weight:600; letter-spacing:0; line-height:inherit; text-wrap:wrap; color:var(--accent-2)}
+  .prose h3 [lang="ja"],.callout h3 [lang="ja"],.box h3 [lang="ja"],.steps h3 [lang="ja"],.demo h3 [lang="ja"],.res h3 [lang="ja"]{word-break:normal}
   .res ul{margin:0; padding-left:0; list-style:none}
   .res li{position:relative; padding-left:20px; margin:8px 0; font-size:.9rem; color:var(--ink-2)}
   .res li::before{content:""; position:absolute; left:0; top:11px; width:9px; height:1.5px; background:var(--accent)}
@@ -289,7 +290,7 @@
   footer{border-top:1px solid var(--line); padding:68px 0 46px; background:var(--bg)}
   footer h3{font-size:.72rem; font-weight:600; letter-spacing:.12em; text-transform:uppercase; color:var(--muted); margin:0 0 1em; font-family:var(--disp)}
   .foot-grid{display:grid; grid-template-columns:1.5fr 1fr; gap:44px}
-  .foot-grid3{display:grid; grid-template-columns:1.3fr 1fr 1fr; gap:44px; margin-top:40px}
+  .foot-grid3{display:grid; grid-template-columns:1.5fr 1fr; gap:44px; margin-top:40px}
   .foot-grid3 a{color:var(--ink-2)}
   .foot-grid3 a:hover{color:var(--accent)}
   .cite{font-size:.98rem; color:var(--ink-2); line-height:1.7; max-width:52ch}
@@ -701,7 +702,9 @@
   <nav class="crumbs" aria-label="パンくず">
     <a href="../index.html"><span lang="ja">ホーム</span><span lang="en">Home</span></a>
     <span class="csep" aria-hidden="true">&rsaquo;</span>
-    <span class="cur" aria-current="page"><span lang="ja">学習コース：リポジトリマイニング入門</span><span lang="en">Learn: Mining Software Repositories</span></span>
+    <a href="index.html"><span lang="ja">学習コース</span><span lang="en">Learn</span></a>
+    <span class="csep" aria-hidden="true">&rsaquo;</span>
+    <span class="cur" aria-current="page"><span lang="ja">リポジトリマイニング入門</span><span lang="en">Mining Software Repositories</span></span>
   </nav>
 </div>
 
@@ -831,7 +834,7 @@
     </div>
 
     <div class="callout tip">
-      <h4>この Step のまとめ</h4>
+      <h3>この Step のまとめ</h3>
       <p>リポジトリマイニングは、コミット・課題・レビュー・CI といった開発の記録から実態を掘り出す技術。「あるべき論」ではなく実データで欠陥予測・協働・ホットスポットを調べる、経験的ソフトウェア工学の営みです。次からは、その最大のデータ源である Git の履歴に踏み込みます。</p>
     </div>
   </div>
@@ -853,13 +856,13 @@
 
     <p class="layer"><span lang="ja">仕組み</span><span lang="en">How it works</span></p>
     <div class="prose">
-      <h4>1. リポジトリ・コミット・スナップショット</h4>
+      <h3>1. リポジトリ・コミット・スナップショット</h3>
       <p><b>リポジトリ</b>はプロジェクトの全履歴を収めた入れ物です。<b>コミット</b>は「ある時点のプロジェクト全体の状態（スナップショット）」への記録で、ハッシュ値（<code>a1b2c3d...</code> のような 40 桁の識別子）で一意に指し示せます。Git は変更差分だけでなく、その時点のツリー全体を参照する形で状態を保存します。</p>
-      <h4>2. コミットグラフ（DAG）</h4>
+      <h3>2. コミットグラフ（DAG）</h3>
       <p>各コミットは<b>親コミット</b>を指します。ふつうは 1 つですが、ブランチを統合する<b>マージコミット</b>は親を 2 つ以上持ちます。こうしてコミットは、時間をさかのぼる向きにつながった<b>有向非巡回グラフ（DAG: Directed Acyclic Graph）</b>を作ります。循環はしません。この構造をたどることで、どの変更がどの変更の後に来たのかを正確に追えます。</p>
-      <h4>3. diff と blame</h4>
+      <h3>3. diff と blame</h3>
       <p><b>diff</b>は 2 つの状態の差分で、どの行が追加・削除されたかを表します。<b>blame</b>は、ファイルの各行が「どのコミットで最後に変更されたか」を対応づけます。あとで出てくる、バグを埋め込んだコミットをさかのぼる分析は、この blame を土台にします。</p>
-      <h4>4. コミットのメタデータ</h4>
+      <h3>4. コミットのメタデータ</h3>
       <p>1 つのコミットには、次のような情報が付きます。これらがマイニングの生の材料です。</p>
       <ul>
         <li><b>ハッシュ</b>：コミットを一意に識別する値。</li>
@@ -873,7 +876,7 @@
     <!-- DEMO 1: Commit-log parser -->
     <div class="demo reveal" id="demoParse">
       <span class="dtag"><span lang="ja">デモ 1</span><span lang="en">Demo 1</span></span>
-      <h4>コミットログ・パーサ</h4>
+      <h3>コミットログ・パーサ</h3>
       <p class="dnote">1 行に 1 コミットを <code>ハッシュ | 著者 | 日付 | メッセージ</code> の形（縦棒区切り）で書くと、各項目に分解して表にします。さらにメッセージ先頭のキーワード（fix / feat / refactor / docs / test など）から変更の種別を推定し、色分けチップで示します。これは <code>git log --pretty=format:"%h|%an|%ad|%s"</code> の出力を読み解く処理の縮小版です。</p>
       <label class="fld" for="parseInput">コミットログ / Commit log</label>
       <textarea id="parseInput" rows="7" spellcheck="false">a1b2c3d | Alice | 2024-05-01 | fix: guard against null commit
@@ -911,7 +914,7 @@ b2c3d4e|Bob|2024-05-01|feat: add CSV export option
 c3d4e5f|Alice|2024-05-02|refactor: extract parser module</code></pre></div>
 
     <div class="callout tip">
-      <h4>この Step のまとめ</h4>
+      <h3>この Step のまとめ</h3>
       <p>Git はコミットの積み重ねで歴史を残し、コミットは親をたどると DAG を作ります。1 コミットにはハッシュ・作者・日時・親・メッセージが付き、これがマイニングの材料です。次は、この履歴を Python でまとめて取り出します。</p>
     </div>
   </div>
@@ -933,10 +936,10 @@ c3d4e5f|Alice|2024-05-02|refactor: extract parser module</code></pre></div>
 
     <p class="layer"><span lang="ja">仕組み</span><span lang="en">How it works</span></p>
     <div class="prose">
-      <h4>取り出し方は大きく2通り</h4>
+      <h3>取り出し方は大きく2通り</h3>
       <p>ひとつは、Git のコマンド出力を<b>整形して読む</b>方法です。<code>git log --pretty=format:</code> で決まった区切り文字の行を出し、標準ライブラリ <code>subprocess</code> で受け取って分解します。依存が少なく、どんな環境でも動くのが利点です。</p>
       <p>もうひとつは、<b>専用ライブラリを使う</b>方法です。<b>PyDriller</b> はコミットを 1 件ずつオブジェクトとして返し、変更ファイルや追加・削除行数まで手軽に取れます。<b>GitPython</b> はより低レベルに Git を操作できます。研究や分析では、扱いやすさから PyDriller がよく使われます。</p>
-      <h4>取り出した後の形</h4>
+      <h3>取り出した後の形</h3>
       <p>集めたデータは、たいてい「1 行 = 1 つの変更（あるコミットの、ある変更ファイル）」という表の形にまとめます。列は「コミット・日時・作者・ファイル名・追加行・削除行」などです。この<b>ロング形式</b>の表にしておくと、次の Step で pandas による集計がそのまま使えます。</p>
     </div>
 
@@ -988,7 +991,7 @@ b2c3d4e Bob :: feat: add CSV export option
     </div>
 
     <div class="callout tip">
-      <h4>この Step のまとめ</h4>
+      <h3>この Step のまとめ</h3>
       <p>履歴の抽出は「subprocess ＋ git log」か「PyDriller」で。前者は依存が少なく、後者は変更ファイルや行数まで手軽に取れます。取り出したデータは「1行 = 1変更」の表にまとめておくと、次の集計がスムーズです。</p>
     </div>
   </div>
@@ -1010,7 +1013,7 @@ b2c3d4e Bob :: feat: add CSV export option
 
     <p class="layer"><span lang="ja">仕組み</span><span lang="en">How it works</span></p>
     <div class="prose">
-      <h4>コードチャーン（code churn）</h4>
+      <h3>コードチャーン（code churn）</h3>
       <p>あるファイルが、ある期間にどれだけ書き換えられたかの量です。もっとも素朴には<b>追加行数と削除行数の合計</b>で測ります。よく変わるファイルは、それだけ手が入り、壊れる機会も多いと考えられます。</p>
     </div>
     <div class="formula">
@@ -1018,9 +1021,9 @@ b2c3d4e Bob :: feat: add CSV export option
       <small>added(f): ファイル f に加わった行数　deleted(f): 削られた行数　&#931;: 対象期間の全コミットにわたる合計</small>
     </div>
     <div class="prose">
-      <h4>変更頻度とホットスポット</h4>
+      <h3>変更頻度とホットスポット</h3>
       <p><b>変更頻度</b>は、そのファイルが何回のコミットで触られたかです。チャーンや複雑度と組み合わせて、「よく変わり、かつ複雑で危ない場所」を<b>ホットスポット</b>と呼びます。限られたレビューやテストの労力を、どこに集中させるべきかの手がかりになります。</p>
-      <h4>共変更（co-change）</h4>
+      <h3>共変更（co-change）</h3>
       <p>2 つのファイルが<b>同じコミットで一緒に変更される</b>傾向を共変更と呼びます。一緒に変わりやすいファイルは、見えない依存関係でつながっている可能性があります。共変更の強さは、頻出パターン分析と同じく<b>支持度（support）</b>と<b>確信度（confidence）</b>で表せます。</p>
     </div>
     <div class="formula">
@@ -1029,14 +1032,14 @@ b2c3d4e Bob :: feat: add CSV export option
       <small>confidence(A&rarr;B) は「A を変えたとき、同時に B も変えた割合」。0 から 1 の値をとります。</small>
     </div>
     <div class="prose">
-      <h4>作者数とバス係数</h4>
+      <h3>作者数とバス係数</h3>
       <p>ファイルやモジュールに<b>何人の作者が関わったか</b>も重要な指標です。関連して<b>バス係数（bus factor）</b>という考え方があります。「何人が突然いなくなると、プロジェクトが立ち行かなくなるか」を表す目安で、知識が特定の人に偏っているリスクを示します。値が小さいほど危うい状態です。</p>
     </div>
 
     <!-- DEMO 2: Code churn -->
     <div class="demo reveal" id="demoChurn">
       <span class="dtag"><span lang="ja">デモ 2</span><span lang="en">Demo 2</span></span>
-      <h4>コードチャーン計算機</h4>
+      <h3>コードチャーン計算機</h3>
       <p class="dnote">1 行に <code>ファイル名 +追加 -削除</code> の形で変更を書きます（同じファイルが複数行あれば合計します）。ファイルごとにチャーン（追加＋削除）を求め、降順に並べてバーで強調します。変更回数（何回のコミットで触られたか）も数えます。</p>
       <label class="fld" for="churnInput">ファイル変更（1行=1変更）/ File changes</label>
       <textarea id="churnInput" rows="6" spellcheck="false">src/parser.py +120 -30
@@ -1057,7 +1060,7 @@ README.md +10 -0</textarea>
     <!-- DEMO 3: Co-change matrix -->
     <div class="demo reveal" id="demoCochange">
       <span class="dtag"><span lang="ja">デモ 3</span><span lang="en">Demo 3</span></span>
-      <h4>共変更マトリクス</h4>
+      <h3>共変更マトリクス</h3>
       <p class="dnote">1 行に、あるコミットで一緒に変更されたファイルを空白区切りで書きます（1行＝1コミット）。すべてのファイル対について、同時に変更されたコミット数（支持度）と、確信度（片方を変えたとき、もう片方も変えた割合）を計算し、支持度の高い順に表にします。</p>
       <label class="fld" for="cochangeInput">コミットごとの変更ファイル集合 / Files per commit</label>
       <textarea id="cochangeInput" rows="6" spellcheck="false">parser.py utils.py
@@ -1107,7 +1110,7 @@ src/cli.py                  6     50
 README.md                   3     10</code></pre></div>
 
     <div class="callout tip">
-      <h4>この Step のまとめ</h4>
+      <h3>この Step のまとめ</h3>
       <p>変更履歴は数えて指標に変えます。チャーン（追加＋削除）でよく変わる場所を、共変更（支持度・確信度）でつながりを、作者数やバス係数で知識の偏りを測ります。集計は pandas の <code>groupby</code> ひとつで書けます。</p>
     </div>
   </div>
@@ -1129,11 +1132,11 @@ README.md                   3     10</code></pre></div>
 
     <p class="layer"><span lang="ja">仕組み</span><span lang="en">How it works</span></p>
     <div class="prose">
-      <h4>Issue トラッカーとコミットの紐付け</h4>
+      <h3>Issue トラッカーとコミットの紐付け</h3>
       <p>GitHub Issues や JIRA などの課題管理では、それぞれの課題に番号が振られます。開発者はコミットメッセージに <code>fix #123</code> や <code>closes #142</code> のように課題番号を書く慣習があり、これを手がかりに<b>コミットと課題を機械的に結びつけ</b>られます。番号の書き方には流儀があるので、正規表現でひろうのが定番です。</p>
-      <h4>バグ修正コミットの特定</h4>
+      <h3>バグ修正コミットの特定</h3>
       <p>どのコミットが「バグを直したか」を知りたい場面はよくあります。素朴には、メッセージに <code>fix</code>・<code>bug</code>・<code>patch</code> といった語が含まれるかで判定します。より確実には、バグとして分類された課題（Issue）に紐づくコミットを、バグ修正コミットとみなします。ただしメッセージだけの判定はノイズが多く、過大にも過小にも数えうる点に注意します。</p>
-      <h4>SZZ アルゴリズムの考え方</h4>
+      <h3>SZZ アルゴリズムの考え方</h3>
       <p>バグを<b>直した</b>コミットが分かると、次は「そのバグを<b>埋め込んだ</b>のはどのコミットか」を知りたくなります。これを推定する古典的な手法が <b>SZZ アルゴリズム</b>です。考え方はシンプルです。</p>
       <ul>
         <li>バグ修正コミットの diff を見て、<b>修正で変更・削除された行</b>を特定する。</li>
@@ -1175,7 +1178,7 @@ fixkw = re.compile(<span class="st">r"\b(fix|fixes|fixed|close|closes|resolve|re
     </div>
 
     <div class="callout tip">
-      <h4>この Step のまとめ</h4>
+      <h3>この Step のまとめ</h3>
       <p>コミットメッセージの <code>#123</code> や fix 系キーワードで、コミットと課題・バグ修正を結びつけます。バグを埋め込んだコミットは、修正の変更行を blame でさかのぼる SZZ の発想で推定します。これが欠陥予測のラベル作りの土台です。</p>
     </div>
   </div>
@@ -1197,21 +1200,21 @@ fixkw = re.compile(<span class="st">r"\b(fix|fixes|fixed|close|closes|resolve|re
 
     <p class="layer"><span lang="ja">仕組み</span><span lang="en">How it works</span></p>
     <div class="prose">
-      <h4>集計とグラフ化</h4>
+      <h3>集計とグラフ化</h3>
       <p>ここまでで作った「1行=1変更」の表は、<b>pandas</b> の <code>groupby</code> でファイル別・作者別・月別に集計できます。集計した結果を <b>matplotlib</b> で棒グラフや折れ線にすれば、ホットスポットの順位、時間による変更量の推移、作者ごとの貢献などが見えてきます。流れとしては「PyDriller で抽出 → pandas で集計 → matplotlib で作図」の 3 段が定番です。</p>
-      <h4>マイニングの落とし穴</h4>
+      <h3>マイニングの落とし穴</h3>
       <p>リポジトリのデータは、そのままでは<b>ノイズだらけ</b>です。代表的な注意点を挙げます。</p>
       <ul>
         <li><b>tangled commit（もつれたコミット）</b>：1 つのコミットに、バグ修正と機能追加とリファクタが混ざっていること。指標の対応づけを狂わせます。</li>
         <li><b>ノイズと表記ゆれ</b>：同じ人が別名のメールでコミットする、自動整形やファイル移動で大量の行が動く、といった見かけ上の変更が紛れます。</li>
         <li><b>生存者バイアス</b>：今も残っているファイルやプロジェクトだけを見ると、途中で消えたものを見落とし、結論が偏ります。</li>
       </ul>
-      <h4>再現性</h4>
+      <h3>再現性</h3>
       <p>マイニングの結論は、抽出条件や前処理の設計に強く左右されます。だからこそ、対象リポジトリの版（コミットハッシュ）、使ったツールの版、除外したファイルの条件などを<b>記録し、他人が同じ手順をたどれる</b>ようにすることが欠かせません。再現できない分析は、主張の根拠になりません。</p>
     </div>
 
     <div class="callout tip">
-      <h4>この Step のまとめ</h4>
+      <h3>この Step のまとめ</h3>
       <p>「抽出 → 集計（pandas）→ 作図（matplotlib）」で傾向を見せます。ただし tangled commit・ノイズ・生存者バイアスといった落とし穴があり、抽出条件やツールの版を記録して再現性を保つことが、正しい結論への近道です。</p>
     </div>
   </div>
@@ -1237,7 +1240,7 @@ fixkw = re.compile(<span class="st">r"\b(fix|fixes|fixed|close|closes|resolve|re
 
     <div class="res-grid reveal">
       <div class="res">
-        <h5>公開データセット・基盤</h5>
+        <h3>公開データセット・基盤</h3>
         <ul>
           <li><b>公開 GitHub リポジトリ</b>：任意のオープンソースを clone すれば、それ自体がマイニング対象。</li>
           <li><b>GH Archive</b>：GitHub の公開イベントを時系列で集めたアーカイブ。</li>
@@ -1246,7 +1249,7 @@ fixkw = re.compile(<span class="st">r"\b(fix|fixes|fixed|close|closes|resolve|re
         </ul>
       </div>
       <div class="res">
-        <h5>ライブラリ</h5>
+        <h3>ライブラリ</h3>
         <ul>
           <li><b>PyDriller</b>：コミット・変更ファイルを手軽にたどる。</li>
           <li><b>GitPython</b>：Git を低レベルに操作する。</li>
@@ -1255,25 +1258,25 @@ fixkw = re.compile(<span class="st">r"\b(fix|fixes|fixed|close|closes|resolve|re
         </ul>
       </div>
       <div class="res">
-        <h5>参考書</h5>
+        <h3>参考書</h3>
         <ul>
           <li>Bird, Menzies, Zimmermann『The Art and Science of Analyzing Software Data』</li>
-          <li>Bird, Menzies, Zimmermann『Perspectives on Data Science for Software Engineering』</li>
+          <li>Menzies, Williams, Zimmermann『Perspectives on Data Science for Software Engineering』</li>
           <li>MSR（Mining Software Repositories）分野の解説・チュートリアル</li>
         </ul>
       </div>
       <div class="res">
-        <h5>次のモジュールへ</h5>
+        <h3>次のモジュールへ</h3>
         <ul>
-          <li>開発データの前処理とデータセット構築</li>
-          <li>機械学習（分類・回帰・評価）</li>
-          <li>ネットワーク分析（開発者の協働）</li>
+          <li><a href="data-preprocessing.html">開発データの前処理とデータセット構築</a></li>
+          <li><a href="machine-learning.html">機械学習</a>（分類・回帰・評価）</li>
+          <li><a href="network-analysis.html">ネットワーク分析</a>（開発者の協働）</li>
         </ul>
       </div>
     </div>
 
     <div class="callout tip">
-      <h4>おつかれさまでした</h4>
+      <h3>おつかれさまでした</h3>
       <p>ここで学んだ「リポジトリから取り出す → 指標に変える → 見せる」という流れは、開発データに限らず、記録が残るあらゆる現象を定量的に読み解くときに共通の考え方です。手元のサンプルを書き換えて、3 つのデモをもう一度動かしてみてください。値がどう変わるかを確かめると、理解がぐっと深まります。</p>
     </div>
   </div>
@@ -1289,7 +1292,7 @@ fixkw = re.compile(<span class="st">r"\b(fix|fixes|fixed|close|closes|resolve|re
 
     <div class="res-grid reveal">
       <div class="res">
-        <h5>欠陥予測とプロセス指標</h5>
+        <h3>欠陥予測とプロセス指標</h3>
         <ul>
           <li><b>SZZ と欠陥予測</b>：バグ混入コミットを推定してラベルを作り、どこが壊れやすいかを予測する。</li>
           <li><b>プロセス指標 対 コード指標</b>：変更の履歴から作る指標（プロセス指標）と、コードそのものの指標（複雑度など）の、予測力の比較。</li>
@@ -1297,14 +1300,14 @@ fixkw = re.compile(<span class="st">r"\b(fix|fixes|fixed|close|closes|resolve|re
         </ul>
       </div>
       <div class="res">
-        <h5>社会技術ネットワーク</h5>
+        <h3>社会技術ネットワーク</h3>
         <ul>
           <li><b>開発者協働ネットワーク</b>：誰と誰が同じコードを触るかをグラフにし、中心人物や分業構造を見る。</li>
           <li><b>コードレビュー分析</b>：レビューの速さ・指摘の量・承認の経路から、品質やボトルネックを読み解く。</li>
         </ul>
       </div>
       <div class="res">
-        <h5>大規模な鉱脈</h5>
+        <h3>大規模な鉱脈</h3>
         <ul>
           <li><b>World of Code</b>：OSS 全体を横断する巨大なバージョン管理データ基盤。</li>
           <li><b>GH Archive</b>：GitHub の公開イベントを時系列に集めた大規模アーカイブ。</li>
@@ -1312,7 +1315,7 @@ fixkw = re.compile(<span class="st">r"\b(fix|fixes|fixed|close|closes|resolve|re
         </ul>
       </div>
       <div class="res">
-        <h5>コードへの機械学習</h5>
+        <h3>コードへの機械学習</h3>
         <ul>
           <li><b>コード表現学習</b>：ソースコードやコミットをベクトルにして機械学習に載せる（code2vec・CodeBERT など）。</li>
           <li><b>変更のパターン学習</b>：過去の変更から、次に必要な変更や共変更を学習して支援する。</li>
@@ -1347,14 +1350,6 @@ fixkw = re.compile(<span class="st">r"\b(fix|fixes|fixed|close|closes|resolve|re
       </div>
     </div>
     <div class="foot-grid3">
-      <div>
-        <h3><span lang="ja">連絡先</span><span lang="en">Contact</span></h3>
-        <p class="muted-s">
-          <b>Yuta Kimura</b><br>
-          <span lang="ja">大阪公立大学工業高等専門学校</span><span lang="en">Osaka Metropolitan University College of Technology</span><br>
-          <a href="mailto:y.kimura@omu.ac.jp">y.kimura [at] omu.ac.jp</a>
-        </p>
-      </div>
       <div>
         <h3><span lang="ja">サイト</span><span lang="en">Site</span></h3>
         <p class="muted-s">
@@ -1539,13 +1534,13 @@ fixkw = re.compile(<span class="st">r"\b(fix|fixes|fixed|close|closes|resolve|re
       for(var i=0;i<fs.length;i++){
         for(var j=i+1;j<fs.length;j++){
           var a=fs[i], b=fs[j];
-          var key=(a<b?a+' '+b:b+' '+a);
+          var key=(a<b?a+'\x00'+b:b+'\x00'+a);
           pairCount[key]=(pairCount[key]||0)+1;
         }
       }
     });
     var pairs=Object.keys(pairCount).map(function(k){
-      var ab=k.split(' '), A=ab[0], B=ab[1], s=pairCount[k];
+      var ab=k.split('\x00'), A=ab[0], B=ab[1], s=pairCount[k];
       return {A:A, B:B, support:s, cab:s/fileCount[A], cba:s/fileCount[B]};
     });
     if(!pairs.length){ cochangeOut.innerHTML='<div class="chipcount">同時に変更されたファイル対がありません（各コミットに2つ以上のファイルを含めてください）。</div>'; return; }

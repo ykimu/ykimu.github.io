@@ -210,9 +210,9 @@
   .pcbox{border-radius:16px; padding:16px 18px; border:1px solid var(--line)}
   .pcbox.pros{background:var(--accent-soft); border-color:transparent}
   .pcbox.cons{background:var(--bg-2)}
-  .pcbox h4{font:600 .72rem/1 var(--disp); letter-spacing:.06em; margin:0 0 12px; font-family:var(--sans)}
-  .pcbox.pros h4{color:var(--accent-2)}
-  .pcbox.cons h4{color:var(--rose)}
+  .pcbox h3,body.lang-ja .pcbox h3{font:600 .72rem/1 var(--disp); letter-spacing:.06em; margin:0 0 12px; font-family:var(--sans); text-wrap:wrap}
+  .pcbox.pros h3{color:var(--accent-2)}
+  .pcbox.cons h3{color:var(--rose)}
   .pcbox ul{list-style:none; margin:0; padding:0}
   .pcbox li{position:relative; padding-left:18px; margin:8px 0; font-size:.9rem; color:var(--ink-2); line-height:1.55}
   .pcbox li::before{content:""; position:absolute; left:0; top:10px; width:9px; height:1.5px}
@@ -241,7 +241,7 @@
   .cmp-cards{display:flex; flex-direction:column; gap:12px; max-height:340px; overflow-y:auto; padding-right:4px}
   .ccard{border-radius:15px; border:1px solid var(--line); background:var(--bg); padding:14px 16px; position:relative}
   .ccard .ctop{display:flex; align-items:flex-start; justify-content:space-between; gap:10px; margin-bottom:10px}
-  .ccard h4{font-size:.92rem; font-weight:600; letter-spacing:0; line-height:1.35; margin:4px 0 0}
+  .ccard h3{font-size:.92rem; font-weight:600; letter-spacing:0; line-height:1.35; margin:4px 0 0; text-wrap:wrap; color:inherit; font-family:inherit}
   .ccard .swatch{width:10px; height:10px; border-radius:50%; flex:0 0 auto; margin-top:5px}
   .ccard .rm{border:none; background:none; cursor:pointer; color:var(--faint); font-size:1.2rem; line-height:1; padding:0 2px; transition:color .3s var(--ease)}
   .ccard .rm:hover{color:var(--rose)}
@@ -439,7 +439,7 @@
   /* prose (intro + closing) */
   .prose{max-width:var(--readw)}
   .prose p{margin:0 0 1em; color:var(--ink-2)}
-  .prose h4{font-family:var(--sans); font-size:1.12rem; font-weight:600; letter-spacing:0; color:var(--ink); margin:1.6em 0 .6em}
+  .prose h3{font-family:var(--sans); font-size:1.12rem; font-weight:600; letter-spacing:0; color:var(--ink); margin:1.6em 0 .6em; line-height:inherit; text-wrap:wrap}
   .prose ul{margin:0 0 1.2em; padding-left:0; list-style:none}
   .prose ul li{position:relative; padding-left:22px; margin:12px 0; color:var(--ink-2)}
   .prose ul li::before{content:""; position:absolute; left:0; top:13px; width:11px; height:1.5px; background:var(--accent)}
@@ -450,7 +450,7 @@
 
   .callout{border-radius:16px; padding:18px 22px; margin:18px 0; max-width:var(--readw);
     background:var(--card); box-shadow:0 0 0 6px var(--shell),0 0 0 6.5px var(--hair),var(--soft)}
-  .callout h4{margin:0 0 6px; font-size:1rem; font-family:var(--sans); font-weight:600; letter-spacing:0; color:var(--ink)}
+  .callout h3{margin:0 0 6px; font-size:1rem; font-family:var(--sans); font-weight:600; letter-spacing:0; color:var(--ink); line-height:inherit; text-wrap:wrap}
   .callout.tip{background:var(--accent-soft)}
   .callout.warn{background:rgba(138,109,59,.08)}
   .callout a{font-weight:600}
@@ -471,7 +471,7 @@
 
   /* intro diagram */
   .diagram-wrap{margin:18px 0; max-width:var(--readw)}
-  .diagram-wrap h5{margin:0 0 8px; font-size:.92rem; font-family:var(--sans); font-weight:600; letter-spacing:0; color:var(--accent-2)}
+  .diagram-wrap h4{margin:0 0 8px; font-size:.92rem; font-family:var(--sans); font-weight:600; letter-spacing:0; color:var(--accent-2)}
   .diagram-wrap svg{display:block; width:100%; height:auto; background:var(--shell);
     border:1px solid var(--hair); border-radius:12px; padding:8px}
   .dg-box{fill:var(--card); stroke:var(--line); stroke-width:1.2}
@@ -599,7 +599,7 @@
             <div class="megacol">
               <div class="navlabel"><span lang="ja">計画・プロセス</span><span lang="en">Planning &amp; Process</span></div>
               <a href="agile-scrum.html"><span lang="ja">アジャイル開発とスクラム</span><span lang="en">Agile &amp; Scrum</span></a>
-              <a href="project-management.html"><span lang="ja">プロジェクト管理と見積もり</span><span lang="en">Project Management</span></a>
+              <a href="project-management.html"><span lang="ja">プロジェクト管理</span><span lang="en">Project Management</span></a>
               <a href="project-estimation-planning.html"><span lang="ja">プロジェクト計画・見積もり</span><span lang="en">Project Planning &amp; Estimation</span></a>
             </div>
             <div class="megacol">
@@ -705,7 +705,7 @@
       <a href="software-reuse-oss.html"><span lang="ja">ソフトウェア再利用とOSS</span><span lang="en">Software Reuse &amp; OSS</span></a>
       <div class="mobsublabel"><span lang="ja">計画・プロセス</span><span lang="en">Planning &amp; Process</span></div>
       <a href="agile-scrum.html"><span lang="ja">アジャイル開発とスクラム</span><span lang="en">Agile &amp; Scrum</span></a>
-      <a href="project-management.html"><span lang="ja">プロジェクト管理と見積もり</span><span lang="en">Project Management</span></a>
+      <a href="project-management.html"><span lang="ja">プロジェクト管理</span><span lang="en">Project Management</span></a>
       <a href="project-estimation-planning.html"><span lang="ja">プロジェクト計画・見積もり</span><span lang="en">Project Planning &amp; Estimation</span></a>
       <div class="mobsublabel"><span lang="ja">品質・運用</span><span lang="en">Quality &amp; Operations</span></div>
       <a href="software-testing.html"><span lang="ja">ソフトウェアテスト学習ガイド</span><span lang="en">Software Testing Guide</span></a>
@@ -761,6 +761,9 @@
 </div>
 
 <main id="main">
+<noscript><div class="wrap" style="padding-top:24px"><p role="alert" style="margin:0; padding:14px 18px; border:1px solid var(--hair, #ddd); border-radius:12px; background:var(--bg-2, #f4f4f2); color:var(--ink, #222); font-size:.95rem">
+  <span lang="ja">この教材はJavaScriptを有効にすると表示されます。</span><span lang="en">This learning material is displayed when JavaScript is enabled.</span>
+</p></div></noscript>
 
 <button class="totop" type="button" aria-label="上へ戻る" title="上へ戻る">&uarr;</button>
 
@@ -917,8 +920,8 @@
       </div>
 
       <div class="pc-grid">
-        <div class="pcbox pros"><h4>主な長所</h4><ul id="d-pros"></ul></div>
-        <div class="pcbox cons"><h4>主な短所</h4><ul id="d-cons"></ul></div>
+        <div class="pcbox pros"><h3>主な長所</h3><ul id="d-pros"></ul></div>
+        <div class="pcbox cons"><h3>主な短所</h3><ul id="d-cons"></ul></div>
       </div>
 
       <div class="d-block">
@@ -1098,7 +1101,7 @@ const PATTERNS = [
 
   { cat:"structural", name:"スペースベースアーキテクチャ (Space-Based)", short:"タプルスペースで極限スケールを実現",
     desc:"共有メモリ空間（タプルスペース）とプロセッシングユニットで構成。DBとアプリのボトルネックを排除し、超高スケールを実現。金融・ゲームで採用。",
-    detail:"David Gelernter の Linda（1986年）に始まる Tuple Space（タプルスペース）概念が基盤で、Sun の JavaSpaces（Jini、1999年）がJavaでの代表的実装。プロセッシングユニットはアプリロジック＋インメモリデータグリッドを内包し、DBへの書き込みは非同期で行うためRDBMSのボトルネックが根本除去される。Hazelcast・Apache Ignite・GemFireが代表実装。金融市場データ処理では数十万TPSの事例もある高性能アーキテクチャ。",
+    detail:"David Gelernter の Linda（1985年）に始まる Tuple Space（タプルスペース）概念が基盤で、Sun の JavaSpaces（Jini、1999年）がJavaでの代表的実装。プロセッシングユニットはアプリロジック＋インメモリデータグリッドを内包し、DBへの書き込みは非同期で行うためRDBMSのボトルネックが根本除去される。Hazelcast・Apache Ignite・GemFireが代表実装。金融市場データ処理では数十万TPSの事例もある高性能アーキテクチャ。",
     pros:["極限の水平スケール","DBボトルネック排除","高スループット"],
     cons:["設計が複雑","データ整合性の管理","高コスト"],
     uses:["トレーディングシステム","オンラインゲーム","リアルタイム入札","大規模予約システム"],
@@ -1179,7 +1182,7 @@ const PATTERNS = [
 
   { cat:"distributed", name:"バックエンド・フォー・フロントエンド (BFF)", short:"クライアント種別ごとにバックエンドを特化",
     desc:"モバイル・Web・デスクトップなどクライアントの種類ごとに専用のバックエンド層を設ける。各クライアントに最適なAPIと集約ロジックを提供。",
-    detail:"Sam Newman が命名したパターン。モバイルアプリ向けはデータ軽量化・バッテリー配慮、Web向けはリッチデータ・SSR支援、音声向けは音声フォーマットといった具合に、クライアントの特性に特化した集約APIを設計する。GraphQLをBFF層として採用し、フロントエンドがクエリ定義でデータ形状を自由にコントロールするパターンが現代的実装。",
+    detail:"SoundCloud の Phil Calçado が命名し、Sam Newman が解説記事で広めたパターン。モバイルアプリ向けはデータ軽量化・バッテリー配慮、Web向けはリッチデータ・SSR支援、音声向けは音声フォーマットといった具合に、クライアントの特性に特化した集約APIを設計する。GraphQLをBFF層として採用し、フロントエンドがクエリ定義でデータ形状を自由にコントロールするパターンが現代的実装。",
     pros:["クライアント最適なAPI","フロントとバックの独立開発","集約ロジックの分散"],
     cons:["バックエンドの重複","メンテナンスコスト増","共通ロジックの分散"],
     uses:["マルチデバイスサービス","マイクロサービスフロント","GraphQL BFF","モバイル+Web両対応アプリ"],
@@ -1924,7 +1927,7 @@ function renderCompare(){
       <div class="ctop">
         <div style="display:flex;gap:9px">
           <span class="swatch" style="background:${c.border}"></span>
-          <div><span class="cat-tag"><span class="cdot" style="background:${CAT_COLORS[p.cat]}"></span>${CATEGORIES[p.cat].label}</span><h4>${esc(p.name)}</h4></div>
+          <div><span class="cat-tag"><span class="cdot" style="background:${CAT_COLORS[p.cat]}"></span>${CATEGORIES[p.cat].label}</span><h3>${esc(p.name)}</h3></div>
         </div>
         <button class="rm" title="比較から削除" aria-label="比較から削除" onclick="toggleCompare('${esc(p.name)}')">&times;</button>
       </div>
@@ -2024,7 +2027,7 @@ const INTRO_HTML = `
 <div class="dg-legend">パターンは「ある文脈での繰り返し問題」に対する「実績ある構造の解」を、結果（トレードオフ）まで含めて名前付きで記述したもの。</div>
 </div>
 
-<h4>なぜパターンで学ぶのか</h4>
+<h3>なぜパターンで学ぶのか</h3>
 <div class="principles">
   <div class="p"><b>共通言語になる</b><br>
     <span>「ここはヘキサゴナルで」「サーキットブレーカーを入れよう」の一言で、構造と意図がチームに伝わる。設計の会話が速くなる。</span></div>
@@ -2034,14 +2037,14 @@ const INTRO_HTML = `
     <span>候補を並べ、スケーラビリティや単純さといった観点で長所短所を対比すると、文脈に合う選択が見えてくる。</span></div>
 </div>
 
-<h4>トレードオフの見方：万能薬は無い</h4>
+<h3>トレードオフの見方：万能薬は無い</h3>
 <p>アーキテクチャに「常に正しい正解」はありません。ある品質（例：スケーラビリティ）を上げれば、
 別の品質（例：初期の単純さ）が下がる、というのが普通です。マイクロサービスは独立スケールを得る代わりに
 分散システムの複雑さを抱え込み、モノリスは運用が単純な代わりに全体を一括でしかスケールできません。
 <strong>重要なのは「どの品質を優先するか」を文脈から決め、その代償を自覚して選ぶこと</strong>です。</p>
 
 <div class="callout tip">
-  <h4>このカタログの読み方</h4>
+  <h3>このカタログの読み方</h3>
   各カードでは次の情報を確認できます。
   <ul style="margin:.6em 0 0">
     <li><b>構成図</b>: 要素と関係を図式化した「型」のイメージ。</li>
@@ -2057,25 +2060,25 @@ const CLOSING_HTML = `
 <p>最後に、個々のパターンの知識を「使える設計判断」に変えるための心構えをまとめます。</p>
 
 <div class="callout warn">
-  <h4>パターンは銀の弾丸ではない</h4>
+  <h3>パターンは銀の弾丸ではない</h3>
   同じパターンでも、文脈が違えば「最適解」にも「過剰設計」にもなります。
   マイクロサービスやCQRS、イベントソーシングは強力ですが、小さなアプリに持ち込めば、
   得られる利点より運用と認知の負荷が上回ります。<strong>「有名だから」「新しいから」ではなく、
   いま抱えている問題がそのパターンの解く問題と一致しているか</strong>で選びます。
 </div>
 <div class="callout tip">
-  <h4>小さく始め、必要になってから分割する</h4>
+  <h3>小さく始め、必要になってから分割する</h3>
   多くの現場では、まず<strong>モジュラーモノリス</strong>のように境界を意識した単純な構造で始め、
   スケールやチーム分割の必要が<strong>実際に生じてから</strong>マイクロサービスへ切り出すほうが健全です。
   ストラングラーフィグパターンのように、段階的に置き換える道具立ても揃っています。
 </div>
 <div class="callout">
-  <h4>トレードオフを言葉にする</h4>
+  <h3>トレードオフを言葉にする</h3>
   「この構造を選ぶと何を得て、何を諦めるのか」を明示できることが、パターンを学ぶ本当の価値です。
   パターン名は設計判断を記録・共有するための語彙として使い、決定の理由（Architecture Decision Record など）を残しましょう。
 </div>
 
-<h4 style="margin-top:26px">混同しやすいパターン・見分け方</h4>
+<h3 style="margin-top:26px">混同しやすいパターン・見分け方</h3>
 <p>似たパターンは、<strong>「何を分離するのか」「誰が制御するのか」</strong>で見分けると整理できます。</p>
 <table class="cmp-table">
   <tr><th>似ているパターン</th><th>見分けるポイント</th></tr>
@@ -2095,7 +2098,7 @@ const CLOSING_HTML = `
     <td>ACLは外部/レガシーのモデルの<b>汚染を防ぐ変換層</b>。ストラングラーフィグは<b>段階的な置き換え</b>の移行戦略。移行中に併用されることが多い。</td></tr>
 </table>
 
-<h4 style="margin-top:26px">さらに学ぶために（参考文献）</h4>
+<h3 style="margin-top:26px">さらに学ぶために（参考文献）</h3>
 <p>本教材は分野で広く知られた設計知識に基づく概説です。より深く学ぶには、次の定番書・公的文書が役立ちます（書名は正式表記）。</p>
 <ul>
   <li><b>Frank Buschmann ほか</b> 『Pattern-Oriented Software Architecture, Volume 1: A System of Patterns』(POSA) - パターン記述の古典。レイヤーやパイプ＆フィルター等の原典。</li>

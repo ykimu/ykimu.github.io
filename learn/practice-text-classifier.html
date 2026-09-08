@@ -133,7 +133,7 @@
   /* prose */
   .prose{max-width:var(--readw)}
   .prose p{margin:0 0 1em; color:var(--ink-2)}
-  .prose h4{font-family:var(--sans); font-size:1.1rem; font-weight:600; letter-spacing:0; color:var(--ink); margin:1.5em 0 .5em}
+  .prose h3{font-family:var(--sans); font-size:1.1rem; font-weight:600; letter-spacing:0; line-height:inherit; text-wrap:wrap; color:var(--ink); margin:1.5em 0 .5em}
   .prose ul{margin:0 0 1.2em; padding-left:0; list-style:none}
   .prose ul li{position:relative; padding-left:22px; margin:11px 0; color:var(--ink-2)}
   .prose ul li::before{content:""; position:absolute; left:0; top:13px; width:11px; height:1.5px; background:var(--accent)}
@@ -148,7 +148,7 @@
 
   .callout{border-radius:16px; padding:18px 22px; margin:20px 0; max-width:var(--readw);
     background:var(--card); box-shadow:0 0 0 6px var(--shell),0 0 0 6.5px var(--hair),var(--soft)}
-  .callout h4{margin:0 0 6px; font-size:1rem; font-family:var(--sans); font-weight:600; letter-spacing:0; color:var(--ink)}
+  .callout h3{margin:0 0 6px; font-size:1rem; font-family:var(--sans); font-weight:600; letter-spacing:0; line-height:inherit; text-wrap:wrap; color:var(--ink)}
   .callout.tip{background:var(--accent-soft)}
   .callout.warn{background:rgba(138,109,59,.08)}
   .callout p{margin:0; color:var(--ink-2); font-size:.96rem}
@@ -157,14 +157,14 @@
   .grid2{display:grid; grid-template-columns:1fr 1fr; gap:16px; margin:20px 0; max-width:var(--readw)}
   .box{border-radius:16px; padding:16px 20px; background:var(--card);
     box-shadow:0 0 0 6px var(--shell),0 0 0 6.5px var(--hair),var(--soft)}
-  .box h5{margin:0 0 10px; font-size:.92rem; font-family:var(--sans); font-weight:600; letter-spacing:0; color:var(--accent-2); display:flex; align-items:center; gap:7px}
-  .box.lim h5{color:var(--warn)}
+  .box h3{margin:0 0 10px; font-size:.92rem; font-family:var(--sans); font-weight:600; letter-spacing:0; line-height:inherit; text-wrap:wrap; color:var(--accent-2); display:flex; align-items:center; gap:7px}
+  .box.lim h3{color:var(--warn)}
   .box ul{margin:0; padding-left:18px}
   .box li{margin:6px 0; font-size:.92rem; color:var(--ink-2)}
 
   .steps{border-radius:16px; padding:16px 20px; margin:20px 0; max-width:var(--readw); background:var(--card);
     box-shadow:0 0 0 6px var(--shell),0 0 0 6.5px var(--hair),var(--soft)}
-  .steps h5{margin:0 0 10px; font-size:.92rem; font-family:var(--sans); font-weight:600; letter-spacing:0; color:var(--accent-2)}
+  .steps h3{margin:0 0 10px; font-size:.92rem; font-family:var(--sans); font-weight:600; letter-spacing:0; line-height:inherit; text-wrap:wrap; color:var(--accent-2)}
   .steps ol{margin:0; padding:0; list-style:none; counter-reset:st}
   .steps ol li{counter-increment:st; position:relative; padding-left:36px; margin:9px 0; font-size:.94rem; color:var(--ink-2)}
   .steps ol li::before{content:counter(st); position:absolute; left:0; top:2px; width:23px; height:23px; border-radius:50%;
@@ -229,7 +229,7 @@
   .demo .dtag{display:inline-flex; align-items:center; gap:8px; margin:0 0 10px; padding:5px 12px 5px 10px;
     border-radius:999px; background:var(--accent-soft); color:var(--accent-2); font:600 .62rem/1 var(--disp); letter-spacing:.12em; text-transform:uppercase}
   .demo .dtag::before{content:""; width:6px; height:6px; border-radius:50%; background:var(--accent)}
-  .demo h4{margin:0 0 6px; font-size:1.12rem; font-family:var(--sans); font-weight:600; color:var(--ink)}
+  .demo h3{margin:0 0 6px; font-size:1.12rem; font-family:var(--sans); font-weight:600; letter-spacing:0; line-height:inherit; text-wrap:wrap; color:var(--ink)}
   .demo .dnote{font-size:.88rem; color:var(--muted); margin:0 0 16px}
   .demo label.fld{display:block; font:600 .74rem/1 var(--disp); letter-spacing:.08em; text-transform:uppercase; color:var(--muted); margin:0 0 7px}
   .demo textarea,.demo input[type=text]{width:100%; padding:12px 15px; border-radius:12px; border:1px solid var(--hair);
@@ -279,7 +279,8 @@
   .res-grid{display:grid; grid-template-columns:1fr 1fr; gap:16px; margin:20px 0; max-width:var(--readw)}
   @media(max-width:640px){.res-grid{grid-template-columns:1fr}}
   .res{border-radius:16px; padding:18px 20px; background:var(--card); box-shadow:0 0 0 6px var(--shell),0 0 0 6.5px var(--hair),var(--soft)}
-  .res h5{margin:0 0 10px; font-size:.95rem; font-family:var(--sans); font-weight:600; color:var(--accent-2)}
+  .res h3{margin:0 0 10px; font-size:.95rem; font-family:var(--sans); font-weight:600; letter-spacing:0; line-height:inherit; text-wrap:wrap; color:var(--accent-2)}
+  .prose h3 [lang="ja"],.callout h3 [lang="ja"],.box h3 [lang="ja"],.steps h3 [lang="ja"],.demo h3 [lang="ja"],.res h3 [lang="ja"]{word-break:normal}
   .res ul{margin:0; padding-left:0; list-style:none}
   .res li{position:relative; padding-left:20px; margin:8px 0; font-size:.9rem; color:var(--ink-2)}
   .res li::before{content:""; position:absolute; left:0; top:11px; width:9px; height:1.5px; background:var(--accent)}
@@ -289,7 +290,7 @@
   footer{border-top:1px solid var(--line); padding:68px 0 46px; background:var(--bg)}
   footer h3{font-size:.72rem; font-weight:600; letter-spacing:.12em; text-transform:uppercase; color:var(--muted); margin:0 0 1em; font-family:var(--disp)}
   .foot-grid{display:grid; grid-template-columns:1.5fr 1fr; gap:44px}
-  .foot-grid3{display:grid; grid-template-columns:1.3fr 1fr 1fr; gap:44px; margin-top:40px}
+  .foot-grid3{display:grid; grid-template-columns:1.5fr 1fr; gap:44px; margin-top:40px}
   .foot-grid3 a{color:var(--ink-2)}
   .foot-grid3 a:hover{color:var(--accent)}
   .cite{font-size:.98rem; color:var(--ink-2); line-height:1.7; max-width:52ch}
@@ -756,7 +757,7 @@
       <p>この流れをあえて一続きにするのは、実務の分析が単一の技術ではなく、前処理から評価までのつながりで決まるからです。特徴量の作り方ひとつで精度は変わり、評価をひとつの数字だけで見ると判断を誤ります。各段のねらいと落とし穴を、コードと出力例で確かめていきます。</p>
     </div>
     <div class="callout tip">
-      <h4><span lang="ja">前提知識</span><span lang="en">Prerequisites</span></h4>
+      <h3><span lang="ja">前提知識</span><span lang="en">Prerequisites</span></h3>
       <p>第2段階の「自然言語処理」「機械学習」、第1段階の「前処理」を先に一読しておくと理解がなめらかです。まだでも、必要な考え方はこのページ内で最小限そのつど補います。次の節に、関係するモジュールへのリンクをまとめました。</p>
     </div>
   </div>
@@ -772,21 +773,21 @@
     </div>
     <div class="res-grid">
       <div class="res">
-        <h5><span lang="ja">自然言語処理（NLP）</span><span lang="en">Natural Language Processing</span></h5>
+        <h3><span lang="ja">自然言語処理（NLP）</span><span lang="en">Natural Language Processing</span></h3>
         <ul>
           <li><b>役割</b>：テキストの前処理・トークン化と、BoW / TF-IDF によるテキストの数値化。この演習の Step 2・3 の土台です。</li>
           <li><a href="nlp.html"><span lang="ja">モジュールを開く</span><span lang="en">Open the module</span> &rsaquo;</a></li>
         </ul>
       </div>
       <div class="res">
-        <h5><span lang="ja">開発データの前処理</span><span lang="en">Data Preprocessing</span></h5>
+        <h3><span lang="ja">開発データの前処理</span><span lang="en">Data Preprocessing</span></h3>
         <ul>
           <li><b>役割</b>：学習・検証データの分割、リークの防止、パイプラインで前処理を学習に閉じ込める考え方。Step 2 で使います。</li>
           <li><a href="data-preprocessing.html"><span lang="ja">モジュールを開く</span><span lang="en">Open the module</span> &rsaquo;</a></li>
         </ul>
       </div>
       <div class="res">
-        <h5><span lang="ja">機械学習</span><span lang="en">Machine Learning</span></h5>
+        <h3><span lang="ja">機械学習</span><span lang="en">Machine Learning</span></h3>
         <ul>
           <li><b>役割</b>：分類器の学習、適合率・再現率・F値・混同行列・交差検証といった評価。Step 4・5 の中心です。</li>
           <li><a href="machine-learning.html"><span lang="ja">モジュールを開く</span><span lang="en">Open the module</span> &rsaquo;</a></li>
@@ -806,7 +807,7 @@
     </div>
     <div class="demo reveal">
       <span class="dtag"><span lang="ja">ノートブック</span><span lang="en">Notebook</span></span>
-      <h4>practice-text-classifier.ipynb</h4>
+      <h3>practice-text-classifier.ipynb</h3>
       <p class="dnote">Colab ならインストール込みでそのまま実行できます。<code>fetch_20newsgroups</code> は初回にデータをネットワーク経由で取得します。scikit-learn は Colab に最初から入っていますが、念のため冒頭でインストールを明示しています。</p>
       <div class="hero-cta" style="margin-top:18px">
         <a class="btn ink" href="https://colab.research.google.com/github/ykimu/ykimu.github.io/blob/main/learn/notebooks/practice-text-classifier.ipynb" target="_blank" rel="noopener" style="padding:12px 22px">
@@ -887,7 +888,7 @@ gets damaged in MS. The immune system attacks it as if it were a
 foreign body, and the resulting scarring disrupts the signals ...</code></pre></div>
 
     <div class="callout tip">
-      <h4><span lang="ja">この段のまとめ</span><span lang="en">Recap</span></h4>
+      <h3><span lang="ja">この段のまとめ</span><span lang="en">Recap</span></h3>
       <p>公開コーパスを4グループに絞って読み込みました。3759件、本文とラベルの組がそろっています。ヘッダや引用を落としたので、以降は「本文の言葉づかい」だけで話題を当てる勝負になります。</p>
     </div>
   </div>
@@ -905,7 +906,7 @@ foreign body, and the resulting scarring disrupts the signals ...</code></pre></
     <p class="layer first"><span lang="ja">この段でやること</span><span lang="en">Goal</span></p>
     <div class="prose">
       <p>次に、テキストを整え、学習用と評価用に分けます。ここで一番大事なのは<b>リーク（情報漏れ）を避ける</b>ことです。評価用データの情報が学習に混ざると、見かけの精度は上がっても、未知のデータには通用しない分類器ができてしまいます。</p>
-      <h4>正規化とトークン化</h4>
+      <h3>正規化とトークン化</h3>
       <p>英語なので、まず小文字化して大文字小文字の違いをそろえ、単語だけを取り出します（数字や記号を落とす）。「the」「is」のようなどの記事にも出るありふれた語（ストップワード）は、話題の区別に効きにくいので除きます。これらはこの後の <code>TfidfVectorizer</code> の設定で一括して指定できるので、ここでは考え方を確認しておきます。</p>
     </div>
     <div class="code-wrap attached">
@@ -923,7 +924,7 @@ tokens = [t <span class="kw">for</span> t <span class="kw">in</span> tokens <spa
     <div class="code-out"><span class="olbl">出力例 / Output</span><pre><code>['my', 'understanding', 'that', 'myelin', 'sheath', 'around', 'nerves', 'what', 'gets', 'damaged', 'in', 'ms']</code></pre></div>
 
     <div class="prose">
-      <h4>学習用と評価用に分ける</h4>
+      <h3>学習用と評価用に分ける</h3>
       <p><code>train_test_split</code> で全体を学習用（訓練）と評価用（テスト）に分けます。<code>stratify=y</code> を指定すると、各グループの割合を分割の前後で保ちます。件数に偏りがあるとき、これを忘れると評価用にあるグループがほとんど入らない、といった事故が起きます。<code>test_size=0.25</code> で4分の1を評価用に回します。</p>
     </div>
     <div class="code-wrap attached">
@@ -942,7 +943,7 @@ X_train, X_test, y_train, y_test = train_test_split(
     <div class="code-out"><span class="olbl">出力例 / Output</span><pre><code>学習用: 2819 評価用: 940</code></pre></div>
 
     <div class="callout warn">
-      <h4><span lang="ja">リークを防ぐ鉄則</span><span lang="en">Avoiding leakage</span></h4>
+      <h3><span lang="ja">リークを防ぐ鉄則</span><span lang="en">Avoiding leakage</span></h3>
       <p>TF-IDF の語彙や IDF の重みは、<b>学習用データだけ</b>から決めなければいけません。評価用も含めて計算してしまうと、評価用の情報が学習に漏れます。これを確実に守るのが、次の Step で使う <code>Pipeline</code> です。前処理と分類器をひとまとめにし、<code>fit</code> のときは学習用だけで前処理を学習し、<code>predict</code> のときはその設定を評価用に当てる、という順序を自動で守ってくれます。</p>
     </div>
   </div>
@@ -1045,13 +1046,13 @@ lr.fit(X_train, y_train)
     <span class="st">"I rendered the 3D scene with ray tracing and saved the image."</span>,
 ]
 <span class="kw">for</span> text, pred <span class="kw">in</span> zip(examples, lr.predict(examples)):
-    <span class="kw">print</span>(data.target_names[pred], <span class="st">"<-"</span>, text)</code></pre>
+    <span class="kw">print</span>(data.target_names[pred], <span class="st">"&lt;-"</span>, text)</code></pre>
     </div>
     <div class="code-out"><span class="olbl">出力例 / Output</span><pre><code>sci.med &lt;- The patient was prescribed antibiotics for the infection.
 comp.graphics &lt;- I rendered the 3D scene with ray tracing and saved the image.</code></pre></div>
 
     <div class="callout tip">
-      <h4><span lang="ja">この段のまとめ</span><span lang="en">Recap</span></h4>
+      <h3><span lang="ja">この段のまとめ</span><span lang="en">Recap</span></h3>
       <p>ベクトル化と分類器を <code>Pipeline</code> でつなぎ、2つのモデルを同じ条件で学習させました。次はこれを数字で評価します。「なんとなく当たっている」ではなく、どのクラスをどれだけ当てられているかを見ます。</p>
     </div>
   </div>
@@ -1211,7 +1212,7 @@ soc.religion.christian: ['god', 'jesus', 'church', 'christ', 'christians', 'sin'
       </ul>
     </div>
     <div class="callout tip">
-      <h4><span lang="ja">この段のまとめ</span><span lang="en">Recap</span></h4>
+      <h3><span lang="ja">この段のまとめ</span><span lang="en">Recap</span></h3>
       <p>「精度が高い方が良い」で終わらせず、どのクラスでなぜ間違えたか、その差は安定しているかまで見ました。線形モデルの重みから手がかりの語を確かめると、モデルの振る舞いに納得がいきます。ここまでが、前処理から評価までを一続きにする分析の一巡です。</p>
     </div>
   </div>
@@ -1227,25 +1228,25 @@ soc.religion.christian: ['god', 'jesus', 'church', 'christ', 'christians', 'sin'
     </div>
     <div class="res-grid">
       <div class="res">
-        <h5><span lang="ja">1. クラスを増やす</span><span lang="en">Add categories</span></h5>
+        <h3><span lang="ja">1. クラスを増やす</span><span lang="en">Add categories</span></h3>
         <ul>
           <li><code>categories</code> に別のグループ（たとえば <code>rec.sport.baseball</code> や <code>sci.space</code>）を加えて、クラス数が増えると精度がどう変わるか見ます。話題が近いグループを足すと難しくなるはずです。</li>
         </ul>
       </div>
       <div class="res">
-        <h5><span lang="ja">2. 特徴量を変える</span><span lang="en">Tune the features</span></h5>
+        <h3><span lang="ja">2. 特徴量を変える</span><span lang="en">Tune the features</span></h3>
         <ul>
           <li><code>TfidfVectorizer</code> の <code>ngram_range=(1, 2)</code> や <code>min_df</code>・<code>max_df</code> を変えて、語彙の大きさと精度の関係を調べます。次元が増えるほど良いとは限りません。</li>
         </ul>
       </div>
       <div class="res">
-        <h5><span lang="ja">3. 別のコーパスで試す</span><span lang="en">Try another corpus</span></h5>
+        <h3><span lang="ja">3. 別のコーパスで試す</span><span lang="en">Try another corpus</span></h3>
         <ul>
           <li>日本語なら livedoor ニュースコーパスが定番です。分かち書き（janome など）を挟めば、同じ流れで日本語の分類器が作れます。前処理だけ差し替えるのがコツです。</li>
         </ul>
       </div>
       <div class="res">
-        <h5><span lang="ja">4. 重要語を掘り下げる</span><span lang="en">Read the weights</span></h5>
+        <h3><span lang="ja">4. 重要語を掘り下げる</span><span lang="en">Read the weights</span></h3>
         <ul>
           <li>ロジスティック回帰の係数が<b>負</b>に大きい語（そのクラスらしくない語）も並べてみます。誤分類された記事を1件ずつ読み、なぜ間違えたのかを言葉で説明できると理解が深まります。</li>
         </ul>
@@ -1265,26 +1266,33 @@ soc.religion.christian: ['god', 'jesus', 'church', 'christ', 'christians', 'sin'
     </div>
     <div class="res-grid">
       <div class="res">
-        <h5><span lang="ja">自然言語処理（NLP）</span><span lang="en">NLP</span></h5>
+        <h3><span lang="ja">自然言語処理（NLP）</span><span lang="en">NLP</span></h3>
         <ul>
           <li>前処理・BoW / TF-IDF・分散表現をもっと詳しく。<a href="nlp.html"><span lang="ja">モジュールへ</span><span lang="en">Open</span> &rsaquo;</a></li>
         </ul>
       </div>
       <div class="res">
-        <h5><span lang="ja">開発データの前処理</span><span lang="en">Preprocessing</span></h5>
+        <h3><span lang="ja">開発データの前処理</span><span lang="en">Preprocessing</span></h3>
         <ul>
           <li>分割・リーク防止・データセット構築の作法。<a href="data-preprocessing.html"><span lang="ja">モジュールへ</span><span lang="en">Open</span> &rsaquo;</a></li>
         </ul>
       </div>
       <div class="res">
-        <h5><span lang="ja">機械学習</span><span lang="en">Machine Learning</span></h5>
+        <h3><span lang="ja">機械学習</span><span lang="en">Machine Learning</span></h3>
         <ul>
           <li>分類器の仕組みと評価指標を体系的に。<a href="machine-learning.html"><span lang="ja">モジュールへ</span><span lang="en">Open</span> &rsaquo;</a></li>
         </ul>
       </div>
+      <div class="res">
+        <h3><span lang="ja">次の演習・段階へ</span><span lang="en">Next exercise</span></h3>
+        <ul>
+          <li><span lang="ja">次の演習：</span><span lang="en">Next: </span><a href="practice-code-metrics.html"><span lang="ja">ソースコードを測って読み解く</span><span lang="en">Measure and read source code</span></a>（<a href="index.html#stage3"><span lang="ja">演習一覧</span><span lang="en">All exercises</span></a>）</li>
+          <li><span lang="ja">別のコーパスや分類器に差し替えて、同じパイプラインをもう一周する。</span><span lang="en">Swap in another corpus or classifier and run the same pipeline again.</span></li>
+        </ul>
+      </div>
     </div>
     <div class="callout tip">
-      <h4><span lang="ja">おつかれさまでした</span><span lang="en">Nice work</span></h4>
+      <h3><span lang="ja">おつかれさまでした</span><span lang="en">Nice work</span></h3>
       <p>ぜひノートブックを開いて、クラスや <code>ngram_range</code>、正則化 <code>C</code> の数字を変えて再実行してみてください。数字が動く様子を自分の目で見ると、評価の勘所が体にしみこみます。次の総合演習では、また別の技術の組み合わせに挑みます。</p>
     </div>
   </div>
@@ -1315,14 +1323,6 @@ soc.religion.christian: ['god', 'jesus', 'church', 'christ', 'christians', 'sin'
       </div>
     </div>
     <div class="foot-grid3">
-      <div>
-        <h3><span lang="ja">連絡先</span><span lang="en">Contact</span></h3>
-        <p class="muted-s">
-          <b>Yuta Kimura</b><br>
-          <span lang="ja">大阪公立大学工業高等専門学校</span><span lang="en">Osaka Metropolitan University College of Technology</span><br>
-          <a href="mailto:y.kimura@omu.ac.jp">y.kimura [at] omu.ac.jp</a>
-        </p>
-      </div>
       <div>
         <h3><span lang="ja">サイト</span><span lang="en">Site</span></h3>
         <p class="muted-s">
@@ -1392,9 +1392,9 @@ soc.religion.christian: ['god', 'jesus', 'church', 'christ', 'christians', 'sin'
     "から":1,"まで":1,"ね":1,"よ":1,"た":1,"だ":1,"です":1,"ます":1,"ている":1,"いる":1,"のが":1};
   var DICT = {}; JP_DICT.forEach(function(w){ DICT[w]=1; });
   var MAXL = 5;
-  function isJP(ch){ return /[぀-ヿ㐀-䶿一-鿿ｦ-ﾟ]/.test(ch); }
+  function isJP(ch){ return /[\u3040-ヿ㐀-䶿一-鿿ｦ-ﾟ]/.test(ch); }
   function jtype(ch){
-    if(/[぀-ゟ]/.test(ch)) return 'hira';
+    if(/[\u3040-ゟ]/.test(ch)) return 'hira';
     if(/[゠-ヿｦ-ﾟ]/.test(ch)) return 'kata';
     if(/[一-鿿㐀-䶿]/.test(ch)) return 'kanji';
     return 'other';

@@ -133,7 +133,7 @@
   /* prose */
   .prose{max-width:var(--readw)}
   .prose p{margin:0 0 1em; color:var(--ink-2)}
-  .prose h4{font-family:var(--sans); font-size:1.1rem; font-weight:600; letter-spacing:0; color:var(--ink); margin:1.5em 0 .5em}
+  .prose h3{font-family:var(--sans); font-size:1.1rem; font-weight:600; letter-spacing:0; line-height:inherit; text-wrap:wrap; color:var(--ink); margin:1.5em 0 .5em}
   .prose ul{margin:0 0 1.2em; padding-left:0; list-style:none}
   .prose ul li{position:relative; padding-left:22px; margin:11px 0; color:var(--ink-2)}
   .prose ul li::before{content:""; position:absolute; left:0; top:13px; width:11px; height:1.5px; background:var(--accent)}
@@ -148,7 +148,7 @@
 
   .callout{border-radius:16px; padding:18px 22px; margin:20px 0; max-width:var(--readw);
     background:var(--card); box-shadow:0 0 0 6px var(--shell),0 0 0 6.5px var(--hair),var(--soft)}
-  .callout h4{margin:0 0 6px; font-size:1rem; font-family:var(--sans); font-weight:600; letter-spacing:0; color:var(--ink)}
+  .callout h3{margin:0 0 6px; font-size:1rem; font-family:var(--sans); font-weight:600; letter-spacing:0; line-height:inherit; text-wrap:wrap; color:var(--ink)}
   .callout.tip{background:var(--accent-soft)}
   .callout.warn{background:rgba(138,109,59,.08)}
   .callout p{margin:0; color:var(--ink-2); font-size:.96rem}
@@ -157,14 +157,14 @@
   .grid2{display:grid; grid-template-columns:1fr 1fr; gap:16px; margin:20px 0; max-width:var(--readw)}
   .box{border-radius:16px; padding:16px 20px; background:var(--card);
     box-shadow:0 0 0 6px var(--shell),0 0 0 6.5px var(--hair),var(--soft)}
-  .box h5{margin:0 0 10px; font-size:.92rem; font-family:var(--sans); font-weight:600; letter-spacing:0; color:var(--accent-2); display:flex; align-items:center; gap:7px}
-  .box.lim h5{color:var(--warn)}
+  .box h3{margin:0 0 10px; font-size:.92rem; font-family:var(--sans); font-weight:600; letter-spacing:0; line-height:inherit; text-wrap:wrap; color:var(--accent-2); display:flex; align-items:center; gap:7px}
+  .box.lim h3{color:var(--warn)}
   .box ul{margin:0; padding-left:18px}
   .box li{margin:6px 0; font-size:.92rem; color:var(--ink-2)}
 
   .steps{border-radius:16px; padding:16px 20px; margin:20px 0; max-width:var(--readw); background:var(--card);
     box-shadow:0 0 0 6px var(--shell),0 0 0 6.5px var(--hair),var(--soft)}
-  .steps h5{margin:0 0 10px; font-size:.92rem; font-family:var(--sans); font-weight:600; letter-spacing:0; color:var(--accent-2)}
+  .steps h3{margin:0 0 10px; font-size:.92rem; font-family:var(--sans); font-weight:600; letter-spacing:0; line-height:inherit; text-wrap:wrap; color:var(--accent-2)}
   .steps ol{margin:0; padding:0; list-style:none; counter-reset:st}
   .steps ol li{counter-increment:st; position:relative; padding-left:36px; margin:9px 0; font-size:.94rem; color:var(--ink-2)}
   .steps ol li::before{content:counter(st); position:absolute; left:0; top:2px; width:23px; height:23px; border-radius:50%;
@@ -229,7 +229,7 @@
   .demo .dtag{display:inline-flex; align-items:center; gap:8px; margin:0 0 10px; padding:5px 12px 5px 10px;
     border-radius:999px; background:var(--accent-soft); color:var(--accent-2); font:600 .62rem/1 var(--disp); letter-spacing:.12em; text-transform:uppercase}
   .demo .dtag::before{content:""; width:6px; height:6px; border-radius:50%; background:var(--accent)}
-  .demo h4{margin:0 0 6px; font-size:1.12rem; font-family:var(--sans); font-weight:600; color:var(--ink)}
+  .demo h3{margin:0 0 6px; font-size:1.12rem; font-family:var(--sans); font-weight:600; letter-spacing:0; line-height:inherit; text-wrap:wrap; color:var(--ink)}
   .demo .dnote{font-size:.88rem; color:var(--muted); margin:0 0 16px}
   .demo label.fld{display:block; font:600 .74rem/1 var(--disp); letter-spacing:.08em; text-transform:uppercase; color:var(--muted); margin:0 0 7px}
   .demo textarea,.demo input[type=text]{width:100%; padding:12px 15px; border-radius:12px; border:1px solid var(--hair);
@@ -279,7 +279,8 @@
   .res-grid{display:grid; grid-template-columns:1fr 1fr; gap:16px; margin:20px 0; max-width:var(--readw)}
   @media(max-width:640px){.res-grid{grid-template-columns:1fr}}
   .res{border-radius:16px; padding:18px 20px; background:var(--card); box-shadow:0 0 0 6px var(--shell),0 0 0 6.5px var(--hair),var(--soft)}
-  .res h5{margin:0 0 10px; font-size:.95rem; font-family:var(--sans); font-weight:600; color:var(--accent-2)}
+  .res h3{margin:0 0 10px; font-size:.95rem; font-family:var(--sans); font-weight:600; letter-spacing:0; line-height:inherit; text-wrap:wrap; color:var(--accent-2)}
+  .prose h3 [lang="ja"],.callout h3 [lang="ja"],.box h3 [lang="ja"],.steps h3 [lang="ja"],.demo h3 [lang="ja"],.res h3 [lang="ja"]{word-break:normal}
   .res ul{margin:0; padding-left:0; list-style:none}
   .res li{position:relative; padding-left:20px; margin:8px 0; font-size:.9rem; color:var(--ink-2)}
   .res li::before{content:""; position:absolute; left:0; top:11px; width:9px; height:1.5px; background:var(--accent)}
@@ -289,7 +290,7 @@
   footer{border-top:1px solid var(--line); padding:68px 0 46px; background:var(--bg)}
   footer h3{font-size:.72rem; font-weight:600; letter-spacing:.12em; text-transform:uppercase; color:var(--muted); margin:0 0 1em; font-family:var(--disp)}
   .foot-grid{display:grid; grid-template-columns:1.5fr 1fr; gap:44px}
-  .foot-grid3{display:grid; grid-template-columns:1.3fr 1fr 1fr; gap:44px; margin-top:40px}
+  .foot-grid3{display:grid; grid-template-columns:1.5fr 1fr; gap:44px; margin-top:40px}
   .foot-grid3 a{color:var(--ink-2)}
   .foot-grid3 a:hover{color:var(--accent)}
   .cite{font-size:.98rem; color:var(--ink-2); line-height:1.7; max-width:52ch}
@@ -731,7 +732,9 @@
   <nav class="crumbs" aria-label="パンくず">
     <a href="../index.html"><span lang="ja">ホーム</span><span lang="en">Home</span></a>
     <span class="csep" aria-hidden="true">&rsaquo;</span>
-    <span class="cur" aria-current="page"><span lang="ja">学習コース：統計分析</span><span lang="en">Learn: Statistical Analysis</span></span>
+    <a href="index.html"><span lang="ja">学習コース</span><span lang="en">Learn</span></a>
+    <span class="csep" aria-hidden="true">&rsaquo;</span>
+    <span class="cur" aria-current="page"><span lang="ja">統計分析</span><span lang="en">Statistical Analysis</span></span>
   </nav>
 </div>
 
@@ -855,14 +858,14 @@
 
     <p class="layer"><span lang="ja">仕組み</span><span lang="en">How it works</span></p>
     <div class="prose">
-      <h4>母集団と標本</h4>
+      <h3>母集団と標本</h3>
       <p>推測統計のかなめは、<b>母集団</b>と<b>標本</b>の区別です。<b>母集団（population）</b>は本当に知りたい対象全体（たとえば「ある製品の全ユーザー」）、<b>標本（sample）</b>はそこから実際に観測できた一部です。全体を調べつくすのは多くの場合むずかしいので、標本から母集団を推測します。標本から計算した量（標本平均など）を<b>統計量</b>、母集団の真の値（母平均など）を<b>母数（パラメータ）</b>と呼び、統計量を手がかりに母数を推し量ります。</p>
-      <h4>統計分析と機械学習のちがい</h4>
+      <h3>統計分析と機械学習のちがい</h3>
       <p>データからモデルを作る点で、統計分析と機械学習は重なります。ただし主眼が異なります。機械学習は<b>予測</b>の精度を第一に置き、未知のデータをどれだけ当てられるかを重視します。いっぽう統計分析は<b>説明と結論</b>を重視します。「この要因は結果に効いているか」「差は偶然の範囲か」を、解釈できる形で、不確かさとともに述べることを目指します。同じ回帰式でも、機械学習は予測誤差を、統計分析は各係数が偶然でないか（有意か）を見る、という違いです。</p>
     </div>
 
     <div class="callout tip">
-      <h4>この Step のまとめ</h4>
+      <h3>この Step のまとめ</h3>
       <p>統計分析は記述統計と推測統計の2本柱。標本から母集団を推し量るのが推測統計です。機械学習が「予測」を狙うのに対し、統計分析は「説明と結論」を、不確かさとともに述べることを目指します。</p>
     </div>
   </div>
@@ -884,19 +887,19 @@
 
     <p class="layer"><span lang="ja">仕組み</span><span lang="en">How it works</span></p>
     <div class="prose">
-      <h4>中心を表す（代表値）</h4>
+      <h3>中心を表す（代表値）</h3>
       <ul>
         <li><b>平均（mean）</b>：すべての値の合計を個数で割ったもの。<code>mean = &Sigma;x / n</code>。もっとも一般的だが、極端な値（外れ値）に引っぱられやすい。</li>
         <li><b>中央値（median）</b>：値を小さい順に並べたときの真ん中の値。外れ値に強く、分布が偏っているときの中心として頼れる。</li>
         <li><b>最頻値（mode）</b>：もっとも多く現れる値。カテゴリデータの中心として使う。</li>
       </ul>
-      <h4>ばらつきを表す</h4>
+      <h3>ばらつきを表す</h3>
       <p>中心だけでは足りません。同じ平均でも、値が密集しているか広く散っているかで意味は大きく変わります。</p>
       <div class="formula">
         s<span class="op">&sup2;</span> = <span class="op">&Sigma;</span>(x<sub>i</sub> &minus; x&#772;)<span class="op">&sup2;</span> / (n &minus; 1)　　s = <span class="op">&radic;</span>s<span class="op">&sup2;</span>
         <small>標本分散 s&sup2; と標本標準偏差 s。平均からの隔たりを2乗して平均する（n&minus;1 で割るのは母分散の偏りのない推定にするため）。標準偏差はその平方根で、元の値と同じ単位になる。</small>
       </div>
-      <h4>位置を表す（四分位）</h4>
+      <h3>位置を表す（四分位）</h3>
       <p>データを小さい順に並べ、四等分する位置の値を<b>四分位数</b>と呼びます。第1四分位（Q1、下から25%）、第2四分位（中央値）、第3四分位（Q3、下から75%）です。Q3 と Q1 の差を<b>四分位範囲（IQR）</b>と呼び、外れ値の影響を受けにくいばらつきの指標になります。これらを図にしたのが<b>箱ひげ図</b>で、中心・広がり・外れ値を一目で示します。</p>
       <p>分布の<b>形</b>も大切です。左右対称の山なりか、片側に裾を引いているか（歪み）。平均と中央値が大きくずれていれば、分布が偏っているサインです。</p>
     </div>
@@ -904,7 +907,7 @@
     <!-- DEMO 1: descriptive stats calculator -->
     <div class="demo reveal" id="demoDesc">
       <span class="dtag"><span lang="ja">デモ 1</span><span lang="en">Demo 1</span></span>
-      <h4>記述統計電卓</h4>
+      <h3>記述統計電卓</h3>
       <p class="dnote">数値をカンマや空白、改行で区切って入力すると、平均・中央値・標準偏差・四分位数を計算し、下に簡易的な箱ひげ図を描きます。値を書き換えると、代表値やばらつきがどう動くかを確かめられます。四分位数は線形補間（NumPy と同じ既定の方法）で求めます。</p>
       <label class="fld" for="descInput">数値データ / Numbers</label>
       <textarea id="descInput" rows="2" spellcheck="false">72, 85, 90, 68, 95, 78, 88, 76, 83, 91</textarea>
@@ -949,7 +952,7 @@ dtype: float64
 [76.5 84.  89.5]</code></pre></div>
 
     <div class="callout tip">
-      <h4>この Step のまとめ</h4>
+      <h3>この Step のまとめ</h3>
       <p>データは「中心（平均・中央値）」と「ばらつき（分散・標準偏差・IQR）」で要約します。平均は外れ値に弱く、中央値と四分位は頑健です。pandas の <code>describe()</code> でひととおりの要約が得られます。</p>
     </div>
   </div>
@@ -971,13 +974,13 @@ dtype: float64
 
     <p class="layer"><span lang="ja">仕組み</span><span lang="en">How it works</span></p>
     <div class="prose">
-      <h4>代表的な分布</h4>
+      <h3>代表的な分布</h3>
       <ul>
         <li><b>正規分布（normal distribution）</b>：平均を中心に左右対称の釣鐘型。身長や測定誤差など、多くの連続量がこの形に近づく。平均 &mu; と標準偏差 &sigma; の2つで形が決まる。</li>
         <li><b>二項分布（binomial distribution）</b>：成功確率 p の試行を n 回くり返したときの成功回数の分布。コイン投げやクリック率など、成功か失敗かの繰り返しに使う。</li>
         <li><b>ポアソン分布（Poisson distribution）</b>：一定の時間や区間に、まれな事象が起きる回数の分布。単位時間あたりの平均発生数 &lambda; で決まる。</li>
       </ul>
-      <h4>中心極限定理と標準化</h4>
+      <h3>中心極限定理と標準化</h3>
       <p>推測統計で正規分布が主役になる理由が<b>中心極限定理</b>です。もとの分布の形によらず、標本平均は標本サイズ n を大きくするほど正規分布に近づきます。だからこそ、多くの手法が正規分布を前提にできます。</p>
       <p>正規分布どうしを比べるには、単位をそろえる<b>標準化</b>が便利です。値から平均を引き、標準偏差で割ると、平均0・標準偏差1の<b>標準正規分布</b>上の位置＝<b>z値</b>になります。</p>
       <div class="formula">
@@ -989,7 +992,7 @@ dtype: float64
     <!-- DEMO 2: normal distribution visualizer -->
     <div class="demo reveal" id="demoNorm">
       <span class="dtag"><span lang="ja">デモ 2</span><span lang="en">Demo 2</span></span>
-      <h4>正規分布ビジュアライザ</h4>
+      <h3>正規分布ビジュアライザ</h3>
       <p class="dnote">平均と標準偏差のスライダを動かすと、正規分布の曲線が描き直されます。範囲スライダで下限と上限を決めると、その範囲に入る確率（＝曲線と横軸で囲まれた面積）を計算し、色をつけて示します。曲線の面積の合計は必ず1になります。</p>
       <div class="slider"><span class="snm"><span lang="ja">平均 &mu;</span><span lang="en">Mean &mu;</span></span><input type="range" id="nMu" min="20" max="80" step="1" value="50"><span class="sval" id="nMuV">50</span></div>
       <div class="slider"><span class="snm"><span lang="ja">標準偏差 &sigma;</span><span lang="en">SD &sigma;</span></span><input type="range" id="nSd" min="4" max="24" step="1" value="10"><span class="sval" id="nSdV">10</span></div>
@@ -1024,7 +1027,7 @@ dtype: float64
 0.171875</code></pre></div>
 
     <div class="callout tip">
-      <h4>この Step のまとめ</h4>
+      <h3>この Step のまとめ</h3>
       <p>確率分布は「値の散らばり方」を数式で表す道具。正規分布・二項分布・ポアソン分布が基本です。中心極限定理により標本平均は正規分布に近づき、z値で位置を比べられます。範囲の確率は累積確率（cdf）の差で求めます。</p>
     </div>
   </div>
@@ -1046,15 +1049,15 @@ dtype: float64
 
     <p class="layer"><span lang="ja">仕組み</span><span lang="en">How it works</span></p>
     <div class="prose">
-      <h4>標本分布と標準誤差</h4>
+      <h3>標本分布と標準誤差</h3>
       <p>同じ母集団から標本を何度も取り直すと、標本平均は毎回わずかに違います。この標本平均そのものの分布を<b>標本分布</b>と呼び、その散らばりの大きさを<b>標準誤差（standard error, SE）</b>といいます。標準誤差は次のように、標本サイズ n が大きいほど小さくなります。</p>
       <div class="formula">
         SE = s / <span class="op">&radic;</span>n
         <small>s は標本標準偏差、n は標本サイズ。データを増やすほど推定の揺らぎ（標準誤差）は小さくなる。標準偏差（データ自体の散らばり）と標準誤差（平均の推定の揺らぎ）は別物なので混同しない。</small>
       </div>
-      <h4>点推定と区間推定</h4>
+      <h3>点推定と区間推定</h3>
       <p>母平均を「82.6」のように1つの値で見積もるのが<b>点推定</b>です。しかし1つの値だけでは、それがどれだけ確からしいか伝わりません。そこで幅をもたせて「だいたいこの範囲」と示すのが<b>区間推定</b>で、代表が<b>信頼区間（confidence interval, CI）</b>です。95%信頼区間は、点推定の周りにおよそ「標準誤差の約2倍」の幅を取ります。</p>
-      <h4>95%信頼区間の正しい読み方</h4>
+      <h3>95%信頼区間の正しい読み方</h3>
       <p>ここは誤解の多いところです。「母平均が95%の確率でこの区間に入る」ではありません。母平均は動かない未知の定数です。正しくは、<b>同じ手続きで標本を取り直して区間を作る作業を何度もくり返せば、そのうち約95%の区間が母平均を含む</b>、という意味です。信頼は「区間を作る手続き」に対するもので、いま得た1本の区間に対する確率ではありません。</p>
     </div>
 
@@ -1082,7 +1085,7 @@ ci = stats.t.interval(<span class="nu">0.95</span>, df=n-<span class="nu">1</spa
 (76.27, 88.93)</code></pre></div>
 
     <div class="callout tip">
-      <h4>この Step のまとめ</h4>
+      <h3>この Step のまとめ</h3>
       <p>推定は標本から母数を見積もる作業。標準誤差 <code>SE = s / &radic;n</code> は平均の推定の揺らぎで、n を増やすほど小さくなります。95%信頼区間は「手続きをくり返せば約95%が母平均を含む」という意味で、いまの1本に対する確率ではありません。</p>
     </div>
   </div>
@@ -1104,22 +1107,22 @@ ci = stats.t.interval(<span class="nu">0.95</span>, df=n-<span class="nu">1</spa
 
     <p class="layer"><span lang="ja">仕組み</span><span lang="en">How it works</span></p>
     <div class="prose">
-      <h4>帰無仮説と対立仮説</h4>
+      <h3>帰無仮説と対立仮説</h3>
       <p>検定は、まず「差はない」という控えめな主張＝<b>帰無仮説（H&#8320;）</b>を立てるところから始めます。示したいこと（差がある）は<b>対立仮説（H&#8321;）</b>です。そして「もし帰無仮説が正しかったら、観測されたデータはどれくらい起こりにくいか」を計算します。とても起こりにくければ、帰無仮説を<b>棄却</b>し、差があると判断します。</p>
-      <h4>p値と有意水準</h4>
+      <h3>p値と有意水準</h3>
       <p><b>p値</b>は、<b>帰無仮説が正しいと仮定したときに、観測された以上に極端な結果が得られる確率</b>です。あらかじめ基準となる<b>有意水準 &alpha;</b>（多くは0.05）を決めておき、p値が &alpha; を下回れば「有意差あり」と判断します。ここで大切な注意が2つあります。p値は「帰無仮説が正しい確率」でも「差の大きさ」でもありません。あくまで「帰無仮説のもとでの、データの起こりにくさ」です。</p>
-      <h4>2種類の誤り</h4>
+      <h3>2種類の誤り</h3>
       <ul>
         <li><b>第一種の誤り（Type I error）</b>：本当は差がないのに「差あり」としてしまう（偽陽性）。その確率が有意水準 &alpha;。</li>
         <li><b>第二種の誤り（Type II error）</b>：本当は差があるのに「差なし」としてしまう（偽陰性）。その確率が &beta; で、1 &minus; &beta; を<b>検出力</b>という。</li>
       </ul>
-      <h4>代表的な検定</h4>
+      <h3>代表的な検定</h3>
       <ul>
         <li><b>t検定（t-test）</b>：平均の差を調べる。1標本（ある値との比較）・2標本（2群の比較）・対応あり（同じ対象の前後比較）がある。</li>
         <li><b>カイ二乗検定（chi-square test）</b>：カテゴリ同士に関連があるか（分割表の独立性）を調べる。</li>
         <li><b>分散分析（ANOVA）</b>：3群以上の平均に差があるかを一度に調べる。</li>
       </ul>
-      <h4>効果量と多重比較</h4>
+      <h3>効果量と多重比較</h3>
       <p>p値は「差があるか」を答えますが、「差がどれくらい大きいか」は答えません。そこで<b>効果量</b>を併せて報告します。平均差の効果量が<b>Cohen's d</b>で、差を標準偏差の単位で表します（目安は 0.2 で小、0.5 で中、0.8 で大）。また、同じデータで検定を何度もくり返すと偶然の有意が増えます（多重比較問題）。有意水準を検定回数で割って厳しくする<b>ボンフェローニ補正</b>などで対処します。</p>
       <div class="formula">
         t = (x&#772;&#8321; &minus; x&#772;&#8322;) / (s<sub>p</sub> <span class="op">&radic;</span>(1/n&#8321; + 1/n&#8322;))　　d = (x&#772;&#8321; &minus; x&#772;&#8322;) / s<sub>p</sub>
@@ -1130,7 +1133,7 @@ ci = stats.t.interval(<span class="nu">0.95</span>, df=n-<span class="nu">1</spa
     <!-- DEMO 3: two-sample t-test -->
     <div class="demo reveal" id="demoT">
       <span class="dtag"><span lang="ja">デモ 3</span><span lang="en">Demo 3</span></span>
-      <h4>2群のt検定</h4>
+      <h3>2群のt検定</h3>
       <p class="dnote">2つのグループの数値を入力すると、平均の差・t値・p値・有意判定（&alpha;=0.05, 両側）・効果量 Cohen's d を計算します。等分散を仮定した2標本 t 検定です。p値は t 分布から数値計算で求めており、SciPy の <code>ttest_ind</code> と一致します。下の図は各群の平均と標準偏差の範囲を示します。</p>
       <div class="two">
         <div>
@@ -1189,7 +1192,7 @@ chi2=7.919  p=0.0049  dof=1
 F=68.796  p=2.66e-07</code></pre></div>
 
     <div class="callout tip">
-      <h4>この Step のまとめ</h4>
+      <h3>この Step のまとめ</h3>
       <p>検定は「差はない」という帰無仮説を立て、p値が有意水準 &alpha; を下回れば棄却します。p値は「帰無仮説が正しい確率」でも「差の大きさ」でもありません。差の大きさは効果量（Cohen's d）で、くり返し検定にはボンフェローニ補正で備えます。</p>
     </div>
   </div>
@@ -1211,11 +1214,11 @@ F=68.796  p=2.66e-07</code></pre></div>
 
     <p class="layer"><span lang="ja">仕組み</span><span lang="en">How it works</span></p>
     <div class="prose">
-      <h4>相関</h4>
+      <h3>相関</h3>
       <p>2つの量が一緒に動く度合いを表すのが<b>相関係数</b>です。もっとも一般的な<b>ピアソンの相関係数 r</b>は、直線的な関係の強さを &minus;1 から +1 の範囲で表します。+1 は完全な右上がり、&minus;1 は完全な右下がり、0 は直線的な関係がないことを示します。ただし r が測るのは<b>直線関係</b>だけで、曲線的な関係は捉えられない点に注意します。</p>
-      <h4>相関は因果ではない</h4>
+      <h3>相関は因果ではない</h3>
       <p>強い相関があっても、一方が他方の<b>原因</b>とは限りません。よくあるのが<b>交絡</b>で、背後にある第3の要因が両方を動かしているだけ、という状況です。たとえば「アイスの売上」と「水難事故」は相関しますが、原因は共通の「気温」です。相関から因果を主張するには、実験（ランダム化）や、交絡を調整する専用の手法が要ります。この先は<b>因果推論</b>のモジュールで扱います。</p>
-      <h4>説明のための線形回帰</h4>
+      <h3>説明のための線形回帰</h3>
       <p>関係を式で表す基本が<b>線形回帰</b>です。<code>y = &beta;&#8320; + &beta;&#8321; x</code> の係数を、残差（予測と実測の差）の二乗和が最小になるように決めます（最小二乗法）。統計分析では、各係数が偶然でないか（p値）、あてはまりの良さ（決定係数 R&sup2;、0から1で1に近いほど良い）を見ます。妥当な解釈には<b>残差の前提</b>（残差が独立・等分散・おおむね正規）が満たされていることの確認も欠かせません。</p>
     </div>
 
@@ -1244,7 +1247,7 @@ x1             1.9988      0.024     83.756      0.000       1.944       2.054
 R-squared:                       0.999</code></pre></div>
 
     <div class="callout tip">
-      <h4>この Step のまとめ</h4>
+      <h3>この Step のまとめ</h3>
       <p>相関係数は直線関係の強さを &minus;1 から +1 で表します。ただし<b>相関は因果ではありません</b>（交絡に注意）。線形回帰は関係を式で表し、係数の p値や R&sup2; で評価します。因果を主張するには、次の因果推論モジュールで扱う専用の手続きが必要です。</p>
     </div>
   </div>
@@ -1269,14 +1272,14 @@ R-squared:                       0.999</code></pre></div>
 
     <div class="res-grid reveal">
       <div class="res">
-        <h5>公開データセット</h5>
+        <h3>公開データセット</h3>
         <ul>
           <li><b>seaborn tips</b>：飲食店の会計データ。<code>seaborn.load_dataset("tips")</code> で取得でき、相関や群間比較の練習に向く。</li>
           <li><b>iris / diabetes</b>：scikit-learn 内蔵。<code>load_iris()</code> / <code>load_diabetes()</code> で分類・回帰の題材に。</li>
         </ul>
       </div>
       <div class="res">
-        <h5>ライブラリ</h5>
+        <h3>ライブラリ</h3>
         <ul>
           <li><b>NumPy</b>：数値計算の土台。</li>
           <li><b>SciPy（scipy.stats）</b>：分布と検定の定番。</li>
@@ -1286,7 +1289,7 @@ R-squared:                       0.999</code></pre></div>
         </ul>
       </div>
       <div class="res">
-        <h5>参考書</h5>
+        <h3>参考書</h3>
         <ul>
           <li>東京大学教養学部統計学教室 編『統計学入門』東京大学出版会</li>
           <li>Larry Wasserman『All of Statistics』</li>
@@ -1294,17 +1297,17 @@ R-squared:                       0.999</code></pre></div>
         </ul>
       </div>
       <div class="res">
-        <h5>次のモジュールへ</h5>
+        <h3>次のモジュールへ</h3>
         <ul>
-          <li>因果推論（相関を超えて原因を見極める）</li>
-          <li>データ可視化（正しく伝える図の作り方）</li>
-          <li>機械学習（データから予測する）</li>
+          <li><a href="data-visualization.html">データ可視化</a>（正しく伝える図の作り方）</li>
+          <li><a href="causal-inference.html">因果推論</a>（相関を超えて原因を見極める）</li>
+          <li><a href="machine-learning.html">機械学習</a>（データから予測する）</li>
         </ul>
       </div>
     </div>
 
     <div class="callout tip">
-      <h4>おつかれさまでした</h4>
+      <h3>おつかれさまでした</h3>
       <p>ここで学んだ「要約する → 分布で考える → 推定する → 検定する」という流れは、どんな分野のデータにも共通の考え方です。3つのデモの数値を書き換えて、平均・p値・信頼区間・効果量がどう動くかを確かめると、理解がぐっと深まります。</p>
     </div>
   </div>
@@ -1315,36 +1318,36 @@ R-squared:                       0.999</code></pre></div>
     <p class="eyebrow"><span lang="ja">発展トピック</span><span lang="en">Beyond this module</span></p>
     <h2 class="big">このコースでは扱わない、関係する発展トピック</h2>
     <div class="prose" style="margin-top:22px">
-      <p>このモジュールでは、推測統計と仮説検定を軸に「データから結論を導く基礎の流れ」を扱いました。統計にはこの先に、より柔軟な考え方や手法が広がっています。ここでは、このコースでは踏み込まないものの、知っておくと視野が広がる発展的なトピックを紹介します。深掘りは各自の興味に合わせてどうぞ。因果推論は、別モジュールで改めて扱う予定です。</p>
+      <p>このモジュールでは、推測統計と仮説検定を軸に「データから結論を導く基礎の流れ」を扱いました。統計にはこの先に、より柔軟な考え方や手法が広がっています。ここでは、このコースでは踏み込まないものの、知っておくと視野が広がる発展的なトピックを紹介します。深掘りは各自の興味に合わせてどうぞ。因果推論は、<a href="causal-inference.html">因果推論</a>のモジュールで改めて扱います。</p>
     </div>
 
     <div class="res-grid reveal">
       <div class="res">
-        <h5>ベイズ統計</h5>
+        <h3>ベイズ統計</h3>
         <ul>
           <li><b>ベイズ推定</b>：事前分布に情報を足して事後分布を得る、確率の更新としての推論。頻度論とは別の立場。</li>
           <li><b>MCMC とライブラリ</b>：複雑な事後分布を数値的に扱う（マルコフ連鎖モンテカルロ）。PyMC や Stan が定番。</li>
         </ul>
       </div>
       <div class="res">
-        <h5>頑健・ノンパラメトリック</h5>
+        <h3>頑健・ノンパラメトリック</h3>
         <ul>
           <li><b>ノンパラメトリック検定</b>：分布の形を仮定しない検定（Mann-Whitney U 検定・Wilcoxon 符号順位検定）。</li>
           <li><b>ブートストラップ</b>：データを再標本化して、信頼区間や標準誤差を数値的に見積もる。</li>
         </ul>
       </div>
       <div class="res">
-        <h5>モデルの一般化</h5>
+        <h3>モデルの一般化</h3>
         <ul>
           <li><b>一般化線形モデル（GLM）</b>：ロジスティック回帰・ポアソン回帰など、正規分布以外にも回帰を広げる枠組み。</li>
           <li><b>多変量解析</b>：主成分分析・因子分析など、多数の変数を同時に扱う手法。</li>
         </ul>
       </div>
       <div class="res">
-        <h5>設計と因果</h5>
+        <h3>設計と因果</h3>
         <ul>
           <li><b>検定力分析</b>：必要な標本サイズを事前に見積もり、検出力を確保する（実験計画）。</li>
-          <li><b>因果推論</b>：相関を超えて処置の効果を推定する（RCT・傾向スコア・差分の差分法）。別モジュールで扱う予定。</li>
+          <li><b>因果推論</b>：相関を超えて処置の効果を推定する（RCT・傾向スコア・差分の差分法）。<a href="causal-inference.html">因果推論</a>のモジュールで扱います。</li>
         </ul>
       </div>
     </div>
@@ -1376,14 +1379,6 @@ R-squared:                       0.999</code></pre></div>
       </div>
     </div>
     <div class="foot-grid3">
-      <div>
-        <h3><span lang="ja">連絡先</span><span lang="en">Contact</span></h3>
-        <p class="muted-s">
-          <b>Yuta Kimura</b><br>
-          <span lang="ja">大阪公立大学工業高等専門学校</span><span lang="en">Osaka Metropolitan University College of Technology</span><br>
-          <a href="mailto:y.kimura@omu.ac.jp">y.kimura [at] omu.ac.jp</a>
-        </p>
-      </div>
       <div>
         <h3><span lang="ja">サイト</span><span lang="en">Site</span></h3>
         <p class="muted-s">

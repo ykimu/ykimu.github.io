@@ -474,7 +474,7 @@
             <div class="megacol">
               <div class="navlabel"><span lang="ja">計画・プロセス</span><span lang="en">Planning &amp; Process</span></div>
               <a href="agile-scrum.html"><span lang="ja">アジャイル開発とスクラム</span><span lang="en">Agile &amp; Scrum</span></a>
-              <a href="project-management.html"><span lang="ja">プロジェクト管理と見積もり</span><span lang="en">Project Management</span></a>
+              <a href="project-management.html"><span lang="ja">プロジェクト管理</span><span lang="en">Project Management</span></a>
               <a href="project-estimation-planning.html"><span lang="ja">プロジェクト計画・見積もり</span><span lang="en">Project Planning &amp; Estimation</span></a>
             </div>
             <div class="megacol">
@@ -580,7 +580,7 @@
       <a href="software-reuse-oss.html"><span lang="ja">ソフトウェア再利用とOSS</span><span lang="en">Software Reuse &amp; OSS</span></a>
       <div class="mobsublabel"><span lang="ja">計画・プロセス</span><span lang="en">Planning &amp; Process</span></div>
       <a href="agile-scrum.html"><span lang="ja">アジャイル開発とスクラム</span><span lang="en">Agile &amp; Scrum</span></a>
-      <a href="project-management.html"><span lang="ja">プロジェクト管理と見積もり</span><span lang="en">Project Management</span></a>
+      <a href="project-management.html"><span lang="ja">プロジェクト管理</span><span lang="en">Project Management</span></a>
       <a href="project-estimation-planning.html"><span lang="ja">プロジェクト計画・見積もり</span><span lang="en">Project Planning &amp; Estimation</span></a>
       <div class="mobsublabel"><span lang="ja">品質・運用</span><span lang="en">Quality &amp; Operations</span></div>
       <a href="software-testing.html"><span lang="ja">ソフトウェアテスト学習ガイド</span><span lang="en">Software Testing Guide</span></a>
@@ -1026,7 +1026,7 @@
     <p class="eyebrow reveal">Part 2</p>
     <h2 class="big reveal">シーケンス図：オブジェクト間のやりとりを時系列で表す図</h2>
     <p class="lead reveal" style="max-width:var(--readw); margin-top:20px">
-      ライフライン・アクティベーション・メッセージ、同期／非同期／返信メッセージの書き分け、alt・opt・loopによる条件分岐と繰り返し、作成手順とMermaidでの作図例までを見ていきます。
+      ライフライン・実行仕様（アクティベーション）・メッセージ、同期／非同期／返信メッセージの書き分け、alt・opt・loopによる条件分岐と繰り返し、作成手順とMermaidでの作図例までを見ていきます。
     </p>
 
     <h3 class="reveal" style="font-size:1.3rem; font-weight:600; margin-top:56px">基本の構成</h3>
@@ -1088,7 +1088,7 @@
           <line x1="250" y1="340" x2="67" y2="340" marker-end="url(#seq-open)"/>
         </g>
       </svg>
-      <p class="cap">ライフライン＝オブジェクト＋点線。細い矩形＝アクティベーション（処理中）。実線＋塗り矢じり＝呼び出し、破線＋線矢じり＝戻り（返信）。番号順に時間が上から下へ流れる。</p>
+      <p class="cap">ライフライン＝オブジェクト＋点線。細い矩形＝実行仕様（アクティベーション、処理中）。実線＋塗り矢じり＝呼び出し、破線＋線矢じり＝戻り（返信）。番号順に時間が上から下へ流れる。</p>
     </div>
 
     <h3 class="reveal" style="font-size:1.3rem; font-weight:600; margin-top:56px">記法ポイント：メッセージの種類</h3>
@@ -1148,31 +1148,31 @@
         <line x1="60" y1="58" x2="293" y2="58" stroke="var(--ink)" stroke-width="1.4" marker-end="url(#alt-filled)"/>
         <text x="66" y="52" font-family="var(--mono)" font-size="11" fill="var(--ink-2)">submit(id, pw)</text>
 
+        <!-- verify before branching -->
+        <line x1="300" y1="86" x2="533" y2="86" stroke="var(--ink)" stroke-width="1.4" marker-end="url(#alt-filled)"/>
+        <text x="306" y="80" font-family="var(--mono)" font-size="10.5" fill="var(--ink-2)">verify(id, pw)</text>
+        <line x1="540" y1="112" x2="307" y2="112" stroke="var(--ink-2)" stroke-width="1.2" stroke-dasharray="5 4" marker-end="url(#alt-open)"/>
+        <text x="306" y="106" font-family="var(--mono)" font-size="10.5" fill="var(--ink-2)">result</text>
+
         <!-- alt frame -->
-        <rect x="40" y="76" width="540" height="240" fill="none" stroke="var(--ink)" stroke-width="1.3"/>
-        <path d="M40,76 H130 V92 L118,104 H40 Z" fill="var(--bg-2)" stroke="var(--ink)" stroke-width="1.1"/>
-        <text x="50" y="94" font-family="var(--disp)" font-weight="700" font-size="11.5" fill="var(--ink)">alt</text>
-        <text x="80" y="94" font-family="var(--mono)" font-size="11" fill="var(--ink-2)">[valid]</text>
+        <rect x="40" y="132" width="540" height="164" fill="none" stroke="var(--ink)" stroke-width="1.3"/>
+        <path d="M40,132 H130 V148 L118,160 H40 Z" fill="var(--bg-2)" stroke="var(--ink)" stroke-width="1.1"/>
+        <text x="50" y="150" font-family="var(--disp)" font-weight="700" font-size="11.5" fill="var(--ink)">alt</text>
+        <text x="80" y="150" font-family="var(--mono)" font-size="11" fill="var(--ink-2)">[valid]</text>
 
         <!-- valid branch -->
-        <line x1="300" y1="118" x2="533" y2="118" stroke="var(--ink)" stroke-width="1.4" marker-end="url(#alt-filled)"/>
-        <text x="306" y="112" font-family="var(--mono)" font-size="10.5" fill="var(--ink-2)">verify(id, pw)</text>
-        <line x1="540" y1="146" x2="307" y2="146" stroke="var(--ink-2)" stroke-width="1.2" stroke-dasharray="5 4" marker-end="url(#alt-open)"/>
-        <text x="306" y="140" font-family="var(--mono)" font-size="10.5" fill="var(--ink-2)">ok</text>
-        <line x1="300" y1="174" x2="67" y2="174" stroke="var(--ink-2)" stroke-width="1.2" stroke-dasharray="5 4" marker-end="url(#alt-open)"/>
-        <text x="66" y="168" font-family="var(--mono)" font-size="10.5" fill="var(--ink-2)">go to home</text>
+        <line x1="300" y1="190" x2="67" y2="190" stroke="var(--ink-2)" stroke-width="1.2" stroke-dasharray="5 4" marker-end="url(#alt-open)"/>
+        <text x="66" y="184" font-family="var(--mono)" font-size="10.5" fill="var(--ink-2)">go to home</text>
 
         <!-- divider -->
-        <line x1="40" y1="196" x2="580" y2="196" stroke="var(--ink)" stroke-width="1.1" stroke-dasharray="6 4"/>
-        <text x="50" y="212" font-family="var(--mono)" font-size="11" fill="var(--ink-2)">else [invalid]</text>
+        <line x1="40" y1="214" x2="580" y2="214" stroke="var(--ink)" stroke-width="1.1" stroke-dasharray="6 4"/>
+        <text x="50" y="230" font-family="var(--mono)" font-size="11" fill="var(--ink-2)">else [invalid]</text>
 
         <!-- invalid branch -->
-        <line x1="540" y1="238" x2="307" y2="238" stroke="var(--ink-2)" stroke-width="1.2" stroke-dasharray="5 4" marker-end="url(#alt-open)"/>
-        <text x="306" y="232" font-family="var(--mono)" font-size="10.5" fill="var(--ink-2)">error</text>
         <line x1="300" y1="270" x2="67" y2="270" stroke="var(--ink-2)" stroke-width="1.2" stroke-dasharray="5 4" marker-end="url(#alt-open)"/>
         <text x="66" y="264" font-family="var(--mono)" font-size="10.5" fill="var(--ink-2)">show message</text>
       </svg>
-      <p class="cap">alt枠の左上タブに条件（valid）、区切り線の下にelseの条件（invalid）を書く。Mermaidでは alt ... else ... end で囲む。</p>
+      <p class="cap">まず verify(id, pw) を呼んで結果（result）を受け取り、その結果で分岐する。alt枠の左上タブに条件（valid）、区切り線の下にelseの条件（invalid）を書く。Mermaidでは alt ... else ... end で囲む。</p>
     </div>
     <p class="reveal capline" style="max-width:var(--readw)">Mermaidでは alt / opt / loop ... end で囲む。altの分岐はelseで区切る。枠は入れ子（ネスト）にもできるが、使いすぎると読みにくいので主要な流れに絞る。</p>
 
@@ -1232,7 +1232,7 @@
 
     <div class="mmblock reveal">
       <h3>Mermaidで描く②：alt / loop</h3>
-      <p class="small">alt ... else ... end で分岐、loop ... end で繰り返しを囲む。</p>
+      <p class="small">alt ... else ... end で分岐、loop ... end で繰り返しを囲む。分岐の条件を決める呼び出し（verify）は alt の前に置く。</p>
       <div class="code">
         <span class="fname">login.mmd</span>
         <pre>sequenceDiagram
@@ -1240,12 +1240,11 @@
     participant LoginUI
     participant AuthService
     User-&gt;&gt;LoginUI: submit(id, pw)
+    LoginUI-&gt;&gt;AuthService: verify(id, pw)
+    AuthService--&gt;&gt;LoginUI: result
     alt valid
-        LoginUI-&gt;&gt;AuthService: verify(id, pw)
-        AuthService--&gt;&gt;LoginUI: ok
         LoginUI--&gt;&gt;User: go to home
     else invalid
-        AuthService--&gt;&gt;LoginUI: error
         LoginUI--&gt;&gt;User: show message
     end</pre>
       </div>

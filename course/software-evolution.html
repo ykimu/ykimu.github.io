@@ -139,7 +139,7 @@
   /* prose */
   .prose{max-width:var(--readw)}
   .prose p{margin:0 0 1em; color:var(--ink-2)}
-  .prose h4{font-family:var(--sans); font-size:1.12rem; font-weight:600; letter-spacing:0; color:var(--ink); margin:1.6em 0 .6em}
+  .prose h3{font-family:var(--sans); font-size:1.12rem; font-weight:600; letter-spacing:0; color:var(--ink); margin:1.6em 0 .6em; line-height:inherit; text-wrap:wrap}
   .prose ul{margin:0 0 1.2em; padding-left:0; list-style:none}
   .prose ul li{position:relative; padding-left:22px; margin:12px 0; color:var(--ink-2)}
   .prose ul li::before{content:""; position:absolute; left:0; top:13px; width:11px; height:1.5px; background:var(--accent)}
@@ -150,7 +150,7 @@
 
   .callout{border-radius:16px; padding:18px 22px; margin:18px 0; max-width:var(--readw);
     background:var(--card); box-shadow:0 0 0 6px var(--shell),0 0 0 6.5px var(--hair),var(--soft)}
-  .callout h4{margin:0 0 6px; font-size:1rem; font-family:var(--sans); font-weight:600; letter-spacing:0; color:var(--ink)}
+  .callout h3{margin:0 0 6px; font-size:1rem; font-family:var(--sans); font-weight:600; letter-spacing:0; color:var(--ink); line-height:inherit; text-wrap:wrap}
   .callout.tip{background:var(--accent-soft)}
   .callout.warn{background:rgba(138,109,59,.08)}
   .callout a{font-weight:600}
@@ -228,14 +228,14 @@
   .grid2{display:grid; grid-template-columns:1fr 1fr; gap:16px; margin:18px 0}
   .box{border-radius:16px; padding:16px 18px; background:var(--card);
     box-shadow:0 0 0 6px var(--shell),0 0 0 6.5px var(--hair),var(--soft)}
-  .box h5{margin:0 0 10px; font-size:.92rem; font-family:var(--sans); font-weight:600; letter-spacing:0; display:flex; align-items:center; gap:7px}
-  .box.pros h5{color:var(--accent-2)}
-  .box.cons h5{color:var(--bad)}
+  .box h4{margin:0 0 10px; font-size:.92rem; font-family:var(--sans); font-weight:600; letter-spacing:0; display:flex; align-items:center; gap:7px}
+  .box.pros h4{color:var(--accent-2)}
+  .box.cons h4{color:var(--bad)}
   .box ul{margin:0; padding-left:18px}
   .box li{margin:6px 0; font-size:.9rem; color:var(--ink-2)}
 
   .meta-row{display:grid; grid-template-columns:1fr 1fr; gap:16px; margin:16px 0}
-  .meta h5{margin:0 0 8px; font-size:.92rem; font-family:var(--sans); font-weight:600; letter-spacing:0; color:var(--accent-2)}
+  .meta h4{margin:0 0 8px; font-size:.92rem; font-family:var(--sans); font-weight:600; letter-spacing:0; color:var(--accent-2)}
   .meta p,.meta li{font-size:.92rem; color:var(--ink-2)}
   .meta ul{margin:0; padding-left:18px}
   .meta p{margin:0}
@@ -244,7 +244,7 @@
   /* numbered procedure steps */
   .steps{border-radius:16px; padding:16px 18px; margin:16px 0; background:var(--card);
     box-shadow:0 0 0 6px var(--shell),0 0 0 6.5px var(--hair),var(--soft)}
-  .steps h5{margin:0 0 10px; font-size:.92rem; font-family:var(--sans); font-weight:600; letter-spacing:0; color:var(--accent-2)}
+  .steps h4{margin:0 0 10px; font-size:.92rem; font-family:var(--sans); font-weight:600; letter-spacing:0; color:var(--accent-2)}
   .steps ol{margin:0; padding:0; list-style:none; counter-reset:st}
   .steps ol li{counter-increment:st; position:relative; padding-left:36px; margin:9px 0; font-size:.92rem; color:var(--ink-2)}
   .steps ol li::before{content:counter(st); position:absolute; left:0; top:3px; width:23px; height:23px; border-radius:50%;
@@ -253,7 +253,7 @@
 
   /* diagrams */
   .diagram-wrap{margin:18px 0; max-width:var(--readw)}
-  .diagram-wrap h5{margin:0 0 8px; font-size:.92rem; font-family:var(--sans); font-weight:600; letter-spacing:0; color:var(--accent-2)}
+  .diagram-wrap h4{margin:0 0 8px; font-size:.92rem; font-family:var(--sans); font-weight:600; letter-spacing:0; color:var(--accent-2)}
   .diagram-wrap svg{display:block; width:100%; height:auto; background:var(--shell);
     border:1px solid var(--hair); border-radius:12px; padding:8px}
   .dg-box{fill:var(--card); stroke:var(--line); stroke-width:1.2}
@@ -286,7 +286,7 @@
   /* equivalence-partition demo */
   .demo{border-radius:16px; padding:20px 22px; margin:22px 0; max-width:var(--readw); background:var(--card);
     box-shadow:0 0 0 6px var(--shell),0 0 0 6.5px var(--hair),var(--soft)}
-  .demo h4{margin:0 0 6px; font-size:1rem; font-family:var(--sans); font-weight:600; color:var(--ink)}
+  .demo h3{margin:0 0 6px; font-size:1rem; font-family:var(--sans); font-weight:600; color:var(--ink); line-height:inherit; text-wrap:wrap; letter-spacing:normal}
   .demo .spec{font-size:.9rem; color:var(--muted); margin:0 0 14px}
   .demo-row{display:flex; gap:10px; flex-wrap:wrap; align-items:center}
   .demo input[type=text]{width:min(220px,100%); padding:10px 16px; border-radius:999px; border:1px solid var(--hair);
@@ -599,7 +599,7 @@
             <div class="megacol">
               <div class="navlabel"><span lang="ja">計画・プロセス</span><span lang="en">Planning &amp; Process</span></div>
               <a href="agile-scrum.html"><span lang="ja">アジャイル開発とスクラム</span><span lang="en">Agile &amp; Scrum</span></a>
-              <a href="project-management.html"><span lang="ja">プロジェクト管理と見積もり</span><span lang="en">Project Management</span></a>
+              <a href="project-management.html"><span lang="ja">プロジェクト管理</span><span lang="en">Project Management</span></a>
               <a href="project-estimation-planning.html"><span lang="ja">プロジェクト計画・見積もり</span><span lang="en">Project Planning &amp; Estimation</span></a>
             </div>
             <div class="megacol">
@@ -705,7 +705,7 @@
       <a href="software-reuse-oss.html"><span lang="ja">ソフトウェア再利用とOSS</span><span lang="en">Software Reuse &amp; OSS</span></a>
       <div class="mobsublabel"><span lang="ja">計画・プロセス</span><span lang="en">Planning &amp; Process</span></div>
       <a href="agile-scrum.html"><span lang="ja">アジャイル開発とスクラム</span><span lang="en">Agile &amp; Scrum</span></a>
-      <a href="project-management.html"><span lang="ja">プロジェクト管理と見積もり</span><span lang="en">Project Management</span></a>
+      <a href="project-management.html"><span lang="ja">プロジェクト管理</span><span lang="en">Project Management</span></a>
       <a href="project-estimation-planning.html"><span lang="ja">プロジェクト計画・見積もり</span><span lang="en">Project Planning &amp; Estimation</span></a>
       <div class="mobsublabel"><span lang="ja">品質・運用</span><span lang="en">Quality &amp; Operations</span></div>
       <a href="software-testing.html"><span lang="ja">ソフトウェアテスト学習ガイド</span><span lang="en">Software Testing Guide</span></a>
@@ -761,6 +761,9 @@
 </div>
 
 <main id="main">
+<noscript><div class="wrap" style="padding-top:24px"><p role="alert" style="margin:0; padding:14px 18px; border:1px solid var(--hair, #ddd); border-radius:12px; background:var(--bg-2, #f4f4f2); color:var(--ink, #222); font-size:.95rem">
+  <span lang="ja">この教材はJavaScriptを有効にすると表示されます。</span><span lang="en">This learning material is displayed when JavaScript is enabled.</span>
+</p></div></noscript>
 
 <button class="totop" type="button" aria-label="上へ戻る" title="上へ戻る">&uarr;</button>
 
@@ -845,7 +848,7 @@
     <h2 class="big reveal"><span lang="ja">技術的負債の「利子」を体感する</span><span lang="en">Feel the interest on technical debt</span></h2>
     <div class="prose reveal" id="techProse" style="margin-top:22px"></div>
     <div class="demo reveal" id="tdDemo">
-      <h4>体験デモ：技術的負債の利子シミュレーター</h4>
+      <h3>体験デモ：技術的負債の利子シミュレーター</h3>
       <p class="spec">あるチームの開発を10スプリント分シミュレートします。チームには<b>既存の負債（40ポイント）</b>があり、負債が多いほど<b>利子</b>（理解・修正に余計にかかる時間）で velocity が下がります。開発時間のうち<b>何%を負債の返済（リファクタリング）に充てるか</b>を選んで、累積デリバリー量（10スプリントで届けられた機能の合計）を比較してください。</p>
       <div class="demo-row">
         <div class="try" aria-label="返済割合を選ぶ" style="gap:8px">
@@ -941,7 +944,7 @@ const INTRO_HTML = `
 大規模なソフトウェアシステムの寿命は長く、30年以上使われ続けることも珍しくありません。
 その間、ビジネスも法律も技術も変わり続けるので、<strong>変更は「あるかもしれない」ものではなく「必ず来る」もの</strong>です。</p>
 
-<h4>なぜ変更は避けられないのか</h4>
+<h3>なぜ変更は避けられないのか</h3>
 <ul>
   <li><b>新しい要求の出現</b>：使ってみて初めて「こうしたい」が見えてくる。ビジネス環境の変化が新しい機能を要求する。</li>
   <li><b>エラーの修正</b>：出荷後に見つかった欠陥・脆弱性は直さなければならない。</li>
@@ -950,7 +953,7 @@ const INTRO_HTML = `
 </ul>
 
 <div class="callout warn">
-  <h4>コストの主戦場は「作った後」にある</h4>
+  <h3>コストの主戦場は「作った後」にある</h3>
   カスタム開発されたソフトウェアでは、<strong>保守・進化のコストが開発コストを上回るのが普通</strong>です
   （Sommerville）。システムの種類によっては、生涯コストの<strong>3分の2以上</strong>が「作った後」に発生するという
   見積もりもあります。つまりソフトウェア工学の経済的な主戦場は、華やかな新規開発ではなく、
@@ -958,7 +961,7 @@ const INTRO_HTML = `
   「作って終わり」の発想で書かれたコードのツケは、すべてこの段階に回ってきます。
 </div>
 
-<h4>Lehman のソフトウェア進化の法則</h4>
+<h3>Lehman のソフトウェア進化の法則</h3>
 <p>M. M. Lehman らは、大規模システムの変更の歴史を実証的に調べ、進化に関する経験則を
 「<b>ソフトウェア進化の法則</b>」としてまとめました（1970年代〜）。代表的なものを4つ紹介します。</p>
 <div class="principles">
@@ -975,7 +978,7 @@ const INTRO_HTML = `
 変更すればするほど構造は劣化して次の変更が難しくなる（②）。
 この矛盾とどう付き合うかが、このページ全体のテーマ：<strong>リファクタリングと技術的負債の管理</strong>：につながります。</p>
 
-<h4>ソフトウェアの生涯 ： 開発と進化のスパイラル</h4>
+<h3>ソフトウェアの生涯 ： 開発と進化のスパイラル</h3>
 <p>開発と進化は別々の活動ではなく、<strong>一体の反復プロセス</strong>として捉えられます。
 仕様化 → 実装 → 妥当性確認 → 運用のサイクルを生涯にわたって回し続け、
 やがて変更の価値が下がると<b>サービシング</b>（小さな修正のみ）に移行し、最後は<b>廃止</b>を迎えます。</p>
@@ -1012,7 +1015,7 @@ const INTRO_HTML = `
 </div>
 
 <div class="callout tip">
-  <h4>用語メモ：「保守」と「進化」</h4>
+  <h3>用語メモ：「保守」と「進化」</h3>
   教科書では、納入後にシステムを変更する一般的なプロセスを<b>保守（maintenance）</b>と呼びます。
   「保守」という言葉には「現状を保つ」という響きがありますが、実際の保守工数の過半は<strong>新機能の追加</strong>です。
   そこで近年は、変化し続ける活動全体を<b>進化（evolution）</b>と呼ぶことが増えました。
@@ -1040,14 +1043,14 @@ const TECH_HTML = `
 const CLOSING_HTML = `
 <p>最後に、個々のトピックの知識を「使える判断力」に変えるための視点をまとめます。</p>
 <div class="callout tip">
-  <h4>ボーイスカウト・ルール ： 来たときより少しだけきれいにして立ち去る</h4>
+  <h3>ボーイスカウト・ルール ： 来たときより少しだけきれいにして立ち去る</h3>
   Lehman の法則が示すとおり、何もしなければ構造は劣化する一方です。これに対する現実的な処方箋が、
   Robert C. Martin の言う<b>ボーイスカウト・ルール</b>：コードに触れるたびに、
   <strong>触れる前より少しだけきれいにしてからコミットする</strong>という習慣です。
   「いつか大規模にきれいにする日」は永遠に来ません。日々の小さな返済だけが、複雑性増大の法則に抗う唯一の方法です。
 </div>
 <div class="callout warn">
-  <h4>負債は「悪」ではない ： 危険なのは「見えない負債」</h4>
+  <h3>負債は「悪」ではない ： 危険なのは「見えない負債」</h3>
   締切前に意図的にショートカットを選ぶことは、合理的な経営判断になり得ます（戦略的負債）。
   Cunningham がこのメタファーを作ったのも、「借金で市場投入を早めるのは正しいことがある」と説明するためでした。
   本当に危険なのは、負債を<strong>抱えていることに誰も気づいていない</strong>状態、
@@ -1055,7 +1058,7 @@ const CLOSING_HTML = `
   負債は記録し、見える化し、意思決定の対象にする：それが技術的負債「管理」の出発点です。
 </div>
 <div class="callout">
-  <h4>保守を「格下の仕事」と見なさない</h4>
+  <h3>保守を「格下の仕事」と見なさない</h3>
   保守が高くつく最大の理由のひとつは、保守が魅力のない仕事と見なされ、経験の浅い担当者に回され、
   プログラム理解に膨大な時間がかかることです。しかし現実には、
   プロの開発者のキャリアの大半は「他人の書いた動いているコードを変更すること」に費やされます。
@@ -1063,7 +1066,7 @@ const CLOSING_HTML = `
   これは Feathers『レガシーコード改善ガイド』の中心的なメッセージでもあります。
 </div>
 
-<h4 style="margin-top:26px">混同しやすい用語の見分け方</h4>
+<h3 style="margin-top:26px">混同しやすい用語の見分け方</h3>
 <p>似ている用語は、<strong>「何を変えるか」「いつやるか」「何が目的か」</strong>で見分けます。試験でも実務でも問われるポイントです。</p>
 <table class="cmp-table">
   <tr><th>似ている用語</th><th>見分けるポイント</th></tr>
@@ -1087,19 +1090,19 @@ const CLOSING_HTML = `
     <td>どちらもレガシーの置換だが、<b>ストラングラーフィグ</b>は新旧を並走させ機能を少しずつ移す（いつでも中断・撤退できる）。<b>ビッグバン</b>は全機能を一括で置き換える（後戻りできず、完成まで価値を生まない）。</td></tr>
 </table>
 
-<h4 style="margin-top:26px">研究者の視点：進化と負債は、いまソフトウェア工学研究の中心にいる</h4>
+<h3 style="margin-top:26px">研究者の視点：進化と負債は、いまソフトウェア工学研究の中心にいる</h3>
 <div class="callout">
-  <h4>マイニング・ソフトウェアリポジトリ（MSR）と技術的負債研究</h4>
+  <h3>マイニング・ソフトウェアリポジトリ（MSR）と技術的負債研究</h3>
   GitHub などに蓄積された膨大なコード・コミット・Issue の履歴を分析する
   <strong>リポジトリマイニング（MSR）</strong>という研究分野の発展により、「負債はどこで生まれ、どれくらい生き残り、
   誰がいつ返すのか」を<strong>データで</strong>調べられるようになりました。
   SATD の自動検出・分類、リファクタリングの自動検出（RefactoringMiner 等）、負債の利子の定量化、
   近年は大規模言語モデル（LLM）による負債コメントの理解・返済コードの自動生成まで、
   この分野は現在のソフトウェア工学でもっとも活発な研究領域のひとつです。
-  「20年前の Cunningham の比喩」が、いまや国際会議（TechDebt など）を持つ一大研究分野に育っています。
+  「30年以上前の Cunningham の比喩」が、いまや国際会議（TechDebt など）を持つ一大研究分野に育っています。
 </div>
 
-<h4 style="margin-top:26px">さらに学ぶための文献・資料</h4>
+<h3 style="margin-top:26px">さらに学ぶための文献・資料</h3>
 <ul>
   <li>I. Sommerville『Software Engineering (10th ed.)』Pearson, 2016年, 第9章：本教材の底本</li>
   <li>M. Fowler『リファクタリング 第2版 ： 既存のコードを安全に改善する』オーム社, 2019年：リファクタリングとコードスメルのカタログの決定版</li>
@@ -1783,7 +1786,7 @@ function renderTopic(t, idx){
   const badgeH = `<span class="badge-imp ${BADGE_CLS[t.badge]||'imp1'}">${t.badge}</span>`;
   const analogyH = t.analogy ? `<div class="analogy"><span><b>たとえるなら</b> ${t.analogy}</span></div>` : '';
   const dg = DIAGRAMS[t.id];
-  const diagramH = dg ? `<div class="diagram-wrap"><h5>図解</h5>${dg}</div>` : '';
+  const diagramH = dg ? `<div class="diagram-wrap"><h4>図解</h4>${dg}</div>` : '';
   let codeH = '';
   if(t.hasCode && CODE[t.id]){
     const c = CODE[t.id];
@@ -1813,20 +1816,20 @@ function renderTopic(t, idx){
     <div class="pdetail">
       ${analogyH}
       <div class="meta-row">
-        <div class="meta"><h5>何のためにあるか（目的）</h5><p>${t.purpose}</p></div>
-        <div class="meta"><h5>誰が・いつ関わるか</h5><p>${t.who}</p></div>
+        <div class="meta"><h4>何のためにあるか（目的）</h4><p>${t.purpose}</p></div>
+        <div class="meta"><h4>誰が・いつ関わるか</h4><p>${t.who}</p></div>
       </div>
-      <div class="steps"><h5>考え方・進め方</h5><ol>${stepsLi}</ol></div>
+      <div class="steps"><h4>考え方・進め方</h4><ol>${stepsLi}</ol></div>
       ${diagramH}
       <div class="grid2">
-        <div class="box pros"><h5>✓ 意識するポイント</h5><ul>${pointsLi}</ul></div>
-        <div class="box cons"><h5>！ 注意点・落とし穴</h5><ul>${cautionsLi}</ul></div>
+        <div class="box pros"><h4>✓ 意識するポイント</h4><ul>${pointsLi}</ul></div>
+        <div class="box cons"><h4>！ 注意点・落とし穴</h4><ul>${cautionsLi}</ul></div>
       </div>
       <div class="meta-row">
-        <div class="meta"><h5>具体例</h5><ul>${exLi}</ul></div>
-        <div class="meta"><h5>混同しやすいものとの違い</h5><p>${t.related}</p></div>
+        <div class="meta"><h4>具体例</h4><ul>${exLi}</ul></div>
+        <div class="meta"><h4>混同しやすいものとの違い</h4><p>${t.related}</p></div>
       </div>
-      <div class="meta" style="margin:16px 0"><h5>現場では（ツール・現代的な実践）</h5><p>${t.modern}</p></div>
+      <div class="meta" style="margin:16px 0"><h4>現場では（ツール・現代的な実践）</h4><p>${t.modern}</p></div>
       ${codeH}
       <label class="learn"><input type="checkbox" onchange="toggleLearned('${t.id}',this)">
         このトピックを理解した（習得チェック）</label>

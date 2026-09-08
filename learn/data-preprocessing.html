@@ -133,7 +133,7 @@
   /* prose */
   .prose{max-width:var(--readw)}
   .prose p{margin:0 0 1em; color:var(--ink-2)}
-  .prose h4{font-family:var(--sans); font-size:1.1rem; font-weight:600; letter-spacing:0; color:var(--ink); margin:1.5em 0 .5em}
+  .prose h3{font-family:var(--sans); font-size:1.1rem; font-weight:600; letter-spacing:0; line-height:inherit; text-wrap:wrap; color:var(--ink); margin:1.5em 0 .5em}
   .prose ul{margin:0 0 1.2em; padding-left:0; list-style:none}
   .prose ul li{position:relative; padding-left:22px; margin:11px 0; color:var(--ink-2)}
   .prose ul li::before{content:""; position:absolute; left:0; top:13px; width:11px; height:1.5px; background:var(--accent)}
@@ -148,7 +148,7 @@
 
   .callout{border-radius:16px; padding:18px 22px; margin:20px 0; max-width:var(--readw);
     background:var(--card); box-shadow:0 0 0 6px var(--shell),0 0 0 6.5px var(--hair),var(--soft)}
-  .callout h4{margin:0 0 6px; font-size:1rem; font-family:var(--sans); font-weight:600; letter-spacing:0; color:var(--ink)}
+  .callout h3{margin:0 0 6px; font-size:1rem; font-family:var(--sans); font-weight:600; letter-spacing:0; line-height:inherit; text-wrap:wrap; color:var(--ink)}
   .callout.tip{background:var(--accent-soft)}
   .callout.warn{background:rgba(138,109,59,.08)}
   .callout p{margin:0; color:var(--ink-2); font-size:.96rem}
@@ -157,14 +157,14 @@
   .grid2{display:grid; grid-template-columns:1fr 1fr; gap:16px; margin:20px 0; max-width:var(--readw)}
   .box{border-radius:16px; padding:16px 20px; background:var(--card);
     box-shadow:0 0 0 6px var(--shell),0 0 0 6.5px var(--hair),var(--soft)}
-  .box h5{margin:0 0 10px; font-size:.92rem; font-family:var(--sans); font-weight:600; letter-spacing:0; color:var(--accent-2); display:flex; align-items:center; gap:7px}
-  .box.lim h5{color:var(--warn)}
+  .box h3{margin:0 0 10px; font-size:.92rem; font-family:var(--sans); font-weight:600; letter-spacing:0; line-height:inherit; text-wrap:wrap; color:var(--accent-2); display:flex; align-items:center; gap:7px}
+  .box.lim h3{color:var(--warn)}
   .box ul{margin:0; padding-left:18px}
   .box li{margin:6px 0; font-size:.92rem; color:var(--ink-2)}
 
   .steps{border-radius:16px; padding:16px 20px; margin:20px 0; max-width:var(--readw); background:var(--card);
     box-shadow:0 0 0 6px var(--shell),0 0 0 6.5px var(--hair),var(--soft)}
-  .steps h5{margin:0 0 10px; font-size:.92rem; font-family:var(--sans); font-weight:600; letter-spacing:0; color:var(--accent-2)}
+  .steps h3{margin:0 0 10px; font-size:.92rem; font-family:var(--sans); font-weight:600; letter-spacing:0; line-height:inherit; text-wrap:wrap; color:var(--accent-2)}
   .steps ol{margin:0; padding:0; list-style:none; counter-reset:st}
   .steps ol li{counter-increment:st; position:relative; padding-left:36px; margin:9px 0; font-size:.94rem; color:var(--ink-2)}
   .steps ol li::before{content:counter(st); position:absolute; left:0; top:2px; width:23px; height:23px; border-radius:50%;
@@ -229,7 +229,7 @@
   .demo .dtag{display:inline-flex; align-items:center; gap:8px; margin:0 0 10px; padding:5px 12px 5px 10px;
     border-radius:999px; background:var(--accent-soft); color:var(--accent-2); font:600 .62rem/1 var(--disp); letter-spacing:.12em; text-transform:uppercase}
   .demo .dtag::before{content:""; width:6px; height:6px; border-radius:50%; background:var(--accent)}
-  .demo h4{margin:0 0 6px; font-size:1.12rem; font-family:var(--sans); font-weight:600; color:var(--ink)}
+  .demo h3{margin:0 0 6px; font-size:1.12rem; font-family:var(--sans); font-weight:600; letter-spacing:0; line-height:inherit; text-wrap:wrap; color:var(--ink)}
   .demo .dnote{font-size:.88rem; color:var(--muted); margin:0 0 16px}
   .demo label.fld{display:block; font:600 .74rem/1 var(--disp); letter-spacing:.08em; text-transform:uppercase; color:var(--muted); margin:0 0 7px}
   .demo textarea,.demo input[type=text]{width:100%; padding:12px 15px; border-radius:12px; border:1px solid var(--hair);
@@ -279,7 +279,8 @@
   .res-grid{display:grid; grid-template-columns:1fr 1fr; gap:16px; margin:20px 0; max-width:var(--readw)}
   @media(max-width:640px){.res-grid{grid-template-columns:1fr}}
   .res{border-radius:16px; padding:18px 20px; background:var(--card); box-shadow:0 0 0 6px var(--shell),0 0 0 6.5px var(--hair),var(--soft)}
-  .res h5{margin:0 0 10px; font-size:.95rem; font-family:var(--sans); font-weight:600; color:var(--accent-2)}
+  .res h3{margin:0 0 10px; font-size:.95rem; font-family:var(--sans); font-weight:600; letter-spacing:0; line-height:inherit; text-wrap:wrap; color:var(--accent-2)}
+  .prose h3 [lang="ja"],.callout h3 [lang="ja"],.box h3 [lang="ja"],.steps h3 [lang="ja"],.demo h3 [lang="ja"],.res h3 [lang="ja"]{word-break:normal}
   .res ul{margin:0; padding-left:0; list-style:none}
   .res li{position:relative; padding-left:20px; margin:8px 0; font-size:.9rem; color:var(--ink-2)}
   .res li::before{content:""; position:absolute; left:0; top:11px; width:9px; height:1.5px; background:var(--accent)}
@@ -289,7 +290,7 @@
   footer{border-top:1px solid var(--line); padding:68px 0 46px; background:var(--bg)}
   footer h3{font-size:.72rem; font-weight:600; letter-spacing:.12em; text-transform:uppercase; color:var(--muted); margin:0 0 1em; font-family:var(--disp)}
   .foot-grid{display:grid; grid-template-columns:1.5fr 1fr; gap:44px}
-  .foot-grid3{display:grid; grid-template-columns:1.3fr 1fr 1fr; gap:44px; margin-top:40px}
+  .foot-grid3{display:grid; grid-template-columns:1.5fr 1fr; gap:44px; margin-top:40px}
   .foot-grid3 a{color:var(--ink-2)}
   .foot-grid3 a:hover{color:var(--accent)}
   .cite{font-size:.98rem; color:var(--ink-2); line-height:1.7; max-width:52ch}
@@ -701,7 +702,9 @@
   <nav class="crumbs" aria-label="パンくず">
     <a href="../index.html"><span lang="ja">ホーム</span><span lang="en">Home</span></a>
     <span class="csep" aria-hidden="true">&rsaquo;</span>
-    <span class="cur" aria-current="page"><span lang="ja">学習コース：開発データの前処理とデータセット構築</span><span lang="en">Learn: Data Preprocessing &amp; Dataset Construction</span></span>
+    <a href="index.html"><span lang="ja">学習コース</span><span lang="en">Learn</span></a>
+    <span class="csep" aria-hidden="true">&rsaquo;</span>
+    <span class="cur" aria-current="page"><span lang="ja">開発データの前処理とデータセット構築</span><span lang="en">Data Preprocessing &amp; Dataset Construction</span></span>
   </nav>
 </div>
 
@@ -826,14 +829,14 @@
 
     <p class="layer"><span lang="ja">仕組み</span><span lang="en">How it works</span></p>
     <div class="prose">
-      <h4>表形式データの基本</h4>
+      <h3>表形式データの基本</h3>
       <p>もっとも基本的なデータの形が<b>表形式（tabular）データ</b>です。多くの分析はこの形を前提にします。用語を押さえておきましょう。</p>
       <ul>
         <li><b>行（row）＝サンプル</b>：1件のデータ点。1人の顧客、1つの計測、1件の記事など。</li>
         <li><b>列（column）＝特徴量</b>：サンプルを説明する属性。年齢・年収・カテゴリなど。特徴量は<b>数値型</b>（連続・離散）と<b>カテゴリ型</b>（順序あり・なし）に大別されます。</li>
         <li><b>目的変数（target / label）</b>：予測したい列。分類なら「クラス」、回帰なら「連続値」。教師なし学習ではこれがありません。</li>
       </ul>
-      <h4>データ品質の観点</h4>
+      <h3>データ品質の観点</h3>
       <p>生データには、さまざまな汚れが混じっています。前処理は、これらを見つけて手当てする作業でもあります。代表的な観点は次の4つです。</p>
       <ul>
         <li><b>欠損（missing）</b>：値が入っていないセル。測定漏れ、無回答、システムの都合などで生じます。</li>
@@ -845,7 +848,7 @@
     </div>
 
     <div class="callout tip">
-      <h4>この Step のまとめ</h4>
+      <h3>この Step のまとめ</h3>
       <p>前処理は生データを「整った表」に仕立てる工程で、その成果物がデータセットです。行＝サンプル・列＝特徴量・目的変数という基本を押さえ、欠損・重複・ノイズ・不整合という品質の観点で汚れを見つけて手当てします。「garbage in, garbage out」を避けることが、良い分析の第一歩です。</p>
     </div>
   </div>
@@ -867,21 +870,21 @@
 
     <p class="layer"><span lang="ja">仕組み</span><span lang="en">How it works</span></p>
     <div class="prose">
-      <h4>1. 欠損の種類</h4>
+      <h3>1. 欠損の種類</h3>
       <p>欠損は、なぜ抜けたかによって性質が変わります。統計学では次の3つに分けて考えます。処理方針を選ぶうえで大切な視点です。</p>
       <ul>
         <li><b>完全にランダムな欠損（MCAR）</b>：欠損がどの変数とも無関係。単純な削除でも偏りが出にくい。</li>
         <li><b>観測値に依存する欠損（MAR）</b>：他の観測できている列で欠損の起こりやすさが説明できる。補完が有効。</li>
         <li><b>欠損自体に依存する欠損（MNAR）</b>：抜けた値そのものが原因（高所得者ほど収入を答えない等）。単純な補完では偏りが残る。</li>
       </ul>
-      <h4>2. 除去するか、補完するか</h4>
+      <h3>2. 除去するか、補完するか</h3>
       <p>欠損への対処は、大きく<b>除去</b>と<b>補完（imputation）</b>に分かれます。</p>
       <ul>
         <li><b>行削除（listwise deletion）</b>：欠損を含む行を丸ごと落とす。手軽ですが、欠損が多いとサンプルが激減し、情報を捨てすぎることがあります。</li>
         <li><b>列削除</b>：欠損だらけの列を落とす。その特徴量をあきらめる判断です。</li>
         <li><b>補完</b>：欠けたセルを代表値で埋める。数値列は<b>平均</b>や<b>中央値</b>、カテゴリ列は<b>最頻値</b>が定番です。外れ値の影響を受けにくい<b>中央値</b>は、分布が偏ったデータで特に有効です。時系列では前後の値で埋める<b>前方/後方補完</b>もあります。</li>
       </ul>
-      <h4>3. 外れ値の検出</h4>
+      <h3>3. 外れ値の検出</h3>
       <p>外れ値は、誤入力（年齢 999 など）の場合もあれば、本物の極端値の場合もあります。まずは検出してから、除去・上限打ち切り（クリッピング）・そのまま残すのいずれかを選びます。定番の検出法が2つあります。</p>
       <ul>
         <li><b>IQR 法</b>：四分位範囲 <code>IQR = Q3 - Q1</code> を使い、下限・上限からはみ出す点を外れ値とみなします。分布の形を仮定しない頑健な方法です。</li>
@@ -897,7 +900,7 @@
     <!-- DEMO 1: Missing value handling -->
     <div class="demo reveal" id="demoImpute">
       <span class="dtag"><span lang="ja">デモ 1</span><span lang="en">Demo 1</span></span>
-      <h4>欠損値ハンドリング</h4>
+      <h3>欠損値ハンドリング</h3>
       <p class="dnote">欠損セル（<code>NaN</code> と表示）を含む小さな表です。処理方式を選ぶと、結果の表を更新します。「行削除」は欠損を含む行を丸ごと落とし、「平均補完」「中央値補完」は各特徴量の平均・中央値で欠けたセルを埋めます。補完・変更されたセルは緑で示します。<code>id</code> は識別子なので補完の対象にしません。</p>
       <div class="try">
         <span class="tlbl">方式</span>
@@ -969,7 +972,7 @@ low, high = q1 - <span class="nu">1.5</span> * iqr, q3 + <span class="nu">1.5</s
 [120]</code></pre></div>
 
     <div class="callout tip">
-      <h4>この Step のまとめ</h4>
+      <h3>この Step のまとめ</h3>
       <p>欠損は「除去するか、補完するか」を、欠損の起こり方を踏まえて決めます。数値は平均や中央値、カテゴリは最頻値が定番で、外れ値に強いのは中央値です。外れ値は IQR 法や z スコアで検出してから、除去・打ち切り・保持を選びます。次は、整えたデータを数値の特徴量へ変換します。</p>
     </div>
   </div>
@@ -991,13 +994,13 @@ low, high = q1 - <span class="nu">1.5</span> * iqr, q3 + <span class="nu">1.5</s
 
     <p class="layer"><span lang="ja">仕組み</span><span lang="en">How it works</span></p>
     <div class="prose">
-      <h4>1. カテゴリ変数のエンコーディング</h4>
+      <h3>1. カテゴリ変数のエンコーディング</h3>
       <p>「東京 / 大阪」「S / M / L」のような文字のカテゴリは、数値に変換します。カテゴリの性質で使い分けます。</p>
       <ul>
         <li><b>ラベルエンコーディング</b>：各カテゴリに整数を割り当てる（S=0, M=1, L=2）。<b>順序に意味がある</b>（順序尺度）ときに向きます。名義尺度に使うと、本来ない大小関係をモデルに誤解させます。</li>
         <li><b>One-Hot エンコーディング</b>：カテゴリごとに 0/1 の列を作る。「東京」→ <code>[1,0,0]</code> のように、<b>順序のない</b>名義尺度の定番です。カテゴリ数が多いと列が増える（次元の増加）点に注意します。</li>
       </ul>
-      <h4>2. スケーリング（正規化・標準化）</h4>
+      <h3>2. スケーリング（正規化・標準化）</h3>
       <p>数値特徴量は、列ごとに値の範囲が大きく異なります。年齢（0〜100）と年収（数百万）をそのまま混ぜると、大きな値の列ばかりが効いてしまいます。距離や勾配を使う手法（k近傍法・SVM・ニューラルネット等）では特に、スケールをそろえるのが大切です。代表的な方法が2つあります。</p>
       <ul>
         <li><b>Min-Max 正規化</b>：最小を 0、最大を 1 に線形変換し、<b>0〜1 の範囲</b>に収めます。範囲が決まっているのが利点ですが、外れ値に引っぱられやすい弱点があります。</li>
@@ -1010,16 +1013,16 @@ low, high = q1 - <span class="nu">1.5</span> * iqr, q3 + <span class="nu">1.5</s
       <small>min / max: 列の最小・最大　mean: 平均　std: 標準偏差<br>Min-Max は 0〜1 に収め、標準化は平均 0・標準偏差 1 にそろえます。</small>
     </div>
     <div class="prose">
-      <h4>3. ビン化（binning）</h4>
+      <h3>3. ビン化（binning）</h3>
       <p>連続値を区間に区切って、カテゴリに変える処理です。年齢を「10代・20代・30代」に、点数を「低・中・高」にまとめるなど。非線形な関係を単純化でき、外れ値の影響もやわらぎます。等幅で区切る方法と、件数が等しくなるよう区切る方法（等頻度）があります。</p>
-      <h4>4. 日時特徴の分解</h4>
+      <h3>4. 日時特徴の分解</h3>
       <p>日時（タイムスタンプ）は、そのままでは扱いにくい値です。<b>年・月・日・曜日・時刻</b>などに分解すると、意味のある特徴量になります。たとえば「曜日」や「休日かどうか」は、売上や交通量の予測で強く効くことがあります。周期性（月・曜日・時刻）を意識するのがコツです。</p>
     </div>
 
     <!-- DEMO 2: Normalization vs standardization -->
     <div class="demo reveal" id="demoScale">
       <span class="dtag"><span lang="ja">デモ 2</span><span lang="en">Demo 2</span></span>
-      <h4>正規化 vs 標準化</h4>
+      <h3>正規化 vs 標準化</h3>
       <p class="dnote">数値をカンマか空白で区切って入力すると、<b>Min-Max 正規化</b>と<b>標準化（z スコア）</b>の両方を計算し、表とミニバーで比較します。Min-Max は 0〜1 に収まり、z スコアは平均 0（中央の縦線）を基準に左右へ広がります。標準偏差は scikit-learn の <code>StandardScaler</code> と同じ母標準偏差（ddof=0）で計算します。</p>
       <label class="fld" for="scaleInput">数値の列 / Numbers</label>
       <textarea id="scaleInput" rows="2" spellcheck="false">12, 18, 22, 35, 60, 80</textarea>
@@ -1075,7 +1078,7 @@ np.set_printoptions(precision=<span class="nu">3</span>, suppress=<span class="k
     </div>
 
     <div class="callout tip">
-      <h4>この Step のまとめ</h4>
+      <h3>この Step のまとめ</h3>
       <p>カテゴリは順序尺度ならラベル、名義尺度なら One-Hot でエンコードします。数値は Min-Max（0〜1）か標準化（平均0・標準偏差1）でスケールをそろえます。さらにビン化や日時分解で、意味のある特徴量を作れます。次は、目的変数（ラベル）側の課題を見ます。</p>
     </div>
   </div>
@@ -1097,11 +1100,11 @@ np.set_printoptions(precision=<span class="nu">3</span>, suppress=<span class="k
 
     <p class="layer"><span lang="ja">仕組み</span><span lang="en">How it works</span></p>
     <div class="prose">
-      <h4>1. ラベル付け（アノテーション）</h4>
+      <h3>1. ラベル付け（アノテーション）</h3>
       <p>正解ラベルは、人手でのアノテーション、既存の記録（購入した/しなかった等）、あるいはルールによる自動付与などで用意します。人手の場合は、複数人で付けて一致度を測る（アノテータ間一致）と品質を確認できます。付け方の基準がぶれると<b>ノイズラベル</b>（誤った正解）が混じり、モデルの上限を下げてしまいます。</p>
-      <h4>2. クラス不均衡という問題</h4>
-      <p>不正検知や病気の判定のように、<b>片方のクラスが極端に少ない</b>データはよくあります。たとえば 99% が正常・1% が異常のデータでは、すべて「正常」と答えるだけで正解率 99% になります。数字は高いのに、肝心の異常をまったく拾えていません。<b>正解率だけを見てはいけない</b>典型例で、少数派クラスの再現率や F 値を確認する必要があります（評価指標は Step&nbsp;5 でも触れます）。</p>
-      <h4>3. 不均衡への対処</h4>
+      <h3>2. クラス不均衡という問題</h3>
+      <p>不正検知や病気の判定のように、<b>片方のクラスが極端に少ない</b>データはよくあります。たとえば 99% が正常・1% が異常のデータでは、すべて「正常」と答えるだけで正解率 99% になります。数字は高いのに、肝心の異常をまったく拾えていません。<b>正解率だけを見てはいけない</b>典型例で、少数派クラスの再現率や F 値を確認する必要があります（評価指標の詳しい説明は <a href="machine-learning.html">機械学習</a>のモジュールで扱います）。</p>
+      <h3>3. 不均衡への対処</h3>
       <p>不均衡をやわらげる代表的な手立てが4つあります。</p>
       <ul>
         <li><b>アンダーサンプリング</b>：多数派を間引いて件数をそろえる。手軽ですが情報を捨てます。</li>
@@ -1115,7 +1118,7 @@ np.set_printoptions(precision=<span class="nu">3</span>, suppress=<span class="k
     <!-- DEMO 3: Stratified split visualizer -->
     <div class="demo reveal" id="demoStratify">
       <span class="dtag"><span lang="ja">デモ 3</span><span lang="en">Demo 3</span></span>
-      <h4>層化分割ビジュアライザ</h4>
+      <h3>層化分割ビジュアライザ</h3>
       <p class="dnote">2 クラス（A・B）の件数と、テストの割合を決めると、<b>通常のランダム分割</b>と<b>層化分割</b>で、クラスの構成がどう保たれるかを棒で比較します。層化分割は、各クラスを同じ割合で分けるので、元のクラス比が train・test の両方で保たれます。不均衡なデータほど、ランダム分割のずれが目立ちます。</p>
       <div class="two">
         <div>
@@ -1160,7 +1163,7 @@ after : Counter({0: 90, 1: 90})</code></pre></div>
     </div>
 
     <div class="callout tip">
-      <h4>この Step のまとめ</h4>
+      <h3>この Step のまとめ</h3>
       <p>ラベルは付け方の基準がぶれるとノイズになります。クラス不均衡があると正解率はあてになりにくく、少数派の再現率・F 値を見ます。対処はアンダー/オーバーサンプリング・クラス重み・SMOTE などで、いずれも学習データにだけ適用します。次は、その「学習側に閉じる」設計を、データ分割とリーク防止として体系立てます。</p>
     </div>
   </div>
@@ -1182,7 +1185,7 @@ after : Counter({0: 90, 1: 90})</code></pre></div>
 
     <p class="layer"><span lang="ja">仕組み</span><span lang="en">How it works</span></p>
     <div class="prose">
-      <h4>train / validation / test</h4>
+      <h3>train / validation / test</h3>
       <p>データは役割で3つに分けます。<b>学習用（train）</b>でモデルを学習し、<b>検証用（validation）</b>でハイパーパラメータを調整し、<b>テスト用（test）</b>で最後に一度だけ実力を測ります。テストは「本番の代役」なので、調整には決して使いません。</p>
     </div>
 
@@ -1203,9 +1206,9 @@ after : Counter({0: 90, 1: 90})</code></pre></div>
     </div>
 
     <div class="prose">
-      <h4>層化抽出と交差検証</h4>
+      <h3>層化抽出と交差検証</h3>
       <p>分割のときも、クラス比を保つ<b>層化抽出（stratified sampling）</b>が基本です（Step&nbsp;4 のデモで見たとおり）。データが少ないときは、分割を変えながら繰り返し評価する<b>交差検証（cross-validation）</b>が有効です。データを k 個に分け、順番に 1 個を検証、残りを学習に使い、k 回の平均で性能を評価します（k-分割交差検証）。偶然のばらつきをならせます。</p>
-      <h4>データリークの正体</h4>
+      <h3>データリークの正体</h3>
       <p>データリークは、<b>本来知り得ない情報が学習に混ざる</b>ことです。前処理でよくやってしまうのが次の誤りです。</p>
       <ul>
         <li><b>前処理を分割前に全体へ適用する</b>：標準化の平均・標準偏差や、補完の中央値を<b>データ全体</b>から計算すると、テストの情報が学習に漏れます。これらの統計量は<b>学習データだけ</b>から求め、同じ変換をテストに当てるのが正解です。</li>
@@ -1247,13 +1250,14 @@ scores = cross_val_score(pipe, X, y, cv=<span class="nu">5</span>)
     </div>
     <div class="code-out"><span class="olbl">出力例 / Output</span><pre><code>test accuracy: 0.978
 CV mean: 0.973</code></pre></div>
+    <p class="muted-s">※ CV mean の値は scikit-learn のバージョンにより 0.96〜0.97 程度で変わります（test accuracy は 0.978 で一定）。</p>
 
     <div class="prose">
       <p>もし <code>StandardScaler</code> をパイプラインに入れず、分割前にデータ全体へ <code>fit_transform</code> していたら、それがデータリークです。<code>Pipeline</code> にまとめておけば、<code>cross_val_score</code> が内部で分割を切り替えるたびに、標準化はその都度の学習側だけで学び直されます。数値がわずかに変わるだけに見えて、評価の正しさを守る大切な違いです。</p>
     </div>
 
     <div class="callout tip">
-      <h4>この Step のまとめ</h4>
+      <h3>この Step のまとめ</h3>
       <p>データは train / validation / test に、クラス比を保って（層化）分けます。前処理の統計量は必ず学習データだけから求め、テストには変換だけを当てます。この漏れ防止を <code>Pipeline</code> で構造化すれば、交差検証でも安全です。時系列では時間順に分割し、シャッフルしません。</p>
     </div>
   </div>
@@ -1275,18 +1279,18 @@ CV mean: 0.973</code></pre></div>
 
     <p class="layer"><span lang="ja">仕組み</span><span lang="en">How it works</span></p>
     <div class="prose">
-      <h4>パイプライン化</h4>
+      <h3>パイプライン化</h3>
       <p>前処理の一つひとつを手作業で回すと、順番の取り違えや当て忘れが起こります。補完・スケーリング・エンコーディングといった工程を<b>パイプライン（Pipeline）</b>として1本にまとめておけば、同じ手順を確実に、同じ順で再実行できます。Step&nbsp;5 で見たように、リーク防止にもつながります。</p>
-      <h4>乱数シードの固定</h4>
+      <h3>乱数シードの固定</h3>
       <p>データ分割、シャッフル、SMOTE のような処理には乱数が関わります。<code>random_state</code>（シード）を固定すると、乱数の並びが毎回同じになり、結果を再現できます。実験の比較や、不具合の追跡に欠かせません。</p>
-      <h4>データのバージョン管理</h4>
+      <h3>データのバージョン管理</h3>
       <p>コードだけでなく、<b>データそのもののバージョン</b>も記録します。「どの時点のデータで、どの前処理を通したモデルか」をたどれるようにするのが目的です。データにハッシュ（内容の指紋）を付けて管理する専用ツール（DVC など）もあります。生データ・中間データ・最終データセットを区別して保存する習慣も有効です。</p>
-      <h4>記録（データシート）</h4>
+      <h3>記録（データシート）</h3>
       <p>データセットには、その<b>出所・収集方法・前処理・既知の偏りや制限</b>を文書として添えます。こうした説明書は<b>データシート（datasheets for datasets）</b>と呼ばれ、他者が（そして未来の自分が）安全に使うための土台になります。どんな加工をしたかを残すことは、研究でも実務でも基本の作法です。</p>
     </div>
 
     <div class="callout tip">
-      <h4>この Step のまとめ</h4>
+      <h3>この Step のまとめ</h3>
       <p>良い前処理は「もう一度同じ結果を出せる」ことまで含みます。工程をパイプライン化し、乱数シードを固定し、データとコードのバージョンをそろえ、加工の記録（データシート）を残す。これで、作ったデータセットを安心して使い回せます。次のモジュールで、このデータセットを実際にモデルへ渡していきます。</p>
     </div>
   </div>
@@ -1312,7 +1316,7 @@ CV mean: 0.973</code></pre></div>
 
     <div class="res-grid reveal">
       <div class="res">
-        <h5>公開データセット</h5>
+        <h3>公開データセット</h3>
         <ul>
           <li><b>Titanic</b>：乗客の生存予測。欠損・カテゴリ・不均衡がそろう前処理の練習台（OpenML から取得可能）。</li>
           <li><b>UCI Adult</b>：国勢調査から年収を分類。カテゴリ変数のエンコーディングの定番（UCI / OpenML）。</li>
@@ -1320,7 +1324,7 @@ CV mean: 0.973</code></pre></div>
         </ul>
       </div>
       <div class="res">
-        <h5>ライブラリ</h5>
+        <h3>ライブラリ</h3>
         <ul>
           <li><b>pandas</b>：表形式データの読み込み・洗浄・変換。</li>
           <li><b>NumPy</b>：数値配列と数学演算の土台。</li>
@@ -1329,24 +1333,24 @@ CV mean: 0.973</code></pre></div>
         </ul>
       </div>
       <div class="res">
-        <h5>参考書</h5>
+        <h3>参考書</h3>
         <ul>
           <li>本橋智光『前処理大全』技術評論社</li>
           <li>Alice Zheng, Amanda Casari『Feature Engineering for Machine Learning』O'Reilly</li>
         </ul>
       </div>
       <div class="res">
-        <h5>次のモジュールへ</h5>
+        <h3>次のモジュールへ</h3>
         <ul>
-          <li>機械学習の基礎（分類・回帰・評価）</li>
-          <li>ネットワーク分析（グラフとしてのデータ）</li>
-          <li>自然言語処理（テキストの前処理と特徴量化）</li>
+          <li><a href="nlp.html">自然言語処理（NLP）</a>（テキストの前処理と特徴量化）</li>
+          <li><a href="network-analysis.html">ネットワーク分析</a>（グラフとしてのデータ）</li>
+          <li><a href="machine-learning.html">機械学習</a>（分類・回帰・評価）</li>
         </ul>
       </div>
     </div>
 
     <div class="callout tip">
-      <h4>おつかれさまでした</h4>
+      <h3>おつかれさまでした</h3>
       <p>ここで学んだ「洗って → 数値にして → 学習側に閉じて分ける」という流れは、どんなデータを扱うときも共通の土台になります。3 つのデモの数値や件数を書き換えて、もう一度動かしてみてください。補完で表がどう変わるか、スケーリングで値がどう並び直すか、層化がクラス比をどう守るか。手を動かすと、理解がぐっと深まります。</p>
     </div>
   </div>
@@ -1362,28 +1366,28 @@ CV mean: 0.973</code></pre></div>
 
     <div class="res-grid reveal">
       <div class="res">
-        <h5>不均衡と自動特徴量生成</h5>
+        <h3>不均衡と自動特徴量生成</h3>
         <ul>
           <li><b>不均衡対策の発展</b>：SMOTE の派生（Borderline-SMOTE・ADASYN）やアンダーサンプリングとの組み合わせ。<code>imbalanced-learn</code> にまとまっている。</li>
           <li><b>自動特徴量生成</b>：関係のある複数の表から特徴量を自動で作る（Featuretools の深層特徴量合成）。</li>
         </ul>
       </div>
       <div class="res">
-        <h5>データ検証と品質保証</h5>
+        <h3>データ検証と品質保証</h3>
         <ul>
           <li><b>データ検証</b>：期待するスキーマや値の範囲を宣言し、逸脱を自動で検出する（Great Expectations・pandera）。</li>
           <li><b>データドリフト監視</b>：運用中に入力分布が学習時とずれていないかを継続的に確かめる。</li>
         </ul>
       </div>
       <div class="res">
-        <h5>データ管理の基盤</h5>
+        <h3>データ管理の基盤</h3>
         <ul>
           <li><b>データバージョン管理</b>：データセットと前処理の来歴を Git のように追跡する（DVC）。</li>
           <li><b>特徴量ストア（feature store）</b>：作った特徴量を一元管理し、学習と推論で同じ定義を再利用する仕組み。</li>
         </ul>
       </div>
       <div class="res">
-        <h5>ラベルづくりの発展</h5>
+        <h3>ラベルづくりの発展</h3>
         <ul>
           <li><b>弱教師あり学習・能動学習</b>：ルールや少量の注釈からラベルを効率よく用意する（弱教師：Snorkel、能動学習：不確実なサンプルを優先注釈）。</li>
           <li><b>合成データ</b>：本物に近い人工データを生成して不足やプライバシーを補う。</li>
@@ -1418,14 +1422,6 @@ CV mean: 0.973</code></pre></div>
       </div>
     </div>
     <div class="foot-grid3">
-      <div>
-        <h3><span lang="ja">連絡先</span><span lang="en">Contact</span></h3>
-        <p class="muted-s">
-          <b>Yuta Kimura</b><br>
-          <span lang="ja">大阪公立大学工業高等専門学校</span><span lang="en">Osaka Metropolitan University College of Technology</span><br>
-          <a href="mailto:y.kimura@omu.ac.jp">y.kimura [at] omu.ac.jp</a>
-        </p>
-      </div>
       <div>
         <h3><span lang="ja">サイト</span><span lang="en">Site</span></h3>
         <p class="muted-s">

@@ -133,7 +133,7 @@
   /* prose */
   .prose{max-width:var(--readw)}
   .prose p{margin:0 0 1em; color:var(--ink-2)}
-  .prose h4{font-family:var(--sans); font-size:1.1rem; font-weight:600; letter-spacing:0; color:var(--ink); margin:1.5em 0 .5em}
+  .prose h3{font-family:var(--sans); font-size:1.1rem; font-weight:600; letter-spacing:0; line-height:inherit; text-wrap:wrap; color:var(--ink); margin:1.5em 0 .5em}
   .prose ul{margin:0 0 1.2em; padding-left:0; list-style:none}
   .prose ul li{position:relative; padding-left:22px; margin:11px 0; color:var(--ink-2)}
   .prose ul li::before{content:""; position:absolute; left:0; top:13px; width:11px; height:1.5px; background:var(--accent)}
@@ -148,7 +148,7 @@
 
   .callout{border-radius:16px; padding:18px 22px; margin:20px 0; max-width:var(--readw);
     background:var(--card); box-shadow:0 0 0 6px var(--shell),0 0 0 6.5px var(--hair),var(--soft)}
-  .callout h4{margin:0 0 6px; font-size:1rem; font-family:var(--sans); font-weight:600; letter-spacing:0; color:var(--ink)}
+  .callout h3{margin:0 0 6px; font-size:1rem; font-family:var(--sans); font-weight:600; letter-spacing:0; line-height:inherit; text-wrap:wrap; color:var(--ink)}
   .callout.tip{background:var(--accent-soft)}
   .callout.warn{background:rgba(138,109,59,.08)}
   .callout p{margin:0; color:var(--ink-2); font-size:.96rem}
@@ -157,14 +157,14 @@
   .grid2{display:grid; grid-template-columns:1fr 1fr; gap:16px; margin:20px 0; max-width:var(--readw)}
   .box{border-radius:16px; padding:16px 20px; background:var(--card);
     box-shadow:0 0 0 6px var(--shell),0 0 0 6.5px var(--hair),var(--soft)}
-  .box h5{margin:0 0 10px; font-size:.92rem; font-family:var(--sans); font-weight:600; letter-spacing:0; color:var(--accent-2); display:flex; align-items:center; gap:7px}
-  .box.lim h5{color:var(--warn)}
+  .box h3{margin:0 0 10px; font-size:.92rem; font-family:var(--sans); font-weight:600; letter-spacing:0; line-height:inherit; text-wrap:wrap; color:var(--accent-2); display:flex; align-items:center; gap:7px}
+  .box.lim h3{color:var(--warn)}
   .box ul{margin:0; padding-left:18px}
   .box li{margin:6px 0; font-size:.92rem; color:var(--ink-2)}
 
   .steps{border-radius:16px; padding:16px 20px; margin:20px 0; max-width:var(--readw); background:var(--card);
     box-shadow:0 0 0 6px var(--shell),0 0 0 6.5px var(--hair),var(--soft)}
-  .steps h5{margin:0 0 10px; font-size:.92rem; font-family:var(--sans); font-weight:600; letter-spacing:0; color:var(--accent-2)}
+  .steps h3{margin:0 0 10px; font-size:.92rem; font-family:var(--sans); font-weight:600; letter-spacing:0; line-height:inherit; text-wrap:wrap; color:var(--accent-2)}
   .steps ol{margin:0; padding:0; list-style:none; counter-reset:st}
   .steps ol li{counter-increment:st; position:relative; padding-left:36px; margin:9px 0; font-size:.94rem; color:var(--ink-2)}
   .steps ol li::before{content:counter(st); position:absolute; left:0; top:2px; width:23px; height:23px; border-radius:50%;
@@ -229,7 +229,7 @@
   .demo .dtag{display:inline-flex; align-items:center; gap:8px; margin:0 0 10px; padding:5px 12px 5px 10px;
     border-radius:999px; background:var(--accent-soft); color:var(--accent-2); font:600 .62rem/1 var(--disp); letter-spacing:.12em; text-transform:uppercase}
   .demo .dtag::before{content:""; width:6px; height:6px; border-radius:50%; background:var(--accent)}
-  .demo h4{margin:0 0 6px; font-size:1.12rem; font-family:var(--sans); font-weight:600; color:var(--ink)}
+  .demo h3{margin:0 0 6px; font-size:1.12rem; font-family:var(--sans); font-weight:600; letter-spacing:0; line-height:inherit; text-wrap:wrap; color:var(--ink)}
   .demo .dnote{font-size:.88rem; color:var(--muted); margin:0 0 16px}
   .demo label.fld{display:block; font:600 .74rem/1 var(--disp); letter-spacing:.08em; text-transform:uppercase; color:var(--muted); margin:0 0 7px}
   .demo textarea,.demo input[type=text]{width:100%; padding:12px 15px; border-radius:12px; border:1px solid var(--hair);
@@ -279,7 +279,8 @@
   .res-grid{display:grid; grid-template-columns:1fr 1fr; gap:16px; margin:20px 0; max-width:var(--readw)}
   @media(max-width:640px){.res-grid{grid-template-columns:1fr}}
   .res{border-radius:16px; padding:18px 20px; background:var(--card); box-shadow:0 0 0 6px var(--shell),0 0 0 6.5px var(--hair),var(--soft)}
-  .res h5{margin:0 0 10px; font-size:.95rem; font-family:var(--sans); font-weight:600; color:var(--accent-2)}
+  .res h3{margin:0 0 10px; font-size:.95rem; font-family:var(--sans); font-weight:600; letter-spacing:0; line-height:inherit; text-wrap:wrap; color:var(--accent-2)}
+  .prose h3 [lang="ja"],.callout h3 [lang="ja"],.box h3 [lang="ja"],.steps h3 [lang="ja"],.demo h3 [lang="ja"],.res h3 [lang="ja"]{word-break:normal}
   .res ul{margin:0; padding-left:0; list-style:none}
   .res li{position:relative; padding-left:20px; margin:8px 0; font-size:.9rem; color:var(--ink-2)}
   .res li::before{content:""; position:absolute; left:0; top:11px; width:9px; height:1.5px; background:var(--accent)}
@@ -289,7 +290,7 @@
   footer{border-top:1px solid var(--line); padding:68px 0 46px; background:var(--bg)}
   footer h3{font-size:.72rem; font-weight:600; letter-spacing:.12em; text-transform:uppercase; color:var(--muted); margin:0 0 1em; font-family:var(--disp)}
   .foot-grid{display:grid; grid-template-columns:1.5fr 1fr; gap:44px}
-  .foot-grid3{display:grid; grid-template-columns:1.3fr 1fr 1fr; gap:44px; margin-top:40px}
+  .foot-grid3{display:grid; grid-template-columns:1.5fr 1fr; gap:44px; margin-top:40px}
   .foot-grid3 a{color:var(--ink-2)}
   .foot-grid3 a:hover{color:var(--accent)}
   .cite{font-size:.98rem; color:var(--ink-2); line-height:1.7; max-width:52ch}
@@ -701,7 +702,9 @@
   <nav class="crumbs" aria-label="パンくず">
     <a href="../index.html"><span lang="ja">ホーム</span><span lang="en">Home</span></a>
     <span class="csep" aria-hidden="true">&rsaquo;</span>
-    <span class="cur" aria-current="page"><span lang="ja">学習コース：プログラム解析</span><span lang="en">Learn: Program Analysis</span></span>
+    <a href="index.html"><span lang="ja">学習コース</span><span lang="en">Learn</span></a>
+    <span class="csep" aria-hidden="true">&rsaquo;</span>
+    <span class="cur" aria-current="page"><span lang="ja">プログラム解析</span><span lang="en">Program Analysis</span></span>
   </nav>
 </div>
 
@@ -823,16 +826,16 @@
     <p class="layer"><span lang="ja">仕組み</span><span lang="en">How it works</span></p>
     <div class="prose">
       <p>解析には、実行するかどうかで大きく2つの立場があります。</p>
-      <h4>静的解析（static analysis）</h4>
+      <h3>静的解析（static analysis）</h3>
       <p>プログラムを<b>実行せずに</b>、ソースコードやコンパイル後のバイトコードそのものを調べます。あらゆる入力・あらゆる経路を（近似的に）まとめて扱えるのが強みです。いっぽう、実行時にしか決まらない値（利用者の入力やファイルの中身など）は分からないため、結果はどうしても<b>近似</b>になります。安全側に倒すと、実際には問題ない箇所まで警告する<b>偽陽性</b>が増えがちです。</p>
-      <h4>動的解析（dynamic analysis）</h4>
+      <h3>動的解析（dynamic analysis）</h3>
       <p>プログラムを<b>実際に実行して</b>、その振る舞いを観測します。実行した具体的な値や経路について正確な情報が得られます。ただし、観測できるのは<b>実行した経路だけ</b>で、試さなかった入力の挙動は分かりません。見逃し（<b>偽陰性</b>）が起きやすいのが弱点です。テストカバレッジやプロファイリングが代表例です。</p>
-      <h4>解析の限界</h4>
+      <h3>解析の限界</h3>
       <p>「このプログラムは必ず停止するか」「この2つのプログラムは同じ振る舞いか」といった、プログラムの<b>意味に関する非自明な性質</b>は、一般には機械的に完全に判定できないことが知られています（ライスの定理・停止性問題）。だからこそ実務の解析は、安全な近似・ヒューリスティック・限定した範囲での判定を組み合わせて、役に立つ答えを返すよう設計されています。静的と動的は対立するものではなく、互いの弱点を補い合う道具だと考えるのがよいでしょう。</p>
     </div>
 
     <div class="callout tip">
-      <h4>この Step のまとめ</h4>
+      <h3>この Step のまとめ</h3>
       <p>プログラム解析はコードから機械的に情報を引き出す技術。実行しない<b>静的解析</b>は網羅的だが近似的、実行する<b>動的解析</b>は正確だが観測した経路だけ。両者を組み合わせて、バグ発見・品質評価・セキュリティに役立てます。</p>
     </div>
   </div>
@@ -854,11 +857,11 @@
 
     <p class="layer"><span lang="ja">仕組み</span><span lang="en">How it works</span></p>
     <div class="prose">
-      <h4>1. 字句解析（lexing / tokenization）</h4>
+      <h3>1. 字句解析（lexing / tokenization）</h3>
       <p>文字列を、意味のある最小単位である<b>トークン</b>に区切ります。<code>y = 2 + 3</code> なら、<code>y</code>（識別子）・<code>=</code>（記号）・<code>2</code>（数値）・<code>+</code>（記号）・<code>3</code>（数値）に分けます。空白やコメントはここで落とします。Python では標準ライブラリ <code>tokenize</code> がこの役目を担います。</p>
-      <h4>2. 構文解析（parsing）</h4>
+      <h3>2. 構文解析（parsing）</h3>
       <p>トークンの並びを、文法規則に従って木に組み立てます。ここで<b>演算子の優先順位</b>と<b>結合性</b>が効きます。<code>2 + 3 * 4</code> では、掛け算が足し算より優先されるので、<code>3 * 4</code> がひとつのまとまりになり、その結果と <code>2</code> を足す、という入れ子の木になります。同じ優先順位の <code>10 - 4 - 2</code> は左から結合し、<code>(10 - 4) - 2</code> と解釈されます。</p>
-      <h4>3. 抽象構文木（AST）</h4>
+      <h3>3. 抽象構文木（AST）</h3>
       <p>できあがった木からは、括弧やセミコロンといった「書き方の飾り」を落とし、<b>構造の本質だけ</b>を残します。これが AST です。各ノードは「代入」「二項演算」「関数呼び出し」などの構文要素に対応します。木になっていれば、深さ優先でたどって特定のパターンを探す、といった処理が素直に書けます。</p>
       <p>なお、Python はソースを<b>バイトコード</b>にコンパイルしてから仮想マシンで実行します。標準ライブラリ <code>dis</code> を使うと、この中間表現（どんな命令に落ちるか）を覗くことができます。字句解析・構文解析・AST は、その手前の「意味を組み立てる」段階だと考えるとよいでしょう。</p>
     </div>
@@ -866,7 +869,7 @@
     <!-- DEMO 1: expression syntax tree -->
     <div class="demo reveal" id="demoAst">
       <span class="dtag"><span lang="ja">デモ 1</span><span lang="en">Demo 1</span></span>
-      <h4>式の構文木</h4>
+      <h3>式の構文木</h3>
       <p class="dnote">算術式（<code>+ - * /</code> と括弧、整数）を入力すると、簡易パーサが演算子の優先順位に従って構文木を組み立て、SVG のツリーで表示します。掛け算・割り算は足し算・引き算より先に、括弧が最優先です。木の下には、その優先順位で計算した結果も表示します。</p>
       <label class="fld" for="astInput">式 / Expression</label>
       <input type="text" id="astInput" spellcheck="false" value="2 + 3 * 4">
@@ -942,7 +945,7 @@ tree = ast.parse(<span class="st">"y = 2 + 3 * 4"</span>)
 Mult</code></pre></div>
 
     <div class="callout tip">
-      <h4>この Step のまとめ</h4>
+      <h3>この Step のまとめ</h3>
       <p>解析は「文字列 → トークン → 構文木（AST）」という変換から始まります。演算子の優先順位はこの木の形に現れます。Python では <code>tokenize</code> で字句解析、<code>ast</code> で構文解析ができ、以降の解析はすべてこの木の上で行われます。</p>
     </div>
   </div>
@@ -964,11 +967,11 @@ Mult</code></pre></div>
 
     <p class="layer"><span lang="ja">仕組み</span><span lang="en">How it works</span></p>
     <div class="prose">
-      <h4>制御フローグラフ（CFG）</h4>
+      <h3>制御フローグラフ（CFG）</h3>
       <p>プログラムの「どこからどこへ進みうるか」をグラフで表したものが<b>制御フローグラフ（Control Flow Graph）</b>です。分岐のない一続きの命令列を<b>基本ブロック</b>としてノードにまとめ、条件分岐やループによる遷移をエッジで結びます。「この行に到達できるか」「ここから抜け出せるか」といった問いは、このグラフ上の到達可能性の問題になります。</p>
-      <h4>データフロー解析</h4>
+      <h3>データフロー解析</h3>
       <p>変数の値がプログラム中をどう流れるかを追うのが<b>データフロー解析</b>です。ある地点で「どの代入の結果が生きているか（到達定義）」「この先で使われる変数はどれか（生存変数）」などを、CFG に沿って伝播させて求めます。応用として、<b>定義・使用連鎖（def-use chain）</b>を作れば、「代入したのに一度も使われない変数」や「使う前に値が入っていない変数」を検出できます。</p>
-      <h4>リンタの仕組み</h4>
+      <h3>リンタの仕組み</h3>
       <p><b>リンタ（linter）</b>は、AST を走査してあらかじめ決めたパターン（アンチパターン）に一致する箇所を警告するツールです。未使用の変数・インポート、比較演算子の誤用、命名規約からの逸脱などを指摘します。Python では <b>pylint</b> や <b>flake8</b> が定番で、内部では <code>ast</code> のような構文木の走査を行っています。次のコードは、その「未使用変数の検出」を <code>ast</code> だけでミニチュア実装した例です。</p>
     </div>
 
@@ -1005,7 +1008,7 @@ unused:   ['z']</code></pre></div>
     </div>
 
     <div class="callout tip">
-      <h4>この Step のまとめ</h4>
+      <h3>この Step のまとめ</h3>
       <p>静的解析は AST の上で、制御フロー（CFG）とデータフローを追う技術です。定義・使用の関係を調べれば、未使用変数のような問題を実行前に見つけられます。pylint や flake8 は、この考え方を体系化したツールです。</p>
     </div>
   </div>
@@ -1027,9 +1030,9 @@ unused:   ['z']</code></pre></div>
 
     <p class="layer"><span lang="ja">仕組み</span><span lang="en">How it works</span></p>
     <div class="prose">
-      <h4>行数（LOC）</h4>
+      <h3>行数（LOC）</h3>
       <p>もっとも素朴な指標が<b>行数（Lines of Code）</b>です。空行やコメントを除いた実行文の行数（論理行数）を数えるのが一般的です。単純ですが、規模の当たりをつけるのに役立ちます。</p>
-      <h4>循環的複雑度（cyclomatic complexity）</h4>
+      <h3>循環的複雑度（cyclomatic complexity）</h3>
       <p>McCabe が提案した<b>循環的複雑度</b>は、制御フローグラフをもとに「独立した経路の数」を測る指標です。分岐が多いほど値が大きく、テストすべき経路も増えます。CFG のエッジ数を E、ノード数を N、連結成分の数を P とすると、次の式で定義されます。</p>
     </div>
     <div class="formula">
@@ -1038,7 +1041,7 @@ unused:   ['z']</code></pre></div>
     </div>
     <div class="prose">
       <p>実務では、この「判定点を数えて 1 を足す」やり方で手早く見積もります。分岐が 0 なら M = 1（一本道）、分岐が増えるほど M も増えます。目安として、M が小さいほど理解・テストしやすく、大きくなるほど分割を検討する合図になります。次のデモは、まさにこの数え方で複雑度を計算します。</p>
-      <h4>その他の指標</h4>
+      <h3>その他の指標</h3>
       <ul>
         <li><b>Halstead 指標</b>：コード中の演算子・オペランドの種類数と総数から、プログラムの語彙・規模・難しさ（difficulty）・労力（effort）などを見積もる。</li>
         <li><b>保守性指数（Maintainability Index）</b>：Halstead 体積・循環的複雑度・行数を組み合わせ、保守のしやすさを一つの数値にまとめたもの。</li>
@@ -1050,7 +1053,7 @@ unused:   ['z']</code></pre></div>
     <!-- DEMO 2: cyclomatic complexity -->
     <div class="demo reveal" id="demoCc">
       <span class="dtag"><span lang="ja">デモ 2</span><span lang="en">Demo 2</span></span>
-      <h4>循環的複雑度</h4>
+      <h3>循環的複雑度</h3>
       <p class="dnote">疑似コード（Python 風）を入力すると、<code>if</code>・<code>elif</code>・<code>for</code>・<code>while</code>・<code>case</code>・<code>and</code>・<code>or</code>（<code>&amp;&amp;</code>・<code>||</code> も）といった判定点を数え、循環的複雑度 <b>M = 判定数 + 1</b> を計算します。内訳の表と、簡単・やや複雑・複雑の目安も表示します。</p>
       <label class="fld" for="ccInput">疑似コード / Pseudocode</label>
       <textarea id="ccInput" rows="9" spellcheck="false">def grade(s):
@@ -1097,7 +1100,7 @@ source = open(<span class="st">"example.py"</span>).read()
     <div class="code-out"><span class="olbl">出力例 / Output</span><pre><code>grade 4</code></pre></div>
 
     <div class="callout tip">
-      <h4>この Step のまとめ</h4>
+      <h3>この Step のまとめ</h3>
       <p>コードメトリクスは品質を数値化する道具。<b>循環的複雑度</b>は M = E - N + 2P（判定点 + 1）で分岐の多さを測ります。radon の <code>cc</code> で簡単に計測でき、テストしにくい複雑な関数の目印になります。</p>
     </div>
   </div>
@@ -1119,11 +1122,11 @@ source = open(<span class="st">"example.py"</span>).read()
 
     <p class="layer"><span lang="ja">仕組み</span><span lang="en">How it works</span></p>
     <div class="prose">
-      <h4>テストカバレッジ</h4>
+      <h3>テストカバレッジ</h3>
       <p><b>カバレッジ</b>は、テストがコードのどれだけを実行したかを測る指標です。<b>行カバレッジ</b>は実行された行の割合、<b>分岐カバレッジ</b>は条件分岐の真・偽の両方を通ったかを見ます。カバレッジが低い箇所は「テストで一度も動かしていない場所」であり、バグが潜みやすい要注意ゾーンです。Python では <b>coverage.py</b> が定番です。</p>
-      <h4>プロファイリング</h4>
+      <h3>プロファイリング</h3>
       <p><b>プロファイリング</b>は、どの関数がどれだけ呼ばれ、どれだけ時間を使ったかを計測します。「速くしたい」ときに、当てずっぽうで直すのではなく、実測にもとづいてボトルネックを特定するために使います。Python 標準の <b>cProfile</b> が手軽です。</p>
-      <h4>トレースと限界</h4>
+      <h3>トレースと限界</h3>
       <p><b>トレース</b>は、実行の経路や関数の呼び出し順を時系列で記録します。動的解析に共通する限界は、<b>観測できるのは実際に実行した経路だけ</b>という点です。与えた入力しだいで結果が変わるため、静的解析のような網羅性はありません。だからこそ、両者を組み合わせるのが実務の基本になります。</p>
     </div>
 
@@ -1168,14 +1171,14 @@ cProfile.run(<span class="st">"slow()"</span>)</code></pre>
 
     <div class="prose">
       <p>ジェネレータ式が 100001 回呼ばれ（10 万個の値と、最後の停止で 1 回）、そこと <code>sum</code> に時間が集中しているのが読み取れます。どこを直せば速くなるかが、実測から分かります。</p>
-      <h4>実践：コードの重複を測る（クローン検出）</h4>
+      <h3>実践：コードの重複を測る（クローン検出）</h3>
       <p>最後に、品質評価の実践として<b>コードクローン検出</b>を体験します。これはコードを実行せずトークン列を比べる手法ですが、コピー＆ペーストで増えた重複を見つけ、保守性の問題を洗い出すのに使われます。よくある手法は、コードを正規化してトークン列にし、その<b>類似度</b>を測るものです。空白やコメントを無視するだけの一致（Type-1）に加え、<b>変数名や定数の違いを吸収</b>すると、名前だけ変えた複製（Type-2）も見つかります。次のデモは、正規化したトークンの並びから類似度を計算します。</p>
     </div>
 
     <!-- DEMO 3: code clone detection -->
     <div class="demo reveal" id="demoClone">
       <span class="dtag"><span lang="ja">デモ 3</span><span lang="en">Demo 3</span></span>
-      <h4>コードクローン検出</h4>
+      <h3>コードクローン検出</h3>
       <p class="dnote">2つのコード片を入力すると、空白とコメントを除き、変数名を <code>ID</code>・数値を <code>NUM</code>・文字列を <code>STR</code> に正規化してトークン列にします。トークンの2-gram（隣り合う2つ組）の集合どうしの <b>Jaccard 係数</b>で類似度を測り、クローンかどうかを判定します。<code>Jaccard = |共通| / |和集合|</code> です。</p>
       <div class="two">
         <div>
@@ -1205,7 +1208,7 @@ cProfile.run(<span class="st">"slow()"</span>)</code></pre>
     </div>
 
     <div class="callout tip">
-      <h4>この Step のまとめ</h4>
+      <h3>この Step のまとめ</h3>
       <p>動的解析は、実行して観測する技術です。<code>coverage</code> でテストの網羅度を、<code>cProfile</code> で性能のボトルネックを測れます。観測できるのは通った経路だけという限界を、静的解析が補います。トークンを正規化して比べれば、コードクローンも検出できます。</p>
     </div>
   </div>
@@ -1227,16 +1230,16 @@ cProfile.run(<span class="st">"slow()"</span>)</code></pre>
 
     <p class="layer"><span lang="ja">仕組み</span><span lang="en">How it works</span></p>
     <div class="prose">
-      <h4>バグ検出と欠陥予測</h4>
+      <h3>バグ検出と欠陥予測</h3>
       <p>静的解析のパターン照合で「ぬるぽ（null 参照）になりうる」「例外が握りつぶされている」といった典型的な欠陥を見つけられます。さらに、過去の変更履歴やメトリクスを組み合わせ、どのファイルがバグを含みやすいかを見積もる<b>欠陥予測</b>という研究分野もあります。</p>
-      <h4>セキュリティ解析</h4>
+      <h3>セキュリティ解析</h3>
       <p>脆弱性を見つける解析には、コードを実行せず調べる<b>SAST（静的アプリケーションセキュリティテスト）</b>と、動かして試す<b>DAST（動的〜）</b>があります。中核となる考え方の一つが<b>テイント解析</b>で、外部からの入力（汚染源）が、データベース問い合わせやコマンド実行などの危険な地点（シンク）まで、無害化されずに届く経路を追跡します。</p>
-      <h4>コードへの機械学習</h4>
+      <h3>コードへの機械学習</h3>
       <p>近年は、コードを<b>データ</b>として機械学習にかける流れが広がっています。AST やトークン列を数値ベクトルに変換する<b>コード表現・埋め込み</b>を作り、バグ検出・コード補完・要約などに使います。テキストを数値にする自然言語処理の発想が、そのままコードにも応用されているのです。ここは、このコースの機械学習・大規模言語モデル（LLM）のモジュールへとつながっていきます。</p>
     </div>
 
     <div class="callout tip">
-      <h4>この Step のまとめ</h4>
+      <h3>この Step のまとめ</h3>
       <p>基本の道具は、バグ検出・欠陥予測・セキュリティ解析（SAST/DAST・テイント解析）へ応用できます。さらにコードを機械学習の対象とみなす流れが、コード表現・埋め込みを通じて機械学習や LLM のモジュールへつながります。</p>
     </div>
   </div>
@@ -1261,14 +1264,14 @@ cProfile.run(<span class="st">"slow()"</span>)</code></pre>
 
     <div class="res-grid reveal">
       <div class="res">
-        <h5>解析の対象・データ</h5>
+        <h3>解析の対象・データ</h3>
         <ul>
           <li><b>任意の公開 Python ソース</b>：手元のスクリプトや OSS のコードをそのまま解析対象にできる。</li>
           <li><b>Python 標準ライブラリのコード</b>：<code>ast</code> や <code>tokenize</code> で読み込み、実在するコードで練習できる。</li>
         </ul>
       </div>
       <div class="res">
-        <h5>ライブラリ・ツール</h5>
+        <h3>ライブラリ・ツール</h3>
         <ul>
           <li><b>Python 標準 ast・dis・tokenize</b>：構文木・バイトコード・トークン列。</li>
           <li><b>radon</b>：循環的複雑度・保守性指数などの計測。</li>
@@ -1278,7 +1281,7 @@ cProfile.run(<span class="st">"slow()"</span>)</code></pre>
         </ul>
       </div>
       <div class="res">
-        <h5>参考書</h5>
+        <h3>参考書</h3>
         <ul>
           <li>Aho ほか『コンパイラ 原理・技法・ツール』（通称ドラゴンブック）</li>
           <li>Nielson ほか『Principles of Program Analysis』</li>
@@ -1286,17 +1289,17 @@ cProfile.run(<span class="st">"slow()"</span>)</code></pre>
         </ul>
       </div>
       <div class="res">
-        <h5>次のモジュールへ</h5>
+        <h3>次のモジュールへ</h3>
         <ul>
-          <li>機械学習の基礎（分類・回帰・評価）</li>
-          <li>大規模言語モデル（LLM）とコード生成</li>
-          <li>リポジトリマイニング（変更履歴の分析）</li>
+          <li><a href="statistics.html">統計分析</a>（測った指標を統計的に読む）</li>
+          <li><a href="machine-learning.html">機械学習</a>（分類・回帰・評価）</li>
+          <li><a href="repository-mining.html">リポジトリマイニング入門</a>（変更履歴の分析）</li>
         </ul>
       </div>
     </div>
 
     <div class="callout tip">
-      <h4>おつかれさまでした</h4>
+      <h3>おつかれさまでした</h3>
       <p>ここで学んだ「コードを構造にして、静的・動的に調べる」という流れは、言語や規模を問わず通用する考え方です。手元の Python ファイルを題材に、3 つのデモを動かしてみてください。式を変え、疑似コードの分岐を増やし、コードを少しずつ書き換えると、構文木・複雑度・類似度がどう変わるかを確かめられ、理解がぐっと深まります。</p>
     </div>
   </div>
@@ -1312,14 +1315,14 @@ cProfile.run(<span class="st">"slow()"</span>)</code></pre>
 
     <div class="res-grid reveal">
       <div class="res">
-        <h5>高度な静的解析</h5>
+        <h3>高度な静的解析</h3>
         <ul>
           <li><b>記号実行（symbolic execution）</b>：変数を具体値ではなく記号のまま実行し、どんな入力でどの経路を通るかを論理的に解く。</li>
           <li><b>抽象解釈（abstract interpretation）</b>：値を「符号」「区間」などの抽象領域で近似し、健全に性質を証明する理論的枠組み。</li>
         </ul>
       </div>
       <div class="res">
-        <h5>セキュリティと検証</h5>
+        <h3>セキュリティと検証</h3>
         <ul>
           <li><b>テイント解析</b>：外部入力が危険な地点に届く経路を追跡し、脆弱性を見つける。</li>
           <li><b>ファジング（fuzzing）</b>：大量のランダム・変異入力を与えてクラッシュを探す動的手法。</li>
@@ -1327,17 +1330,17 @@ cProfile.run(<span class="st">"slow()"</span>)</code></pre>
         </ul>
       </div>
       <div class="res">
-        <h5>コードの機械学習</h5>
+        <h3>コードの機械学習</h3>
         <ul>
           <li><b>コード表現学習</b>：AST やトークン列を数値ベクトルに変換する（code2vec など）。</li>
           <li><b>事前学習モデル</b>：大量のコードで学習したモデル（CodeBERT など）を、バグ検出や要約に応用する。</li>
         </ul>
       </div>
       <div class="res">
-        <h5>生成と合成</h5>
+        <h3>生成と合成</h3>
         <ul>
           <li><b>プログラム合成</b>：入出力例や仕様から、条件を満たすプログラムを自動生成する。</li>
-          <li><b>LLM によるコード生成・解析</b>：大規模言語モデルがコードを書き、説明し、レビューを支援する最新の広がり。別モジュールで扱う予定。</li>
+          <li><b>LLM によるコード生成・解析</b>：大規模言語モデルがコードを書き、説明し、レビューを支援する最新の広がり。<a href="llm.html">大規模言語モデル（LLM）</a>のモジュールで扱います。</li>
         </ul>
       </div>
     </div>
@@ -1369,14 +1372,6 @@ cProfile.run(<span class="st">"slow()"</span>)</code></pre>
       </div>
     </div>
     <div class="foot-grid3">
-      <div>
-        <h3><span lang="ja">連絡先</span><span lang="en">Contact</span></h3>
-        <p class="muted-s">
-          <b>Yuta Kimura</b><br>
-          <span lang="ja">大阪公立大学工業高等専門学校</span><span lang="en">Osaka Metropolitan University College of Technology</span><br>
-          <a href="mailto:y.kimura@omu.ac.jp">y.kimura [at] omu.ac.jp</a>
-        </p>
-      </div>
       <div>
         <h3><span lang="ja">サイト</span><span lang="en">Site</span></h3>
         <p class="muted-s">

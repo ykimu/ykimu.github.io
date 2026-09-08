@@ -139,7 +139,7 @@
   /* prose */
   .prose{max-width:var(--readw)}
   .prose p{margin:0 0 1em; color:var(--ink-2)}
-  .prose h4{font-family:var(--sans); font-size:1.12rem; font-weight:600; letter-spacing:0; color:var(--ink); margin:1.6em 0 .6em}
+  .prose h3{font-family:var(--sans); font-size:1.12rem; font-weight:600; letter-spacing:0; color:var(--ink); margin:1.6em 0 .6em; line-height:inherit; text-wrap:wrap}
   .prose ul{margin:0 0 1.2em; padding-left:0; list-style:none}
   .prose ul li{position:relative; padding-left:22px; margin:12px 0; color:var(--ink-2)}
   .prose ul li::before{content:""; position:absolute; left:0; top:13px; width:11px; height:1.5px; background:var(--accent)}
@@ -150,7 +150,7 @@
 
   .callout{border-radius:16px; padding:18px 22px; margin:18px 0; max-width:var(--readw);
     background:var(--card); box-shadow:0 0 0 6px var(--shell),0 0 0 6.5px var(--hair),var(--soft)}
-  .callout h4{margin:0 0 6px; font-size:1rem; font-family:var(--sans); font-weight:600; letter-spacing:0; color:var(--ink)}
+  .callout h3{margin:0 0 6px; font-size:1rem; font-family:var(--sans); font-weight:600; letter-spacing:0; color:var(--ink); line-height:inherit; text-wrap:wrap}
   .callout.tip{background:var(--accent-soft)}
   .callout.warn{background:rgba(138,109,59,.08)}
   .callout a{font-weight:600}
@@ -228,14 +228,14 @@
   .grid2{display:grid; grid-template-columns:1fr 1fr; gap:16px; margin:18px 0}
   .box{border-radius:16px; padding:16px 18px; background:var(--card);
     box-shadow:0 0 0 6px var(--shell),0 0 0 6.5px var(--hair),var(--soft)}
-  .box h5{margin:0 0 10px; font-size:.92rem; font-family:var(--sans); font-weight:600; letter-spacing:0; display:flex; align-items:center; gap:7px}
-  .box.pros h5{color:var(--accent-2)}
-  .box.cons h5{color:var(--bad)}
+  .box h4{margin:0 0 10px; font-size:.92rem; font-family:var(--sans); font-weight:600; letter-spacing:0; display:flex; align-items:center; gap:7px}
+  .box.pros h4{color:var(--accent-2)}
+  .box.cons h4{color:var(--bad)}
   .box ul{margin:0; padding-left:18px}
   .box li{margin:6px 0; font-size:.9rem; color:var(--ink-2)}
 
   .meta-row{display:grid; grid-template-columns:1fr 1fr; gap:16px; margin:16px 0}
-  .meta h5{margin:0 0 8px; font-size:.92rem; font-family:var(--sans); font-weight:600; letter-spacing:0; color:var(--accent-2)}
+  .meta h4{margin:0 0 8px; font-size:.92rem; font-family:var(--sans); font-weight:600; letter-spacing:0; color:var(--accent-2)}
   .meta p,.meta li{font-size:.92rem; color:var(--ink-2)}
   .meta ul{margin:0; padding-left:18px}
   .meta p{margin:0}
@@ -244,7 +244,7 @@
   /* numbered procedure steps */
   .steps{border-radius:16px; padding:16px 18px; margin:16px 0; background:var(--card);
     box-shadow:0 0 0 6px var(--shell),0 0 0 6.5px var(--hair),var(--soft)}
-  .steps h5{margin:0 0 10px; font-size:.92rem; font-family:var(--sans); font-weight:600; letter-spacing:0; color:var(--accent-2)}
+  .steps h4{margin:0 0 10px; font-size:.92rem; font-family:var(--sans); font-weight:600; letter-spacing:0; color:var(--accent-2)}
   .steps ol{margin:0; padding:0; list-style:none; counter-reset:st}
   .steps ol li{counter-increment:st; position:relative; padding-left:36px; margin:9px 0; font-size:.92rem; color:var(--ink-2)}
   .steps ol li::before{content:counter(st); position:absolute; left:0; top:3px; width:23px; height:23px; border-radius:50%;
@@ -253,7 +253,7 @@
 
   /* diagrams */
   .diagram-wrap{margin:18px 0; max-width:var(--readw)}
-  .diagram-wrap h5{margin:0 0 8px; font-size:.92rem; font-family:var(--sans); font-weight:600; letter-spacing:0; color:var(--accent-2)}
+  .diagram-wrap h4{margin:0 0 8px; font-size:.92rem; font-family:var(--sans); font-weight:600; letter-spacing:0; color:var(--accent-2)}
   .diagram-wrap svg{display:block; width:100%; height:auto; background:var(--shell);
     border:1px solid var(--hair); border-radius:12px; padding:8px}
   .dg-box{fill:var(--card); stroke:var(--line); stroke-width:1.2}
@@ -286,17 +286,17 @@
   /* demo / interactive tools */
   .demo{border-radius:16px; padding:20px 22px; margin:22px 0; max-width:var(--readw); background:var(--card);
     box-shadow:0 0 0 6px var(--shell),0 0 0 6.5px var(--hair),var(--soft)}
-  .demo h4{margin:0 0 6px; font-size:1rem; font-family:var(--sans); font-weight:600; color:var(--ink)}
+  .demo h3{margin:0 0 6px; font-size:1rem; font-family:var(--sans); font-weight:600; color:var(--ink); line-height:inherit; text-wrap:wrap; letter-spacing:normal}
   .demo .spec{font-size:.9rem; color:var(--muted); margin:0 0 14px}
   .demo-row{display:flex; gap:10px; flex-wrap:wrap; align-items:center}
   .demo input[type=text]{width:min(220px,100%); padding:10px 16px; border-radius:999px; border:1px solid var(--hair);
     background:#fff; color:var(--ink); font:500 .95rem/1 var(--mono); outline:none; transition:border-color .3s var(--ease)}
   .demo input[type=text]:focus{border-color:var(--accent)}
-  .demo .try{display:flex; gap:6px; flex-wrap:wrap}
-  .demo .try button{background:#fff; border:1px solid var(--hair); color:var(--ink-2); border-radius:999px;
+  .demo .try,.tool .try{display:flex; gap:6px; flex-wrap:wrap}
+  .demo .try button,.tool .try button{background:#fff; border:1px solid var(--hair); color:var(--ink-2); border-radius:999px;
     padding:7px 13px; font:500 .82rem/1 var(--mono); cursor:pointer; transition:border-color .3s var(--ease), transform .3s var(--ease)}
-  .demo .try button:hover{border-color:var(--ink); transform:translateY(-1px)}
-  .demo .try button.on{background:var(--ink); border-color:var(--ink); color:#fff}
+  .demo .try button:hover,.tool .try button:hover{border-color:var(--ink); transform:translateY(-1px)}
+  .demo .try button.on,.tool .try button.on{background:var(--ink); border-color:var(--ink); color:#fff}
   .demo-out{margin-top:14px; border-radius:12px; padding:14px 16px; font-size:.92rem; background:var(--bg-2); color:var(--ink-2)}
   .demo-out b{font-weight:600}
   .demo-out.ok{background:var(--accent-soft); }
@@ -309,7 +309,7 @@
   /* calculator tools */
   .tool{border-radius:20px; padding:24px 26px; margin:24px 0; max-width:var(--readw); background:var(--card);
     box-shadow:0 0 0 7px var(--shell),0 0 0 7.5px var(--hair),var(--soft)}
-  .tool > h4{margin:0 0 4px; font-size:1.14rem; font-family:var(--sans); font-weight:600; color:var(--ink)}
+  .tool > h3{margin:0 0 4px; font-size:1.14rem; font-family:var(--sans); font-weight:600; color:var(--ink); line-height:inherit; text-wrap:wrap; letter-spacing:normal}
   .tool .lede{font-size:.92rem; color:var(--muted); margin:0 0 16px}
   .tool-grid{display:grid; grid-template-columns:1.05fr .95fr; gap:24px; align-items:start}
   @media(max-width:760px){.tool-grid{grid-template-columns:1fr}}
@@ -632,7 +632,7 @@
             <div class="megacol">
               <div class="navlabel"><span lang="ja">計画・プロセス</span><span lang="en">Planning &amp; Process</span></div>
               <a href="agile-scrum.html"><span lang="ja">アジャイル開発とスクラム</span><span lang="en">Agile &amp; Scrum</span></a>
-              <a href="project-management.html"><span lang="ja">プロジェクト管理と見積もり</span><span lang="en">Project Management</span></a>
+              <a href="project-management.html"><span lang="ja">プロジェクト管理</span><span lang="en">Project Management</span></a>
               <a class="here" href="project-estimation-planning.html" aria-current="page"><span lang="ja">プロジェクト計画・見積もり</span><span lang="en">Project Planning &amp; Estimation</span></a>
             </div>
             <div class="megacol">
@@ -738,7 +738,7 @@
       <a href="software-reuse-oss.html"><span lang="ja">ソフトウェア再利用とOSS</span><span lang="en">Software Reuse &amp; OSS</span></a>
       <div class="mobsublabel"><span lang="ja">計画・プロセス</span><span lang="en">Planning &amp; Process</span></div>
       <a href="agile-scrum.html"><span lang="ja">アジャイル開発とスクラム</span><span lang="en">Agile &amp; Scrum</span></a>
-      <a href="project-management.html"><span lang="ja">プロジェクト管理と見積もり</span><span lang="en">Project Management</span></a>
+      <a href="project-management.html"><span lang="ja">プロジェクト管理</span><span lang="en">Project Management</span></a>
       <a class="here" href="project-estimation-planning.html" aria-current="page"><span lang="ja">プロジェクト計画・見積もり</span><span lang="en">Project Planning &amp; Estimation</span></a>
       <div class="mobsublabel"><span lang="ja">品質・運用</span><span lang="en">Quality &amp; Operations</span></div>
       <a href="software-testing.html"><span lang="ja">ソフトウェアテスト学習ガイド</span><span lang="en">Software Testing Guide</span></a>
@@ -794,6 +794,9 @@
 </div>
 
 <main id="main">
+<noscript><div class="wrap" style="padding-top:24px"><p role="alert" style="margin:0; padding:14px 18px; border:1px solid var(--hair, #ddd); border-radius:12px; background:var(--bg-2, #f4f4f2); color:var(--ink, #222); font-size:.95rem">
+  <span lang="ja">この教材はJavaScriptを有効にすると表示されます。</span><span lang="en">This learning material is displayed when JavaScript is enabled.</span>
+</p></div></noscript>
 
 <button class="totop" type="button" aria-label="上へ戻る" title="上へ戻る">&uarr;</button>
 
@@ -830,7 +833,7 @@
 
 <div class="wrap">
   <div class="callout tip" style="margin-top:8px">
-    <h4>位置づけ・関連教材</h4>
+    <h2 style="margin:0 0 6px; font-size:1rem; font-family:var(--sans); font-weight:600; letter-spacing:0; color:var(--ink); line-height:inherit; text-wrap:wrap">位置づけ・関連教材</h2>
     この教材は<b>計画・スケジューリング・見積もり（定量）</b>を扱います。リスクマネジメント・人とチームのマネジメント・進捗と健全性のメトリクスは、姉妹教材<a href="project-management.html">「プロジェクト管理」学習ガイド</a>にまとめています。
   </div>
 </div>
@@ -860,15 +863,15 @@
 <section class="soft-sec" id="topics" style="padding-top:80px">
   <div class="wrap">
     <p class="eyebrow reveal"><span lang="ja">概念カタログ</span><span lang="en">Concept catalog</span></p>
-    <h2 class="big reveal"><span lang="ja">15の概念・技法カタログ</span><span lang="en">Fifteen concepts and techniques</span></h2>
+    <h2 class="big reveal"><span lang="ja">16の概念・技法カタログ</span><span lang="en">Sixteen concepts and techniques</span></h2>
     <p class="lead reveal" style="max-width:var(--readw); margin-top:18px">価格決定・計画駆動とスケジューリング・アジャイル計画・見積もり技法・COCOMO の5カテゴリに整理しました。カテゴリで絞り込み、各カードをクリックすると、目的・進め方・意識するポイント・注意点・具体例が開きます。この後の<a href="#tools">計算ツール</a>とあわせて読むと理解が深まります。</p>
     <div class="controls reveal" style="margin-top:26px">
       <div class="pills" role="tablist" aria-label="カテゴリ切替">
-        <button class="pill active" onclick="filterCat('all',this)">すべて<span>15</span></button>
+        <button class="pill active" onclick="filterCat('all',this)">すべて<span>16</span></button>
         <button class="pill" onclick="filterCat('pricing',this)">価格決定<span>2</span></button>
         <button class="pill" onclick="filterCat('planning',this)">計画・スケジュール<span>5</span></button>
         <button class="pill" onclick="filterCat('agile',this)">アジャイル計画<span>3</span></button>
-        <button class="pill" onclick="filterCat('estimation',this)">見積もり技法<span>3</span></button>
+        <button class="pill" onclick="filterCat('estimation',this)">見積もり技法<span>4</span></button>
         <button class="pill" onclick="filterCat('cocomo',this)">COCOMO・人員<span>2</span></button>
       </div>
       <div class="ctrl-right">
@@ -884,12 +887,12 @@
 <section id="tools">
   <div class="wrap">
     <p class="eyebrow reveal"><span lang="ja">計算ツール</span><span lang="en">Interactive calculators</span></p>
-    <h2 class="big reveal"><span lang="ja">手を動かす：3つの計算ツール</span><span lang="en">Try the numbers yourself</span></h2>
+    <h2 class="big reveal"><span lang="ja">手を動かす：4つの計算ツール</span><span lang="en">Try the numbers yourself</span></h2>
     <div class="prose reveal" id="toolsProse" style="margin-top:22px"></div>
 
     <!-- TOOL 1: COCOMO -->
     <div class="tool reveal" id="cocomoTool">
-      <h4>① COCOMO II 工数計算機</h4>
+      <h3>① COCOMO II 工数計算機</h3>
       <p class="lede">規模（KLOC）・スケール指数 <b>B</b>・コストドライバ乗数 <b>M</b> を動かすと、工数・開発期間・必要人員が即時に再計算されます。すべて簡略化した COCOMO II の関係式に基づきます（式は下部に明示）。</p>
       <div class="tool-grid">
         <div>
@@ -951,7 +954,7 @@
 
     <!-- TOOL 2: CRITICAL PATH / GANTT -->
     <div class="tool reveal" id="cpmTool">
-      <h4>② クリティカルパス／ガントチャート可視化</h4>
+      <h3>② クリティカルパス／ガントチャート可視化</h3>
       <p class="lede">教科書の演習「図23.14」（16タスク・所要日数・依存関係）を、汎用の<b>CPM（クリティカルパス法）エンジン</b>で解いて描画します。各バーは開始〜終了、<b>クリティカルパス</b>のタスクは緑で強調、点線はそのタスクが持つ<b>余裕（フロート）</b>です。</p>
       <div class="demo-row" style="margin-bottom:6px">
         <span class="nm" style="font-size:.9rem;font-weight:600;color:var(--ink)">シナリオ：</span>
@@ -971,7 +974,7 @@
 
     <!-- TOOL 3: VELOCITY -->
     <div class="tool reveal" id="velTool">
-      <h4>③ ベロシティ簡易プランナー（アジャイル）</h4>
+      <h3>③ ベロシティ簡易プランナー（アジャイル）</h3>
       <p class="lede">プロダクトバックログの<b>ストーリーポイント合計</b>とチームの<b>ベロシティ</b>（1イテレーションあたりの消化ポイント）から、必要イテレーション数とおおよそのカレンダー期間を見積もります。</p>
       <div class="tool-grid">
         <div>
@@ -997,6 +1000,45 @@
           <div class="tool-note">ベロシティが安定していれば、残ポイント ÷ ベロシティ で完了時期を予測できます。スコープ（ポイント）を固定するのではなく、<b>期日を固定して入る機能を優先順位で選ぶ</b>のがアジャイルの発想です。</div>
         </div>
       </div>
+    </div>
+
+    <!-- TOOL 4: THREE-POINT (PERT) -->
+    <div class="tool reveal" id="pertTool">
+      <h3>④ 三点見積もり（PERT）計算機</h3>
+      <p class="lede">タスクの<b>楽観値 O・最頻値 M・悲観値 P</b>（人日）を入力すると、期待値 <b>E=(O+4M+P)/6</b> と標準偏差 <b>σ=(P−O)/6</b>、68%／95% の信頼区間を計算し、分布の形を描きます。</p>
+      <div class="demo-row" style="margin-bottom:12px">
+        <span class="nm" style="font-size:.9rem;font-weight:600;color:var(--ink)">代表例：</span>
+        <div class="try" role="group" aria-label="代表例を試す">
+          <button type="button" onclick="pertTry(4,7,16)">4 / 7 / 16（悲観側に長い）</button>
+          <button type="button" onclick="pertTry(5,8,11)">5 / 8 / 11（対称）</button>
+          <button type="button" onclick="pertTry(2,3,20)">2 / 3 / 20（極端な悲観）</button>
+          <button type="button" onclick="pertTry(6,6,6)">6 / 6 / 6（不確実性ゼロ）</button>
+        </div>
+      </div>
+      <div class="tool-grid" style="grid-template-columns:repeat(3,1fr); gap:16px">
+        <div class="field">
+          <div class="flabel"><span class="nm">楽観値 O</span></div>
+          <input type="number" id="pertO" min="0" step="0.5" placeholder="例：4" oninput="pertCheck()" aria-label="楽観値 O">
+          <div class="hint">すべて順調ならば</div>
+        </div>
+        <div class="field">
+          <div class="flabel"><span class="nm">最頻値 M</span></div>
+          <input type="number" id="pertM" min="0" step="0.5" placeholder="例：7" oninput="pertCheck()" aria-label="最頻値 M">
+          <div class="hint">いちばんありそうな値</div>
+        </div>
+        <div class="field">
+          <div class="flabel"><span class="nm">悲観値 P</span></div>
+          <input type="number" id="pertP" min="0" step="0.5" placeholder="例：16" oninput="pertCheck()" aria-label="悲観値 P">
+          <div class="hint">想定内の悪いことが重なったら</div>
+        </div>
+      </div>
+      <div class="formula">
+        期待値 &nbsp;<b>E</b> = (O + 4M + P) / 6 &nbsp;&nbsp;&nbsp; 標準偏差 &nbsp;<b>σ</b> = (P − O) / 6<br>
+        68%信頼区間 ≈ E ± σ &nbsp;&nbsp;&nbsp; 95%信頼区間 ≈ E ± 2σ &nbsp;〔正規分布近似〕
+      </div>
+      <div class="demo-out" id="pertOut"></div>
+      <div id="pertViz"></div>
+      <p class="tool-note"><b>読み方：</b>悲観側の裾が長い（P−M が M−O より大きい）タスクほど、期待値 E は最頻値 M より右にずれます。「いちばんありそうな値」で約束すると五分五分より高い確率で遅れる：三点見積もりの最重要の教訓です。複数タスクの合計は E を足し、σ は √Σσ<sup>2</sup> で合成します。</p>
     </div>
   </div>
 </section>
@@ -1078,7 +1120,7 @@ const INTRO_HTML = `
 その見通しを実行しながら更新し続ける活動です。工数の<b>見積もり（estimation）</b>はその心臓部にあたります。
 どんなに優れた設計・実装の技術があっても、計画と見積もりが甘ければ、プロジェクトは予算超過・納期遅延・品質崩壊に陥ります。</p>
 
-<h4>この回で扱う6つのトピック</h4>
+<h3>この教材で扱う6つのトピック</h3>
 <div class="principles">
   <div class="p"><b>① 価格決定（pricing）</b><br>
     <span>価格は「開発コスト＋利益」だけでは決まらない。市場機会・契約条件・要求の不確かさが価格を動かす。</span></div>
@@ -1094,13 +1136,13 @@ const INTRO_HTML = `
     <span>経験的に導かれたアルゴリズム的モデル。<strong>工数 = A × サイズ<sup>B</sup> × M</strong>。</span></div>
 </div>
 
-<h4>計画駆動 と アジャイル：2つの計画スタイル</h4>
+<h3>計画駆動 と アジャイル：2つの計画スタイル</h3>
 <p>計画には大きく2つのスタイルがあります。<b>計画駆動開発</b>では、プロジェクトの早い段階で全体の計画（作業分解・スケジュール・成果物・責任分担）を詳細に作り込みます。
 一方<b>アジャイル計画</b>では、増分（インクリメント）ごとに計画を作り、状況に応じて<strong>作る機能のほうを削って</strong>納期を守ります。
 どちらのスタイルでも、計画は一度作って終わりではなく、<strong>問題が起きるたびに見直される反復的なプロセス</strong>である点は共通です。</p>
 
 <div class="callout tip">
-  <h4>見積もりの不確かさは「初期ほど大きい」：不確かさの漏斗</h4>
+  <h3>見積もりの不確かさは「初期ほど大きい」：不確かさの漏斗</h3>
   同じシステムでも、企画段階の見積もりと、設計を終えた後の見積もりでは精度がまるで違います。
   経験的に、ごく初期の見積もりは実績に対して<strong>4倍もの幅</strong>を持ちうるとされ（Boehm ら）、開発が進むほど幅は狭まっていきます。
   だから「初期の一点見積もりを約束させられる」のは危険で、見積もりは<strong>幅（レンジ）とともに示し、進捗に応じて更新</strong>するのが誠実な姿勢です。
@@ -1121,7 +1163,7 @@ const INTRO_HTML = `
 </svg>
 </div>
 
-<h4>このページの歩き方</h4>
+<h3>このページの歩き方</h3>
 <p>まず下の<a href="#topics">概念カタログ</a>で用語と考え方を押さえ、そのうえで<a href="#tools">計算ツール</a>で数字を動かすと、
 「B を上げると工数がどれだけ膨らむか」「どのタスクがクリティカルパスか」「ベロシティが上がると何イテレーション縮むか」を体感できます。
 各カード末尾の「習得チェック」を付けると進捗が右上に表示されます（保存はされず、ページを開いている間だけ保持されます）。最後は<a href="#quiz">理解度チェッククイズ</a>で定着を。</p>
@@ -1129,12 +1171,13 @@ const INTRO_HTML = `
 </script>
 <script>
 const TOOLS_HTML = `
-<p>ここからがこの教材の主役です。3つのツールは、教科書の式・演習を<strong>そのまま実行できる形</strong>にしたものです。
+<p>ここからがこの教材の主役です。4つのツールは、教科書の式・演習を<strong>そのまま実行できる形</strong>にしたものです。
 数字を眺めるだけでなく、スライダーやトグルを動かして「入力を変えると結果がどう動くか」を確かめてください。</p>
 <ul>
   <li><b>① COCOMO II 工数計算機</b>：<code>PM = A × KLOC<sup>B</sup> × M</code> を即時計算。スケール指数 B（規模の不経済）とコストドライバ乗数 M の効き方の違いを体感する。</li>
   <li><b>② クリティカルパス／ガント可視化</b>：図23.14 の16タスクを CPM で解き、クリティカルパスとフロートを色分け表示。T5 の遅れ（10→40日）が全体に効くかどうかを切り替えて確認する。</li>
   <li><b>③ ベロシティ・プランナー</b>：ストーリーポイント合計とベロシティから必要イテレーション数を求める、アジャイル計画の基本計算。</li>
+  <li><b>④ 三点見積もり（PERT）計算機</b>：楽観値 O・最頻値 M・悲観値 P から期待値 <code>E=(O+4M+P)/6</code> と標準偏差 <code>σ=(P−O)/6</code> を求め、分布の形と信頼区間を可視化する。</li>
 </ul>
 `;
 
@@ -1142,26 +1185,26 @@ const CLOSING_HTML = `
 <p>最後に、個々の技法の知識を「使える判断力」に変えるための視点をまとめます。</p>
 
 <div class="callout tip">
-  <h4>人員追加には限界がある：計算ツール①の「必要人員」を鵜呑みにしない</h4>
+  <h3>人員追加には限界がある：計算ツール①の「必要人員」を鵜呑みにしない</h3>
   「工数（人月）」と「期間（月）」は<strong>単純には交換できません</strong>。計算ツール①が示す「必要人員」は、人員を増やすほど意思疎通・教育コストで効率が落ちるという非線形性を織り込んでいない単純な目安です。
   <strong>人員追加の限界（ブルックスの法則）と、人・チームのマネジメントは、姉妹教材<a href="project-management.html">「プロジェクト管理」学習ガイド</a>で詳説</strong>しています。
 </div>
 
 <div class="callout tip">
-  <h4>見積もりは「約束」ではなく「予測」：幅で示し、更新し続ける</h4>
+  <h3>見積もりは「約束」ではなく「予測」：幅で示し、更新し続ける</h3>
   初期の見積もりは不確かさの漏斗の広い側にいます。一点の数字を「約束」として固定させられると、
   その数字を守るために品質が犠牲になります。見積もりは<strong>レンジ（幅）で示し、進捗に応じて更新</strong>する。
   アジャイルなら、期日を固定してスコープ（入れる機能）を優先順位で調整する：これが破綻を避ける現実解です。
 </div>
 
 <div class="callout">
-  <h4>計画の価値は「計画書」ではなく「計画する行為」にある</h4>
+  <h3>計画の価値は「計画書」ではなく「計画する行為」にある</h3>
   完璧な計画書を作ることが目的ではありません。初期計画は<strong>必ず変わります</strong>。
   価値があるのは、制約を洗い出し、依存関係とクリティカルパスを把握し、問題が起きたときに素早く計画を組み替えられる状態を保つこと：
   つまり<strong>反復的に計画し続ける</strong>ことです。「計画は無価値だが、計画することは不可欠だ」という言葉のとおりです。
 </div>
 
-<h4 style="margin-top:26px">混同しやすい用語・考え方の見分け方</h4>
+<h3 style="margin-top:26px">混同しやすい用語・考え方の見分け方</h3>
 <table class="cmp-table">
   <tr><th>似ている用語</th><th>見分けるポイント</th></tr>
   <tr><td><b>計画駆動</b> と <b>アジャイル計画</b></td>
@@ -1182,7 +1225,7 @@ const CLOSING_HTML = `
     <td>前者は「契約を取れる価格」を先に決め、その価格に<b>機能を合わせる</b>。後者は開発コストに利益を乗せる。前者は倫理的・品質的なリスクを伴う。</td></tr>
 </table>
 
-<h4 style="margin-top:26px">さらに学ぶための文献・資料</h4>
+<h3 style="margin-top:26px">さらに学ぶための文献・資料</h3>
 <ul>
   <li>I. Sommerville『Software Engineering (10th ed.)』Pearson, 2016年, 第23章：本教材の底本</li>
   <li>B. W. Boehm ほか『Software Cost Estimation with COCOMO II』Prentice Hall, 2000年：COCOMO II の原典</li>
@@ -1550,7 +1593,7 @@ const TESTS = [
   ],
   points:[
     '不確かさは<b>初期ほど大きく、進むほど狭まる</b>（不確かさの漏斗）',
-    '初期見積もりは実績に対し<b>±4倍</b>にもなりうる（Boehm ら）',
+    '初期見積もりは実績に対し<b>4倍〜1/4倍</b>にもなりうる（Boehm ら）',
     '見積もりは<b>約束ではなく予測</b>：更新されるのが正常'
   ],
   cautions:[
@@ -1597,6 +1640,39 @@ const TESTS = [
   ],
   related:'<b>アルゴリズム的コストモデル</b> との違い：経験ベースは<b>人の判断</b>、アルゴリズム的は<b>式による計算</b>。両者は競合ではなく相互チェックの関係。',
   modern:'アジャイルの<b>プランニングポーカー</b>は、経験ベース見積もりをチームで集約する軽量な手法。過去データを機械学習で使う見積もり支援も研究されている。'
+},
+{
+  id:'three-point-pert', name:'Three-point (PERT) Estimation', jp:'三点見積もり（PERT）', cat:'estimation',
+  badge:'技法', tags:['楽観・最頻・悲観','期待値 E','標準偏差 σ'],
+  summary:'タスクごとに<strong>楽観値 O・最頻値 M・悲観値 P</strong> の3つを見積もり、<strong>E=(O+4M+P)/6</strong> で期待値を、<strong>σ=(P−O)/6</strong> でばらつきを求める技法。',
+  analogy:'通勤時間を「空いていれば20分、たいてい30分、事故があれば70分」と3通りで言うようなもの。「30分」の一点より、幅と偏りが伝わる。',
+  purpose:'一点の数字に潜む楽観バイアスを避け、見積もりの<b>不確かさ（幅）</b>を数値として扱えるようにする。',
+  who:'見積もり会議で、タスクを担当する開発者（あるいはチーム）が行う。プランニングポーカーと組み合わせることも多い。',
+  steps:[
+    'タスクごとに <b>楽観値 O</b>（すべて順調ならば）を見積もる',
+    '<b>最頻値 M</b>（いちばんありそうな値）を見積もる',
+    '<b>悲観値 P</b>（想定内の悪いことが重なったら）を見積もる',
+    '期待値 <b>E = (O + 4M + P) / 6</b>、標準偏差 <b>σ = (P − O) / 6</b> を計算する',
+    'タスクの E を合計して全体の見積もりとし、σ から <b>信頼区間</b>（E±σ で約68%、E±2σ で約95%）を添える'
+  ],
+  points:[
+    '悲観側の裾が長いタスクでは <b>E &gt; M</b> になる：「いちばんありそうな値」で約束すると五分五分より高い確率で遅れる',
+    '重みは <b>M が4、O と P が1ずつ</b>（ベータ分布の近似）',
+    '個々のタスクより<b>合計</b>で見ると、ばらつきは相殺されて相対的に小さくなる（分散は加算：σ<sub>合計</sub>=√Σσ<sup>2</sup>）',
+    'この教材の<a href="#pertTool">計算ツール④</a>で、O・M・P を変えて E と σ の動きを確かめられる'
+  ],
+  cautions:[
+    '<b>O ≤ M ≤ P</b> になっていない入力は定義上あり得ない：会議での認識ズレのサイン',
+    'P を「最悪の想定」まで広げすぎると σ が膨らみ、見積もりが無意味になる：想定内の悪化にとどめる',
+    'ベータ分布・正規近似はあくまで<b>近似</b>：数式の精密さが、入力（O・M・P）の根拠の弱さを隠してしまう'
+  ],
+  examples:[
+    'O=4, M=7, P=16（人日）→ E=8.0、σ=2.0：68%区間は 6〜10 人日、95%区間は 4〜12 人日',
+    'WBS の各タスクを三点で見積もり、合計 E と √Σσ<sup>2</sup> からプロジェクト全体のレンジを出す',
+    'PERT ネットワークで、各タスクの E を所要期間としてクリティカルパスを計算する（ツール②）'
+  ],
+  related:'<b>経験ベースの見積もり</b>との関係：O・M・P の各値は経験や類推で決める。三点見積もりは「値の決め方」ではなく、<b>不確かさを数値化する枠組み</b>。<b>不確かさの漏斗</b>は時間軸での幅の変化、三点見積もりはある時点でのタスクの幅を扱う。',
+  modern:'PERT（1950年代の米海軍ポラリス計画）に由来する古典だが、現在も PMBOK の標準的な技法。アジャイル現場では<b>プランニングポーカー</b>で意見が割れたときに三点で幅を記録したり、<b>モンテカルロ法</b>で各タスクの分布からサンプリングして完了日の確率分布を出す実務へつながっている。'
 },
 {
   id:'algorithmic-cost-modeling', name:'Algorithmic Cost Modeling', jp:'アルゴリズム的コストモデル', cat:'estimation',
@@ -1765,7 +1841,7 @@ function renderTest(t, idx){
   const badgeH = `<span class="badge-imp ${BADGE_CLS[t.badge]||'imp1'}">${t.badge}</span>`;
   const analogyH = t.analogy ? `<div class="analogy"><span><b>たとえるなら</b> ${t.analogy}</span></div>` : '';
   const dg = DIAGRAMS[t.id];
-  const diagramH = dg ? `<div class="diagram-wrap"><h5>イメージ図</h5>${dg}</div>` : '';
+  const diagramH = dg ? `<div class="diagram-wrap"><h4>イメージ図</h4>${dg}</div>` : '';
   const searchText = (t.name+' '+t.jp+' '+t.summary+' '+(t.analogy||'')+' '+t.badge+' '+(t.tags||[]).join(' ')).toLowerCase();
   const catColor = CAT_META[t.cat].color;
   return `
@@ -1781,20 +1857,20 @@ function renderTest(t, idx){
     <div class="pdetail">
       ${analogyH}
       <div class="meta-row">
-        <div class="meta"><h5>目的（何のために）</h5><p>${t.purpose}</p></div>
-        <div class="meta"><h5>誰が・いつ行うか</h5><p>${t.who}</p></div>
+        <div class="meta"><h4>目的（何のために）</h4><p>${t.purpose}</p></div>
+        <div class="meta"><h4>誰が・いつ行うか</h4><p>${t.who}</p></div>
       </div>
-      <div class="steps"><h5>進め方（ステップ）</h5><ol>${stepsLi}</ol></div>
+      <div class="steps"><h4>進め方（ステップ）</h4><ol>${stepsLi}</ol></div>
       ${diagramH}
       <div class="grid2">
-        <div class="box pros"><h5>&#10003; 意識するポイント</h5><ul>${pointsLi}</ul></div>
-        <div class="box cons"><h5>&#65281; 注意点・落とし穴</h5><ul>${cautionsLi}</ul></div>
+        <div class="box pros"><h4>&#10003; 意識するポイント</h4><ul>${pointsLi}</ul></div>
+        <div class="box cons"><h4>&#65281; 注意点・落とし穴</h4><ul>${cautionsLi}</ul></div>
       </div>
       <div class="meta-row">
-        <div class="meta"><h5>具体例</h5><ul>${exLi}</ul></div>
-        <div class="meta"><h5>混同しやすいものとの違い</h5><p>${t.related}</p></div>
+        <div class="meta"><h4>具体例</h4><ul>${exLi}</ul></div>
+        <div class="meta"><h4>混同しやすいものとの違い</h4><p>${t.related}</p></div>
       </div>
-      <div class="meta" style="margin:16px 0"><h5>現場では（ツール・現代的な実践）</h5><p>${t.modern}</p></div>
+      <div class="meta" style="margin:16px 0"><h4>現場では（ツール・現代的な実践）</h4><p>${t.modern}</p></div>
       <label class="learn"><input type="checkbox" onchange="toggleLearned('${t.id}',this)">
         この項目を理解した（習得チェック）</label>
     </div>
@@ -1843,6 +1919,7 @@ function build(){
   cocomoCalc();
   setCPM(10);
   velCalc();
+  pertCheck();
   buildQuiz();
 }
 
@@ -2005,6 +2082,114 @@ function velCalc(){
   document.getElementById('rExact').textContent = exact.toFixed(1)+' → '+iters;
 }
 
+/* ============== ツール④：三点見積もり（PERT）計算機 ============== */
+function pertTry(o,m,p){
+  document.getElementById('pertO').value = o;
+  document.getElementById('pertM').value = m;
+  document.getElementById('pertP').value = p;
+  pertCheck();
+}
+function r1(v){ return Math.round(v*10)/10; }
+function pertCheck(){
+  const rawO = document.getElementById('pertO').value.trim();
+  const rawM = document.getElementById('pertM').value.trim();
+  const rawP = document.getElementById('pertP').value.trim();
+  const out = document.getElementById('pertOut');
+  const viz = document.getElementById('pertViz');
+  if(!rawO && !rawM && !rawP){
+    out.className = 'demo-out';
+    out.innerHTML = '3つの値を入力するか、上のボタンで代表例を試してください。「4 / 7 / 16」は悲観側に裾が長い典型的なタスクの例です。';
+    viz.innerHTML = '';
+    return;
+  }
+  const o = parseFloat(rawO), m = parseFloat(rawM), p = parseFloat(rawP);
+  if(!isFinite(o) || !isFinite(m) || !isFinite(p)){
+    out.className = 'demo-out ng';
+    out.innerHTML = '<span class="pl">入力エラー</span>3つとも<b>数値</b>で入力してください（例：O=4, M=7, P=16）。';
+    viz.innerHTML = '';
+    return;
+  }
+  if(o < 0 || m < 0 || p < 0){
+    out.className = 'demo-out ng';
+    out.innerHTML = '<span class="pl">入力エラー</span>負の作業時間はありません。0以上の値を入力してください。';
+    viz.innerHTML = '';
+    return;
+  }
+  if(!(o <= m && m <= p)){
+    out.className = 'demo-out ng';
+    out.innerHTML = '<span class="pl">矛盾</span><b>O ≤ M ≤ P</b> になるように入力してください。「楽観値が悲観値より大きい」見積もりは定義上あり得ません：実際の見積もり会議でも、この種の入力ミス・認識ズレはよく起こります。';
+    viz.innerHTML = '';
+    return;
+  }
+  const e = (o + 4*m + p) / 6;
+  const s = (p - o) / 6;
+  if(s === 0){
+    out.className = 'demo-out ok';
+    out.innerHTML = '<span class="pl">計算結果</span>期待値 <b>E = ' + r1(e) + '人日</b>、標準偏差 <b>σ = 0</b>。3つの値がすべて同じ＝不確実性ゼロの見積もりです。現実のタスクでまずあり得ない、という点にこそ意味があります：OとPの幅を正直に見積もることから始めましょう。';
+    viz.innerHTML = '';
+    return;
+  }
+  const lo68 = r1(e - s), hi68 = r1(e + s);
+  const lo95 = r1(Math.max(0, e - 2*s)), hi95 = r1(e + 2*s);
+  let skew = '';
+  if((p - m) > (m - o)){
+    skew = ' 悲観側の裾が長いため、期待値 E（' + r1(e) + '）は最頻値 M（' + r1(m) + '）より<b>大きく</b>なっています。「いちばんありそうな値」で約束すると五分五分より高い確率で遅れる：三点見積もりの最重要の教訓です。';
+  } else if((p - m) < (m - o)){
+    skew = ' この例では珍しく楽観側の裾が長いため、期待値 E は最頻値 M より小さくなっています。';
+  } else {
+    skew = ' 楽観・悲観が対称なので、期待値 E は最頻値 M と一致します。';
+  }
+  out.className = 'demo-out ok';
+  out.innerHTML = '<span class="pl">計算結果</span>期待値 <b>E = ' + r1(e) + '人日</b>、標準偏差 <b>σ = ' + r1(s) + '</b>。'
+    + '<b>68%信頼区間：' + lo68 + '〜' + hi68 + '人日</b>／<b>95%信頼区間：' + lo95 + '〜' + hi95 + '人日</b>（正規分布近似）。'
+    + skew;
+  viz.innerHTML = pertSvg(o, m, p, e, s);
+}
+function pertSvg(o, m, p, e, s){
+  const lo = Math.min(o, e - 3.2*s);
+  const hi = Math.max(p, e + 3.2*s);
+  const X = v => 40 + (v - lo) / (hi - lo) * 680;
+  const y0 = 160, amp = 112;
+  const Y = v => y0 - amp * Math.exp(-((v - e)*(v - e)) / (2*s*s));
+  const N = 120;
+  const pts = [];
+  for(let i = 0; i <= N; i++){
+    const v = lo + (hi - lo) * i / N;
+    pts.push([X(v), Y(v)]);
+  }
+  const curve = 'M' + pts.map(q => r1(q[0]) + ' ' + r1(q[1])).join(' L');
+  function region(a, b){
+    const seg = [];
+    const steps = 60;
+    for(let i = 0; i <= steps; i++){
+      const v = a + (b - a) * i / steps;
+      seg.push(r1(X(v)) + ',' + r1(Y(v)));
+    }
+    return 'M' + r1(X(a)) + ' ' + y0 + ' L' + seg.join(' L') + ' L' + r1(X(b)) + ' ' + y0 + ' Z';
+  }
+  const svg = `
+<div class="diagram-wrap" style="margin:14px 0 0">
+<svg viewBox="0 0 760 215" role="img" aria-label="三点見積もりの分布イメージ">
+  <path d="${region(e-2*s, e+2*s)}" fill="rgba(14,111,92,.07)"/>
+  <path d="${region(e-s, e+s)}" fill="rgba(14,111,92,.18)"/>
+  <path d="${curve}" fill="none" stroke="#0E6F5C" stroke-width="1.8"/>
+  <path d="M40 ${y0} L720 ${y0}" class="dg-line"/>
+  <path d="M${r1(X(e))} ${y0} L${r1(X(e))} ${Y(e)-4}" stroke="#0A5748" stroke-width="1.6"/>
+  <path d="M${r1(X(e-s))} ${y0} L${r1(X(e-s))} ${r1(Y(e-s))} M${r1(X(e+s))} ${y0} L${r1(X(e+s))} ${r1(Y(e+s))}" class="dg-line dg-dash"/>
+  <circle cx="${r1(X(o))}" cy="${y0}" r="5" fill="#8A6D3B"/>
+  <circle cx="${r1(X(m))}" cy="${y0}" r="5" fill="#3E5C50"/>
+  <circle cx="${r1(X(p))}" cy="${y0}" r="5" fill="#B04A3E"/>
+  <text x="${r1(X(o))}" y="${y0+20}" class="dg-el">O=${r1(o)}</text>
+  <text x="${r1(X(m))}" y="${y0+34}" class="dg-el">M=${r1(m)}</text>
+  <text x="${r1(X(p))}" y="${y0+20}" class="dg-el">P=${r1(p)}</text>
+  <text x="${r1(X(e))}" y="30" class="dg-lbl" fill="#0A5748">E=${r1(e)}</text>
+  <text x="${r1(X(e))}" y="${y0-14}" class="dg-el">68%</text>
+  <text x="380" y="211" class="dg-note">濃い緑＝E±1σ（約68%）、薄い緑＝E±2σ（約95%）。悲観側に裾が長いほど、E は M より右にずれる。</text>
+</svg>
+</div>`;
+  return svg;
+}
+
 /* ============== 理解度クイズ ============== */
 const QUIZ = [
 { q:'ソフトウェアの価格は「開発コスト＋利益」だけで決まる、という説明は正しい？',
@@ -2045,7 +2230,7 @@ const QUIZ = [
   why:'240 ÷ 30 = 8。切り上げて8イテレーション。ベロシティが安定していれば、残ポイント÷ベロシティで完了時期を予測できる（計算ツール③）。'},
 { q:'見積もりの不確かさについて正しいのは？',
   opts:['プロジェクトの初期ほど大きい','常に一定','後期ほど大きい','技法を使えばゼロになる'], a:0,
-  why:'不確かさの漏斗。初期は実績に対し±4倍にもなりうる。見積もりは一点でなく幅（レンジ）で示し、進捗に応じて更新する。'},
+  why:'不確かさの漏斗。初期は実績に対し4倍〜1/4倍にもなりうる。見積もりは一点でなく幅（レンジ）で示し、進捗に応じて更新する。'},
 { q:'過去の類似プロジェクトの経験から専門家が判断して見積もる方法は？',
   opts:['経験ベースの見積もり','アルゴリズム的コストモデル','境界値分析','クリティカルパス法'], a:0,
   why:'経験ベースは人の判断が根拠。新規性が高いと精度が落ちる。式で計算するアルゴリズム的モデル（COCOMO）と突き合わせるのが賢い。'},

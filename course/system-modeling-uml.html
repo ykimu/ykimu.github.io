@@ -139,7 +139,7 @@
   /* prose */
   .prose{max-width:var(--readw)}
   .prose p{margin:0 0 1em; color:var(--ink-2)}
-  .prose h4{font-family:var(--sans); font-size:1.12rem; font-weight:600; letter-spacing:0; color:var(--ink); margin:1.6em 0 .6em}
+  .prose h3{font-family:var(--sans); font-size:1.12rem; font-weight:600; letter-spacing:0; color:var(--ink); margin:1.6em 0 .6em; line-height:inherit; text-wrap:wrap}
   .prose ul{margin:0 0 1.2em; padding-left:0; list-style:none}
   .prose ul li{position:relative; padding-left:22px; margin:12px 0; color:var(--ink-2)}
   .prose ul li::before{content:""; position:absolute; left:0; top:13px; width:11px; height:1.5px; background:var(--accent)}
@@ -150,7 +150,7 @@
 
   .callout{border-radius:16px; padding:18px 22px; margin:18px 0; max-width:var(--readw);
     background:var(--card); box-shadow:0 0 0 6px var(--shell),0 0 0 6.5px var(--hair),var(--soft)}
-  .callout h4{margin:0 0 6px; font-size:1rem; font-family:var(--sans); font-weight:600; letter-spacing:0; color:var(--ink)}
+  .callout h3{margin:0 0 6px; font-size:1rem; font-family:var(--sans); font-weight:600; letter-spacing:0; color:var(--ink); line-height:inherit; text-wrap:wrap}
   .callout.tip{background:var(--accent-soft)}
   .callout.warn{background:rgba(138,109,59,.08)}
   .callout a{font-weight:600}
@@ -228,14 +228,14 @@
   .grid2{display:grid; grid-template-columns:1fr 1fr; gap:16px; margin:18px 0}
   .box{border-radius:16px; padding:16px 18px; background:var(--card);
     box-shadow:0 0 0 6px var(--shell),0 0 0 6.5px var(--hair),var(--soft)}
-  .box h5{margin:0 0 10px; font-size:.92rem; font-family:var(--sans); font-weight:600; letter-spacing:0; display:flex; align-items:center; gap:7px}
-  .box.pros h5{color:var(--accent-2)}
-  .box.cons h5{color:var(--bad)}
+  .box h4{margin:0 0 10px; font-size:.92rem; font-family:var(--sans); font-weight:600; letter-spacing:0; display:flex; align-items:center; gap:7px}
+  .box.pros h4{color:var(--accent-2)}
+  .box.cons h4{color:var(--bad)}
   .box ul{margin:0; padding-left:18px}
   .box li{margin:6px 0; font-size:.9rem; color:var(--ink-2)}
 
   .meta-row{display:grid; grid-template-columns:1fr 1fr; gap:16px; margin:16px 0}
-  .meta h5{margin:0 0 8px; font-size:.92rem; font-family:var(--sans); font-weight:600; letter-spacing:0; color:var(--accent-2)}
+  .meta h4{margin:0 0 8px; font-size:.92rem; font-family:var(--sans); font-weight:600; letter-spacing:0; color:var(--accent-2)}
   .meta p,.meta li{font-size:.92rem; color:var(--ink-2)}
   .meta ul{margin:0; padding-left:18px}
   .meta p{margin:0}
@@ -245,7 +245,7 @@
   /* numbered procedure steps */
   .steps{border-radius:16px; padding:16px 18px; margin:16px 0; background:var(--card);
     box-shadow:0 0 0 6px var(--shell),0 0 0 6.5px var(--hair),var(--soft)}
-  .steps h5{margin:0 0 10px; font-size:.92rem; font-family:var(--sans); font-weight:600; letter-spacing:0; color:var(--accent-2)}
+  .steps h4{margin:0 0 10px; font-size:.92rem; font-family:var(--sans); font-weight:600; letter-spacing:0; color:var(--accent-2)}
   .steps ol{margin:0; padding:0; list-style:none; counter-reset:st}
   .steps ol li{counter-increment:st; position:relative; padding-left:36px; margin:9px 0; font-size:.92rem; color:var(--ink-2)}
   .steps ol li::before{content:counter(st); position:absolute; left:0; top:3px; width:23px; height:23px; border-radius:50%;
@@ -254,7 +254,7 @@
 
   /* diagrams */
   .diagram-wrap{margin:18px 0; max-width:var(--readw)}
-  .diagram-wrap h5{margin:0 0 8px; font-size:.92rem; font-family:var(--sans); font-weight:600; letter-spacing:0; color:var(--accent-2)}
+  .diagram-wrap h4{margin:0 0 8px; font-size:.92rem; font-family:var(--sans); font-weight:600; letter-spacing:0; color:var(--accent-2)}
   .diagram-wrap svg{display:block; width:100%; height:auto; background:var(--shell);
     border:1px solid var(--hair); border-radius:12px; padding:8px}
   .dg-box{fill:var(--card); stroke:var(--line); stroke-width:1.2}
@@ -297,7 +297,7 @@
   @media(min-width:980px){.nx-wrap{grid-template-columns:1fr 1fr}}
   .nx-card{background:var(--card); border-radius:18px; padding:18px 20px;
     box-shadow:0 0 0 6px var(--shell),0 0 0 6.5px var(--hair),var(--soft)}
-  .nx-card h4{margin:0 0 4px; font-family:var(--sans); font-weight:600; font-size:1.05rem; color:var(--ink)}
+  .nx-card h3{margin:0 0 4px; font-family:var(--sans); font-weight:600; font-size:1.05rem; color:var(--ink); line-height:inherit; text-wrap:wrap; letter-spacing:normal}
   .nx-card .nx-sub{margin:0 0 12px; font-size:.9rem; color:var(--muted)}
   .nx svg{display:block; width:100%; height:auto; background:var(--shell);
     border:1px solid var(--hair); border-radius:12px; padding:6px}
@@ -601,7 +601,7 @@
             <div class="megacol">
               <div class="navlabel"><span lang="ja">計画・プロセス</span><span lang="en">Planning &amp; Process</span></div>
               <a href="agile-scrum.html"><span lang="ja">アジャイル開発とスクラム</span><span lang="en">Agile &amp; Scrum</span></a>
-              <a href="project-management.html"><span lang="ja">プロジェクト管理と見積もり</span><span lang="en">Project Management</span></a>
+              <a href="project-management.html"><span lang="ja">プロジェクト管理</span><span lang="en">Project Management</span></a>
               <a href="project-estimation-planning.html"><span lang="ja">プロジェクト計画・見積もり</span><span lang="en">Project Planning &amp; Estimation</span></a>
             </div>
             <div class="megacol">
@@ -707,7 +707,7 @@
       <a href="software-reuse-oss.html"><span lang="ja">ソフトウェア再利用とOSS</span><span lang="en">Software Reuse &amp; OSS</span></a>
       <div class="mobsublabel"><span lang="ja">計画・プロセス</span><span lang="en">Planning &amp; Process</span></div>
       <a href="agile-scrum.html"><span lang="ja">アジャイル開発とスクラム</span><span lang="en">Agile &amp; Scrum</span></a>
-      <a href="project-management.html"><span lang="ja">プロジェクト管理と見積もり</span><span lang="en">Project Management</span></a>
+      <a href="project-management.html"><span lang="ja">プロジェクト管理</span><span lang="en">Project Management</span></a>
       <a href="project-estimation-planning.html"><span lang="ja">プロジェクト計画・見積もり</span><span lang="en">Project Planning &amp; Estimation</span></a>
       <div class="mobsublabel"><span lang="ja">品質・運用</span><span lang="en">Quality &amp; Operations</span></div>
       <a href="software-testing.html"><span lang="ja">ソフトウェアテスト学習ガイド</span><span lang="en">Software Testing Guide</span></a>
@@ -763,6 +763,9 @@
 </div>
 
 <main id="main">
+<noscript><div class="wrap" style="padding-top:24px"><p role="alert" style="margin:0; padding:14px 18px; border:1px solid var(--hair, #ddd); border-radius:12px; background:var(--bg-2, #f4f4f2); color:var(--ink, #222); font-size:.95rem">
+  <span lang="ja">この教材はJavaScriptを有効にすると表示されます。</span><span lang="en">This learning material is displayed when JavaScript is enabled.</span>
+</p></div></noscript>
 
 <button class="totop" type="button" aria-label="上へ戻る" title="上へ戻る">&uarr;</button>
 
@@ -827,15 +830,15 @@
     <p class="lead reveal" style="max-width:var(--readw); margin-top:18px">UMLの図は「記号の意味」がわかれば読み書きできます。下の<strong>クラス図</strong>と<strong>シーケンス図</strong>の各記号を<strong>クリック（またはホバー）</strong>すると、その名前と意味が下のパネルに表示されます。作図課題の前に、まずここで記号に慣れましょう。</p>
     <div class="nx-wrap reveal">
       <div class="nx-card nx" data-dg="class">
-        <h4>クラス図の記法</h4>
+        <h3>クラス図の記法</h3>
         <p class="nx-sub">クラスの3区画・関連・多重度・汎化・集約。図の記号をクリック。</p>
         <div id="nxSvg-class"></div>
         <div class="nx-panel" id="nxPanel-class">記号をクリックすると、ここに名前と意味が表示されます。</div>
         <p class="nx-hint">ヒント：白抜きの<strong>三角</strong>は汎化（is-a）、白抜きの<strong>ひし形</strong>は集約（has-a）。混同に注意。</p>
       </div>
       <div class="nx-card nx" data-dg="seq">
-        <h4>シーケンス図の記法</h4>
-        <p class="nx-sub">ライフライン・実行区間・同期メッセージ・返信・altフレーム。図の記号をクリック。</p>
+        <h3>シーケンス図の記法</h3>
+        <p class="nx-sub">ライフライン・実行仕様（アクティベーション）・同期メッセージ・返信・altフレーム。図の記号をクリック。</p>
         <div id="nxSvg-seq"></div>
         <div class="nx-panel" id="nxPanel-seq">記号をクリックすると、ここに名前と意味が表示されます。</div>
         <p class="nx-hint">ヒント：<strong>実線＋塗り矢じり</strong>は呼び出し（同期メッセージ）、<strong>破線の矢印</strong>は戻り（return）。</p>
@@ -956,7 +959,7 @@ const INTRO_HTML = `
 だからこそ、1つのモデルでは1つの視点しか表せず、<strong>複数の相補的なモデルを組み合わせて</strong>初めてシステムの全体像が見えてきます。
 現在は主に <b>UML（Unified Modeling Language）</b> に基づくグラフィカル表記を用います。</p>
 
-<h4>モデルを作る3つのタイミング</h4>
+<h3>モデルを作る3つのタイミング</h3>
 <div class="principles">
   <div class="p"><b>① 要求工学の段階</b><br>
     <span>既存システムの把握や、新システムの要求を説明するためにモデルを描く。関係者の合意形成に使う。</span></div>
@@ -966,7 +969,7 @@ const INTRO_HTML = `
     <span>できあがったシステムの構造・動作をドキュメント化するために描く。保守の助けになる。</span></div>
 </div>
 
-<h4>システムモデリングにおける4つの視点</h4>
+<h3>システムモデリングにおける4つの視点</h3>
 <p>システムは複雑で1枚の図では表せません。次の<strong>4つの視点</strong>から、それぞれ別のモデル（UML図）で捉えます。
 本教材の図鑑カードは、この4視点にひもづいています。</p>
 <div class="diagram-wrap">
@@ -995,8 +998,8 @@ const INTRO_HTML = `
 <div class="dg-legend">対応するUML図：① コンテキスト＝アクティビティ図（業務フロー）／② 相互作用＝ユースケース図・シーケンス図／③ 構造＝クラス図／④ 振る舞い＝アクティビティ図（データ駆動）・状態遷移図（イベント駆動）。</div>
 </div>
 
-<h4>UML：よく使う5つのダイアグラム</h4>
-<p>UMLはオブジェクト指向モデリングの<strong>標準言語</strong>で、全部で<strong>13種類</strong>のダイアグラムがあります。
+<h3>UML：よく使う5つのダイアグラム</h3>
+<p>UMLはオブジェクト指向モデリングの<strong>標準言語</strong>で、全部で<strong>14種類</strong>のダイアグラムがあります（UML 2.5。Sommerville の教科書では、後から加わったプロファイル図を除いた13種として整理されています）。
 そのうち実務・学習でよく使うのは、次の<strong>5つ</strong>です。本教材の「UMLダイアグラム図鑑」で1枚ずつ扱います。</p>
 <ul>
   <li><b>アクティビティ図</b>（Activity diagram）：業務フローやデータの処理の流れ</li>
@@ -1007,7 +1010,7 @@ const INTRO_HTML = `
 </ul>
 
 <div class="callout tip">
-  <h4>この教材の位置づけ：作図課題の予習</h4>
+  <h3>この教材の位置づけ：作図課題の予習</h3>
   この科目には別途「<b>クラス図・シーケンス図 作成ガイド</b>」の課題があります。本教材は、その課題に取り組む前の
   <strong>記法習得と予習</strong>を担います。まず<a href="#explorer">記法エクスプローラ</a>で記号に慣れ、
   <a href="#diagrams">図鑑カード</a>で描き方とコツを押さえ、<a href="#which">判定クイズ</a>と<a href="#quiz">理解度クイズ</a>で定着を確認しましょう。
@@ -1019,7 +1022,7 @@ const INTRO_HTML = `
 const CLOSING_HTML = `
 <p>最後に、5つの図の使い分けと、作図課題に向けたポイントをまとめます。</p>
 
-<h4>4つの視点と図の対応（早見表）</h4>
+<h3>4つの視点と図の対応（早見表）</h3>
 <table class="cmp-table">
   <tr><th>視点</th><th>問い</th><th>主なUML図</th></tr>
   <tr><td><b>コンテキスト</b></td><td>何がシステムの内側／外側か？（境界）</td><td>アクティビティ図（業務フロー）＋アーキテクチャ図</td></tr>
@@ -1030,22 +1033,22 @@ const CLOSING_HTML = `
 </table>
 
 <div class="callout">
-  <h4>同じ振る舞いでも、相手に応じて図を選ぶ</h4>
+  <h3>同じ振る舞いでも、相手に応じて図を選ぶ</h3>
   データの流れを表すとき、<strong>専門家向け</strong>には詳細なオブジェクトや関数呼び出しがわかる<b>シーケンス図</b>、
   <strong>非専門家向け</strong>には直感的に流れがわかる<b>アクティビティ図</b>を使う、という使い分けがあります。
   同じシステムでも、<b>アクティビティ図とシーケンス図の両方</b>を描くことに意味があるのはこのためです。
 </div>
 
-<h4 style="margin-top:26px">モデル駆動：図からコードへ</h4>
+<h3 style="margin-top:26px">モデル駆動：図からコードへ</h3>
 <div class="callout tip">
-  <h4>MDA / MDE：モデルを主役にする</h4>
+  <h3>MDA / MDE：モデルを主役にする</h3>
   <b>モデル駆動工学（MDE）</b>は、プログラムではなく<strong>モデルを開発の主要な成果物</strong>とし、
   構造モデルと振る舞いモデルから<strong>実行可能コードを自動生成</strong>することを目指すアプローチです。
   その中核が <b>MDA</b>（CIM → PIM → PSM）。ただし「議論に有用な抽象化」と「実装に適した抽象化」は必ずしも一致せず、
   アジャイル手法（事前の大規模モデリングを嫌う）とは方向性が相反する面もあります。詳しくは図鑑の<a href="#mda">MDAカード</a>へ。
 </div>
 
-<h4 style="margin-top:26px">作図課題に向けた心構え</h4>
+<h3 style="margin-top:26px">作図課題に向けた心構え</h3>
 <ul>
   <li><b>記号の意味を正確に</b>：白抜き三角（汎化）とひし形（集約）、実線（呼び出し）と破線（戻り）など、記号の取り違えが一番多い減点ポイント。</li>
   <li><b>多重度は各クラス側から見た数</b>を関連の端に書く（<code>1</code> / <code>1..*</code> / <code>*</code> / <code>1..4</code>）。</li>
@@ -1053,7 +1056,7 @@ const CLOSING_HTML = `
   <li><b>図だけで足りなければ表で補う</b>：ユースケースや状態は、テーブル形式の詳細記述と併用する。</li>
 </ul>
 
-<h4 style="margin-top:26px">さらに学ぶための文献・資料</h4>
+<h3 style="margin-top:26px">さらに学ぶための文献・資料</h3>
 <ul>
   <li>I. Sommerville『Software Engineering (10th ed.)』Pearson, 2016年, 第5章：本教材の底本（System modeling）</li>
   <li>OMG『Unified Modeling Language (UML) Specification』：記法の一次情報</li>
@@ -1178,7 +1181,7 @@ const NOTA = {
   seq:{
     'object-head':{t:'オブジェクト / アクタ（上部の見出し）', d:'相互作用に参加するオブジェクトやアクタを図の上部に横に並べる。ここから下へライフラインが伸びる。アクタは人に限らず外部システムでもよい。'},
     'lifeline':{t:'ライフライン（垂直の破線）', d:'各オブジェクトの「時間の流れ」を表す縦の破線。上が過去、下が未来。シーケンス図の時系列は必ず上から下へ進む。'},
-    'activation':{t:'実行区間 / 活性区間（破線上の細い矩形）', d:'そのオブジェクトが処理を実行している（アクティブな）期間を表す細長い矩形。メッセージを受けてから返すまでの間。'},
+    'activation':{t:'実行仕様（アクティベーション）（破線上の細い矩形）', d:'そのオブジェクトが処理を実行している（アクティブな）期間を表す細長い矩形。メッセージを受けてから返すまでの間。'},
     'sync-msg':{t:'同期メッセージ（実線の矢印）', d:'他オブジェクトの操作を呼び出すメッセージ。実線＋塗り矢じりで表し、注釈にメソッド名・引数を書く（例：ViewInfo(PID)）。'},
     'return-msg':{t:'返信 / return（破線の矢印）', d:'呼び出しに対する戻り値や結果を返すメッセージ。破線の矢印で表す。設計初期では省略されることも多い。'},
     'alt-frame':{t:'alt フレーム（条件分岐）', d:'相互作用の枠。alt は条件による分岐を表し、[条件] のガードで場合分けする（例：認証OK なら患者情報を表示、失敗ならエラーを表示）。'}
@@ -1223,7 +1226,8 @@ const TESTS = [
     ['関連（実線）','クラス間に関係があることを示す線。名前を付けることもできる。'],
     ['多重度（端の数字）','<code>1</code>=ちょうど1つ、<code>1..*</code>=1つ以上、<code>*</code>=0以上、<code>1..4</code>=1〜4つ。各クラス側から見た数を端に書く。'],
     ['汎化（白抜き三角・is-a）','共通部分を上位クラスにまとめる継承の関係。三角が指す方が親。'],
-    ['集約（白抜きひし形・has-a）','あるオブジェクトが複数の別オブジェクトから構成される関係。ひし形側が全体。']
+    ['集約（白抜きひし形・has-a）','あるオブジェクトが複数の別オブジェクトから構成される関係。ひし形側が全体。'],
+    ['コンポジション（黒塗りひし形◆）','集約の強い形：部分は全体に所有され、全体が消えると部分も消える（例：注文と注文明細）。']
   ],
   steps:[
     '仕様から<b>名詞</b>を拾ってクラス候補を挙げる',
@@ -1261,7 +1265,7 @@ const TESTS = [
   who:'ユースケースを詳細化する設計段階。専門家向けに動きを詳しく共有したいとき。',
   notation:[
     ['ライフライン','オブジェクト名＋垂直の破線。上が過去、下が未来。'],
-    ['実行区間（活性区間）','ライフライン上の細い矩形。処理を実行している期間。'],
+    ['実行仕様（アクティベーション）','ライフライン上の細い矩形。処理を実行している期間。'],
     ['同期メッセージ（実線の矢印）','他オブジェクトの呼び出し。注釈にメソッド名・引数を書く。'],
     ['返信 / return（破線の矢印）','呼び出しへの戻り値・結果。'],
     ['alt フレーム','[条件] のガードで場合分けする条件分岐の枠。']
@@ -1335,7 +1339,7 @@ const TESTS = [
   who:'コンテキストの業務フローを示すとき、データ駆動の振る舞いを<b>非専門家</b>にもわかるよう表すとき。',
   notation:[
     ['開始','塗りつぶし円（●）。'],
-    ['終了','二重円（◎）。'],
+    ['終了','中心を塗りつぶした二重円（◉）。'],
     ['活動','角丸矩形。1つの処理ステップを表す。'],
     ['分岐条件','ガード <code>[条件]</code> 付きの矢印。'],
     ['同期バー','黒い太線。並行動作の開始（分岐）／合流を表す。'],
@@ -1346,7 +1350,7 @@ const TESTS = [
     '処理を<b>活動（角丸矩形）</b>で順につなぐ',
     '条件分岐は<b>ガード <code>[条件]</code></b> 付きの矢印で表す',
     '並行に進む処理は<b>同期バー（黒太線）</b>で分岐・合流させる',
-    'やり取りされるデータは<b>オブジェクト（矩形）</b>で示し、<b>終了（◎）</b>で閉じる'
+    'やり取りされるデータは<b>オブジェクト（矩形）</b>で示し、<b>終了（◉）</b>で閉じる'
   ],
   points:[
     'フローチャートと違い<b>並行動作とデータの流れ</b>を表せる',
@@ -1354,7 +1358,7 @@ const TESTS = [
     '同じデータ駆動でも、<b>専門家にはシーケンス図</b>、<b>非専門家にはアクティビティ図</b>が向く'
   ],
   cautions:[
-    '<b>開始（●）と終了（◎）の記号</b>を取り違えない',
+    '<b>開始（●）と終了（◉）の記号</b>を取り違えない',
     '<b>同期バー（並行）</b>と単なる条件分岐を混同しない'
   ],
   examples:[
@@ -1457,8 +1461,8 @@ const TESTS = [
 },
 {
   id:'uml', name:'What is UML', jp:'UMLとは', cat:'basics',
-  badge:'基礎概念', tags:['標準言語','13種類','よく使う5つ'],
-  summary:'UML（Unified Modeling Language）は、オブジェクト指向モデリングの<strong>標準言語</strong>。13種類の図があり、よく使うのは5つ。',
+  badge:'基礎概念', tags:['標準言語','14種類','よく使う5つ'],
+  summary:'UML（Unified Modeling Language）は、オブジェクト指向モデリングの<strong>標準言語</strong>。14種類の図（UML 2.5）があり、よく使うのは5つ。',
   analogy:'図面の「共通言語」。方言をなくし、誰が読んでも同じ意味に取れる記号の取り決め。',
   purpose:'モデルを描くための標準的な表記法。人によって記号の意味がばらつかないよう統一されている。',
   notation:[
@@ -1469,12 +1473,12 @@ const TESTS = [
     ['状態遷移図','状態とイベントによる遷移。']
   ],
   points:[
-    'UMLは<b>13種類</b>の図を持つが、実務でよく使うのは上の<b>5つ</b>',
+    'UMLは<b>14種類</b>の図を持つ（UML 2.5。プロファイル図を除いて13種と数える整理もある）が、実務でよく使うのは上の<b>5つ</b>',
     '標準化されているので<b>他者と共有・レビュー</b>しやすい',
     '目的（視点）に応じて図の種類を選ぶ'
   ],
   cautions:[
-    '13種すべてを覚える必要はない：<b>よく使う5つ</b>を確実に',
+    '14種すべてを覚える必要はない：<b>よく使う5つ</b>を確実に',
     '記法を自己流にせず、<b>標準の記号</b>に従う（共有価値が下がる）'
   ],
   examples:[
@@ -1573,7 +1577,7 @@ const DIAGRAMS = {
   <path d="M370 82 L428 64" class="dg-line" marker-end="url(#dam)"/><text x="392" y="66" class="dg-el">[yes]</text>
   <path d="M370 98 L428 118" class="dg-line" marker-end="url(#dam)"/><text x="392" y="128" class="dg-el">[no]</text>
   <path d="M570 62 L639 62" class="dg-line" marker-end="url(#dam)"/>
-  <text x="360" y="185" class="dg-note">開始(●)→活動(角丸)→分岐[条件]→終了(◎)</text>
+  <text x="360" y="185" class="dg-note">開始(●)→活動(角丸)→分岐[条件]→終了(◉)</text>
   <defs><marker id="dam" markerWidth="9" markerHeight="9" refX="8" refY="4.5" orient="auto"><path d="M0,0 L9,4.5 L0,9 z" fill="#6B746F"/></marker></defs>
 </svg>`,
 'state-diagram': `
@@ -1654,8 +1658,8 @@ const QUIZ = [
   opts:['状態遷移図','クラス図','ユースケース図','コンテキストモデル'], a:0,
   why:'状態遷移図（ステートマシーン図）。イベント駆動モデリングで、状態は角丸矩形、遷移はイベント名付き矢印。'},
 { q:'アクティビティ図で「並行動作の開始／合流」を表す記号は？',
-  opts:['同期バー（黒い太線）','塗りつぶし円','二重円','角丸矩形'], a:0,
-  why:'同期バー（黒太線）が並行の開始・合流を表す。塗り円は開始、二重円は終了、角丸矩形は活動。'},
+  opts:['同期バー（黒い太線）','塗りつぶし円','中心塗りの二重円','角丸矩形'], a:0,
+  why:'同期バー（黒太線）が並行の開始・合流を表す。塗り円は開始、中心塗りの二重円（◉）は終了、角丸矩形は活動。'},
 { q:'状態遷移図の「開始状態」を表す記号は？',
   opts:['塗りつぶし円（●）','中心塗りの二重円（◉）','角丸矩形','ひし形'], a:0,
   why:'開始状態は塗りつぶし円（●）。終了状態は中心を塗った二重円（◉）。取り違えに注意。'},
@@ -1714,7 +1718,7 @@ const WHICH = [
     <ellipse cx="270" cy="104" rx="90" ry="24" class="dg-box dg-if"/><text x="270" y="108" class="dg-lbl">検索</text>
     <path d="M56 62 L182 60" class="dg-line"/><path d="M56 70 L182 104" class="dg-line"/>
   </svg>`},
-{ a:'アクティビティ図', why:'塗りつぶし円の開始、角丸矩形の活動、ひし形の分岐[条件]、二重円の終了が特徴。処理の流れ。',
+{ a:'アクティビティ図', why:'塗りつぶし円の開始、角丸矩形の活動、ひし形の分岐[条件]、中心塗りの二重円（◉）の終了が特徴。処理の流れ。',
   svg:`<svg viewBox="0 0 420 150" role="img" aria-label="図の断片5">
     <circle cx="30" cy="70" r="9" class="dg-dot"/>
     <rect x="60" y="50" width="110" height="40" rx="12" class="dg-box"/><text x="115" y="74" class="dg-lbl">入力受付</text>
@@ -1759,29 +1763,29 @@ function renderTest(t, idx){
   const badgeH = `<span class="badge-imp ${BADGE_CLS[t.badge]||'imp1'}">${t.badge}</span>`;
   const analogyH = t.analogy ? `<div class="analogy"><span><b>たとえるなら</b> ${t.analogy}</span></div>` : '';
   const dg = DIAGRAMS[t.id];
-  const diagramH = dg ? `<div class="diagram-wrap"><h5>図のイメージ</h5>${dg}</div>` : '';
+  const diagramH = dg ? `<div class="diagram-wrap"><h4>図のイメージ</h4>${dg}</div>` : '';
 
-  let metaTop = `<div class="meta"><h5>何をモデル化するか</h5><p>${t.purpose}</p></div>`;
-  if(t.who) metaTop += `<div class="meta"><h5>いつ・どこで使うか</h5><p>${t.who}</p></div>`;
+  let metaTop = `<div class="meta"><h4>何をモデル化するか</h4><p>${t.purpose}</p></div>`;
+  if(t.who) metaTop += `<div class="meta"><h4>いつ・どこで使うか</h4><p>${t.who}</p></div>`;
   const metaTopH = `<div class="meta-row">${metaTop}</div>`;
 
-  const notaH = has(t.notation) ? `<h5 class="sec-h">記法要素（記号と意味）</h5>
+  const notaH = has(t.notation) ? `<h4 class="sec-h">記法要素（記号と意味）</h4>
     <table class="nota"><thead><tr><th>記号 / 要素</th><th>意味</th></tr></thead><tbody>${
       t.notation.map(r=>`<tr><td class="sym">${r[0]}</td><td>${r[1]}</td></tr>`).join('')}</tbody></table>` : '';
 
-  const stepsH = has(t.steps) ? `<div class="steps"><h5>描き方（手順）</h5><ol>${li(t.steps)}</ol></div>` : '';
+  const stepsH = has(t.steps) ? `<div class="steps"><h4>描き方（手順）</h4><ol>${li(t.steps)}</ol></div>` : '';
 
   const gridH = `<div class="grid2">
-      <div class="box pros"><h5>✓ 設計のコツ</h5><ul>${li(t.points)}</ul></div>
-      <div class="box cons"><h5>！ ありがちな誤り</h5><ul>${li(t.cautions)}</ul></div>
+      <div class="box pros"><h4>✓ 設計のコツ</h4><ul>${li(t.points)}</ul></div>
+      <div class="box cons"><h4>！ ありがちな誤り</h4><ul>${li(t.cautions)}</ul></div>
     </div>`;
 
   let metaBot = '';
-  if(has(t.examples)) metaBot += `<div class="meta"><h5>具体例</h5><ul>${li(t.examples)}</ul></div>`;
-  if(t.related) metaBot += `<div class="meta"><h5>他の図との使い分け</h5><p>${t.related}</p></div>`;
+  if(has(t.examples)) metaBot += `<div class="meta"><h4>具体例</h4><ul>${li(t.examples)}</ul></div>`;
+  if(t.related) metaBot += `<div class="meta"><h4>他の図との使い分け</h4><p>${t.related}</p></div>`;
   const metaBotH = metaBot ? `<div class="meta-row">${metaBot}</div>` : '';
 
-  const modernH = t.modern ? `<div class="meta" style="margin:16px 0"><h5>補足・現場では</h5><p>${t.modern}</p></div>` : '';
+  const modernH = t.modern ? `<div class="meta" style="margin:16px 0"><h4>補足・現場では</h4><p>${t.modern}</p></div>` : '';
 
   const searchText = (t.name+' '+t.jp+' '+t.summary+' '+(t.analogy||'')+' '+t.badge+' '+(t.tags||[]).join(' ')).toLowerCase();
   const catColor = CAT_META[t.cat].color;

@@ -139,7 +139,7 @@
   /* prose */
   .prose{max-width:var(--readw)}
   .prose p{margin:0 0 1em; color:var(--ink-2)}
-  .prose h4{font-family:var(--sans); font-size:1.12rem; font-weight:600; letter-spacing:0; color:var(--ink); margin:1.6em 0 .6em}
+  .prose h3{font-family:var(--sans); font-size:1.12rem; font-weight:600; letter-spacing:0; color:var(--ink); margin:1.6em 0 .6em; line-height:inherit; text-wrap:wrap}
   .prose ul{margin:0 0 1.2em; padding-left:0; list-style:none}
   .prose ul li{position:relative; padding-left:22px; margin:12px 0; color:var(--ink-2)}
   .prose ul li::before{content:""; position:absolute; left:0; top:13px; width:11px; height:1.5px; background:var(--accent)}
@@ -150,7 +150,7 @@
 
   .callout{border-radius:16px; padding:18px 22px; margin:18px 0; max-width:var(--readw);
     background:var(--card); box-shadow:0 0 0 6px var(--shell),0 0 0 6.5px var(--hair),var(--soft)}
-  .callout h4{margin:0 0 6px; font-size:1rem; font-family:var(--sans); font-weight:600; letter-spacing:0; color:var(--ink)}
+  .callout h3{margin:0 0 6px; font-size:1rem; font-family:var(--sans); font-weight:600; letter-spacing:0; color:var(--ink); line-height:inherit; text-wrap:wrap}
   .callout.tip{background:var(--accent-soft)}
   .callout.warn{background:rgba(138,109,59,.08)}
   .callout a{font-weight:600}
@@ -228,14 +228,14 @@
   .grid2{display:grid; grid-template-columns:1fr 1fr; gap:16px; margin:18px 0}
   .box{border-radius:16px; padding:16px 18px; background:var(--card);
     box-shadow:0 0 0 6px var(--shell),0 0 0 6.5px var(--hair),var(--soft)}
-  .box h5{margin:0 0 10px; font-size:.92rem; font-family:var(--sans); font-weight:600; letter-spacing:0; display:flex; align-items:center; gap:7px}
-  .box.pros h5{color:var(--accent-2)}
-  .box.cons h5{color:var(--bad)}
+  .box h4{margin:0 0 10px; font-size:.92rem; font-family:var(--sans); font-weight:600; letter-spacing:0; display:flex; align-items:center; gap:7px}
+  .box.pros h4{color:var(--accent-2)}
+  .box.cons h4{color:var(--bad)}
   .box ul{margin:0; padding-left:18px}
   .box li{margin:6px 0; font-size:.9rem; color:var(--ink-2)}
 
   .meta-row{display:grid; grid-template-columns:1fr 1fr; gap:16px; margin:16px 0}
-  .meta h5{margin:0 0 8px; font-size:.92rem; font-family:var(--sans); font-weight:600; letter-spacing:0; color:var(--accent-2)}
+  .meta h4{margin:0 0 8px; font-size:.92rem; font-family:var(--sans); font-weight:600; letter-spacing:0; color:var(--accent-2)}
   .meta p,.meta li{font-size:.92rem; color:var(--ink-2)}
   .meta ul{margin:0; padding-left:18px}
   .meta p{margin:0}
@@ -244,7 +244,7 @@
   /* numbered procedure steps */
   .steps{border-radius:16px; padding:16px 18px; margin:16px 0; background:var(--card);
     box-shadow:0 0 0 6px var(--shell),0 0 0 6.5px var(--hair),var(--soft)}
-  .steps h5{margin:0 0 10px; font-size:.92rem; font-family:var(--sans); font-weight:600; letter-spacing:0; color:var(--accent-2)}
+  .steps h4{margin:0 0 10px; font-size:.92rem; font-family:var(--sans); font-weight:600; letter-spacing:0; color:var(--accent-2)}
   .steps ol{margin:0; padding:0; list-style:none; counter-reset:st}
   .steps ol li{counter-increment:st; position:relative; padding-left:36px; margin:9px 0; font-size:.92rem; color:var(--ink-2)}
   .steps ol li::before{content:counter(st); position:absolute; left:0; top:3px; width:23px; height:23px; border-radius:50%;
@@ -253,7 +253,7 @@
 
   /* diagrams */
   .diagram-wrap{margin:18px 0; max-width:var(--readw)}
-  .diagram-wrap h5{margin:0 0 8px; font-size:.92rem; font-family:var(--sans); font-weight:600; letter-spacing:0; color:var(--accent-2)}
+  .diagram-wrap h4{margin:0 0 8px; font-size:.92rem; font-family:var(--sans); font-weight:600; letter-spacing:0; color:var(--accent-2)}
   .diagram-wrap svg{display:block; width:100%; height:auto; background:var(--shell);
     border:1px solid var(--hair); border-radius:12px; padding:8px}
   .dg-box{fill:var(--card); stroke:var(--line); stroke-width:1.2}
@@ -286,7 +286,7 @@
   /* equivalence-partition demo */
   .demo{border-radius:16px; padding:20px 22px; margin:22px 0; max-width:var(--readw); background:var(--card);
     box-shadow:0 0 0 6px var(--shell),0 0 0 6.5px var(--hair),var(--soft)}
-  .demo h4{margin:0 0 6px; font-size:1rem; font-family:var(--sans); font-weight:600; color:var(--ink)}
+  .demo h3{margin:0 0 6px; font-size:1rem; font-family:var(--sans); font-weight:600; color:var(--ink); line-height:inherit; text-wrap:wrap; letter-spacing:normal}
   .demo .spec{font-size:.9rem; color:var(--muted); margin:0 0 14px}
   .demo-row{display:flex; gap:10px; flex-wrap:wrap; align-items:center}
   .demo input[type=text]{width:min(220px,100%); padding:10px 16px; border-radius:999px; border:1px solid var(--hair);
@@ -592,7 +592,7 @@
             <div class="megacol">
               <div class="navlabel"><span lang="ja">計画・プロセス</span><span lang="en">Planning &amp; Process</span></div>
               <a href="agile-scrum.html"><span lang="ja">アジャイル開発とスクラム</span><span lang="en">Agile &amp; Scrum</span></a>
-              <a href="project-management.html"><span lang="ja">プロジェクト管理と見積もり</span><span lang="en">Project Management</span></a>
+              <a href="project-management.html"><span lang="ja">プロジェクト管理</span><span lang="en">Project Management</span></a>
               <a href="project-estimation-planning.html"><span lang="ja">プロジェクト計画・見積もり</span><span lang="en">Project Planning &amp; Estimation</span></a>
             </div>
             <div class="megacol">
@@ -698,7 +698,7 @@
       <a href="software-reuse-oss.html"><span lang="ja">ソフトウェア再利用とOSS</span><span lang="en">Software Reuse &amp; OSS</span></a>
       <div class="mobsublabel"><span lang="ja">計画・プロセス</span><span lang="en">Planning &amp; Process</span></div>
       <a href="agile-scrum.html"><span lang="ja">アジャイル開発とスクラム</span><span lang="en">Agile &amp; Scrum</span></a>
-      <a href="project-management.html"><span lang="ja">プロジェクト管理と見積もり</span><span lang="en">Project Management</span></a>
+      <a href="project-management.html"><span lang="ja">プロジェクト管理</span><span lang="en">Project Management</span></a>
       <a href="project-estimation-planning.html"><span lang="ja">プロジェクト計画・見積もり</span><span lang="en">Project Planning &amp; Estimation</span></a>
       <div class="mobsublabel"><span lang="ja">品質・運用</span><span lang="en">Quality &amp; Operations</span></div>
       <a href="software-testing.html"><span lang="ja">ソフトウェアテスト学習ガイド</span><span lang="en">Software Testing Guide</span></a>
@@ -754,6 +754,9 @@
 </div>
 
 <main id="main">
+<noscript><div class="wrap" style="padding-top:24px"><p role="alert" style="margin:0; padding:14px 18px; border:1px solid var(--hair, #ddd); border-radius:12px; background:var(--bg-2, #f4f4f2); color:var(--ink, #222); font-size:.95rem">
+  <span lang="ja">この教材はJavaScriptを有効にすると表示されます。</span><span lang="en">This learning material is displayed when JavaScript is enabled.</span>
+</p></div></noscript>
 
 <button class="totop" type="button" aria-label="上へ戻る" title="上へ戻る">&uarr;</button>
 
@@ -838,7 +841,7 @@
     <h2 class="big reveal"><span lang="ja">バージョン番号は「約束」：semver を体験する</span><span lang="en">Version numbers are promises</span></h2>
     <div class="prose reveal" id="techProse" style="margin-top:22px"></div>
     <div class="demo reveal" id="svDemo">
-      <h4>体験デモ：セマンティックバージョニング判定</h4>
+      <h3>体験デモ：セマンティックバージョニング判定</h3>
       <p class="spec">現在のバージョンを入力し（初期値 <b>1.4.2</b>）、次のリリースに含まれる<b>いちばん大きな変更</b>をボタンで選ぶと、semver のルールに従って次のバージョン番号を判定します。</p>
       <div class="demo-row">
         <input type="text" id="svVer" value="1.4.2" inputmode="decimal" aria-label="現在のバージョン" oninput="svCalc()">
@@ -932,7 +935,7 @@ const INTRO_HTML = `
 だとすれば必要なのは、変更を<strong>安全に・速く・追跡可能に</strong>扱う仕組みです。
 それを体系化したのが<b>構成管理（Configuration Management, CM）</b>：変化し続けるソフトウェアシステムを管理するための方針・プロセス・ツールの総称です。</p>
 
-<h4>構成管理の4つの活動</h4>
+<h3>構成管理の4つの活動</h3>
 <p>Sommerville は構成管理を、互いに連携する<strong>4つの活動</strong>に整理しています。このページのカタログもこの4活動を骨格にしています。</p>
 <div class="principles">
   <div class="p"><b>① バージョン管理（Version management）</b><br>
@@ -977,7 +980,7 @@ const INTRO_HTML = `
 <div class="dg-legend">変更要求（変更管理）が承認されるとコミットされ（バージョン管理）、その版がビルドされ（システム構築）、選ばれた版が世に出る（リリース管理）。4活動はひとつの流れとして連携する。</div>
 </div>
 
-<h4>用語メモ：構成管理の基本語彙</h4>
+<h3>用語メモ：構成管理の基本語彙</h3>
 <div class="principles">
   <div class="p"><b>リポジトリ（repository）</b><br>
     <span>成果物とその<strong>全履歴</strong>を保管する保存庫。バージョン管理システムの中心。</span></div>
@@ -989,7 +992,7 @@ const INTRO_HTML = `
     <span>「この構成で確かに動く」と固定した<strong>基準点</strong>。コンポーネントの版の組合せを確定したもので、リリースの土台になる。</span></div>
 </div>
 
-<h4>手動リリースから DevOps へ：歴史の流れ</h4>
+<h3>手動リリースから DevOps へ：歴史の流れ</h3>
 <p>かつてソフトウェアの統合とリリースは、数か月に一度の「一大イベント」でした。
 別々に開発したコードを持ち寄って統合すると大量の不整合が噴き出す：いわゆる<strong>統合地獄（integration hell）</strong>です。
 第3回で学んだ XP（エクストリーム・プログラミング）は「痛いことほど頻繁にやれ」と発想を逆転させ、
@@ -1022,7 +1025,7 @@ const INTRO_HTML = `
 </div>
 
 <div class="callout tip">
-  <h4>講義とのつながり</h4>
+  <h3>講義とのつながり</h3>
   この単元は第2回（ソフトウェアプロセス：進化・変更への対処・インクリメンタルデリバリ）と
   第3回（アジャイル開発：XP・継続的インテグレーション・スクラム）の続きにあたります。
   アジャイルが「変化を受け入れる」<strong>心構え</strong>だとすれば、構成管理と CI/CD はそれを可能にする<strong>足腰</strong>です。
@@ -1055,7 +1058,7 @@ const TECH_HTML = `
 <code>1.0.0</code> を公開することが「ここから互換性の約束を守ります」という宣言になるのです。
 下のデモで、変更の種類とバージョン番号の対応を体感してみてください。</p>
 <div class="callout tip">
-  <h4>リリースノートとチェンジログも「約束」の一部</h4>
+  <h3>リリースノートとチェンジログも「約束」の一部</h3>
   番号だけでは「何が変わったか」までは伝わりません。<strong>CHANGELOG</strong>（開発者向けの変更履歴）と
   <strong>リリースノート</strong>（利用者向けの説明）をセットで書くのがリリース管理の作法です。
   特に MAJOR リリースでは、<strong>何が壊れるか・どう移行するか</strong>を必ず案内します。
@@ -1066,26 +1069,26 @@ const TECH_HTML = `
 const CLOSING_HTML = `
 <p>最後に、個々のプラクティスの知識を「使える判断力」に変えるための視点をまとめます。</p>
 <div class="callout warn">
-  <h4>「壊すな」ではなく「壊してもすぐ戻せるようにせよ」</h4>
-  変更が怖いからと変更を避ければ、ソフトウェアは要求とずれてゆき、静かに価値を失います（第2回：ソフトウェア進化）。
+  <h3>「壊すな」ではなく「壊してもすぐ戻せるようにせよ」</h3>
+  変更が怖いからと変更を避ければ、ソフトウェアは要求とずれてゆき、静かに価値を失います（第9回：ソフトウェア進化）。
   優れたチームは変更を減らすのではなく、<strong>バージョン管理・自動テスト・CI/CD・即時ロールバック</strong>という
   安全網を整えることで、変更のコストとリスクを下げています。DORA の調査が示したのは、
   「速さと安定性はトレードオフではなく、<strong>両立している所が強い</strong>」という事実でした。
 </div>
 <div class="callout tip">
-  <h4>履歴は未来の自分へのメッセージ</h4>
+  <h3>履歴は未来の自分へのメッセージ</h3>
   コミットメッセージ・PRの説明・Issue・CHANGELOG の読み手は、半年後のあなた自身と、まだ見ぬ後任者です。
   「なぜこの変更をしたのか」が残っているリポジトリは、それ自体が最良のドキュメントになります。
   卒業研究や課題のコードでも、今日から「意味のある単位でコミットし、理由を書く」習慣を始めましょう。
 </div>
 <div class="callout">
-  <h4>ツールの導入はゴールではない</h4>
+  <h3>ツールの導入はゴールではない</h3>
   GitHub Actions を設定しただけでは CI にはなりません。CI の本体は「全員が頻繁に統合し、壊れたら即直す」という
   <strong>実践と文化</strong>であり、ツールはそれを支える道具です。DevOps も同様に、ツールチェーンの名前ではなく
   <strong>開発と運用が責任を共有する文化</strong>の名前です。形から入るのは良い一歩ですが、形だけで終わらせないこと。
 </div>
 
-<h4 style="margin-top:26px">混同しやすい用語の見分け方</h4>
+<h3 style="margin-top:26px">混同しやすい用語の見分け方</h3>
 <p>この単元は似た用語のペアが多く、試験でも実務でも繰り返し問われます。<strong>「何を」「どこまで」</strong>を意識して見分けましょう。</p>
 <table class="cmp-table">
   <tr><th>似ている用語</th><th>見分けるポイント</th></tr>
@@ -1111,9 +1114,9 @@ const CLOSING_HTML = `
     <td>ビルドは<b>ソースから実行可能な成果物を作る</b>こと、デプロイは<b>その成果物を環境に配置して動かす</b>こと。「一度ビルドした成果物を各環境へ運ぶ」のが CD の原則。</td></tr>
 </table>
 
-<h4 style="margin-top:26px">研究者の視点：リポジトリは研究データの宝庫</h4>
+<h3 style="margin-top:26px">研究者の視点：リポジトリは研究データの宝庫</h3>
 <div class="callout">
-  <h4>マイニングソフトウェアリポジトリ（MSR）</h4>
+  <h3>マイニングソフトウェアリポジトリ（MSR）</h3>
   バージョン管理の履歴・Issue・プルリクエストには、「ソフトウェアがどう作られ、どう壊れ、どう直されたか」の記録が
   すべて残っています。これを大規模に分析する<strong>リポジトリマイニング</strong>は、ソフトウェア工学の主要な研究手法になりました。
   「どんなコミットがバグを生みやすいか」「技術的負債はどんな Issue として報告されるか」「レビューの何が品質を左右するか」：
@@ -1121,7 +1124,7 @@ const CLOSING_HTML = `
   DORA の State of DevOps Report のような大規模調査も、この「開発をデータで理解する」流れの一部です。
 </div>
 
-<h4 style="margin-top:26px">さらに学ぶための文献・資料</h4>
+<h3 style="margin-top:26px">さらに学ぶための文献・資料</h3>
 <ul>
   <li>I. Sommerville『Software Engineering (10th ed.)』Pearson, 2016年, 第25章（Configuration Management）：本教材の底本</li>
   <li>J. Humble, D. Farley『継続的デリバリー』KADOKAWA／アスキードワンゴ, 2017年（原著 2010年）：CDの原典</li>
@@ -1478,7 +1481,7 @@ const PRACTICES = [
     '①②は<b>速さ（スループット）</b>、③④は<b>安定性</b>の指標：4つセットで見るから「速いだけ」「慎重なだけ」を防げる',
     'エリートチームの目安：<b>オンデマンド（1日複数回）デプロイ、リードタイム1日未満、復旧1時間未満</b>',
     'Four Keys を押し上げる能力として、trunk-based・CI/CD・小さいバッチ・疎結合アーキテクチャ・ブレームレスな文化が特定されている',
-    '指標は進化している：MTTR は「<b>失敗したデプロイからの復旧時間</b>」に改められ、2025年の整理では5つ目の指標<b>リワーク率</b>（本番の問題対応による計画外デプロイの割合）が加わった'
+    '指標は進化している：MTTR は「<b>失敗したデプロイからの復旧時間</b>」に改められ、2023年版 State of DevOps Report では5つ目の指標<b>リワーク率</b>（本番の問題対応による計画外デプロイの割合）が加わった'
   ],
   cautions:[
     '<b>指標をノルマにすると壊れる</b>（Goodhart の法則：測定が目標になると、良い測定でなくなる）：「デプロイ回数を稼ぐための空デプロイ」に意味はない',
@@ -1741,7 +1744,7 @@ function renderPractice(t, idx){
   const badgeH = `<span class="badge-imp ${BADGE_CLS[t.badge]||'imp1'}">${t.badge}</span>`;
   const analogyH = t.analogy ? `<div class="analogy"><span><b>たとえるなら</b> ${t.analogy}</span></div>` : '';
   const dg = DIAGRAMS[t.id];
-  const diagramH = dg ? `<div class="diagram-wrap"><h5>図解イメージ</h5>${dg}</div>` : '';
+  const diagramH = dg ? `<div class="diagram-wrap"><h4>図解イメージ</h4>${dg}</div>` : '';
   let codeH = '';
   if(t.hasCode && CODE[t.id]){
     const tabsH = CODE[t.id].map((c,k)=>`<button class="tab${k===0?' active':''}" onclick="switchCode('${t.id}',${k},this)">${c.label}</button>`).join('');
@@ -1770,20 +1773,20 @@ function renderPractice(t, idx){
     <div class="pdetail">
       ${analogyH}
       <div class="meta-row">
-        <div class="meta"><h5>実施の目的</h5><p>${t.purpose}</p></div>
-        <div class="meta"><h5>誰が・いつ使うか</h5><p>${t.who}</p></div>
+        <div class="meta"><h4>実施の目的</h4><p>${t.purpose}</p></div>
+        <div class="meta"><h4>誰が・いつ使うか</h4><p>${t.who}</p></div>
       </div>
-      <div class="steps"><h5>実施の仕方（進め方）</h5><ol>${stepsLi}</ol></div>
+      <div class="steps"><h4>実施の仕方（進め方）</h4><ol>${stepsLi}</ol></div>
       ${diagramH}
       <div class="grid2">
-        <div class="box pros"><h5>✓ 意識するポイント</h5><ul>${pointsLi}</ul></div>
-        <div class="box cons"><h5>！ 注意点・落とし穴</h5><ul>${cautionsLi}</ul></div>
+        <div class="box pros"><h4>✓ 意識するポイント</h4><ul>${pointsLi}</ul></div>
+        <div class="box cons"><h4>！ 注意点・落とし穴</h4><ul>${cautionsLi}</ul></div>
       </div>
       <div class="meta-row">
-        <div class="meta"><h5>具体例</h5><ul>${exLi}</ul></div>
-        <div class="meta"><h5>混同しやすいものとの違い</h5><p>${t.related}</p></div>
+        <div class="meta"><h4>具体例</h4><ul>${exLi}</ul></div>
+        <div class="meta"><h4>混同しやすいものとの違い</h4><p>${t.related}</p></div>
       </div>
-      <div class="meta" style="margin:16px 0"><h5>現場では（ツール・現代的な実践）</h5><p>${t.modern}</p></div>
+      <div class="meta" style="margin:16px 0"><h4>現場では（ツール・現代的な実践）</h4><p>${t.modern}</p></div>
       ${codeH}
       <label class="learn"><input type="checkbox" onchange="toggleLearned('${t.id}',this)">
         このプラクティスを理解した（習得チェック）</label>
@@ -1860,7 +1863,10 @@ function svCalc(){
     why = '後方互換な<b>バグ修正のみ</b>なので、いちばん右の PATCH を +1 します。API は何も変わらないため、利用者は「直っただけ」と分かり、安心してすぐ更新できます。';
   } else if(svLastKind==='minor'){
     next = maj+'.'+(min+1)+'.0'; pl='MINOR を上げる';
-    why = '<b>後方互換な機能追加</b>なので MINOR を +1 し、PATCH は <b>0 にリセット</b>します。既存の使い方はそのまま動くので、利用者は新機能目当てに更新できます（<code>^'+raw+'</code> のような互換範囲指定にも収まります）。';
+    why = '<b>後方互換な機能追加</b>なので MINOR を +1 し、PATCH は <b>0 にリセット</b>します。既存の使い方はそのまま動くので、利用者は新機能目当てに更新できます'
+      + (maj===0
+        ? '（ただし MAJOR が 0 の間は <code>^'+raw+'</code> は <code>'+next+'</code> を<b>含みません</b>：npm などのキャレット指定は 0.y.z では MINOR の変更も破壊的とみなします）。'
+        : '（<code>^'+raw+'</code> のような互換範囲指定にも収まります）。');
   } else {
     next = (maj+1)+'.0.0'; pl='MAJOR を上げる';
     why = '<b>後方互換性を壊す変更</b>が1つでも含まれるので MAJOR を +1 し、MINOR と PATCH は <b>0 にリセット</b>します。利用者のコードが壊れる可能性がある：リリースノートで「何が壊れるか・どう移行するか」を必ず案内します。';

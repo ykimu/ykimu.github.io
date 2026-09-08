@@ -133,7 +133,7 @@
   /* prose */
   .prose{max-width:var(--readw)}
   .prose p{margin:0 0 1em; color:var(--ink-2)}
-  .prose h4{font-family:var(--sans); font-size:1.1rem; font-weight:600; letter-spacing:0; color:var(--ink); margin:1.5em 0 .5em}
+  .prose h3{font-family:var(--sans); font-size:1.1rem; font-weight:600; letter-spacing:0; line-height:inherit; text-wrap:wrap; color:var(--ink); margin:1.5em 0 .5em}
   .prose ul{margin:0 0 1.2em; padding-left:0; list-style:none}
   .prose ul li{position:relative; padding-left:22px; margin:11px 0; color:var(--ink-2)}
   .prose ul li::before{content:""; position:absolute; left:0; top:13px; width:11px; height:1.5px; background:var(--accent)}
@@ -148,7 +148,7 @@
 
   .callout{border-radius:16px; padding:18px 22px; margin:20px 0; max-width:var(--readw);
     background:var(--card); box-shadow:0 0 0 6px var(--shell),0 0 0 6.5px var(--hair),var(--soft)}
-  .callout h4{margin:0 0 6px; font-size:1rem; font-family:var(--sans); font-weight:600; letter-spacing:0; color:var(--ink)}
+  .callout h3{margin:0 0 6px; font-size:1rem; font-family:var(--sans); font-weight:600; letter-spacing:0; line-height:inherit; text-wrap:wrap; color:var(--ink)}
   .callout.tip{background:var(--accent-soft)}
   .callout.warn{background:rgba(138,109,59,.08)}
   .callout p{margin:0; color:var(--ink-2); font-size:.96rem}
@@ -157,14 +157,14 @@
   .grid2{display:grid; grid-template-columns:1fr 1fr; gap:16px; margin:20px 0; max-width:var(--readw)}
   .box{border-radius:16px; padding:16px 20px; background:var(--card);
     box-shadow:0 0 0 6px var(--shell),0 0 0 6.5px var(--hair),var(--soft)}
-  .box h5{margin:0 0 10px; font-size:.92rem; font-family:var(--sans); font-weight:600; letter-spacing:0; color:var(--accent-2); display:flex; align-items:center; gap:7px}
-  .box.lim h5{color:var(--warn)}
+  .box h3{margin:0 0 10px; font-size:.92rem; font-family:var(--sans); font-weight:600; letter-spacing:0; line-height:inherit; text-wrap:wrap; color:var(--accent-2); display:flex; align-items:center; gap:7px}
+  .box.lim h3{color:var(--warn)}
   .box ul{margin:0; padding-left:18px}
   .box li{margin:6px 0; font-size:.92rem; color:var(--ink-2)}
 
   .steps{border-radius:16px; padding:16px 20px; margin:20px 0; max-width:var(--readw); background:var(--card);
     box-shadow:0 0 0 6px var(--shell),0 0 0 6.5px var(--hair),var(--soft)}
-  .steps h5{margin:0 0 10px; font-size:.92rem; font-family:var(--sans); font-weight:600; letter-spacing:0; color:var(--accent-2)}
+  .steps h3{margin:0 0 10px; font-size:.92rem; font-family:var(--sans); font-weight:600; letter-spacing:0; line-height:inherit; text-wrap:wrap; color:var(--accent-2)}
   .steps ol{margin:0; padding:0; list-style:none; counter-reset:st}
   .steps ol li{counter-increment:st; position:relative; padding-left:36px; margin:9px 0; font-size:.94rem; color:var(--ink-2)}
   .steps ol li::before{content:counter(st); position:absolute; left:0; top:2px; width:23px; height:23px; border-radius:50%;
@@ -229,7 +229,7 @@
   .demo .dtag{display:inline-flex; align-items:center; gap:8px; margin:0 0 10px; padding:5px 12px 5px 10px;
     border-radius:999px; background:var(--accent-soft); color:var(--accent-2); font:600 .62rem/1 var(--disp); letter-spacing:.12em; text-transform:uppercase}
   .demo .dtag::before{content:""; width:6px; height:6px; border-radius:50%; background:var(--accent)}
-  .demo h4{margin:0 0 6px; font-size:1.12rem; font-family:var(--sans); font-weight:600; color:var(--ink)}
+  .demo h3{margin:0 0 6px; font-size:1.12rem; font-family:var(--sans); font-weight:600; letter-spacing:0; line-height:inherit; text-wrap:wrap; color:var(--ink)}
   .demo .dnote{font-size:.88rem; color:var(--muted); margin:0 0 16px}
   .demo label.fld{display:block; font:600 .74rem/1 var(--disp); letter-spacing:.08em; text-transform:uppercase; color:var(--muted); margin:0 0 7px}
   .demo textarea,.demo input[type=text]{width:100%; padding:12px 15px; border-radius:12px; border:1px solid var(--hair);
@@ -279,7 +279,8 @@
   .res-grid{display:grid; grid-template-columns:1fr 1fr; gap:16px; margin:20px 0; max-width:var(--readw)}
   @media(max-width:640px){.res-grid{grid-template-columns:1fr}}
   .res{border-radius:16px; padding:18px 20px; background:var(--card); box-shadow:0 0 0 6px var(--shell),0 0 0 6.5px var(--hair),var(--soft)}
-  .res h5{margin:0 0 10px; font-size:.95rem; font-family:var(--sans); font-weight:600; color:var(--accent-2)}
+  .res h3{margin:0 0 10px; font-size:.95rem; font-family:var(--sans); font-weight:600; letter-spacing:0; line-height:inherit; text-wrap:wrap; color:var(--accent-2)}
+  .prose h3 [lang="ja"],.callout h3 [lang="ja"],.box h3 [lang="ja"],.steps h3 [lang="ja"],.demo h3 [lang="ja"],.res h3 [lang="ja"]{word-break:normal}
   .res ul{margin:0; padding-left:0; list-style:none}
   .res li{position:relative; padding-left:20px; margin:8px 0; font-size:.9rem; color:var(--ink-2)}
   .res li::before{content:""; position:absolute; left:0; top:11px; width:9px; height:1.5px; background:var(--accent)}
@@ -289,7 +290,7 @@
   footer{border-top:1px solid var(--line); padding:68px 0 46px; background:var(--bg)}
   footer h3{font-size:.72rem; font-weight:600; letter-spacing:.12em; text-transform:uppercase; color:var(--muted); margin:0 0 1em; font-family:var(--disp)}
   .foot-grid{display:grid; grid-template-columns:1.5fr 1fr; gap:44px}
-  .foot-grid3{display:grid; grid-template-columns:1.3fr 1fr 1fr; gap:44px; margin-top:40px}
+  .foot-grid3{display:grid; grid-template-columns:1.5fr 1fr; gap:44px; margin-top:40px}
   .foot-grid3 a{color:var(--ink-2)}
   .foot-grid3 a:hover{color:var(--accent)}
   .cite{font-size:.98rem; color:var(--ink-2); line-height:1.7; max-width:52ch}
@@ -701,7 +702,9 @@
   <nav class="crumbs" aria-label="パンくず">
     <a href="../index.html"><span lang="ja">ホーム</span><span lang="en">Home</span></a>
     <span class="csep" aria-hidden="true">&rsaquo;</span>
-    <span class="cur" aria-current="page"><span lang="ja">学習コース：大規模言語モデル</span><span lang="en">Learn: Large Language Models</span></span>
+    <a href="index.html"><span lang="ja">学習コース</span><span lang="en">Learn</span></a>
+    <span class="csep" aria-hidden="true">&rsaquo;</span>
+    <span class="cur" aria-current="page"><span lang="ja">大規模言語モデル</span><span lang="en">Large Language Models</span></span>
   </nav>
 </div>
 
@@ -822,14 +825,14 @@
 
     <p class="layer"><span lang="ja">仕組み</span><span lang="en">How it works</span></p>
     <div class="prose">
-      <h4>GPT と BERT の系譜</h4>
+      <h3>GPT と BERT の系譜</h3>
       <p>現代の LLM の土台は、2017 年に登場した <b>Transformer</b> というアーキテクチャです。ここから大きく 2 つの系譜が伸びました。<b>BERT</b>（Devlin ら, 2018）は文の両方向の文脈を使い、文章の一部を隠して当てる「マスク言語モデル」で事前学習します。分類や検索など、文章を<b>理解</b>する課題に強いモデルです。いっぽう <b>GPT</b> 系は、前から順に次の単語を予測する「自己回帰」で学習し、文章を<b>生成</b>することに向いています。私たちが「対話する AI」として触れる LLM の多くは、この生成型の流れにあります。</p>
-      <h4>スケール則と規模の効果</h4>
+      <h3>スケール則と規模の効果</h3>
       <p>LLM の「大規模」とは、主に <b>パラメータ数</b>（モデルが持つ重みの数）、<b>学習データ量</b>、<b>計算量</b>の 3 つが大きいことを指します。研究の中で、これらを増やすほど、次単語予測の誤差（損失）が滑らかに下がっていく傾向が観察されてきました。これを<b>スケール則（scaling laws）</b>と呼びます。さらに、ある規模を超えると、それまで苦手だった課題を急にこなせるようになる現象も報告されており、規模そのものが能力の源泉のひとつになっています。ただし、規模を上げれば何でも解けるわけではなく、限界や副作用（Step 6）も同時に大きくなります。</p>
     </div>
 
     <div class="callout tip">
-      <h4>この Step のまとめ</h4>
+      <h3>この Step のまとめ</h3>
       <p>LLM は「次の単語を当てる」学習を、巨大なモデルとデータで突き詰めたもの。Transformer を土台に GPT 系（生成）と BERT 系（理解）が育ちました。規模を上げると性能が滑らかに伸びる（スケール則）のが、大きな特徴です。</p>
     </div>
   </div>
@@ -851,9 +854,9 @@
 
     <p class="layer"><span lang="ja">仕組み</span><span lang="en">How it works</span></p>
     <div class="prose">
-      <h4>トークン化のおさらい（サブワード）</h4>
+      <h3>トークン化のおさらい（サブワード）</h3>
       <p>モデルはテキストをそのまま読むのではなく、まず<b>トークン</b>という単位に区切ります。NLP モジュールでは単語で区切りましたが、現代の LLM は単語より細かい<b>サブワード</b>で区切るのがふつうです。よく使う語はそのまま 1 トークンに、めずらしい語や未知語はいくつかの小さな断片に分けます。こうすると、語彙の数を抑えつつ、初めて見る語や表記ゆれにも対応できます。代表的な方式に <b>BPE（byte pair encoding）</b> や <b>WordPiece</b>、<b>SentencePiece</b> があります。各トークンには番号（ID）が割り当てられ、その ID が数値ベクトル（埋め込み）に変換されて、モデルに入ります。</p>
-      <h4>自己注意：Query・Key・Value</h4>
+      <h3>自己注意：Query・Key・Value</h3>
       <p>自己注意は、各トークンが「文中のほかのトークンをどれだけ見るか」を決める仕組みです。各トークンの埋め込みから、3 種類のベクトルを作ります。</p>
       <ul>
         <li><b>Query（クエリ, Q）</b>：「私は何を探しているか」を表す。</li>
@@ -867,14 +870,14 @@
       <small>Q K<sup>T</sup>: クエリとキーの内積でスコアを作る　&radic;d<sub>k</sub>: キーの次元数の平方根で割り、値を安定させる<br>softmax: スコアを合計 1 の重みに変える　最後に重みで Value を混ぜ合わせる</small>
     </div>
     <div class="prose">
-      <h4>位置エンコーディングとマルチヘッド</h4>
+      <h3>位置エンコーディングとマルチヘッド</h3>
       <p>自己注意そのものは、語の<b>順番</b>を区別しません（すべての語を同時に見るため）。そこで、各トークンに「何番目か」の情報を足します。これが<b>位置エンコーディング（positional encoding）</b>です。また、注意は 1 種類ではなく、<b>複数の観点</b>で並行して行います。これを<b>マルチヘッド注意</b>と呼び、ある観点は文法的な係り受けを、別の観点は意味的な関連を、というように役割を分担します。これらを束ね、正規化や全結合層を重ねた 1 かたまりを <b>Transformer ブロック</b>と呼び、これを何十層も積み重ねたものが LLM の本体です。</p>
     </div>
 
     <!-- DEMO 1: Subword tokenization -->
     <div class="demo reveal" id="demoSub">
       <span class="dtag"><span lang="ja">デモ 1</span><span lang="en">Demo 1</span></span>
-      <h4>サブワード・トークン化</h4>
+      <h3>サブワード・トークン化</h3>
       <p class="dnote">テキストを入力すると、説明用の簡易的なサブワード分割でトークンに区切り、チップとトークン数を表示します。英語は小さなサブワード辞書による最長一致（WordPiece 風に、語の途中の断片は <code>##</code> を付けて表示）、日本語は小さな辞書による区切りです。実務では tiktoken（BPE）や SentencePiece などの学習済みトークナイザを使います。ここでは区切りの雰囲気をつかむための簡易版です。</p>
       <label class="fld" for="subInput">入力テキスト / Input</label>
       <textarea id="subInput" rows="2" spellcheck="false">tokenization is unbelievably useful</textarea>
@@ -919,7 +922,7 @@ tokens = tok.tokenize(text)
     </div>
 
     <div class="callout tip">
-      <h4>この Step のまとめ</h4>
+      <h3>この Step のまとめ</h3>
       <p>Transformer の要は自己注意。各トークンの Query と Key の内積で「どこを見るか」を決め、ソフトマックスの重みで Value を混ぜます。入り口ではテキストをサブワードのトークンに区切ります。次は、このモデルをどう学習させるかを見ます。</p>
     </div>
   </div>
@@ -941,7 +944,7 @@ tokens = tok.tokenize(text)
 
     <p class="layer"><span lang="ja">仕組み</span><span lang="en">How it works</span></p>
     <div class="prose">
-      <h4>次単語予測（自己回帰）</h4>
+      <h3>次単語予測（自己回帰）</h3>
       <p>生成型 LLM の学習目標は、とてもシンプルです。文章の途中まで（これまでの単語列）を見て、<b>次の 1 語</b>を当てる。これを文章の先頭から最後まで、あらゆる位置で繰り返します。モデルは各時点で「次の語の確率分布」を出し、正解の語の確率が高くなるよう重みを少しずつ調整します。この、直前までの出力を条件に次を予測するやり方を<b>自己回帰（autoregressive）</b>と呼びます。式で書くと、文章全体の確率を次のように分解して扱っていることになります。</p>
     </div>
     <div class="formula">
@@ -949,9 +952,9 @@ tokens = tok.tokenize(text)
       <small>文章の確率を「これまでの単語列を条件にした、次の単語の確率」の積に分解する<br>生成時は、この分布から 1 語を選び、それを条件に加えて次の 1 語を選ぶ、を繰り返す</small>
     </div>
     <div class="prose">
-      <h4>事前学習コーパス</h4>
+      <h3>事前学習コーパス</h3>
       <p>事前学習には、非常に大量のテキストを使います。よく使われる公開の資源として、百科事典の <b>Wikipedia</b>、ウェブを広く収集した <b>Common Crawl</b>、研究用に整理された大規模コーパス <b>The Pile</b> などが知られています。データの質と多様性、そして偏りをどう扱うかが、モデルの性質を大きく左右します。</p>
-      <h4>事前学習のあと：微調整と指示チューニング</h4>
+      <h3>事前学習のあと：微調整と指示チューニング</h3>
       <p>事前学習だけのモデルは「続きを書く」のは得意でも、人の<b>指示に従う</b>のは苦手です。そこで次の段階が続きます。</p>
       <ul>
         <li><b>ファインチューニング</b>：目的の課題（分類・要約など）のデータで追加学習し、その課題に合わせる。</li>
@@ -964,7 +967,7 @@ tokens = tok.tokenize(text)
     <!-- DEMO 2: Next-word prediction -->
     <div class="demo reveal" id="demoNext">
       <span class="dtag"><span lang="ja">デモ 2</span><span lang="en">Demo 2</span></span>
-      <h4>次の単語を予測</h4>
+      <h3>次の単語を予測</h3>
       <p class="dnote">下の小さなコーパスから、単語のつながり（bigram・trigram）の頻度を数えます。プレフィックス（直前の語）を入力すると、次に来る単語の確率を頻度から計算して表示します。直前 2 語で数えられる（trigram）ときはそれを使い、なければ直前 1 語（bigram）にバックオフします。温度スライダで分布の偏りを変えられます（温度が低いほど高確率の語に集中し、高いほど平らになります）。確率は <code>p<sup>1/T</sup></code> を正規化した値です。</p>
       <label class="fld" for="nwInput">プレフィックス（空白区切り）/ Prefix</label>
       <textarea id="nwInput" rows="1" spellcheck="false">猫 が</textarea>
@@ -987,7 +990,7 @@ tokens = tok.tokenize(text)
     </div>
 
     <div class="callout tip">
-      <h4>この Step のまとめ</h4>
+      <h3>この Step のまとめ</h3>
       <p>生成型 LLM は「次の単語予測」を大量のテキストで繰り返して学びます（自己回帰）。事前学習で土台を作り、ファインチューニング・指示チューニング・RLHF で、指示に従う役立つモデルへと整えます。デモの頻度モデルは、その考え方をごく小さく再現したものです。</p>
     </div>
   </div>
@@ -1009,11 +1012,11 @@ tokens = tok.tokenize(text)
 
     <p class="layer"><span lang="ja">仕組み</span><span lang="en">How it works</span></p>
     <div class="prose">
-      <h4>ゼロショットと少数ショット</h4>
+      <h3>ゼロショットと少数ショット</h3>
       <p>指示だけを与えて解かせるのが<b>ゼロショット</b>、いくつか手本の例を見せてから解かせるのが<b>少数ショット（few-shot）</b>です。プロンプトの中に例を並べると、モデルはその場でパターンを読み取って応答を合わせます。追加学習をしていないのに、文脈の中の例から学ぶように見えるので、これを<b>文脈内学習（in-context learning）</b>と呼びます。</p>
-      <h4>思考の連鎖（chain-of-thought）</h4>
+      <h3>思考の連鎖（chain-of-thought）</h3>
       <p>推論を要する問題では、「順を追って考えてから答えて」と促し、途中の考えを書かせると、正解率が上がることがあります。これを<b>思考の連鎖（chain-of-thought）</b>と呼びます。答えだけを急がせず、中間の手順を言語化させるのがコツです。</p>
-      <h4>生成パラメータ</h4>
+      <h3>生成パラメータ</h3>
       <p>生成は「次の語の確率分布から 1 語を選ぶ」の繰り返しです。この選び方を制御するのが生成パラメータです。</p>
       <ul>
         <li><b>温度（temperature, T）</b>：分布の鋭さを変える。低いほど高確率の語に集中し（堅実）、高いほど平らになって多様に（奔放）。デモ 2 で体験した効果です。</li>
@@ -1025,7 +1028,7 @@ tokens = tok.tokenize(text)
     <!-- DEMO 3: Attention heatmap -->
     <div class="demo reveal" id="demoAttn">
       <span class="dtag"><span lang="ja">デモ 3</span><span lang="en">Demo 3</span></span>
-      <h4>注意の重みヒートマップ</h4>
+      <h3>注意の重みヒートマップ</h3>
       <p class="dnote">プリセットの文を選ぶと、自己注意の重みを行列（トークン × トークン）としてヒートマップで表示します。各<b>行</b>が「見る側（Query）」、各<b>列</b>が「見られる側（Key）」で、色が濃いほど強く注意しています。生成型モデルにならい、各語は自分より前の語だけを見ます（因果マスク）。各行の重みは合計 1 です。ここではトイの埋め込みから <code>Q&middot;K</code> を計算してソフトマックスした<b>説明用</b>の値で、実際に学習された注意重みではありません。</p>
       <div class="try">
         <span class="tlbl">例</span>
@@ -1078,7 +1081,7 @@ out = model.generate(**ids, max_new_tokens=<span class="nu">10</span>, do_sample
     <div class="code-out"><span class="olbl">出力例 / Output</span><pre><code>The three primary colors are red, green, and blue.</code></pre></div>
 
     <div class="callout tip">
-      <h4>この Step のまとめ</h4>
+      <h3>この Step のまとめ</h3>
       <p>プロンプトは、追加学習なしでモデルの振る舞いを変える入力です。ゼロショット・少数ショット・思考の連鎖といった型があり、温度・top-p・top-k で生成を制御します。Hugging Face の <code>pipeline</code> や <code>generate</code> で、数行から試せます。</p>
     </div>
   </div>
@@ -1100,13 +1103,13 @@ out = model.generate(**ids, max_new_tokens=<span class="nu">10</span>, do_sample
 
     <p class="layer"><span lang="ja">仕組み</span><span lang="en">How it works</span></p>
     <div class="prose">
-      <h4>検索拡張生成（RAG）</h4>
+      <h3>検索拡張生成（RAG）</h3>
       <p>RAG の流れはシンプルです。質問が来たら、まず手元の文書集合から<b>関連する文書を検索</b>し、その内容をプロンプトに<b>根拠として添えて</b>、モデルに答えさせます。モデルは自分の記憶だけでなく、渡された文書を見て答えるので、最新情報や社内文書のような、学習に含まれない知識にも対応でき、根拠を示しやすくなります。</p>
-      <h4>埋め込みによる意味検索</h4>
+      <h3>埋め込みによる意味検索</h3>
       <p>検索の鍵が<b>文埋め込み（embedding）</b>です。NLP モジュールの単語ベクトルを文の単位に広げたもので、文をベクトルに変換します。意味の近い文どうしはベクトルも近くなるので、質問のベクトルと各文書のベクトルの<b>コサイン類似度</b>を測れば、キーワードが一致しなくても意味的に近い文書を見つけられます。文書が多いときは、ベクトルデータベースや近似最近傍探索で高速に探します。</p>
-      <h4>ツールとエージェント</h4>
+      <h3>ツールとエージェント</h3>
       <p>言語モデルは、正確な計算や最新情報の取得は不得意です。そこで、電卓・検索・データベース照会などの<b>ツール</b>を外部に用意し、必要なときにモデルがそれを呼び出して結果を受け取る、という設計が広がっています。複数の手順を計画しながらツールを使い分ける仕組みは<b>エージェント</b>と呼ばれます。</p>
-      <h4>限界としての幻覚</h4>
+      <h3>限界としての幻覚</h3>
       <p>RAG やツールは幻覚を減らしますが、ゼロにはできません。LLM は「事実を検索している」のではなく「もっともらしい続き」を生成しているという性質を、使う側が意識することが大切です。重要な用途では、出力の裏取り（検証）を前提に設計します。</p>
     </div>
 
@@ -1143,7 +1146,7 @@ best: The Eiffel Tower is located in Paris, France.</code></pre></div>
     </div>
 
     <div class="callout warn">
-      <h4>注意</h4>
+      <h3>注意</h3>
       <p>RAG やツールを使っても、LLM は「もっともらしい文」を生成しているという本質は変わりません。渡した文書に答えが無いのに、それらしく作文してしまうこともあります。出力をそのまま信じず、根拠となる文書や計算結果と突き合わせて確かめる姿勢が欠かせません。</p>
     </div>
   </div>
@@ -1165,22 +1168,22 @@ best: The Eiffel Tower is located in Paris, France.</code></pre></div>
 
     <p class="layer"><span lang="ja">仕組み</span><span lang="en">How it works</span></p>
     <div class="prose">
-      <h4>評価はむずかしい</h4>
+      <h3>評価はむずかしい</h3>
       <p>分類なら正解率で測れますが、「良い文章」を 1 つの数字で測るのは簡単ではありません。実際には次のような方法を組み合わせます。</p>
       <ul>
         <li><b>ベンチマーク</b>：多数の課題を集めた問題集で、正答率などを測る。ただし、学習データに問題が混入していると、実力を過大評価する恐れがあります。</li>
         <li><b>人手評価</b>：人が応答の有用性・正確さ・安全性を判断する。手間はかかるが、生成の質を測るには欠かせません。</li>
       </ul>
-      <h4>安全性とバイアス</h4>
+      <h3>安全性とバイアス</h3>
       <p>LLM は学習データの傾向をそのまま映します。データに含まれる<b>偏見や差別</b>を再生産したり、有害な内容を出したりする危険があります。また、堂々と誤情報を述べる幻覚（Step 5）もあります。こうしたリスクを抑え、モデルの振る舞いを人の価値観に合わせる取り組みを<b>アラインメント（alignment）</b>と呼びます。</p>
-      <h4>コストと環境</h4>
+      <h3>コストと環境</h3>
       <p>大規模モデルの学習と運用には、多くの計算資源と電力が必要です。性能だけでなく、<b>コストと環境負荷</b>も設計上の重要な指標になっています。用途に対して過大なモデルを避け、適切な規模を選ぶ判断が求められます。</p>
-      <h4>オープンモデルと責任ある利用</h4>
+      <h3>オープンモデルと責任ある利用</h3>
       <p>重みが公開された<b>オープンモデル</b>も数多く、Hugging Face Hub などから入手できます。手元で動かせるため、学習や検証、透明性の観点で価値があります。いっぽうで、誰でも使えるからこそ、悪用の防止や出典の明示、個人情報の扱いといった<b>責任ある利用</b>が問われます。技術の仕組みと限界の両方を理解したうえで、道具として賢く使うことが大切です。</p>
     </div>
 
     <div class="callout tip">
-      <h4>この Step のまとめ</h4>
+      <h3>この Step のまとめ</h3>
       <p>LLM の評価はベンチマークと人手評価を組み合わせて行い、安全性・バイアス・幻覚・コスト・環境という課題が伴います。オープンモデルを活かしつつ、仕組みと限界を理解して責任をもって使うことが、これからますます重要になります。</p>
     </div>
   </div>
@@ -1206,14 +1209,14 @@ best: The Eiffel Tower is located in Paris, France.</code></pre></div>
 
     <div class="res-grid reveal">
       <div class="res">
-        <h5>データ・モデル</h5>
+        <h3>データ・モデル</h3>
         <ul>
           <li><b>Wikipedia / Common Crawl / The Pile</b>：事前学習で使われる公開の大規模テキスト資源。</li>
           <li><b>Hugging Face Hub</b>：オープンな学習済みモデルやトークナイザを配布。手元で試せる。</li>
         </ul>
       </div>
       <div class="res">
-        <h5>ライブラリ</h5>
+        <h3>ライブラリ</h3>
         <ul>
           <li><b>Hugging Face Transformers</b>：LLM の読み込みと生成の定番。</li>
           <li><b>tiktoken / SentencePiece</b>：サブワード・トークン化。</li>
@@ -1221,7 +1224,7 @@ best: The Eiffel Tower is located in Paris, France.</code></pre></div>
         </ul>
       </div>
       <div class="res">
-        <h5>参考書</h5>
+        <h3>参考書</h3>
         <ul>
           <li>山田育矢 ほか『大規模言語モデル入門』技術評論社</li>
           <li>Daniel Jurafsky, James H. Martin『Speech and Language Processing』</li>
@@ -1229,17 +1232,17 @@ best: The Eiffel Tower is located in Paris, France.</code></pre></div>
         </ul>
       </div>
       <div class="res">
-        <h5>次のモジュールへ</h5>
+        <h3>次のモジュールへ</h3>
         <ul>
-          <li>深層学習とニューラルネット</li>
-          <li>自然言語処理（NLP）の基礎</li>
-          <li>機械学習の基礎（分類・評価）</li>
+          <li><a href="program-analysis.html">プログラム解析</a>（コードを対象にした分析へ）</li>
+          <li><a href="deep-learning.html">深層学習</a>（ニューラルネットの基礎）</li>
+          <li><a href="nlp.html">自然言語処理（NLP）</a>（基礎の復習）</li>
         </ul>
       </div>
     </div>
 
     <div class="callout tip">
-      <h4>おつかれさまでした</h4>
+      <h3>おつかれさまでした</h3>
       <p>LLM は魔法ではなく、「次の単語を当てる」という素朴な仕組みを、Transformer と大規模な事前学習で徹底したものでした。ページ内の 3 つのデモ（サブワード分割・次単語予測・注意のヒートマップ）を、入力を変えながらもう一度動かしてみてください。仕組みの手ざわりがつかめると、ニュースで見る話題も違って見えてきます。</p>
     </div>
   </div>
@@ -1255,14 +1258,14 @@ best: The Eiffel Tower is located in Paris, France.</code></pre></div>
 
     <div class="res-grid reveal">
       <div class="res">
-        <h5>整列と学習の発展</h5>
+        <h3>整列と学習の発展</h3>
         <ul>
           <li><b>RLHF / DPO</b>：人の好みにモデルを合わせる学習。DPO は報酬モデルを介さず好みから直接最適化する新しい方法。</li>
           <li><b>LoRA による軽量ファインチューニング</b>：一部の小さな行列だけを学習し、少ない計算で微調整する。量子化と組み合わせることも多い。</li>
         </ul>
       </div>
       <div class="res">
-        <h5>アーキテクチャと効率</h5>
+        <h3>アーキテクチャと効率</h3>
         <ul>
           <li><b>Mixture-of-Experts（MoE）</b>：入力ごとに一部の「専門家」だけを使い、大規模化と計算効率を両立する。</li>
           <li><b>長文コンテキスト</b>：一度に扱えるトークン長を伸ばす工夫。長い文書や対話履歴を丸ごと入力できるようにする。</li>
@@ -1270,14 +1273,14 @@ best: The Eiffel Tower is located in Paris, France.</code></pre></div>
         </ul>
       </div>
       <div class="res">
-        <h5>広がるモデル</h5>
+        <h3>広がるモデル</h3>
         <ul>
           <li><b>マルチモーダル LLM</b>：テキストに加えて画像や音声も扱うモデル。</li>
           <li><b>エージェント・ツール使用</b>：計画を立て、検索や計算などの外部ツールを使い分けて課題を解く。</li>
         </ul>
       </div>
       <div class="res">
-        <h5>評価と安全性</h5>
+        <h3>評価と安全性</h3>
         <ul>
           <li><b>評価ベンチマーク</b>：能力を多面的に測る問題集と、その汚染（学習データ混入）への対処。</li>
           <li><b>アラインメントと安全性</b>：有害な出力の抑制、価値観との整合、悪用の防止に関する研究。</li>
@@ -1312,14 +1315,6 @@ best: The Eiffel Tower is located in Paris, France.</code></pre></div>
       </div>
     </div>
     <div class="foot-grid3">
-      <div>
-        <h3><span lang="ja">連絡先</span><span lang="en">Contact</span></h3>
-        <p class="muted-s">
-          <b>Yuta Kimura</b><br>
-          <span lang="ja">大阪公立大学工業高等専門学校</span><span lang="en">Osaka Metropolitan University College of Technology</span><br>
-          <a href="mailto:y.kimura@omu.ac.jp">y.kimura [at] omu.ac.jp</a>
-        </p>
-      </div>
       <div>
         <h3><span lang="ja">サイト</span><span lang="en">Site</span></h3>
         <p class="muted-s">
@@ -1411,7 +1406,7 @@ best: The Eiffel Tower is located in Paris, France.</code></pre></div>
     "は","が","を","に","で","と","の","も","です","ます","た","て"];
   var JD={}; JP_DICT.forEach(function(w){ JD[w]=1; });
   var JMAX=4;
-  function isJP(ch){ return /[぀-ヿ㐀-䶿一-鿿ｦ-ﾟ]/.test(ch); }
+  function isJP(ch){ return /[\u3040-ヿ㐀-䶿一-鿿ｦ-ﾟ]/.test(ch); }
   function jpDictAt(text,i){
     for(var L=Math.min(JMAX,text.length-i); L>=1; L--){
       var s=text.substr(i,L); if(JD[s]) return s;
@@ -1419,7 +1414,7 @@ best: The Eiffel Tower is located in Paris, France.</code></pre></div>
     return null;
   }
   function jpType(ch){
-    if(/[぀-ゟ]/.test(ch)) return 'hira';
+    if(/[\u3040-ゟ]/.test(ch)) return 'hira';
     if(/[゠-ヿｦ-ﾟ]/.test(ch)) return 'kata';
     return 'kanji';
   }

@@ -133,7 +133,7 @@
   /* prose */
   .prose{max-width:var(--readw)}
   .prose p{margin:0 0 1em; color:var(--ink-2)}
-  .prose h4{font-family:var(--sans); font-size:1.1rem; font-weight:600; letter-spacing:0; color:var(--ink); margin:1.5em 0 .5em}
+  .prose h3{font-family:var(--sans); font-size:1.1rem; font-weight:600; letter-spacing:0; line-height:inherit; text-wrap:wrap; color:var(--ink); margin:1.5em 0 .5em}
   .prose ul{margin:0 0 1.2em; padding-left:0; list-style:none}
   .prose ul li{position:relative; padding-left:22px; margin:11px 0; color:var(--ink-2)}
   .prose ul li::before{content:""; position:absolute; left:0; top:13px; width:11px; height:1.5px; background:var(--accent)}
@@ -148,7 +148,7 @@
 
   .callout{border-radius:16px; padding:18px 22px; margin:20px 0; max-width:var(--readw);
     background:var(--card); box-shadow:0 0 0 6px var(--shell),0 0 0 6.5px var(--hair),var(--soft)}
-  .callout h4{margin:0 0 6px; font-size:1rem; font-family:var(--sans); font-weight:600; letter-spacing:0; color:var(--ink)}
+  .callout h3{margin:0 0 6px; font-size:1rem; font-family:var(--sans); font-weight:600; letter-spacing:0; line-height:inherit; text-wrap:wrap; color:var(--ink)}
   .callout.tip{background:var(--accent-soft)}
   .callout.warn{background:rgba(138,109,59,.08)}
   .callout p{margin:0; color:var(--ink-2); font-size:.96rem}
@@ -157,14 +157,14 @@
   .grid2{display:grid; grid-template-columns:1fr 1fr; gap:16px; margin:20px 0; max-width:var(--readw)}
   .box{border-radius:16px; padding:16px 20px; background:var(--card);
     box-shadow:0 0 0 6px var(--shell),0 0 0 6.5px var(--hair),var(--soft)}
-  .box h5{margin:0 0 10px; font-size:.92rem; font-family:var(--sans); font-weight:600; letter-spacing:0; color:var(--accent-2); display:flex; align-items:center; gap:7px}
-  .box.lim h5{color:var(--warn)}
+  .box h3{margin:0 0 10px; font-size:.92rem; font-family:var(--sans); font-weight:600; letter-spacing:0; line-height:inherit; text-wrap:wrap; color:var(--accent-2); display:flex; align-items:center; gap:7px}
+  .box.lim h3{color:var(--warn)}
   .box ul{margin:0; padding-left:18px}
   .box li{margin:6px 0; font-size:.92rem; color:var(--ink-2)}
 
   .steps{border-radius:16px; padding:16px 20px; margin:20px 0; max-width:var(--readw); background:var(--card);
     box-shadow:0 0 0 6px var(--shell),0 0 0 6.5px var(--hair),var(--soft)}
-  .steps h5{margin:0 0 10px; font-size:.92rem; font-family:var(--sans); font-weight:600; letter-spacing:0; color:var(--accent-2)}
+  .steps h3{margin:0 0 10px; font-size:.92rem; font-family:var(--sans); font-weight:600; letter-spacing:0; line-height:inherit; text-wrap:wrap; color:var(--accent-2)}
   .steps ol{margin:0; padding:0; list-style:none; counter-reset:st}
   .steps ol li{counter-increment:st; position:relative; padding-left:36px; margin:9px 0; font-size:.94rem; color:var(--ink-2)}
   .steps ol li::before{content:counter(st); position:absolute; left:0; top:2px; width:23px; height:23px; border-radius:50%;
@@ -229,7 +229,7 @@
   .demo .dtag{display:inline-flex; align-items:center; gap:8px; margin:0 0 10px; padding:5px 12px 5px 10px;
     border-radius:999px; background:var(--accent-soft); color:var(--accent-2); font:600 .62rem/1 var(--disp); letter-spacing:.12em; text-transform:uppercase}
   .demo .dtag::before{content:""; width:6px; height:6px; border-radius:50%; background:var(--accent)}
-  .demo h4{margin:0 0 6px; font-size:1.12rem; font-family:var(--sans); font-weight:600; color:var(--ink)}
+  .demo h3{margin:0 0 6px; font-size:1.12rem; font-family:var(--sans); font-weight:600; letter-spacing:0; line-height:inherit; text-wrap:wrap; color:var(--ink)}
   .demo .dnote{font-size:.88rem; color:var(--muted); margin:0 0 16px}
   .demo label.fld{display:block; font:600 .74rem/1 var(--disp); letter-spacing:.08em; text-transform:uppercase; color:var(--muted); margin:0 0 7px}
   .demo textarea,.demo input[type=text]{width:100%; padding:12px 15px; border-radius:12px; border:1px solid var(--hair);
@@ -279,7 +279,8 @@
   .res-grid{display:grid; grid-template-columns:1fr 1fr; gap:16px; margin:20px 0; max-width:var(--readw)}
   @media(max-width:640px){.res-grid{grid-template-columns:1fr}}
   .res{border-radius:16px; padding:18px 20px; background:var(--card); box-shadow:0 0 0 6px var(--shell),0 0 0 6.5px var(--hair),var(--soft)}
-  .res h5{margin:0 0 10px; font-size:.95rem; font-family:var(--sans); font-weight:600; color:var(--accent-2)}
+  .res h3{margin:0 0 10px; font-size:.95rem; font-family:var(--sans); font-weight:600; letter-spacing:0; line-height:inherit; text-wrap:wrap; color:var(--accent-2)}
+  .prose h3 [lang="ja"],.callout h3 [lang="ja"],.box h3 [lang="ja"],.steps h3 [lang="ja"],.demo h3 [lang="ja"],.res h3 [lang="ja"]{word-break:normal}
   .res ul{margin:0; padding-left:0; list-style:none}
   .res li{position:relative; padding-left:20px; margin:8px 0; font-size:.9rem; color:var(--ink-2)}
   .res li::before{content:""; position:absolute; left:0; top:11px; width:9px; height:1.5px; background:var(--accent)}
@@ -289,7 +290,7 @@
   footer{border-top:1px solid var(--line); padding:68px 0 46px; background:var(--bg)}
   footer h3{font-size:.72rem; font-weight:600; letter-spacing:.12em; text-transform:uppercase; color:var(--muted); margin:0 0 1em; font-family:var(--disp)}
   .foot-grid{display:grid; grid-template-columns:1.5fr 1fr; gap:44px}
-  .foot-grid3{display:grid; grid-template-columns:1.3fr 1fr 1fr; gap:44px; margin-top:40px}
+  .foot-grid3{display:grid; grid-template-columns:1.5fr 1fr; gap:44px; margin-top:40px}
   .foot-grid3 a{color:var(--ink-2)}
   .foot-grid3 a:hover{color:var(--accent)}
   .cite{font-size:.98rem; color:var(--ink-2); line-height:1.7; max-width:52ch}
@@ -701,7 +702,9 @@
   <nav class="crumbs" aria-label="パンくず">
     <a href="../index.html"><span lang="ja">ホーム</span><span lang="en">Home</span></a>
     <span class="csep" aria-hidden="true">&rsaquo;</span>
-    <span class="cur" aria-current="page"><span lang="ja">学習コース：因果推論</span><span lang="en">Learn: Causal Inference</span></span>
+    <a href="index.html"><span lang="ja">学習コース</span><span lang="en">Learn</span></a>
+    <span class="csep" aria-hidden="true">&rsaquo;</span>
+    <span class="cur" aria-current="page"><span lang="ja">因果推論</span><span lang="en">Causal Inference</span></span>
   </nav>
 </div>
 
@@ -821,14 +824,14 @@
 
     <p class="layer"><span lang="ja">仕組み</span><span lang="en">How it works</span></p>
     <div class="prose">
-      <h4>反実仮想（potential outcomes）</h4>
-      <p>因果を厳密に考えるための土台が<b>反実仮想</b>の枠組みです（Rubin の因果モデルとも呼ばれます）。ある個体 i について、処置（介入）を受けたかどうかを表す二値 <code>T</code> を考え、次の二つの結果を想定します。</p>
+      <h3>潜在結果（potential outcomes）</h3>
+      <p>因果を厳密に考えるための土台が<b>潜在結果</b>（potential outcomes）の枠組みです（Rubin の因果モデルとも呼ばれます）。ある個体 i について、処置（介入）を受けたかどうかを表す二値 <code>T</code> を考え、次の二つの結果を想定します。</p>
       <ul>
         <li><b>Y<sub>i</sub>(1)</b>：もし処置を<b>受けた</b>ら得られる結果。</li>
         <li><b>Y<sub>i</sub>(0)</b>：もし処置を<b>受けなかった</b>ら得られる結果。</li>
       </ul>
       <p>この個体にとっての処置効果は、両者の差 <code>Y<sub>i</sub>(1) - Y<sub>i</sub>(0)</code> です。ところが現実には、同じ個体について「受けた場合」と「受けなかった場合」を同時に観測できません。処置を受けた人からは Y(1) しか、受けなかった人からは Y(0) しか手に入らないのです。もう一方はけっして観測できない<b>反実仮想</b>であり、これを<b>因果推論の根本問題</b>と呼びます。</p>
-      <h4>平均処置効果（ATE）</h4>
+      <h3>平均処置効果（ATE）</h3>
       <p>個体ごとの効果は取り出せませんが、集団全体で<b>平均</b>を取れば推定できる見込みがあります。これが<b>平均処置効果（ATE: Average Treatment Effect）</b>です。</p>
     </div>
     <div class="formula">
@@ -840,7 +843,7 @@
     </div>
 
     <div class="callout tip">
-      <h4>この Step のまとめ</h4>
+      <h3>この Step のまとめ</h3>
       <p>因果推論が問うのは「介入したら結果はどう変わるか」。各個体には受けた場合 Y(1) と受けなかった場合 Y(0) があり、片方しか観測できません（根本問題）。その差の平均が平均処置効果（ATE）で、これを正しく推定するのがこのモジュールの目標です。</p>
     </div>
   </div>
@@ -862,20 +865,20 @@
 
     <p class="layer"><span lang="ja">仕組み</span><span lang="en">How it works</span></p>
     <div class="prose">
-      <h4>交絡変数（confounder）</h4>
+      <h3>交絡変数（confounder）</h3>
       <p><b>交絡変数</b>とは、処置 T と結果 Y の<b>両方</b>に影響する変数のことです。先ほどの例では、気温がアイスの売上（T）と水難事故（Y）の共通原因でした。交絡があると、T と Y の相関には「T が Y を引き起こす効果」と「共通原因を通じた見かけの効果」が混ざり込み、素朴な比較は<b>偏り（バイアス）</b>を持ちます。</p>
-      <h4>選択バイアス（selection bias）</h4>
+      <h3>選択バイアス（selection bias）</h3>
       <p>誰がデータに含まれるか、誰が処置を受けるかが結果と関係していると、<b>選択バイアス</b>が生じます。たとえば「やる気のある人ほど講座を受講する」なら、受講者の成績が良くても、それが講座の効果なのか、もともとのやる気の差なのか区別できません。処置群と対照群が処置以外の点で異なるとき、比較は公平になりません。</p>
-      <h4>シンプソンのパラドックス</h4>
+      <h3>シンプソンのパラドックス</h3>
       <p>交絡の効果が劇的に現れるのが<b>シンプソンのパラドックス</b>です。<b>全体で見ると</b>ある傾向があるのに、集団を適切なグループに<b>層別すると、すべての層で逆の傾向</b>になる、という現象です。下のデモで実際に体験できますが、たとえば「治療法Aは全体では回復率が低く見えるのに、軽症でも重症でも、層別すればAのほうがBより回復率が高い」といったことが起こります。原因は、Aが重症者に多く使われている（＝重症度が交絡している）ことです。どちらの数字を見るべきかは、背後の因果構造によって決まります。</p>
-      <h4>因果ダイアグラム（DAG）とバックドア基準</h4>
+      <h3>因果ダイアグラム（DAG）とバックドア基準</h3>
       <p>どの変数を調整すべきかを見きわめる道具が<b>因果ダイアグラム（DAG: 有向非巡回グラフ）</b>です。変数を点、因果の向きを矢印で描きます。処置から結果への「まっすぐな道」以外に、交絡変数を経由して裏から回り込む経路（<b>バックドア経路</b>）があると、見かけの相関が生まれます。この裏道を、交絡変数で条件づけて<b>ふさぐ</b>のが<b>バックドア基準</b>の考え方です。必要な交絡変数をすべて調整できれば、観察データからでも因果効果を識別できます。逆に、調整すべきでない変数（結果の後に来る変数など）まで触ると、かえって新たなバイアスを生む点にも注意します。</p>
     </div>
 
     <!-- DEMO 1: Simpson's paradox -->
     <div class="demo reveal" id="demoSimpson">
       <span class="dtag"><span lang="ja">デモ 1</span><span lang="en">Demo 1</span></span>
-      <h4>シンプソンのパラドックス</h4>
+      <h3>シンプソンのパラドックス</h3>
       <p class="dnote">全体で見たときと、グループごとに層別したときで、結論が逆転する数値例です。データを選び、「全体で見る」「層別で見る」を切り替えて、棒グラフと表がどう変わるかを確かめてください。全体では負けている側が、じつはどの層でも勝っている、という逆転が起こります。</p>
       <div class="try">
         <span class="tlbl">データ</span>
@@ -891,7 +894,7 @@
     </div>
 
     <div class="callout tip">
-      <h4>この Step のまとめ</h4>
+      <h3>この Step のまとめ</h3>
       <p>交絡変数は処置と結果の両方に影響し、素朴な比較にバイアスを生みます。シンプソンのパラドックスは、その極端な現れ方です。DAG とバックドア基準は「どの変数を調整すべきか」を教えてくれます。次の Step では、交絡そのものを断ち切る最強の方法＝ランダム化を見ます。</p>
     </div>
   </div>
@@ -913,9 +916,9 @@
 
     <p class="layer"><span lang="ja">仕組み</span><span lang="en">How it works</span></p>
     <div class="prose">
-      <h4>なぜランダム化で交絡が消えるのか</h4>
+      <h3>なぜランダム化で交絡が消えるのか</h3>
       <p>処置を受けるかどうかをコイン投げで決めると、割り付けは<b>あらゆる背景要因と統計的に独立</b>になります。年齢も、重症度も、やる気も、まだ測っていない未知の要因さえも、処置群と対照群にほぼ同じ割合で散らばります。つまり、既知の交絡だけでなく<b>未観測の交絡までまとめてバランス</b>させられるのが、ランダム化の決定的な強みです。両群がそろっている以上、処置後に生じた結果の差は、処置そのものの効果と見なせます。</p>
-      <h4>処置群・対照群と ATE の推定</h4>
+      <h3>処置群・対照群と ATE の推定</h3>
       <p>ランダム化のもとでは、処置群の結果の平均が E[Y(1)] の、対照群の結果の平均が E[Y(0)] の、それぞれ偏りのない推定になります。したがって単純な差</p>
     </div>
     <div class="formula">
@@ -929,7 +932,7 @@
     <!-- DEMO 2: randomization -->
     <div class="demo reveal" id="demoRand">
       <span class="dtag"><span lang="ja">デモ 2</span><span lang="en">Demo 2</span></span>
-      <h4>ランダム化の効果</h4>
+      <h3>ランダム化の効果</h3>
       <p class="dnote">重症度が交絡している母集団を作り、二通りの割り付けを比べます。観察データ（重症ほど処置を受けやすい）と、ランダム化（コイン投げ）です。真の平均処置効果はどちらでも同じですが、単純比較の値は大きく変わります。スライダで交絡の強さを変え、再サンプリングで別の乱数も試せます。</p>
       <label class="fld" for="randConf">交絡の強さ / Confounding strength</label>
       <input type="range" id="randConf" min="0" max="100" value="80" style="width:100%;max-width:340px;accent-color:var(--accent)">
@@ -982,7 +985,7 @@ rct = Yr[Tr == <span class="nu">1</span>].mean() - Yr[Tr == <span class="nu">0</
     </div>
 
     <div class="callout tip">
-      <h4>この Step のまとめ</h4>
+      <h3>この Step のまとめ</h3>
       <p>ランダム化は、既知・未知を問わずあらゆる交絡をバランスさせ、単純な群間差をそのまま ATE の推定にします。これが因果推論の理想形です。とはいえ、倫理やコストの制約でランダム化できない場面も多い。次の Step からは、すでにある観察データから因果を取り出す方法を学びます。</p>
     </div>
   </div>
@@ -1004,9 +1007,9 @@ rct = Yr[Tr == <span class="nu">1</span>].mean() - Yr[Tr == <span class="nu">0</
 
     <p class="layer"><span lang="ja">仕組み</span><span lang="en">How it works</span></p>
     <div class="prose">
-      <h4>層別と回帰による調整</h4>
+      <h3>層別と回帰による調整</h3>
       <p>もっとも素直なのは、交絡変数の値ごとに<b>層別</b>して、層のなかで処置群と対照群を比べる方法です。シンプソンのパラドックスの例で「軽症・重症に分けて比べる」のが、まさにこれでした。各層での効果を、層の大きさで重み付けして平均すれば、全体の効果になります。交絡変数が多いと層が細かくなりすぎるため、実務では<b>回帰</b>で調整することも多い。結果 Y を、処置 T と交絡変数 X の両方で説明する回帰式を立て、X をそろえたうえでの T の係数を効果と見なします。</p>
-      <h4>傾向スコア（propensity score）</h4>
+      <h3>傾向スコア（propensity score）</h3>
       <p>交絡変数が多いと、層別も回帰も扱いづらくなります。そこで登場するのが<b>傾向スコア</b>です。傾向スコアとは、共変量 X が与えられたときに<b>その個体が処置を受ける確率</b></p>
     </div>
     <div class="formula">
@@ -1065,7 +1068,7 @@ IPW による ATE 推定 : 4.88
     </div>
 
     <div class="callout tip">
-      <h4>この Step のまとめ</h4>
+      <h3>この Step のまとめ</h3>
       <p>観察データでは、交絡変数を測って調整するのが基本です。層別・回帰に加え、多次元の共変量を1つの確率にまとめる傾向スコア（マッチング・IPW）が強力です。ただしどの方法も「必要な交絡をすべて観測できている」という仮定に依存します。</p>
     </div>
   </div>
@@ -1087,7 +1090,7 @@ IPW による ATE 推定 : 4.88
 
     <p class="layer"><span lang="ja">仕組み</span><span lang="en">How it works</span></p>
     <div class="prose">
-      <h4>差分の差分法（DID: Difference-in-Differences）</h4>
+      <h3>差分の差分法（DID: Difference-in-Differences）</h3>
       <p>ある施策が一部の集団（<b>処置群</b>）だけに導入され、別の集団（<b>対照群</b>）には導入されなかったとします。両群の<b>処置前後の変化の差</b>を取ることで、施策の効果を推定するのが DID です。定義は次のとおりです。</p>
     </div>
     <div class="formula">
@@ -1096,16 +1099,16 @@ IPW による ATE 推定 : 4.88
     </div>
     <div class="prose">
       <p>DID が効果を正しく捉えるための鍵が<b>平行トレンドの仮定</b>です。「もし施策がなかったら、処置群も対照群と同じだけ変化していたはずだ」という仮定です。これが成り立つなら、対照群の変化ぶんを「処置群にとっての反実仮想の変化」と見なせます。処置群の実際の変化と、この反実仮想の変化との差が、施策の効果です。下のデモで、この関係を図で確かめられます。</p>
-      <h4>操作変数法（IV: Instrumental Variables）</h4>
+      <h3>操作変数法（IV: Instrumental Variables）</h3>
       <p>未観測の交絡があっても使えることがあるのが IV です。<b>操作変数</b>とは、(1)&nbsp;処置には影響するが、(2)&nbsp;結果には処置を通じてしか影響せず、(3)&nbsp;交絡変数とは無関係、という三条件を満たす変数です。この「処置をゆさぶるが結果には直接効かない」外生的な変動だけを取り出して、効果を推定します。たとえば、くじで決まる何かや、制度上の割り当てなどが操作変数の候補になります。適切な操作変数を見つけるのが最大の難所です。</p>
-      <h4>回帰不連続デザイン（RDD: Regression Discontinuity Design）</h4>
+      <h3>回帰不連続デザイン（RDD: Regression Discontinuity Design）</h3>
       <p>ある連続量の<b>しきい値</b>で処置の有無がぱっと切り替わる状況を使うのが RDD です。たとえば「点数が基準点以上なら奨学金を受給」なら、基準点のすぐ上とすぐ下の人は、点数以外はほとんど同じはずです。境界のすぐ両側を比べれば、その場所での効果を、あたかも局所的なランダム化のように推定できます。境界近傍という限られた範囲での効果である点に注意します。</p>
     </div>
 
     <!-- DEMO 3: difference-in-differences -->
     <div class="demo reveal" id="demoDid">
       <span class="dtag"><span lang="ja">デモ 3</span><span lang="en">Demo 3</span></span>
-      <h4>差分の差分法（DID）</h4>
+      <h3>差分の差分法（DID）</h3>
       <p class="dnote">処置群と対照群について、処置前・処置後の平均アウトカムを入力すると、DID 推定量を計算し図にします。破線は「もし処置がなければ処置群はこう動いたはず」という平行トレンドの仮定にもとづく反実仮想です。実際の処置後の値と破線との差が、推定された効果（DID）です。</p>
       <div class="two">
         <div>
@@ -1170,7 +1173,7 @@ DID 推定量（交互作用項）= 8.0</code></pre></div>
     </div>
 
     <div class="callout tip">
-      <h4>この Step のまとめ</h4>
+      <h3>この Step のまとめ</h3>
       <p>DID・IV・RDD は、交絡をすべて測れなくても、データの構造や自然な変化を利用して因果を取り出す準実験的な手法です。いずれも「平行トレンド」「操作変数の三条件」「境界での連続性」といった<b>識別のための仮定</b>に支えられており、その仮定が妥当かどうかが結果の信頼性を決めます。</p>
     </div>
   </div>
@@ -1192,18 +1195,18 @@ DID 推定量（交互作用項）= 8.0</code></pre></div>
 
     <p class="layer"><span lang="ja">仕組み</span><span lang="en">How it works</span></p>
     <div class="prose">
-      <h4>識別仮定の重要性</h4>
+      <h3>識別仮定の重要性</h3>
       <p>因果効果を観察データから取り出せるかどうかは、<b>識別仮定</b>にかかっています。傾向スコアや回帰調整は「必要な交絡をすべて観測できている」、DID は「平行トレンド」、IV は「操作変数の三条件」、RDD は「境界での連続性」を前提にしていました。手法の計算が正しく回ることと、仮定が現実に成り立つことは<b>別の話</b>です。どんなに洗練された推定でも、仮定が崩れていれば結論は信用できません。</p>
-      <h4>未観測交絡</h4>
+      <h3>未観測交絡</h3>
       <p>観察データでの最大の脅威が<b>未観測交絡</b>です。測れていない、あるいは存在に気づいていない交絡変数があると、調整のしようがありません。ランダム化がこれほど尊ばれるのは、まさに未観測交絡までバランスさせられるからです。観察研究では、結論がどれだけ未観測交絡に対して頑健かを調べる<b>感度分析</b>が役立ちます。</p>
-      <h4>外的妥当性</h4>
+      <h3>外的妥当性</h3>
       <p>ある集団・ある状況で得られた効果が、<b>別の集団や状況でも同じとは限りません</b>。これを外的妥当性の問題と呼びます。特定の地域や時期の実験結果を、そのまま一般化してよいかは慎重に考える必要があります。効果が誰にとっても一定とは限らず、人によって異なる（異質な処置効果）ことも多いのです。</p>
-      <h4>因果推論と機械学習の接点</h4>
+      <h3>因果推論と機械学習の接点</h3>
       <p>近年は、機械学習と因果推論が急速に融合しています。多数の共変量から傾向スコアや結果を柔軟に予測させつつ、因果効果の推定には偏りが乗らないように工夫する<b>二重機械学習（Double ML）</b>や、人によって異なる効果（<b>異質処置効果</b>）を推定する手法が発展しています。予測を得意とする機械学習と、介入の効果を問う因果推論は、目的が違うからこそ補い合う関係にあります。</p>
     </div>
 
     <div class="callout tip">
-      <h4>この Step のまとめ</h4>
+      <h3>この Step のまとめ</h3>
       <p>因果推論の結論は、識別仮定の妥当性しだいです。未観測交絡・外的妥当性・効果の異質性に注意し、感度分析で頑健さを確かめましょう。機械学習との融合は、この分野のもっとも活発なフロンティアの一つです。</p>
     </div>
   </div>
@@ -1228,14 +1231,14 @@ DID 推定量（交互作用項）= 8.0</code></pre></div>
 
     <div class="res-grid reveal">
       <div class="res">
-        <h5>公開データセット</h5>
+        <h3>公開データセット</h3>
         <ul>
           <li><b>LaLonde（NSW 職業訓練データ）</b>：職業訓練の効果検証に使われる古典的な公開データ。因果推論の教材で広く用いられる。</li>
           <li><b>シミュレーション生成データ</b>：効果の「正解」を自分で決められるため、手法の検証に最適。本ページの例もこの方式。</li>
         </ul>
       </div>
       <div class="res">
-        <h5>ライブラリ</h5>
+        <h3>ライブラリ</h3>
         <ul>
           <li><b>statsmodels</b>：回帰・DID など計量経済の定番。</li>
           <li><b>scikit-learn</b>：傾向スコア（ロジスティック回帰）など。</li>
@@ -1244,7 +1247,7 @@ DID 推定量（交互作用項）= 8.0</code></pre></div>
         </ul>
       </div>
       <div class="res">
-        <h5>参考書</h5>
+        <h3>参考書</h3>
         <ul>
           <li>Judea Pearl ほか『入門 統計的因果推論』</li>
           <li>宮川雅巳『統計的因果推論』</li>
@@ -1252,17 +1255,17 @@ DID 推定量（交互作用項）= 8.0</code></pre></div>
         </ul>
       </div>
       <div class="res">
-        <h5>次のモジュールへ</h5>
+        <h3>次のモジュールへ</h3>
         <ul>
-          <li>統計分析（推定・仮説検定）</li>
-          <li>時系列分析（時間を伴うデータ）</li>
-          <li>機械学習（予測と因果の使い分け）</li>
+          <li><a href="time-series.html">時系列分析</a>（時間を伴うデータ）</li>
+          <li><a href="statistics.html">統計分析</a>（推定・仮説検定）</li>
+          <li><a href="machine-learning.html">機械学習</a>（予測と因果の使い分け）</li>
         </ul>
       </div>
     </div>
 
     <div class="callout tip">
-      <h4>おつかれさまでした</h4>
+      <h3>おつかれさまでした</h3>
       <p>ここで学んだ「相関を疑い、交絡を洗い出し、仮定を明示して効果を推定する」という姿勢は、データから意思決定へつなぐあらゆる場面で共通します。3つのデモの数値を書き換えて、推定値がどう動くかを何度も確かめてみてください。手を動かすほど、仮定の大切さが実感できます。</p>
     </div>
   </div>
@@ -1278,14 +1281,14 @@ DID 推定量（交互作用項）= 8.0</code></pre></div>
 
     <div class="res-grid reveal">
       <div class="res">
-        <h5>構造的因果モデルと do 演算</h5>
+        <h3>構造的因果モデルと do 演算</h3>
         <ul>
           <li><b>構造的因果モデル（SCM）</b>：変数間の因果関係を方程式とグラフで表す枠組み（Pearl）。</li>
           <li><b>do 演算子</b>：観測ではなく「介入した世界」を数式で表す記法。バックドア基準やフロントドア基準は、この上で導かれる。</li>
         </ul>
       </div>
       <div class="res">
-        <h5>機械学習との融合</h5>
+        <h3>機械学習との融合</h3>
         <ul>
           <li><b>二重機械学習（Double ML）</b>：柔軟な機械学習で共変量を捌きつつ、効果推定の偏りを抑える。</li>
           <li><b>異質処置効果</b>：人によって異なる効果（CATE）を推定する（Causal Forest など）。</li>
@@ -1293,14 +1296,14 @@ DID 推定量（交互作用項）= 8.0</code></pre></div>
         </ul>
       </div>
       <div class="res">
-        <h5>因果探索と媒介分析</h5>
+        <h3>因果探索と媒介分析</h3>
         <ul>
           <li><b>因果探索（causal discovery）</b>：データから因果グラフの構造そのものを推定する試み。</li>
           <li><b>媒介分析</b>：効果を「直接効果」と「媒介変数を経由する間接効果」に分解する。</li>
         </ul>
       </div>
       <div class="res">
-        <h5>頑健性の評価</h5>
+        <h3>頑健性の評価</h3>
         <ul>
           <li><b>感度分析</b>：未観測交絡がどれほどあれば結論が覆るかを調べ、推定の頑健さを測る。</li>
           <li><b>反証テスト</b>：効果が出るはずのない場所（プラセボ）で本当に効果ゼロか確かめる健全性チェック。</li>
@@ -1335,14 +1338,6 @@ DID 推定量（交互作用項）= 8.0</code></pre></div>
       </div>
     </div>
     <div class="foot-grid3">
-      <div>
-        <h3><span lang="ja">連絡先</span><span lang="en">Contact</span></h3>
-        <p class="muted-s">
-          <b>Yuta Kimura</b><br>
-          <span lang="ja">大阪公立大学工業高等専門学校</span><span lang="en">Osaka Metropolitan University College of Technology</span><br>
-          <a href="mailto:y.kimura@omu.ac.jp">y.kimura [at] omu.ac.jp</a>
-        </p>
-      </div>
       <div>
         <h3><span lang="ja">サイト</span><span lang="en">Site</span></h3>
         <p class="muted-s">

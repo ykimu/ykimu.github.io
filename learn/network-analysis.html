@@ -133,7 +133,7 @@
   /* prose */
   .prose{max-width:var(--readw)}
   .prose p{margin:0 0 1em; color:var(--ink-2)}
-  .prose h4{font-family:var(--sans); font-size:1.1rem; font-weight:600; letter-spacing:0; color:var(--ink); margin:1.5em 0 .5em}
+  .prose h3{font-family:var(--sans); font-size:1.1rem; font-weight:600; letter-spacing:0; line-height:inherit; text-wrap:wrap; color:var(--ink); margin:1.5em 0 .5em}
   .prose ul{margin:0 0 1.2em; padding-left:0; list-style:none}
   .prose ul li{position:relative; padding-left:22px; margin:11px 0; color:var(--ink-2)}
   .prose ul li::before{content:""; position:absolute; left:0; top:13px; width:11px; height:1.5px; background:var(--accent)}
@@ -148,7 +148,7 @@
 
   .callout{border-radius:16px; padding:18px 22px; margin:20px 0; max-width:var(--readw);
     background:var(--card); box-shadow:0 0 0 6px var(--shell),0 0 0 6.5px var(--hair),var(--soft)}
-  .callout h4{margin:0 0 6px; font-size:1rem; font-family:var(--sans); font-weight:600; letter-spacing:0; color:var(--ink)}
+  .callout h3{margin:0 0 6px; font-size:1rem; font-family:var(--sans); font-weight:600; letter-spacing:0; line-height:inherit; text-wrap:wrap; color:var(--ink)}
   .callout.tip{background:var(--accent-soft)}
   .callout.warn{background:rgba(138,109,59,.08)}
   .callout p{margin:0; color:var(--ink-2); font-size:.96rem}
@@ -157,14 +157,14 @@
   .grid2{display:grid; grid-template-columns:1fr 1fr; gap:16px; margin:20px 0; max-width:var(--readw)}
   .box{border-radius:16px; padding:16px 20px; background:var(--card);
     box-shadow:0 0 0 6px var(--shell),0 0 0 6.5px var(--hair),var(--soft)}
-  .box h5{margin:0 0 10px; font-size:.92rem; font-family:var(--sans); font-weight:600; letter-spacing:0; color:var(--accent-2); display:flex; align-items:center; gap:7px}
-  .box.lim h5{color:var(--warn)}
+  .box h3{margin:0 0 10px; font-size:.92rem; font-family:var(--sans); font-weight:600; letter-spacing:0; line-height:inherit; text-wrap:wrap; color:var(--accent-2); display:flex; align-items:center; gap:7px}
+  .box.lim h3{color:var(--warn)}
   .box ul{margin:0; padding-left:18px}
   .box li{margin:6px 0; font-size:.92rem; color:var(--ink-2)}
 
   .steps{border-radius:16px; padding:16px 20px; margin:20px 0; max-width:var(--readw); background:var(--card);
     box-shadow:0 0 0 6px var(--shell),0 0 0 6.5px var(--hair),var(--soft)}
-  .steps h5{margin:0 0 10px; font-size:.92rem; font-family:var(--sans); font-weight:600; letter-spacing:0; color:var(--accent-2)}
+  .steps h3{margin:0 0 10px; font-size:.92rem; font-family:var(--sans); font-weight:600; letter-spacing:0; line-height:inherit; text-wrap:wrap; color:var(--accent-2)}
   .steps ol{margin:0; padding:0; list-style:none; counter-reset:st}
   .steps ol li{counter-increment:st; position:relative; padding-left:36px; margin:9px 0; font-size:.94rem; color:var(--ink-2)}
   .steps ol li::before{content:counter(st); position:absolute; left:0; top:2px; width:23px; height:23px; border-radius:50%;
@@ -229,7 +229,7 @@
   .demo .dtag{display:inline-flex; align-items:center; gap:8px; margin:0 0 10px; padding:5px 12px 5px 10px;
     border-radius:999px; background:var(--accent-soft); color:var(--accent-2); font:600 .62rem/1 var(--disp); letter-spacing:.12em; text-transform:uppercase}
   .demo .dtag::before{content:""; width:6px; height:6px; border-radius:50%; background:var(--accent)}
-  .demo h4{margin:0 0 6px; font-size:1.12rem; font-family:var(--sans); font-weight:600; color:var(--ink)}
+  .demo h3{margin:0 0 6px; font-size:1.12rem; font-family:var(--sans); font-weight:600; letter-spacing:0; line-height:inherit; text-wrap:wrap; color:var(--ink)}
   .demo .dnote{font-size:.88rem; color:var(--muted); margin:0 0 16px}
   .demo label.fld{display:block; font:600 .74rem/1 var(--disp); letter-spacing:.08em; text-transform:uppercase; color:var(--muted); margin:0 0 7px}
   .demo textarea,.demo input[type=text]{width:100%; padding:12px 15px; border-radius:12px; border:1px solid var(--hair);
@@ -279,7 +279,8 @@
   .res-grid{display:grid; grid-template-columns:1fr 1fr; gap:16px; margin:20px 0; max-width:var(--readw)}
   @media(max-width:640px){.res-grid{grid-template-columns:1fr}}
   .res{border-radius:16px; padding:18px 20px; background:var(--card); box-shadow:0 0 0 6px var(--shell),0 0 0 6.5px var(--hair),var(--soft)}
-  .res h5{margin:0 0 10px; font-size:.95rem; font-family:var(--sans); font-weight:600; color:var(--accent-2)}
+  .res h3{margin:0 0 10px; font-size:.95rem; font-family:var(--sans); font-weight:600; letter-spacing:0; line-height:inherit; text-wrap:wrap; color:var(--accent-2)}
+  .prose h3 [lang="ja"],.callout h3 [lang="ja"],.box h3 [lang="ja"],.steps h3 [lang="ja"],.demo h3 [lang="ja"],.res h3 [lang="ja"]{word-break:normal}
   .res ul{margin:0; padding-left:0; list-style:none}
   .res li{position:relative; padding-left:20px; margin:8px 0; font-size:.9rem; color:var(--ink-2)}
   .res li::before{content:""; position:absolute; left:0; top:11px; width:9px; height:1.5px; background:var(--accent)}
@@ -289,7 +290,7 @@
   footer{border-top:1px solid var(--line); padding:68px 0 46px; background:var(--bg)}
   footer h3{font-size:.72rem; font-weight:600; letter-spacing:.12em; text-transform:uppercase; color:var(--muted); margin:0 0 1em; font-family:var(--disp)}
   .foot-grid{display:grid; grid-template-columns:1.5fr 1fr; gap:44px}
-  .foot-grid3{display:grid; grid-template-columns:1.3fr 1fr 1fr; gap:44px; margin-top:40px}
+  .foot-grid3{display:grid; grid-template-columns:1.5fr 1fr; gap:44px; margin-top:40px}
   .foot-grid3 a{color:var(--ink-2)}
   .foot-grid3 a:hover{color:var(--accent)}
   .cite{font-size:.98rem; color:var(--ink-2); line-height:1.7; max-width:52ch}
@@ -701,7 +702,9 @@
   <nav class="crumbs" aria-label="パンくず">
     <a href="../index.html"><span lang="ja">ホーム</span><span lang="en">Home</span></a>
     <span class="csep" aria-hidden="true">&rsaquo;</span>
-    <span class="cur" aria-current="page"><span lang="ja">学習コース：ネットワーク分析</span><span lang="en">Learn: Network Analysis</span></span>
+    <a href="index.html"><span lang="ja">学習コース</span><span lang="en">Learn</span></a>
+    <span class="csep" aria-hidden="true">&rsaquo;</span>
+    <span class="cur" aria-current="page"><span lang="ja">ネットワーク分析</span><span lang="en">Network Analysis</span></span>
   </nav>
 </div>
 
@@ -864,7 +867,7 @@
     </div>
 
     <div class="callout tip">
-      <h4>この Step のまとめ</h4>
+      <h3>この Step のまとめ</h3>
       <p>ネットワーク分析は「関係」を主役にする見方。要素をノード、つながりをエッジとして表すと、社会・引用・依存・交通など分野をまたいで同じ道具が使えます。「重要なノード・まとまり・近さ・全体の形」を数値で読み解いていきます。</p>
     </div>
   </div>
@@ -886,13 +889,13 @@
 
     <p class="layer"><span lang="ja">仕組み</span><span lang="en">How it works</span></p>
     <div class="prose">
-      <h4>有向グラフと無向グラフ</h4>
+      <h3>有向グラフと無向グラフ</h3>
       <p>エッジに向きがないものを<b>無向グラフ</b>と呼びます。友人関係のように「たがいに」つながる関係です。いっぽう、向きがあるものを<b>有向グラフ</b>と呼びます。フォロー関係や引用のように「AからBへ」という一方向の関係です。エッジに数値（距離・重み・回数など）を付けたものは<b>重み付きグラフ</b>です。</p>
-      <h4>隣接行列と隣接リスト</h4>
+      <h3>隣接行列と隣接リスト</h3>
       <p>グラフをコンピュータで表す代表的な方法が2つあります。<b>隣接行列</b>は、ノード数を n として n×n の表を作り、ノード i とノード j がつながっていれば 1（重み付きなら重み）を書きます。<b>隣接リスト</b>は、各ノードについて「つながっている相手の一覧」を持ちます。エッジが少ない（疎な）グラフでは、隣接リストのほうが省メモリで効率的です。</p>
-      <h4>次数（degree）</h4>
+      <h3>次数（degree）</h3>
       <p>あるノードにつながっているエッジの本数を<b>次数</b>と呼びます。無向グラフでは単に本数ですが、有向グラフでは、入ってくるエッジの数を<b>入次数（in-degree）</b>、出ていくエッジの数を<b>出次数（out-degree）</b>と区別します。次数は「そのノードが何本の線を持つか」という、もっとも素朴な重要度の目安になります。</p>
-      <h4>密度（density）</h4>
+      <h3>密度（density）</h3>
       <p>ネットワーク全体が「どれくらい密につながっているか」を表すのが<b>密度</b>です。実際にあるエッジ数を、あり得る最大のエッジ数で割った値で、0（線がまったくない）から 1（すべてのノードが互いにつながる完全グラフ）までの範囲を取ります。無向グラフでは次の式です。</p>
     </div>
     <div class="formula">
@@ -903,7 +906,7 @@
     <!-- DEMO 1: graph & degree -->
     <div class="demo reveal" id="demoDeg">
       <span class="dtag"><span lang="ja">デモ 1</span><span lang="en">Demo 1</span></span>
-      <h4>グラフと次数</h4>
+      <h3>グラフと次数</h3>
       <p class="dnote">プリセットのグラフを表示します。ノードをクリックすると、そのノードにつながるエッジ（次数）と隣接ノードを強調し、次数中心性を計算します。上のボタンでグラフを切り替えられます。もう一度クリックすると選択が解除されます。</p>
       <div class="try">
         <span class="tlbl">グラフ</span>
@@ -950,7 +953,7 @@ D.add_edges_from([(<span class="st">"A"</span>, <span class="st">"B"</span>), (<
 {'A': 2, 'B': 1, 'C': 0}</code></pre></div>
 
     <div class="callout tip">
-      <h4>この Step のまとめ</h4>
+      <h3>この Step のまとめ</h3>
       <p>グラフはノードとエッジの組。有向/無向・重みの有無で表し方が変わり、隣接行列や隣接リストで保持します。もっとも基本の量が<b>次数</b>で、そこから全体の<b>密度</b>もわかります。次はこの上で「どのノードが重要か」を測ります。</p>
     </div>
   </div>
@@ -972,7 +975,7 @@ D.add_edges_from([(<span class="st">"A"</span>, <span class="st">"B"</span>), (<
 
     <p class="layer"><span lang="ja">仕組み</span><span lang="en">How it works</span></p>
     <div class="prose">
-      <h4>次数中心性（degree centrality）</h4>
+      <h3>次数中心性（degree centrality）</h3>
       <p>もっとも単純で、<b>つながっている相手の多さ</b>をそのまま重要度とします。比較しやすいよう、次数を「あり得る最大の次数 n-1」で割って 0 から 1 に正規化します。SNS でフォロワーが多い人、といったイメージです。</p>
     </div>
     <div class="formula">
@@ -980,7 +983,7 @@ D.add_edges_from([(<span class="st">"A"</span>, <span class="st">"B"</span>), (<
       <small>deg(v): ノード v の次数　n: ノード数</small>
     </div>
     <div class="prose">
-      <h4>媒介中心性（betweenness centrality）</h4>
+      <h3>媒介中心性（betweenness centrality）</h3>
       <p>ノードが<b>どれだけ「橋渡し」をしているか</b>を測ります。すべてのノード対の最短経路を考え、そのうち何割が自分を通るかを合計します。集団と集団をつなぐ位置にあるノードは、次数が少なくても媒介中心性が高くなります。情報や物の流れの「関所」にあたる重要な役割です。</p>
     </div>
     <div class="formula">
@@ -988,7 +991,7 @@ D.add_edges_from([(<span class="st">"A"</span>, <span class="st">"B"</span>), (<
       <small>&sigma;<sub>st</sub>: ノード s と t の間の最短経路の数　&sigma;<sub>st</sub>(v): そのうち v を通る本数</small>
     </div>
     <div class="prose">
-      <h4>近接中心性（closeness centrality）</h4>
+      <h3>近接中心性（closeness centrality）</h3>
       <p>あるノードから<b>他のすべてのノードへ、どれだけ近いか</b>を測ります。最短距離の合計が小さいほど、ネットワークの「中心」に近いと考えます。全体へ素早く到達できる位置にあるノードほど高くなります。</p>
     </div>
     <div class="formula">
@@ -996,7 +999,7 @@ D.add_edges_from([(<span class="st">"A"</span>, <span class="st">"B"</span>), (<
       <small>d(v, u): ノード v から u への最短距離　合計は v 以外のすべての u について取る</small>
     </div>
     <div class="prose">
-      <h4>固有ベクトル中心性と PageRank</h4>
+      <h3>固有ベクトル中心性と PageRank</h3>
       <p>「重要なノードにつながっているノードは重要」という再帰的な考え方が<b>固有ベクトル中心性</b>です。つながりの数だけでなく、<b>つながる相手の重要度</b>まで考慮します。これを有向グラフ（Web のリンクなど）向けに改良し、実用的にしたのが <b>PageRank</b> です。Google の初期の検索順位づけで有名になりました。多くの重要なページからリンクされるページほど、高いスコアになります。</p>
       <p>これらの指標は、同じグラフでも「誰が重要か」の答えが変わります。次のデモで、指標を切り替えながらその違いを体感してみましょう。</p>
     </div>
@@ -1004,7 +1007,7 @@ D.add_edges_from([(<span class="st">"A"</span>, <span class="st">"B"</span>), (<
     <!-- DEMO 2: centrality ranking -->
     <div class="demo reveal" id="demoCent">
       <span class="dtag"><span lang="ja">デモ 2</span><span lang="en">Demo 2</span></span>
-      <h4>中心性ランキング</h4>
+      <h3>中心性ランキング</h3>
       <p class="dnote">Step 2 と同じ交友グラフ（7ノード）に対して、指標を選ぶと各ノードの中心性スコアを計算し、高い順にランキングします。グラフ上のノードは、色が濃いほどスコアが高いことを表します。指標によって「重要なノード」が入れ替わることに注目してください。</p>
       <div class="try">
         <span class="tlbl">指標</span>
@@ -1040,12 +1043,13 @@ G.add_edges_from([(<span class="st">"A"</span>, <span class="st">"B"</span>), (<
 {'A': 0.0, 'B': 0.0, 'C': 0.533, 'D': 0.6, 'E': 0.0, 'F': 0.333, 'G': 0.0}
 {'A': 0.429, 'B': 0.429, 'C': 0.6, 'D': 0.667, 'E': 0.5, 'F': 0.545, 'G': 0.375}
 {'A': 0.125, 'B': 0.125, 'C': 0.179, 'D': 0.179, 'E': 0.126, 'F': 0.19, 'G': 0.075}</code></pre></div>
+    <p class="muted-s">※ NetworkX の <code>betweenness_centrality</code> は既定で正規化され、上の式の合計に 2/((n−1)(n−2)) を掛けた値を返します（n はノード数。この例では n=7 なので D の 9 本 × 2/30 = 0.6）。</p>
     <div class="prose">
       <p>結果を見比べると面白いことがわかります。次数では C・D・F が同点ですが、<b>媒介中心性では D が最大</b>（左右の集団をつなぐ橋渡し）、<b>近接中心性でも D が最大</b>（全体の中心）です。いっぽう PageRank では、末端の G から流れ込むぶんだけ <b>F が少し高く</b>なります。「重要さ」は測り方しだいなのです。</p>
     </div>
 
     <div class="callout tip">
-      <h4>この Step のまとめ</h4>
+      <h3>この Step のまとめ</h3>
       <p>中心性は「重要なノード」を数値化する道具。次数は多さ、媒介は橋渡し、近接は全体への近さ、PageRank は重要な相手からのつながりを重く見ます。目的に合った指標を選ぶことが肝心です。</p>
     </div>
   </div>
@@ -1067,9 +1071,9 @@ G.add_edges_from([(<span class="st">"A"</span>, <span class="st">"B"</span>), (<
 
     <p class="layer"><span lang="ja">仕組み</span><span lang="en">How it works</span></p>
     <div class="prose">
-      <h4>連結成分</h4>
+      <h3>連結成分</h3>
       <p>もっとも素朴なまとまりが<b>連結成分（connected component）</b>です。エッジをたどって互いに行き来できるノードの集まりで、グラフが「いくつの島に分かれているか」を表します。まず全体がひとつながりかどうかを確かめるのが出発点です。</p>
-      <h4>モジュラリティ</h4>
+      <h3>モジュラリティ</h3>
       <p>連結成分よりも細かく「密なまとまり」を見つけるには、分割の良さを測るものさしが要ります。定番が<b>モジュラリティ（modularity）</b>です。コミュニティの内部にエッジが多く、コミュニティ間のエッジが少ないほど値が大きくなります。よい分割ほどモジュラリティが高い、という考え方です。</p>
     </div>
     <div class="formula">
@@ -1077,9 +1081,9 @@ G.add_edges_from([(<span class="st">"A"</span>, <span class="st">"B"</span>), (<
       <small>e<sub>cc</sub>: コミュニティ c の内部にあるエッジの割合　a<sub>c</sub>: c につながるエッジ端の割合<br>実際の内部エッジが、ランダムな場合の期待値をどれだけ上回るかを足し合わせます。</small>
     </div>
     <div class="prose">
-      <h4>コミュニティ検出の手法</h4>
+      <h3>コミュニティ検出の手法</h3>
       <p>モジュラリティを手がかりに分割を探す代表的な手法があります。<b>ガーバン・ニューマン法</b>は、橋渡しをするエッジ（媒介の高いエッジ）を少しずつ取り除いてコミュニティを浮かび上がらせます。<b>Louvain 法</b>は、モジュラリティが上がるようにノードをまとめていく高速な手法で、大規模なネットワークでもよく使われます。NetworkX の <code>greedy_modularity_communities</code> は、モジュラリティを貪欲に最大化する手法です。</p>
-      <h4>クラスタリング係数</h4>
+      <h3>クラスタリング係数</h3>
       <p>「友達の友達は友達か」という、まとまりやすさの局所的な指標が<b>クラスタリング係数</b>です。あるノードの隣どうしが、実際にどれだけ互いにつながっているかの割合で、社会ネットワークでは高くなりがちです。ネットワーク全体で平均したものを平均クラスタリング係数と呼びます。</p>
     </div>
 
@@ -1114,14 +1118,15 @@ comms = nx.community.greedy_modularity_communities(G)
     </div>
     <div class="code-out"><span class="olbl">出力例 / Output</span><pre><code>1
 3
-0.3807
+0.411
 0.5706</code></pre></div>
+    <p class="muted-s">※ モジュラリティの値は NetworkX のバージョンによって変わります（上は NetworkX 3.6 で実行した結果。古い 2.x 系では約 0.38 になります）。</p>
     <div class="prose">
-      <p>34人のネットワークが3つのコミュニティに分かれ、その分割のモジュラリティは約 0.38、平均クラスタリング係数は約 0.57 でした。空手クラブは実際に2つの派閥に分裂した歴史があり、こうした構造がデータからも読み取れます。</p>
+      <p>34人のネットワークが3つのコミュニティに分かれ、その分割のモジュラリティは約 0.41、平均クラスタリング係数は約 0.57 でした。空手クラブは実際に2つの派閥に分裂した歴史があり、こうした構造がデータからも読み取れます。</p>
     </div>
 
     <div class="callout tip">
-      <h4>この Step のまとめ</h4>
+      <h3>この Step のまとめ</h3>
       <p>コミュニティ検出は「密なまとまり」を見つける道具。連結成分でまず島の数を数え、モジュラリティを手がかりに Louvain 法などで細かく分割します。クラスタリング係数は「友達の友達は友達か」という局所的なまとまりやすさを表します。</p>
     </div>
   </div>
@@ -1143,18 +1148,18 @@ comms = nx.community.greedy_modularity_communities(G)
 
     <p class="layer"><span lang="ja">仕組み</span><span lang="en">How it works</span></p>
     <div class="prose">
-      <h4>最短経路（BFS とダイクストラ）</h4>
+      <h3>最短経路（BFS とダイクストラ）</h3>
       <p>重みのないグラフでは、<b>幅優先探索（BFS: breadth-first search）</b>で最短経路を求められます。始点から近い順に、波が広がるようにノードを訪れていくので、初めて終点に届いたときの経路が最短です。エッジに重み（距離など）があるグラフでは、<b>ダイクストラ法</b>を使います。次のデモは BFS で、始点から終点までの最短経路をたどります。</p>
-      <h4>直径と平均経路長</h4>
+      <h3>直径と平均経路長</h3>
       <p>すべてのノード対について最短距離を求めると、ネットワーク全体の広がりがわかります。最短距離の最大値を<b>直径（diameter）</b>、平均を<b>平均経路長</b>と呼びます。直径が小さいほど、ネットワークは「どこからどこへも近い」コンパクトな形です。</p>
-      <h4>スモールワールドとスケールフリー</h4>
+      <h3>スモールワールドとスケールフリー</h3>
       <p>現実の多くのネットワークには、共通する2つの性質が見られます。ひとつは<b>スモールワールド性</b>で、巨大なネットワークでも、ごく少ないステップで任意の2ノードがつながります。「六次の隔たり」で知られる性質です。もうひとつは<b>スケールフリー性</b>で、次数の分布が<b>べき則（power law）</b>に従い、ごく一部の「ハブ」が飛び抜けて多くのつながりを持ちます。SNS や Web、引用ネットワークなどで観察されます。</p>
     </div>
 
     <!-- DEMO 3: shortest path -->
     <div class="demo reveal" id="demoPath">
       <span class="dtag"><span lang="ja">デモ 3</span><span lang="en">Demo 3</span></span>
-      <h4>最短経路（BFS）</h4>
+      <h3>最短経路（BFS）</h3>
       <p class="dnote">Step 2 と同じ交友グラフで、始点と終点を選ぶと、BFS（幅優先探索）で最短経路を求め、グラフ上に太い線で示します。始点と終点は濃い緑、経路上のノードは薄い緑で表示します。経路の長さ（エッジの数）が最短距離です。</p>
       <div class="two">
         <div>
@@ -1202,7 +1207,7 @@ G.add_edges_from([(<span class="st">"A"</span>, <span class="st">"B"</span>), (<
     </div>
 
     <div class="callout tip">
-      <h4>この Step のまとめ</h4>
+      <h3>この Step のまとめ</h3>
       <p>ネットワークの「近さ」は最短経路で測り、重みがなければ BFS で求まります。全体の広がりは直径や平均経路長で表します。現実のネットワークには、少ないステップでつながる<b>スモールワールド性</b>と、一部のハブが偏って多くつながる<b>スケールフリー性</b>がよく見られます。</p>
     </div>
   </div>
@@ -1224,11 +1229,11 @@ G.add_edges_from([(<span class="st">"A"</span>, <span class="st">"B"</span>), (<
 
     <p class="layer"><span lang="ja">仕組み</span><span lang="en">How it works</span></p>
     <div class="prose">
-      <h4>レイアウト</h4>
+      <h3>レイアウト</h3>
       <p>グラフ描画で広く使われるのが<b>力学モデル（force-directed layout）</b>です。エッジをばね、ノードどうしを反発する電荷に見立て、力がつり合う位置へノードを配置します。密につながったノードは近くに、そうでないノードは遠くに集まるので、コミュニティ構造が自然と見えてきます。</p>
-      <h4>大規模ネットワークと動的ネットワーク</h4>
+      <h3>大規模ネットワークと動的ネットワーク</h3>
       <p>ノードが数万・数百万になると、すべてを描くと「毛玉」のようになり、かえって読み取れません。重要な部分だけを抜き出す、集約する、対話的に拡大縮小するといった工夫が要ります。専用ツールの <b>Gephi</b> や、Python の <b>igraph</b>・<b>graph-tool</b> は大きなグラフに向いています。また、つながりが時間とともに変わる<b>動的ネットワーク</b>を扱う研究も進んでいます。</p>
-      <h4>描画のコード</h4>
+      <h3>描画のコード</h3>
       <p>小さなグラフなら、NetworkX と matplotlib で手軽に描けます。レイアウトを計算し、ノード・エッジ・ラベルを重ねて描画します。</p>
     </div>
     <div class="code-wrap attached">
@@ -1246,7 +1251,7 @@ plt.savefig(<span class="st">"karate.png"</span>, dpi=<span class="nu">150</span
     </div>
 
     <div class="callout tip">
-      <h4>この Step のまとめ</h4>
+      <h3>この Step のまとめ</h3>
       <p>可視化はレイアウトしだいで見え方が変わり、力学モデルはコミュニティ構造を自然に浮かび上がらせます。大規模・動的なネットワークには専用の道具と工夫が必要です。ここまでの「グラフ構築 → 指標 → まとまり → 経路 → 可視化」が、ネットワーク分析の基本の一巡です。</p>
     </div>
   </div>
@@ -1271,7 +1276,7 @@ plt.savefig(<span class="st">"karate.png"</span>, dpi=<span class="nu">150</span
 
     <div class="res-grid reveal">
       <div class="res">
-        <h5>公開データセット</h5>
+        <h3>公開データセット</h3>
         <ul>
           <li><b>Zachary の空手クラブ</b>：34人の交友ネットワーク。<code>nx.karate_club_graph()</code> で内蔵。</li>
           <li><b>Les Misérables 共起ネットワーク</b>：小説の登場人物の共起関係。ネットワーク可視化の定番。</li>
@@ -1279,7 +1284,7 @@ plt.savefig(<span class="st">"karate.png"</span>, dpi=<span class="nu">150</span
         </ul>
       </div>
       <div class="res">
-        <h5>ライブラリ</h5>
+        <h3>ライブラリ</h3>
         <ul>
           <li><b>NetworkX</b>：Python の定番。学習・中小規模に最適。</li>
           <li><b>igraph</b>：C 実装で高速、Python から使える。</li>
@@ -1288,7 +1293,7 @@ plt.savefig(<span class="st">"karate.png"</span>, dpi=<span class="nu">150</span
         </ul>
       </div>
       <div class="res">
-        <h5>参考書</h5>
+        <h3>参考書</h3>
         <ul>
           <li>Mark Newman『Networks』（Oxford University Press）</li>
           <li>Albert-László Barabási『Network Science』（邦訳『ネットワーク科学』）</li>
@@ -1296,17 +1301,17 @@ plt.savefig(<span class="st">"karate.png"</span>, dpi=<span class="nu">150</span
         </ul>
       </div>
       <div class="res">
-        <h5>次のモジュールへ</h5>
+        <h3>次のモジュールへ</h3>
         <ul>
-          <li>機械学習の基礎（分類・回帰・評価）</li>
-          <li>深層学習とニューラルネット</li>
-          <li>グラフニューラルネットワークへの橋渡し</li>
+          <li><a href="machine-learning.html">機械学習</a>（分類・回帰・評価）</li>
+          <li><a href="deep-learning.html">深層学習</a>（ニューラルネットの基礎）</li>
+          <li><a href="repository-mining.html">リポジトリマイニング入門</a>（開発者ネットワークの元データ）</li>
         </ul>
       </div>
     </div>
 
     <div class="callout tip">
-      <h4>おつかれさまでした</h4>
+      <h3>おつかれさまでした</h3>
       <p>ここで学んだ「グラフにする → 指標で測る → まとまりや経路を読む」という流れは、関係を持つあらゆるデータに共通する考え方です。3つのデモのノードやグラフを切り替えたり、始点・終点を変えたりして、値がどう変わるかを確かめてみてください。指標ごとに「重要なノード」が入れ替わる感覚がつかめると、理解がぐっと深まります。</p>
     </div>
   </div>
@@ -1317,33 +1322,33 @@ plt.savefig(<span class="st">"karate.png"</span>, dpi=<span class="nu">150</span
     <p class="eyebrow"><span lang="ja">発展トピック</span><span lang="en">Beyond this module</span></p>
     <h2 class="big">このコースでは扱わない、関係する発展トピック</h2>
     <div class="prose" style="margin-top:22px">
-      <p>このモジュールでは、グラフを組み立て、指標で測り、構造を読み解く「基礎の流れ」を扱いました。いっぽうで近年のネットワーク分析は、機械学習や深層学習と結びつき、急速に広がっています。ここでは、このコースでは踏み込まないものの、知っておくと視野が広がる発展的なトピックを、特に近年の主流を中心に紹介します。深掘りは各自の興味に合わせてどうぞ。グラフニューラルネットワークまわりは、深層学習のモジュールで改めて扱う予定です。</p>
+      <p>このモジュールでは、グラフを組み立て、指標で測り、構造を読み解く「基礎の流れ」を扱いました。いっぽうで近年のネットワーク分析は、機械学習や深層学習と結びつき、急速に広がっています。ここでは、このコースでは踏み込まないものの、知っておくと視野が広がる発展的なトピックを、特に近年の主流を中心に紹介します。深掘りは各自の興味に合わせてどうぞ。グラフニューラルネットワーク（GNN）はこのコースの範囲外の発展トピックで、<a href="deep-learning.html">深層学習</a>のモジュールでも名前を挙げるにとどめています。</p>
     </div>
 
     <div class="res-grid reveal">
       <div class="res">
-        <h5>グラフの表現学習</h5>
+        <h3>グラフの表現学習</h3>
         <ul>
           <li><b>グラフ埋め込み</b>：ノードを密なベクトルに変換し、機械学習に使えるようにする手法（node2vec・DeepWalk）。ランダムウォークと word2vec の考え方を組み合わせます。</li>
           <li><b>スペクトラルクラスタリング</b>：グラフのラプラシアン行列の固有ベクトルを使って分割する、数理的なコミュニティ検出。</li>
         </ul>
       </div>
       <div class="res">
-        <h5>グラフニューラルネットワーク</h5>
+        <h3>グラフニューラルネットワーク</h3>
         <ul>
-          <li><b>GNN</b>：隣接ノードの情報を集約しながら学習する深層モデル（GCN・GraphSAGE・GAT）。ノード分類やグラフ分類に強力。深層学習のモジュールで扱う予定。</li>
+          <li><b>GNN</b>：隣接ノードの情報を集約しながら学習する深層モデル（GCN・GraphSAGE・GAT）。ノード分類やグラフ分類に強力。このコースの範囲外（発展トピック）。</li>
           <li><b>メッセージパッシング</b>：GNN に共通する、近傍から情報を伝え合う枠組み。</li>
         </ul>
       </div>
       <div class="res">
-        <h5>予測と動的ネットワーク</h5>
+        <h3>予測と動的ネットワーク</h3>
         <ul>
           <li><b>リンク予測</b>：まだ存在しないつながりを予測する（友人推薦・共著予測など）。</li>
           <li><b>動的・時系列ネットワーク</b>：時間とともに変化するつながりをモデル化し、成長や消滅を捉える。</li>
         </ul>
       </div>
       <div class="res">
-        <h5>大規模グラフと拡散</h5>
+        <h3>大規模グラフと拡散</h3>
         <ul>
           <li><b>大規模グラフ処理</b>：数億ノード規模を扱う分散処理や近似アルゴリズム（graph-tool・分散グラフ基盤）。</li>
           <li><b>拡散・伝播</b>：情報や感染がネットワーク上をどう広がるかのモデル（感染症モデル・影響最大化）。</li>
@@ -1378,14 +1383,6 @@ plt.savefig(<span class="st">"karate.png"</span>, dpi=<span class="nu">150</span
       </div>
     </div>
     <div class="foot-grid3">
-      <div>
-        <h3><span lang="ja">連絡先</span><span lang="en">Contact</span></h3>
-        <p class="muted-s">
-          <b>Yuta Kimura</b><br>
-          <span lang="ja">大阪公立大学工業高等専門学校</span><span lang="en">Osaka Metropolitan University College of Technology</span><br>
-          <a href="mailto:y.kimura@omu.ac.jp">y.kimura [at] omu.ac.jp</a>
-        </p>
-      </div>
       <div>
         <h3><span lang="ja">サイト</span><span lang="en">Site</span></h3>
         <p class="muted-s">

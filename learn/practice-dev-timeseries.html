@@ -133,7 +133,7 @@
   /* prose */
   .prose{max-width:var(--readw)}
   .prose p{margin:0 0 1em; color:var(--ink-2)}
-  .prose h4{font-family:var(--sans); font-size:1.1rem; font-weight:600; letter-spacing:0; color:var(--ink); margin:1.5em 0 .5em}
+  .prose h3{font-family:var(--sans); font-size:1.1rem; font-weight:600; letter-spacing:0; line-height:inherit; text-wrap:wrap; color:var(--ink); margin:1.5em 0 .5em}
   .prose ul{margin:0 0 1.2em; padding-left:0; list-style:none}
   .prose ul li{position:relative; padding-left:22px; margin:11px 0; color:var(--ink-2)}
   .prose ul li::before{content:""; position:absolute; left:0; top:13px; width:11px; height:1.5px; background:var(--accent)}
@@ -148,7 +148,7 @@
 
   .callout{border-radius:16px; padding:18px 22px; margin:20px 0; max-width:var(--readw);
     background:var(--card); box-shadow:0 0 0 6px var(--shell),0 0 0 6.5px var(--hair),var(--soft)}
-  .callout h4{margin:0 0 6px; font-size:1rem; font-family:var(--sans); font-weight:600; letter-spacing:0; color:var(--ink)}
+  .callout h3{margin:0 0 6px; font-size:1rem; font-family:var(--sans); font-weight:600; letter-spacing:0; line-height:inherit; text-wrap:wrap; color:var(--ink)}
   .callout.tip{background:var(--accent-soft)}
   .callout.warn{background:rgba(138,109,59,.08)}
   .callout p{margin:0; color:var(--ink-2); font-size:.96rem}
@@ -157,14 +157,14 @@
   .grid2{display:grid; grid-template-columns:1fr 1fr; gap:16px; margin:20px 0; max-width:var(--readw)}
   .box{border-radius:16px; padding:16px 20px; background:var(--card);
     box-shadow:0 0 0 6px var(--shell),0 0 0 6.5px var(--hair),var(--soft)}
-  .box h5{margin:0 0 10px; font-size:.92rem; font-family:var(--sans); font-weight:600; letter-spacing:0; color:var(--accent-2); display:flex; align-items:center; gap:7px}
-  .box.lim h5{color:var(--warn)}
+  .box h3{margin:0 0 10px; font-size:.92rem; font-family:var(--sans); font-weight:600; letter-spacing:0; line-height:inherit; text-wrap:wrap; color:var(--accent-2); display:flex; align-items:center; gap:7px}
+  .box.lim h3{color:var(--warn)}
   .box ul{margin:0; padding-left:18px}
   .box li{margin:6px 0; font-size:.92rem; color:var(--ink-2)}
 
   .steps{border-radius:16px; padding:16px 20px; margin:20px 0; max-width:var(--readw); background:var(--card);
     box-shadow:0 0 0 6px var(--shell),0 0 0 6.5px var(--hair),var(--soft)}
-  .steps h5{margin:0 0 10px; font-size:.92rem; font-family:var(--sans); font-weight:600; letter-spacing:0; color:var(--accent-2)}
+  .steps h3{margin:0 0 10px; font-size:.92rem; font-family:var(--sans); font-weight:600; letter-spacing:0; line-height:inherit; text-wrap:wrap; color:var(--accent-2)}
   .steps ol{margin:0; padding:0; list-style:none; counter-reset:st}
   .steps ol li{counter-increment:st; position:relative; padding-left:36px; margin:9px 0; font-size:.94rem; color:var(--ink-2)}
   .steps ol li::before{content:counter(st); position:absolute; left:0; top:2px; width:23px; height:23px; border-radius:50%;
@@ -229,7 +229,7 @@
   .demo .dtag{display:inline-flex; align-items:center; gap:8px; margin:0 0 10px; padding:5px 12px 5px 10px;
     border-radius:999px; background:var(--accent-soft); color:var(--accent-2); font:600 .62rem/1 var(--disp); letter-spacing:.12em; text-transform:uppercase}
   .demo .dtag::before{content:""; width:6px; height:6px; border-radius:50%; background:var(--accent)}
-  .demo h4{margin:0 0 6px; font-size:1.12rem; font-family:var(--sans); font-weight:600; color:var(--ink)}
+  .demo h3{margin:0 0 6px; font-size:1.12rem; font-family:var(--sans); font-weight:600; letter-spacing:0; line-height:inherit; text-wrap:wrap; color:var(--ink)}
   .demo .dnote{font-size:.88rem; color:var(--muted); margin:0 0 16px}
   .demo label.fld{display:block; font:600 .74rem/1 var(--disp); letter-spacing:.08em; text-transform:uppercase; color:var(--muted); margin:0 0 7px}
   .demo textarea,.demo input[type=text]{width:100%; padding:12px 15px; border-radius:12px; border:1px solid var(--hair);
@@ -279,7 +279,8 @@
   .res-grid{display:grid; grid-template-columns:1fr 1fr; gap:16px; margin:20px 0; max-width:var(--readw)}
   @media(max-width:640px){.res-grid{grid-template-columns:1fr}}
   .res{border-radius:16px; padding:18px 20px; background:var(--card); box-shadow:0 0 0 6px var(--shell),0 0 0 6.5px var(--hair),var(--soft)}
-  .res h5{margin:0 0 10px; font-size:.95rem; font-family:var(--sans); font-weight:600; color:var(--accent-2)}
+  .res h3{margin:0 0 10px; font-size:.95rem; font-family:var(--sans); font-weight:600; letter-spacing:0; line-height:inherit; text-wrap:wrap; color:var(--accent-2)}
+  .prose h3 [lang="ja"],.callout h3 [lang="ja"],.box h3 [lang="ja"],.steps h3 [lang="ja"],.demo h3 [lang="ja"],.res h3 [lang="ja"]{word-break:normal}
   .res ul{margin:0; padding-left:0; list-style:none}
   .res li{position:relative; padding-left:20px; margin:8px 0; font-size:.9rem; color:var(--ink-2)}
   .res li::before{content:""; position:absolute; left:0; top:11px; width:9px; height:1.5px; background:var(--accent)}
@@ -289,7 +290,7 @@
   footer{border-top:1px solid var(--line); padding:68px 0 46px; background:var(--bg)}
   footer h3{font-size:.72rem; font-weight:600; letter-spacing:.12em; text-transform:uppercase; color:var(--muted); margin:0 0 1em; font-family:var(--disp)}
   .foot-grid{display:grid; grid-template-columns:1.5fr 1fr; gap:44px}
-  .foot-grid3{display:grid; grid-template-columns:1.3fr 1fr 1fr; gap:44px; margin-top:40px}
+  .foot-grid3{display:grid; grid-template-columns:1.5fr 1fr; gap:44px; margin-top:40px}
   .foot-grid3 a{color:var(--ink-2)}
   .foot-grid3 a:hover{color:var(--accent)}
   .cite{font-size:.98rem; color:var(--ink-2); line-height:1.7; max-width:52ch}
@@ -816,19 +817,19 @@
     </div>
     <div class="res-grid reveal">
       <div class="res">
-        <h5><a href="repository-mining.html">リポジトリマイニング入門</a></h5>
+        <h3><a href="repository-mining.html">リポジトリマイニング入門</a></h3>
         <ul>
           <li>PyDriller で公開リポジトリを走査し、各コミットの日時を取り出す。<b>Step 1（データ入手）</b>の土台。</li>
         </ul>
       </div>
       <div class="res">
-        <h5><a href="time-series.html">時系列分析</a></h5>
+        <h3><a href="time-series.html">時系列分析</a></h3>
         <ul>
           <li>コミットを週次系列に集計し、トレンド・季節性に分解して、ARIMA で先を予測する。時間を守った評価も学ぶ。<b>Step 2・4・5</b>で使う。</li>
         </ul>
       </div>
       <div class="res">
-        <h5><a href="data-visualization.html">データ可視化</a></h5>
+        <h3><a href="data-visualization.html">データ可視化</a></h3>
         <ul>
           <li>折れ線と移動平均で推移を描き、分解結果を図にして波を読み取る。<b>Step 3</b>で使う。</li>
         </ul>
@@ -844,7 +845,7 @@
     <h2 class="big">このページのコードを、そのまま動かす</h2>
     <div class="demo reveal" style="margin-top:22px">
       <span class="dtag"><span lang="ja">Colab / Jupyter</span><span lang="en">Colab / Jupyter</span></span>
-      <h4>開発活動の時系列ノートブック</h4>
+      <h3>開発活動の時系列ノートブック</h3>
       <p class="dnote">このページで読むコードと同じ内容を、上から順に実行できるノートブックにまとめてあります。Colab で開けば、インストール込みで環境構築なしにそのまま動かせます。手元の Jupyter で動かしたい場合は .ipynb をダウンロードしてください。</p>
       <div class="hero-cta" style="margin-top:6px">
         <a class="btn ink" href="https://colab.research.google.com/github/ykimu/ykimu.github.io/blob/main/learn/notebooks/practice-dev-timeseries.ipynb" target="_blank" rel="noopener" style="padding:12px 22px">
@@ -894,7 +895,7 @@ s = pd.Series(<span class="nu">1</span>, index=pd.to_datetime(dates, utc=<span c
 2018-02-15 13:22:31+00:00 -> 2024-05-27 09:41:08+00:00</code></pre></div>
 
     <div class="callout tip">
-      <h4>この Step のまとめ</h4>
+      <h3>この Step のまとめ</h3>
       <p><code>traverse_commits()</code> で履歴を走査し、各コミットの日時を集めて、日時を索引にした系列にしました。値はすべて1です。次はこれを「週ごとの回数」に数えなおして、一定間隔の時系列にします。</p>
     </div>
   </div>
@@ -934,7 +935,7 @@ Freq: W-MON, dtype: int64
 週数: 328</code></pre></div>
 
     <div class="callout tip">
-      <h4>この Step のまとめ</h4>
+      <h3>この Step のまとめ</h3>
       <p><code>resample("W-MON").sum()</code> で週次のコミット数にまとめ、<code>asfreq</code> で欠測週を0にしました。これで間隔のそろった、欠測のない時系列ができました。次はこの系列を目で見て、大きな流れをつかみます。</p>
     </div>
   </div>
@@ -951,7 +952,7 @@ Freq: W-MON, dtype: int64
 
     <p class="layer first"><span lang="ja">何を・なぜ</span><span lang="en">What &amp; why</span></p>
     <div class="prose">
-      <p>まずは素直に折れ線で描きます。週次の生データはぎざぎざしていて、大きな流れが見えにくいものです。そこで<b>移動平均</b>を重ねます。移動平均は、各時点の前後いくつかの値を平均して系列をなだらかにする方法で、短期の細かい上下を打ち消し、長い波を浮かび上がらせます。ここでは前後8週の中心移動平均（<code>center=True</code>）を使います。</p>
+      <p>まずは素直に折れ線で描きます。週次の生データはぎざぎざしていて、大きな流れが見えにくいものです。そこで<b>移動平均</b>を重ねます。移動平均は、各時点の前後いくつかの値を平均して系列をなだらかにする方法で、短期の細かい上下を打ち消し、長い波を浮かび上がらせます。ここでは8週幅の中心移動平均（<code>center=True</code>）を使います。</p>
     </div>
     <div class="code-wrap attached">
       <div class="code-head"><span class="lbl">Python</span><span class="lang-tag">plot_series.py</span><button class="copy" type="button" onclick="copyCode(this)">copy</button></div>
@@ -979,7 +980,7 @@ plt.show()</code></pre>
     <!-- DEMO: moving average -->
     <div class="demo reveal" id="demoMA">
       <span class="dtag"><span lang="ja">デモ</span><span lang="en">Demo</span></span>
-      <h4>移動平均で平滑してみる</h4>
+      <h3>移動平均で平滑してみる</h3>
       <p class="dnote">窓幅（何週分を平均するか）を動かすと、週次コミット数（灰色）に対する移動平均（緑）がどう変わるかを見られます。窓を広げるほど短期の細かい上下が消え、大きな波だけが残ります。これは上のコードの <code>rolling(window=...).mean()</code> と同じ考え方です。</p>
       <label class="fld" for="maWin">窓幅 / Window（<span id="maWinVal">4</span> 週）</label>
       <input type="range" id="maWin" min="1" max="12" step="1" value="4" style="width:100%; accent-color:#0E6F5C">
@@ -990,7 +991,7 @@ plt.show()</code></pre>
     </div>
 
     <div class="callout tip">
-      <h4>この Step のまとめ</h4>
+      <h3>この Step のまとめ</h3>
       <p>折れ線で推移を描き、移動平均で大きな流れを取り出しました。目で見ると波があるのは分かりますが、「トレンドなのか、季節の繰り返しなのか」までは区別できません。次のステップで、系列を成分に分けて切り分けます。</p>
     </div>
   </div>
@@ -1029,13 +1030,14 @@ result.plot()  <span class="cm"># 観測・トレンド・季節・残差の4段
 plt.show()</code></pre>
     </div>
     <div class="code-out"><span class="olbl">出力例 / Output</span><pre><code>トレンド（末尾）:
-2024-03-25    2.71
-2024-04-01    2.63
-2024-04-08    2.58
+2023-11-13    2.71
+2023-11-20    2.63
+2023-11-27    2.58
 Freq: W-MON, Name: trend, dtype: float64</code></pre></div>
+    <p class="muted-s">※ <code>period=52</code> のため、移動平均で求めるトレンドの両端26週は NaN になります（上の末尾は最後の観測 2024-05-27 の26週前で終わっています）。</p>
 
     <div class="callout tip">
-      <h4>この Step のまとめ</h4>
+      <h3>この Step のまとめ</h3>
       <p><code>seasonal_decompose</code> で系列をトレンド・季節・残差に分けました。トレンドを見れば長期の勢い、季節成分を見れば1年の中での繰り返し（たとえば夏や年末の停滞）が読めます。次は、この流れを使って先の活動量を見積もります。</p>
     </div>
   </div>
@@ -1082,12 +1084,12 @@ mae = np.mean(np.abs(forecast.values - test.values))
     </div>
 
     <div class="callout warn">
-      <h4>時間を守る</h4>
+      <h3>時間を守る</h3>
       <p>時系列の評価では、データをランダムに分けてはいけません。必ず時間で区切り、過去で学習して未来を当てます。ランダム分割は未来の情報が学習に混ざり（リーク）、実力より良く見えてしまいます。</p>
     </div>
 
     <div class="callout tip">
-      <h4>この Step のまとめ</h4>
+      <h3>この Step のまとめ</h3>
       <p>末尾を検証用に取り分け、ARIMA で先の活動量を予測して MAE で評価しました。時間を守った分割にすることで、現実に近い当たり具合を測れます。最後に、この一連の結果から何が言えて、何に注意すべきかを整理します。</p>
     </div>
   </div>
@@ -1108,7 +1110,7 @@ mae = np.mean(np.abs(forecast.values - test.values))
     </div>
     <div class="grid2 reveal">
       <div class="box">
-        <h5><span lang="ja">読み取れること</span><span lang="en">Signals</span></h5>
+        <h3><span lang="ja">読み取れること</span><span lang="en">Signals</span></h3>
         <ul>
           <li>トレンドの向きで、プロジェクトの勢い（成長・成熟・停滞）が分かる。</li>
           <li>季節成分で、リリース前の高まりや長期休暇の停滞といった繰り返しが見える。</li>
@@ -1116,7 +1118,7 @@ mae = np.mean(np.abs(forecast.values - test.values))
         </ul>
       </div>
       <div class="box lim">
-        <h5><span lang="ja">注意すべきこと</span><span lang="en">Cautions</span></h5>
+        <h3><span lang="ja">注意すべきこと</span><span lang="en">Cautions</span></h3>
         <ul>
           <li>コミット数は活動の一面にすぎない。1コミットの大きさはまちまちで、量の多さが価値や進捗と直結するわけではない。</li>
           <li>履歴の書き換え（rebase やスカッシュ）や自動コミットは、系列をゆがめる。</li>
@@ -1142,7 +1144,7 @@ mae = np.mean(np.abs(forecast.values - test.values))
       <p>基本の流れをつかんだら、次の課題で分析を深めてみてください。どれもノートブックの一部を書き換えるだけで試せます。</p>
     </div>
     <div class="steps reveal">
-      <h5>次に挑戦すること</h5>
+      <h3>次に挑戦すること</h3>
       <ol>
         <li><b>別のリポジトリで比べる</b>：<code>url</code> を変えて、活発なプロジェクトと落ち着いたプロジェクトの波形を並べる。規模の大きなリポジトリでは取得に時間がかかる点に注意。</li>
         <li><b>切り口を変える</b>：全体ではなく、作者別やファイル別・ディレクトリ別に週次系列を作り、誰が・どこが活動の中心かを時系列で見る。</li>
@@ -1170,7 +1172,7 @@ mae = np.mean(np.abs(forecast.values - test.values))
 
     <div class="res-grid reveal">
       <div class="res">
-        <h5>使ったモジュール</h5>
+        <h3>使ったモジュール</h3>
         <ul>
           <li><a href="repository-mining.html">リポジトリマイニング入門</a></li>
           <li><a href="time-series.html">時系列分析</a></li>
@@ -1178,8 +1180,9 @@ mae = np.mean(np.abs(forecast.values - test.values))
         </ul>
       </div>
       <div class="res">
-        <h5>次の演習・段階へ</h5>
+        <h3>次の演習・段階へ</h3>
         <ul>
+          <li>次の演習：<a href="practice-ab-test.html">A/Bテストで効果を検証する</a>（<a href="index.html#stage3">演習一覧</a>）</li>
           <li>ほかの実践編で、別の切り口のパイプラインも試す。</li>
           <li>ノートブックの <code>url</code> を気になるリポジトリに変えて、その開発の波を読んでみる。</li>
         </ul>
@@ -1187,7 +1190,7 @@ mae = np.mean(np.abs(forecast.values - test.values))
     </div>
 
     <div class="callout tip">
-      <h4>おつかれさまでした</h4>
+      <h3>おつかれさまでした</h3>
       <p>ノートブックを開き、<code>url</code> を自分の気になるリポジトリに変えて、もう一度上から実行してみてください。集計の間隔（週次・月次）や移動平均の窓幅、ARIMA の <code>order</code> を少し変えるだけで、見える波がどう動くかを確かめると、時系列分析の勘所がつかめます。</p>
     </div>
   </div>
@@ -1217,14 +1220,6 @@ mae = np.mean(np.abs(forecast.values - test.values))
       </div>
     </div>
     <div class="foot-grid3">
-      <div>
-        <h3><span lang="ja">連絡先</span><span lang="en">Contact</span></h3>
-        <p class="muted-s">
-          <b>Yuta Kimura</b><br>
-          <span lang="ja">大阪公立大学工業高等専門学校</span><span lang="en">Osaka Metropolitan University College of Technology</span><br>
-          <a href="mailto:y.kimura@omu.ac.jp">y.kimura [at] omu.ac.jp</a>
-        </p>
-      </div>
       <div>
         <h3><span lang="ja">サイト</span><span lang="en">Site</span></h3>
         <p class="muted-s">

@@ -133,7 +133,7 @@
   /* prose */
   .prose{max-width:var(--readw)}
   .prose p{margin:0 0 1em; color:var(--ink-2)}
-  .prose h4{font-family:var(--sans); font-size:1.1rem; font-weight:600; letter-spacing:0; color:var(--ink); margin:1.5em 0 .5em}
+  .prose h3{font-family:var(--sans); font-size:1.1rem; font-weight:600; letter-spacing:0; line-height:inherit; text-wrap:wrap; color:var(--ink); margin:1.5em 0 .5em}
   .prose ul{margin:0 0 1.2em; padding-left:0; list-style:none}
   .prose ul li{position:relative; padding-left:22px; margin:11px 0; color:var(--ink-2)}
   .prose ul li::before{content:""; position:absolute; left:0; top:13px; width:11px; height:1.5px; background:var(--accent)}
@@ -148,7 +148,7 @@
 
   .callout{border-radius:16px; padding:18px 22px; margin:20px 0; max-width:var(--readw);
     background:var(--card); box-shadow:0 0 0 6px var(--shell),0 0 0 6.5px var(--hair),var(--soft)}
-  .callout h4{margin:0 0 6px; font-size:1rem; font-family:var(--sans); font-weight:600; letter-spacing:0; color:var(--ink)}
+  .callout h3{margin:0 0 6px; font-size:1rem; font-family:var(--sans); font-weight:600; letter-spacing:0; line-height:inherit; text-wrap:wrap; color:var(--ink)}
   .callout.tip{background:var(--accent-soft)}
   .callout.warn{background:rgba(138,109,59,.08)}
   .callout p{margin:0; color:var(--ink-2); font-size:.96rem}
@@ -157,14 +157,14 @@
   .grid2{display:grid; grid-template-columns:1fr 1fr; gap:16px; margin:20px 0; max-width:var(--readw)}
   .box{border-radius:16px; padding:16px 20px; background:var(--card);
     box-shadow:0 0 0 6px var(--shell),0 0 0 6.5px var(--hair),var(--soft)}
-  .box h5{margin:0 0 10px; font-size:.92rem; font-family:var(--sans); font-weight:600; letter-spacing:0; color:var(--accent-2); display:flex; align-items:center; gap:7px}
-  .box.lim h5{color:var(--warn)}
+  .box h3{margin:0 0 10px; font-size:.92rem; font-family:var(--sans); font-weight:600; letter-spacing:0; line-height:inherit; text-wrap:wrap; color:var(--accent-2); display:flex; align-items:center; gap:7px}
+  .box.lim h3{color:var(--warn)}
   .box ul{margin:0; padding-left:18px}
   .box li{margin:6px 0; font-size:.92rem; color:var(--ink-2)}
 
   .steps{border-radius:16px; padding:16px 20px; margin:20px 0; max-width:var(--readw); background:var(--card);
     box-shadow:0 0 0 6px var(--shell),0 0 0 6.5px var(--hair),var(--soft)}
-  .steps h5{margin:0 0 10px; font-size:.92rem; font-family:var(--sans); font-weight:600; letter-spacing:0; color:var(--accent-2)}
+  .steps h3{margin:0 0 10px; font-size:.92rem; font-family:var(--sans); font-weight:600; letter-spacing:0; line-height:inherit; text-wrap:wrap; color:var(--accent-2)}
   .steps ol{margin:0; padding:0; list-style:none; counter-reset:st}
   .steps ol li{counter-increment:st; position:relative; padding-left:36px; margin:9px 0; font-size:.94rem; color:var(--ink-2)}
   .steps ol li::before{content:counter(st); position:absolute; left:0; top:2px; width:23px; height:23px; border-radius:50%;
@@ -229,7 +229,7 @@
   .demo .dtag{display:inline-flex; align-items:center; gap:8px; margin:0 0 10px; padding:5px 12px 5px 10px;
     border-radius:999px; background:var(--accent-soft); color:var(--accent-2); font:600 .62rem/1 var(--disp); letter-spacing:.12em; text-transform:uppercase}
   .demo .dtag::before{content:""; width:6px; height:6px; border-radius:50%; background:var(--accent)}
-  .demo h4{margin:0 0 6px; font-size:1.12rem; font-family:var(--sans); font-weight:600; color:var(--ink)}
+  .demo h3{margin:0 0 6px; font-size:1.12rem; font-family:var(--sans); font-weight:600; letter-spacing:0; line-height:inherit; text-wrap:wrap; color:var(--ink)}
   .demo .dnote{font-size:.88rem; color:var(--muted); margin:0 0 16px}
   .demo label.fld{display:block; font:600 .74rem/1 var(--disp); letter-spacing:.08em; text-transform:uppercase; color:var(--muted); margin:0 0 7px}
   .demo textarea,.demo input[type=text]{width:100%; padding:12px 15px; border-radius:12px; border:1px solid var(--hair);
@@ -279,7 +279,8 @@
   .res-grid{display:grid; grid-template-columns:1fr 1fr; gap:16px; margin:20px 0; max-width:var(--readw)}
   @media(max-width:640px){.res-grid{grid-template-columns:1fr}}
   .res{border-radius:16px; padding:18px 20px; background:var(--card); box-shadow:0 0 0 6px var(--shell),0 0 0 6.5px var(--hair),var(--soft)}
-  .res h5{margin:0 0 10px; font-size:.95rem; font-family:var(--sans); font-weight:600; color:var(--accent-2)}
+  .res h3{margin:0 0 10px; font-size:.95rem; font-family:var(--sans); font-weight:600; letter-spacing:0; line-height:inherit; text-wrap:wrap; color:var(--accent-2)}
+  .prose h3 [lang="ja"],.callout h3 [lang="ja"],.box h3 [lang="ja"],.steps h3 [lang="ja"],.demo h3 [lang="ja"],.res h3 [lang="ja"]{word-break:normal}
   .res ul{margin:0; padding-left:0; list-style:none}
   .res li{position:relative; padding-left:20px; margin:8px 0; font-size:.9rem; color:var(--ink-2)}
   .res li::before{content:""; position:absolute; left:0; top:11px; width:9px; height:1.5px; background:var(--accent)}
@@ -289,7 +290,7 @@
   footer{border-top:1px solid var(--line); padding:68px 0 46px; background:var(--bg)}
   footer h3{font-size:.72rem; font-weight:600; letter-spacing:.12em; text-transform:uppercase; color:var(--muted); margin:0 0 1em; font-family:var(--disp)}
   .foot-grid{display:grid; grid-template-columns:1.5fr 1fr; gap:44px}
-  .foot-grid3{display:grid; grid-template-columns:1.3fr 1fr 1fr; gap:44px; margin-top:40px}
+  .foot-grid3{display:grid; grid-template-columns:1.5fr 1fr; gap:44px; margin-top:40px}
   .foot-grid3 a{color:var(--ink-2)}
   .foot-grid3 a:hover{color:var(--accent)}
   .cite{font-size:.98rem; color:var(--ink-2); line-height:1.7; max-width:52ch}
@@ -816,19 +817,19 @@
     </div>
     <div class="res-grid reveal">
       <div class="res">
-        <h5><a href="statistics.html">統計分析</a></h5>
+        <h3><a href="statistics.html">統計分析</a></h3>
         <ul>
           <li>帰無仮説・p値・信頼区間・第一種の誤りという枠組みで、観測された差が偶然で説明しにくいかを判定する。<b>Step 3・4</b>の土台。</li>
         </ul>
       </div>
       <div class="res">
-        <h5><a href="causal-inference.html">因果推論</a></h5>
+        <h3><a href="causal-inference.html">因果推論</a></h3>
         <ul>
           <li>ランダム化割り当てがなぜ交絡を断ち、群間の差を因果効果として読めるのかを理解する。<b>Step 5</b>で使う。</li>
         </ul>
       </div>
       <div class="res">
-        <h5><a href="data-visualization.html">データ可視化</a></h5>
+        <h3><a href="data-visualization.html">データ可視化</a></h3>
         <ul>
           <li>分布や、効果量と信頼区間を図にして、判断の根拠を誤解なく伝える。<b>Step 2・6</b>で使う。</li>
         </ul>
@@ -844,7 +845,7 @@
     <h2 class="big">このページのコードを、そのまま動かす</h2>
     <div class="demo reveal" style="margin-top:22px">
       <span class="dtag"><span lang="ja">Colab / Jupyter</span><span lang="en">Colab / Jupyter</span></span>
-      <h4>A/Bテスト検証ノートブック</h4>
+      <h3>A/Bテスト検証ノートブック</h3>
       <p class="dnote">このページで読むコードと同じ内容を、上から順に実行できるノートブックにまとめてあります。Colab で開けば、インストール込みで環境構築なしにそのまま動かせます。手元の Jupyter で動かしたい場合は .ipynb をダウンロードしてください。</p>
       <div class="hero-cta" style="margin-top:6px">
         <a class="btn ink" href="https://colab.research.google.com/github/ykimu/ykimu.github.io/blob/main/learn/notebooks/practice-ab-test.ipynb" target="_blank" rel="noopener" style="padding:12px 22px">
@@ -902,7 +903,7 @@ dwell_b = rng.normal(<span class="nu">64</span>, <span class="nu">20</span>, n_b
 A: 実測CV率 0.123  B: 実測CV率 0.149</code></pre></div>
 
     <div class="callout tip">
-      <h4>この Step のまとめ</h4>
+      <h3>この Step のまとめ</h3>
       <p>真の効果を仕込んだ実験データを作りました。仕込んだ真の率は 12% と 15%（差 3ポイント）ですが、実測は 12.3% と 14.9% と少しずれています。これが<b>標本のばらつき</b>です。以降のステップは、この観測された差が「仕込んだ効果」なのか「たまたま」なのかを見分けていきます。</p>
     </div>
   </div>
@@ -973,7 +974,7 @@ plt.tight_layout(); plt.show()</code></pre>
     </div>
 
     <div class="callout tip">
-      <h4>この Step のまとめ</h4>
+      <h3>この Step のまとめ</h3>
       <p>群別の平均はB群が上でした。ただし滞在時間の分布は大きく重なっており、平均差だけでは判断できません。<b>差があるかどうか</b>を偶然と切り分けるのが、次の仮説検定の役割です。</p>
     </div>
   </div>
@@ -1012,7 +1013,7 @@ plt.tight_layout(); plt.show()</code></pre>
 <span class="cm"># 分割表: 行=群, 列=[非CV, CV]</span>
 table = [[n_a - conv_a.sum(), conv_a.sum()],
          [n_b - conv_b.sum(), conv_b.sum()]]
-chi2, p_chi, dof, expected = chi2_contingency(table)
+chi2, p_chi, dof, expected = chi2_contingency(table, correction=<span class="kw">False</span>)  <span class="cm"># Z検定と一致させるため連続性補正なし</span>
 <span class="kw">print</span>(<span class="st">f"chi2 = {chi2:.3f}, p = {p_chi:.4f}"</span>)
 
 <span class="cm"># 等価なZ検定と、差(p_B - p_A)の95%信頼区間</span>
@@ -1024,12 +1025,12 @@ low, high = confint_proportions_2indep(
 <span class="kw">print</span>(<span class="st">f"z = {z:.3f}, p = {p_z:.4f}"</span>)
 <span class="kw">print</span>(<span class="st">f"95% CI for (p_B - p_A) = [{low:.4f}, {high:.4f}]"</span>)</code></pre>
     </div>
-    <div class="code-out"><span class="olbl">出力例 / Output</span><pre><code>chi2 = 5.534, p = 0.0187
+    <div class="code-out"><span class="olbl">出力例 / Output</span><pre><code>chi2 = 5.753, p = 0.0165
 z = 2.399, p = 0.0165
 95% CI for (p_B - p_A) = [0.0048, 0.0472]</code></pre></div>
 
     <div class="prose">
-      <p>p値は 0.05 を大きく下回り、信頼区間 [0.005, 0.047] は 0 を含みません。つまり「差がない」という仮定では今の結果は説明しにくく、B群のコンバージョン率が高いと判断できます。区間の下限が約0.5ポイントなので、効果は少なくともこの程度はありそうだ、と幅つきで言えます。</p>
+      <p>p値は 0.05 を下回り、信頼区間 [0.005, 0.047] は 0 を含みません。つまり「差がない」という仮定では今の結果は説明しにくく、B群のコンバージョン率が高いと判断できます。区間の下限が約0.5ポイントなので、効果は少なくともこの程度はありそうだ、と幅つきで言えます。</p>
       <p><b>連続値（滞在時間）</b>は、2群の平均を比べる2標本のt検定 <code>ttest_ind</code> を使います。分散が群で違う可能性に備え、Welch の検定（<code>equal_var=False</code>）を既定にします。</p>
     </div>
     <div class="code-wrap attached">
@@ -1047,7 +1048,7 @@ t, p_t = ttest_ind(dwell_b, dwell_a, equal_var=<span class="kw">False</span>)
     <!-- DEMO: A/B ratio-based tester -->
     <div class="demo reveal" id="demoAB">
       <span class="dtag"><span lang="ja">デモ</span><span lang="en">Demo</span></span>
-      <h4>A/Bテスト判定（比率ベース）</h4>
+      <h3>A/Bテスト判定（比率ベース）</h3>
       <p class="dnote">A群・B群それぞれの成功数（コンバージョン数）と試行数（訪問者数）を入れると、コンバージョン率・差・リフト・2標本比率のZ検定によるp値（正規近似）と有意判定を計算します。上のコードの二値検定を、手元で数字を変えながら体験できます。標本が小さいときや差が小さいときに、いかにp値が有意水準を割らないかを確かめてください。</p>
       <div class="two">
         <div>
@@ -1076,7 +1077,7 @@ t, p_t = ttest_ind(dwell_b, dwell_a, equal_var=<span class="kw">False</span>)
     </div>
 
     <div class="callout tip">
-      <h4>この Step のまとめ</h4>
+      <h3>この Step のまとめ</h3>
       <p>二値はカイ二乗検定（またはZ検定）、連続値はt検定で、観測された差が偶然で説明しにくいかを判定しました。どちらも p &lt; 0.05 で、信頼区間も 0 をまたぎません。ただし<b>「有意」は差の存在を示すだけで、差の大きさは語りません</b>。それを次のステップで補います。</p>
     </div>
   </div>
@@ -1129,7 +1130,7 @@ lift = abs_diff / rate_a
     </div>
 
     <div class="callout tip">
-      <h4>この Step のまとめ</h4>
+      <h3>この Step のまとめ</h3>
       <p>効果量として、連続値は Cohen's d、二値はリフトと絶対差を出しました。p値が「差があるか」を、効果量が「どれだけ大きいか」を担います。報告では必ず両方に、信頼区間を添えて示します。</p>
     </div>
   </div>
@@ -1170,7 +1171,7 @@ chi2_aa, p_aa, _, _ = chi2_contingency(table_aa)
     <p class="layer"><span lang="ja">落とし穴</span><span lang="en">Pitfalls</span></p>
     <div class="grid2">
       <div class="box lim">
-        <h5><span lang="ja">やりがちな誤り</span><span lang="en">Common mistakes</span></h5>
+        <h3><span lang="ja">やりがちな誤り</span><span lang="en">Common mistakes</span></h3>
         <ul>
           <li><b>のぞき見（peeking）</b>：有意になるまで毎日結果を見て、出た瞬間に止める。これは第一種の誤りを大きく膨らませます。事前にサンプルサイズと期間を決めるのが基本です。</li>
           <li><b>多重比較</b>：指標や切り口を数多く試すと、どれかは偶然有意になります。検定を増やすほど、偽陽性の確率は上がります。</li>
@@ -1178,7 +1179,7 @@ chi2_aa, p_aa, _, _ = chi2_contingency(table_aa)
         </ul>
       </div>
       <div class="box">
-        <h5><span lang="ja">対処の指針</span><span lang="en">Safeguards</span></h5>
+        <h3><span lang="ja">対処の指針</span><span lang="en">Safeguards</span></h3>
         <ul>
           <li>解析計画（主要指標・サンプルサイズ・期間）を事前に決めて固定する。</li>
           <li>連続モニタリングが必要なら、逐次検定やアルファ消費関数など専用の手法を使う。</li>
@@ -1189,7 +1190,7 @@ chi2_aa, p_aa, _, _ = chi2_contingency(table_aa)
     </div>
 
     <div class="callout tip">
-      <h4>この Step のまとめ</h4>
+      <h3>この Step のまとめ</h3>
       <p>ランダム化は、気づいていない交絡まで平均的に打ち消し、群間の差を因果効果として読めるようにします。ただしのぞき見や多重比較といった運用上の落とし穴が、その保証を壊します。A/Aテストで仕組みを点検し、計画を事前に固定するのが安全です。</p>
     </div>
   </div>
@@ -1237,7 +1238,7 @@ plt.tight_layout(); plt.show()</code></pre>
     </div>
 
     <div class="callout warn">
-      <h4>「有意」で止まらない</h4>
+      <h3>「有意」で止まらない</h3>
       <p>p &lt; 0.05 は出発点であって結論ではありません。効果量が実務的に意味のある大きさか、コストに見合うか、他の指標を悪化させていないか。統計の結果に、ドメインの判断を重ねて初めて意思決定になります。</p>
     </div>
   </div>
@@ -1253,25 +1254,25 @@ plt.tight_layout(); plt.show()</code></pre>
     </div>
     <div class="res-grid reveal">
       <div class="res">
-        <h5>サンプルサイズ設計（検定力）</h5>
+        <h3>サンプルサイズ設計（検定力）</h3>
         <ul>
           <li>検出したい効果量と有意水準・検定力（例 0.8）から、必要なサンプルサイズを逆算する。statsmodels の <code>NormalIndPower</code> や <code>tt_ind_solve_power</code> を使い、真の差を小さくすると必要数がどう増えるかを見る。</li>
         </ul>
       </div>
       <div class="res">
-        <h5>連続モニタリングの罠</h5>
+        <h3>連続モニタリングの罠</h3>
         <ul>
           <li>真に差がない設定（A/A）で、毎日p値を計算して「有意になったら止める」戦略を何度もシミュレートする。事前に固定した1回の検定に比べ、偽陽性がどれだけ増えるかを体感する。</li>
         </ul>
       </div>
       <div class="res">
-        <h5>ベイズA/Bテスト</h5>
+        <h3>ベイズA/Bテスト</h3>
         <ul>
           <li>コンバージョンをBeta-Binomialでモデル化し、「B群がA群を上回る確率」を事後分布から求める。p値による判定と結論がどう対応・相違するかを比べる。</li>
         </ul>
       </div>
       <div class="res">
-        <h5>複数指標と補正</h5>
+        <h3>複数指標と補正</h3>
         <ul>
           <li>コンバージョン・滞在時間・離脱率など複数の指標を同時に検定し、Bonferroni補正の有無で有意判定がどう変わるかを確かめる。主要指標を1つに絞る意義を考える。</li>
         </ul>
@@ -1297,7 +1298,7 @@ plt.tight_layout(); plt.show()</code></pre>
 
     <div class="res-grid reveal">
       <div class="res">
-        <h5>使ったモジュール</h5>
+        <h3>使ったモジュール</h3>
         <ul>
           <li><a href="statistics.html">統計分析</a></li>
           <li><a href="causal-inference.html">因果推論</a></li>
@@ -1305,8 +1306,9 @@ plt.tight_layout(); plt.show()</code></pre>
         </ul>
       </div>
       <div class="res">
-        <h5>次の演習・段階へ</h5>
+        <h3>次の演習・段階へ</h3>
         <ul>
+          <li>これが最後の演習です。<a href="index.html#stage3">演習一覧</a>に戻って、まだ試していない実践編に取り組む。</li>
           <li>ほかの実践編で、リポジトリマイニングや時系列を軸にしたパイプラインも試す。</li>
           <li>真の効果やサンプルサイズを変えて、検定が効果を拾える境目を自分で探ってみる。</li>
         </ul>
@@ -1314,7 +1316,7 @@ plt.tight_layout(); plt.show()</code></pre>
     </div>
 
     <div class="callout tip">
-      <h4>おつかれさまでした</h4>
+      <h3>おつかれさまでした</h3>
       <p>ノートブックを開き、<code>p_a</code> や <code>p_b</code>、サンプルサイズを変えて、もう一度上から実行してみてください。真の差を小さくしたり標本を減らしたりすると、有意にならなくなる境目が見えてきます。因果検証の考え方をさらに深めたい場合は、安井翔太『効果検証入門』などが実務に即した入り口になります。</p>
     </div>
   </div>
@@ -1344,14 +1346,6 @@ plt.tight_layout(); plt.show()</code></pre>
       </div>
     </div>
     <div class="foot-grid3">
-      <div>
-        <h3><span lang="ja">連絡先</span><span lang="en">Contact</span></h3>
-        <p class="muted-s">
-          <b>Yuta Kimura</b><br>
-          <span lang="ja">大阪公立大学工業高等専門学校</span><span lang="en">Osaka Metropolitan University College of Technology</span><br>
-          <a href="mailto:y.kimura@omu.ac.jp">y.kimura [at] omu.ac.jp</a>
-        </p>
-      </div>
       <div>
         <h3><span lang="ja">サイト</span><span lang="en">Site</span></h3>
         <p class="muted-s">

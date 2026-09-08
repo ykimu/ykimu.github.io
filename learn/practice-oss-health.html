@@ -133,7 +133,7 @@
   /* prose */
   .prose{max-width:var(--readw)}
   .prose p{margin:0 0 1em; color:var(--ink-2)}
-  .prose h4{font-family:var(--sans); font-size:1.1rem; font-weight:600; letter-spacing:0; color:var(--ink); margin:1.5em 0 .5em}
+  .prose h3{font-family:var(--sans); font-size:1.1rem; font-weight:600; letter-spacing:0; line-height:inherit; text-wrap:wrap; color:var(--ink); margin:1.5em 0 .5em}
   .prose ul{margin:0 0 1.2em; padding-left:0; list-style:none}
   .prose ul li{position:relative; padding-left:22px; margin:11px 0; color:var(--ink-2)}
   .prose ul li::before{content:""; position:absolute; left:0; top:13px; width:11px; height:1.5px; background:var(--accent)}
@@ -148,7 +148,7 @@
 
   .callout{border-radius:16px; padding:18px 22px; margin:20px 0; max-width:var(--readw);
     background:var(--card); box-shadow:0 0 0 6px var(--shell),0 0 0 6.5px var(--hair),var(--soft)}
-  .callout h4{margin:0 0 6px; font-size:1rem; font-family:var(--sans); font-weight:600; letter-spacing:0; color:var(--ink)}
+  .callout h3{margin:0 0 6px; font-size:1rem; font-family:var(--sans); font-weight:600; letter-spacing:0; line-height:inherit; text-wrap:wrap; color:var(--ink)}
   .callout.tip{background:var(--accent-soft)}
   .callout.warn{background:rgba(138,109,59,.08)}
   .callout p{margin:0; color:var(--ink-2); font-size:.96rem}
@@ -157,14 +157,14 @@
   .grid2{display:grid; grid-template-columns:1fr 1fr; gap:16px; margin:20px 0; max-width:var(--readw)}
   .box{border-radius:16px; padding:16px 20px; background:var(--card);
     box-shadow:0 0 0 6px var(--shell),0 0 0 6.5px var(--hair),var(--soft)}
-  .box h5{margin:0 0 10px; font-size:.92rem; font-family:var(--sans); font-weight:600; letter-spacing:0; color:var(--accent-2); display:flex; align-items:center; gap:7px}
-  .box.lim h5{color:var(--warn)}
+  .box h3{margin:0 0 10px; font-size:.92rem; font-family:var(--sans); font-weight:600; letter-spacing:0; line-height:inherit; text-wrap:wrap; color:var(--accent-2); display:flex; align-items:center; gap:7px}
+  .box.lim h3{color:var(--warn)}
   .box ul{margin:0; padding-left:18px}
   .box li{margin:6px 0; font-size:.92rem; color:var(--ink-2)}
 
   .steps{border-radius:16px; padding:16px 20px; margin:20px 0; max-width:var(--readw); background:var(--card);
     box-shadow:0 0 0 6px var(--shell),0 0 0 6.5px var(--hair),var(--soft)}
-  .steps h5{margin:0 0 10px; font-size:.92rem; font-family:var(--sans); font-weight:600; letter-spacing:0; color:var(--accent-2)}
+  .steps h3{margin:0 0 10px; font-size:.92rem; font-family:var(--sans); font-weight:600; letter-spacing:0; line-height:inherit; text-wrap:wrap; color:var(--accent-2)}
   .steps ol{margin:0; padding:0; list-style:none; counter-reset:st}
   .steps ol li{counter-increment:st; position:relative; padding-left:36px; margin:9px 0; font-size:.94rem; color:var(--ink-2)}
   .steps ol li::before{content:counter(st); position:absolute; left:0; top:2px; width:23px; height:23px; border-radius:50%;
@@ -229,7 +229,7 @@
   .demo .dtag{display:inline-flex; align-items:center; gap:8px; margin:0 0 10px; padding:5px 12px 5px 10px;
     border-radius:999px; background:var(--accent-soft); color:var(--accent-2); font:600 .62rem/1 var(--disp); letter-spacing:.12em; text-transform:uppercase}
   .demo .dtag::before{content:""; width:6px; height:6px; border-radius:50%; background:var(--accent)}
-  .demo h4{margin:0 0 6px; font-size:1.12rem; font-family:var(--sans); font-weight:600; color:var(--ink)}
+  .demo h3{margin:0 0 6px; font-size:1.12rem; font-family:var(--sans); font-weight:600; letter-spacing:0; line-height:inherit; text-wrap:wrap; color:var(--ink)}
   .demo .dnote{font-size:.88rem; color:var(--muted); margin:0 0 16px}
   .demo label.fld{display:block; font:600 .74rem/1 var(--disp); letter-spacing:.08em; text-transform:uppercase; color:var(--muted); margin:0 0 7px}
   .demo textarea,.demo input[type=text]{width:100%; padding:12px 15px; border-radius:12px; border:1px solid var(--hair);
@@ -279,7 +279,8 @@
   .res-grid{display:grid; grid-template-columns:1fr 1fr; gap:16px; margin:20px 0; max-width:var(--readw)}
   @media(max-width:640px){.res-grid{grid-template-columns:1fr}}
   .res{border-radius:16px; padding:18px 20px; background:var(--card); box-shadow:0 0 0 6px var(--shell),0 0 0 6.5px var(--hair),var(--soft)}
-  .res h5{margin:0 0 10px; font-size:.95rem; font-family:var(--sans); font-weight:600; color:var(--accent-2)}
+  .res h3{margin:0 0 10px; font-size:.95rem; font-family:var(--sans); font-weight:600; letter-spacing:0; line-height:inherit; text-wrap:wrap; color:var(--accent-2)}
+  .prose h3 [lang="ja"],.callout h3 [lang="ja"],.box h3 [lang="ja"],.steps h3 [lang="ja"],.demo h3 [lang="ja"],.res h3 [lang="ja"]{word-break:normal}
   .res ul{margin:0; padding-left:0; list-style:none}
   .res li{position:relative; padding-left:20px; margin:8px 0; font-size:.9rem; color:var(--ink-2)}
   .res li::before{content:""; position:absolute; left:0; top:11px; width:9px; height:1.5px; background:var(--accent)}
@@ -289,7 +290,7 @@
   footer{border-top:1px solid var(--line); padding:68px 0 46px; background:var(--bg)}
   footer h3{font-size:.72rem; font-weight:600; letter-spacing:.12em; text-transform:uppercase; color:var(--muted); margin:0 0 1em; font-family:var(--disp)}
   .foot-grid{display:grid; grid-template-columns:1.5fr 1fr; gap:44px}
-  .foot-grid3{display:grid; grid-template-columns:1.3fr 1fr 1fr; gap:44px; margin-top:40px}
+  .foot-grid3{display:grid; grid-template-columns:1.5fr 1fr; gap:44px; margin-top:40px}
   .foot-grid3 a{color:var(--ink-2)}
   .foot-grid3 a:hover{color:var(--accent)}
   .cite{font-size:.98rem; color:var(--ink-2); line-height:1.7; max-width:52ch}
@@ -815,25 +816,25 @@
     </div>
     <div class="res-grid reveal">
       <div class="res">
-        <h5><a href="repository-mining.html">リポジトリマイニング入門</a></h5>
+        <h3><a href="repository-mining.html">リポジトリマイニング入門</a></h3>
         <ul>
           <li>PyDriller でコミット履歴を走査し、誰がいつどのファイルを変えたかを取り出す。<b>Step 1（データ入手）</b>の土台。</li>
         </ul>
       </div>
       <div class="res">
-        <h5><a href="data-preprocessing.html">開発データの前処理</a></h5>
+        <h3><a href="data-preprocessing.html">開発データの前処理</a></h3>
         <ul>
           <li>生の履歴を pandas でファイル単位の表に整え、欠損を除き、変更回数やチャーンを特徴量化する。<b>Step 2</b>で使う。</li>
         </ul>
       </div>
       <div class="res">
-        <h5><a href="network-analysis.html">ネットワーク分析</a></h5>
+        <h3><a href="network-analysis.html">ネットワーク分析</a></h3>
         <ul>
           <li>共変更ネットワークを NetworkX で構築し、次数中心性・媒介中心性で結び目になるファイルを測る。<b>Step 3</b>で使う。</li>
         </ul>
       </div>
       <div class="res">
-        <h5><a href="machine-learning.html">機械学習</a></h5>
+        <h3><a href="machine-learning.html">機械学習</a></h3>
         <ul>
           <li>特徴量からホットスポットを分類し、適合率・再現率・F値で評価する。<b>Step 4</b>で使う。</li>
         </ul>
@@ -849,7 +850,7 @@
     <h2 class="big">このページのコードを、そのまま動かす</h2>
     <div class="demo reveal" style="margin-top:22px">
       <span class="dtag"><span lang="ja">Colab / Jupyter</span><span lang="en">Colab / Jupyter</span></span>
-      <h4>OSSプロジェクトの健康診断ノートブック</h4>
+      <h3>OSSプロジェクトの健康診断ノートブック</h3>
       <p class="dnote">このページで読むコードと同じ内容を、上から順に実行できるノートブックにまとめてあります。Colab で開けば、インストール込みで環境構築なしにそのまま動かせます。手元の Jupyter で動かしたい場合は .ipynb をダウンロードしてください。</p>
       <div class="hero-cta" style="margin-top:6px">
         <a class="btn ink" href="https://colab.research.google.com/github/ykimu/ykimu.github.io/blob/main/learn/notebooks/practice-oss-health.ipynb" target="_blank" rel="noopener" style="padding:12px 22px">
@@ -912,9 +913,10 @@ df = pd.DataFrame(rows)
 2  1f4e9c07  davide.spadini@example.org  2018-02-16 09:05:12+01:00    tests/test_repository.py     41        1
 3  1f4e9c07  davide.spadini@example.org  2018-02-16 09:05:12+01:00     pydriller/repository.py      7        3
 4  9d2b7a55       contributor@example.org  2018-03-02 18:40:55+01:00  pydriller/domain/commit.py     22        4</code></pre></div>
+    <p class="muted-s">※出力例（ハッシュ・メールはダミー）。実際の値は実行時のリポジトリの状態によって変わります。</p>
 
     <div class="callout tip">
-      <h4>この Step のまとめ</h4>
+      <h3>この Step のまとめ</h3>
       <p><code>Repository(url).traverse_commits()</code> で履歴を走査し、変更ファイル単位の生データを表にしました。ここでは「1行 = あるコミットでの1ファイルの変更」という長い表になっています。次はこれをファイル単位に集計します。</p>
     </div>
   </div>
@@ -965,7 +967,7 @@ feat = feat.sort_values(<span class="st">"changes"</span>, ascending=<span class
 4      pydriller/utils/conf.py       37    690        6</code></pre></div>
 
     <div class="callout tip">
-      <h4>この Step のまとめ</h4>
+      <h3>この Step のまとめ</h3>
       <p>長い表を <code>groupby</code> でファイル単位に畳み込み、changes・churn・authors という3つの特徴量にしました。上位のファイルは変更回数もチャーンも大きく、直感とも合います。次に、ファイル同士の「つながり」を特徴量に加えます。</p>
     </div>
   </div>
@@ -1021,7 +1023,7 @@ cent = pd.DataFrame({
 4      pydriller/scm/commit.py  0.145540     0.041020</code></pre></div>
 
     <div class="callout tip">
-      <h4>この Step のまとめ</h4>
+      <h3>この Step のまとめ</h3>
       <p>共変更ネットワークを作り、次数中心性と媒介中心性で「結び目」になるファイルを数値化しました。中心性が高いファイルは、変更回数の多いファイルと重なりがちですが、完全には一致しません。この差が、次の機械学習で効いてきます。</p>
     </div>
   </div>
@@ -1090,7 +1092,7 @@ authors      0.086</code></pre></div>
     </div>
 
     <div class="callout tip">
-      <h4>この Step のまとめ</h4>
+      <h3>この Step のまとめ</h3>
       <p>4つの特徴量からホットスポットを分類し、評価指標で性能を確かめました。ネットワーク由来の中心性が予測に寄与している点が、複数の技術をつないだ効果です。<code>LogisticRegression</code> に差し替えて比べるのも良い練習になります。</p>
     </div>
   </div>
@@ -1157,7 +1159,7 @@ plt.show()</code></pre>
     <p class="layer"><span lang="ja">注意点</span><span lang="en">Caveats</span></p>
     <div class="grid2">
       <div class="box lim">
-        <h5><span lang="ja">解釈の限界</span><span lang="en">Limits</span></h5>
+        <h3><span lang="ja">解釈の限界</span><span lang="en">Limits</span></h3>
         <ul>
           <li><b>相関であって因果ではない</b>：変更が多い＝悪いとは限らない。活発に育っている中心機能かもしれません。</li>
           <li><b>tangled commit</b>：無関係な変更が1コミットに混ざると、共変更が過大に見えることがあります。</li>
@@ -1165,7 +1167,7 @@ plt.show()</code></pre>
         </ul>
       </div>
       <div class="box">
-        <h5><span lang="ja">妥当性を高めるには</span><span lang="en">Toward validity</span></h5>
+        <h3><span lang="ja">妥当性を高めるには</span><span lang="en">Toward validity</span></h3>
         <ul>
           <li>期間を区切って、最近の傾向と過去を分ける。</li>
           <li>リネーム追跡を有効にして履歴のつながりを保つ。</li>
@@ -1175,7 +1177,7 @@ plt.show()</code></pre>
     </div>
 
     <div class="callout warn">
-      <h4>数字を鵜呑みにしない</h4>
+      <h3>数字を鵜呑みにしない</h3>
       <p>ここで得た予測やランキングは、あくまで「見るべき場所の候補」です。最終的な判断には、コードの中身やチームの文脈を合わせて読む必要があります。メトリクスは会話の出発点であって、結論ではありません。</p>
     </div>
   </div>
@@ -1191,25 +1193,25 @@ plt.show()</code></pre>
     </div>
     <div class="res-grid reveal">
       <div class="res">
-        <h5>別のリポジトリで試す</h5>
+        <h3>別のリポジトリで試す</h3>
         <ul>
           <li><code>url</code> を別の小さな公開リポジトリに変えて走らせる。プロジェクトによってホットスポットの偏り方がどう違うかを比べる。</li>
         </ul>
       </div>
       <div class="res">
-        <h5>期間で区切る</h5>
+        <h3>期間で区切る</h3>
         <ul>
           <li><code>Repository(url, since=..., to=...)</code> で期間を絞り、直近1年と全期間で結果を比べる。ホットスポットは時期によって移り変わります。</li>
         </ul>
       </div>
       <div class="res">
-        <h5>特徴量を足す</h5>
+        <h3>特徴量を足す</h3>
         <ul>
           <li>ファイルの平均コミット間隔、直近の変更からの経過日数、コメント行の割合などを加えて、予測が変わるかを見る。</li>
         </ul>
       </div>
       <div class="res">
-        <h5>バグ修正を辿る</h5>
+        <h3>バグ修正を辿る</h3>
         <ul>
           <li>コミットメッセージから <code>fix</code> や <code>bug</code> を含むものを拾い、修正が集中するファイルを調べる。SZZ 的にバグ混入コミットまで遡るとさらに踏み込めます。</li>
         </ul>
@@ -1236,7 +1238,7 @@ plt.show()</code></pre>
 
     <div class="res-grid reveal">
       <div class="res">
-        <h5>使ったモジュール</h5>
+        <h3>使ったモジュール</h3>
         <ul>
           <li><a href="repository-mining.html">リポジトリマイニング入門</a></li>
           <li><a href="data-preprocessing.html">開発データの前処理</a></li>
@@ -1245,8 +1247,9 @@ plt.show()</code></pre>
         </ul>
       </div>
       <div class="res">
-        <h5>次の演習・段階へ</h5>
+        <h3>次の演習・段階へ</h3>
         <ul>
+          <li>次の演習：<a href="practice-text-classifier.html">テキスト分類器をゼロから作る</a>（<a href="index.html#stage3">演習一覧</a>）</li>
           <li>ほかの実践編で、NLP やプログラム解析を軸にしたパイプラインも試す。</li>
           <li>特徴量やモデルを差し替えて、自分の関心のあるリポジトリを診断してみる。</li>
         </ul>
@@ -1254,7 +1257,7 @@ plt.show()</code></pre>
     </div>
 
     <div class="callout tip">
-      <h4>おつかれさまでした</h4>
+      <h3>おつかれさまでした</h3>
       <p>ノートブックを開き、<code>url</code> を自分の気になるリポジトリに変えて、もう一度上から実行してみてください。しきい値や特徴量を少し変えるだけで、ホットスポットの顔ぶれや評価指標がどう動くかを確かめると、パイプライン全体の勘所がつかめます。</p>
     </div>
   </div>
@@ -1284,14 +1287,6 @@ plt.show()</code></pre>
       </div>
     </div>
     <div class="foot-grid3">
-      <div>
-        <h3><span lang="ja">連絡先</span><span lang="en">Contact</span></h3>
-        <p class="muted-s">
-          <b>Yuta Kimura</b><br>
-          <span lang="ja">大阪公立大学工業高等専門学校</span><span lang="en">Osaka Metropolitan University College of Technology</span><br>
-          <a href="mailto:y.kimura@omu.ac.jp">y.kimura [at] omu.ac.jp</a>
-        </p>
-      </div>
       <div>
         <h3><span lang="ja">サイト</span><span lang="en">Site</span></h3>
         <p class="muted-s">
@@ -1361,9 +1356,9 @@ plt.show()</code></pre>
     "から":1,"まで":1,"ね":1,"よ":1,"た":1,"だ":1,"です":1,"ます":1,"ている":1,"いる":1,"のが":1};
   var DICT = {}; JP_DICT.forEach(function(w){ DICT[w]=1; });
   var MAXL = 5;
-  function isJP(ch){ return /[぀-ヿ㐀-䶿一-鿿ｦ-ﾟ]/.test(ch); }
+  function isJP(ch){ return /[\u3040-ヿ㐀-䶿一-鿿ｦ-ﾟ]/.test(ch); }
   function jtype(ch){
-    if(/[぀-ゟ]/.test(ch)) return 'hira';
+    if(/[\u3040-ゟ]/.test(ch)) return 'hira';
     if(/[゠-ヿｦ-ﾟ]/.test(ch)) return 'kata';
     if(/[一-鿿㐀-䶿]/.test(ch)) return 'kanji';
     return 'other';

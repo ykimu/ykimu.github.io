@@ -133,7 +133,7 @@
   /* prose */
   .prose{max-width:var(--readw)}
   .prose p{margin:0 0 1em; color:var(--ink-2)}
-  .prose h4{font-family:var(--sans); font-size:1.1rem; font-weight:600; letter-spacing:0; color:var(--ink); margin:1.5em 0 .5em}
+  .prose h3{font-family:var(--sans); font-size:1.1rem; font-weight:600; letter-spacing:0; line-height:inherit; text-wrap:wrap; color:var(--ink); margin:1.5em 0 .5em}
   .prose ul{margin:0 0 1.2em; padding-left:0; list-style:none}
   .prose ul li{position:relative; padding-left:22px; margin:11px 0; color:var(--ink-2)}
   .prose ul li::before{content:""; position:absolute; left:0; top:13px; width:11px; height:1.5px; background:var(--accent)}
@@ -148,7 +148,7 @@
 
   .callout{border-radius:16px; padding:18px 22px; margin:20px 0; max-width:var(--readw);
     background:var(--card); box-shadow:0 0 0 6px var(--shell),0 0 0 6.5px var(--hair),var(--soft)}
-  .callout h4{margin:0 0 6px; font-size:1rem; font-family:var(--sans); font-weight:600; letter-spacing:0; color:var(--ink)}
+  .callout h3{margin:0 0 6px; font-size:1rem; font-family:var(--sans); font-weight:600; letter-spacing:0; line-height:inherit; text-wrap:wrap; color:var(--ink)}
   .callout.tip{background:var(--accent-soft)}
   .callout.warn{background:rgba(138,109,59,.08)}
   .callout p{margin:0; color:var(--ink-2); font-size:.96rem}
@@ -157,14 +157,14 @@
   .grid2{display:grid; grid-template-columns:1fr 1fr; gap:16px; margin:20px 0; max-width:var(--readw)}
   .box{border-radius:16px; padding:16px 20px; background:var(--card);
     box-shadow:0 0 0 6px var(--shell),0 0 0 6.5px var(--hair),var(--soft)}
-  .box h5{margin:0 0 10px; font-size:.92rem; font-family:var(--sans); font-weight:600; letter-spacing:0; color:var(--accent-2); display:flex; align-items:center; gap:7px}
-  .box.lim h5{color:var(--warn)}
+  .box h3{margin:0 0 10px; font-size:.92rem; font-family:var(--sans); font-weight:600; letter-spacing:0; line-height:inherit; text-wrap:wrap; color:var(--accent-2); display:flex; align-items:center; gap:7px}
+  .box.lim h3{color:var(--warn)}
   .box ul{margin:0; padding-left:18px}
   .box li{margin:6px 0; font-size:.92rem; color:var(--ink-2)}
 
   .steps{border-radius:16px; padding:16px 20px; margin:20px 0; max-width:var(--readw); background:var(--card);
     box-shadow:0 0 0 6px var(--shell),0 0 0 6.5px var(--hair),var(--soft)}
-  .steps h5{margin:0 0 10px; font-size:.92rem; font-family:var(--sans); font-weight:600; letter-spacing:0; color:var(--accent-2)}
+  .steps h3{margin:0 0 10px; font-size:.92rem; font-family:var(--sans); font-weight:600; letter-spacing:0; line-height:inherit; text-wrap:wrap; color:var(--accent-2)}
   .steps ol{margin:0; padding:0; list-style:none; counter-reset:st}
   .steps ol li{counter-increment:st; position:relative; padding-left:36px; margin:9px 0; font-size:.94rem; color:var(--ink-2)}
   .steps ol li::before{content:counter(st); position:absolute; left:0; top:2px; width:23px; height:23px; border-radius:50%;
@@ -229,7 +229,7 @@
   .demo .dtag{display:inline-flex; align-items:center; gap:8px; margin:0 0 10px; padding:5px 12px 5px 10px;
     border-radius:999px; background:var(--accent-soft); color:var(--accent-2); font:600 .62rem/1 var(--disp); letter-spacing:.12em; text-transform:uppercase}
   .demo .dtag::before{content:""; width:6px; height:6px; border-radius:50%; background:var(--accent)}
-  .demo h4{margin:0 0 6px; font-size:1.12rem; font-family:var(--sans); font-weight:600; color:var(--ink)}
+  .demo h3{margin:0 0 6px; font-size:1.12rem; font-family:var(--sans); font-weight:600; letter-spacing:0; line-height:inherit; text-wrap:wrap; color:var(--ink)}
   .demo .dnote{font-size:.88rem; color:var(--muted); margin:0 0 16px}
   .demo label.fld{display:block; font:600 .74rem/1 var(--disp); letter-spacing:.08em; text-transform:uppercase; color:var(--muted); margin:0 0 7px}
   .demo textarea,.demo input[type=text]{width:100%; padding:12px 15px; border-radius:12px; border:1px solid var(--hair);
@@ -279,7 +279,8 @@
   .res-grid{display:grid; grid-template-columns:1fr 1fr; gap:16px; margin:20px 0; max-width:var(--readw)}
   @media(max-width:640px){.res-grid{grid-template-columns:1fr}}
   .res{border-radius:16px; padding:18px 20px; background:var(--card); box-shadow:0 0 0 6px var(--shell),0 0 0 6.5px var(--hair),var(--soft)}
-  .res h5{margin:0 0 10px; font-size:.95rem; font-family:var(--sans); font-weight:600; color:var(--accent-2)}
+  .res h3{margin:0 0 10px; font-size:.95rem; font-family:var(--sans); font-weight:600; letter-spacing:0; line-height:inherit; text-wrap:wrap; color:var(--accent-2)}
+  .prose h3 [lang="ja"],.callout h3 [lang="ja"],.box h3 [lang="ja"],.steps h3 [lang="ja"],.demo h3 [lang="ja"],.res h3 [lang="ja"]{word-break:normal}
   .res ul{margin:0; padding-left:0; list-style:none}
   .res li{position:relative; padding-left:20px; margin:8px 0; font-size:.9rem; color:var(--ink-2)}
   .res li::before{content:""; position:absolute; left:0; top:11px; width:9px; height:1.5px; background:var(--accent)}
@@ -289,7 +290,7 @@
   footer{border-top:1px solid var(--line); padding:68px 0 46px; background:var(--bg)}
   footer h3{font-size:.72rem; font-weight:600; letter-spacing:.12em; text-transform:uppercase; color:var(--muted); margin:0 0 1em; font-family:var(--disp)}
   .foot-grid{display:grid; grid-template-columns:1.5fr 1fr; gap:44px}
-  .foot-grid3{display:grid; grid-template-columns:1.3fr 1fr 1fr; gap:44px; margin-top:40px}
+  .foot-grid3{display:grid; grid-template-columns:1.5fr 1fr; gap:44px; margin-top:40px}
   .foot-grid3 a{color:var(--ink-2)}
   .foot-grid3 a:hover{color:var(--accent)}
   .cite{font-size:.98rem; color:var(--ink-2); line-height:1.7; max-width:52ch}
@@ -701,7 +702,9 @@
   <nav class="crumbs" aria-label="パンくず">
     <a href="../index.html"><span lang="ja">ホーム</span><span lang="en">Home</span></a>
     <span class="csep" aria-hidden="true">&rsaquo;</span>
-    <span class="cur" aria-current="page"><span lang="ja">学習コース：データ可視化</span><span lang="en">Learn: Data Visualization</span></span>
+    <a href="index.html"><span lang="ja">学習コース</span><span lang="en">Learn</span></a>
+    <span class="csep" aria-hidden="true">&rsaquo;</span>
+    <span class="cur" aria-current="page"><span lang="ja">データ可視化</span><span lang="en">Data Visualization</span></span>
   </nav>
 </div>
 
@@ -837,7 +840,7 @@
     </div>
 
     <div class="callout tip">
-      <h4>この Step のまとめ</h4>
+      <h3>この Step のまとめ</h3>
       <p>データ可視化は、要約統計だけでは見えないデータの姿を目で読み取れるようにする技術です。目的は「自分が理解するため（探索的）」と「他者に伝えるため（説明的）」の2つ。アンスコムの例が示すように、まず図を描く習慣が分析の第一歩です。</p>
     </div>
   </div>
@@ -859,22 +862,22 @@
 
     <p class="layer"><span lang="ja">仕組み</span><span lang="en">How it works</span></p>
     <div class="prose">
-      <h4>1. 比較：棒グラフ</h4>
+      <h3>1. 比較：棒グラフ</h3>
       <p>カテゴリごとの量を比べるなら<b>棒グラフ</b>です。長さで大小を読むので、<b>必ず0を起点</b>にします。項目が多いときは横棒にすると項目名が読みやすくなります。</p>
-      <h4>2. 推移：折れ線グラフ</h4>
+      <h3>2. 推移：折れ線グラフ</h3>
       <p>時間にそった変化を見るなら<b>折れ線グラフ</b>です。連続した時間を線でつなぎます。順序のないカテゴリを線で結ぶのは誤りです。折れ線は変化の傾きが主役なので、0起点は必須ではありません。</p>
-      <h4>3. 分布：ヒストグラム・箱ひげ図・バイオリンプロット</h4>
+      <h3>3. 分布：ヒストグラム・箱ひげ図・バイオリンプロット</h3>
       <p>1つの数値変数がどう散らばっているかを見るなら<b>ヒストグラム</b>です。値を区間（ビン）に区切って本数を数えます。ビン幅で印象が変わる点に注意します。複数の群を比べるなら、<b>箱ひげ図</b>（中央値・四分位・外れ値）や<b>バイオリンプロット</b>（分布の形も見える）が便利です。</p>
-      <h4>4. 関係：散布図</h4>
+      <h3>4. 関係：散布図</h3>
       <p>2つの数値変数の関係を見るなら<b>散布図</b>です。点の広がりから、相関の向きや強さ、外れ値が読み取れます。点が重なるときは透明度やサイズを調整します。</p>
-      <h4>5. 割合：円グラフには注意</h4>
+      <h3>5. 割合：円グラフには注意</h3>
       <p>全体に対する内訳を示すのが<b>割合</b>です。円グラフは有名ですが、人は角度や面積の比較が苦手なので、<b>項目が2〜3個</b>までに留めます。項目が多いときや正確な比較には、棒グラフ（必要なら積み上げ棒）のほうが読みやすくなります。</p>
     </div>
 
     <!-- DEMO 1: chart chooser -->
     <div class="demo reveal" id="demoChooser">
       <span class="dtag"><span lang="ja">デモ 1</span><span lang="en">Demo 1</span></span>
-      <h4>図の選び方ガイド</h4>
+      <h3>図の選び方ガイド</h3>
       <p class="dnote">伝えたい<b>目的</b>と、手元の<b>データの型</b>を選ぶと、おすすめの図と注意点を表示します。小さなサムネイルで図の形もイメージできます。目的とデータの型がかみ合っているかも判定します。</p>
       <div class="two">
         <div>
@@ -950,7 +953,7 @@ plt.show()</code></pre>
 # 散布図: x と y の点が右上がりに並ぶ（正の関係）</code></pre></div>
 
     <div class="callout tip">
-      <h4>この Step のまとめ</h4>
+      <h3>この Step のまとめ</h3>
       <p>図は「目的（比較・推移・分布・関係・割合）」と「データの型」から選びます。比較は棒、推移は折れ線、分布はヒストグラムや箱ひげ、関係は散布図、割合は棒（円は控えめに）。デモで組み合わせを試すと、対応関係が体になじみます。</p>
     </div>
   </div>
@@ -972,20 +975,20 @@ plt.show()</code></pre>
 
     <p class="layer"><span lang="ja">仕組み</span><span lang="en">How it works</span></p>
     <div class="prose">
-      <h4>データインク比（data-ink ratio）</h4>
+      <h3>データインク比（data-ink ratio）</h3>
       <p>統計グラフィックスの古典を書いた<b>エドワード・タフテ（Edward Tufte）</b>は、図に使うインクのうち「データそのものを表す割合」を<b>データインク比</b>と呼びました。狙いは、この比を高めること。背景の濃い色、余計な枠線、意味のない3D、目盛りの過剰な装飾（chartjunk）を削り、データに注意を集めます。</p>
-      <h4>明快さ第一</h4>
+      <h3>明快さ第一</h3>
       <p>図はパズルではありません。タイトル・軸ラベル・単位を明記し、凡例は該当する要素の近くに置きます。要素が少なければ、凡例の代わりに線や棒へ直接ラベルを添えるほうが読みやすいこともあります。</p>
-      <h4>軸の扱い</h4>
+      <h3>軸の扱い</h3>
       <p>もっとも誤解を生みやすいのが軸です。<b>棒グラフは必ず0を起点</b>にします。棒は長さで量を表すため、途中で切ると差が誇張されてしまうからです（次のデモで体験します）。折れ線は変化の傾きを見るので、0起点は必須ではありませんが、起点は明示します。二重軸（左右で別スケール）は誤解のもとになりやすく、慎重に使います。</p>
-      <h4>色の使い方と色覚多様性</h4>
+      <h3>色の使い方と色覚多様性</h3>
       <p>色は意味を持たせて使い、数を絞ります。<b>赤と緑だけで区別する</b>のは、色覚の多様性を考えると避けたい配色です。色に加えて形やラベルでも区別できるようにし、連続量には <code>viridis</code> のような色覚に配慮したカラーマップを使うと安全です。</p>
     </div>
 
     <!-- DEMO 2: misleading vs honest bar chart -->
     <div class="demo reveal" id="demoAxis">
       <span class="dtag"><span lang="ja">デモ 2</span><span lang="en">Demo 2</span></span>
-      <h4>誤解を招く図 vs 正直な図</h4>
+      <h3>誤解を招く図 vs 正直な図</h3>
       <p class="dnote">まったく同じ4つの値の棒グラフです。y軸の起点を「0から」と「値の近くで切る」で切り替えると、棒の見え方がどれだけ変わるかがわかります。データは同じでも、軸の切り詰めだけで差を何倍にも誇張できてしまいます。</p>
       <div class="try">
         <span class="tlbl">y軸の起点</span>
@@ -1040,7 +1043,7 @@ plt.show()</code></pre>
 # 右側に色と値の対応を示すカラーバーが表示される</code></pre></div>
 
     <div class="callout tip">
-      <h4>この Step のまとめ</h4>
+      <h3>この Step のまとめ</h3>
       <p>良い図は「データインク比を高め、明快に、正直に」。とくに<b>棒グラフは0起点</b>が鉄則です。色は数を絞り、赤緑だけに頼らず、連続量には色覚に配慮したカラーマップを使います。デモで軸の切り詰めの威力を確かめてください。</p>
     </div>
   </div>
@@ -1062,9 +1065,9 @@ plt.show()</code></pre>
 
     <p class="layer"><span lang="ja">仕組み</span><span lang="en">How it works</span></p>
     <div class="prose">
-      <h4>figure と axes</h4>
+      <h3>figure と axes</h3>
       <p>matplotlib の図は、2つの入れ物でできています。<b>figure（図全体のキャンバス）</b>と、その中に置かれる <b>axes（1枚1枚の描画領域）</b>です。<code>fig, ax = plt.subplots()</code> と書くと、figure と1つの axes をまとめて作れます。以降は <code>ax</code> に対して <code>ax.plot()</code> や <code>ax.bar()</code> を呼んで描き、<code>ax.set_xlabel()</code> などで飾ります。この「オブジェクト指向スタイル」は、複数の図を扱うときに見通しがよく、おすすめです。</p>
-      <h4>軸・目盛・凡例・注釈</h4>
+      <h3>軸・目盛・凡例・注釈</h3>
       <p>図の意味は、周辺の情報で決まります。よく使う設定は次のとおりです。</p>
       <ul>
         <li><b>軸ラベル・タイトル</b>：<code>ax.set_xlabel</code> / <code>ax.set_ylabel</code> / <code>ax.set_title</code>。</li>
@@ -1072,9 +1075,9 @@ plt.show()</code></pre>
         <li><b>凡例</b>：各プロットに <code>label=</code> を付け、<code>ax.legend()</code> を呼ぶ。</li>
         <li><b>注釈</b>：特定の点に説明を添える <code>ax.annotate("text", xy=(x, y))</code>。</li>
       </ul>
-      <h4>複数図（subplots）</h4>
+      <h3>複数図（subplots）</h3>
       <p>1枚の figure に複数の axes を並べたいときは <code>plt.subplots(nrows, ncols)</code> を使います。返ってくる <code>axes</code> は配列で、<code>axes[0]</code>, <code>axes[1]</code> のように個別に描けます。並べて比べる図（スモールマルチプル）に便利です。</p>
-      <h4>日本語表示の注意</h4>
+      <h3>日本語表示の注意</h3>
       <p>matplotlib の既定フォントは日本語を含まないため、そのままだと日本語ラベルが豆腐（□）になります。日本語を表示するには、日本語フォントを設定するか、<code>japanize-matplotlib</code> のような補助ライブラリを使います。<code>plt.rcParams["font.family"]</code> に手元の日本語フォント名を指定するのが基本です。</p>
     </div>
 
@@ -1140,7 +1143,7 @@ plt.show()
     <div class="code-out"><span class="olbl">出力例 / Output</span><pre><code># 軸ラベルや項目名が日本語で正しく表示される（□にならない）</code></pre></div>
 
     <div class="callout tip">
-      <h4>この Step のまとめ</h4>
+      <h3>この Step のまとめ</h3>
       <p>matplotlib は <b>figure（キャンバス）</b>と <b>axes（描画領域）</b>の2階層。<code>fig, ax = plt.subplots()</code> から始め、<code>ax</code> に描いてラベル・凡例・注釈で仕上げます。日本語はフォント設定が必要です。この土台の上に、次の seaborn が乗ります。</p>
     </div>
   </div>
@@ -1162,22 +1165,22 @@ plt.show()
 
     <p class="layer"><span lang="ja">仕組み</span><span lang="en">How it works</span></p>
     <div class="prose">
-      <h4>分布を見る</h4>
+      <h3>分布を見る</h3>
       <p>1つの数値変数の散らばりは <code>histplot</code>（ヒストグラム）や <code>kdeplot</code>（カーネル密度推定でなめらかな分布曲線）で見ます。<code>hue</code> にカテゴリ列を渡すと、群ごとに色を分けて重ねられます。</p>
-      <h4>関係を見る</h4>
+      <h3>関係を見る</h3>
       <p>2つの数値変数の関係は <code>scatterplot</code>（散布図）です。傾向線も一緒に見たいときは <code>regplot</code> を使うと、散布図に回帰直線と信頼区間の帯を重ねてくれます。</p>
-      <h4>カテゴリで比べる</h4>
+      <h3>カテゴリで比べる</h3>
       <p>群ごとの分布を比べるには <code>boxplot</code>（箱ひげ図）や <code>violinplot</code>（分布の形も見える）が便利です。中央値・四分位・外れ値や、山の形の違いが一目で分かります。</p>
-      <h4>相関を俯瞰する</h4>
+      <h3>相関を俯瞰する</h3>
       <p>多くの変数の相関を一望するには、相関行列を <code>heatmap</code> で色分けします。<code>annot=True</code> で数値も重ねられます。</p>
-      <h4>ファセット（小さな図の並び）</h4>
+      <h3>ファセット（小さな図の並び）</h3>
       <p>カテゴリごとに同じ図を並べて比べたいときは <code>relplot</code> や <code>FacetGrid</code> を使い、<code>col=</code> や <code>row=</code> に列名を渡します。seaborn には練習用の実在データが同梱されており、<code>sns.load_dataset("tips")</code> や <code>sns.load_dataset("penguins")</code> ですぐ読み込めます。</p>
     </div>
 
     <!-- DEMO 3: scatter & correlation -->
     <div class="demo reveal" id="demoScatter">
       <span class="dtag"><span lang="ja">デモ 3</span><span lang="en">Demo 3</span></span>
-      <h4>散布図と相関</h4>
+      <h3>散布図と相関</h3>
       <p class="dnote">点を追加したりプリセットを選ぶと、<b>ピアソンの相関係数</b>と<b>最小二乗法による回帰直線</b>をその場で計算し、SVGで描きます。図の上でクリックすると点を足せます。相関の強さが、点の散らばり（視覚）と数値でどう対応するかを確かめてください。</p>
       <div class="try">
         <span class="tlbl">プリセット</span>
@@ -1250,7 +1253,7 @@ plt.show()</code></pre>
 # total_bill と tip の相関 0.68 などがマスに数値つきで色分けされる</code></pre></div>
 
     <div class="callout tip">
-      <h4>この Step のまとめ</h4>
+      <h3>この Step のまとめ</h3>
       <p>seaborn は「よくある統計の図」を短く描く道具。分布は <code>histplot</code>/<code>kdeplot</code>、関係は <code>scatterplot</code>/<code>regplot</code>、カテゴリ比較は <code>boxplot</code>/<code>violinplot</code>、相関一覧は <code>heatmap</code>、並べるなら <code>relplot</code>。同梱の tips・penguins ですぐ試せます。</p>
     </div>
   </div>
@@ -1272,20 +1275,20 @@ plt.show()</code></pre>
 
     <p class="layer"><span lang="ja">仕組み</span><span lang="en">How it works</span></p>
     <div class="prose">
-      <h4>1. 軸の操作</h4>
+      <h3>1. 軸の操作</h3>
       <p>もっとも多いのが軸の細工です。<b>棒グラフのy軸を0以外から始める</b>と、わずかな差が何倍にも見えます（Step&nbsp;3のデモで体験したとおりです）。逆に、変化を小さく見せたいときに軸を極端に広げることもあります。折れ線でも、縦軸の範囲しだいで傾きの印象は大きく変わります。</p>
-      <h4>2. チェリーピッキング</h4>
+      <h3>2. チェリーピッキング</h3>
       <p>都合のよい期間や対象だけを選んで見せる手口です。上昇に転じた月からグラフを始める、外れ値を黙って除く、といった<b>切り取り</b>で、全体像とは違う印象を与えます。図の「範囲」そのものを疑う視点が大切です。</p>
-      <h4>3. 3Dの乱用と面積・体積の誤用</h4>
+      <h3>3. 3Dの乱用と面積・体積の誤用</h3>
       <p>立体的な棒グラフや円グラフは、奥行きによって手前が大きく見え、正確な比較を妨げます。また、値を<b>円や図形の面積・体積</b>で表すとき、直径や辺の長さを値に比例させてしまうと、面積は2乗・体積は3乗で効くため、差が過大に見えます。長さで比べられる棒グラフのほうが安全です。</p>
-      <h4>4. 二重軸の罠</h4>
+      <h3>4. 二重軸の罠</h3>
       <p>左右で別々のスケールを持つ<b>二重軸</b>は、2本の線の交差や上下関係を、目盛りの取り方しだいで自由に演出できてしまいます。「相関しているように見せる」ための道具になりやすく、使うなら目盛りの根拠を明確にします。</p>
-      <h4>5. 相関の見せかけ</h4>
+      <h3>5. 相関の見せかけ</h3>
       <p>2つの量が一緒に動いていても、それは偶然の一致や、背後の第三の要因によることがあります（見せかけの相関、擬似相関）。<b>相関は因果を意味しません</b>。散布図で強い関係が見えても、「だから一方が他方の原因だ」と結論づけないよう注意します。</p>
     </div>
 
     <div class="callout tip">
-      <h4>この Step のまとめ</h4>
+      <h3>この Step のまとめ</h3>
       <p>誤解を招く図の典型は、軸の操作・チェリーピッキング・3Dや面積の誤用・二重軸・見せかけの相関。作る側としてはこれらを避け、読む側としては「軸の起点」「範囲」「相関と因果」を疑う目を持つこと。これが正直な可視化の土台です。</p>
     </div>
   </div>
@@ -1310,7 +1313,7 @@ plt.show()</code></pre>
 
     <div class="res-grid reveal">
       <div class="res">
-        <h5>公開データセット</h5>
+        <h3>公開データセット</h3>
         <ul>
           <li><b>tips</b>：レストランの会計と心づけ。seaborn に同梱（<code>load_dataset("tips")</code>）。</li>
           <li><b>penguins</b>：3種のペンギンの計測データ。seaborn 同梱。</li>
@@ -1318,7 +1321,7 @@ plt.show()</code></pre>
         </ul>
       </div>
       <div class="res">
-        <h5>ライブラリ</h5>
+        <h3>ライブラリ</h3>
         <ul>
           <li><b>matplotlib</b>：Python の作図の土台。</li>
           <li><b>seaborn</b>：統計的可視化を短く。</li>
@@ -1327,24 +1330,25 @@ plt.show()</code></pre>
         </ul>
       </div>
       <div class="res">
-        <h5>参考書</h5>
+        <h3>参考書</h3>
         <ul>
           <li>Edward Tufte『The Visual Display of Quantitative Information』</li>
           <li>Alberto Cairo『The Truthful Art』</li>
-          <li>藤俊久仁 ほか『データ視覚化のデザイン』</li>
+          <li>永田ゆかり『データ視覚化のデザイン』</li>
         </ul>
       </div>
       <div class="res">
-        <h5>次のモジュールへ</h5>
+        <h3>次のモジュールへ</h3>
         <ul>
-          <li>統計分析（記述統計・推測統計・検定）</li>
-          <li>機械学習の基礎（分類・回帰・評価）</li>
+          <li><a href="causal-inference.html">因果推論</a>（相関と因果を図で切り分ける）</li>
+          <li><a href="statistics.html">統計分析</a>（記述統計・推測統計・検定）</li>
+          <li><a href="machine-learning.html">機械学習</a>（分類・回帰・評価）</li>
         </ul>
       </div>
     </div>
 
     <div class="callout tip">
-      <h4>おつかれさまでした</h4>
+      <h3>おつかれさまでした</h3>
       <p>ここで学んだ「目的から図を選び、正直に設計する」という流れは、あらゆるデータを扱う場面で共通の考え方です。手元のサンプルを書き換えて、3 つのデモをもう一度動かしてみてください。図の見え方がどう変わるかを確かめると、理解がぐっと深まります。</p>
     </div>
   </div>
@@ -1360,28 +1364,28 @@ plt.show()</code></pre>
 
     <div class="res-grid reveal">
       <div class="res">
-        <h5>インタラクティブ可視化</h5>
+        <h3>インタラクティブ可視化</h3>
         <ul>
           <li><b>Plotly・Bokeh</b>：ズームやホバーで詳細を見られる対話的な図をブラウザ上で描く。</li>
           <li><b>Altair</b>：可視化文法（Vega-Lite）にもとづき、宣言的に図を組み立てるライブラリ。</li>
         </ul>
       </div>
       <div class="res">
-        <h5>地理空間とダッシュボード</h5>
+        <h3>地理空間とダッシュボード</h3>
         <ul>
           <li><b>地理空間可視化</b>：地図上にデータを重ねる（GeoPandas など）。</li>
           <li><b>ダッシュボード</b>：指標を継続的に見せるアプリを作る（Streamlit・Dash）。</li>
         </ul>
       </div>
       <div class="res">
-        <h5>大規模データとネットワーク</h5>
+        <h3>大規模データとネットワーク</h3>
         <ul>
           <li><b>大規模データの可視化</b>：数百万点を集約して描く（datashader）。</li>
           <li><b>ネットワーク可視化</b>：ノードとエッジのつながりを図にする（別途ネットワーク分析の話題）。</li>
         </ul>
       </div>
       <div class="res">
-        <h5>色理論とウェブ表現</h5>
+        <h3>色理論とウェブ表現</h3>
         <ul>
           <li><b>色理論とアクセシビリティ</b>：色覚多様性に配慮した配色や、知覚的に均等なカラーマップの設計。</li>
           <li><b>D3.js</b>：ウェブ上で自由度の高い可視化を作るための JavaScript ライブラリ。</li>
@@ -1416,14 +1420,6 @@ plt.show()</code></pre>
       </div>
     </div>
     <div class="foot-grid3">
-      <div>
-        <h3><span lang="ja">連絡先</span><span lang="en">Contact</span></h3>
-        <p class="muted-s">
-          <b>Yuta Kimura</b><br>
-          <span lang="ja">大阪公立大学工業高等専門学校</span><span lang="en">Osaka Metropolitan University College of Technology</span><br>
-          <a href="mailto:y.kimura@omu.ac.jp">y.kimura [at] omu.ac.jp</a>
-        </p>
-      </div>
       <div>
         <h3><span lang="ja">サイト</span><span lang="en">Site</span></h3>
         <p class="muted-s">

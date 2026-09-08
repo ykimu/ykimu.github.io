@@ -613,22 +613,27 @@
 
     <div class="hero-viz">
       <div class="hv-head">
-        <span class="hv-label"><span lang="ja">コーディング規約違反の数</span><span lang="en">Coding-standard violations</span></span>
-        <span class="hv-scale"><span lang="ja">相対</span><span lang="en">relative</span></span>
+        <span class="hv-label"><span lang="ja">規約違反を増やしたパッチの割合（Lang）</span><span lang="en">Patches that added violations (Lang)</span></span>
+        <span class="hv-scale">0 › 100%</span>
       </div>
       <div class="hv-row">
-        <span class="hv-name"><span lang="ja">修正前（基準）</span><span lang="en">Before (base)</span></span>
-        <span class="hv-bar"><span style="width:66%; background:var(--c-code)"></span></span>
-        <span class="hv-val num">100</span>
+        <span class="hv-name"><span lang="ja">独自規約</span><span lang="en">Project</span></span>
+        <span class="hv-bar"><span style="width:49.2%; background:var(--c-code)"></span></span>
+        <span class="hv-val num">49.2%</span>
       </div>
       <div class="hv-row">
-        <span class="hv-name"><span lang="ja">APR適用後</span><span lang="en">After APR</span></span>
-        <span class="hv-bar"><span style="width:92%"></span></span>
-        <span class="hv-val num">≈140</span>
+        <span class="hv-name">Google</span>
+        <span class="hv-bar"><span style="width:60.7%"></span></span>
+        <span class="hv-val num">60.7%</span>
+      </div>
+      <div class="hv-row">
+        <span class="hv-name">Sun</span>
+        <span class="hv-bar"><span style="width:56.6%"></span></span>
+        <span class="hv-val num">56.6%</span>
       </div>
       <p class="hv-cap">
-        <span lang="ja">APRは規約の種類によらず違反を約<b style="color:var(--accent)">40%増加</b>。うち約9〜10%は可読性に影響。</span>
-        <span lang="en">APR increases violations by about <b style="color:var(--accent)">40%</b> regardless of standard; ~9-10% affect readability.</span>
+        <span lang="ja">規約の種類によらず、APRパッチの<b style="color:var(--accent)">約4〜6割</b>が規約違反を増加（Math でも43〜47%）。増えた違反のうち LeftCurly・NeedBraces がそれぞれ約9〜10%で可読性に影響。</span>
+        <span lang="en">Regardless of the standard, <b style="color:var(--accent)">about 40-60%</b> of APR patches add violations (43-47% for Math). Among added violations, LeftCurly and NeedBraces each account for ~9-10% and affect readability.</span>
       </p>
     </div>
   </div>
@@ -638,16 +643,16 @@
   <div class="wrap">
     <div class="stat"><div class="n num">3</div><div class="l"><span lang="ja">OSSプロジェクト（Defects4J）</span><span lang="en">OSS projects (Defects4J)</span></div></div>
     <div class="stat"><div class="n num">32</div><div class="l"><span lang="ja">APRツール</span><span lang="en">APR tools</span></div></div>
-    <div class="stat"><div class="n num"><b>+40</b><span style="font-size:1.2rem">%</span></div><div class="l"><span lang="ja">規約違反の増加</span><span lang="en">more violations</span></div></div>
-    <div class="stat"><div class="n num">9-10<span style="font-size:1.2rem">%</span></div><div class="l"><span lang="ja">可読性に影響する違反</span><span lang="en">affect readability</span></div></div>
+    <div class="stat"><div class="n num"><b>40-60</b><span style="font-size:1.2rem">%</span></div><div class="l"><span lang="ja">違反を増やしたパッチの割合</span><span lang="en">of patches add violations</span></div></div>
+    <div class="stat"><div class="n num">9-10<span style="font-size:1.2rem">%</span></div><div class="l"><span lang="ja">可読性に影響する違反（種類ごと）</span><span lang="en">readability-affecting types (each)</span></div></div>
   </div>
 </div>
 
 <section class="brief">
   <div class="wrap reveal">
     <p class="lead">
-      <span lang="ja">自動プログラム修正（<b>APR: Automated Program Repair</b>）は、不具合修正の負担を減らす技術として研究が進んでいます。しかしその品質評価は、テストに通るか（正しさ）に偏っており、生成されたパッチが<b>コーディング規約や可読性</b>をどれだけ損なうかはほとんど検討されてきませんでした。本研究は、Defects4J の3つのOSSプロジェクト（Lang・Math・Time）に対し 32 のAPRツールが生成したパッチを適用し、Checkstyle を用いて Google / Sun の2規約に照らした違反の増減を定量的に分析しました。</span>
-      <span lang="en">Automated Program Repair (<b>APR</b>) is a growing approach to reduce the burden of fixing defects. Yet patch quality has been judged mainly by test-passing (correctness), and little attention has been paid to how much generated patches harm <b>coding standards and readability</b>. This study applies patches from 32 APR tools to three OSS projects from Defects4J (Lang, Math, Time) and uses Checkstyle to quantify how violations change against the Google and Sun standards.</span>
+      <span lang="ja">自動プログラム修正（<b>APR: Automated Program Repair</b>）は、不具合修正の負担を減らす技術として研究が進んでいます。しかしその品質評価は、テストに通るか（正しさ）に偏っており、生成されたパッチが<b>コーディング規約や可読性</b>をどれだけ損なうかはほとんど検討されてきませんでした。本研究は、Defects4J の3つのOSSプロジェクト（Lang・Math・Time）に対し 32 のAPRツールが生成したパッチを適用し、Checkstyle を用いてプロジェクト独自規約・Google Java Style・Sun Code Conventions の3規約に照らした違反の増減を定量的に分析しました。</span>
+      <span lang="en">Automated Program Repair (<b>APR</b>) is a growing approach to reduce the burden of fixing defects. Yet patch quality has been judged mainly by test-passing (correctness), and little attention has been paid to how much generated patches harm <b>coding standards and readability</b>. This study applies patches from 32 APR tools to three OSS projects from Defects4J (Lang, Math, Time) and uses Checkstyle to quantify how violations change against three standards: the project's own rules, Google Java Style, and Sun Code Conventions.</span>
     </p>
   </div>
 </section>
@@ -657,12 +662,12 @@
     <h2 class="big reveal"><span lang="ja">3つのポイント</span><span lang="en">Three takeaways</span></h2>
     <div class="cards reveal">
       <div class="card">
-        <h3><span class="mk">RQ1</span><span lang="ja">違反は約40%増える</span><span lang="en">~40% more violations</span></h3>
-        <p><span lang="ja">APRが生成したパッチは、規約の種類によらずコーディング規約違反を約40%増やしていました。正しさは満たしても、コードの整い方は犠牲になりがちです。</span><span lang="en">APR patches increased coding-standard violations by about 40% regardless of the standard. Correctness is met, but tidiness suffers.</span></p>
+        <h3><span class="mk">RQ1</span><span lang="ja">パッチの4〜6割が違反を増やす</span><span lang="en">40-60% of patches add violations</span></h3>
+        <p><span lang="ja">APRが生成したパッチのうち、規約の種類によらず約4〜6割がコーディング規約違反を増やしていました。正しさは満たしても、コードの整い方は犠牲になりがちです。</span><span lang="en">Regardless of the standard, about 40-60% of APR patches increased coding-standard violations. Correctness is met, but tidiness suffers.</span></p>
       </div>
       <div class="card">
         <h3><span class="mk">RQ2</span><span lang="ja">多くは軽微、一部は可読性に影響</span><span lang="en">Mostly minor, some hurt readability</span></h3>
-        <p><span lang="ja">増えた違反の多くは軽微でしたが、約9〜10%はソースコードの可読性に影響するものでした。見過ごせない割合が残ります。</span><span lang="en">Most added violations were minor, but about 9-10% affected source-code readability, a non-negligible share.</span></p>
+        <p><span lang="ja">増えた違反の多くは軽微でしたが、波括弧の位置（LeftCurly）や省略（NeedBraces）のように可読性に影響する違反もそれぞれ約9〜10%を占めました。見過ごせない割合が残ります。</span><span lang="en">Most added violations were minor, but readability-affecting types such as brace placement (LeftCurly) and omitted braces (NeedBraces) each account for about 9-10%, a non-negligible share.</span></p>
       </div>
       <div class="card">
         <h3><span class="mk">RQ3</span><span lang="ja">生成方式が似ると違反も似る</span><span lang="en">Similar tools, similar violations</span></h3>
@@ -679,7 +684,7 @@
       <div class="step"><div class="no">1</div><h3><span lang="ja">対象の特定</span><span lang="en">Locate</span></h3><p><span lang="ja">開発者パッチが適用されたファイルを検索し、修正対象を洗い出す。</span><span lang="en">Find the files a developer patch touched to identify repair targets.</span></p></div>
       <div class="step"><div class="no">2</div><h3><span lang="ja">修正前の復元</span><span lang="en">Pre-fix version</span></h3><p><span lang="ja">適用前のファイルを特定し、APR適用の起点をそろえる。</span><span lang="en">Recover the pre-patch file so every APR run starts from the same point.</span></p></div>
       <div class="step"><div class="no">3</div><h3><span lang="ja">APR適用</span><span lang="en">Apply APR</span></h3><p><span lang="ja">32のAPRツールでパッチを生成・適用する。</span><span lang="en">Generate and apply patches with 32 APR tools.</span></p></div>
-      <div class="step"><div class="no">4</div><h3><span lang="ja">違反の計測</span><span lang="en">Measure</span></h3><p><span lang="ja">Checkstyleで Google / Sun 規約の違反を計測し、増減を比較。</span><span lang="en">Run Checkstyle for Google / Sun standards and compare the change.</span></p></div>
+      <div class="step"><div class="no">4</div><h3><span lang="ja">違反の計測</span><span lang="en">Measure</span></h3><p><span lang="ja">Checkstyleで独自・Google・Sun の3規約の違反を計測し、増減を比較。</span><span lang="en">Run Checkstyle for the project, Google and Sun standards and compare the change.</span></p></div>
     </div>
   </div>
 </section>
@@ -697,7 +702,7 @@
       <div class="reveal">
         <h3 style="font-size:1.24rem; font-weight:600; letter-spacing:-.01em"><span lang="ja">分析の要点</span><span lang="en">Method notes</span></h3>
         <ul class="clean">
-          <li><span lang="ja"><b>対象：</b>Defects4J の Lang・Math・Time。<code class="inl">Checkstyle</code> で Google Java Style と Sun Code Conventions を検査。</span><span lang="en"><b>Targets:</b> Lang, Math, Time from Defects4J; <code class="inl">Checkstyle</code> against Google Java Style and Sun Code Conventions.</span></li>
+          <li><span lang="ja"><b>対象：</b>Defects4J の Lang・Math・Time。<code class="inl">Checkstyle</code> でプロジェクト独自規約・Google Java Style・Sun Code Conventions を検査。</span><span lang="en"><b>Targets:</b> Lang, Math, Time from Defects4J; <code class="inl">Checkstyle</code> against the project's own rules, Google Java Style and Sun Code Conventions.</span></li>
           <li><span lang="ja"><b>比較：</b>各ツールの違反傾向をコサイン距離で比較し、生成方式との関係を分析。</span><span lang="en"><b>Comparison:</b> violation tendencies across tools compared by cosine distance to relate them to generation strategy.</span></li>
           <li><span lang="ja"><b>視点：</b>「正しさ」だけでなく「整い方」からAPRを評価。</span><span lang="en"><b>Lens:</b> evaluating APR by tidiness, not correctness alone.</span></li>
         </ul>
@@ -727,8 +732,8 @@
       <div>
         <h3><span lang="ja">論文</span><span lang="en">Paper</span></h3>
         <div class="cite">
-          <span lang="ja">野口優輝, 木村祐太, 伊原彰紀, 大平雅雄「自動生成されたパッチがコーディング規約に与える影響の分析」コンピュータソフトウェア, Vol.42, No.1 (2025), pp.54-68.</span>
-          <span lang="en">Y. Noguchi, Y. Kimura, A. Ihara, and M. Ohira, "An Analysis of the Impact of Automatically-Generated Patches on Coding Standard Violation," Computer Software, Vol.42, No.1 (2025), pp.54-68.</span>
+          <span lang="ja">野口優輝, 木村祐太, 伊原彰紀, 大平雅雄「自動生成されたパッチがコーディング規約違反に与える影響の分析」コンピュータソフトウェア, Vol.42, No.1 (2025), pp.54-68. <a href="https://doi.org/10.11309/jssst.42.1_54" target="_blank" rel="noopener">doi:10.11309/jssst.42.1_54</a></span>
+          <span lang="en">Y. Noguchi, Y. Kimura, A. Ihara, and M. Ohira, "Analysis of the Impact of Automatically Generated Patches on Coding Convention Violations," Computer Software, Vol.42, No.1 (2025), pp.54-68. <a href="https://doi.org/10.11309/jssst.42.1_54" target="_blank" rel="noopener">doi:10.11309/jssst.42.1_54</a></span>
         </div>
       </div>
       <div>

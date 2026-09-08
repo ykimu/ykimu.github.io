@@ -139,7 +139,7 @@
   /* prose */
   .prose{max-width:var(--readw)}
   .prose p{margin:0 0 1em; color:var(--ink-2)}
-  .prose h4{font-family:var(--sans); font-size:1.12rem; font-weight:600; letter-spacing:0; color:var(--ink); margin:1.6em 0 .6em}
+  .prose h3{font-family:var(--sans); font-size:1.12rem; font-weight:600; letter-spacing:0; color:var(--ink); margin:1.6em 0 .6em; line-height:inherit; text-wrap:wrap}
   .prose ul{margin:0 0 1.2em; padding-left:0; list-style:none}
   .prose ul li{position:relative; padding-left:22px; margin:12px 0; color:var(--ink-2)}
   .prose ul li::before{content:""; position:absolute; left:0; top:13px; width:11px; height:1.5px; background:var(--accent)}
@@ -150,7 +150,7 @@
 
   .callout{border-radius:16px; padding:18px 22px; margin:18px 0; max-width:var(--readw);
     background:var(--card); box-shadow:0 0 0 6px var(--shell),0 0 0 6.5px var(--hair),var(--soft)}
-  .callout h4{margin:0 0 6px; font-size:1rem; font-family:var(--sans); font-weight:600; letter-spacing:0; color:var(--ink)}
+  .callout h3{margin:0 0 6px; font-size:1rem; font-family:var(--sans); font-weight:600; letter-spacing:0; color:var(--ink); line-height:inherit; text-wrap:wrap}
   .callout.tip{background:var(--accent-soft)}
   .callout.warn{background:rgba(138,109,59,.08)}
   .callout a{font-weight:600}
@@ -228,14 +228,14 @@
   .grid2{display:grid; grid-template-columns:1fr 1fr; gap:16px; margin:18px 0}
   .box{border-radius:16px; padding:16px 18px; background:var(--card);
     box-shadow:0 0 0 6px var(--shell),0 0 0 6.5px var(--hair),var(--soft)}
-  .box h5{margin:0 0 10px; font-size:.92rem; font-family:var(--sans); font-weight:600; letter-spacing:0; display:flex; align-items:center; gap:7px}
-  .box.pros h5{color:var(--accent-2)}
-  .box.cons h5{color:var(--bad)}
+  .box h4{margin:0 0 10px; font-size:.92rem; font-family:var(--sans); font-weight:600; letter-spacing:0; display:flex; align-items:center; gap:7px}
+  .box.pros h4{color:var(--accent-2)}
+  .box.cons h4{color:var(--bad)}
   .box ul{margin:0; padding-left:18px}
   .box li{margin:6px 0; font-size:.9rem; color:var(--ink-2)}
 
   .meta-row{display:grid; grid-template-columns:1fr 1fr; gap:16px; margin:16px 0}
-  .meta h5{margin:0 0 8px; font-size:.92rem; font-family:var(--sans); font-weight:600; letter-spacing:0; color:var(--accent-2)}
+  .meta h4{margin:0 0 8px; font-size:.92rem; font-family:var(--sans); font-weight:600; letter-spacing:0; color:var(--accent-2)}
   .meta p,.meta li{font-size:.92rem; color:var(--ink-2)}
   .meta ul{margin:0; padding-left:18px}
   .meta p{margin:0}
@@ -244,7 +244,7 @@
   /* numbered procedure steps */
   .steps{border-radius:16px; padding:16px 18px; margin:16px 0; background:var(--card);
     box-shadow:0 0 0 6px var(--shell),0 0 0 6.5px var(--hair),var(--soft)}
-  .steps h5{margin:0 0 10px; font-size:.92rem; font-family:var(--sans); font-weight:600; letter-spacing:0; color:var(--accent-2)}
+  .steps h4{margin:0 0 10px; font-size:.92rem; font-family:var(--sans); font-weight:600; letter-spacing:0; color:var(--accent-2)}
   .steps ol{margin:0; padding:0; list-style:none; counter-reset:st}
   .steps ol li{counter-increment:st; position:relative; padding-left:36px; margin:9px 0; font-size:.92rem; color:var(--ink-2)}
   .steps ol li::before{content:counter(st); position:absolute; left:0; top:3px; width:23px; height:23px; border-radius:50%;
@@ -253,7 +253,7 @@
 
   /* diagrams */
   .diagram-wrap{margin:18px 0; max-width:var(--readw)}
-  .diagram-wrap h5{margin:0 0 8px; font-size:.92rem; font-family:var(--sans); font-weight:600; letter-spacing:0; color:var(--accent-2)}
+  .diagram-wrap h4{margin:0 0 8px; font-size:.92rem; font-family:var(--sans); font-weight:600; letter-spacing:0; color:var(--accent-2)}
   .diagram-wrap svg{display:block; width:100%; height:auto; background:var(--shell);
     border:1px solid var(--hair); border-radius:12px; padding:8px}
   .dg-box{fill:var(--card); stroke:var(--line); stroke-width:1.2}
@@ -286,7 +286,7 @@
   /* equivalence-partition demo */
   .demo{border-radius:16px; padding:20px 22px; margin:22px 0; max-width:var(--readw); background:var(--card);
     box-shadow:0 0 0 6px var(--shell),0 0 0 6.5px var(--hair),var(--soft)}
-  .demo h4{margin:0 0 6px; font-size:1rem; font-family:var(--sans); font-weight:600; color:var(--ink)}
+  .demo h3{margin:0 0 6px; font-size:1rem; font-family:var(--sans); font-weight:600; color:var(--ink); line-height:inherit; text-wrap:wrap; letter-spacing:normal}
   .demo .spec{font-size:.9rem; color:var(--muted); margin:0 0 14px}
   .demo-row{display:flex; gap:10px; flex-wrap:wrap; align-items:center}
   .demo input[type=text]{width:min(220px,100%); padding:10px 16px; border-radius:999px; border:1px solid var(--hair);
@@ -593,7 +593,7 @@
             <div class="megacol">
               <div class="navlabel"><span lang="ja">計画・プロセス</span><span lang="en">Planning &amp; Process</span></div>
               <a href="agile-scrum.html"><span lang="ja">アジャイル開発とスクラム</span><span lang="en">Agile &amp; Scrum</span></a>
-              <a href="project-management.html"><span lang="ja">プロジェクト管理と見積もり</span><span lang="en">Project Management</span></a>
+              <a href="project-management.html"><span lang="ja">プロジェクト管理</span><span lang="en">Project Management</span></a>
               <a href="project-estimation-planning.html"><span lang="ja">プロジェクト計画・見積もり</span><span lang="en">Project Planning &amp; Estimation</span></a>
             </div>
             <div class="megacol">
@@ -699,7 +699,7 @@
       <a href="software-reuse-oss.html"><span lang="ja">ソフトウェア再利用とOSS</span><span lang="en">Software Reuse &amp; OSS</span></a>
       <div class="mobsublabel"><span lang="ja">計画・プロセス</span><span lang="en">Planning &amp; Process</span></div>
       <a href="agile-scrum.html"><span lang="ja">アジャイル開発とスクラム</span><span lang="en">Agile &amp; Scrum</span></a>
-      <a href="project-management.html"><span lang="ja">プロジェクト管理と見積もり</span><span lang="en">Project Management</span></a>
+      <a href="project-management.html"><span lang="ja">プロジェクト管理</span><span lang="en">Project Management</span></a>
       <a href="project-estimation-planning.html"><span lang="ja">プロジェクト計画・見積もり</span><span lang="en">Project Planning &amp; Estimation</span></a>
       <div class="mobsublabel"><span lang="ja">品質・運用</span><span lang="en">Quality &amp; Operations</span></div>
       <a class="here" href="software-testing.html" aria-current="page"><span lang="ja">ソフトウェアテスト学習ガイド</span><span lang="en">Software Testing Guide</span></a>
@@ -755,6 +755,9 @@
 </div>
 
 <main id="main">
+<noscript><div class="wrap" style="padding-top:24px"><p role="alert" style="margin:0; padding:14px 18px; border:1px solid var(--hair, #ddd); border-radius:12px; background:var(--bg-2, #f4f4f2); color:var(--ink, #222); font-size:.95rem">
+  <span lang="ja">この教材はJavaScriptを有効にすると表示されます。</span><span lang="en">This learning material is displayed when JavaScript is enabled.</span>
+</p></div></noscript>
 
 <button class="totop" type="button" aria-label="上へ戻る" title="上へ戻る">&uarr;</button>
 
@@ -842,7 +845,7 @@
     <h2 class="big reveal"><span lang="ja">テストケースをどう選ぶか</span><span lang="en">How to choose test cases</span></h2>
     <div class="prose reveal" id="techProse" style="margin-top:22px"></div>
     <div class="demo reveal" id="epDemo">
-      <h4>体験デモ：等価分割と境界値を試してみよう</h4>
+      <h3>体験デモ：等価分割と境界値を試してみよう</h3>
       <p class="spec">仕様：「入力は <b>10000〜99999 の整数（5桁）</b>のみ有効」。値を入力すると、どの<b>等価クラス</b>に属するか、そして<b>境界値</b>かどうかを判定します。</p>
       <div class="demo-row">
         <input type="text" id="epInput" inputmode="numeric" placeholder="値を入力（例：9999）" aria-label="テスト入力値" oninput="epCheck()">
@@ -938,7 +941,7 @@ const INTRO_HTML = `
 「作ったものが意図どおりに動くことを示す」ことと、「ユーザの手に渡る前に欠陥を見つける」こと。
 この2つを実現するために、開発の様々な段階で、性格の異なるテストを組み合わせて実施します。</p>
 
-<h4>テストの2つの目的</h4>
+<h3>テストの2つの目的</h3>
 <div class="principles">
   <div class="p"><b>① 妥当性確認テスト（validation testing）</b><br>
     <span>ソフトウェアが<strong>要求を満たしていることを示す</strong>ためのテスト。期待どおりの使われ方を反映したテストケースを使い、「正しく動く」ことを実証する。</span></div>
@@ -947,14 +950,14 @@ const INTRO_HTML = `
 </div>
 
 <div class="callout warn">
-  <h4>Dijkstra の警句：テストの根本的な限界</h4>
+  <h3>Dijkstra の警句：テストの根本的な限界</h3>
   「テストはプログラムに<strong>誤りが存在すること</strong>は示せるが、<strong>誤りが存在しないこと</strong>は示せない」
   （E. W. Dijkstra, 1972）。すべてのテストに合格しても、それは「テストした範囲では問題が見つからなかった」
   という意味でしかありません。だからこそ、<strong>限られたテストで何を確かめるか（テストケースの選び方）</strong>が
   テストの本質になります。
 </div>
 
-<h4>プログラムテストの入出力モデル</h4>
+<h3>プログラムテストの入出力モデル</h3>
 <p>プログラムへの入力全体の集合の中には、異常な出力を引き起こす入力の部分集合 <b>I<sub>e</sub></b> が潜んでいます。
 <strong>欠陥テストの最優先事項はこの I<sub>e</sub> に属する入力を見つけること</strong>であり、
 逆に妥当性確認テストでは I<sub>e</sub> の外側にある正常な入力を使って、期待どおりの動作を確認します。</p>
@@ -983,7 +986,7 @@ const INTRO_HTML = `
 <div class="dg-legend">欠陥テストのゴールは、赤い部分集合 I<sub>e</sub>（誤りを示す出力 O<sub>e</sub> につながる入力）をできるだけ効率よく見つけ出すこと。</div>
 </div>
 
-<h4>検証と妥当性確認（V &amp; V）</h4>
+<h3>検証と妥当性確認（V &amp; V）</h3>
 <p>テストは、より広い <b>検証と妥当性確認（Verification and Validation）</b> というプロセスの一部です。
 この2つの問いの違いは、試験でも実務でも繰り返し問われます（Boehm, 1979）。</p>
 <div class="principles">
@@ -997,13 +1000,13 @@ const INTRO_HTML = `
 <strong>市場環境</strong>（早期リリースの価値）に応じて決まります。</p>
 
 <div class="callout">
-  <h4>実行しない検査：インスペクション（静的V&amp;V）</h4>
+  <h3>実行しない検査：インスペクション（静的V&amp;V）</h3>
   V&amp;V にはプログラムを実行するテスト（動的技法）だけでなく、要求・設計・コードを<strong>実行せずに</strong>検査する
   <a href="#inspection">インスペクション（静的技法）</a>もあります。両者は競合ではなく<strong>相互補完</strong>の関係で、
   商用システムの開発では両方を組み合わせるのが標準です。詳しくは下のカタログのカードで説明します。
 </div>
 
-<h4>テストプロセス：商用ソフトウェアが通る3つの段階</h4>
+<h3>テストプロセス：商用ソフトウェアが通る3つの段階</h3>
 <p>商用のソフトウェアシステムは、通常次の3段階のテストを経て世に出ます。
 段階が進むにつれて、テストの主目的が<strong>欠陥の発見</strong>から<strong>妥当性の確認</strong>へと移っていきます。</p>
 <div class="diagram-wrap">
@@ -1033,7 +1036,7 @@ const INTRO_HTML = `
 </div>
 
 <div class="callout tip">
-  <h4>用語メモ：教科書によって呼び名が違う</h4>
+  <h3>用語メモ：教科書によって呼び名が違う</h3>
   この教材は Sommerville の用語に従います。JSTQB/ISTQB などの資格試験や現場では、
   <b>ユニットテスト＝単体テスト</b>、<b>コンポーネントテスト＝統合テスト（結合テスト）</b>と呼ばれることが多く、
   V字モデルでは「単体→統合→システム→受入れ」という段階に対応づけられます。
@@ -1056,7 +1059,7 @@ const TECH_HTML = `
     <span>問題が起きやすい異常な入力をわざと与え、きちんと処理される（クラッシュ・データ破壊しない）ことを確かめるもの。欠陥テストのためのテスト。</span></div>
 </div>
 
-<h4>戦略①：等価分割（equivalence partitioning）と境界値分析</h4>
+<h3>戦略①：等価分割（equivalence partitioning）と境界値分析</h3>
 <p>入力データや出力結果を、「プログラムから見て<strong>同じように扱われるグループ（等価クラス／分割）</strong>」に分けます。
 同じクラスに属する値はどれを試しても検出できる欠陥がほぼ同じなので、<strong>各クラスから代表値を選べば、
 少ないテストで広い範囲をカバー</strong>できます。代表値としては次の2つを選ぶのが定石です。</p>
@@ -1090,7 +1093,7 @@ const TECH_HTML = `
 仕様だけから分割を導けば<a href="#black-box-testing">ブラックボックステスト</a>、コードの中の条件分岐や例外処理の知識で分割を補強すれば
 <a href="#white-box-testing">ホワイトボックステスト</a>の考え方になります。</p>
 
-<h4>戦略②：ガイドラインベースのテスト</h4>
+<h3>戦略②：ガイドラインベースのテスト</h3>
 <p>「プログラマがよくやる誤り」についての経験則（ガイドライン）を使ってテストケースを選ぶ方法です。
 たとえば<strong>シーケンス・配列・リスト</strong>を扱うプログラムなら、次のようなガイドラインが知られています。</p>
 <ul>
@@ -1104,7 +1107,7 @@ const TECH_HTML = `
 どれも「開発者が想定していなさそうな使い方」を突く、<strong>欠陥テストの発想</strong>です。</p>
 
 <div class="callout tip">
-  <h4>テスト設計は「意地悪な想像力」の訓練</h4>
+  <h3>テスト設計は「意地悪な想像力」の訓練</h3>
   よいテスト設計者は、仕様を読むと同時に「どうすれば壊せるか」を考え始めます。
   境界・空・重複・巨大・不正な型・予期しない順序。このページの<a href="#component-testing">コンポーネントテスト</a>や
   <a href="#performance-testing">ストレステスト</a>も、同じ発想の延長線上にあります。
@@ -1114,7 +1117,7 @@ const TECH_HTML = `
 const CLOSING_HTML = `
 <p>最後に、個々のテストの知識を「使える判断力」に変えるための視点をまとめます。</p>
 <div class="callout warn">
-  <h4>テストは品質を「測る」ことはできても「作り込む」ことはできない</h4>
+  <h3>テストは品質を「測る」ことはできても「作り込む」ことはできない</h3>
   テストで欠陥を見つけて直しても、設計そのものが悪ければ品質は上がりません。
   品質は要求・設計・実装の各工程で作り込むものであり、テストはそれを<strong>確かめる</strong>手段です。
   「最後にテストで頑張ればよい」という発想は、手戻りコストの爆発を招きます。
@@ -1122,20 +1125,20 @@ const CLOSING_HTML = `
   できるだけ早い段階でテスト（とインスペクション）を行う「シフトレフト」の考え方が重要です。
 </div>
 <div class="callout tip">
-  <h4>「壊すつもりで」テストする</h4>
+  <h3>「壊すつもりで」テストする</h3>
   自分の書いたプログラムには愛着があり、「動いてほしい」という気持ちがテストを甘くします。
   よいテストの心構えは、経験とガイドラインを使って<strong>ソフトウェアを「壊しにいく」</strong>こと。
   だからこそ、リリーステストは開発チームとは<strong>別の独立したチーム</strong>が担うべきだとされています
   （自分の答案を自分で採点しない、ということです）。
 </div>
 <div class="callout">
-  <h4>可能な限り自動化する</h4>
+  <h3>可能な限り自動化する</h3>
   自動化されたテストは数秒〜数分で全件を再実行でき、変更のたびに回帰テストとして働きます。
   「テストを書くコスト」は一度きりですが、「手動で再テストするコスト」は変更のたびに発生します。
   現代の開発では、自動テスト＋継続的インテグレーション（CI）が品質の生命線です。
 </div>
 
-<h4 style="margin-top:26px">混同しやすい用語・テストの見分け方</h4>
+<h3 style="margin-top:26px">混同しやすい用語・テストの見分け方</h3>
 <p>似ているテスト・用語は、<strong>「誰が」「何のために」</strong>やるのかで見分けます。試験でも実務でも問われるポイントです。</p>
 <table class="cmp-table">
   <tr><th>似ている用語</th><th>見分けるポイント</th></tr>
@@ -1167,9 +1170,9 @@ const CLOSING_HTML = `
     <td>どちらも入力の自動大量生成。ファジングは<b>クラッシュ・脆弱性</b>を探し、プロパティベースは定義した<b>性質の反例</b>を探す（そして最小の反例に自動縮小してくれる）。</td></tr>
 </table>
 
-<h4 style="margin-top:26px">研究者の視点：テストはいま、研究の最前線でもある</h4>
+<h3 style="margin-top:26px">研究者の視点：テストはいま、研究の最前線でもある</h3>
 <div class="callout">
-  <h4>自動テスト生成・自動プログラム修正</h4>
+  <h3>自動テスト生成・自動プログラム修正</h3>
   「テストケースを人間が考える」こと自体を自動化する研究が進んでいます。ランダムな入力を大量生成する
   <strong>ファジング（fuzzing）</strong>はOSSの脆弱性発見で大きな成果を上げ、探索的アルゴリズムでテストを自動生成する
   <strong>サーチベースドテスティング</strong>、さらに失敗するテストを手がかりにパッチを自動生成する
@@ -1178,7 +1181,7 @@ const CLOSING_HTML = `
   ソフトウェア工学のもっとも活発な研究分野の1つです。
 </div>
 
-<h4 style="margin-top:26px">さらに学ぶための文献・資料</h4>
+<h3 style="margin-top:26px">さらに学ぶための文献・資料</h3>
 <ul>
   <li>I. Sommerville『Software Engineering (10th ed.)』Pearson, 2016年, 第8章：本教材の底本</li>
   <li>G. J. Myers ほか『ソフトウェア・テストの技法 第2版』近代科学社：テストケース設計の古典</li>
@@ -2188,7 +2191,7 @@ function renderTest(t, idx){
   const badgeH = `<span class="badge-imp ${BADGE_CLS[t.badge]||'imp1'}">${t.badge}</span>`;
   const analogyH = t.analogy ? `<div class="analogy"><span><b>たとえるなら</b> ${t.analogy}</span></div>` : '';
   const dg = DIAGRAMS[t.id];
-  const diagramH = dg ? `<div class="diagram-wrap"><h5>進め方のイメージ</h5>${dg}</div>` : '';
+  const diagramH = dg ? `<div class="diagram-wrap"><h4>進め方のイメージ</h4>${dg}</div>` : '';
   let codeH = '';
   if(t.hasCode && CODE[t.id]){
     codeH = `
@@ -2217,20 +2220,20 @@ function renderTest(t, idx){
     <div class="pdetail">
       ${analogyH}
       <div class="meta-row">
-        <div class="meta"><h5>実施の目的</h5><p>${t.purpose}</p></div>
-        <div class="meta"><h5>誰が・いつ実施するか</h5><p>${t.who}</p></div>
+        <div class="meta"><h4>実施の目的</h4><p>${t.purpose}</p></div>
+        <div class="meta"><h4>誰が・いつ実施するか</h4><p>${t.who}</p></div>
       </div>
-      <div class="steps"><h5>実施の仕方（進め方）</h5><ol>${stepsLi}</ol></div>
+      <div class="steps"><h4>実施の仕方（進め方）</h4><ol>${stepsLi}</ol></div>
       ${diagramH}
       <div class="grid2">
-        <div class="box pros"><h5>✓ 意識するポイント</h5><ul>${pointsLi}</ul></div>
-        <div class="box cons"><h5>！ 注意点・落とし穴</h5><ul>${cautionsLi}</ul></div>
+        <div class="box pros"><h4>✓ 意識するポイント</h4><ul>${pointsLi}</ul></div>
+        <div class="box cons"><h4>！ 注意点・落とし穴</h4><ul>${cautionsLi}</ul></div>
       </div>
       <div class="meta-row">
-        <div class="meta"><h5>具体例</h5><ul>${exLi}</ul></div>
-        <div class="meta"><h5>混同しやすいものとの違い</h5><p>${t.related}</p></div>
+        <div class="meta"><h4>具体例</h4><ul>${exLi}</ul></div>
+        <div class="meta"><h4>混同しやすいものとの違い</h4><p>${t.related}</p></div>
       </div>
-      <div class="meta" style="margin:16px 0"><h5>現場では（ツール・現代的な実践）</h5><p>${t.modern}</p></div>
+      <div class="meta" style="margin:16px 0"><h4>現場では（ツール・現代的な実践）</h4><p>${t.modern}</p></div>
       ${codeH}
       <label class="learn"><input type="checkbox" onchange="toggleLearned('${t.id}',this)">
         このテストを理解した（習得チェック）</label>

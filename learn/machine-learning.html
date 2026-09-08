@@ -133,7 +133,7 @@
   /* prose */
   .prose{max-width:var(--readw)}
   .prose p{margin:0 0 1em; color:var(--ink-2)}
-  .prose h4{font-family:var(--sans); font-size:1.1rem; font-weight:600; letter-spacing:0; color:var(--ink); margin:1.5em 0 .5em}
+  .prose h3{font-family:var(--sans); font-size:1.1rem; font-weight:600; letter-spacing:0; line-height:inherit; text-wrap:wrap; color:var(--ink); margin:1.5em 0 .5em}
   .prose ul{margin:0 0 1.2em; padding-left:0; list-style:none}
   .prose ul li{position:relative; padding-left:22px; margin:11px 0; color:var(--ink-2)}
   .prose ul li::before{content:""; position:absolute; left:0; top:13px; width:11px; height:1.5px; background:var(--accent)}
@@ -148,7 +148,7 @@
 
   .callout{border-radius:16px; padding:18px 22px; margin:20px 0; max-width:var(--readw);
     background:var(--card); box-shadow:0 0 0 6px var(--shell),0 0 0 6.5px var(--hair),var(--soft)}
-  .callout h4{margin:0 0 6px; font-size:1rem; font-family:var(--sans); font-weight:600; letter-spacing:0; color:var(--ink)}
+  .callout h3{margin:0 0 6px; font-size:1rem; font-family:var(--sans); font-weight:600; letter-spacing:0; line-height:inherit; text-wrap:wrap; color:var(--ink)}
   .callout.tip{background:var(--accent-soft)}
   .callout.warn{background:rgba(138,109,59,.08)}
   .callout p{margin:0; color:var(--ink-2); font-size:.96rem}
@@ -157,14 +157,14 @@
   .grid2{display:grid; grid-template-columns:1fr 1fr; gap:16px; margin:20px 0; max-width:var(--readw)}
   .box{border-radius:16px; padding:16px 20px; background:var(--card);
     box-shadow:0 0 0 6px var(--shell),0 0 0 6.5px var(--hair),var(--soft)}
-  .box h5{margin:0 0 10px; font-size:.92rem; font-family:var(--sans); font-weight:600; letter-spacing:0; color:var(--accent-2); display:flex; align-items:center; gap:7px}
-  .box.lim h5{color:var(--warn)}
+  .box h3{margin:0 0 10px; font-size:.92rem; font-family:var(--sans); font-weight:600; letter-spacing:0; line-height:inherit; text-wrap:wrap; color:var(--accent-2); display:flex; align-items:center; gap:7px}
+  .box.lim h3{color:var(--warn)}
   .box ul{margin:0; padding-left:18px}
   .box li{margin:6px 0; font-size:.92rem; color:var(--ink-2)}
 
   .steps{border-radius:16px; padding:16px 20px; margin:20px 0; max-width:var(--readw); background:var(--card);
     box-shadow:0 0 0 6px var(--shell),0 0 0 6.5px var(--hair),var(--soft)}
-  .steps h5{margin:0 0 10px; font-size:.92rem; font-family:var(--sans); font-weight:600; letter-spacing:0; color:var(--accent-2)}
+  .steps h3{margin:0 0 10px; font-size:.92rem; font-family:var(--sans); font-weight:600; letter-spacing:0; line-height:inherit; text-wrap:wrap; color:var(--accent-2)}
   .steps ol{margin:0; padding:0; list-style:none; counter-reset:st}
   .steps ol li{counter-increment:st; position:relative; padding-left:36px; margin:9px 0; font-size:.94rem; color:var(--ink-2)}
   .steps ol li::before{content:counter(st); position:absolute; left:0; top:2px; width:23px; height:23px; border-radius:50%;
@@ -229,7 +229,7 @@
   .demo .dtag{display:inline-flex; align-items:center; gap:8px; margin:0 0 10px; padding:5px 12px 5px 10px;
     border-radius:999px; background:var(--accent-soft); color:var(--accent-2); font:600 .62rem/1 var(--disp); letter-spacing:.12em; text-transform:uppercase}
   .demo .dtag::before{content:""; width:6px; height:6px; border-radius:50%; background:var(--accent)}
-  .demo h4{margin:0 0 6px; font-size:1.12rem; font-family:var(--sans); font-weight:600; color:var(--ink)}
+  .demo h3{margin:0 0 6px; font-size:1.12rem; font-family:var(--sans); font-weight:600; letter-spacing:0; line-height:inherit; text-wrap:wrap; color:var(--ink)}
   .demo .dnote{font-size:.88rem; color:var(--muted); margin:0 0 16px}
   .demo label.fld{display:block; font:600 .74rem/1 var(--disp); letter-spacing:.08em; text-transform:uppercase; color:var(--muted); margin:0 0 7px}
   .demo textarea,.demo input[type=text]{width:100%; padding:12px 15px; border-radius:12px; border:1px solid var(--hair);
@@ -279,7 +279,8 @@
   .res-grid{display:grid; grid-template-columns:1fr 1fr; gap:16px; margin:20px 0; max-width:var(--readw)}
   @media(max-width:640px){.res-grid{grid-template-columns:1fr}}
   .res{border-radius:16px; padding:18px 20px; background:var(--card); box-shadow:0 0 0 6px var(--shell),0 0 0 6.5px var(--hair),var(--soft)}
-  .res h5{margin:0 0 10px; font-size:.95rem; font-family:var(--sans); font-weight:600; color:var(--accent-2)}
+  .res h3{margin:0 0 10px; font-size:.95rem; font-family:var(--sans); font-weight:600; letter-spacing:0; line-height:inherit; text-wrap:wrap; color:var(--accent-2)}
+  .prose h3 [lang="ja"],.callout h3 [lang="ja"],.box h3 [lang="ja"],.steps h3 [lang="ja"],.demo h3 [lang="ja"],.res h3 [lang="ja"]{word-break:normal}
   .res ul{margin:0; padding-left:0; list-style:none}
   .res li{position:relative; padding-left:20px; margin:8px 0; font-size:.9rem; color:var(--ink-2)}
   .res li::before{content:""; position:absolute; left:0; top:11px; width:9px; height:1.5px; background:var(--accent)}
@@ -289,7 +290,7 @@
   footer{border-top:1px solid var(--line); padding:68px 0 46px; background:var(--bg)}
   footer h3{font-size:.72rem; font-weight:600; letter-spacing:.12em; text-transform:uppercase; color:var(--muted); margin:0 0 1em; font-family:var(--disp)}
   .foot-grid{display:grid; grid-template-columns:1.5fr 1fr; gap:44px}
-  .foot-grid3{display:grid; grid-template-columns:1.3fr 1fr 1fr; gap:44px; margin-top:40px}
+  .foot-grid3{display:grid; grid-template-columns:1.5fr 1fr; gap:44px; margin-top:40px}
   .foot-grid3 a{color:var(--ink-2)}
   .foot-grid3 a:hover{color:var(--accent)}
   .cite{font-size:.98rem; color:var(--ink-2); line-height:1.7; max-width:52ch}
@@ -701,7 +702,9 @@
   <nav class="crumbs" aria-label="パンくず">
     <a href="../index.html"><span lang="ja">ホーム</span><span lang="en">Home</span></a>
     <span class="csep" aria-hidden="true">&rsaquo;</span>
-    <span class="cur" aria-current="page"><span lang="ja">学習コース：機械学習</span><span lang="en">Learn: Machine Learning</span></span>
+    <a href="index.html"><span lang="ja">学習コース</span><span lang="en">Learn</span></a>
+    <span class="csep" aria-hidden="true">&rsaquo;</span>
+    <span class="cur" aria-current="page"><span lang="ja">機械学習</span><span lang="en">Machine Learning</span></span>
   </nav>
 </div>
 
@@ -837,7 +840,7 @@
     </div>
 
     <div class="callout tip">
-      <h4>この Step のまとめ</h4>
+      <h3>この Step のまとめ</h3>
       <p>機械学習は、ルールを書く代わりにデータからパターンを学ばせる技術。教師あり（分類・回帰）・教師なし・強化学習に大別され、目標は手元のデータの暗記ではなく、未知のデータへの<b>汎化</b>です。次の Step からは、まず回帰を手を動かして学びます。</p>
     </div>
   </div>
@@ -859,7 +862,7 @@
 
     <p class="layer"><span lang="ja">仕組み</span><span lang="en">How it works</span></p>
     <div class="prose">
-      <h4>線形回帰と最小二乗法</h4>
+      <h3>線形回帰と最小二乗法</h3>
       <p>入力が1つ（単回帰）のとき、線形回帰は点の集まりに<b>1本の直線</b> y = a + b x を当てはめます。b は傾き、a は切片です。問題は「どの直線が一番よく当てはまるか」です。そこで各点について、実際の値 y と直線の予測値 ŷ とのズレ（<b>残差</b>）を考え、<b>残差の二乗の合計を最小にする</b>直線を選びます。これが<b>最小二乗法（least squares）</b>です。二乗するのは、正負のズレを打ち消し合わせず、大きなズレをより重く見るためです。</p>
       <p>単回帰の最小二乗解は、次の式で求まります（数式的に一意に決まります）。</p>
     </div>
@@ -868,7 +871,7 @@
       <small>x&#772;, y&#772;: x と y の平均　b: 傾き　a: 切片。傾きは「x と y の共分散 / x の分散」に等しくなります。</small>
     </div>
     <div class="prose">
-      <h4>損失関数（MSE）と勾配降下法</h4>
+      <h3>損失関数（MSE）と勾配降下法</h3>
       <p>「当てはまりの悪さ」を測る関数を<b>損失関数（loss function）</b>と呼びます。回帰の定番は<b>平均二乗誤差（MSE: Mean Squared Error）</b>で、残差の二乗の平均です。</p>
     </div>
     <div class="formula">
@@ -877,14 +880,14 @@
     </div>
     <div class="prose">
       <p>単回帰なら上の式で最適解が一発で求まりますが、特徴量が多い一般の場合には、損失を少しずつ小さくする<b>勾配降下法（gradient descent）</b>という反復法がよく使われます。損失関数の「傾き（勾配）」を計算し、損失が下がる向きへパラメータを少しずつ動かす、を繰り返します。1回にどれだけ動かすかを<b>学習率（learning rate）</b>と呼び、大きすぎると発散し、小さすぎるとなかなか収束しません。</p>
-      <h4>当てはまりの良さ（決定係数 R&sup2;）</h4>
+      <h3>当てはまりの良さ（決定係数 R&sup2;）</h3>
       <p>当てはまりを一つの数字で見たいときは<b>決定係数 R&sup2;</b>を使います。1 に近いほど良く、0 なら「常に平均値と答えるのと同じ」、負なら平均より悪い、という目安になります。</p>
     </div>
 
     <!-- DEMO 1: Linear regression fitter -->
     <div class="demo reveal" id="demoReg">
       <span class="dtag"><span lang="ja">デモ 1</span><span lang="en">Demo 1</span></span>
-      <h4>線形回帰フィッター</h4>
+      <h3>線形回帰フィッター</h3>
       <p class="dnote">1 行に 1 点を <code>x, y</code> の形で書きます（点は自由に追加・編集できます）。最小二乗法で直線 y = a + b x を当てはめ、<b>傾き b・切片 a・MSE・R&sup2;</b> を計算して、点と回帰直線を図に描きます。上の式のとおり b と a を求め、予測とのズレの二乗平均が MSE です。</p>
       <label class="fld" for="regInput">データ点（1行 = 1点, x, y）/ Points</label>
       <textarea id="regInput" rows="6" spellcheck="false">1, 2.1
@@ -957,7 +960,7 @@ R2  = 0.332</code></pre></div>
     </div>
 
     <div class="callout tip">
-      <h4>この Step のまとめ</h4>
+      <h3>この Step のまとめ</h3>
       <p>回帰は数値を予測する教師あり学習。線形回帰は最小二乗法で「残差の二乗和が最小の直線」を選び、当てはまりは MSE や R&sup2; で測ります。一般には勾配降下法で損失を少しずつ下げます。次は、数値ではなく<b>クラス</b>を当てる分類に進みます。</p>
     </div>
   </div>
@@ -979,18 +982,18 @@ R2  = 0.332</code></pre></div>
 
     <p class="layer"><span lang="ja">仕組み</span><span lang="en">How it works</span></p>
     <div class="prose">
-      <h4>ロジスティック回帰</h4>
+      <h3>ロジスティック回帰</h3>
       <p>名前に「回帰」とありますが、<b>分類</b>のための手法です。線形回帰のように重みつきの和 z = w&middot;x + b を作り、それを<b>シグモイド関数</b> &sigma;(z) = 1 / (1 + e<sup>&minus;z</sup>) に通します。シグモイドは出力を必ず 0 から 1 の範囲に押し込むので、これを「クラス1である確率」と解釈できます。確率が 0.5 を超えたらクラス1、下回ればクラス0、という具合です。この「クラスの境目」を<b>決定境界（decision boundary）</b>と呼び、ロジスティック回帰では直線（高次元では平面）になります。</p>
-      <h4>k近傍法（k-NN）</h4>
+      <h3>k近傍法（k-NN）</h3>
       <p><b>k近傍法（k-nearest neighbors）</b>は、とても直感的な手法です。新しい点を分類するとき、<b>特徴量空間で近くにある学習データ k 個を探し、その多数決</b>でクラスを決めます。「似たものは同じ仲間」という素朴な考え方です。学習は「データを覚えるだけ」で、予測のときに近さを計算します。k を小さくすると境界が細かく（ノイズに敏感）、大きくすると滑らか（大まかな傾向を重視）になります。近さは通常ユークリッド距離で測るため、特徴量のスケールをそろえておくことが大切です。</p>
-      <h4>決定木</h4>
+      <h3>決定木</h3>
       <p><b>決定木（decision tree）</b>は、「この特徴量がこの値より大きいか？」という<b>Yes/No の質問</b>を枝分かれで重ね、葉にたどり着いたらそこのクラスを答えます。人間が読んで理解しやすいのが長所です。木を深くしすぎると学習データに合わせすぎる（過学習）ので、深さの制限などで抑えます。この決定木を多数束ねたのが、Step&nbsp;6 で扱うランダムフォレストです。</p>
     </div>
 
     <!-- DEMO 2: k-NN -->
     <div class="demo reveal" id="demoKnn">
       <span class="dtag"><span lang="ja">デモ 2</span><span lang="en">Demo 2</span></span>
-      <h4>k近傍法（k-NN）</h4>
+      <h3>k近傍法（k-NN）</h3>
       <p class="dnote">2 クラス（クラス A・クラス B）の学習データが平面上に置いてあります。スライダで<b>クエリ点</b>の位置と <b>k</b>（見る近傍の数）を変えると、クエリ点から最も近い k 個を線で結び、その<b>多数決</b>で予測クラスを表示します。k を変えると判定がどう変わるか試してください。</p>
       <div class="two">
         <div>
@@ -1062,7 +1065,7 @@ clf.fit(X_tr, y_tr)
     </div>
 
     <div class="callout tip">
-      <h4>この Step のまとめ</h4>
+      <h3>この Step のまとめ</h3>
       <p>分類はクラスを当てる教師あり学習。ロジスティック回帰はシグモイドで確率を出す線形モデル、k近傍法は「近い k 個の多数決」、決定木は Yes/No の質問の連鎖です。scikit-learn では分類器を差し替えるだけで比較できます。</p>
     </div>
   </div>
@@ -1084,9 +1087,9 @@ clf.fit(X_tr, y_tr)
 
     <p class="layer"><span lang="ja">仕組み</span><span lang="en">How it works</span></p>
     <div class="prose">
-      <h4>学習データと検証データの分割</h4>
+      <h3>学習データと検証データの分割</h3>
       <p>モデルの本当の実力は、<b>学習に使っていないデータ</b>で測ります。学習データで測ると、丸暗記したモデルほど高得点になり、汎化性能が見えないからです。そこでデータを<b>学習用（train）と検証用（test）に分割</b>し、train で学習し、test で評価します。分類では、クラスの比率を分割の前後で保つ<b>層化抽出（stratify）</b>を使うのが定番です。</p>
-      <h4>混同行列</h4>
+      <h3>混同行列</h3>
       <p>2 クラス分類（陽性 / 陰性）の結果は、<b>混同行列（confusion matrix）</b>にまとめると見通しがよくなります。予測と正解の組み合わせを、次の4つに数えます。</p>
       <ul>
         <li><b>TP（真陽性）</b>：陽性を正しく陽性と予測。</li>
@@ -1094,7 +1097,7 @@ clf.fit(X_tr, y_tr)
         <li><b>FN（偽陰性）</b>：陽性なのに陰性と予測（見逃し）。</li>
         <li><b>TN（真陰性）</b>：陰性を正しく陰性と予測。</li>
       </ul>
-      <h4>評価指標</h4>
+      <h3>評価指標</h3>
       <p>「正解率（accuracy）」だけでは不十分な場合があります。たとえば 99% が陰性のデータでは、全部を陰性と答えるだけで正解率 99% になってしまいます。そこで次の指標を組み合わせて見ます。</p>
       <ul>
         <li><b>正解率（accuracy）</b>：全体のうち正しく当てた割合。(TP + TN) / 全体。</li>
@@ -1102,15 +1105,15 @@ clf.fit(X_tr, y_tr)
         <li><b>再現率（recall）</b>：本当の陽性のうち、正しく拾えた割合。TP / (TP + FN)。見逃しを嫌う場面で重視。</li>
         <li><b>F値（F1）</b>：適合率と再現率の調和平均。2PR / (P + R)。両者のバランスを 1 つの数字で表す。</li>
       </ul>
-      <p>適合率と再現率は、多くの場合トレードオフの関係にあります（片方を上げると片方が下がる）。しきい値を動かしたときの両者の関係を1枚のグラフにしたのが <b>ROC 曲線</b>で、その下の面積を <b>AUC</b> と呼び、1 に近いほど良い分類器という目安になります。</p>
-      <h4>交差検証</h4>
+      <p>適合率と再現率は、多くの場合トレードオフの関係にあります（片方を上げると片方が下がる）。しきい値を動かしたときの<b>真陽性率（＝再現率）</b>と<b>偽陽性率</b>（陰性のうち誤って陽性と判定した割合）の関係を1枚のグラフにしたのが <b>ROC 曲線</b>で、その下の面積を <b>AUC</b> と呼び、1 に近いほど良い分類器という目安になります。なお、適合率と再現率の関係をそのまま描いた図は <b>PR 曲線</b>（Precision-Recall 曲線）と呼び、陽性がまれなデータではこちらのほうが差が見えやすいことがあります。</p>
+      <h3>交差検証</h3>
       <p>train/test の1回の分割だけだと、たまたまの分かれ方で結果がぶれます。そこで、データを k 個に分け、1 個を検証・残りを学習として k 回評価し、平均を取る<b>k分割交差検証（k-fold cross-validation）</b>で、評価を安定させます。</p>
     </div>
 
     <!-- DEMO 3: Confusion matrix & metrics -->
     <div class="demo reveal" id="demoCm">
       <span class="dtag"><span lang="ja">デモ 3</span><span lang="en">Demo 3</span></span>
-      <h4>混同行列と評価指標</h4>
+      <h3>混同行列と評価指標</h3>
       <p class="dnote"><b>正解ラベル</b>と<b>予測ラベル</b>を、それぞれ <code>1</code>（陽性）と <code>0</code>（陰性）の並びで書きます（空白・カンマ区切り、個数は同じにそろえてください）。TP / FP / FN / TN を数えて混同行列にし、<b>正解率・適合率・再現率・F値</b>を計算します。数字を書き換えて、指標がどう動くか確かめてください。</p>
       <div class="two">
         <div>
@@ -1185,7 +1188,7 @@ scores = cross_val_score(clf, X, y, cv=<span class="nu">5</span>, scoring=<span 
 mean = 0.961</code></pre></div>
 
     <div class="callout tip">
-      <h4>この Step のまとめ</h4>
+      <h3>この Step のまとめ</h3>
       <p>評価は「学習に使っていないデータ」で行います。正解率だけでなく、混同行列（TP/FP/FN/TN）から適合率・再現率・F値を見て、目的に合う指標を選びます。交差検証で結果を安定させれば、より信頼できる評価になります。</p>
     </div>
   </div>
@@ -1207,18 +1210,18 @@ mean = 0.961</code></pre></div>
 
     <p class="layer"><span lang="ja">仕組み</span><span lang="en">How it works</span></p>
     <div class="prose">
-      <h4>過学習と未学習</h4>
+      <h3>過学習と未学習</h3>
       <p><b>過学習</b>は、モデルが複雑すぎて、学習データのノイズや偶然のパターンまで覚え込んだ状態です。<b>学習データでは高得点、検証データでは低得点</b>という形で現れます。逆に、モデルが単純すぎてデータの傾向すら捉えられない状態を<b>未学習（underfitting）</b>と呼び、こちらは学習・検証の両方で成績が悪くなります。ちょうど良い複雑さを見つけるのが目標です。</p>
-      <h4>バイアスとバリアンス</h4>
+      <h3>バイアスとバリアンス</h3>
       <p>この綱引きは<b>バイアスとバリアンスのトレードオフ</b>として整理されます。<b>バイアス</b>はモデルの仮定が単純すぎて生じる系統的なズレ（未学習の原因）、<b>バリアンス</b>はデータの小さな違いで予測が大きくぶれる不安定さ（過学習の原因）です。片方を下げると他方が上がりやすく、両者の和を小さくする点を探します。</p>
-      <h4>正則化（L1 / L2）</h4>
+      <h3>正則化（L1 / L2）</h3>
       <p><b>正則化（regularization）</b>は、過学習を抑える代表的な方法です。損失関数に「パラメータ（重み）が大きくなりすぎることへの罰則」を加え、モデルが極端に複雑になるのを防ぎます。回帰では次の2つが有名です。</p>
       <ul>
         <li><b>L2 正則化（Ridge 回帰）</b>：重みの二乗和を罰則に加える。重みを全体的に小さく抑え、なめらかなモデルにする。</li>
         <li><b>L1 正則化（Lasso 回帰）</b>：重みの絶対値の和を罰則に加える。一部の重みをちょうど 0 にする性質があり、<b>特徴量の自動選択</b>にもなる。</li>
       </ul>
       <p>罰則の強さは<b>ハイパーパラメータ</b>（学習前に人が決める値）で調整します。強すぎれば未学習、弱すぎれば過学習になります。</p>
-      <h4>ハイパーパラメータ調整と学習曲線</h4>
+      <h3>ハイパーパラメータ調整と学習曲線</h3>
       <p>最適なハイパーパラメータは、候補を総当たりで試す<b>グリッドサーチ（grid search）</b>を交差検証と組み合わせて探すのが定番です。また、学習データ量や複雑さに対して、学習・検証の成績がどう変化するかを描いた<b>学習曲線（learning curve）</b>を見ると、過学習か未学習かを診断できます。</p>
     </div>
 
@@ -1272,7 +1275,7 @@ grid.fit(X, y)
 best R2    = 0.481</code></pre></div>
 
     <div class="callout tip">
-      <h4>この Step のまとめ</h4>
+      <h3>この Step のまとめ</h3>
       <p>過学習は「学習データでは高得点、検証データでは低得点」。複雑さの綱引きがバイアスとバリアンスです。正則化（L2=Ridge, L1=Lasso）で重みを抑えて過学習を防ぎ、強さはグリッドサーチと交差検証で選びます。</p>
     </div>
   </div>
@@ -1294,16 +1297,16 @@ best R2    = 0.481</code></pre></div>
 
     <p class="layer"><span lang="ja">仕組み</span><span lang="en">How it works</span></p>
     <div class="prose">
-      <h4>アンサンブル学習</h4>
+      <h3>アンサンブル学習</h3>
       <p><b>アンサンブル（ensemble）</b>は、「弱いモデルをたくさん束ねると、単体より強くなる」という考え方です。代表的な組み合わせ方が2つあります。</p>
       <ul>
         <li><b>バギング（bagging）</b>：データを少しずつ変えながら多数のモデルを並列に作り、多数決や平均を取る。ばらつき（バリアンス）を抑える。</li>
         <li><b>ブースティング（boosting）</b>：前のモデルが間違えたところを、次のモデルが重点的に補う形で、順番にモデルを足していく。</li>
       </ul>
       <p><b>ランダムフォレスト（random forest）</b>は、決定木のバギングに「使う特徴量もランダムに選ぶ」工夫を加えたもので、設定が少なくても安定して高い性能を出す定番です。<b>勾配ブースティング（gradient boosting）</b>はブースティングの代表で、表形式データのコンペで長く強さを発揮しています。</p>
-      <h4>教師なし学習のさわり</h4>
+      <h3>教師なし学習のさわり</h3>
       <p>正解ラベルがないデータからも学べます。<b>k-means</b> は、データを k 個のグループ（クラスタ）に分ける手法で、各点を最も近いクラスタ中心に割り当て、中心を更新する、を繰り返します。<b>主成分分析（PCA）</b>は、情報をなるべく保ちながら特徴量の次元を減らす手法で、可視化や前処理に使われます。</p>
-      <h4>深層学習への橋渡し</h4>
+      <h3>深層学習への橋渡し</h3>
       <p>ここまでの手法は、人が設計した特徴量を入力にします。いっぽう画像や音声、テキストのように生の信号が複雑な対象では、特徴量そのものを自動で学ぶ<b>深層学習（ニューラルネットワーク）</b>が力を発揮します。とはいえ、その土台にあるのは、このモジュールで学んだ「損失を定義し、勾配で少しずつ最適化し、汎化を評価する」という同じ考え方です。基礎をしっかり押さえたことが、次の学びを支えます。</p>
     </div>
 
@@ -1333,7 +1336,7 @@ top = np.argsort(rf.feature_importances_)[::-<span class="nu">1</span>][:<span c
 top features = [12  9  6]</code></pre></div>
 
     <div class="callout tip">
-      <h4>この Step のまとめ</h4>
+      <h3>この Step のまとめ</h3>
       <p>アンサンブル（バギング・ブースティング）は弱いモデルを束ねて強くします。ランダムフォレストや勾配ブースティングは表データの定番です。教師なし学習（k-means・PCA）や深層学習も、損失・最適化・汎化という同じ土台の上にあります。</p>
     </div>
   </div>
@@ -1359,7 +1362,7 @@ top features = [12  9  6]</code></pre></div>
 
     <div class="res-grid reveal">
       <div class="res">
-        <h5>公開データセット</h5>
+        <h3>公開データセット</h3>
         <ul>
           <li><b>Iris（あやめ）</b>：3 品種 150 本を4 特徴量で分類。<code>load_iris</code>。</li>
           <li><b>Wine（ワイン）</b>：3 品種 178 件を13 特徴量で分類。<code>load_wine</code>。</li>
@@ -1368,7 +1371,7 @@ top features = [12  9  6]</code></pre></div>
         </ul>
       </div>
       <div class="res">
-        <h5>ライブラリ</h5>
+        <h3>ライブラリ</h3>
         <ul>
           <li><b>scikit-learn</b>：学習・評価・前処理の定番。</li>
           <li><b>NumPy</b>：数値計算・配列演算の基盤。</li>
@@ -1377,7 +1380,7 @@ top features = [12  9  6]</code></pre></div>
         </ul>
       </div>
       <div class="res">
-        <h5>参考書</h5>
+        <h3>参考書</h3>
         <ul>
           <li>平井有三『はじめてのパターン認識』森北出版</li>
           <li>Andreas C. Müller, Sarah Guido『Pythonではじめる機械学習』オライリー</li>
@@ -1385,17 +1388,17 @@ top features = [12  9  6]</code></pre></div>
         </ul>
       </div>
       <div class="res">
-        <h5>次のモジュールへ</h5>
+        <h3>次のモジュールへ</h3>
         <ul>
-          <li>深層学習とニューラルネット</li>
-          <li>大規模言語モデル（LLM）</li>
-          <li>ネットワーク分析</li>
+          <li><a href="deep-learning.html">深層学習</a>（ニューラルネットの基礎）</li>
+          <li><a href="llm.html">大規模言語モデル（LLM）</a></li>
+          <li><a href="statistics.html">統計分析</a>（推定・検定・回帰の基礎）</li>
         </ul>
       </div>
     </div>
 
     <div class="callout tip">
-      <h4>おつかれさまでした</h4>
+      <h3>おつかれさまでした</h3>
       <p>ここで学んだ「損失を定義する → 最適化する → 汎化を評価する」という流れは、機械学習の多くの手法に共通する考え方です。手元のサンプルを書き換えて、3 つのデモをもう一度動かしてみてください。傾きや k、ラベルを変えると値がどう動くかを確かめると、理解がぐっと深まります。</p>
     </div>
   </div>
@@ -1406,26 +1409,26 @@ top features = [12  9  6]</code></pre></div>
     <p class="eyebrow"><span lang="ja">発展トピック</span><span lang="en">Beyond this module</span></p>
     <h2 class="big">このコースでは扱わない、関係する発展トピック</h2>
     <div class="prose" style="margin-top:22px">
-      <p>このモジュールでは、データからパターンを学ぶ「基礎の流れ」を扱いました。いっぽうで機械学習は、より高性能な手法や、モデルを理解・自動化する技術へと広がっています。ここでは、このコースでは踏み込まないものの、知っておくと視野が広がる発展的なトピックを、特に近年よく使われるものを中心に紹介します。深掘りは各自の興味に合わせてどうぞ。深層学習まわりは、別モジュールで改めて扱う予定です。</p>
+      <p>このモジュールでは、データからパターンを学ぶ「基礎の流れ」を扱いました。いっぽうで機械学習は、より高性能な手法や、モデルを理解・自動化する技術へと広がっています。ここでは、このコースでは踏み込まないものの、知っておくと視野が広がる発展的なトピックを、特に近年よく使われるものを中心に紹介します。深掘りは各自の興味に合わせてどうぞ。深層学習まわりは、<a href="deep-learning.html">深層学習</a>のモジュールで改めて扱います。</p>
     </div>
 
     <div class="res-grid reveal">
       <div class="res">
-        <h5>高性能な木ベースの手法</h5>
+        <h3>高性能な木ベースの手法</h3>
         <ul>
           <li><b>勾配ブースティング実装</b>：XGBoost・LightGBM・CatBoost。表形式データで非常に強く、実務やコンペの定番。</li>
           <li><b>サポートベクターマシン（SVM）</b>：マージン最大化とカーネル法で、非線形の決定境界も扱える古典的な強力手法。</li>
         </ul>
       </div>
       <div class="res">
-        <h5>次元削減と可視化</h5>
+        <h3>次元削減と可視化</h3>
         <ul>
           <li><b>t-SNE・UMAP</b>：高次元データを2次元へ落として可視化する非線形の手法。クラスタ構造の把握に役立つ。</li>
           <li><b>PCA の発展</b>：カーネル PCA や、行列分解にもとづく特徴抽出。</li>
         </ul>
       </div>
       <div class="res">
-        <h5>モデル解釈と最適化</h5>
+        <h3>モデル解釈と最適化</h3>
         <ul>
           <li><b>モデル解釈</b>：SHAP や特徴量重要度、部分依存プロットで「なぜその予測か」を説明する。</li>
           <li><b>ハイパーパラメータ最適化</b>：Optuna などによる効率的な探索（ベイズ最適化）。グリッドサーチの発展。</li>
@@ -1433,11 +1436,11 @@ top features = [12  9  6]</code></pre></div>
         </ul>
       </div>
       <div class="res">
-        <h5>学習設定の広がり</h5>
+        <h3>学習設定の広がり</h3>
         <ul>
           <li><b>半教師あり学習</b>：少量のラベルつきと大量のラベルなしデータを併用する。</li>
           <li><b>オンライン学習</b>：データが少しずつ届く状況で、逐次的にモデルを更新する。</li>
-          <li><b>深層学習への接続</b>：生の信号から特徴量そのものを学ぶニューラルネット（別モジュールで扱う予定）。</li>
+          <li><b>深層学習への接続</b>：生の信号から特徴量そのものを学ぶニューラルネット（<a href="deep-learning.html">深層学習</a>のモジュールで扱います）。</li>
         </ul>
       </div>
     </div>
@@ -1469,14 +1472,6 @@ top features = [12  9  6]</code></pre></div>
       </div>
     </div>
     <div class="foot-grid3">
-      <div>
-        <h3><span lang="ja">連絡先</span><span lang="en">Contact</span></h3>
-        <p class="muted-s">
-          <b>Yuta Kimura</b><br>
-          <span lang="ja">大阪公立大学工業高等専門学校</span><span lang="en">Osaka Metropolitan University College of Technology</span><br>
-          <a href="mailto:y.kimura@omu.ac.jp">y.kimura [at] omu.ac.jp</a>
-        </p>
-      </div>
       <div>
         <h3><span lang="ja">サイト</span><span lang="en">Site</span></h3>
         <p class="muted-s">

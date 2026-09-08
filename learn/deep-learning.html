@@ -133,7 +133,7 @@
   /* prose */
   .prose{max-width:var(--readw)}
   .prose p{margin:0 0 1em; color:var(--ink-2)}
-  .prose h4{font-family:var(--sans); font-size:1.1rem; font-weight:600; letter-spacing:0; color:var(--ink); margin:1.5em 0 .5em}
+  .prose h3{font-family:var(--sans); font-size:1.1rem; font-weight:600; letter-spacing:0; line-height:inherit; text-wrap:wrap; color:var(--ink); margin:1.5em 0 .5em}
   .prose ul{margin:0 0 1.2em; padding-left:0; list-style:none}
   .prose ul li{position:relative; padding-left:22px; margin:11px 0; color:var(--ink-2)}
   .prose ul li::before{content:""; position:absolute; left:0; top:13px; width:11px; height:1.5px; background:var(--accent)}
@@ -148,7 +148,7 @@
 
   .callout{border-radius:16px; padding:18px 22px; margin:20px 0; max-width:var(--readw);
     background:var(--card); box-shadow:0 0 0 6px var(--shell),0 0 0 6.5px var(--hair),var(--soft)}
-  .callout h4{margin:0 0 6px; font-size:1rem; font-family:var(--sans); font-weight:600; letter-spacing:0; color:var(--ink)}
+  .callout h3{margin:0 0 6px; font-size:1rem; font-family:var(--sans); font-weight:600; letter-spacing:0; line-height:inherit; text-wrap:wrap; color:var(--ink)}
   .callout.tip{background:var(--accent-soft)}
   .callout.warn{background:rgba(138,109,59,.08)}
   .callout p{margin:0; color:var(--ink-2); font-size:.96rem}
@@ -157,14 +157,14 @@
   .grid2{display:grid; grid-template-columns:1fr 1fr; gap:16px; margin:20px 0; max-width:var(--readw)}
   .box{border-radius:16px; padding:16px 20px; background:var(--card);
     box-shadow:0 0 0 6px var(--shell),0 0 0 6.5px var(--hair),var(--soft)}
-  .box h5{margin:0 0 10px; font-size:.92rem; font-family:var(--sans); font-weight:600; letter-spacing:0; color:var(--accent-2); display:flex; align-items:center; gap:7px}
-  .box.lim h5{color:var(--warn)}
+  .box h3{margin:0 0 10px; font-size:.92rem; font-family:var(--sans); font-weight:600; letter-spacing:0; line-height:inherit; text-wrap:wrap; color:var(--accent-2); display:flex; align-items:center; gap:7px}
+  .box.lim h3{color:var(--warn)}
   .box ul{margin:0; padding-left:18px}
   .box li{margin:6px 0; font-size:.92rem; color:var(--ink-2)}
 
   .steps{border-radius:16px; padding:16px 20px; margin:20px 0; max-width:var(--readw); background:var(--card);
     box-shadow:0 0 0 6px var(--shell),0 0 0 6.5px var(--hair),var(--soft)}
-  .steps h5{margin:0 0 10px; font-size:.92rem; font-family:var(--sans); font-weight:600; letter-spacing:0; color:var(--accent-2)}
+  .steps h3{margin:0 0 10px; font-size:.92rem; font-family:var(--sans); font-weight:600; letter-spacing:0; line-height:inherit; text-wrap:wrap; color:var(--accent-2)}
   .steps ol{margin:0; padding:0; list-style:none; counter-reset:st}
   .steps ol li{counter-increment:st; position:relative; padding-left:36px; margin:9px 0; font-size:.94rem; color:var(--ink-2)}
   .steps ol li::before{content:counter(st); position:absolute; left:0; top:2px; width:23px; height:23px; border-radius:50%;
@@ -229,7 +229,7 @@
   .demo .dtag{display:inline-flex; align-items:center; gap:8px; margin:0 0 10px; padding:5px 12px 5px 10px;
     border-radius:999px; background:var(--accent-soft); color:var(--accent-2); font:600 .62rem/1 var(--disp); letter-spacing:.12em; text-transform:uppercase}
   .demo .dtag::before{content:""; width:6px; height:6px; border-radius:50%; background:var(--accent)}
-  .demo h4{margin:0 0 6px; font-size:1.12rem; font-family:var(--sans); font-weight:600; color:var(--ink)}
+  .demo h3{margin:0 0 6px; font-size:1.12rem; font-family:var(--sans); font-weight:600; letter-spacing:0; line-height:inherit; text-wrap:wrap; color:var(--ink)}
   .demo .dnote{font-size:.88rem; color:var(--muted); margin:0 0 16px}
   .demo label.fld{display:block; font:600 .74rem/1 var(--disp); letter-spacing:.08em; text-transform:uppercase; color:var(--muted); margin:0 0 7px}
   .demo textarea,.demo input[type=text]{width:100%; padding:12px 15px; border-radius:12px; border:1px solid var(--hair);
@@ -279,7 +279,8 @@
   .res-grid{display:grid; grid-template-columns:1fr 1fr; gap:16px; margin:20px 0; max-width:var(--readw)}
   @media(max-width:640px){.res-grid{grid-template-columns:1fr}}
   .res{border-radius:16px; padding:18px 20px; background:var(--card); box-shadow:0 0 0 6px var(--shell),0 0 0 6.5px var(--hair),var(--soft)}
-  .res h5{margin:0 0 10px; font-size:.95rem; font-family:var(--sans); font-weight:600; color:var(--accent-2)}
+  .res h3{margin:0 0 10px; font-size:.95rem; font-family:var(--sans); font-weight:600; letter-spacing:0; line-height:inherit; text-wrap:wrap; color:var(--accent-2)}
+  .prose h3 [lang="ja"],.callout h3 [lang="ja"],.box h3 [lang="ja"],.steps h3 [lang="ja"],.demo h3 [lang="ja"],.res h3 [lang="ja"]{word-break:normal}
   .res ul{margin:0; padding-left:0; list-style:none}
   .res li{position:relative; padding-left:20px; margin:8px 0; font-size:.9rem; color:var(--ink-2)}
   .res li::before{content:""; position:absolute; left:0; top:11px; width:9px; height:1.5px; background:var(--accent)}
@@ -289,7 +290,7 @@
   footer{border-top:1px solid var(--line); padding:68px 0 46px; background:var(--bg)}
   footer h3{font-size:.72rem; font-weight:600; letter-spacing:.12em; text-transform:uppercase; color:var(--muted); margin:0 0 1em; font-family:var(--disp)}
   .foot-grid{display:grid; grid-template-columns:1.5fr 1fr; gap:44px}
-  .foot-grid3{display:grid; grid-template-columns:1.3fr 1fr 1fr; gap:44px; margin-top:40px}
+  .foot-grid3{display:grid; grid-template-columns:1.5fr 1fr; gap:44px; margin-top:40px}
   .foot-grid3 a{color:var(--ink-2)}
   .foot-grid3 a:hover{color:var(--accent)}
   .cite{font-size:.98rem; color:var(--ink-2); line-height:1.7; max-width:52ch}
@@ -701,7 +702,9 @@
   <nav class="crumbs" aria-label="パンくず">
     <a href="../index.html"><span lang="ja">ホーム</span><span lang="en">Home</span></a>
     <span class="csep" aria-hidden="true">&rsaquo;</span>
-    <span class="cur" aria-current="page"><span lang="ja">学習コース：深層学習</span><span lang="en">Learn: Deep Learning</span></span>
+    <a href="index.html"><span lang="ja">学習コース</span><span lang="en">Learn</span></a>
+    <span class="csep" aria-hidden="true">&rsaquo;</span>
+    <span class="cur" aria-current="page"><span lang="ja">深層学習</span><span lang="en">Deep Learning</span></span>
   </nav>
 </div>
 
@@ -830,16 +833,16 @@
 
     <p class="layer"><span lang="ja">仕組み</span><span lang="en">How it works</span></p>
     <div class="prose">
-      <h4>なぜ「深い」のか</h4>
+      <h3>なぜ「深い」のか</h3>
       <p>ここでの「深い（deep）」は、ネットワークの<b>層が多い</b>ことを指します。入力層と出力層の間に、たくさんの隠れ層を挟みます。層を重ねると、前の層が見つけた単純な特徴を組み合わせて、より複雑で抽象的な特徴を作れます。画像なら、はじめの層は線や角のような部品を、中ほどの層は目や車輪のようなパーツを、深い層は顔や車のような全体像を捉える、という具合です。</p>
-      <h4>表現学習</h4>
+      <h3>表現学習</h3>
       <p>従来の機械学習では、「どんな特徴を入力にするか」を人間が設計する必要がありました。たとえば画像なら、色のヒストグラムや輪郭の統計量などを、人手で選んで計算していました。深層学習の核心は、この<b>特徴（表現）そのものをデータから自動で学ぶ</b>ことです。これを<b>表現学習（representation learning）</b>と呼びます。良い特徴を人が作る手間を、学習に肩代わりさせるわけです。</p>
-      <h4>成功を支えた条件</h4>
+      <h3>成功を支えた条件</h3>
       <p>ニューラルネットワークの発想自体は古くからありましたが、実用的な成果が一気に広がったのは近年です。背景には、<b>大量のデータ</b>、<b>GPU による高速な計算</b>、そして<b>学習を安定させる工夫</b>（ReLU などの活性化関数や各種の正則化）の3つがそろったことがあります。</p>
     </div>
 
     <div class="callout tip">
-      <h4>この Step のまとめ</h4>
+      <h3>この Step のまとめ</h3>
       <p>深層学習は、多層のニューラルネットワークで表現を自動的に学ぶ機械学習の手法です。層を深くすることで、単純な特徴から複雑な特徴へと段階的に組み立てられます。次の Step から、その最小単位であるニューロンを組み立てていきます。</p>
     </div>
   </div>
@@ -861,7 +864,7 @@
 
     <p class="layer"><span lang="ja">仕組み</span><span lang="en">How it works</span></p>
     <div class="prose">
-      <h4>1つのニューロン</h4>
+      <h3>1つのニューロン</h3>
       <p>ニューロンは、入力 x に重み w をかけて総和を取り、バイアス b を足します。この加重和を、活性化関数 f に通したものが出力です。重みは「どの入力をどれだけ重視するか」を表し、バイアスは出力の基準をずらす役割を持ちます。</p>
     </div>
     <div class="formula">
@@ -869,7 +872,7 @@
       <small>x: 入力　w: 重み　b: バイアス　f: 活性化関数<br>加重和をとってから、活性化関数で出力の形を決めます。</small>
     </div>
     <div class="prose">
-      <h4>活性化関数</h4>
+      <h3>活性化関数</h3>
       <p>もし活性化関数がなければ、層をいくら重ねても全体は1つの線形変換にまとまってしまい、複雑な関係を表せません。そこで<b>非線形</b>な活性化関数を挟むことが決定的に重要です。代表的なものを3つ挙げます。</p>
       <ul>
         <li><b>シグモイド</b>：出力を 0 から 1 に収める、なめらかなS字。確率のように扱いたい出力に向きます。</li>
@@ -882,14 +885,14 @@
       <small>シグモイドと tanh はなめらかなS字、ReLU は0で折れ曲がる折れ線です。</small>
     </div>
     <div class="prose">
-      <h4>順伝播と多層パーセプトロン</h4>
+      <h3>順伝播と多層パーセプトロン</h3>
       <p>層のニューロンすべてを一度に計算し、その出力を次の層の入力とする。これを出力層まで繰り返すのが<b>順伝播（forward propagation）</b>です。入力層・隠れ層・出力層をすべて全結合でつないだネットワークを<b>多層パーセプトロン</b>と呼び、最も基本的な深層モデルです。次のデモで、活性化関数の形を目で確かめてみましょう。</p>
     </div>
 
     <!-- DEMO 1: activation functions -->
     <div class="demo reveal" id="demoAct">
       <span class="dtag"><span lang="ja">デモ 1</span><span lang="en">Demo 1</span></span>
-      <h4>活性化関数</h4>
+      <h3>活性化関数</h3>
       <p class="dnote">活性化関数を選び、入力 x のスライダを動かすと、曲線と出力値がその場で変わります。シグモイドと tanh はなめらかなS字、ReLU は負を0にする折れ線です。ニューロンは加重和にこの関数をかけて出力を決めます。</p>
       <div class="try">
         <span class="tlbl">関数</span>
@@ -955,7 +958,7 @@ clf.fit(X_tr, y_tr)
 0.976</code></pre></div>
 
     <div class="callout tip">
-      <h4>この Step のまとめ</h4>
+      <h3>この Step のまとめ</h3>
       <p>ニューロンは「加重和 → 活性化関数」。非線形な活性化関数（シグモイド・tanh・ReLU）を挟むことで、層を重ねる意味が生まれます。これらを全結合でつないだ多層パーセプトロンが、深層学習の出発点です。次は、この重みをどう学習するのかを見ます。</p>
     </div>
   </div>
@@ -977,7 +980,7 @@ clf.fit(X_tr, y_tr)
 
     <p class="layer"><span lang="ja">仕組み</span><span lang="en">How it works</span></p>
     <div class="prose">
-      <h4>損失関数</h4>
+      <h3>損失関数</h3>
       <p>まず、予測がどれだけ外れているかを1つの数字で表します。これが<b>損失関数（loss function）</b>です。数値を当てる回帰では<b>平均二乗誤差（MSE）</b>、クラスを当てる分類では<b>交差エントロピー</b>がよく使われます。</p>
     </div>
     <div class="formula">
@@ -985,7 +988,7 @@ clf.fit(X_tr, y_tr)
       <small>t: 正解　y: 予測　N: サンプル数<br>MSE は予測と正解の差の二乗の平均。交差エントロピーは正解クラスの予測確率が高いほど小さくなります。</small>
     </div>
     <div class="prose">
-      <h4>勾配降下法</h4>
+      <h3>勾配降下法</h3>
       <p>損失を小さくするには、各重みを「損失が減る向き」に動かします。損失を重みで微分した<b>勾配</b>は、損失が最も増える向きを指すので、その<b>逆向き</b>に進めば損失は減ります。進む歩幅を決めるのが<b>学習率（learning rate）</b>です。大きすぎると行き過ぎて発散し、小さすぎるとなかなか収束しません。</p>
     </div>
     <div class="formula">
@@ -993,16 +996,16 @@ clf.fit(X_tr, y_tr)
       <small>&eta;（イータ）: 学習率　&part;L/&part;w: 損失を重み w で微分した勾配<br>勾配の逆向きに、学習率のぶんだけ重みを更新します。</small>
     </div>
     <div class="prose">
-      <h4>誤差逆伝播</h4>
+      <h3>誤差逆伝播</h3>
       <p>多層のネットワークでは、各重みの勾配を効率よく求める必要があります。これを担うのが<b>誤差逆伝播（backpropagation）</b>です。出力側で計算した誤差を、合成関数の微分（連鎖律）を使って入力側へ順に伝えていくことで、すべての重みの勾配をまとめて計算します。</p>
-      <h4>エポック・バッチ・学習率</h4>
+      <h3>エポック・バッチ・学習率</h3>
       <p>実際の学習では、データを少しずつ（<b>ミニバッチ</b>）に分けて勾配を計算し、重みを更新します。学習データ全体を1回使い切ることを<b>1エポック</b>と数え、これを何回も繰り返します。エポックを重ねるごとに損失が下がっていくのが、うまく学習できているしるしです。次のデモで、最も単純なニューロン（パーセプトロン）が論理を表せることを確かめましょう。</p>
     </div>
 
     <!-- DEMO 2: perceptron logic gates -->
     <div class="demo reveal" id="demoPerc">
       <span class="dtag"><span lang="ja">デモ 2</span><span lang="en">Demo 2</span></span>
-      <h4>パーセプトロンで論理ゲート</h4>
+      <h3>パーセプトロンで論理ゲート</h3>
       <p class="dnote">2つの入力に重み w1・w2 とバイアス b をかけて合計し、0以上なら1、そうでなければ0を出力します（ステップ活性）。スライダを動かして、AND と OR の真理値表を正しく分けられる重みを探してください。「解」ボタンで正解の一例も見られます。</p>
       <div class="try">
         <span class="tlbl">ゲート</span>
@@ -1050,7 +1053,7 @@ epoch 400  loss 0.0102  w 2.010  b 1.020</code></pre></div>
     </div>
 
     <div class="callout tip">
-      <h4>この Step のまとめ</h4>
+      <h3>この Step のまとめ</h3>
       <p>学習とは、損失関数を勾配降下法で小さくすること。多層では誤差逆伝播で全重みの勾配をまとめて求めます。学習率・エポック・ミニバッチが、学習を回すための基本の設定です。</p>
     </div>
   </div>
@@ -1072,18 +1075,18 @@ epoch 400  loss 0.0102  w 2.010  b 1.020</code></pre></div>
 
     <p class="layer"><span lang="ja">仕組み</span><span lang="en">How it works</span></p>
     <div class="prose">
-      <h4>畳み込み</h4>
+      <h3>畳み込み</h3>
       <p><b>畳み込み（convolution）</b>は、小さな重みの格子（<b>カーネル</b>、たとえば 3×3）を画像の上で少しずつ動かし、重なった部分との<b>積の合計</b>を計算する操作です。カーネルの値によって、縦の線・横の線・輪郭など、特定の模様に強く反応します。1枚のカーネルから作られる出力を<b>特徴マップ（feature map）</b>と呼びます。同じカーネルを画像全体で使い回すので、<b>どこに現れた特徴でも同じように検出でき</b>、重みの数も少なくてすみます。</p>
-      <h4>プーリング</h4>
+      <h3>プーリング</h3>
       <p>畳み込みの後には、しばしば<b>プーリング（pooling）</b>を挟みます。近くの数マスをまとめて代表値を取る操作で、最大値を取る<b>最大プーリング</b>が定番です。これにより特徴マップを小さくし、多少の位置のずれに強くします。</p>
-      <h4>階層的な特徴</h4>
+      <h3>階層的な特徴</h3>
       <p>「畳み込み → 活性化 → プーリング」を何段も重ねると、はじめの層は線や角のような単純な模様を、深い層は目や車輪のような複雑なパーツを捉えるようになります。最後に全結合層で、これらの特徴を使ってクラスを判定します。次のデモで、カーネルによって画像がどう変わるかを見てみましょう。</p>
     </div>
 
     <!-- DEMO 3: convolution filter -->
     <div class="demo reveal" id="demoConv">
       <span class="dtag"><span lang="ja">デモ 3</span><span lang="en">Demo 3</span></span>
-      <h4>畳み込みフィルタ</h4>
+      <h3>畳み込みフィルタ</h3>
       <p class="dnote">左のグレースケール画像（マスをクリックすると明暗が反転します）に、3×3のカーネルを重ねて畳み込みます。各出力マスは、重なる9マスとカーネルの積の合計です。ぼかしは画像を平滑化し、エッジ検出は輪郭を強調します。端はゼロで埋めています。</p>
       <div class="try">
         <span class="tlbl">カーネル</span>
@@ -1177,7 +1180,7 @@ model.compile(optimizer=<span class="st">"adam"</span>,
     </div>
 
     <div class="callout tip">
-      <h4>この Step のまとめ</h4>
+      <h3>この Step のまとめ</h3>
       <p>CNN は、小さなカーネルを画像に滑らせる畳み込みで局所特徴を捉え、プーリングで縮約し、階層的に複雑な特徴を組み立てます。同じカーネルを使い回すため、位置に強く、重みも少なくてすみます。画像認識の主役です。</p>
     </div>
   </div>
@@ -1199,16 +1202,16 @@ model.compile(optimizer=<span class="st">"adam"</span>,
 
     <p class="layer"><span lang="ja">仕組み</span><span lang="en">How it works</span></p>
     <div class="prose">
-      <h4>再帰型ニューラルネットワーク（RNN）</h4>
+      <h3>再帰型ニューラルネットワーク（RNN）</h3>
       <p><b>RNN（recurrent neural network）</b>は、系列を1つずつ順に読み、それまでの内容を<b>状態</b>として次の時刻へ持ち越します。前の情報を覚えながら進めるので、文脈のあるデータに向きます。ただし、系列が長くなると前の情報が薄れやすく（勾配消失）、逐次処理のため学習に時間がかかるという弱点があります。</p>
-      <h4>LSTM と GRU</h4>
+      <h3>LSTM と GRU</h3>
       <p>この弱点をやわらげるのが<b>LSTM</b>や<b>GRU</b>です。情報を「どれだけ覚え、どれだけ忘れ、どれだけ出力するか」を制御する<b>ゲート</b>という仕組みを備え、長い系列でも重要な情報を保ちやすくしています。長らく系列処理の主力でした。</p>
-      <h4>注意機構と Transformer</h4>
+      <h3>注意機構と Transformer</h3>
       <p>さらに大きな転機となったのが<b>注意機構（attention）</b>です。系列を順に読むのではなく、<b>どの要素とどの要素が関係するか</b>を直接・並列に捉えます。これを全面的に採用したのが <b>Transformer</b> で、長い依存関係に強く、大規模な並列学習ができます。現在の大規模言語モデルの土台であり、くわしくは別モジュール（LLM）で扱います。</p>
     </div>
 
     <div class="callout tip">
-      <h4>この Step のまとめ</h4>
+      <h3>この Step のまとめ</h3>
       <p>系列データは、状態を持ち越す RNN、ゲートで記憶を制御する LSTM/GRU、そして関係を並列に捉える注意機構・Transformer へと発展しました。Transformer は現代の言語モデルの中核で、次のステップへの橋渡しになります。</p>
     </div>
   </div>
@@ -1230,9 +1233,9 @@ model.compile(optimizer=<span class="st">"adam"</span>,
 
     <p class="layer"><span lang="ja">仕組み</span><span lang="en">How it works</span></p>
     <div class="prose">
-      <h4>フレームワーク</h4>
+      <h3>フレームワーク</h3>
       <p>深層学習を一から実装するのは大変ですが、<b>PyTorch</b>や<b>TensorFlow / Keras</b>といったフレームワークを使えば、層を並べるだけでモデルを組めます。勾配の計算（誤差逆伝播）は自動で行われ（自動微分）、GPU による高速化も透過的に使えます。</p>
-      <h4>過学習とその対策</h4>
+      <h3>過学習とその対策</h3>
       <p>深層学習は表現力が高いぶん、学習データを丸暗記してしまい、未知のデータで性能が落ちる<b>過学習</b>を起こしやすいです。代表的な対策を挙げます。</p>
       <ul>
         <li><b>ドロップアウト</b>：学習中にニューロンをランダムに一部無効化し、特定の経路に頼りすぎないようにする。</li>
@@ -1240,12 +1243,12 @@ model.compile(optimizer=<span class="st">"adam"</span>,
         <li><b>データ拡張</b>：画像を反転・回転・切り抜きするなどして、学習データを実質的に増やす。</li>
         <li><b>早期終了</b>：検証データの性能が悪化し始めたら学習を止める。</li>
       </ul>
-      <h4>計算資源と転移学習</h4>
+      <h3>計算資源と転移学習</h3>
       <p>大きなモデルの学習には、<b>GPU</b>と大量のデータ、そして時間が必要です。そこで役立つのが<b>転移学習</b>です。大規模なデータであらかじめ学習させた<b>事前学習モデル</b>を土台にして、手元の小さなデータで目的に合わせて微調整します。ゼロから学習するより、少ないデータと計算で高い性能に届きます。この「事前学習＋微調整」の発想が、現代の大規模モデルへとつながっています。</p>
     </div>
 
     <div class="callout tip">
-      <h4>この Step のまとめ</h4>
+      <h3>この Step のまとめ</h3>
       <p>実践ではフレームワーク（PyTorch・TensorFlow/Keras）を使い、過学習にはドロップアウト・正則化・データ拡張・早期終了で対処します。GPU と転移学習が、大きなモデルを現実的にします。基礎の一続きが、ここでひとまず完成しました。</p>
     </div>
   </div>
@@ -1270,7 +1273,7 @@ model.compile(optimizer=<span class="st">"adam"</span>,
 
     <div class="res-grid reveal">
       <div class="res">
-        <h5>公開データセット</h5>
+        <h3>公開データセット</h3>
         <ul>
           <li><b>MNIST</b>：28×28 の手書き数字 7万枚。深層学習の入門で最も有名。</li>
           <li><b>Fashion-MNIST</b>：衣類画像 7万枚。MNIST と同じ形式で、少し難しい。</li>
@@ -1279,7 +1282,7 @@ model.compile(optimizer=<span class="st">"adam"</span>,
         </ul>
       </div>
       <div class="res">
-        <h5>ライブラリ</h5>
+        <h3>ライブラリ</h3>
         <ul>
           <li><b>PyTorch</b>：研究でも実務でも定番の深層学習フレームワーク。</li>
           <li><b>TensorFlow / Keras</b>：簡潔な記述で使えるフレームワーク。</li>
@@ -1288,7 +1291,7 @@ model.compile(optimizer=<span class="st">"adam"</span>,
         </ul>
       </div>
       <div class="res">
-        <h5>参考書</h5>
+        <h3>参考書</h3>
         <ul>
           <li>斎藤康毅『ゼロから作る Deep Learning』オライリー・ジャパン</li>
           <li>岡谷貴之『深層学習』講談社</li>
@@ -1296,17 +1299,17 @@ model.compile(optimizer=<span class="st">"adam"</span>,
         </ul>
       </div>
       <div class="res">
-        <h5>次のモジュールへ</h5>
+        <h3>次のモジュールへ</h3>
         <ul>
-          <li>大規模言語モデル（LLM）</li>
-          <li>自然言語処理（NLP）</li>
-          <li>機械学習の基礎</li>
+          <li><a href="llm.html">大規模言語モデル（LLM）</a></li>
+          <li><a href="nlp.html">自然言語処理（NLP）</a></li>
+          <li><a href="machine-learning.html">機械学習</a>（基礎の復習）</li>
         </ul>
       </div>
     </div>
 
     <div class="callout tip">
-      <h4>おつかれさまでした</h4>
+      <h3>おつかれさまでした</h3>
       <p>ここで学んだ「順伝播で予測し、損失を勾配降下法で小さくする」という流れは、どんなに大きなモデルでも共通の骨格です。3つのデモの設定を書き換えて、もう一度動かしてみてください。活性化関数の形、パーセプトロンの判定、畳み込みの効き方が、手ざわりとして残るはずです。</p>
     </div>
   </div>
@@ -1317,19 +1320,19 @@ model.compile(optimizer=<span class="st">"adam"</span>,
     <p class="eyebrow"><span lang="ja">発展トピック</span><span lang="en">Beyond this module</span></p>
     <h2 class="big">このコースでは扱わない、関係する発展トピック</h2>
     <div class="prose" style="margin-top:22px">
-      <p>このモジュールでは、ニューラルネットワークの「基礎の流れ」を扱いました。いっぽうで近年の深層学習は、より大きなモデルと新しい学習の枠組みを軸に急速に広がっています。ここでは、このコースでは踏み込まないものの、知っておくと視野が広がる発展的なトピックを、特に近年の主流を中心に紹介します。深掘りは各自の興味に合わせてどうぞ。大規模言語モデル（LLM）まわりは、別モジュールで改めて扱う予定です。</p>
+      <p>このモジュールでは、ニューラルネットワークの「基礎の流れ」を扱いました。いっぽうで近年の深層学習は、より大きなモデルと新しい学習の枠組みを軸に急速に広がっています。ここでは、このコースでは踏み込まないものの、知っておくと視野が広がる発展的なトピックを、特に近年の主流を中心に紹介します。深掘りは各自の興味に合わせてどうぞ。大規模言語モデル（LLM）まわりは、<a href="llm.html">大規模言語モデル（LLM）</a>のモジュールで改めて扱います。</p>
     </div>
 
     <div class="res-grid reveal">
       <div class="res">
-        <h5>Transformer と自己注意</h5>
+        <h3>Transformer と自己注意</h3>
         <ul>
           <li><b>自己注意機構</b>：系列の要素どうしの関係を重みづけて捉える、現代の中核アーキテクチャ。</li>
           <li><b>Transformer</b>：注意機構だけで構成し、大規模な並列学習を可能にした。言語だけでなく画像にも広がる（Vision Transformer）。</li>
         </ul>
       </div>
       <div class="res">
-        <h5>生成モデル</h5>
+        <h3>生成モデル</h3>
         <ul>
           <li><b>GAN（敵対的生成ネットワーク）</b>：生成器と識別器を競わせて、本物らしいデータを作る。</li>
           <li><b>拡散モデル</b>：ノイズから徐々に画像を作り出す。近年の画像生成の主流。</li>
@@ -1337,7 +1340,7 @@ model.compile(optimizer=<span class="st">"adam"</span>,
         </ul>
       </div>
       <div class="res">
-        <h5>学習の枠組みと基盤モデル</h5>
+        <h3>学習の枠組みと基盤モデル</h3>
         <ul>
           <li><b>自己教師あり学習</b>：ラベルなしのデータから、データ自身を手がかりに表現を学ぶ。</li>
           <li><b>基盤モデル</b>：大量のデータで事前学習し、多くの課題に転用できる汎用モデル。</li>
@@ -1345,7 +1348,7 @@ model.compile(optimizer=<span class="st">"adam"</span>,
         </ul>
       </div>
       <div class="res">
-        <h5>効率化と広がり</h5>
+        <h3>効率化と広がり</h3>
         <ul>
           <li><b>モデル圧縮・量子化</b>：小型化や低精度化で、少ない資源でも動かせるようにする。</li>
           <li><b>グラフニューラルネットワーク</b>：ノードとエッジで表される関係データを扱う深層モデル。</li>
@@ -1381,14 +1384,6 @@ model.compile(optimizer=<span class="st">"adam"</span>,
       </div>
     </div>
     <div class="foot-grid3">
-      <div>
-        <h3><span lang="ja">連絡先</span><span lang="en">Contact</span></h3>
-        <p class="muted-s">
-          <b>Yuta Kimura</b><br>
-          <span lang="ja">大阪公立大学工業高等専門学校</span><span lang="en">Osaka Metropolitan University College of Technology</span><br>
-          <a href="mailto:y.kimura@omu.ac.jp">y.kimura [at] omu.ac.jp</a>
-        </p>
-      </div>
       <div>
         <h3><span lang="ja">サイト</span><span lang="en">Site</span></h3>
         <p class="muted-s">

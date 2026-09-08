@@ -139,7 +139,7 @@
   /* prose */
   .prose{max-width:var(--readw)}
   .prose p{margin:0 0 1em; color:var(--ink-2)}
-  .prose h4{font-family:var(--sans); font-size:1.12rem; font-weight:600; letter-spacing:0; color:var(--ink); margin:1.6em 0 .6em}
+  .prose h3{font-family:var(--sans); font-size:1.12rem; font-weight:600; letter-spacing:0; color:var(--ink); margin:1.6em 0 .6em; line-height:inherit; text-wrap:wrap}
   .prose ul{margin:0 0 1.2em; padding-left:0; list-style:none}
   .prose ul li{position:relative; padding-left:22px; margin:12px 0; color:var(--ink-2)}
   .prose ul li::before{content:""; position:absolute; left:0; top:13px; width:11px; height:1.5px; background:var(--accent)}
@@ -150,7 +150,7 @@
 
   .callout{border-radius:16px; padding:18px 22px; margin:18px 0; max-width:var(--readw);
     background:var(--card); box-shadow:0 0 0 6px var(--shell),0 0 0 6.5px var(--hair),var(--soft)}
-  .callout h4{margin:0 0 6px; font-size:1rem; font-family:var(--sans); font-weight:600; letter-spacing:0; color:var(--ink)}
+  .callout h3{margin:0 0 6px; font-size:1rem; font-family:var(--sans); font-weight:600; letter-spacing:0; color:var(--ink); line-height:inherit; text-wrap:wrap}
   .callout.tip{background:var(--accent-soft)}
   .callout.warn{background:rgba(138,109,59,.08)}
   .callout a{font-weight:600}
@@ -228,14 +228,14 @@
   .grid2{display:grid; grid-template-columns:1fr 1fr; gap:16px; margin:18px 0}
   .box{border-radius:16px; padding:16px 18px; background:var(--card);
     box-shadow:0 0 0 6px var(--shell),0 0 0 6.5px var(--hair),var(--soft)}
-  .box h5{margin:0 0 10px; font-size:.92rem; font-family:var(--sans); font-weight:600; letter-spacing:0; display:flex; align-items:center; gap:7px}
-  .box.pros h5{color:var(--accent-2)}
-  .box.cons h5{color:var(--bad)}
+  .box h4{margin:0 0 10px; font-size:.92rem; font-family:var(--sans); font-weight:600; letter-spacing:0; display:flex; align-items:center; gap:7px}
+  .box.pros h4{color:var(--accent-2)}
+  .box.cons h4{color:var(--bad)}
   .box ul{margin:0; padding-left:18px}
   .box li{margin:6px 0; font-size:.9rem; color:var(--ink-2)}
 
   .meta-row{display:grid; grid-template-columns:1fr 1fr; gap:16px; margin:16px 0}
-  .meta h5{margin:0 0 8px; font-size:.92rem; font-family:var(--sans); font-weight:600; letter-spacing:0; color:var(--accent-2)}
+  .meta h4{margin:0 0 8px; font-size:.92rem; font-family:var(--sans); font-weight:600; letter-spacing:0; color:var(--accent-2)}
   .meta p,.meta li{font-size:.92rem; color:var(--ink-2)}
   .meta ul{margin:0; padding-left:18px}
   .meta p{margin:0}
@@ -244,7 +244,7 @@
   /* numbered procedure steps */
   .steps{border-radius:16px; padding:16px 18px; margin:16px 0; background:var(--card);
     box-shadow:0 0 0 6px var(--shell),0 0 0 6.5px var(--hair),var(--soft)}
-  .steps h5{margin:0 0 10px; font-size:.92rem; font-family:var(--sans); font-weight:600; letter-spacing:0; color:var(--accent-2)}
+  .steps h4{margin:0 0 10px; font-size:.92rem; font-family:var(--sans); font-weight:600; letter-spacing:0; color:var(--accent-2)}
   .steps ol{margin:0; padding:0; list-style:none; counter-reset:st}
   .steps ol li{counter-increment:st; position:relative; padding-left:36px; margin:9px 0; font-size:.92rem; color:var(--ink-2)}
   .steps ol li::before{content:counter(st); position:absolute; left:0; top:3px; width:23px; height:23px; border-radius:50%;
@@ -253,7 +253,7 @@
 
   /* diagrams */
   .diagram-wrap{margin:18px 0; max-width:var(--readw)}
-  .diagram-wrap h5{margin:0 0 8px; font-size:.92rem; font-family:var(--sans); font-weight:600; letter-spacing:0; color:var(--accent-2)}
+  .diagram-wrap h4{margin:0 0 8px; font-size:.92rem; font-family:var(--sans); font-weight:600; letter-spacing:0; color:var(--accent-2)}
   .diagram-wrap svg{display:block; width:100%; height:auto; background:var(--shell);
     border:1px solid var(--hair); border-radius:12px; padding:8px}
   .dg-box{fill:var(--card); stroke:var(--line); stroke-width:1.2}
@@ -286,7 +286,7 @@
   /* interactive widgets (calculator / visualizer) */
   .demo{border-radius:16px; padding:20px 22px; margin:22px 0; max-width:var(--readw); background:var(--card);
     box-shadow:0 0 0 6px var(--shell),0 0 0 6.5px var(--hair),var(--soft)}
-  .demo h4{margin:0 0 6px; font-size:1rem; font-family:var(--sans); font-weight:600; color:var(--ink)}
+  .demo h3{margin:0 0 6px; font-size:1rem; font-family:var(--sans); font-weight:600; color:var(--ink); line-height:inherit; text-wrap:wrap; letter-spacing:normal}
   .demo .spec{font-size:.9rem; color:var(--muted); margin:0 0 14px}
   .demo-row{display:flex; gap:10px; flex-wrap:wrap; align-items:center}
   .demo input[type=text]{width:min(220px,100%); padding:10px 16px; border-radius:999px; border:1px solid var(--hair);
@@ -308,7 +308,7 @@
   /* metrics calculator */
   .calc-grid{display:grid; grid-template-columns:repeat(auto-fit,minmax(250px,1fr)); gap:16px; margin-top:8px}
   .calc{border-radius:16px; padding:18px 18px; background:var(--card); box-shadow:0 0 0 6px var(--shell),0 0 0 6.5px var(--hair),var(--soft)}
-  .calc h5{margin:0 0 4px; font-size:.98rem; font-family:var(--sans); font-weight:600; color:var(--ink)}
+  .calc h4{margin:0 0 4px; font-size:.98rem; font-family:var(--sans); font-weight:600; color:var(--ink)}
   .calc .formula{font:.82rem/1.5 var(--mono); color:var(--accent-2); background:var(--shell); border:1px solid var(--hair); border-radius:8px; padding:8px 10px; margin:8px 0 14px; display:block}
   .calc label{display:block; font-size:.82rem; color:var(--muted); margin:10px 0 4px}
   .calc input[type=number]{width:100%; padding:9px 13px; border-radius:10px; border:1px solid var(--hair);
@@ -627,7 +627,7 @@
             <div class="megacol">
               <div class="navlabel"><span lang="ja">計画・プロセス</span><span lang="en">Planning &amp; Process</span></div>
               <a href="agile-scrum.html"><span lang="ja">アジャイル開発とスクラム</span><span lang="en">Agile &amp; Scrum</span></a>
-              <a href="project-management.html"><span lang="ja">プロジェクト管理と見積もり</span><span lang="en">Project Management</span></a>
+              <a href="project-management.html"><span lang="ja">プロジェクト管理</span><span lang="en">Project Management</span></a>
               <a href="project-estimation-planning.html"><span lang="ja">プロジェクト計画・見積もり</span><span lang="en">Project Planning &amp; Estimation</span></a>
             </div>
             <div class="megacol">
@@ -733,7 +733,7 @@
       <a href="software-reuse-oss.html"><span lang="ja">ソフトウェア再利用とOSS</span><span lang="en">Software Reuse &amp; OSS</span></a>
       <div class="mobsublabel"><span lang="ja">計画・プロセス</span><span lang="en">Planning &amp; Process</span></div>
       <a href="agile-scrum.html"><span lang="ja">アジャイル開発とスクラム</span><span lang="en">Agile &amp; Scrum</span></a>
-      <a href="project-management.html"><span lang="ja">プロジェクト管理と見積もり</span><span lang="en">Project Management</span></a>
+      <a href="project-management.html"><span lang="ja">プロジェクト管理</span><span lang="en">Project Management</span></a>
       <a href="project-estimation-planning.html"><span lang="ja">プロジェクト計画・見積もり</span><span lang="en">Project Planning &amp; Estimation</span></a>
       <div class="mobsublabel"><span lang="ja">品質・運用</span><span lang="en">Quality &amp; Operations</span></div>
       <a href="software-testing.html"><span lang="ja">ソフトウェアテスト学習ガイド</span><span lang="en">Software Testing Guide</span></a>
@@ -789,6 +789,9 @@
 </div>
 
 <main id="main">
+<noscript><div class="wrap" style="padding-top:24px"><p role="alert" style="margin:0; padding:14px 18px; border:1px solid var(--hair, #ddd); border-radius:12px; background:var(--bg-2, #f4f4f2); color:var(--ink, #222); font-size:.95rem">
+  <span lang="ja">この教材はJavaScriptを有効にすると表示されます。</span><span lang="en">This learning material is displayed when JavaScript is enabled.</span>
+</p></div></noscript>
 
 <button class="totop" type="button" aria-label="上へ戻る" title="上へ戻る">&uarr;</button>
 
@@ -809,7 +812,7 @@
   <div class="wrap">
     <p class="kick">Dependable Systems</p>
     <h1>ディペンダブルシステム：<em>「信頼できる」</em>を工学する</h1>
-    <p class="lead">重要なシステムの障害は、大きな経済損失や情報漏えい、時には人命に関わります。<strong>ディペンダビリティ（信頼できる度合い）</strong>は、可用性・信頼性・安全性・セキュリティ・レジリエンスという<strong>5つの次元</strong>からなる概念です。この教材では、第10〜14回の内容：ディペンダビリティ総論、信頼性工学（フォールト→エラー→障害、POFOD・MTTF、フォールトトレランス）、セーフティ工学（ハザード分析・FTA・セーフティケース）、セキュリティ工学（資産・脅威・脆弱性・統制）、レジリエンス工学（生存性の4戦略）を、<strong>ねらい・仕組み・意識するポイント・注意点</strong>つきで整理しました。信頼性メトリクス計算機、フォールト連鎖の可視化、理解度クイズ付きです。</p>
+    <p class="lead">重要なシステムの障害は、大きな経済損失や情報漏えい、時には人命に関わります。<strong>ディペンダビリティ（信頼できる度合い）</strong>は、可用性・信頼性・安全性・セキュリティ・レジリエンスという<strong>5つの次元</strong>からなる概念です。この教材では、第10〜14章（発展教材）の内容：ディペンダビリティ総論、信頼性工学（フォールト→エラー→障害、POFOD・MTTF、フォールトトレランス）、セーフティ工学（ハザード分析・FTA・セーフティケース）、セキュリティ工学（資産・脅威・脆弱性・統制）、レジリエンス工学（生存性の4戦略）を、<strong>ねらい・仕組み・意識するポイント・注意点</strong>つきで整理しました。信頼性メトリクス計算機、フォールト連鎖の可視化、理解度クイズ付きです。</p>
     <p class="ja-note"><span lang="ja">この教材は日本語のみで提供しています</span><span lang="en">This learning material is available in Japanese only.</span></p>
     <div class="hero-cta">
       <a class="btn ink" href="#concepts" style="padding:12px 22px">
@@ -877,11 +880,11 @@
 
     <!-- Reliability metrics calculator -->
     <div class="demo reveal" id="relCalc" style="margin-top:26px">
-      <h4>① 信頼性メトリクス計算機</h4>
+      <h3>① 信頼性メトリクス計算機</h3>
       <p class="spec">値を変えると即座に <b>POFOD</b>・<b>可用性(AVAIL)</b>・<b>MTBF から求める可用性</b>が計算されます。式も併記しています。信頼性は「ユーザが経験する値」であることを思い出しながら、数字が現実にどう効くかを体感してください。</p>
       <div class="calc-grid">
         <div class="calc">
-          <h5>POFOD（要求あたり故障確率）</h5>
+          <h4>POFOD（要求あたり故障確率）</h4>
           <code class="formula">POFOD = 失敗した要求数 / 総要求数</code>
           <label for="pofodN">総要求数（demands）</label>
           <input type="number" id="pofodN" min="1" step="1" value="10000" oninput="relCalc()">
@@ -890,7 +893,7 @@
           <div class="res" id="pofodRes"></div>
         </div>
         <div class="calc">
-          <h5>可用性（稼働時間から）</h5>
+          <h4>可用性（稼働時間から）</h4>
           <code class="formula">AVAIL = 稼働 / (稼働 + 停止)</code>
           <label for="avUp">稼働時間（時間）</label>
           <input type="number" id="avUp" min="0" step="1" value="8759" oninput="relCalc()">
@@ -899,7 +902,7 @@
           <div class="res" id="avRes"></div>
         </div>
         <div class="calc">
-          <h5>MTBF / MTTR から可用性</h5>
+          <h4>MTBF / MTTR から可用性</h4>
           <code class="formula">AVAIL = MTBF / (MTBF + MTTR)</code>
           <label for="mtbf">MTBF＝平均故障間隔（時間）</label>
           <input type="number" id="mtbf" min="0" step="1" value="1000" oninput="relCalc()">
@@ -913,7 +916,7 @@
 
     <!-- Fault -> Error -> Failure visualizer -->
     <div class="demo reveal" id="faultViz">
-      <h4>② フォールト → エラー → 障害 連鎖ビジュアライザ</h4>
+      <h3>② フォールト → エラー → 障害 連鎖ビジュアライザ</h3>
       <p class="spec">信頼性工学の出発点は、この3語を区別することです。各段を<b>クリック</b>すると定義と、なぜ「フォールトがあっても必ずしも障害にならない」のかが表示されます。</p>
       <div class="fc-wrap">
         <svg viewBox="0 0 760 210" role="img" aria-label="フォールト・エラー・障害の連鎖">
@@ -949,12 +952,12 @@
     </div>
 
     <!-- Mini matching: 5 dimensions -->
-    <h4 class="prose" style="margin-top:34px; font-family:var(--sans); font-size:1.12rem; font-weight:600; color:var(--ink)">③ 5次元あてクイズ：定義から次元を選ぶ</h4>
+    <h3 class="prose" style="margin-top:34px; margin-bottom:1.33em; line-height:inherit; text-wrap:wrap; font-family:var(--sans); font-size:1.12rem; font-weight:600; color:var(--ink)">③ 5次元あてクイズ：定義から次元を選ぶ</h3>
     <p class="prose" style="color:var(--ink-2); max-width:var(--readw)">それぞれの説明が、ディペンダビリティの<b>どの次元</b>を指すかを選んでください。</p>
     <div id="dimMatch"></div>
 
     <!-- Mini matching: threat classification -->
-    <h4 class="prose" style="margin-top:30px; font-family:var(--sans); font-size:1.12rem; font-weight:600; color:var(--ink)">④ 脅威4分類あてクイズ：どのセキュリティ目標への脅威か</h4>
+    <h3 class="prose" style="margin-top:30px; margin-bottom:1.33em; line-height:inherit; text-wrap:wrap; font-family:var(--sans); font-size:1.12rem; font-weight:600; color:var(--ink)">④ 脅威4分類あてクイズ：どのセキュリティ目標への脅威か</h3>
     <p class="prose" style="color:var(--ink-2); max-width:var(--readw)">4種類の攻撃が、<b>機密性・完全性・可用性</b>のどれを脅かすかを選んでください。</p>
     <div id="threatMatch"></div>
   </div>
@@ -988,8 +991,8 @@
 <footer>
   <div class="wrap">
     <div class="cite">
-      <span lang="ja">ディペンダブルシステムの全体像（信頼性・セーフティ・セキュリティ・レジリエンス）を、これから学ぶ方向けにまとめた学習ガイドです。木村祐太のソフトウェア工学の授業教材（第10〜14回）の一部としてご覧いただけます。授業の詳細（評価方法・日程等）は最新のシラバスを確認してください。</span>
-      <span lang="en">A study guide to dependable systems (reliability, safety, security, and resilience), for those new to it. Part of Yuta Kimura's software engineering course materials (Lectures 10-14). For course details such as assessment and schedule, please refer to the latest syllabus.</span>
+      <span lang="ja">ディペンダブルシステムの全体像（信頼性・セーフティ・セキュリティ・レジリエンス）を、これから学ぶ方向けにまとめた学習ガイドです。木村祐太のソフトウェア工学の授業教材（第10〜14章・発展教材）の一部としてご覧いただけます。授業の詳細（評価方法・日程等）は最新のシラバスを確認してください。</span>
+      <span lang="en">A study guide to dependable systems (reliability, safety, security, and resilience), for those new to it. Part of Yuta Kimura's software engineering course materials (Chapters 10-14, advanced material). For course details such as assessment and schedule, please refer to the latest syllabus.</span>
     </div>
     <div class="foot-grid">
       <div>
@@ -1038,7 +1041,7 @@ const INTRO_HTML = `
 制御システムの障害は人命に関わることさえあります。だからこそ、システムが「ちゃんと動く」だけでなく「<strong>信頼できる</strong>」ことを、
 工学的に設計・検証する必要があります。</p>
 
-<h4>ディペンダビリティの5つの次元</h4>
+<h3>ディペンダビリティの5つの次元</h3>
 <p>ディペンダビリティは単一の特性ではなく、次の<strong>5つの次元</strong>を包含する概念です。この教材のカタログも、この5次元に沿って構成されています。</p>
 <div class="principles">
   <div class="p"><b>① 可用性（Availability）</b><br>
@@ -1078,17 +1081,17 @@ const INTRO_HTML = `
 <div class="dg-legend">5次元は独立ではなく相互に関係する。ほかにも修理性・保守性・誤り許容性など多くの特性がディペンダビリティに寄与する。</div>
 </div>
 
-<h4>なぜ重要か：そして「100%」は目指せない</h4>
+<h3>なぜ重要か：そして「100%」は目指せない</h3>
 <p>信頼できないシステムは利用者に拒否・回避され、システム障害のコストは開発コストを上回ることさえあります（損失・訴訟・評判の低下）。
 一方で、ディペンダビリティの向上は<strong>コストを急激に増大させ</strong>、しかも<strong>100%の達成は不可能</strong>です。高いレベルほど検証コストが跳ね上がるため、
 「どの次元を、どこまで」高めるべきかを<strong>見極める</strong>こと（コストと利便性のトレードオフ判断）が工学の要になります。</p>
 <div class="callout warn">
-  <h4>信頼性は「必要条件」だが「十分条件」ではない</h4>
+  <h3>信頼性は「必要条件」だが「十分条件」ではない</h3>
   仕様に完全に適合していても事故は起こり得ます（有名な例：ワルシャワ空港の着陸事故では、仕様どおりに動いた逆噴射ロジックが悲劇につながりました）。
   <strong>信頼性の高さは安全性の必要条件ですが、それだけでは安全を保証しません。</strong>だからこそ、安全性・セキュリティ・レジリエンスは、信頼性とは別の次元として個別に工学する必要があります。
 </div>
 
-<h4>すべての土台となる2つの基本戦略：冗長性と多様性</h4>
+<h3>すべての土台となる2つの基本戦略：冗長性と多様性</h3>
 <p>5次元のいずれを高めるにも、根っこにあるのは次の2つの戦略です。カタログの多くのカードが、この2語の応用になっています。</p>
 <div class="principles">
   <div class="p"><b>冗長性（Redundancy）</b><br>
@@ -1100,7 +1103,7 @@ const INTRO_HTML = `
 <strong>ディペンダブルなプロセス</strong>（明示的・反復可能・監査可能・文書化された、検証活動を全段階に含むプロセス）への投資も欠かせません。</p>
 
 <div class="callout tip">
-  <h4>この教材の歩き方</h4>
+  <h3>この教材の歩き方</h3>
   下の<a href="#concepts">概念カタログ</a>は5次元＝5カテゴリで構成されています。まず<b>総論</b>で全体像をつかみ、
   <b>信頼性 → セーフティ → セキュリティ → レジリエンス</b>と読み進めるのがおすすめです。
   途中の<a href="#tools">計算・可視化ツール</a>で信頼性メトリクスとフォールト連鎖を手で動かし、最後に<a href="#quiz">理解度クイズ</a>で定着を確認しましょう。
@@ -1117,24 +1120,24 @@ const TOOLS_HTML = `
 const CLOSING_HTML = `
 <p>最後に、5次元の知識を「使える判断力」に変えるための視点をまとめます。</p>
 <div class="callout warn">
-  <h4>ディペンダビリティは「作り込む」もの、「後付け」はできない</h4>
+  <h3>ディペンダビリティは「作り込む」もの、「後付け」はできない</h3>
   安全性やセキュリティは、実装が終わってから足し算で付けられるものではありません。設計の選択そのものがリスクを決めるため、
   <strong>設計とリスク評価を反復しながら</strong>作り込む必要があります。テストで「起きないこと」を確認するのは本質的に難しく
   （攻撃者は賢く、時間もこちらより潤沢かもしれません）、だからこそ上流の要求・設計・プロセスが決定的に重要です。
 </div>
 <div class="callout tip">
-  <h4>「障害は必ず起きる」を出発点にする</h4>
+  <h3>「障害は必ず起きる」を出発点にする</h3>
   完全な防御は不可能です。信頼性・安全性で障害の<strong>発生確率を下げる</strong>と同時に、レジリエンスの発想で
   「起きたあとにどう<strong>認識・抵抗・回復・復旧</strong>するか」を設計しておく：この二段構えが、現代のディペンダブルシステムの基本姿勢です。
   重要サービスを識別し、それを守り・素早く復旧できるようにしておきましょう。
 </div>
 <div class="callout">
-  <h4>技術だけでなく「社会技術システム」として考える</h4>
+  <h3>技術だけでなく「社会技術システム」として考える</h3>
   障害の多くは技術ではなく、人間・組織・プロセスに起因します。過度な自動化や硬直した手順は、想定外の事態への対応力（レジリエンス）を奪います。
   運用者を「問題の原因」ではなく「回復の担い手」と捉え、人がシステムの障害に対処できる余地を残すことが大切です。
 </div>
 
-<h4 style="margin-top:26px">混同しやすい用語・概念の見分け方</h4>
+<h3 style="margin-top:26px">混同しやすい用語・概念の見分け方</h3>
 <p>ディペンダビリティの語彙は似たものが多く、試験でも実務でも取り違えが起こります。<strong>「何を守るのか」「誰の視点か」</strong>で見分けます。</p>
 <table class="cmp-table">
   <tr><th>似ている用語</th><th>見分けるポイント</th></tr>
@@ -1160,16 +1163,16 @@ const CLOSING_HTML = `
     <td>回避は「フォールトを<b>作り込まない</b>」、トレランスは「フォールトがあっても<b>動き続ける</b>」。両者は補完し合う。</td></tr>
 </table>
 
-<h4 style="margin-top:26px">研究者の視点：ディペンダビリティは研究の最前線でもある</h4>
+<h3 style="margin-top:26px">研究者の視点：ディペンダビリティは研究の最前線でもある</h3>
 <div class="callout">
-  <h4>形式手法・サイバーレジリエンス・自動化</h4>
+  <h3>形式手法・サイバーレジリエンス・自動化</h3>
   安全クリティカル分野では、形式仕様・形式検証・モデル検査が実務でも使われ始めています。一方でネットワーク化が進み、
   「攻撃は必ず成功する」前提での<strong>サイバーレジリエンス</strong>設計、重要サービスを守る<strong>生存可能性分析</strong>、
   人的要因を織り込んだ<strong>社会技術的レジリエンス</strong>の研究が活発です。「完全な防御は不可能」という現実の中で、
   いかに賢く守り、素早く立て直すか：ソフトウェア工学の重要な研究テーマの1つです。
 </div>
 
-<h4 style="margin-top:26px">さらに学ぶための文献・資料</h4>
+<h3 style="margin-top:26px">さらに学ぶための文献・資料</h3>
 <ul>
   <li>I. Sommerville『Software Engineering (10th ed.)』Pearson, 2016年, 第10〜14章：本教材の底本（Dependable systems / Reliability / Safety / Security / Resilience）</li>
   <li>N. G. Leveson『Engineering a Safer World』MIT Press, 2011年：システム安全（STAMP/STPA）の重要文献</li>
@@ -2160,7 +2163,7 @@ function renderTest(t, idx){
   const badgeH = `<span class="badge-imp ${BADGE_CLS[t.badge]||'imp1'}">${t.badge}</span>`;
   const analogyH = t.analogy ? `<div class="analogy"><span><b>たとえるなら</b> ${t.analogy}</span></div>` : '';
   const dg = DIAGRAMS[t.id];
-  const diagramH = dg ? `<div class="diagram-wrap"><h5>イメージ図</h5>${dg}</div>` : '';
+  const diagramH = dg ? `<div class="diagram-wrap"><h4>イメージ図</h4>${dg}</div>` : '';
   let codeH = '';
   if(t.hasCode && CODE[t.id]){
     codeH = `
@@ -2189,20 +2192,20 @@ function renderTest(t, idx){
     <div class="pdetail">
       ${analogyH}
       <div class="meta-row">
-        <div class="meta"><h5>ねらい・意義</h5><p>${t.purpose}</p></div>
-        <div class="meta"><h5>位置づけ（どこで効くか）</h5><p>${t.who}</p></div>
+        <div class="meta"><h4>ねらい・意義</h4><p>${t.purpose}</p></div>
+        <div class="meta"><h4>位置づけ（どこで効くか）</h4><p>${t.who}</p></div>
       </div>
-      <div class="steps"><h5>仕組み・考え方の流れ</h5><ol>${stepsLi}</ol></div>
+      <div class="steps"><h4>仕組み・考え方の流れ</h4><ol>${stepsLi}</ol></div>
       ${diagramH}
       <div class="grid2">
-        <div class="box pros"><h5>✓ 意識するポイント</h5><ul>${pointsLi}</ul></div>
-        <div class="box cons"><h5>！ 注意点・落とし穴</h5><ul>${cautionsLi}</ul></div>
+        <div class="box pros"><h4>✓ 意識するポイント</h4><ul>${pointsLi}</ul></div>
+        <div class="box cons"><h4>！ 注意点・落とし穴</h4><ul>${cautionsLi}</ul></div>
       </div>
       <div class="meta-row">
-        <div class="meta"><h5>具体例</h5><ul>${exLi}</ul></div>
-        <div class="meta"><h5>混同しやすいものとの違い</h5><p>${t.related}</p></div>
+        <div class="meta"><h4>具体例</h4><ul>${exLi}</ul></div>
+        <div class="meta"><h4>混同しやすいものとの違い</h4><p>${t.related}</p></div>
       </div>
-      <div class="meta" style="margin:16px 0"><h5>補足・発展（実務・研究では）</h5><p>${t.modern}</p></div>
+      <div class="meta" style="margin:16px 0"><h4>補足・発展（実務・研究では）</h4><p>${t.modern}</p></div>
       ${codeH}
       <label class="learn"><input type="checkbox" onchange="toggleLearned('${t.id}',this)">
         この概念を理解した（習得チェック）</label>

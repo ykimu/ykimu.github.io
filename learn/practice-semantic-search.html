@@ -133,7 +133,7 @@
   /* prose */
   .prose{max-width:var(--readw)}
   .prose p{margin:0 0 1em; color:var(--ink-2)}
-  .prose h4{font-family:var(--sans); font-size:1.1rem; font-weight:600; letter-spacing:0; color:var(--ink); margin:1.5em 0 .5em}
+  .prose h3{font-family:var(--sans); font-size:1.1rem; font-weight:600; letter-spacing:0; line-height:inherit; text-wrap:wrap; color:var(--ink); margin:1.5em 0 .5em}
   .prose ul{margin:0 0 1.2em; padding-left:0; list-style:none}
   .prose ul li{position:relative; padding-left:22px; margin:11px 0; color:var(--ink-2)}
   .prose ul li::before{content:""; position:absolute; left:0; top:13px; width:11px; height:1.5px; background:var(--accent)}
@@ -148,7 +148,7 @@
 
   .callout{border-radius:16px; padding:18px 22px; margin:20px 0; max-width:var(--readw);
     background:var(--card); box-shadow:0 0 0 6px var(--shell),0 0 0 6.5px var(--hair),var(--soft)}
-  .callout h4{margin:0 0 6px; font-size:1rem; font-family:var(--sans); font-weight:600; letter-spacing:0; color:var(--ink)}
+  .callout h3{margin:0 0 6px; font-size:1rem; font-family:var(--sans); font-weight:600; letter-spacing:0; line-height:inherit; text-wrap:wrap; color:var(--ink)}
   .callout.tip{background:var(--accent-soft)}
   .callout.warn{background:rgba(138,109,59,.08)}
   .callout p{margin:0; color:var(--ink-2); font-size:.96rem}
@@ -157,14 +157,14 @@
   .grid2{display:grid; grid-template-columns:1fr 1fr; gap:16px; margin:20px 0; max-width:var(--readw)}
   .box{border-radius:16px; padding:16px 20px; background:var(--card);
     box-shadow:0 0 0 6px var(--shell),0 0 0 6.5px var(--hair),var(--soft)}
-  .box h5{margin:0 0 10px; font-size:.92rem; font-family:var(--sans); font-weight:600; letter-spacing:0; color:var(--accent-2); display:flex; align-items:center; gap:7px}
-  .box.lim h5{color:var(--warn)}
+  .box h3{margin:0 0 10px; font-size:.92rem; font-family:var(--sans); font-weight:600; letter-spacing:0; line-height:inherit; text-wrap:wrap; color:var(--accent-2); display:flex; align-items:center; gap:7px}
+  .box.lim h3{color:var(--warn)}
   .box ul{margin:0; padding-left:18px}
   .box li{margin:6px 0; font-size:.92rem; color:var(--ink-2)}
 
   .steps{border-radius:16px; padding:16px 20px; margin:20px 0; max-width:var(--readw); background:var(--card);
     box-shadow:0 0 0 6px var(--shell),0 0 0 6.5px var(--hair),var(--soft)}
-  .steps h5{margin:0 0 10px; font-size:.92rem; font-family:var(--sans); font-weight:600; letter-spacing:0; color:var(--accent-2)}
+  .steps h3{margin:0 0 10px; font-size:.92rem; font-family:var(--sans); font-weight:600; letter-spacing:0; line-height:inherit; text-wrap:wrap; color:var(--accent-2)}
   .steps ol{margin:0; padding:0; list-style:none; counter-reset:st}
   .steps ol li{counter-increment:st; position:relative; padding-left:36px; margin:9px 0; font-size:.94rem; color:var(--ink-2)}
   .steps ol li::before{content:counter(st); position:absolute; left:0; top:2px; width:23px; height:23px; border-radius:50%;
@@ -229,7 +229,7 @@
   .demo .dtag{display:inline-flex; align-items:center; gap:8px; margin:0 0 10px; padding:5px 12px 5px 10px;
     border-radius:999px; background:var(--accent-soft); color:var(--accent-2); font:600 .62rem/1 var(--disp); letter-spacing:.12em; text-transform:uppercase}
   .demo .dtag::before{content:""; width:6px; height:6px; border-radius:50%; background:var(--accent)}
-  .demo h4{margin:0 0 6px; font-size:1.12rem; font-family:var(--sans); font-weight:600; color:var(--ink)}
+  .demo h3{margin:0 0 6px; font-size:1.12rem; font-family:var(--sans); font-weight:600; letter-spacing:0; line-height:inherit; text-wrap:wrap; color:var(--ink)}
   .demo .dnote{font-size:.88rem; color:var(--muted); margin:0 0 16px}
   .demo label.fld{display:block; font:600 .74rem/1 var(--disp); letter-spacing:.08em; text-transform:uppercase; color:var(--muted); margin:0 0 7px}
   .demo textarea,.demo input[type=text]{width:100%; padding:12px 15px; border-radius:12px; border:1px solid var(--hair);
@@ -279,7 +279,8 @@
   .res-grid{display:grid; grid-template-columns:1fr 1fr; gap:16px; margin:20px 0; max-width:var(--readw)}
   @media(max-width:640px){.res-grid{grid-template-columns:1fr}}
   .res{border-radius:16px; padding:18px 20px; background:var(--card); box-shadow:0 0 0 6px var(--shell),0 0 0 6.5px var(--hair),var(--soft)}
-  .res h5{margin:0 0 10px; font-size:.95rem; font-family:var(--sans); font-weight:600; color:var(--accent-2)}
+  .res h3{margin:0 0 10px; font-size:.95rem; font-family:var(--sans); font-weight:600; letter-spacing:0; line-height:inherit; text-wrap:wrap; color:var(--accent-2)}
+  .prose h3 [lang="ja"],.callout h3 [lang="ja"],.box h3 [lang="ja"],.steps h3 [lang="ja"],.demo h3 [lang="ja"],.res h3 [lang="ja"]{word-break:normal}
   .res ul{margin:0; padding-left:0; list-style:none}
   .res li{position:relative; padding-left:20px; margin:8px 0; font-size:.9rem; color:var(--ink-2)}
   .res li::before{content:""; position:absolute; left:0; top:11px; width:9px; height:1.5px; background:var(--accent)}
@@ -289,7 +290,7 @@
   footer{border-top:1px solid var(--line); padding:68px 0 46px; background:var(--bg)}
   footer h3{font-size:.72rem; font-weight:600; letter-spacing:.12em; text-transform:uppercase; color:var(--muted); margin:0 0 1em; font-family:var(--disp)}
   .foot-grid{display:grid; grid-template-columns:1.5fr 1fr; gap:44px}
-  .foot-grid3{display:grid; grid-template-columns:1.3fr 1fr 1fr; gap:44px; margin-top:40px}
+  .foot-grid3{display:grid; grid-template-columns:1.5fr 1fr; gap:44px; margin-top:40px}
   .foot-grid3 a{color:var(--ink-2)}
   .foot-grid3 a:hover{color:var(--accent)}
   .cite{font-size:.98rem; color:var(--ink-2); line-height:1.7; max-width:52ch}
@@ -821,19 +822,19 @@
     </div>
     <div class="res-grid reveal">
       <div class="res">
-        <h5><a href="nlp.html">自然言語処理（NLP）</a></h5>
+        <h3><a href="nlp.html">自然言語処理（NLP）</a></h3>
         <ul>
           <li>前処理・トークン化と、Bag-of-Words から TF-IDF への流れ。コサイン類似度の考え方も含め、<b>Step 2・Step 3</b>の土台になります。</li>
         </ul>
       </div>
       <div class="res">
-        <h5><a href="llm.html">大規模言語モデル（LLM）</a></h5>
+        <h3><a href="llm.html">大規模言語モデル（LLM）</a></h3>
         <ul>
           <li>Transformer と文埋め込み。意味をベクトルで表す仕組みが、<b>Step 4</b>の意味検索の中心です。</li>
         </ul>
       </div>
       <div class="res">
-        <h5><a href="data-preprocessing.html">開発データの前処理</a></h5>
+        <h3><a href="data-preprocessing.html">開発データの前処理</a></h3>
         <ul>
           <li>正規化や不要データの除去といった、テキストをそろえる基本作業。<b>Step 1・Step 2</b>で軽く使います。</li>
         </ul>
@@ -849,7 +850,7 @@
     <h2 class="big">このページのコードを、そのまま動かす</h2>
     <div class="demo reveal" style="margin-top:22px">
       <span class="dtag"><span lang="ja">Colab / Jupyter</span><span lang="en">Colab / Jupyter</span></span>
-      <h4>意味で検索するノートブック</h4>
+      <h3>意味で検索するノートブック</h3>
       <p class="dnote">このページで読むコードと同じ内容を、上から順に実行できるノートブックにまとめてあります。Colab で開けば、インストール込みで環境構築なしにそのまま動かせます。手元の Jupyter で動かしたい場合は .ipynb をダウンロードしてください。</p>
       <div class="hero-cta" style="margin-top:6px">
         <a class="btn ink" href="https://colab.research.google.com/github/ykimu/ykimu.github.io/blob/main/learn/notebooks/practice-semantic-search.ipynb" target="_blank" rel="noopener" style="padding:12px 22px">
@@ -900,7 +901,7 @@ space shuttle and how long it takes to circle the earth once it has
 reached low earth orbit.</code></pre></div>
 
     <div class="callout tip">
-      <h4>この Step のまとめ</h4>
+      <h3>この Step のまとめ</h3>
       <p><code>fetch_20newsgroups</code> で実在のコーパスから文書を読み込みました。話題の異なる文書が混ざっているので、次の前処理でそろえたあと、検索が話題をきちんと当てられるかを確かめられます。</p>
     </div>
   </div>
@@ -941,7 +942,7 @@ clean = [d <span class="kw">for</span> d <span class="kw">in</span> clean <span 
 i was wondering if anyone could tell me more about the orbit of the space shuttle and how long it takes to circle</code></pre></div>
 
     <div class="callout tip">
-      <h4>この Step のまとめ</h4>
+      <h3>この Step のまとめ</h3>
       <p>小文字化と記号の除去でテキストをそろえ、短すぎる文書を落としました。ここで整えた <code>clean</code> が TF-IDF 検索の入力になります。埋め込みには元の文をそのまま渡す点に注意してください。</p>
     </div>
   </div>
@@ -962,7 +963,7 @@ i was wondering if anyone could tell me more about the orbit of the space shuttl
       <p>scikit-learn の <code>TfidfVectorizer</code> がベクトル化を、<code>cosine_similarity</code> が類似度計算を担います。英語のストップワードを除き、2文書未満にしか出ない語（<code>min_df=2</code>）を落として語彙を引き締めます。</p>
     </div>
     <div class="formula">
-      tf-idf(t, d) <span class="op">=</span> tf(t, d) <span class="op">&times;</span> log( (1+N) <span class="op">/</span> (1+df(t)) ) <span class="op">+</span> 1
+      tf-idf(t, d) <span class="op">=</span> tf(t, d) <span class="op">&times;</span> ( log( (1+N) <span class="op">/</span> (1+df(t)) ) <span class="op">+</span> 1 )
       <small>N: 全文書数　df(t): 語 t を含む文書数（scikit-learn 既定の平滑化つき idf）<br>ベクトルは L2 正規化され、コサイン類似度＝正規化ベクトルの内積になります。</small>
     </div>
     <div class="code-wrap attached">
@@ -992,7 +993,7 @@ doc_matrix = vectorizer.fit_transform(clean)
     <!-- DEMO: TF-IDF mini search -->
     <div class="demo reveal" id="demoSearch">
       <span class="dtag"><span lang="ja">デモ</span><span lang="en">Demo</span></span>
-      <h4>TF-IDF ミニ検索</h4>
+      <h3>TF-IDF ミニ検索</h3>
       <p class="dnote">6つの短い英文を対象に、TF-IDF でクエリに近い文を順位付けします（scikit-learn と同じ平滑化つき idf・L2 正規化・コサイン類似度）。スコアの源は語の重なりなので、同義語や言い換えでは0点になりやすいことを体感できます。たとえば「space vehicle」は、宇宙の文ではなく "vehicle" を含む車の文を上位に出します。意味でのマッチはブラウザでは動かせないため、ここは TF-IDF 側だけを示します。</p>
       <label class="fld" for="searchInput">クエリ / Query</label>
       <input type="text" id="searchInput" value="rocket orbit" spellcheck="false">
@@ -1007,7 +1008,7 @@ doc_matrix = vectorizer.fit_transform(clean)
     </div>
 
     <div class="callout tip">
-      <h4>この Step のまとめ</h4>
+      <h3>この Step のまとめ</h3>
       <p>TF-IDF でベクトル化し、コサイン類似度で文書を並べる検索ができました。語がよく一致する文書を確実に、しかも高速に取り出せます。弱点は言い換えです。次は、その弱点を補う意味検索を作ります。</p>
     </div>
   </div>
@@ -1051,11 +1052,12 @@ doc_emb = model.encode(docs, batch_size=<span class="nu">32</span>, show_progres
     </div>
     <div class="code-out"><span class="olbl">出力例 / Output</span><pre><code>embeddings: (200, 384)
 0.671  A rocket has to reach orbit velocity before the engines
-0.633  I was wondering about the orbit of the space shuttle and
+0.633  I was wondering if anyone could tell me more about the orbit
 0.588  Once in orbit the satellite fires small thrusters to adjust</code></pre></div>
+    <p class="muted-s">※出力は実行環境・データ取得時期により変わります。</p>
 
     <div class="callout tip">
-      <h4>この Step のまとめ</h4>
+      <h3>この Step のまとめ</h3>
       <p>文埋め込みで文書と質問を同じ空間のベクトルにし、コサイン類似度で意味の近い文書を取り出しました。骨組みは TF-IDF 検索とそっくりで、違いはベクトル化の中身だけです。次は、両者が本当に違う結果を出す場面を作って比べます。</p>
     </div>
   </div>
@@ -1109,7 +1111,7 @@ embed_sims = cosine_similarity(model.encode([query]), emb).ravel()
     </div>
 
     <div class="callout tip">
-      <h4>この Step のまとめ</h4>
+      <h3>この Step のまとめ</h3>
       <p>言い換え質問では TF-IDF が取りこぼし、埋め込みが意味で拾いました。反対に完全一致が要る場面では TF-IDF が強い。両者は優劣ではなく、役割が違います。次はコストや使い分けを整理します。</p>
     </div>
   </div>
@@ -1132,7 +1134,7 @@ embed_sims = cosine_similarity(model.encode([query]), emb).ravel()
     <p class="layer"><span lang="ja">それぞれの性質</span><span lang="en">Where each shines</span></p>
     <div class="grid2">
       <div class="box">
-        <h5><span lang="ja">TF-IDF が向く場面</span><span lang="en">TF-IDF</span></h5>
+        <h3><span lang="ja">TF-IDF が向く場面</span><span lang="en">TF-IDF</span></h3>
         <ul>
           <li>型番・固有名詞・識別子など、<b>完全一致</b>が効く検索。</li>
           <li>学習済みモデルを持ち込めない軽量な環境。計算が速く安価。</li>
@@ -1140,7 +1142,7 @@ embed_sims = cosine_similarity(model.encode([query]), emb).ravel()
         </ul>
       </div>
       <div class="box lim">
-        <h5><span lang="ja">埋め込みの注意</span><span lang="en">Embeddings</span></h5>
+        <h3><span lang="ja">埋め込みの注意</span><span lang="en">Embeddings</span></h3>
         <ul>
           <li>ベクトル化にモデルが要り、<b>計算コストが高い</b>。件数が増えると事前計算と保存が必要。</li>
           <li>意味が近いだけの無関係な文を拾うことがある。</li>
@@ -1150,7 +1152,7 @@ embed_sims = cosine_similarity(model.encode([query]), emb).ravel()
     </div>
 
     <div class="callout warn">
-      <h4>件数が増えると総当りは苦しい</h4>
+      <h3>件数が増えると総当りは苦しい</h3>
       <p>質問ごとに全文書とのコサイン類似度を計算する総当り方式は、文書数が増えると遅くなります。実運用では、次に紹介する近似最近傍（FAISS など）で、精度をほぼ保ったまま探索を高速化するのが定石です。</p>
     </div>
   </div>
@@ -1166,25 +1168,25 @@ embed_sims = cosine_similarity(model.encode([query]), emb).ravel()
     </div>
     <div class="res-grid reveal">
       <div class="res">
-        <h5>別のコーパスで試す</h5>
+        <h3>別のコーパスで試す</h3>
         <ul>
           <li><code>categories</code> を増やしたり別の話題に変えたりして、検索の当たり方がどう変わるかを見る。件数を増やすとどうなるかも試す。</li>
         </ul>
       </div>
       <div class="res">
-        <h5>別の埋め込みモデル</h5>
+        <h3>別の埋め込みモデル</h3>
         <ul>
           <li><code>all-mpnet-base-v2</code> など、より大きな実在モデルに差し替えて、精度と速度のちがいを比べる。多言語モデルで日本語の検索も試せます。</li>
         </ul>
       </div>
       <div class="res">
-        <h5>近似最近傍（FAISS）</h5>
+        <h3>近似最近傍（FAISS）</h3>
         <ul>
           <li>埋め込みを FAISS のインデックスに載せ、総当りではなく近似最近傍で検索する。件数を増やしたときの速度差を測る。</li>
         </ul>
       </div>
       <div class="res">
-        <h5>ハイブリッド検索</h5>
+        <h3>ハイブリッド検索</h3>
         <ul>
           <li>TF-IDF のスコアと埋め込みのスコアを重み付けで足し合わせ、完全一致と意味の両取りを狙う。重みを変えて結果の変化を見る。</li>
         </ul>
@@ -1210,7 +1212,7 @@ embed_sims = cosine_similarity(model.encode([query]), emb).ravel()
 
     <div class="res-grid reveal">
       <div class="res">
-        <h5>使ったモジュール</h5>
+        <h3>使ったモジュール</h3>
         <ul>
           <li><a href="nlp.html">自然言語処理（NLP）</a></li>
           <li><a href="llm.html">大規模言語モデル（LLM）</a></li>
@@ -1218,17 +1220,24 @@ embed_sims = cosine_similarity(model.encode([query]), emb).ravel()
         </ul>
       </div>
       <div class="res">
-        <h5>データ・ライブラリ・参考</h5>
+        <h3>データ・ライブラリ・参考</h3>
         <ul>
           <li><b>データ</b>：20 Newsgroups（scikit-learn 同梱の取得関数）</li>
           <li><b>ライブラリ</b>：scikit-learn・sentence-transformers・NumPy</li>
           <li><b>参考</b>：sentence-transformers / Hugging Face のドキュメント</li>
         </ul>
       </div>
+      <div class="res">
+        <h3>次の演習・段階へ</h3>
+        <ul>
+          <li>次の演習：<a href="practice-cnn-endtoend.html">深層学習の一気通貫（CNN）</a>（<a href="index.html#stage3">演習一覧</a>）</li>
+          <li>埋め込みモデルやクエリを差し替えて、TF-IDF と埋め込みの差が出る場面を自分で探す。</li>
+        </ul>
+      </div>
     </div>
 
     <div class="callout tip">
-      <h4>おつかれさまでした</h4>
+      <h3>おつかれさまでした</h3>
       <p>ノートブックを開き、<code>query</code> を自分の言葉に変えて、TF-IDF と埋め込みの順位がどう入れ替わるかを見てください。完全一致が要る質問と、言い換えの質問を交互に投げると、二つの検索の性格の違いがはっきりつかめます。</p>
     </div>
   </div>
@@ -1258,14 +1267,6 @@ embed_sims = cosine_similarity(model.encode([query]), emb).ravel()
       </div>
     </div>
     <div class="foot-grid3">
-      <div>
-        <h3><span lang="ja">連絡先</span><span lang="en">Contact</span></h3>
-        <p class="muted-s">
-          <b>Yuta Kimura</b><br>
-          <span lang="ja">大阪公立大学工業高等専門学校</span><span lang="en">Osaka Metropolitan University College of Technology</span><br>
-          <a href="mailto:y.kimura@omu.ac.jp">y.kimura [at] omu.ac.jp</a>
-        </p>
-      </div>
       <div>
         <h3><span lang="ja">サイト</span><span lang="en">Site</span></h3>
         <p class="muted-s">

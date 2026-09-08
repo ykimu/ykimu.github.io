@@ -205,6 +205,7 @@
   .feat-card{display:grid; grid-template-columns:1.05fr .95fr; gap:0; overflow:hidden}
   .feat-body{padding:40px 42px}
   .feat-tag{font:600 .72rem/1 var(--disp); letter-spacing:.1em; text-transform:uppercase; color:var(--accent)}
+  .feat-status{display:inline-block; margin-left:10px; padding:3px 8px; border:1px solid var(--line); border-radius:999px; font:500 .66rem/1 var(--sans); letter-spacing:.04em; text-transform:none; color:var(--muted); vertical-align:middle}
   .feat-body h3{font-size:1.42rem; font-weight:600; letter-spacing:-.01em; margin:14px 0 12px; line-height:1.25}
   .feat-body p{color:var(--ink-2); font-size:1rem; margin:0 0 24px}
   .feat-viz{background:linear-gradient(160deg,var(--bg-3),var(--card)); border-left:1px solid var(--line); padding:36px 38px;
@@ -720,7 +721,7 @@
     <div class="pcard reveal">
       <div class="avatar">YK</div>
       <h3><span lang="ja">木村 祐太</span><span lang="en">Yuta Kimura</span></h3>
-      <div class="sub"><span lang="ja">助教 / 博士後期課程</span><span lang="en">Assistant Professor / Ph.D. student</span></div>
+      <div class="sub"><span lang="ja">助教</span><span lang="en">Assistant Professor</span></div>
       <div class="divider"></div>
       <div class="kv"><span class="k"><span lang="ja">分野</span><span lang="en">Field</span></span><span class="v"><span lang="ja">ソフトウェア工学</span><span lang="en">Software Engineering</span></span></div>
       <div class="kv"><span class="k"><span lang="ja">所属</span><span lang="en">Affiliation</span></span><span class="v"><span lang="ja">大阪公立大学工業高等専門学校</span><span lang="en">OMU College of Technology</span></span></div>
@@ -740,9 +741,9 @@
     <span class="lbl"><span lang="ja">研究キーワード</span><span lang="en">Keywords</span></span>
     <a class="kchip on" href="technical-debt.html"><span lang="ja">技術的負債</span><span lang="en">Technical Debt</span><span class="kx" aria-hidden="true">&rsaquo;</span></a>
     <a class="kchip" href="software-engineering.html"><span lang="ja">ソフトウェア工学</span><span lang="en">Software Engineering</span><span class="kx" aria-hidden="true">&rsaquo;</span></a>
-    <span class="kchip"><span lang="ja">ソフトウェア保守</span><span lang="en">Software Maintenance</span></span>
-    <span class="kchip"><span lang="ja">マイニングソフトウェアリポジトリ</span><span lang="en">Mining Software Repositories</span></span>
-    <span class="kchip"><span lang="ja">オープンソースソフトウェア</span><span lang="en">Open Source Software</span></span>
+    <a class="kchip" href="course/software-evolution.html"><span lang="ja">ソフトウェア保守</span><span lang="en">Software Maintenance</span><span class="kx" aria-hidden="true">&rsaquo;</span></a>
+    <a class="kchip" href="learn/repository-mining.html"><span lang="ja">マイニングソフトウェアリポジトリ</span><span lang="en">Mining Software Repositories</span><span class="kx" aria-hidden="true">&rsaquo;</span></a>
+    <a class="kchip" href="course/software-reuse-oss.html"><span lang="ja">オープンソースソフトウェア</span><span lang="en">Open Source Software</span><span class="kx" aria-hidden="true">&rsaquo;</span></a>
   </div>
 </div>
 
@@ -832,7 +833,7 @@
         <article class="caro-slide">
           <div class="feat-card">
             <div class="feat-body">
-              <span class="feat-tag">Technical Debt × Software Metrics</span>
+              <span class="feat-tag">Technical Debt × Software Metrics <span class="feat-status"><span lang="ja">投稿中</span><span lang="en">Under review</span></span></span>
               <h3><span lang="ja">課題管理システムで報告された技術的負債の、メトリクスによる分類と特徴づけ</span><span lang="en">Classifying &amp; characterizing technical debt reported in issue tracking systems using software metrics</span></h3>
               <p>
                 <span lang="ja">GitHub上のJava 140プロジェクト・約7.3万ファイルを対象に、77のソフトウェアメトリクスで「負債と報告されたファイル」をどこまで捉えられるかを検証。5つの開発履歴メトリクスが72のソースコード指標に匹敵しました。</span>
@@ -870,10 +871,10 @@
           <div class="feat-card">
             <div class="feat-body">
               <span class="feat-tag">APR × Coding Standards</span>
-              <h3><span lang="ja">自動生成されたパッチがコーディング規約に与える影響の分析</span><span lang="en">The impact of automatically-generated patches on coding standards</span></h3>
+              <h3><span lang="ja">自動生成されたパッチがコーディング規約違反に与える影響の分析</span><span lang="en">The impact of automatically-generated patches on coding standards</span></h3>
               <p>
-                <span lang="ja">Defects4Jの3プロジェクトに32のAPRツールのパッチを適用し、Checkstyleで規約違反を計測。テストに通っても、生成コードの「読みやすさ」がどれだけ損なわれるかを定量化しました。</span>
-                <span lang="en">Applying 32 APR tools to three Defects4J projects and measuring violations with Checkstyle, this study quantifies how much auto-generated code sacrifices readability even when tests pass.</span>
+                <span lang="ja">Defects4Jの3プロジェクトに32のAPRツールのパッチを適用し、Checkstyleで3種の規約違反を計測。テストに通っても、生成コードの「読みやすさ」がどれだけ損なわれるかを定量化しました。</span>
+                <span lang="en">Applying 32 APR tools to three Defects4J projects and measuring violations against three standards with Checkstyle, this study quantifies how much auto-generated code sacrifices readability even when tests pass.</span>
               </p>
               <a class="btn ink" href="research/apr-coding-standards.html">
                 <span lang="ja">研究紹介を見る</span><span lang="en">Read the highlight</span>
@@ -881,18 +882,23 @@
               </a>
             </div>
             <div class="feat-viz">
-              <div class="mini-cap" style="margin:0 0 14px; font-weight:600; color:var(--ink)"><span lang="ja">コーディング規約違反の数</span><span lang="en">Coding-standard violations</span></div>
+              <div class="mini-cap" style="margin:0 0 14px; font-weight:600; color:var(--ink)"><span lang="ja">規約違反を増やしたパッチの割合（Lang）</span><span lang="en">Patches adding violations (Lang)</span></div>
               <div class="mini-row">
-                <span class="mini-name"><span lang="ja">修正前</span><span lang="en">Before</span></span>
-                <span class="mini-bar"><span style="width:66%; background:var(--faint)"></span></span>
-                <span class="mini-val num">100</span>
+                <span class="mini-name"><span lang="ja">独自規約</span><span lang="en">Project</span></span>
+                <span class="mini-bar"><span style="width:49.2%; background:var(--faint)"></span></span>
+                <span class="mini-val num">49.2%</span>
               </div>
               <div class="mini-row">
-                <span class="mini-name"><span lang="ja">APR適用後</span><span lang="en">After APR</span></span>
-                <span class="mini-bar"><span style="width:92%; background:var(--accent)"></span></span>
-                <span class="mini-val num">≈140</span>
+                <span class="mini-name">Google</span>
+                <span class="mini-bar"><span style="width:60.7%; background:var(--accent)"></span></span>
+                <span class="mini-val num">60.7%</span>
               </div>
-              <p class="mini-cap"><span lang="ja">規約違反が約40%増加。うち約9〜10%は可読性に影響。</span><span lang="en">About 40% more violations; ~9-10% affect readability.</span></p>
+              <div class="mini-row">
+                <span class="mini-name">Sun</span>
+                <span class="mini-bar"><span style="width:56.6%; background:var(--ink)"></span></span>
+                <span class="mini-val num">56.6%</span>
+              </div>
+              <p class="mini-cap"><span lang="ja">規約の種類によらずパッチの約4〜6割が違反を増やす。可読性に関わる違反も約9〜10%ずつ。</span><span lang="en">40-60% of patches add violations regardless of standard; readability-affecting types each ~9-10%.</span></p>
             </div>
           </div>
         </article>
@@ -961,7 +967,7 @@
                 <span class="mini-bar"><span style="width:94.7%; background:var(--accent)"></span></span>
                 <span class="mini-val num">0.947</span>
               </div>
-              <p class="mini-cap"><span lang="ja">TF-IDF＋SVMで高精度に分類（vscode）。</span><span lang="en">High accuracy with TF-IDF + SVM (vscode).</span></p>
+              <p class="mini-cap"><span lang="ja">TF-IDF＋SVMによる最良値（vscode）。正例が少ないプロジェクトでは性能が下がる。</span><span lang="en">Best case with TF-IDF + SVM (vscode); performance drops for projects with few positives.</span></p>
             </div>
           </div>
         </article>
@@ -1000,7 +1006,7 @@
           <div class="pub-venue-badge"><span lang="ja">査読付き</span><span lang="en">Refereed</span></div>
         </div>
         <div>
-          <div class="pub-title"><a href="research/apr-coding-standards.html"><span><span lang="ja">自動生成されたパッチがコーディング規約に与える影響の分析</span><span lang="en">Analysis of the Impact of Automatically Generated Patches on Coding Standards</span></span><span class="go" aria-hidden="true">&rsaquo;</span></a></div>
+          <div class="pub-title"><a href="research/apr-coding-standards.html"><span><span lang="ja">自動生成されたパッチがコーディング規約違反に与える影響の分析</span><span lang="en">Analysis of the Impact of Automatically Generated Patches on Coding Convention Violations</span></span><span class="go" aria-hidden="true">&rsaquo;</span></a></div>
           <div class="pub-meta">
             <span lang="ja">野口優輝, <span class="you">木村祐太</span>, 伊原彰紀, 大平雅雄</span><span lang="en">Yuki Noguchi, <span class="you">Yuta Kimura</span>, Akinori Ihara, Masao Ohira</span>
             &nbsp;·&nbsp; <span class="pub-venue">コンピュータソフトウェア (Computer Software)</span> 42(1), 54-68
@@ -1040,7 +1046,7 @@
         </li>
         <li class="talk">
           <div class="tt"><span lang="ja">Stack Overflow と GitHub Discussions における技術的負債の投稿の傾向と内容の違いの調査</span><span lang="en">Differences in technical-debt posts between Stack Overflow and GitHub Discussions</span></div>
-          <div class="tm"><span lang="ja">桑原大昇, <b>木村祐太</b></span><span lang="en">A. Kuwahara, <b>Y. Kimura</b></span> · FOSE 2025</div>
+          <div class="tm"><span lang="ja">桑原大昇, <b>木村祐太</b></span><span lang="en">D. Kuwahara, <b>Y. Kimura</b></span> · FOSE 2025</div>
         </li>
         <li class="talk">
           <div class="tt"><span lang="ja">高品質なコミットメッセージの自動生成に向けたデータ収集手法の構築</span><span lang="en">Building a data-collection method for high-quality commit-message generation</span></div>
@@ -1150,7 +1156,7 @@
 
           <div class="smgroup">
             <span class="smhead"><span lang="ja">教育</span><span lang="en">Teaching</span></span>
-            <span class="smcount"><span lang="ja">科目3件＋教材13件</span><span lang="en">3 courses, 13 materials</span></span>
+            <span class="smcount"><span lang="ja">科目ページ3件＋教材13件</span><span lang="en">3 course pages, 13 materials</span></span>
             <ul class="smlist">
               <li><a href="course/index.html"><span lang="ja">ソフトウェア工学 科目ページ</span><span lang="en">Software engineering (course)</span></a></li>
               <li><a href="course/logic-circuits.html"><span lang="ja">論理回路1 科目ページ</span><span lang="en">Logic circuits 1 (course)</span></a></li>

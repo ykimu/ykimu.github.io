@@ -133,7 +133,7 @@
   /* prose */
   .prose{max-width:var(--readw)}
   .prose p{margin:0 0 1em; color:var(--ink-2)}
-  .prose h4{font-family:var(--sans); font-size:1.1rem; font-weight:600; letter-spacing:0; color:var(--ink); margin:1.5em 0 .5em}
+  .prose h3{font-family:var(--sans); font-size:1.1rem; font-weight:600; letter-spacing:0; line-height:inherit; text-wrap:wrap; color:var(--ink); margin:1.5em 0 .5em}
   .prose ul{margin:0 0 1.2em; padding-left:0; list-style:none}
   .prose ul li{position:relative; padding-left:22px; margin:11px 0; color:var(--ink-2)}
   .prose ul li::before{content:""; position:absolute; left:0; top:13px; width:11px; height:1.5px; background:var(--accent)}
@@ -148,7 +148,7 @@
 
   .callout{border-radius:16px; padding:18px 22px; margin:20px 0; max-width:var(--readw);
     background:var(--card); box-shadow:0 0 0 6px var(--shell),0 0 0 6.5px var(--hair),var(--soft)}
-  .callout h4{margin:0 0 6px; font-size:1rem; font-family:var(--sans); font-weight:600; letter-spacing:0; color:var(--ink)}
+  .callout h3{margin:0 0 6px; font-size:1rem; font-family:var(--sans); font-weight:600; letter-spacing:0; line-height:inherit; text-wrap:wrap; color:var(--ink)}
   .callout.tip{background:var(--accent-soft)}
   .callout.warn{background:rgba(138,109,59,.08)}
   .callout p{margin:0; color:var(--ink-2); font-size:.96rem}
@@ -157,14 +157,14 @@
   .grid2{display:grid; grid-template-columns:1fr 1fr; gap:16px; margin:20px 0; max-width:var(--readw)}
   .box{border-radius:16px; padding:16px 20px; background:var(--card);
     box-shadow:0 0 0 6px var(--shell),0 0 0 6.5px var(--hair),var(--soft)}
-  .box h5{margin:0 0 10px; font-size:.92rem; font-family:var(--sans); font-weight:600; letter-spacing:0; color:var(--accent-2); display:flex; align-items:center; gap:7px}
-  .box.lim h5{color:var(--warn)}
+  .box h3{margin:0 0 10px; font-size:.92rem; font-family:var(--sans); font-weight:600; letter-spacing:0; line-height:inherit; text-wrap:wrap; color:var(--accent-2); display:flex; align-items:center; gap:7px}
+  .box.lim h3{color:var(--warn)}
   .box ul{margin:0; padding-left:18px}
   .box li{margin:6px 0; font-size:.92rem; color:var(--ink-2)}
 
   .steps{border-radius:16px; padding:16px 20px; margin:20px 0; max-width:var(--readw); background:var(--card);
     box-shadow:0 0 0 6px var(--shell),0 0 0 6.5px var(--hair),var(--soft)}
-  .steps h5{margin:0 0 10px; font-size:.92rem; font-family:var(--sans); font-weight:600; letter-spacing:0; color:var(--accent-2)}
+  .steps h3{margin:0 0 10px; font-size:.92rem; font-family:var(--sans); font-weight:600; letter-spacing:0; line-height:inherit; text-wrap:wrap; color:var(--accent-2)}
   .steps ol{margin:0; padding:0; list-style:none; counter-reset:st}
   .steps ol li{counter-increment:st; position:relative; padding-left:36px; margin:9px 0; font-size:.94rem; color:var(--ink-2)}
   .steps ol li::before{content:counter(st); position:absolute; left:0; top:2px; width:23px; height:23px; border-radius:50%;
@@ -229,7 +229,7 @@
   .demo .dtag{display:inline-flex; align-items:center; gap:8px; margin:0 0 10px; padding:5px 12px 5px 10px;
     border-radius:999px; background:var(--accent-soft); color:var(--accent-2); font:600 .62rem/1 var(--disp); letter-spacing:.12em; text-transform:uppercase}
   .demo .dtag::before{content:""; width:6px; height:6px; border-radius:50%; background:var(--accent)}
-  .demo h4{margin:0 0 6px; font-size:1.12rem; font-family:var(--sans); font-weight:600; color:var(--ink)}
+  .demo h3{margin:0 0 6px; font-size:1.12rem; font-family:var(--sans); font-weight:600; letter-spacing:0; line-height:inherit; text-wrap:wrap; color:var(--ink)}
   .demo .dnote{font-size:.88rem; color:var(--muted); margin:0 0 16px}
   .demo label.fld{display:block; font:600 .74rem/1 var(--disp); letter-spacing:.08em; text-transform:uppercase; color:var(--muted); margin:0 0 7px}
   .demo textarea,.demo input[type=text]{width:100%; padding:12px 15px; border-radius:12px; border:1px solid var(--hair);
@@ -279,7 +279,8 @@
   .res-grid{display:grid; grid-template-columns:1fr 1fr; gap:16px; margin:20px 0; max-width:var(--readw)}
   @media(max-width:640px){.res-grid{grid-template-columns:1fr}}
   .res{border-radius:16px; padding:18px 20px; background:var(--card); box-shadow:0 0 0 6px var(--shell),0 0 0 6.5px var(--hair),var(--soft)}
-  .res h5{margin:0 0 10px; font-size:.95rem; font-family:var(--sans); font-weight:600; color:var(--accent-2)}
+  .res h3{margin:0 0 10px; font-size:.95rem; font-family:var(--sans); font-weight:600; letter-spacing:0; line-height:inherit; text-wrap:wrap; color:var(--accent-2)}
+  .prose h3 [lang="ja"],.callout h3 [lang="ja"],.box h3 [lang="ja"],.steps h3 [lang="ja"],.demo h3 [lang="ja"],.res h3 [lang="ja"]{word-break:normal}
   .res ul{margin:0; padding-left:0; list-style:none}
   .res li{position:relative; padding-left:20px; margin:8px 0; font-size:.9rem; color:var(--ink-2)}
   .res li::before{content:""; position:absolute; left:0; top:11px; width:9px; height:1.5px; background:var(--accent)}
@@ -289,7 +290,7 @@
   footer{border-top:1px solid var(--line); padding:68px 0 46px; background:var(--bg)}
   footer h3{font-size:.72rem; font-weight:600; letter-spacing:.12em; text-transform:uppercase; color:var(--muted); margin:0 0 1em; font-family:var(--disp)}
   .foot-grid{display:grid; grid-template-columns:1.5fr 1fr; gap:44px}
-  .foot-grid3{display:grid; grid-template-columns:1.3fr 1fr 1fr; gap:44px; margin-top:40px}
+  .foot-grid3{display:grid; grid-template-columns:1.5fr 1fr; gap:44px; margin-top:40px}
   .foot-grid3 a{color:var(--ink-2)}
   .foot-grid3 a:hover{color:var(--accent)}
   .cite{font-size:.98rem; color:var(--ink-2); line-height:1.7; max-width:52ch}
@@ -701,7 +702,9 @@
   <nav class="crumbs" aria-label="パンくず">
     <a href="../index.html"><span lang="ja">ホーム</span><span lang="en">Home</span></a>
     <span class="csep" aria-hidden="true">&rsaquo;</span>
-    <span class="cur" aria-current="page"><span lang="ja">学習コース：自然言語処理</span><span lang="en">Learn: Natural Language Processing</span></span>
+    <a href="index.html"><span lang="ja">学習コース</span><span lang="en">Learn</span></a>
+    <span class="csep" aria-hidden="true">&rsaquo;</span>
+    <span class="cur" aria-current="page"><span lang="ja">自然言語処理</span><span lang="en">Natural Language Processing</span></span>
   </nav>
 </div>
 
@@ -837,7 +840,7 @@
     </div>
 
     <div class="callout tip">
-      <h4>この Step のまとめ</h4>
+      <h3>この Step のまとめ</h3>
       <p>NLP は言葉をコンピュータで扱う技術の総称。曖昧性・文脈・表記ゆれという難しさがあるため、「整える → 数値化する → モデルにかける」というパイプラインで少しずつ攻略していきます。</p>
     </div>
   </div>
@@ -859,20 +862,20 @@
 
     <p class="layer"><span lang="ja">仕組み</span><span lang="en">How it works</span></p>
     <div class="prose">
-      <h4>1. 正規化（normalization）</h4>
+      <h3>1. 正規化（normalization）</h3>
       <p>表記のゆれをそろえます。英語なら大文字を小文字にする（<code>Apple</code> と <code>apple</code> を同一視）、日本語なら全角と半角、記号の統一などです。数字や記号を落とすかどうかは目的次第で決めます。</p>
-      <h4>2. トークン化（tokenization）</h4>
+      <h3>2. トークン化（tokenization）</h3>
       <p>文を語（トークン）の並びに区切ります。英語は単語が空白で区切られているので、空白と句読点で分けるのが基本です。一方、<b>日本語は語の間に空白がありません</b>。そこで<b>形態素解析</b>を使い、辞書と文法規則にもとづいて「分かち書き」します。日本語では MeCab や janome といったツールが定番です。</p>
-      <h4>3. ストップワード（stop words）</h4>
+      <h3>3. ストップワード（stop words）</h3>
       <p>「の」「は」「a」「the」のように、どの文書にも高頻度で現れ、内容の区別に寄与しにくい語を<b>ストップワード</b>と呼び、目的に応じて除去します。ただし機械翻訳のように語順や機能語が重要な課題では、安易に消すと情報が失われる点に注意します。</p>
-      <h4>4. ステミングとレンマ化</h4>
+      <h3>4. ステミングとレンマ化</h3>
       <p>英語では、活用や語尾の違いを吸収して語をまとめる処理があります。<b>ステミング（stemming）</b>は規則で語尾を機械的に削る方法で、<code>studies</code> や <code>studying</code> を <code>studi</code> のような語幹にします（Porter ステマーが有名）。<b>レンマ化（lemmatization）</b>は辞書を使って正しい原形（見出し語）に戻す方法で、<code>studies</code> は <code>study</code>、<code>better</code> は <code>good</code> になります。</p>
     </div>
 
     <!-- DEMO 1: Tokenizer -->
     <div class="demo reveal" id="demoTok">
       <span class="dtag"><span lang="ja">デモ 1</span><span lang="en">Demo 1</span></span>
-      <h4>トークナイザ体験</h4>
+      <h3>トークナイザ体験</h3>
       <p class="dnote">テキストを入力すると、トークン（語）に区切ってチップで表示します。英語は空白・句読点で分割、日本語は簡易的な分かち書き（小さな辞書＋最長一致）で区切ります。実務では MeCab や janome などの形態素解析器を使いますが、区切りの雰囲気をつかむには十分です。</p>
       <label class="fld" for="tokInput">入力テキスト / Input</label>
       <textarea id="tokInput" rows="2" spellcheck="false">自然言語処理は面白い分野です</textarea>
@@ -947,7 +950,7 @@ t = Tokenizer(wakati=<span class="kw">True</span>)
     <div class="code-out"><span class="olbl">出力例 / Output</span><pre><code>['自然', '言語', '処理', 'は', '面白い', '分野', 'です']</code></pre></div>
 
     <div class="callout tip">
-      <h4>この Step のまとめ</h4>
+      <h3>この Step のまとめ</h3>
       <p>前処理は「そろえて、区切る」。英語は空白で区切れますが、日本語は形態素解析で分かち書きします。ここで作った<b>トークンの列</b>が、次の Step で数値ベクトルに変わります。</p>
     </div>
   </div>
@@ -969,9 +972,9 @@ t = Tokenizer(wakati=<span class="kw">True</span>)
 
     <p class="layer"><span lang="ja">仕組み</span><span lang="en">How it works</span></p>
     <div class="prose">
-      <h4>Bag-of-Words（BoW）</h4>
+      <h3>Bag-of-Words（BoW）</h3>
       <p>文書を「語の袋（bag）」とみなし、<b>どの語が何回出たか</b>だけで表します。語順は捨てます。語彙全体を列に並べ、各文書を出現回数のベクトルにします。たとえば語彙が <code>[cat, dog, sat, the]</code> のとき、文書「the cat sat」は <code>[1, 0, 1, 1]</code> です。単純ですが、分類などで驚くほどよく効きます。弱点は、語順や文脈を捨てること、そして「the」のようなありふれた語が大きな値を持ちやすいことです。</p>
-      <h4>TF-IDF</h4>
+      <h3>TF-IDF</h3>
       <p>後者の弱点に対処するのが TF-IDF です。<b>その文書での出現頻度（TF）</b>を、<b>コーパス全体でのめずらしさ（IDF）</b>で重み付けします。多くの文書に出る語ほど IDF が小さくなり、値が抑えられます。逆に、特定の文書に偏って出る語が強調されます。標準的な定義は次のとおりです。</p>
     </div>
     <div class="formula">
@@ -985,7 +988,7 @@ t = Tokenizer(wakati=<span class="kw">True</span>)
     <!-- DEMO 2: TF-IDF -->
     <div class="demo reveal" id="demoTfidf">
       <span class="dtag"><span lang="ja">デモ 2</span><span lang="en">Demo 2</span></span>
-      <h4>TF-IDF ミニ計算機</h4>
+      <h3>TF-IDF ミニ計算機</h3>
       <p class="dnote">1 行に 1 文書を書きます（語は空白区切り、日本語は簡易分かち書き）。各語の df・idf と、文書ごとの tf-idf を計算して表にします。値が大きいほど濃い緑で強調します。すべての文書に出る語は idf = 0（重み 0）になる点に注目してください。</p>
       <label class="fld" for="tfidfInput">文書集合（1行=1文書）/ Documents</label>
       <textarea id="tfidfInput" rows="4" spellcheck="false">the cat sat on the mat
@@ -1049,7 +1052,7 @@ np.set_printoptions(precision=<span class="nu">3</span>, suppress=<span class="k
     </div>
 
     <div class="callout tip">
-      <h4>この Step のまとめ</h4>
+      <h3>この Step のまとめ</h3>
       <p>BoW は語の出現回数ベクトル。TF-IDF は「その文書での頻度 × コーパスでのめずらしさ」で重み付けし、ありふれた語を抑えます。これで文書が数値ベクトルになり、次はベクトル同士の「近さ」を測れます。</p>
     </div>
   </div>
@@ -1071,18 +1074,18 @@ np.set_printoptions(precision=<span class="nu">3</span>, suppress=<span class="k
 
     <p class="layer"><span lang="ja">仕組み</span><span lang="en">How it works</span></p>
     <div class="prose">
-      <h4>one-hot の限界</h4>
+      <h3>one-hot の限界</h3>
       <p>one-hot では、語彙が 5 万語あればベクトルの次元も 5 万になり、しかもほとんどが 0 の疎なベクトルです。さらに致命的なのは、<b>語と語の意味的な近さを表せない</b>ことです。「猫」と「犬」は動物として近いのに、one-hot ではどの 2 語も直交し（内積が 0）、「猫と犬」も「猫と自動車」も同じだけ無関係に見えてしまいます。</p>
-      <h4>分布仮説</h4>
+      <h3>分布仮説</h3>
       <p>この問題への鍵が<b>分布仮説（distributional hypothesis）</b>です。言語学者 J.R. Firth の言葉、<i>&ldquo;You shall know a word by the company it keeps&rdquo;</i>（1957）に象徴されるように、<b>似た文脈に現れる語は、似た意味を持つ</b>という考え方です。「犬が___を食べる」「猫が___を食べる」のように、周囲に現れる語が似ていれば、その 2 語も意味的に近いとみなします。</p>
-      <h4>word2vec の考え方</h4>
+      <h3>word2vec の考え方</h3>
       <p>この仮説をニューラルネットで実装したのが <b>word2vec</b>（Mikolov ら, 2013）です。大量の文から「語とその周辺語」の関係を学習し、各語を数十から数百次元の密なベクトルに割り当てます。学習方式は 2 つあります。</p>
       <ul>
         <li><b>CBOW</b>：周辺の語から中心の語を当てる。</li>
         <li><b>Skip-gram</b>：中心の語から周辺の語を当てる。</li>
       </ul>
       <p>学習後は、意味の近い語のベクトルが近くに配置されます。有名なのが「king - man + woman ≒ queen」のような、意味の関係がベクトルの足し引きに現れる例です。文全体を表したいときは、単語ベクトルの平均を取る素朴な方法から、文脈を考慮した文埋め込みまで、さまざまな発展があります。</p>
-      <h4>コサイン類似度</h4>
+      <h3>コサイン類似度</h3>
       <p>ベクトル同士の「近さ」は<b>コサイン類似度</b>で測るのが定番です。2 つのベクトルのなす角の余弦（cos）で、向きが同じなら 1、直交なら 0、逆向きなら -1 です（出現回数ベクトルのように成分が 0 以上なら 0 から 1 の範囲）。大きさではなく<b>向き</b>を見るので、文書の長さに左右されにくいのが利点です。</p>
     </div>
     <div class="formula">
@@ -1115,7 +1118,7 @@ np.set_printoptions(precision=<span class="nu">3</span>, suppress=<span class="k
     <!-- DEMO 3: Cosine similarity -->
     <div class="demo reveal" id="demoCos">
       <span class="dtag"><span lang="ja">デモ 3</span><span lang="en">Demo 3</span></span>
-      <h4>コサイン類似度</h4>
+      <h3>コサイン類似度</h3>
       <p class="dnote">2 つの短い文を入力すると、それぞれを Bag-of-Words ベクトルに変換し、コサイン類似度を計算します。共通する語が多いほど 1 に近づきます。日本語は簡易分かち書き、英語は空白・句読点で区切ります。</p>
       <div class="two">
         <div>
@@ -1175,7 +1178,7 @@ model = Word2Vec(sentences, vector_size=<span class="nu">50</span>, window=<span
     <div class="code-out"><span class="olbl">出力例 / Output</span><pre><code>(50,)</code></pre></div>
 
     <div class="callout warn">
-      <h4>注意</h4>
+      <h3>注意</h3>
       <p>word2vec は「意味を理解している」わけではなく、大量のテキストから<b>共起の統計</b>を学んでいるだけです。学習データに含まれる偏りや差別的な関連づけも、そのままベクトルに反映されます。結果を使うときは、その出所と限界を意識することが大切です。</p>
     </div>
   </div>
@@ -1197,15 +1200,15 @@ model = Word2Vec(sentences, vector_size=<span class="nu">50</span>, window=<span
 
     <p class="layer"><span lang="ja">仕組み</span><span lang="en">How it works</span></p>
     <div class="prose">
-      <h4>特徴量と分類器</h4>
+      <h3>特徴量と分類器</h3>
       <p>文書を TF-IDF ベクトルにし、教師あり学習の分類器を学習させます。テキスト分類で古くから強いのが、次の 2 つです。</p>
       <ul>
         <li><b>ナイーブベイズ</b>：各語の出現が「クラスが決まれば互いに独立」と仮定して確率を計算する。単純で高速、少データでも安定。</li>
         <li><b>ロジスティック回帰</b>：各語の重みを学習して、クラスの確率を出す線形モデル。解釈しやすく高精度。</li>
       </ul>
-      <h4>学習データと検証データ</h4>
+      <h3>学習データと検証データ</h3>
       <p>モデルの本当の実力は、学習に使っていないデータで測ります。データを<b>学習用（train）と検証用（test）に分割</b>し、train で学習し、test で評価します。データが少ないときは、分割を変えながら繰り返し評価する<b>交差検証（cross-validation）</b>で、偶然のばらつきをならします。</p>
-      <h4>評価指標</h4>
+      <h3>評価指標</h3>
       <p>「正解率（accuracy）」だけでは不十分な場合があります。たとえば 99% が通常メールのデータでは、全部を通常と答えるだけで正解率 99% になってしまいます。そこでクラスごとに次を見ます。</p>
       <ul>
         <li><b>適合率（precision）</b>：陽性と予測したうち、本当に陽性だった割合。TP / (TP + FP)。</li>
@@ -1228,10 +1231,12 @@ model = Word2Vec(sentences, vector_size=<span class="nu">50</span>, window=<span
 
 sport = [<span class="st">"the pitcher threw a fastball and the batter hit a home run"</span>,
          <span class="st">"our team won the baseball game in the ninth inning"</span>,
-         <span class="cm"># ... 合計 15 文（野球の話題）</span>]
+         <span class="cm"># ... 合計 15 文（野球の話題）</span>
+         ]
 space = [<span class="st">"the rocket launched into orbit around the earth"</span>,
          <span class="st">"astronauts on the space station study microgravity"</span>,
-         <span class="cm"># ... 合計 15 文（宇宙の話題）</span>]
+         <span class="cm"># ... 合計 15 文（宇宙の話題）</span>
+         ]
 
 texts  = sport + space
 labels = [<span class="st">"sport"</span>] * len(sport) + [<span class="st">"space"</span>] * len(space)
@@ -1281,7 +1286,7 @@ test  = fetch_20newsgroups(subset=<span class="st">"test"</span>, categories=cat
     </div>
 
     <div class="callout tip">
-      <h4>この Step のまとめ</h4>
+      <h3>この Step のまとめ</h3>
       <p>テキスト分類は「TF-IDF で特徴量にして、分類器にかける」。train と test に分け、正解率だけでなく適合率・再現率・F値で評価します。ここまでが古典的 NLP の王道です。</p>
     </div>
   </div>
@@ -1303,19 +1308,19 @@ test  = fetch_20newsgroups(subset=<span class="st">"test"</span>, categories=cat
 
     <p class="layer"><span lang="ja">仕組み</span><span lang="en">How it works</span></p>
     <div class="prose">
-      <h4>文脈を捉えるモデルの流れ</h4>
+      <h3>文脈を捉えるモデルの流れ</h3>
       <p>語の並びを扱うため、まず<b>RNN（再帰型ニューラルネット）</b>が使われました。単語を 1 つずつ順に読み、それまでの内容を「状態」として持ち越します。ただし長い文では前の情報が薄れやすく、逐次処理のため学習に時間がかかりました。</p>
       <p>これを一変させたのが <b>Transformer</b>（Vaswani ら, 2017「Attention Is All You Need」）です。<b>注意機構（attention）</b>によって、文中のどの語とどの語が関係するかを直接・並列に捉えます。長い依存関係に強く、大規模な並列学習が可能になりました。</p>
       <p>Transformer を土台に、<b>BERT</b>（Devlin ら, 2018）が登場します。文の<b>両方向</b>の文脈を使い、文章の一部を隠して当てる「マスク言語モデル」で事前学習します。同じ語でも文脈に応じて異なるベクトルになる（文脈化された表現）のが、TF-IDF や word2vec との大きな違いです。</p>
-      <h4>事前学習と転移学習</h4>
+      <h3>事前学習と転移学習</h3>
       <p>近年の主役は<b>事前学習（pre-training）と転移学習（transfer learning）</b>という考え方です。まず大量のテキストで言語の一般的な性質を学ばせた汎用モデルを作り（事前学習）、その後、手元の小さなデータで目的の課題に合わせて微調整します（ファインチューニング）。ゼロから学習するより、少ないデータで高い性能に届きます。</p>
-      <h4>LLM への橋渡し</h4>
+      <h3>LLM への橋渡し</h3>
       <p>この事前学習をさらに巨大なモデルとデータへ推し進めたのが、<b>大規模言語モデル（LLM）</b>です。文章生成・要約・翻訳・質問応答などを 1 つのモデルでこなします。仕組みの中心は、ここで見た Transformer と事前学習の延長線上にあります。BoW から始まった「テキストを数値にして扱う」という発想が、形を変えて今も生きているのです。</p>
     </div>
 
     <div class="callout tip">
-      <h4>この Step のまとめ</h4>
-      <p>BoW/TF-IDF の「語順・文脈を捨てる」限界を、RNN、そして Transformer と BERT が乗り越えました。事前学習＋転移学習という枠組みが、現在の LLM へとつながっています。より深い内容は、今後の機械学習・深層学習・LLM のモジュールで扱う予定です。</p>
+      <h3>この Step のまとめ</h3>
+      <p>BoW/TF-IDF の「語順・文脈を捨てる」限界を、RNN、そして Transformer と BERT が乗り越えました。事前学習＋転移学習という枠組みが、現在の LLM へとつながっています。より深い内容は、<a href="machine-learning.html">機械学習</a>・<a href="deep-learning.html">深層学習</a>・<a href="llm.html">大規模言語モデル（LLM）</a>のモジュールで扱います。</p>
     </div>
   </div>
 </section>
@@ -1339,14 +1344,14 @@ test  = fetch_20newsgroups(subset=<span class="st">"test"</span>, categories=cat
 
     <div class="res-grid reveal">
       <div class="res">
-        <h5>公開データセット</h5>
+        <h3>公開データセット</h3>
         <ul>
           <li><b>20 Newsgroups</b>：英語のニュースグループ投稿 約2万件を20カテゴリに分類。scikit-learn から取得可能。</li>
           <li><b>livedoor ニュースコーパス</b>：日本語のニュース記事コーパス（RONDHUIT が公開）。日本語分類の定番。</li>
         </ul>
       </div>
       <div class="res">
-        <h5>ライブラリ</h5>
+        <h3>ライブラリ</h3>
         <ul>
           <li><b>janome / MeCab</b>：日本語の形態素解析。</li>
           <li><b>scikit-learn</b>：特徴量化・分類・評価の定番。</li>
@@ -1356,7 +1361,7 @@ test  = fetch_20newsgroups(subset=<span class="st">"test"</span>, categories=cat
         </ul>
       </div>
       <div class="res">
-        <h5>参考書</h5>
+        <h3>参考書</h3>
         <ul>
           <li>Daniel Jurafsky, James H. Martin『Speech and Language Processing』</li>
           <li>高村大也『言語処理のための機械学習入門』コロナ社</li>
@@ -1364,17 +1369,17 @@ test  = fetch_20newsgroups(subset=<span class="st">"test"</span>, categories=cat
         </ul>
       </div>
       <div class="res">
-        <h5>次のモジュールへ</h5>
+        <h3>次のモジュールへ</h3>
         <ul>
-          <li>機械学習の基礎（分類・回帰・評価）</li>
-          <li>深層学習とニューラルネット</li>
-          <li>Transformer と大規模言語モデル（LLM）</li>
+          <li><a href="network-analysis.html">ネットワーク分析</a>（語や文書のつながりをグラフで見る）</li>
+          <li><a href="machine-learning.html">機械学習</a>（分類・回帰・評価）</li>
+          <li><a href="llm.html">大規模言語モデル（LLM）</a>（Transformer 以降の展開）</li>
         </ul>
       </div>
     </div>
 
     <div class="callout tip">
-      <h4>おつかれさまでした</h4>
+      <h3>おつかれさまでした</h3>
       <p>ここで学んだ「整える → 数値にする → モデルにかける」という流れは、テキストに限らずデータを扱う多くの場面で共通の考え方です。手元のサンプルを書き換えて、3 つのデモをもう一度動かしてみてください。値がどう変わるかを確かめると、理解がぐっと深まります。</p>
     </div>
   </div>
@@ -1385,27 +1390,27 @@ test  = fetch_20newsgroups(subset=<span class="st">"test"</span>, categories=cat
     <p class="eyebrow"><span lang="ja">発展トピック</span><span lang="en">Beyond this module</span></p>
     <h2 class="big">このコースでは扱わない、関係する発展トピック</h2>
     <div class="prose" style="margin-top:22px">
-      <p>このモジュールでは、テキストを数値にしてモデルにかける「基礎の流れ」を扱いました。いっぽうで近年の自然言語処理は、より大きなモデルと事前学習を軸に急速に広がっています。ここでは、このコースでは踏み込まないものの、知っておくと視野が広がる発展的なトピックを、特に近年の主流を中心に紹介します。深掘りは各自の興味に合わせてどうぞ。大規模言語モデル（LLM）まわりは、別モジュールで改めて扱う予定です。</p>
+      <p>このモジュールでは、テキストを数値にしてモデルにかける「基礎の流れ」を扱いました。いっぽうで近年の自然言語処理は、より大きなモデルと事前学習を軸に急速に広がっています。ここでは、このコースでは踏み込まないものの、知っておくと視野が広がる発展的なトピックを、特に近年の主流を中心に紹介します。深掘りは各自の興味に合わせてどうぞ。大規模言語モデル（LLM）まわりは、<a href="llm.html">大規模言語モデル（LLM）</a>のモジュールで改めて扱います。</p>
     </div>
 
     <div class="res-grid reveal">
       <div class="res">
-        <h5>モダンなトークン化と表現</h5>
+        <h3>モダンなトークン化と表現</h3>
         <ul>
           <li><b>サブワード分割</b>：単語より細かい単位で区切る方式（BPE・WordPiece・SentencePiece）。未知語や表記ゆれに強く、現代モデルの標準。</li>
           <li><b>文脈埋め込み</b>：語の意味を文脈ごとに変えるベクトル（ELMo・BERT）。静的な word2vec の次の世代。</li>
         </ul>
       </div>
       <div class="res">
-        <h5>Transformer と大規模言語モデル</h5>
+        <h3>Transformer と大規模言語モデル</h3>
         <ul>
           <li><b>自己注意機構と Transformer</b>：文中の語どうしの関係を重みづけて捉える、現代 NLP の中核アーキテクチャ。</li>
-          <li><b>大規模言語モデル（LLM）</b>：GPT 系、指示チューニング、少数事例からの学習（few-shot・in-context learning）。別モジュールで扱う予定。</li>
+          <li><b>大規模言語モデル（LLM）</b>：GPT 系、指示チューニング、少数事例からの学習（few-shot・in-context learning）。<a href="llm.html">大規模言語モデル（LLM）</a>のモジュールで扱います。</li>
           <li><b>検索拡張生成（RAG）</b>：外部の文書を検索し、その内容を根拠として LLM に答えさせる仕組み。</li>
         </ul>
       </div>
       <div class="res">
-        <h5>意味検索と応用タスク</h5>
+        <h3>意味検索と応用タスク</h3>
         <ul>
           <li><b>文埋め込みと意味検索</b>：文をベクトル化して意味の近い文書を探す（Sentence-BERT・ベクトルデータベース・近似最近傍探索）。</li>
           <li><b>系列ラベリング</b>：単語ごとにラベルを付けるタスク（固有表現抽出・品詞タグ付け。CRF や BiLSTM が定番）。</li>
@@ -1413,7 +1418,7 @@ test  = fetch_20newsgroups(subset=<span class="st">"test"</span>, categories=cat
         </ul>
       </div>
       <div class="res">
-        <h5>生成タスクと評価・広がり</h5>
+        <h3>生成タスクと評価・広がり</h3>
         <ul>
           <li><b>生成タスクと評価</b>：機械翻訳・要約・対話などの生成では、分類とは別の指標を使う（BLEU・ROUGE・パープレキシティ）。</li>
           <li><b>多言語・マルチモーダル</b>：言語をまたぐモデルや、画像と言語を結ぶモデル（CLIP など）といった最新の広がり。</li>
@@ -1448,14 +1453,6 @@ test  = fetch_20newsgroups(subset=<span class="st">"test"</span>, categories=cat
       </div>
     </div>
     <div class="foot-grid3">
-      <div>
-        <h3><span lang="ja">連絡先</span><span lang="en">Contact</span></h3>
-        <p class="muted-s">
-          <b>Yuta Kimura</b><br>
-          <span lang="ja">大阪公立大学工業高等専門学校</span><span lang="en">Osaka Metropolitan University College of Technology</span><br>
-          <a href="mailto:y.kimura@omu.ac.jp">y.kimura [at] omu.ac.jp</a>
-        </p>
-      </div>
       <div>
         <h3><span lang="ja">サイト</span><span lang="en">Site</span></h3>
         <p class="muted-s">
@@ -1525,9 +1522,9 @@ test  = fetch_20newsgroups(subset=<span class="st">"test"</span>, categories=cat
     "から":1,"まで":1,"ね":1,"よ":1,"た":1,"だ":1,"です":1,"ます":1,"ている":1,"いる":1,"のが":1};
   var DICT = {}; JP_DICT.forEach(function(w){ DICT[w]=1; });
   var MAXL = 5;
-  function isJP(ch){ return /[぀-ヿ㐀-䶿一-鿿ｦ-ﾟ]/.test(ch); }
+  function isJP(ch){ return /[\u3040-ヿ㐀-䶿一-鿿ｦ-ﾟ]/.test(ch); }
   function jtype(ch){
-    if(/[぀-ゟ]/.test(ch)) return 'hira';
+    if(/[\u3040-ゟ]/.test(ch)) return 'hira';
     if(/[゠-ヿｦ-ﾟ]/.test(ch)) return 'kata';
     if(/[一-鿿㐀-䶿]/.test(ch)) return 'kanji';
     return 'other';

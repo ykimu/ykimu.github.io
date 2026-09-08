@@ -139,7 +139,7 @@
   /* prose */
   .prose{max-width:var(--readw)}
   .prose p{margin:0 0 1em; color:var(--ink-2)}
-  .prose h4{font-family:var(--sans); font-size:1.12rem; font-weight:600; letter-spacing:0; color:var(--ink); margin:1.6em 0 .6em}
+  .prose h3{font-family:var(--sans); font-size:1.12rem; font-weight:600; letter-spacing:0; color:var(--ink); margin:1.6em 0 .6em; line-height:inherit; text-wrap:wrap}
   .prose ul{margin:0 0 1.2em; padding-left:0; list-style:none}
   .prose ul li{position:relative; padding-left:22px; margin:12px 0; color:var(--ink-2)}
   .prose ul li::before{content:""; position:absolute; left:0; top:13px; width:11px; height:1.5px; background:var(--accent)}
@@ -150,7 +150,7 @@
 
   .callout{border-radius:16px; padding:18px 22px; margin:18px 0; max-width:var(--readw);
     background:var(--card); box-shadow:0 0 0 6px var(--shell),0 0 0 6.5px var(--hair),var(--soft)}
-  .callout h4{margin:0 0 6px; font-size:1rem; font-family:var(--sans); font-weight:600; letter-spacing:0; color:var(--ink)}
+  .callout h3{margin:0 0 6px; font-size:1rem; font-family:var(--sans); font-weight:600; letter-spacing:0; color:var(--ink); line-height:inherit; text-wrap:wrap}
   .callout.tip{background:var(--accent-soft)}
   .callout.warn{background:rgba(138,109,59,.08)}
   .callout a{font-weight:600}
@@ -228,14 +228,14 @@
   .grid2{display:grid; grid-template-columns:1fr 1fr; gap:16px; margin:18px 0}
   .box{border-radius:16px; padding:16px 18px; background:var(--card);
     box-shadow:0 0 0 6px var(--shell),0 0 0 6.5px var(--hair),var(--soft)}
-  .box h5{margin:0 0 10px; font-size:.92rem; font-family:var(--sans); font-weight:600; letter-spacing:0; display:flex; align-items:center; gap:7px}
-  .box.pros h5{color:var(--accent-2)}
-  .box.cons h5{color:var(--bad)}
+  .box h4{margin:0 0 10px; font-size:.92rem; font-family:var(--sans); font-weight:600; letter-spacing:0; display:flex; align-items:center; gap:7px}
+  .box.pros h4{color:var(--accent-2)}
+  .box.cons h4{color:var(--bad)}
   .box ul{margin:0; padding-left:18px}
   .box li{margin:6px 0; font-size:.9rem; color:var(--ink-2)}
 
   .meta-row{display:grid; grid-template-columns:1fr 1fr; gap:16px; margin:16px 0}
-  .meta h5{margin:0 0 8px; font-size:.92rem; font-family:var(--sans); font-weight:600; letter-spacing:0; color:var(--accent-2)}
+  .meta h4{margin:0 0 8px; font-size:.92rem; font-family:var(--sans); font-weight:600; letter-spacing:0; color:var(--accent-2)}
   .meta p,.meta li{font-size:.92rem; color:var(--ink-2)}
   .meta ul{margin:0; padding-left:18px}
   .meta p{margin:0}
@@ -244,7 +244,7 @@
   /* numbered procedure steps */
   .steps{border-radius:16px; padding:16px 18px; margin:16px 0; background:var(--card);
     box-shadow:0 0 0 6px var(--shell),0 0 0 6.5px var(--hair),var(--soft)}
-  .steps h5{margin:0 0 10px; font-size:.92rem; font-family:var(--sans); font-weight:600; letter-spacing:0; color:var(--accent-2)}
+  .steps h4{margin:0 0 10px; font-size:.92rem; font-family:var(--sans); font-weight:600; letter-spacing:0; color:var(--accent-2)}
   .steps ol{margin:0; padding:0; list-style:none; counter-reset:st}
   .steps ol li{counter-increment:st; position:relative; padding-left:36px; margin:9px 0; font-size:.92rem; color:var(--ink-2)}
   .steps ol li::before{content:counter(st); position:absolute; left:0; top:3px; width:23px; height:23px; border-radius:50%;
@@ -253,7 +253,7 @@
 
   /* diagrams */
   .diagram-wrap{margin:18px 0; max-width:var(--readw)}
-  .diagram-wrap h5{margin:0 0 8px; font-size:.92rem; font-family:var(--sans); font-weight:600; letter-spacing:0; color:var(--accent-2)}
+  .diagram-wrap h4{margin:0 0 8px; font-size:.92rem; font-family:var(--sans); font-weight:600; letter-spacing:0; color:var(--accent-2)}
   .diagram-wrap svg{display:block; width:100%; height:auto; background:var(--shell);
     border:1px solid var(--hair); border-radius:12px; padding:8px}
   .dg-box{fill:var(--card); stroke:var(--line); stroke-width:1.2}
@@ -286,7 +286,7 @@
   /* equivalence-partition demo */
   .demo{border-radius:16px; padding:20px 22px; margin:22px 0; max-width:var(--readw); background:var(--card);
     box-shadow:0 0 0 6px var(--shell),0 0 0 6.5px var(--hair),var(--soft)}
-  .demo h4{margin:0 0 6px; font-size:1rem; font-family:var(--sans); font-weight:600; color:var(--ink)}
+  .demo h3{margin:0 0 6px; font-size:1rem; font-family:var(--sans); font-weight:600; color:var(--ink); line-height:inherit; text-wrap:wrap; letter-spacing:normal}
   .demo .spec{font-size:.9rem; color:var(--muted); margin:0 0 14px}
   .demo-row{display:flex; gap:10px; flex-wrap:wrap; align-items:center}
   .demo input[type=text]{width:min(220px,100%); padding:10px 16px; border-radius:999px; border:1px solid var(--hair);
@@ -592,7 +592,7 @@
             <div class="megacol">
               <div class="navlabel"><span lang="ja">計画・プロセス</span><span lang="en">Planning &amp; Process</span></div>
               <a href="agile-scrum.html"><span lang="ja">アジャイル開発とスクラム</span><span lang="en">Agile &amp; Scrum</span></a>
-              <a href="project-management.html"><span lang="ja">プロジェクト管理と見積もり</span><span lang="en">Project Management</span></a>
+              <a href="project-management.html"><span lang="ja">プロジェクト管理</span><span lang="en">Project Management</span></a>
               <a href="project-estimation-planning.html"><span lang="ja">プロジェクト計画・見積もり</span><span lang="en">Project Planning &amp; Estimation</span></a>
             </div>
             <div class="megacol">
@@ -698,7 +698,7 @@
       <a class="here" href="software-reuse-oss.html" aria-current="page"><span lang="ja">ソフトウェア再利用とOSS</span><span lang="en">Software Reuse &amp; OSS</span></a>
       <div class="mobsublabel"><span lang="ja">計画・プロセス</span><span lang="en">Planning &amp; Process</span></div>
       <a href="agile-scrum.html"><span lang="ja">アジャイル開発とスクラム</span><span lang="en">Agile &amp; Scrum</span></a>
-      <a href="project-management.html"><span lang="ja">プロジェクト管理と見積もり</span><span lang="en">Project Management</span></a>
+      <a href="project-management.html"><span lang="ja">プロジェクト管理</span><span lang="en">Project Management</span></a>
       <a href="project-estimation-planning.html"><span lang="ja">プロジェクト計画・見積もり</span><span lang="en">Project Planning &amp; Estimation</span></a>
       <div class="mobsublabel"><span lang="ja">品質・運用</span><span lang="en">Quality &amp; Operations</span></div>
       <a href="software-testing.html"><span lang="ja">ソフトウェアテスト学習ガイド</span><span lang="en">Software Testing Guide</span></a>
@@ -754,6 +754,9 @@
 </div>
 
 <main id="main">
+<noscript><div class="wrap" style="padding-top:24px"><p role="alert" style="margin:0; padding:14px 18px; border:1px solid var(--hair, #ddd); border-radius:12px; background:var(--bg-2, #f4f4f2); color:var(--ink, #222); font-size:.95rem">
+  <span lang="ja">この教材はJavaScriptを有効にすると表示されます。</span><span lang="en">This learning material is displayed when JavaScript is enabled.</span>
+</p></div></noscript>
 
 <button class="totop" type="button" aria-label="上へ戻る" title="上へ戻る">&uarr;</button>
 
@@ -838,7 +841,7 @@
     <h2 class="big reveal"><span lang="ja">OSSライセンスをどう選ぶか</span><span lang="en">How to choose an OSS license</span></h2>
     <div class="prose reveal" id="techProse" style="margin-top:22px"></div>
     <div class="demo reveal" id="licDemo">
-      <h4>体験デモ：OSSライセンス選択ガイド</h4>
+      <h3>体験デモ：OSSライセンス選択ガイド</h3>
       <p class="spec">あなたが自分の書いたソフトウェアをOSSとして公開するとします。3つの質問に答えると、考え方の合う代表的なライセンスを提案します。<b>※これは学習用の簡易ガイドであり、法的助言ではありません。</b>実際の選択では原文と専門家の助言を確認してください。</p>
       <div id="licQ1" style="margin:18px 0 6px">
         <p class="spec" style="margin:0 0 8px; color:var(--ink-2)"><b>Q1.</b> あなたのコードを改変・利用した人に、その<b>ソースコードの公開を義務づけたい</b>ですか？</p>
@@ -951,7 +954,7 @@ Black Duck 社の OSSRA 2025 レポート（商用コードベース965件の監
 つまり現代の開発者が書く「自分のコード」は氷山の一角で、その下に巨大な再利用の土台が広がっています。
 「何を作り、何を作らないか」：再利用はコーディングのテクニックではなく、<strong>設計判断そのもの</strong>なのです。</p>
 
-<h4>再利用の利点：なぜ「作らない」のか</h4>
+<h3>再利用の利点：なぜ「作らない」のか</h3>
 <div class="principles">
   <div class="p"><b>① 開発の迅速化</b><br>
     <span>すでに動くものを使えば、市場投入までの時間（time to market）を大きく短縮できる。開発スケジュールが短いほど、既製システムの利用が有利になる。</span></div>
@@ -964,7 +967,7 @@ Black Duck 社の OSSRA 2025 レポート（商用コードベース965件の監
 </div>
 
 <div class="callout warn">
-  <h4>ただし「タダ」ではない：再利用の隠れたコスト</h4>
+  <h3>ただし「タダ」ではない：再利用の隠れたコスト</h3>
   再利用には固有のコストと問題が伴います。①<strong>探すコスト</strong>：要求に合う部品を発見・選定する時間、
   ②<strong>理解するコスト</strong>：他人が書いたものの仕様・前提・くせを学ぶ時間、
   ③<strong>統合するコスト</strong>：自分のシステムやほかの部品と組み合わせて動かす手間（インタフェースの不適合・想定の衝突）、
@@ -973,7 +976,7 @@ Black Duck 社の OSSRA 2025 レポート（商用コードベース965件の監
   再利用の判断とは、これらのコストと利点を天秤にかけることです。
 </div>
 
-<h4>再利用のレベル：何を再利用するのか</h4>
+<h3>再利用のレベル：何を再利用するのか</h3>
 <p>「再利用」と一口に言っても、その<strong>抽象度と規模</strong>には段階があります。
 小さく抽象的なものほど柔軟に使えますが、得られる「出来合いの機能」は少なく、
 大きく具体的なものほど一気に機能が手に入りますが、自分の要求に合わせる自由は減ります。</p>
@@ -1002,7 +1005,7 @@ Black Duck 社の OSSRA 2025 レポート（商用コードベース965件の監
 <div class="dg-legend">再利用のレベル：下に行くほど再利用の単位が大きくなり、「作る量」は減るが「合わせる・妥協する」比重が増える。</div>
 </div>
 
-<h4>再利用の風景（reuse landscape）</h4>
+<h3>再利用の風景（reuse landscape）</h3>
 <p>教科書（Sommerville 10th, Ch.15）は、抽象度と規模の異なる多くの再利用技法の全体を
 <b>再利用の風景（reuse landscape）</b>と呼びます。このページのカタログは、この風景の主要な住人たちを1枚ずつ訪ねていく構成です。</p>
 <div class="diagram-wrap">
@@ -1038,7 +1041,7 @@ Black Duck 社の OSSRA 2025 レポート（商用コードベース965件の監
 <div class="dg-legend">どの技法を選ぶかに絶対の正解はなく、要求・技術・組織の状況で決まる。複数を組み合わせるのが普通。</div>
 </div>
 
-<h4>技法をどう選ぶか：考慮すべきこと</h4>
+<h3>技法をどう選ぶか：考慮すべきこと</h3>
 <ul>
   <li><b>開発スケジュール</b>：短いなら、大粒の再利用（既製システムの利用）が有利。</li>
   <li><b>ソフトウェアの想定寿命</b>：長く使うシステムなら、部品の<strong>進化可能性</strong>（ベンダーやコミュニティが将来も保守してくれるか）を重視する。</li>
@@ -1048,7 +1051,7 @@ Black Duck 社の OSSRA 2025 レポート（商用コードベース965件の監
 </ul>
 
 <div class="callout tip">
-  <h4>この教材の歩き方</h4>
+  <h3>この教材の歩き方</h3>
   カタログは「<b>再利用の技法</b>」（教科書 Ch.15-16 の柱）→「<b>OSSの世界</b>」（現代の再利用の最大の供給源）→
   「<b>リスクと現代の再利用</b>」（サプライチェーン・API）の順に並んでいます。
   各カード末尾の「習得チェック」を付けると、絞り込みバー右側に進捗が表示されます（保存はされず、ページを開いている間だけ保持されます）。
@@ -1078,27 +1081,27 @@ const TECH_HTML = `
 const CLOSING_HTML = `
 <p>最後に、個々の技法の知識を「使える判断力」に変えるための視点をまとめます。</p>
 <div class="callout warn">
-  <h4>「作らない」ことにも設計とコストがある</h4>
+  <h3>「作らない」ことにも設計とコストがある</h3>
   再利用は「楽をする」ことではなく、<strong>探す・理解する・統合する・追随し続ける</strong>という別の仕事を引き受けることです。
   依存を1つ追加することは、その部品の将来のバージョンアップ・脆弱性・開発停止まで引き受けるという長期の契約に近い：
   「この依存は、この仕事量に見合うか？」と問う習慣が、よい設計判断の第一歩です。
   逆に、実績ある部品があるのに「よそのものは信用できない」と自作に走るNIH症候群も、同じくらい高くつきます。
 </div>
 <div class="callout tip">
-  <h4>OSSは「無料の資材置き場」ではなく、人が保守する公共財</h4>
+  <h3>OSSは「無料の資材置き場」ではなく、人が保守する公共財</h3>
   あなたが使うライブラリの向こう側には、多くの場合ごく少数の（ときに無償の）メンテナがいます。
   Nadia Eghbal『Working in Public』は、広く使われるOSSの保守が一部の個人に集中する構造を描き、
   xz-utils 事件はまさに「疲弊した単独メンテナ」が攻撃の入口になりました。
   Issue の書き方ひとつ、PR のマナーひとつが、この公共財の持続可能性に関わっています。
 </div>
 <div class="callout">
-  <h4>依存は「見える化」して管理する</h4>
+  <h3>依存は「見える化」して管理する</h3>
   自分のシステムが何に依存しているか（推移的依存を含めて）を言えないなら、それはもう管理できていません。
   lockファイルによる再現性の確保、SBOMによる部品表の整備、Dependabot などによる継続的な脆弱性監視：
   現代の開発では、依存の管理はコードを書くことと同格の日常業務です。
 </div>
 
-<h4 style="margin-top:26px">混同しやすい用語の見分け方</h4>
+<h3 style="margin-top:26px">混同しやすい用語の見分け方</h3>
 <p>似ている用語は、<strong>「誰が主導権を持つか」「何を義務づけるか」</strong>で見分けます。試験でも実務でも問われるポイントです。</p>
 <table class="cmp-table">
   <tr><th>似ている用語</th><th>見分けるポイント</th></tr>
@@ -1124,9 +1127,9 @@ const CLOSING_HTML = `
     <td>OSSはOSI の定義（OSD）を満たすもの：<b>自由な再配布・改変・利用分野の無差別</b>など。ソース公開でも「商用利用禁止」「競合利用禁止」等の制限付き（source-available）はOSSではない。</td></tr>
 </table>
 
-<h4 style="margin-top:26px">研究者の視点：再利用はいま、研究の最前線でもある</h4>
+<h3 style="margin-top:26px">研究者の視点：再利用はいま、研究の最前線でもある</h3>
 <div class="callout">
-  <h4>ソフトウェアエコシステムの実証研究</h4>
+  <h3>ソフトウェアエコシステムの実証研究</h3>
   npm や PyPI のような巨大エコシステムは、依存関係のグラフ・脆弱性の伝播・メンテナの持続可能性を実データで研究できる場になっています。
   left-pad 事件後には「取るに足らない小さなパッケージ（trivial packages）はなぜ使われるのか」という実証研究が生まれ、
   依存の自動更新（Dependabot のようなボット）が開発者の行動に与える影響、
@@ -1134,7 +1137,7 @@ const CLOSING_HTML = `
   そして生成AIがパッケージ選択・供給網に与える影響など、マイニングソフトウェアリポジトリ（MSR）分野の中心テーマであり続けています。
 </div>
 
-<h4 style="margin-top:26px">さらに学ぶための文献・資料</h4>
+<h3 style="margin-top:26px">さらに学ぶための文献・資料</h3>
 <ul>
   <li>I. Sommerville『Software Engineering (10th ed.)』Pearson, 2016年, 第15章（Software reuse）・第16章（Component-based software engineering）：本教材の底本</li>
   <li><a href="https://opensource.org/osd" target="_blank" rel="noopener">Open Source Initiative（OSI）: The Open Source Definition</a>：「オープンソース」の公式定義とライセンス一覧</li>
@@ -1185,7 +1188,7 @@ const ITEMS = [
   cautions:[
     '<b>依存地獄（dependency hell）</b>：パッケージAとBが同じライブラリCの互換性のない別バージョンを要求して解決不能になる、更新が連鎖して壊れる、といった泥沼。依存が増えるほど起こりやすい',
     '<code>^</code> のような範囲指定は便利だが、<b>作者がSemVerを守らない</b>と「パッチ更新のはずが壊れた」が起きる：lockファイルとCIでの検証が保険',
-    '左記の「探す・理解する」コストを飛ばして<b>星の数だけで選ぶ</b>と、保守停止・脆弱性・ライセンス問題を引き込む',
+    '上記の「探す・理解する」コストを飛ばして<b>星の数だけで選ぶ</b>と、保守停止・脆弱性・ライセンス問題を引き込む',
     'インストール時にスクリプトが走るエコシステムでは、パッケージ追加は<b>他人のコードの実行</b>そのもの：タイポスクワッティング（名前の似た悪意あるパッケージ）に注意'
   ],
   examples:[
@@ -1356,7 +1359,7 @@ const ITEMS = [
   points:[
     '主要な収益モデル：①<b>サポート・コンサル型</b>（Red Hat：ソフトは自由、商用サポートを販売）②<b>オープンコア型</b>（GitLab：コアはOSS、企業向け機能は有償）③<b>クラウド・ホスティング型</b>（Databricks・MongoDB：自分で運用する自由はあるが、運用してもらうと有償）④<b>デュアルライセンス型</b>（同じコードをGPLと商用ライセンスの二本立てで提供）',
     '現代のOSSの主役は企業でもある：Linux カーネルの開発者の多くは企業に雇用されており、「善意のボランティアの集まり」という像は半分しか正しくない',
-    '「クラウド事業者によるただ乗り」への対抗として、Elastic や Redis が一時 OSD 非準拠のライセンス（SSPL 等）へ移行した論争（2018〜2024年頃）は、OSSの定義と経済の緊張関係を示す好例（両者とも後にOSSライセンス併用へ回帰）',
+    '「クラウド事業者によるただ乗り」への対抗として、Elastic（2021年）や Redis（2024年）が一時 OSD 非準拠のライセンス（SSPL 等）へ移行した論争は、OSSの定義と経済の緊張関係を示す好例（Elastic は2024年、Redis は2025年に AGPL-3.0 を選択肢に加えて OSS ライセンス併用へ回帰）',
     '健全性のシグナル：コミット・リリースの頻度、メンテナの人数（バス係数）、財団の後ろ盾、行動規範と CONTRIBUTING の整備'
   ],
   cautions:[
@@ -1400,7 +1403,7 @@ const ITEMS = [
     'AIコーディング支援が出力したコードのライセンス的な由来は現在も論争中：コピペ由来の混入に注意する'
   ],
   examples:[
-    '<b>GPL-3.0</b>：Linux（v2）・Bash・GCC。<b>LGPL</b>：glibc など「クローズドアプリからも使わせたいライブラリ」',
+    '<b>GPL-2.0</b>：Linux カーネル（GPL-2.0-only）。<b>GPL-3.0</b>：Bash・GCC。<b>LGPL</b>：glibc など「クローズドアプリからも使わせたいライブラリ」',
     '<b>MIT</b>：React・Rails・jQuery など、普及最優先の定番。<b>Apache-2.0</b>：Kubernetes・Android(AOSP)・TensorFlow など企業主導プロジェクトの定番',
     '<b>MPL-2.0</b>：Firefox：ファイル単位コピーレフトの代表'
   ],
@@ -1700,7 +1703,7 @@ function renderItem(t, idx){
   const badgeH = `<span class="badge-imp ${BADGE_CLS[t.badge]||'imp1'}">${t.badge}</span>`;
   const analogyH = t.analogy ? `<div class="analogy"><span><b>たとえるなら</b> ${t.analogy}</span></div>` : '';
   const dg = DIAGRAMS[t.id];
-  const diagramH = dg ? `<div class="diagram-wrap"><h5>図解</h5>${dg}</div>` : '';
+  const diagramH = dg ? `<div class="diagram-wrap"><h4>図解</h4>${dg}</div>` : '';
   let codeH = '';
   if(t.hasCode && CODE[t.id]){
     codeH = `
@@ -1729,20 +1732,20 @@ function renderItem(t, idx){
     <div class="pdetail">
       ${analogyH}
       <div class="meta-row">
-        <div class="meta"><h5>目的・ねらい</h5><p>${t.purpose}</p></div>
-        <div class="meta"><h5>誰が・どこで使うか</h5><p>${t.who}</p></div>
+        <div class="meta"><h4>目的・ねらい</h4><p>${t.purpose}</p></div>
+        <div class="meta"><h4>誰が・どこで使うか</h4><p>${t.who}</p></div>
       </div>
-      <div class="steps"><h5>実施の仕方（進め方）</h5><ol>${stepsLi}</ol></div>
+      <div class="steps"><h4>実施の仕方（進め方）</h4><ol>${stepsLi}</ol></div>
       ${diagramH}
       <div class="grid2">
-        <div class="box pros"><h5>✓ 意識するポイント</h5><ul>${pointsLi}</ul></div>
-        <div class="box cons"><h5>！ 注意点・落とし穴</h5><ul>${cautionsLi}</ul></div>
+        <div class="box pros"><h4>✓ 意識するポイント</h4><ul>${pointsLi}</ul></div>
+        <div class="box cons"><h4>！ 注意点・落とし穴</h4><ul>${cautionsLi}</ul></div>
       </div>
       <div class="meta-row">
-        <div class="meta"><h5>具体例</h5><ul>${exLi}</ul></div>
-        <div class="meta"><h5>混同しやすいものとの違い</h5><p>${t.related}</p></div>
+        <div class="meta"><h4>具体例</h4><ul>${exLi}</ul></div>
+        <div class="meta"><h4>混同しやすいものとの違い</h4><p>${t.related}</p></div>
       </div>
-      <div class="meta" style="margin:16px 0"><h5>現場では（ツール・現代的な実践）</h5><p>${t.modern}</p></div>
+      <div class="meta" style="margin:16px 0"><h4>現場では（ツール・現代的な実践）</h4><p>${t.modern}</p></div>
       ${codeH}
       <label class="learn"><input type="checkbox" onchange="toggleLearned('${t.id}',this)">
         このトピックを理解した（習得チェック）</label>
