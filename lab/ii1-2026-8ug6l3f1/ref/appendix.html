@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>さらに学ぶために | インフラ構築基礎実習 2026</title>
+<link rel="icon" href="../../../favicon.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&family=Noto+Sans+JP:wght@400;500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../lab.css">
+</head>
+<body>
+<a class="skip" href="#main">本文へスキップ</a>
+<header class="bar">
+  <div class="wrap">
+    <a class="brand" href="../index.html">インフラ構築基礎実習 <small>知能情報実験実習1 / 2026</small></a>
+    <nav class="barlinks" aria-label="実習ナビゲーション">
+      <a href="../index.html">実習トップ</a>
+      <a href="../ref/index.html" class="here">基礎知識</a>
+      <a href="../appendix.html">付録</a>
+    </nav>
+  </div>
+</header>
+
+<main id="main" class="page">
+  <div class="hero">
+    <p class="eyebrow">APPENDIX</p>
+    <h1>さらに学ぶために</h1>
+    <p class="lead">調べ方、一次情報のありか、資格、自宅での継続、そして最終課題のテーマ例</p>
+  </div>
+
+  <div class="layout">
+    <aside class="toc" aria-label="このページの目次">
+      <p class="toc-head">このページ</p>
+      <ol></ol>
+    </aside>
+    <article class="doc">
+
+      <h2 id="ca-1"><span class="no">A.1</span>わからないことの調べ方</h2>
+      <p>コマンドの使い方は、まず手元で調べられる。<code>man コマンド名</code> は公式マニュアル（英語だが最も正確）、<code>コマンド名 --help</code> は簡易ヘルプである。エラーメッセージで検索するときは、自分の環境固有の部分（ファイル名など）を除いた核心部分で検索するとヒットしやすい。生成AIに聞くのも有効だが、「なぜそのコマンドで解決するのか」を説明できるまで理解してから実行すること。理解せずに実行したsudoコマンドは、サーバ管理では事故のもとである。</p>
+
+      <h2 id="ca-2"><span class="no">A.2</span>一次情報のありか</h2>
+      <ul>
+        <li>Raspberry Pi 公式ドキュメント（<a href="https://www.raspberrypi.com/documentation/">https://www.raspberrypi.com/documentation/</a>）</li>
+        <li>Debian 管理者ハンドブック（<a href="https://debian-handbook.info/">https://debian-handbook.info/</a>）：無償公開されている本格的な教科書</li>
+        <li>Luanti 公式ドキュメント（<a href="https://docs.luanti.org/">https://docs.luanti.org/</a>）とContentDB（<a href="https://content.luanti.org/">https://content.luanti.org/</a>）</li>
+        <li>Docker 公式ドキュメント（<a href="https://docs.docker.com/">https://docs.docker.com/</a>）</li>
+        <li>systemd・各コマンドのmanページ</li>
+      </ul>
+
+      <h2 id="ca-3"><span class="no">A.3</span>資格という道しるべ</h2>
+      <p>本実習で扱った内容は、Linux技術者認定試験（LinuC レベル1 / LPIC-1）の出題範囲と大きく重なっている。資格の取得自体が目的である必要はないが、出題範囲は「Linux管理者に求められる知識の地図」として優れているため、学習の次の一歩を決める道しるべに使える。クラウド（AWS等）の入門資格も、本実習のインフラ知識の自然な発展先である。</p>
+
+      <h2 id="ca-4"><span class="no">A.4</span>自宅で続けるには</h2>
+      <p>本実習の環境は、自宅でも安価に再現できる。Raspberry Pi一式（あるいは古いノートPC＋Linux）でサーバを立て、家庭内LANで友人と遊ぶところまでは本資料の知識だけで到達できる。さらに進んで学外（インターネット）に公開する場合は、固定回線のポート開放・DDNS・攻撃対策（fail2ban、公開鍵認証、更新の自動化）といった新しい課題が現れる。それらは本実習で学んだ原則、すなわち最小権限、デフォルト拒否、バックアップ、ログ監視の延長線上にある。手を動かし続けることが、最良の学習である。</p>
+
+      <h2 id="ca-5"><span class="no">A.5</span>最終課題のテーマ例：まず動かす、それから広げる</h2>
+      <p>指導書<a href="../day6.html#s6-1">6-1</a>のテーマ表は「向き」を示すだけである。ここでは各テーマについて、最初の30分で動く最小形（まず動かす）と、余裕があれば進む先（広げる）の例を挙げる。どこまで広げたかは評価に影響しない。評価されるのは、動いたものを第三者が再現できるように書けているか、なぜその構成にしたかを説明できているかである（指導書<a href="../day6.html#s6-5">6-5</a>）。したがって、まず最小形を完成させ、記事の骨格を書いてから広げるのが定石である。ここに挙げる例は候補にすぎず、同じテーマの中で別のものを作ってもよい。</p>
+
+      <h3 id="ca-5-a">Mod・ゲーム運用</h3>
+      <p><strong>まず動かす：</strong>ContentDBからModを1つ選び、<code>data/mods</code> に展開して <code>world.mt</code> で有効化し、ゲーム内で動作を確認する（<a href="ch11.html#c11-7">補足資料11.7</a>）。依存関係（Dependencies）の確認と、導入前のバックアップまでを手順に含める。</p>
+      <p><strong>広げる：</strong>複数のModや別のゲーム（<code>gameid</code> の切り替え）を組み合わせて、自分のサーバの「遊び方」を設計する。Modも資産の一部として、バックアップと総合演習の再構築手順に組み込む。Modの更新（新バージョンへの差し替えと戻し方）まで手順化できると運用の記事になる。</p>
+
+      <h3 id="ca-5-b">Mod自作（Lua）</h3>
+      <p><strong>まず動かす：</strong><code>worldmods</code> に数十行のModを置き、チャットコマンドを1つ追加する（例：<code>/hello</code> で挨拶を返す、<code>/where</code> で座標を表示する）。公式ドキュメント（docs.luanti.org）のModding Bookの最初の章で足りる。</p>
+      <p><strong>広げる：</strong>アイテムやノード（ブロック）を追加し、色や効果を <code>luanti.conf</code> の設定値で変えられるようにする。<code>mod.conf</code> を整え、他の人のサーバにそのまま置けば動く形（配布できる形）にまとめる。</p>
+
+      <h3 id="ca-5-c">監視の高度化</h3>
+      <p><strong>まず動かす：</strong><code>cron</code> で load average・メモリ・ディスク・温度を毎分テキストに追記し、<a href="../day5.html">第5回</a>の Web 監視ページからそのファイルを見られるようにする。<a href="../day3.html">第3回</a>で記録した平常時の値と並べて表示する。</p>
+      <p><strong>広げる：</strong>しきい値を超えたら通知する（チャットサービスのWebhookやメール）か、記録をグラフにする（Prometheus＋node_exporter＋Grafana のコンテナ構成も Pi 400 で動く）。誤検知をどう抑えるかを書けると監視設計の記事になる。</p>
+
+      <h3 id="ca-5-d">セキュリティ強化</h3>
+      <p><strong>まず動かす：</strong>SSHのパスワード認証を無効化（<code>PasswordAuthentication no</code>）し、締め出されたときの復旧手順（モニタ接続でのローカルログイン）を先に検証してから適用する。<code>ufw</code> のルールを見直し、開けているポートの理由を一覧にする。</p>
+      <p><strong>広げる：</strong><code>fail2ban</code> を導入し、意図的に失敗ログインを繰り返して検知・遮断されることをログで確認する。SSHのポート変更や許可元IPの限定、Luanti側の権限設計（<code>default_privs</code>）まで含めて「多層防御」として整理する。</p>
+
+      <h3 id="ca-5-e">マルチサーバ構成</h3>
+      <p><strong>まず動かす：</strong><code>compose.yaml</code> にもう1つ game サービス（別ワールド・別ポート、例：サバイバルとクリエイティブ）を追加し、両方に接続できることを確認する。ポートの割り当て表を作る。</p>
+      <p><strong>広げる：</strong>Web 監視ページを共通の入口にして各サーバの状態を一覧できるようにし、バックアップと監視を全サーバに広げる。ワールドごとの設定（<code>luanti.conf</code> を分ける）とリソース配分（<code>docker stats</code> で比較）を設計として説明する。</p>
+
+      <h3 id="ca-5-f">バックアップの高度化</h3>
+      <p><strong>まず動かす：</strong><code>backup.sh</code> の生成物を <code>scp</code> または <code>rsync</code> で別のマシン（BYOD、または隣の学生のPi）へ自動転送し、転送先からリストアしてワールドが戻ることを確認する（3-2-1ルールの「1つは別の場所に」）。</p>
+      <p><strong>広げる：</strong><code>sqlite3</code> の <code>.backup</code> を使ってサービスを止めずに整合性のあるバックアップを取る。さらに「復元して起動できるか」を自動で検証するスクリプトを <code>cron</code> に載せ、結果を <code>backup.log</code> と Web 監視ページに出す。</p>
+
+      <h3 id="ca-5-g">構成管理・自動化</h3>
+      <p><strong>まず動かす：</strong>Ansible を BYOD に入れ（Pythonが必要）、第2回から第3回で手作業した内容、すなわち <code>ufw</code> のルール、ユニットファイルの配置、<code>luanti</code> ユーザの作成を Playbook にして自分のPiに適用し、同じ状態になることを確認する。</p>
+      <p><strong>広げる：</strong>初期状態のPi（隣の学生と協力するか、SDを書き直す）に Playbook を適用して、手順書なしで環境が再現されることを実証する。2回目の実行で変更が0になる（冪等性）ことを示せると、Infrastructure as Code の記事として完成する。</p>
+
+      <h3 id="ca-5-h">資産のバージョン管理</h3>
+      <p><strong>まず動かす：</strong><code>compose.yaml</code>・<code>html</code>・<code>backup.sh</code>・ユニットファイルを Git リポジトリにして履歴を残し、過去の時点の構成をチェックアウトして復元できることを確認する。秘密情報（パスワード等）を含めない工夫を書く。</p>
+      <p><strong>広げる：</strong>Gitea などをコンテナで自前ホストして push 先にし、push を契機に <code>docker compose up -d</code> が走る仕組み（hook や簡単なスクリプト）を作る。「設定を変えたら履歴に残り、自動で反映される」流れを一気通貫で示す。</p>
+
+      <p>上の8つ以外にも、この実習の延長線上にあるテーマはある。たとえば、イメージのタグ固定と「更新前バックアップ→更新→検証→戻す」までを手順化する更新とロールバック、電源断を意図的に起こして復旧を観察し log2ram や USB SSD 起動で改善する SDカードの信頼性、Pi をアクセスポイント（hostapd＋dnsmasq）にして学内Wi-Fiに依存しない独立LANを作るネットワーク構築、<code>journalctl</code> の入退室ログを日次集計してランキングや異常検知を出すログ解析の自動化、nginx の HTTPS 化（自己署名証明書）とアクセス制御などである。独自テーマとして取り組む場合は、第5回までに教員に相談し、「最初の30分で動く最小形」が何かを一緒に決めておくこと。</p>
+      <p>避けた方がよいテーマも書いておく。DDNS やルータのポート開放を伴うインターネット公開は指導書2.4の規則に反する。Kubernetes（k3s 等）は Pi 400 でも動くが、180分では「入れただけ」で終わりやすい。Java で動く別のゲームサーバへの乗り換えは、この実習の資産がほとんど使えない。テーマ選びの基準は「第5回までに作ったものを部品として使えるか」である。</p>
+
+      <nav class="pager" aria-label="前後のページ">
+        <a class="prev" href="ch11.html"><span class="pl">前へ</span><span class="pt">Luantiサーバの技術</span></a>
+      </nav>
+    </article>
+  </div>
+
+  <footer class="foot">
+    <span>知能情報実験実習1「インフラ構築基礎実習」指導書 2026年度版　作成者：木村祐太</span>
+    <a href="../../../index.html">木村祐太 研究室サイト</a>
+  </footer>
+</main>
+<script src="../lab.js"></script>
+</body>
+</html>

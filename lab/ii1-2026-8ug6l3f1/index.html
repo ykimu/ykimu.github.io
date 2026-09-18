@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>実習トップ | インフラ構築基礎実習 2026</title>
+<link rel="icon" href="../../favicon.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&family=Noto+Sans+JP:wght@400;500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="lab.css">
+</head>
+<body>
+<a class="skip" href="#main">本文へスキップ</a>
+<header class="bar">
+  <div class="wrap">
+    <a class="brand" href="index.html">インフラ構築基礎実習 <small>知能情報実験実習1 / 2026</small></a>
+    <nav class="barlinks" aria-label="実習ナビゲーション">
+      <a href="index.html" class="here">実習トップ</a>
+      <a href="ref/index.html">基礎知識</a>
+      <a href="appendix.html">付録</a>
+    </nav>
+  </div>
+</header>
+
+<main id="main" class="page">
+  <div class="hero">
+    <p class="eyebrow">COURSE GUIDE</p>
+    <h1>インフラ構築基礎実習</h1>
+    <p class="lead">知能情報実験実習1　指導書：自分のゲームサーバ（Luanti）を構築・運用しよう</p>
+    <div class="meta"><span><b>実験環境</b> Raspberry Pi 400</span> <span><b>作成日</b> 2026年7月2日</span> <span><b>作成者</b> 木村 祐太</span></div>
+  </div>
+
+  <div class="layout">
+    <aside class="toc" aria-label="このページの目次">
+      <p class="toc-head">このページ</p>
+      <ol></ol>
+    </aside>
+    <article class="doc">
+
+      <h2 id="intro"><span class="no">01</span>はじめに</h2>
+      <p>本実習では、Linuxサーバの構築および運用管理の基本を学ぶ。題材として、オープンソースのマルチプレイゲーム「Luanti（ルアンティ、旧称Minetest）」のサーバを取り上げ、全6回を通して「自分専用のゲームサーバを構築し、公開し、運用する」ことに取り組む。LuantiはMinecraftによく似たボクセル型のサンドボックスゲームで、クライアントもサーバも無料で利用できるため、全員が自分のPCから実際に接続し、遊びながら学ぶことができる。</p>
+      <p>ゲームサーバは、Webサービスと同じく「多数の利用者が接続する本物のサーバ」である。サーバの構築、サービスの常時稼働、利用者（プレイヤー）の管理、負荷の監視、ログの調査、バックアップと復旧、コンテナによるモダンな運用、本実習で扱う内容はすべて、実際のインフラエンジニアが日常的に行っている業務そのものである。楽しみながら手を動かすうちに、ひとりで簡単なサーバの構築や運用管理ができるようになることを目的とする。</p>
+
+      <h3 id="intro-1">1.1 本実習の進め方</h3>
+      <p>各回には達成すべき目標と、その達成条件（確認項目）が設定されている。確認項目をすべて満たすことがその回のゴールである。</p>
+      <ul>
+        <li><strong>目標：</strong>その回に達成すべきこと。冒頭のミニ講義で背景知識を確認した後、各自のペースで実習を進める。</li>
+        <li><strong>確認項目：</strong>目標の達成条件。達成したら、日時・実行したコマンド・確認結果を「実験記録」（各自のノートまたはテキストファイル）に残す。実験記録は最終課題の提出物の一部となる。</li>
+        <li><strong>発展課題：</strong>早く終わった人向けの課題。取り組みは任意だが、最終課題のテーマ選びのヒントになる。</li>
+      </ul>
+      <div class="call example"><span class="ct">実験記録の書き方（1項目分の例）</span>[10/01 14:20] 第2回 確認項目1
+コマンド: sudo systemctl status luanti
+結果 : active (running) を確認
+メモ : enable忘れで一度失敗 → daemon-reload後に成功</div>
+      <p>わからないことがあれば、まず自分で調べる（エラーメッセージを読む・検索する・生成AIに聞く）こと。それでも解決しなければ教員や支援員の先生に質問する。「調べて解決する力」自体が、本実習で身につけてほしい最も重要なスキルである。</p>
+
+      <h3 id="intro-2">1.2 全体スケジュール</h3>
+      <table class="tbl">
+        <thead><tr><th>回</th><th>テーマ</th><th>おもな内容</th></tr></thead>
+        <tbody>
+          <tr><td>第1回</td><td>OSの導入とLinuxの基本操作</td><td>OS導入、SSH接続、Linuxの基本操作、テキストエディタ</td></tr>
+          <tr><td>第2回</td><td>Luantiサーバの構築とサービス化</td><td>パッケージ管理、Luantiの導入、サービス化、ファイアウォール</td></tr>
+          <tr><td>第3回</td><td>ユーザ管理と監視</td><td>パーミッション、ユーザ管理、非root運用、監視、ログ解析</td></tr>
+          <tr><td>第4回</td><td>バックアップと自動化</td><td>バックアップ、シェルスクリプト、cron、復旧訓練、障害対応</td></tr>
+          <tr><td>第5回</td><td>Dockerによる再構築とWeb監視</td><td>Docker、コンテナによる再構築、Web監視ページ</td></tr>
+          <tr><td>第6回</td><td>最終課題</td><td>総合演習（制作＋技術記事の執筆・公開）</td></tr>
+        </tbody>
+      </table>
+
+      <h3 id="intro-3">1.3 補足資料について</h3>
+      <p>本指導書は実習中に手を動かすための手順書であり、技術の背景や「なぜそうするのか」の詳しい説明は、別冊の補足資料「Linuxサーバ構築・運用の基礎知識」にまとめてある。実習後の復習、疑問点の調査、最終課題の深掘りには補足資料を参照すること。各回と補足資料の章の対応は次のとおりである。</p>
+      <div class="scroll">
+      <table class="tbl">
+        <thead><tr><th>実習の回</th><th>補足資料の対応章</th></tr></thead>
+        <tbody>
+          <tr><td><a href="day1.html">第1回</a></td><td><a href="ref/ch01.html">第1章 OSとLinux</a>／<a href="ref/ch02.html">第2章 ファイルシステムとディレクトリ構造</a>／<a href="ref/ch03.html">第3章 シェルとコマンドライン</a>／<a href="ref/ch04.html">第4章 テキストエディタ（vi / Vim）</a></td></tr>
+          <tr><td><a href="day2.html">第2回</a></td><td><a href="ref/ch06.html">第6章 プロセスとサービス管理</a>／<a href="ref/ch07.html">第7章 ネットワークの基礎</a>／<a href="ref/ch11.html">第11章 Luantiサーバの技術</a></td></tr>
+          <tr><td><a href="day3.html">第3回</a></td><td><a href="ref/ch05.html">第5章 ユーザ・グループとパーミッション</a>／<a href="ref/ch06.html">第6章 プロセスとサービス管理</a>／<a href="ref/ch07.html">第7章 ネットワークの基礎</a>（7.6 SSH）／<a href="ref/ch08.html">第8章 サーバ運用の基礎</a></td></tr>
+          <tr><td><a href="day4.html">第4回</a></td><td><a href="ref/ch02.html">第2章 ファイルシステムとディレクトリ構造</a>（2.7 ディスクの調査）／<a href="ref/ch08.html">第8章 サーバ運用の基礎</a>／<a href="ref/ch09.html">第9章 シェルスクリプト入門</a></td></tr>
+          <tr><td><a href="day5.html">第5回</a></td><td><a href="ref/ch10.html">第10章 仮想化とコンテナ</a></td></tr>
+          <tr><td><a href="day6.html">第6回</a></td><td><a href="ref/index.html">全章</a>＋<a href="ref/appendix.html">付録（さらに学ぶために）</a></td></tr>
+        </tbody>
+      </table>
+      </div>
+
+      <h2 id="rules"><span class="no">02</span>注意事項</h2>
+
+      <h3 id="rules-1">2.1 BYODの持参について</h3>
+      <p>本実習では、サーバ環境としてRaspberry Pi 400を1人1台貸与する。Raspberry Pi 400はヘッドレスサーバ（モニタを接続しないサーバ）として運用し、操作は各自のノートPC（BYOD）からSSHで行う（第1回冒頭のセットアップのみモニタを使用する）。毎回必ずBYODを持参すること。</p>
+
+      <h3 id="rules-2">2.2 評価について</h3>
+      <p>最終課題（技術記事＋実験記録）を100点満点で評価する。評価は、教員によるチェックリスト評価（60点）と、学生相互評価（40点）の2軸で行う。詳細は<a href="day6.html">第6回</a>の章に示す。各回の確認項目の達成記録（実験記録）も最終課題の提出物の一部となるため、毎回確実に記録すること。</p>
+
+      <h3 id="rules-3">2.3 生成AIの利用について</h3>
+      <p>本実習では、ChatGPT等の生成AIを用いて学習することに制限は設けない。エラーの原因調査や、実習で触れた内容以外の学習に積極的に活用してよい。ただし、最終課題については利活用方法に制限を設けるため、<a href="day6.html">第6回</a>の章に示すルールを必ず確認すること。規則を破った場合、最終課題の点数を0点とする。</p>
+
+      <h3 id="rules-4">2.4 ネットワーク利用上の注意</h3>
+      <p>本実習では学内Wi-Fiを利用する。以下を厳守すること。</p>
+      <ul>
+        <li>他人のサーバやBYODに対して、許可なくアクセス・攻撃・負荷試験を行わないこと（相互接続演習など、指示がある場合を除く）。</li>
+        <li>サーバを学外（インターネット）に公開しないこと。本実習の範囲は学内ネットワーク内での公開に限る。</li>
+        <li>パスワードは推測されにくいものを設定し、他人と共有しないこと。</li>
+        <li>許可なく他人のコンピュータにアクセスする行為は、不正アクセス禁止法や学内規程に抵触しうる。演習は指導書と教員の指示の範囲でのみ行うこと。</li>
+      </ul>
+
+      <h3 id="rules-5">2.5 Luantiクライアントの準備</h3>
+      <p><a href="day2.html">第2回</a>以降、構築したサーバへの接続確認にLuantiのクライアントを使用する。Luantiはオープンソースソフトウェアであり、クライアントは無料で入手できる。第2回までに次の準備をBYODで済ませておくこと。</p>
+      <ul>
+        <li>Luanti公式サイト（<a href="https://www.luanti.org/">https://www.luanti.org/</a>）のDownloadページから、自分のOS（Windows／macOS）向けのクライアントを入手してインストールし、起動できることを確認する。</li>
+        <li>表示は設定（Settings → Language）から日本語に変更できる。</li>
+        <li>バージョンは当日指示するものに近い5.x系を使うこと（クライアントとサーバのバージョンが大きく離れると接続できない場合がある）。</li>
+      </ul>
+      <p>アカウントの事前作成は不要である。Luantiのアカウントは各サーバへの初回接続時に作られる（この仕組みは<a href="day3.html">第3回</a>で詳しく学ぶ）。</p>
+
+      <h2 id="env"><span class="no">03</span>実験環境</h2>
+
+      <h3 id="env-1">3.1 使用機器とソフトウェア</h3>
+      <table class="tbl">
+        <thead><tr><th>項目</th><th>内容</th></tr></thead>
+        <tbody>
+          <tr><td>サーバ機</td><td>Raspberry Pi 400（CPU: Cortex-A72 4コア 1.8GHz、メモリ: 4GB）</td></tr>
+          <tr><td>ストレージ</td><td>microSDカード（32GB以上）</td></tr>
+          <tr><td>OS</td><td>Raspberry Pi OS Lite（64-bit）　※デスクトップ環境なしの軽量版</td></tr>
+          <tr><td>サーバソフト</td><td>Luanti（旧Minetest。オープンソースのゲームエンジン）＋ Minetest Game</td></tr>
+          <tr><td>実行環境</td><td>Luantiサーバ本体（aptで導入）、Docker（<a href="day5.html">第5回</a>で導入）</td></tr>
+          <tr><td>操作端末</td><td>各自のBYOD（Windows / macOS。ターミナルとSSHクライアントを使用）</td></tr>
+          <tr><td>ネットワーク</td><td>学内Wi-Fi（DHCP）。サーバへの接続はホスト名（mDNS）またはIPアドレスで行う</td></tr>
+        </tbody>
+      </table>
+      <p>Raspberry Pi 400はキーボード一体型のコンピュータであるが、本実習ではキーボードとしては使わず、「小さなLinuxサーバ」として扱う。データセンターのサーバをリモートから管理するのと同じ構図である。</p>
+      <figure><img src="img/g01.png" alt="図1　実験環境の全体構成" width="1800" height="660"><figcaption>図1　実験環境の全体構成</figcaption></figure>
+      <div class="call note"><span class="ct">Note</span><p>※ Luantiサーバは軽量で、メモリ4GBのRaspberry Pi 400でも余裕を持って動作する。それでも「サービスが使う資源」と「OSに残す資源」を分けて考える習慣は重要であり、実際の使用量は<a href="day3.html">第3回</a>の監視の演習で自分の目で確かめる。</p></div>
+
+      <h2 id="days">各回の実習</h2>
+      <div class="grid2">
+        <a class="dcard" href="day1.html"><span class="dn">第1回</span><span class="dt">OSの導入・SSH接続・Linuxの基本操作</span><span class="dd">OS導入、SSH接続、Linuxの基本操作、テキストエディタ</span></a>
+        <a class="dcard" href="day2.html"><span class="dn">第2回</span><span class="dt">Luantiサーバの構築とサービス化</span><span class="dd">パッケージ管理、Luantiの導入、サービス化、ファイアウォール</span></a>
+        <a class="dcard" href="day3.html"><span class="dn">第3回</span><span class="dt">ユーザ管理・パーミッション・監視・ログ</span><span class="dd">パーミッション、ユーザ管理、非root運用、監視、ログ解析</span></a>
+        <a class="dcard" href="day4.html"><span class="dn">第4回</span><span class="dt">バックアップと自動化</span><span class="dd">バックアップ、シェルスクリプト、cron、復旧訓練、障害対応</span></a>
+        <a class="dcard" href="day5.html"><span class="dn">第5回</span><span class="dt">Dockerによる再構築とWeb監視ページ</span><span class="dd">Docker、コンテナによる再構築、Web監視ページ</span></a>
+        <a class="dcard" href="day6.html"><span class="dn">第6回</span><span class="dt">最終課題：総合演習と技術記事の執筆・公開</span><span class="dd">総合演習（制作＋技術記事の執筆・公開）</span></a>
+      </div>
+
+      <h2 id="appx">付録</h2>
+      <ul class="list-links">
+        <li><a href="appendix.html"><span><span class="ln">付録</span>チートシート・FAQ・参考資料</span><span>→</span></a></li>
+      </ul>
+
+      <h2 id="refs">基礎知識（補足資料）</h2>
+      <p>補足資料「Linuxサーバ構築・運用の基礎知識」の全11章と付録である。</p>
+      <ul class="list-links">
+        <li><a href="ref/index.html"><span><span class="ln">序</span>本資料について</span><span>→</span></a></li>
+        <li><a href="ref/ch01.html"><span><span class="ln">第1章</span>OSとLinux</span><span>→</span></a></li>
+        <li><a href="ref/ch02.html"><span><span class="ln">第2章</span>ファイルシステムとディレクトリ構造</span><span>→</span></a></li>
+        <li><a href="ref/ch03.html"><span><span class="ln">第3章</span>シェルとコマンドライン</span><span>→</span></a></li>
+        <li><a href="ref/ch04.html"><span><span class="ln">第4章</span>テキストエディタ（vi / Vim）</span><span>→</span></a></li>
+        <li><a href="ref/ch05.html"><span><span class="ln">第5章</span>ユーザ・グループとパーミッション</span><span>→</span></a></li>
+        <li><a href="ref/ch06.html"><span><span class="ln">第6章</span>プロセスとサービス管理</span><span>→</span></a></li>
+        <li><a href="ref/ch07.html"><span><span class="ln">第7章</span>ネットワークの基礎</span><span>→</span></a></li>
+        <li><a href="ref/ch08.html"><span><span class="ln">第8章</span>サーバ運用の基礎</span><span>→</span></a></li>
+        <li><a href="ref/ch09.html"><span><span class="ln">第9章</span>シェルスクリプト入門</span><span>→</span></a></li>
+        <li><a href="ref/ch10.html"><span><span class="ln">第10章</span>仮想化とコンテナ</span><span>→</span></a></li>
+        <li><a href="ref/ch11.html"><span><span class="ln">第11章</span>Luantiサーバの技術</span><span>→</span></a></li>
+        <li><a href="ref/appendix.html"><span><span class="ln">付録</span>さらに学ぶために</span><span>→</span></a></li>
+      </ul>
+
+      <nav class="pager" aria-label="前後のページ">
+        <a class="next" href="day1.html"><span class="pl">次へ</span><span class="pt">OSの導入・SSH接続・Linuxの基本操作</span></a>
+      </nav>
+    </article>
+  </div>
+
+  <footer class="foot">
+    <span>知能情報実験実習1「インフラ構築基礎実習」指導書 2026年度版　作成者：木村祐太</span>
+    <a href="../../index.html">木村祐太 研究室サイト</a>
+  </footer>
+</main>
+<script src="lab.js"></script>
+</body>
+</html>

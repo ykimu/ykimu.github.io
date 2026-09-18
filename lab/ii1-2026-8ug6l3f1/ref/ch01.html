@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>第1章 OSとLinux | インフラ構築基礎実習 2026</title>
+<link rel="icon" href="../../../favicon.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&family=Noto+Sans+JP:wght@400;500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../lab.css">
+</head>
+<body>
+<a class="skip" href="#main">本文へスキップ</a>
+<header class="bar">
+  <div class="wrap">
+    <a class="brand" href="../index.html">インフラ構築基礎実習 <small>知能情報実験実習1 / 2026</small></a>
+    <nav class="barlinks" aria-label="実習ナビゲーション">
+      <a href="../index.html">実習トップ</a>
+      <a href="../ref/index.html" class="here">基礎知識</a>
+      <a href="../appendix.html">付録</a>
+    </nav>
+  </div>
+</header>
+
+<main id="main" class="page">
+  <div class="hero">
+    <p class="eyebrow">CHAPTER 01 / 第1章</p>
+    <h1>OSとLinux</h1>
+    <p class="lead">コンピュータはCPU・メモリ・ストレージ・ネットワークの4点セットでできており、その上でOSとLinuxがどのような役割を果たすのかを確認する。</p>
+  </div>
+
+  <div class="layout">
+    <aside class="toc" aria-label="このページの目次">
+      <p class="toc-head">このページ</p>
+      <ol></ol>
+    </aside>
+    <article class="doc">
+
+      <h2 id="c1-1"><span class="no">1-1</span>コンピュータの構成要素</h2>
+      <p>コンピュータは大きく4つの部品でできている。CPU（中央処理装置）はプログラムの命令を実行する頭脳、メモリ（主記憶、RAM）は実行中のプログラムとデータを置く作業机、ストレージ（補助記憶。SSDやmicroSDカード）はプログラムやファイルを保存しておく本棚、そしてネットワークインタフェース（有線LANやWi-Fi）が外部との通信を担う。Raspberry Pi 400も、ノートPCも、スマートフォンも、データセンターの大型サーバも、規模こそ違えこの4点セットで構成されている点はまったく同じである。</p>
+      <p>特に重要なのがメモリとストレージの違いである。メモリは高速だが、電源を切ると内容が消える（揮発性）。ストレージは低速だが、電源を切っても内容が残る（不揮発性）。プログラムの実行とは「ストレージ上のプログラムをメモリに読み込み、CPUが命令を1つずつ実行すること」であり、ファイルの保存とは「メモリ上の作業結果をストレージに書き戻すこと」である。Luantiサーバでいえば、プレイ中のワールドはメモリ上で更新されており、それが定期的に<code>world</code>ディレクトリ（ストレージ）へ保存されるからこそ再起動後も残る。また、速度の序列（CPU内部＞メモリ≫ストレージ≫ネットワーク）を頭に入れておくと、第6章で学ぶ「スワップはなぜ遅いのか」、第8章の「バックアップはなぜ時間がかかるのか」が自然に理解できる。</p>
+
+      <figure><img src="../img/s01.png" alt="図1-1　コンピュータの構成要素とデータの流れ" width="1800" height="770"><figcaption>図1-1　コンピュータの構成要素とデータの流れ</figcaption></figure>
+
+      <div class="call note"><span class="ct">Note</span><p>※ ビットとバイト：コンピュータ内部の情報は、すべて0と1の並び（ビット）で表現される。8ビット＝1バイトが容量の基本単位で、約1000倍ごとにKB→MB→GB→TBと呼び名が変わる。「メモリ4GB」「microSD 32GB」という数字は、この単位で作業机と本棚の広さを表している。</p></div>
+
+      <h2 id="c1-2"><span class="no">1-2</span>サーバとクライアント</h2>
+      <p>「サーバ」とは特別な機械の名前ではなく、役割の名前である。ネットワーク越しにサービス（機能）を提供する側をサーバ、それを利用する側をクライアントと呼ぶ。Webページを提供すればWebサーバ、ゲームのワールドを提供すればゲームサーバ（Luanti）、遠隔ログインを受け付ければSSHサーバ（<code>sshd</code>）である。1台のRaspberry Piが同時に複数のサーバ役をこなせること、高価な機械でなくてもサーバになれることは、実習で体験したとおりである。</p>
+
+      <figure><img src="../img/s02.png" alt="図1-2　クライアント／サーバモデル" width="1800" height="750"><figcaption>図1-2　クライアント／サーバモデル</figcaption></figure>
+
+      <p>ただし、サーバにはクライアントにはない設計上の要請がある。①常時稼働していること（利用者はいつ来るかわからない）。②遠隔から管理できること（毎回モニタとキーボードをつなぐわけにはいかない）。③複数の利用者を同時にさばけること。④壊れたときに速やかに復旧できること。実習で学んだサービス化（systemd）、SSH、ユーザ管理、バックアップは、それぞれこの4つの要請への答えになっている。</p>
+
+      <h2 id="c1-3"><span class="no">1-3</span>オペレーティングシステムの役割</h2>
+      <p>コンピュータの本体は、CPU・メモリ・ストレージ・ネットワーク機器などのハードウェアの集まりである。しかし、アプリケーション（ゲームサーバも含む）がこれらのハードウェアを直接操作するとしたら、すべてのアプリケーションがCPUの取り合いやメモリの管理を自前で行わなければならず、まともに共存できない。そこで、ハードウェアとアプリケーションの間に立って交通整理をするソフトウェアが必要になる。これがオペレーティングシステム（OS）である。</p>
+      <p>OSの仕事は大きく2つにまとめられる。1つ目は資源管理である。複数のプログラムにCPU時間を順番に割り当て（スケジューリング）、メモリを配分し、プログラム同士が互いの領域を壊さないように保護する。2つ目は抽象化である。「ファイルに書き込む」「ネットワークにデータを送る」といった単純な命令の裏で、ストレージの種類やネットワーク機器の違いをOSが吸収してくれるため、アプリケーションはハードウェアの詳細を知らなくてよい。実習でLuantiサーバがSDカードの仕組みを一切気にせずワールドを保存できるのは、OSによる抽象化のおかげである。</p>
+
+      <h2 id="c1-4"><span class="no">1-4</span>カーネルとユーザランド</h2>
+      <p>OSの中核部分をカーネルという。カーネルはメモリ管理、プロセス管理、ファイルシステム、ネットワーク機能、デバイスドライバなど、システムの根幹をすべて担う。一方、私たちが直接触れるシェルやコマンド、各種アプリケーションはカーネルの外側で動いており、この領域をユーザランドと呼ぶ。ユーザランドのプログラムは、システムコールという窓口を通じてカーネルに仕事を依頼する。「Linux」という言葉は、厳密にはこのカーネルの名前である。</p>
+
+      <figure><img src="../img/s03.png" alt="図1-3　ユーザ・シェル・カーネルの関係" width="1800" height="470"><figcaption>図1-3　ユーザ・シェル・カーネルの関係</figcaption></figure>
+
+      <h2 id="c1-5"><span class="no">1-5</span>UNIXからLinuxへ</h2>
+      <p>Linuxの設計の源流は、1969年に米国ベル研究所で生まれたUNIXにある。UNIXは「小さな道具を組み合わせて大きな仕事をする」という設計思想を持ち、パイプでコマンドをつなぐ操作方法や、階層型のファイルシステム、マルチユーザの仕組みなど、現在のOSの基本形をつくった。1991年、当時大学生だったリーナス・トーバルズ氏が、UNIXの設計を参考にしたカーネルを自作しインターネットで公開した。これがLinuxである。ソースコードが公開され、誰でも無償で利用・改変・再配布できるオープンソースソフトウェアとして開発が進んだ結果、世界中の開発者の貢献によって急速に成長した。</p>
+      <p>現在、Webサービスやクラウドを支えるサーバの大半、スーパーコンピュータのほぼすべて、Android端末、そして本実習のRaspberry Piまで、LinuxはコンピュータインフラのOSとして事実上の標準になっている。サーバ管理者を目指すうえでLinuxの操作が必須とされるのはこのためである。</p>
+
+      <h2 id="c1-6"><span class="no">1-6</span>ディストリビューション</h2>
+      <p>カーネル単体ではOSとして使えない。シェル、基本コマンド群、ライブラリ、パッケージ管理システム、インストーラなどを組み合わせて初めて実用的なOSになる。この「完成品のセット」をディストリビューションと呼ぶ。ディストリビューションには大きく2つの系統がある。</p>
+
+      <table class="tbl">
+        <thead><tr><th>系統</th><th>代表例</th><th>特徴</th></tr></thead>
+        <tbody>
+          <tr><td>Red Hat系</td><td>RHEL、Rocky Linux、Fedora</td><td>企業サーバで広く採用。パッケージ形式はrpm、管理コマンドは<code>dnf</code>（<code>yum</code>）</td></tr>
+          <tr><td>Debian系</td><td>Debian、Ubuntu、Raspberry Pi OS</td><td>無償で広く普及。パッケージ形式はdeb、管理コマンドは<code>apt</code></td></tr>
+        </tbody>
+      </table>
+
+      <p>本実習で使うRaspberry Pi OSはDebianをRaspberry Pi向けに調整したものであり、Ubuntuとも操作方法はほぼ共通である。系統が違ってもLinuxとしての基本操作（ファイル操作、パーミッション、systemd等）は同じなので、どちらか一方を身につければもう一方への応用は難しくない。</p>
+
+      <div class="call note"><span class="ct">Note</span><p>※ 32-bitと64-bit：CPUが一度に扱えるデータの幅の違いで、OSにも32-bit版と64-bit版がある。実習で64-bit版OSを使うのは、Docker等の主要ソフトウェアが64-bit環境を前提に配布されているためである。</p></div>
+
+      <nav class="pager" aria-label="前後のページ">
+        <a class="prev" href="index.html"><span class="pl">前へ</span><span class="pt">基礎知識：本資料について</span></a>
+        <a class="next" href="ch02.html"><span class="pl">次へ</span><span class="pt">ファイルシステムとディレクトリ構造</span></a>
+      </nav>
+    </article>
+  </div>
+
+  <footer class="foot">
+    <span>知能情報実験実習1「インフラ構築基礎実習」指導書 2026年度版　作成者：木村祐太</span>
+    <a href="../../../index.html">木村祐太 研究室サイト</a>
+  </footer>
+</main>
+<script src="../lab.js"></script>
+</body>
+</html>

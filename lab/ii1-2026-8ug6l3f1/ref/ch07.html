@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>ネットワークの基礎 | インフラ構築基礎実習 2026</title>
+<link rel="icon" href="../../../favicon.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&family=Noto+Sans+JP:wght@400;500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../lab.css">
+</head>
+<body>
+<a class="skip" href="#main">本文へスキップ</a>
+<header class="bar">
+  <div class="wrap">
+    <a class="brand" href="../index.html">インフラ構築基礎実習 <small>知能情報実験実習1 / 2026</small></a>
+    <nav class="barlinks" aria-label="実習ナビゲーション">
+      <a href="../index.html">実習トップ</a>
+      <a href="index.html" class="here">基礎知識</a>
+      <a href="../appendix.html">付録</a>
+    </nav>
+  </div>
+</header>
+
+<main id="main" class="page">
+  <div class="hero">
+    <p class="eyebrow">CHAPTER 07 / 第7章</p>
+    <h1>ネットワークの基礎</h1>
+    <p class="lead">複数のコンピュータをつないでデータをやりとりする仕組みを、LANとインターネット、IPアドレス、名前解決、ポート、ファイアウォール、SSHの順に見ていく。</p>
+  </div>
+
+  <div class="layout">
+    <aside class="toc" aria-label="このページの目次">
+      <p class="toc-head">このページ</p>
+      <ol></ol>
+    </aside>
+    <article class="doc">
+
+      <h2 id="c7-1"><span class="no">7-1</span>ネットワークとは：LANとインターネット</h2>
+      <p>複数のコンピュータをつないで、互いにデータをやりとりできるようにしたものがネットワークである。部屋や建物の中など限られた範囲のネットワークをLAN（Local Area Network）と呼び、有線（イーサネット）または無線（Wi-Fi）で機器をつなぐ。そしてLAN同士を世界規模で相互接続したものがインターネットであり、LANとその外側の境界に立って通信を中継する機器がルータである。実習のBYODとRaspberry Piは、同じ学内LANに属しているからこそ直接通信できる。</p>
+      <figure><img src="../img/s10.png" alt="図7-1　LANとインターネット" width="1800" height="750"><figcaption>図7-1　LANとインターネット</figcaption></figure>
+      <p>ネットワーク上のデータは、丸ごと一塊で送られるのではなく、パケットという小包に分割されて運ばれる。各パケットには宛先と送信元の住所（IPアドレス）が記されており、途中の機器はそれを見てバケツリレーのように転送する。回線を占有しないため多数の通信が共存でき、一部のパケットが失われても再送でリカバリできる。この「小包＋住所」の仕組みの上に、以降で説明するIPアドレス・ポート・プロトコルの話がすべて載っている。</p>
+
+      <h2 id="c7-2"><span class="no">7-2</span>IPアドレスとDHCP</h2>
+      <p>ネットワーク上の機器は、IPアドレスという番号で識別される。IPv4アドレスは <code>10.20.30.41</code> のように4つの数値（各0〜255）で表される。このうち <code>10.x.x.x</code>、<code>172.16〜31.x.x</code>、<code>192.168.x.x</code> はプライベートアドレスと呼ばれ、組織内ネットワーク専用に使われる。学内Wi-Fiで自分のサーバに割り当てられるのもプライベートアドレスであり、だからこそ学外からは直接アクセスできない（本実習のサーバが学内限定公開なのはこの性質による）。</p>
+      <p>IPアドレスを機器に割り当てる方法には、手動で固定する方法と、DHCPサーバから自動で借りる方法がある。実習環境はDHCPであり、アドレスは「リース（貸与）」されている。リースには期限があるが、同じネットワークにいる限り同じアドレスが再貸与されることが多い。とはいえ「変わりうる」ことに変わりはないため、実習ではIPアドレスではなく名前で接続する方法を基本とした。</p>
+
+      <h2 id="c7-3"><span class="no">7-3</span>名前解決：DNSとmDNS</h2>
+      <p>人間が扱いやすい名前（<code>www.example.com</code>）を機器が扱うIPアドレスに変換する仕組みを名前解決という。インターネット全体の名前解決を担うのがDNS（Domain Name System）で、世界中に分散した階層型のデータベースになっている。一方、実習で使った「ホスト名.local」はmDNS（multicast DNS）という別の仕組みである。mDNSはDNSサーバを必要とせず、「mc-24s1234という名前の機器はいますか？」という問いかけを同じネットワーク全体に投げかけ（マルチキャスト）、本人が「私です。IPアドレスは10.20.30.41です」と応答する。サーバ側ではavahiというサービスがこの応答を担当している。同じLANの中でしか使えないが、設定なしで名前解決できる手軽さが利点である。</p>
+
+      <h2 id="c7-4"><span class="no">7-4</span>TCP/UDPとポート番号</h2>
+      <p>1台のサーバは複数のサービス（SSH、Luanti、Webなど）を同時に提供する。そこで通信の宛先には、IPアドレス（どの機器か）に加えてポート番号（機器の中のどのサービスか）を指定する。マンションの住所（IPアドレス）と部屋番号（ポート番号）の関係だと考えるとよい。サービス側は特定のポートで「待ち受け」ており、<code>ss -tlnp</code> コマンドで現在待ち受け中のポート一覧を確認できる。</p>
+      <div class="scroll">
+      <table class="tbl">
+        <thead><tr><th>ポート</th><th>サービス</th><th>備考</th></tr></thead>
+        <tbody>
+          <tr><td><code>22</code></td><td>SSH</td><td>遠隔ログイン</td></tr>
+          <tr><td><code>80</code> / <code>443</code></td><td>HTTP / HTTPS</td><td>Web。実習ではnginxコンテナを8080で公開した</td></tr>
+          <tr><td><code>123</code></td><td>NTP</td><td>時刻同期</td></tr>
+          <tr><td><code>30000</code></td><td>Luanti（ゲームサーバ）</td><td>UDPを使用。実習で構築したサーバの待ち受けポート</td></tr>
+        </tbody>
+      </table>
+      </div>
+      <p>通信方式にはTCPとUDPの2種類がある。TCPは相手との接続を確立し、届いたかを確認しながら送る「確実さ重視」の方式で、SSHやWebが使う。UDPは確認なしで送りっぱなしにする「速度重視」の方式で、動画配信や、位置情報を高頻度でやりとりするオンラインゲーム（Luantiもこちら）が使う。</p>
+
+      <h2 id="c7-5"><span class="no">7-5</span>ファイアウォール</h2>
+      <figure><img src="../img/s11.png" alt="図7-2　ポートとファイアウォール（ufw）の働き" width="1800" height="660"><figcaption>図7-2　ポートとファイアウォール（ufw）の働き</figcaption></figure>
+      <p>ファイアウォールは、ポート単位・送信元単位で通信を許可・遮断する仕組みである。セキュリティの基本は「デフォルト拒否」、つまりすべてを閉じたうえで必要なポートだけを開けることである。ufw（Uncomplicated Firewall）はLinuxのファイアウォール機能（カーネル内のnetfilter）を簡単に操作できるようにしたツールで、実習では22番と30000番（第5回で8080番）だけを開けた。開いているポートはそれぞれが攻撃の入口になりうるため、「そのポートは本当に外部に公開する必要があるか」を常に考える習慣をつけてほしい。使っていないポートを開けない理由はまさにこれである。なお、第5回で使うDockerには注意がある。Dockerが公開するポート（composeの <code>ports:</code>）はカーネルの転送ルールを直接操作するため、ufwの許可・拒否を経由しない。コンテナのポートは「ufwで閉じたつもり」でも外から届く。公開の可否は <code>ports:</code> の記述そのもので制御するのが基本である。</p>
+
+      <h2 id="c7-6"><span class="no">7-6</span>SSHの仕組み</h2>
+      <p>SSH（Secure Shell）は、通信をすべて暗号化して遠隔操作を行うプロトコルである。暗号化のおかげで、同じネットワークにいる第三者が通信を盗み見てもパスワードや操作内容は読み取れない。初回接続時に表示される「fingerprint」の確認は、接続先が本物のサーバか（偽物にすり替わっていないか）を検証する仕組みで、サーバの「ホスト鍵」の指紋を照合している。2回目以降に何も聞かれないのは、BYOD側の <code>~/.ssh/known_hosts</code> に指紋が記録され、自動照合されているからである。</p>
+      <figure><img src="../img/s12.png" alt="図7-3　SSH公開鍵認証の仕組み" width="1800" height="660"><figcaption>図7-3　SSH公開鍵認証の仕組み</figcaption></figure>
+      <p>ユーザ認証には、パスワード認証のほかに公開鍵認証がある。鍵ペア（公開鍵と秘密鍵）を作り、公開鍵をサーバに登録しておくと、接続時にサーバが出す「お題」に秘密鍵で署名して応えることで本人確認が行われる。秘密の情報が通信路に流れないためパスワードより安全であり、実務のサーバではパスワード認証を無効化して公開鍵認証のみとするのが標準である。公開鍵認証への切り替えは実習の第3回で行う（<code>ssh-keygen</code> で鍵ペア作成、<code>ssh-copy-id</code> で登録）。さらにパスワード認証そのものを無効化する堅牢化（<code>/etc/ssh/sshd_config</code> で <code>PasswordAuthentication no</code>）は、最終課題のセキュリティ強化テーマで挑戦してほしい。</p>
+
+      <h2 id="c7-7"><span class="no">7-7</span>ネットワークの調査と転送（ping・ss・wget/curl・scp）</h2>
+      <p>ネットワークまわりの道具は「疎通を確かめる」「待ち受けを確かめる」「ファイルを運ぶ」の3種類に整理できる。第2回の相互接続演習の切り分け（<code>ping</code> → <code>systemctl status</code> → <code>ufw status</code>）に、<code>ss</code> を加えると診断がさらに正確になる。</p>
+      <div class="scroll">
+      <table class="tbl">
+        <thead><tr><th>コマンド</th><th>はたらき</th></tr></thead>
+        <tbody>
+          <tr><td><code>ping ホスト</code></td><td>疎通確認（<kbd>Ctrl</kbd>+<kbd>C</kbd>で停止）。届かないなら電源・Wi-Fi・名前解決を疑う</td></tr>
+          <tr><td><code>ip a</code> ／ <code>hostname -I</code></td><td>自分のIPアドレスとネットワークインタフェースの確認</td></tr>
+          <tr><td><code>ss -tlnp</code> ／ <code>ss -ulnp</code></td><td>待ち受け中のポート一覧（t=TCP、u=UDP）。「そのポートを誰が使っているか」まで表示</td></tr>
+          <tr><td><code>wget URL</code></td><td>ファイルのダウンロード（第1回の <code>quest.tar.gz</code> で使用）</td></tr>
+          <tr><td><code>curl URL</code> ／ <code>curl -O URL</code></td><td>内容を画面に表示／ファイルに保存。Web APIの動作確認にも使える</td></tr>
+          <tr><td><code>scp コピー元 コピー先</code></td><td>SSH経由の暗号化ファイル転送</td></tr>
+        </tbody>
+      </table>
+      </div>
+      <div class="code">
+        <div class="code-head"><span class="code-title">scpの書式：リモートは「ユーザ@ホスト:パス」</span></div>
+<pre><code><span class="in">scp luanti@mc-24s1234.local:~/backup/world_最新.tar.gz . <span class="c"># サーバ → 手元（BYOD側で実行）</span></span>
+<span class="in">scp ./memo.txt taro@mc-24s1234.local:~/ <span class="c"># 手元 → サーバ</span></span></code></pre>
+      </div>
+      <div class="call note"><span class="ct">Note</span><p>※ scpの実体はSSHであり、追加の設定なしに暗号化転送ができる。第4回の発展課題「バックアップを別マシンに転送（3-2-1ルールへの一歩）」は、この1行で実現する。</p></div>
+
+      <nav class="pager" aria-label="前後のページ">
+        <a class="prev" href="ch06.html"><span class="pl">前へ</span><span class="pt">プロセスとサービス管理</span></a>
+        <a class="next" href="ch08.html"><span class="pl">次へ</span><span class="pt">サーバ運用の基礎</span></a>
+      </nav>
+    </article>
+  </div>
+
+  <footer class="foot">
+    <span>知能情報実験実習1「インフラ構築基礎実習」指導書 2026年度版　作成者：木村祐太</span>
+    <a href="../../../index.html">木村祐太 研究室サイト</a>
+  </footer>
+</main>
+<script src="../lab.js"></script>
+</body>
+</html>

@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>第4章 テキストエディタ（vi / Vim） | インフラ構築基礎実習 2026</title>
+<link rel="icon" href="../../../favicon.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&family=Noto+Sans+JP:wght@400;500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../lab.css">
+</head>
+<body>
+<a class="skip" href="#main">本文へスキップ</a>
+<header class="bar">
+  <div class="wrap">
+    <a class="brand" href="../index.html">インフラ構築基礎実習 <small>知能情報実験実習1 / 2026</small></a>
+    <nav class="barlinks" aria-label="実習ナビゲーション">
+      <a href="../index.html">実習トップ</a>
+      <a href="../ref/index.html" class="here">基礎知識</a>
+      <a href="../appendix.html">付録</a>
+    </nav>
+  </div>
+</header>
+
+<main id="main" class="page">
+  <div class="hero">
+    <p class="eyebrow">CHAPTER 04 / 第4章</p>
+    <h1>テキストエディタ（vi / Vim）</h1>
+    <p class="lead">viは1976年に生まれたテキストエディタであり、POSIX標準に含まれるため、どんなに最小構成のLinuxサーバにも必ず入っている。</p>
+  </div>
+
+  <div class="layout">
+    <aside class="toc" aria-label="このページの目次">
+      <p class="toc-head">このページ</p>
+      <ol></ol>
+    </aside>
+    <article class="doc">
+
+      <h2 id="c4-1"><span class="no">4-1</span>なぜ今もviなのか</h2>
+      <p>viは1976年に生まれたテキストエディタであり、現在広く使われているのはその改良版のVimである。半世紀近く前のソフトウェアを今も学ぶ理由は明快で、viはPOSIXという標準規格に含まれており、どんなに最小構成のLinuxサーバにも必ず入っているからである。障害対応で緊急ログインしたサーバに、使い慣れたエディタがインストールされている保証はない。viさえ使えれば、世界中のどのUNIX系サーバでも設定ファイルを編集できる。</p>
+
+      <h2 id="c4-2"><span class="no">4-2</span>モードという考え方</h2>
+      <p>viの最大の特徴は、「文字を入力する状態」と「編集操作をする状態」が分かれていることである。通常のエディタでは<kbd>Ctrl</kbd>キーなどとの組み合わせで操作を行うが、viではモードを切り替えることで、単独のキーを強力な編集命令として使う。慣れるとホームポジションから手を動かさずに高速な編集ができるため、現在でも多くのエンジニアが愛用している。</p>
+
+      <figure><img src="../img/s06.png" alt="図4-1　viのモード遷移" width="1800" height="610"><figcaption>図4-1　viのモード遷移</figcaption></figure>
+
+      <h2 id="c4-3"><span class="no">4-3</span>操作リファレンス</h2>
+
+      <div class="scroll">
+      <table class="tbl">
+        <thead><tr><th>操作</th><th>意味</th></tr></thead>
+        <tbody>
+          <tr><td><kbd>i</kbd> ／ <kbd>a</kbd> ／ <kbd>o</kbd></td><td>入力モードへ（<kbd>i</kbd>：カーソル位置、<kbd>a</kbd>：直後、<kbd>o</kbd>：下に新しい行を作って）</td></tr>
+          <tr><td><kbd>Esc</kbd></td><td>コマンドモードに戻る（迷ったらまず<kbd>Esc</kbd>）</td></tr>
+          <tr><td><kbd>h</kbd> <kbd>j</kbd> <kbd>k</kbd> <kbd>l</kbd></td><td>左・下・上・右へ移動（カーソルキーも使える）</td></tr>
+          <tr><td><kbd>0</kbd> ／ <kbd>$</kbd> ／ <kbd>gg</kbd> ／ <kbd>G</kbd></td><td>行頭／行末／先頭行／最終行へ移動</td></tr>
+          <tr><td><kbd>x</kbd> ／ <kbd>dd</kbd> ／ <kbd>dw</kbd></td><td>1文字削除／1行切り取り／1単語削除</td></tr>
+          <tr><td><kbd>yy</kbd> ／ <kbd>p</kbd> ／ <kbd>P</kbd></td><td>1行コピー／下に貼り付け／上に貼り付け</td></tr>
+          <tr><td><kbd>u</kbd> ／ <kbd>Ctrl</kbd>+<kbd>r</kbd></td><td>取り消し（undo）／やり直し（redo）。<kbd>u</kbd> を知っていると安心感が違う</td></tr>
+          <tr><td><code>/文字列</code> → <kbd>n</kbd></td><td>下方向に検索 → 次の候補へ（<code>?文字列</code> で上方向）</td></tr>
+          <tr><td><code>:%s/旧/新/g</code></td><td>ファイル全体で文字列を置換</td></tr>
+          <tr><td><code>:w</code> ／ <code>:q</code> ／ <code>:wq</code> ／ <code>:q!</code></td><td>保存／終了／保存して終了／保存せず強制終了</td></tr>
+          <tr><td><code>:set number</code></td><td>行番号を表示（<code>:set nonumber</code> で消す）</td></tr>
+        </tbody>
+      </table>
+      </div>
+
+      <div class="call note"><span class="ct">Note</span><p>※ 独習には、Vimに付属する公式チュートリアル <code>vimtutor</code> が優れている（ターミナルで <code>vimtutor ja</code> と実行。約30分）。<code>vimtutor</code> はフル版の <code>vim</code> パッケージに含まれる。Raspberry Pi OS Lite の標準は最小構成の <code>vim-tiny</code> なので、<code>sudo apt install vim</code> で導入しておく（指導書1-7節）。また、誤操作でおかしくなったら、<kbd>Esc</kbd>を数回押してから <code>:q!</code> で「保存せずに出る」のが安全な脱出方法である。</p></div>
+
+      <nav class="pager" aria-label="前後のページ">
+        <a class="prev" href="ch03.html"><span class="pl">前へ</span><span class="pt">シェルとコマンドライン</span></a>
+        <a class="next" href="ch05.html"><span class="pl">次へ</span><span class="pt">ユーザ・グループとパーミッション</span></a>
+      </nav>
+    </article>
+  </div>
+
+  <footer class="foot">
+    <span>知能情報実験実習1「インフラ構築基礎実習」指導書 2026年度版　作成者：木村祐太</span>
+    <a href="../../../index.html">木村祐太 研究室サイト</a>
+  </footer>
+</main>
+<script src="../lab.js"></script>
+</body>
+</html>

@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>第9章　シェルスクリプト入門 | インフラ構築基礎実習 2026</title>
+<link rel="icon" href="../../../favicon.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&family=Noto+Sans+JP:wght@400;500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../lab.css">
+</head>
+<body>
+<a class="skip" href="#main">本文へスキップ</a>
+<header class="bar">
+  <div class="wrap">
+    <a class="brand" href="../index.html">インフラ構築基礎実習 <small>知能情報実験実習1 / 2026</small></a>
+    <nav class="barlinks" aria-label="実習ナビゲーション">
+      <a href="../index.html">実習トップ</a>
+      <a href="../ref/index.html" class="here">基礎知識</a>
+      <a href="../appendix.html">付録</a>
+    </nav>
+  </div>
+</header>
+
+<main id="main" class="page">
+  <div class="hero">
+    <p class="eyebrow">CHAPTER 09 / 第9章</p>
+    <h1>シェルスクリプト入門</h1>
+    <p class="lead">シェルスクリプトは、シェルに打ち込むコマンドをファイルにまとめたもので、一度手で成功させた作業を二度と間違えずに再実行できるようにする。</p>
+  </div>
+
+  <div class="layout">
+    <aside class="toc" aria-label="このページの目次">
+      <p class="toc-head">このページ</p>
+      <ol></ol>
+    </aside>
+    <article class="doc">
+
+      <h2 id="c9-1"><span class="no">9.1</span>シェルスクリプトとは</h2>
+      <p>シェルスクリプトは、シェルに打ち込むコマンドをファイルにまとめたものである。手作業の記録がそのままプログラムになるため、「一度手で成功させた作業を、二度と間違えずに再実行できる」のが本質的な価値である。運用作業（バックアップ、デプロイ、集計）の自動化は、ほとんどここから始まる。</p>
+      <p>1行目の <code>#!/bin/bash</code> はシバン（shebang）と呼ばれ、「このファイルは <code>/bin/bash</code> で実行せよ」という宣言である。スクリプトの実行には、実行権を付与して <code>./backup.sh</code> とする方法と、<code>bash backup.sh</code> とシェルに直接渡す方法がある。前者にはシバンと実行権（<code>chmod +x</code>）が必要で、こちらが実務の標準である。</p>
+
+      <h2 id="c9-2"><span class="no">9.2</span>基本文法</h2>
+      <div class="code file">
+        <div class="code-head"><span class="code-title">シェルスクリプトの基本要素</span></div>
+<pre><code><span class="in">#!/bin/bash</span>
+<span class="in">NAME="world" # 変数（= の前後に空白を入れない）</span>
+<span class="in">echo "target is $NAME" # 参照は $変数名。"" 内では展開される</span>
+<span class="in">DATE=$(date +%Y%m%d) # コマンド置換：実行結果を変数へ</span>
+<span class="in">if [ -d "/home/luanti/server/$NAME" ]; then # 条件分岐</span>
+<span class="in">echo "found"</span>
+<span class="in">else</span>
+<span class="in">echo "not found"; exit 1 # 異常終了（終了コード1）</span>
+<span class="in">fi</span>
+<span class="in">for f in *.tar.gz; do # 繰り返し</span>
+<span class="in">echo "$f"</span>
+<span class="in">done</span></code></pre>
+      </div>
+      <div class="scroll">
+      <table class="tbl">
+        <thead><tr><th>要素</th><th>説明</th></tr></thead>
+        <tbody>
+          <tr><td><code>$1, $2, …, $#</code></td><td>スクリプトに渡された引数（1番目、2番目、…、個数）</td></tr>
+          <tr><td><code>$?</code></td><td>直前のコマンドの終了コード。0が成功、0以外が失敗</td></tr>
+          <tr><td><code>[ 条件 ]</code></td><td>テスト。<code>-d</code>（ディレクトリがある）、<code>-f</code>（ファイルがある）、<code>-z</code>（空文字）など</td></tr>
+          <tr><td><code>&amp;&amp;</code> ／ <code>||</code></td><td>前のコマンドが成功したら／失敗したら次を実行（<code>cd "$DEST" || exit 1</code>）</td></tr>
+          <tr><td><code>"$変数"</code></td><td>変数は常に二重引用符で囲む（空白入りの値でも安全に扱うため）</td></tr>
+        </tbody>
+      </table>
+      </div>
+
+      <h2 id="c9-3"><span class="no">9.3</span>backup.shを読み解く</h2>
+      <p>実習<a href="../day4.html">第4回</a>のbackup.shは、基本要素の実践例になっている。改めて各行の意図を追ってみよう。SRC・DEST・KEEPを冒頭で変数にしたのは、設定を1か所に集めて変更しやすくするためである（マジックナンバーを本文に散らばらせない）。<code>DATE=$(date +%Y%m%d_%H%M%S)</code> はコマンド置換で実行時刻をファイル名に埋め込み、世代を区別する。<code>cd "$DEST" || exit 1</code> は「移動に失敗したらそこで止める」安全装置で、もしこれがないと、移動失敗時に意図しないディレクトリで削除処理が走る危険がある。世代削除の1行は、<code>ls -1t</code>（新しい順に1列で表示）→ <code>tail -n +8</code>（8行目以降＝8世代目以降の古い世代）→ <code>xargs -r rm</code>（それらをrmに渡す。-rは対象なしなら何もしない）というパイプの合わせ技である。同じ発想で、tarの行に <code>|| { 作りかけのファイルの削除; 失敗の記録; exit 1; }</code> を付けておくと、「バックアップが失敗したのに完了と記録される」事故も防げる（指導書のbackup.shはこの形にしている）。</p>
+
+      <h2 id="c9-4"><span class="no">9.4</span>スクリプトのデバッグ</h2>
+      <p>スクリプトが思いどおりに動かないときは、当てずっぽうに書き換える前に「どの行まで進み、変数に何が入っているか」を見えるようにする。最も手軽なのは <code>bash -x</code> による実行トレースと、echoによる変数の確認である。</p>
+      <div class="code">
+        <div class="code-head"><span class="code-title">デバッグの基本道具</span></div>
+<pre><code><span class="in">bash -x ~/backup.sh <span class="c"># 実行しながら各行と変数の展開を表示</span></span>
+<span class="in">echo "DEST=$DEST" <span class="c"># 変数の中身を見る。原始的だが最強</span></span></code></pre>
+      </div>
+      <div class="code file">
+        <div class="code-head"><span class="code-title">スクリプト冒頭に書く安全装置</span></div>
+<pre><code><span class="in">#!/bin/bash</span>
+<span class="in">set -eu</span></code></pre>
+      </div>
+      <p><code>set -e</code> はコマンドが失敗した時点でスクリプトを止め、<code>-u</code> は未定義の変数をエラーにする。backup.sh の <code>cd "$DEST" || exit 1</code> のような明示的な安全装置と併用するとよい。また、静的検査ツールのshellcheck（Webブラウザ版もある）は、引用符の付け忘れなど定番のミスを自動で指摘してくれる。最終課題でスクリプトを書くときの心強い味方である。</p>
+      <div class="call note"><span class="ct">Note</span><p>※ 「手で実行すると動くのにcronだと動かない」ときは、まず絶対パスとPATH（<a href="ch08.html#c8-3">8.3節</a>）を疑う。<code>bash -x</code> の出力をリダイレクトでログに残しておくと、cron環境での調査も速くなる。</p></div>
+
+      <nav class="pager" aria-label="前後のページ">
+        <a class="prev" href="ch08.html"><span class="pl">前へ</span><span class="pt">サーバ運用の基礎</span></a>
+        <a class="next" href="ch10.html"><span class="pl">次へ</span><span class="pt">仮想化とコンテナ</span></a>
+      </nav>
+    </article>
+  </div>
+
+  <footer class="foot">
+    <span>知能情報実験実習1「インフラ構築基礎実習」指導書 2026年度版　作成者：木村祐太</span>
+    <a href="../../../index.html">木村祐太 研究室サイト</a>
+  </footer>
+</main>
+<script src="../lab.js"></script>
+</body>
+</html>

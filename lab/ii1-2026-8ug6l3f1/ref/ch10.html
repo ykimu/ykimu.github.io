@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>第10章　仮想化とコンテナ | インフラ構築基礎実習 2026</title>
+<link rel="icon" href="../../../favicon.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&family=Noto+Sans+JP:wght@400;500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../lab.css">
+</head>
+<body>
+<a class="skip" href="#main">本文へスキップ</a>
+<header class="bar">
+  <div class="wrap">
+    <a class="brand" href="../index.html">インフラ構築基礎実習 <small>知能情報実験実習1 / 2026</small></a>
+    <nav class="barlinks" aria-label="実習ナビゲーション">
+      <a href="../index.html">実習トップ</a>
+      <a href="../ref/index.html" class="here">基礎知識</a>
+      <a href="../appendix.html">付録</a>
+    </nav>
+  </div>
+</header>
+
+<main id="main" class="page">
+  <div class="hero">
+    <p class="eyebrow">CHAPTER 10 / 第10章</p>
+    <h1>仮想化とコンテナ</h1>
+    <p class="lead">1台の物理マシンの上に複数の独立した実行環境を作る仮想化の考え方と、Dockerによるイメージ・コンテナ・ボリュームの扱いをまとめる。</p>
+  </div>
+
+  <div class="layout">
+    <aside class="toc" aria-label="このページの目次">
+      <p class="toc-head">このページ</p>
+      <ol></ol>
+    </aside>
+    <article class="doc">
+
+      <h2 id="c10-1"><span class="no">10.1</span>仮想化の2つの方式</h2>
+      <figure><img src="../img/s14.png" alt="図10-1　仮想マシン型とコンテナ型の違い" width="1800" height="800"><figcaption>図10-1　仮想マシン型とコンテナ型の違い</figcaption></figure>
+      <p>1台の物理マシンの上に複数の独立した実行環境を作る技術を仮想化という。方式は大きく2つある。仮想マシン型は、ハイパーバイザという仮想化ソフトの上に、ゲストOSを丸ごと含む仮想マシンを立てる。完全な分離が得られる反面、OSを1台分ずつ動かすためメモリもストレージも多く消費し、起動にも分単位の時間がかかる。コンテナ型は、ホストOSのカーネルを共有したまま、プロセスの見える世界（ファイルシステム、ネットワーク、プロセス一覧）だけを区切る。ゲストOSを持たないため軽量で、起動は秒単位、Raspberry Piのような小型機でも実用になる。</p>
+
+      <h2 id="c10-2"><span class="no">10.2</span>Dockerの基本概念</h2>
+      <p>Dockerを理解する鍵は、イメージとコンテナの区別である。イメージは「アプリケーションと依存物一式を固めた読み取り専用のひな型」、コンテナは「イメージから起動した実行中の実体」である。プログラムとプロセスの関係（<a href="ch06.html">第6章</a>）とちょうど同じで、1つのイメージから何個でもコンテナを起動できる。イメージはDocker Hubなどのレジストリで共有されており、<code>docker compose up</code> しただけでlinuxserver/luantiのサーバが動いたのは、ビルド済みイメージをレジストリから取得（pull）したからである。</p>
+      <p>イメージはレイヤ（層）の重なりでできている。「OSの基本部分」＋「共通ライブラリ」＋「サーバ本体」のように差分を積み重ねる構造のため、共通部分は複数のイメージで共有され、ダウンロードもストレージも節約される。自分でレイヤを定義してイメージを作るための設計図がDockerfileである（最終課題の発展テーマ）。</p>
+
+      <h2 id="c10-3"><span class="no">10.3</span>データの扱い：ボリューム</h2>
+      <p>コンテナ内で書き込んだデータは、コンテナを削除すると一緒に消える。これは欠点ではなく「環境をいつでも作り直せる」ための設計であり、残したいデータだけをボリューム（ホスト側のディレクトリとの対応付け）としてコンテナの外に出す。実習のcompose.yamlで <code>./data:/config/.minetest</code> と書いたのは、「コンテナ内の <code>/config/.minetest</code> を、ホストの <code>./data</code> に重ねる」という意味である。ワールドデータはホスト側に実体があるため、コンテナを何度作り直しても失われない。「環境は使い捨て、データは資産」というコンテナ運用の原則は、この仕組みに支えられている。</p>
+      <figure><img src="../img/s15.png" alt="図10-2　実習で構築したコンテナ構成" width="1800" height="820"><figcaption>図10-2　実習で構築したコンテナ構成</figcaption></figure>
+
+      <h2 id="c10-4"><span class="no">10.4</span>ComposeとInfrastructure as Code</h2>
+      <p><code>docker compose</code> は、複数コンテナの構成をcompose.yamlという1つのファイルに宣言的に記述し、一括で管理するツールである。「宣言的」とは、手順（どうやって作るか）ではなく、あるべき状態（何がどう動いているべきか）を書くという意味である。composeは現在の状態と記述を比較し、差分だけを適用する。<a href="../day5.html">第5回</a>でwebサービスを追記して up し直したとき、gameコンテナは再起動されず、webだけが新規に起動されたのはこのためである。</p>
+      <p>この「インフラの構成をコードとして記述し、バージョン管理し、何度でも同じ環境を再現する」という考え方をInfrastructure as Code（IaC）と呼ぶ。クラウド時代の運用の中心概念であり、compose.yamlはその入門である。設定ファイルさえ保存しておけば環境を捨てても再現できる、という感覚を実習で体験したことは、TerraformやKubernetesといった実務のツール群を学ぶときの土台になる。</p>
+
+      <h2 id="c10-5"><span class="no">10.5</span>コンテナ利用の注意点</h2>
+      <ul>
+        <li>イメージの出所を確認する。レジストリには誰でもイメージを公開できるため、公式イメージや実績のあるイメージ（linuxserver/luantiは後者の代表例）を選ぶ。</li>
+        <li>タグを意識する。イメージ名の後ろの <code>:latest</code> は「その時点の最新」であり、時間が経つと中身が変わる。再現性を重視する場面ではバージョンを固定する（例：<code>nginx:1.27-alpine</code>）。</li>
+        <li>コンテナも監視・更新の対象である。「動いているから放置」はホストのサーバと同様に危険で、イメージの更新（脆弱性修正）を定期的に取り込む運用が必要である。</li>
+      </ul>
+
+      <h2 id="c10-6"><span class="no">10.6</span>Dockerの基本操作：コンテナのライフサイクル</h2>
+      <p>コンテナには「イメージの取得（pull）→作成→起動→停止→削除」というライフサイクルがある。<code>docker run</code> はこのうち取得（手元になければ）・作成・起動をまとめて実行する複合コマンドであり、実習で最初に実行した <code>docker run hello-world</code> の出力には、まさにこの流れが説明されている。コンテナを削除（rm）してもイメージは手元に残るため、同じイメージから何度でも新しいコンテナを作り直せる。「環境は使い捨て、データは資産」という原則は、このライフサイクルに支えられている。</p>
+      <div class="scroll">
+      <table class="tbl">
+        <thead><tr><th>コマンド</th><th>はたらき</th></tr></thead>
+        <tbody>
+          <tr><td><code>docker run [オプション] イメージ</code></td><td>コンテナの作成と起動（イメージが無ければpullも行う）</td></tr>
+          <tr><td><code>docker ps</code> ／ <code>docker ps -a</code></td><td>実行中の一覧／停止中も含めた一覧。STATUS列に注目する</td></tr>
+          <tr><td><code>docker stop</code> ／ <code>start 名前</code></td><td>停止（後片付けの機会を与える）／再開</td></tr>
+          <tr><td><code>docker rm 名前</code></td><td>コンテナの削除。イメージとボリュームは残る</td></tr>
+          <tr><td><code>docker images</code> ／ <code>docker rmi</code></td><td>手元のイメージ一覧／イメージの削除</td></tr>
+          <tr><td><code>docker logs -f 名前</code></td><td>コンテナのログを表示（-f でリアルタイム追跡）</td></tr>
+          <tr><td><code>docker exec -it 名前 bash</code></td><td>稼働中のコンテナの中でシェルを開く</td></tr>
+        </tbody>
+      </table>
+      </div>
+      <p><code>docker run</code> のオプションは、実習で書いた compose.yaml の各項目と1対1に対応している。次の例（nginx）を compose.yaml のweb サービスの定義と見比べてほしい。</p>
+      <div class="code">
+        <div class="code-head"><span class="code-title">docker run の代表的なオプション</span></div>
+<pre><code><span class="in">docker run -d --name web -p 8080:80 -v $(pwd)/html:/usr/share/nginx/html:ro --restart unless-stopped nginx:alpine</span>
+<span class="cm">-p 8080:80 はポート公開（ホスト側:コンテナ側）、-v はボリューム、--restart unless-stopped は自動再起動、nginx:alpine はイメージ名:タグ</span></code></pre>
+      </div>
+      <p><code>-d</code> はバックグラウンド実行、<code>-p</code> はポートの公開、<code>-v</code> はボリューム（<code>:ro</code> を付けると読み取り専用）、<code>--restart</code> は自動再起動の方針である。つまり compose.yaml は、これらのオプションをファイルに書き下ろしたものにすぎない。composeが読めればrunコマンドも読めるし、その逆もまた然りである。イメージ名は「レジストリ/リポジトリ:タグ」で構成され、タグを省略すると <code>:latest</code> が使われる（<a href="#c10-5">10.5節</a>で述べたとおり、再現性が必要な場面ではタグを固定する）。</p>
+      <p><code>docker exec -it 名前 bash</code> を使うと、稼働中のコンテナの中に入って調査できる。ただしコンテナの中身は必要最小限で、viすら入っていないことも多い。中に入って直接修正するのではなく、ホスト側のファイル（ボリューム）や compose.yaml を直してコンテナを作り直すのがコンテナ流の運用である。</p>
+      <div class="call note"><span class="ct">Note</span><p>※ <code>docker stop</code> は<a href="ch06.html">第6章</a>の <code>systemctl stop</code> と同じ発想で、まず「終了してください」という丁寧な依頼（SIGTERM）を送り、応答がなければ強制終了する。ワールドの保存など後片付けの機会が与えられるため、<code>docker kill</code>（即時抹消）を常用してはいけない。</p></div>
+
+      <h2 id="c10-7"><span class="no">10.7</span>docker compose の操作</h2>
+      <p>composeのコマンドは「compose.yamlのあるディレクトリ」で実行するのが基本である（実習では <code>~/game</code>）。重要な性質は差分適用であり、up は足りないものだけを作り、compose.yamlを編集した後の <code>up -d</code> は変更のあったサービスだけを作り直す。何かを変えるたびに全部を消して作り直す必要はない。</p>
+      <div class="scroll">
+      <table class="tbl">
+        <thead><tr><th>コマンド</th><th>はたらき</th></tr></thead>
+        <tbody>
+          <tr><td><code>docker compose up -d</code></td><td>一式を起動。2回目以降は差分だけを作成・再作成する</td></tr>
+          <tr><td><code>docker compose down</code></td><td>コンテナとネットワークを削除（ボリュームは残る）</td></tr>
+          <tr><td><code>docker compose ps</code></td><td>このプロジェクトのコンテナ一覧と状態</td></tr>
+          <tr><td><code>docker compose logs -f [サービス名]</code></td><td>ログの表示。サービス名を省略すると全サービス分</td></tr>
+          <tr><td><code>docker compose restart [サービス名]</code></td><td>サービスの再起動（設定ファイル変更の反映など）</td></tr>
+          <tr><td><code>docker compose pull</code></td><td>イメージの更新を取得（適用は次の up -d で）</td></tr>
+          <tr><td><code>docker compose exec サービス名 bash</code></td><td>指定サービスのコンテナに入る</td></tr>
+          <tr><td><code>docker compose config</code></td><td>compose.yamlの文法確認（起動せずに検証できる）</td></tr>
+        </tbody>
+      </table>
+      </div>
+      <div class="code">
+        <div class="code-head"><span class="code-title">イメージ更新の定番手順</span></div>
+<pre><code><span class="in">docker compose pull <span class="c"># 新しいイメージを取得</span></span>
+<span class="in">docker compose up -d <span class="c"># 更新があったサービスだけ再作成</span></span>
+<span class="in">docker compose ps <span class="c"># 状態を確認</span></span>
+<span class="in">docker compose logs -f game <span class="c"># 気になるサービスのログを追う</span></span></code></pre>
+      </div>
+      <div class="call note"><span class="ct">Note</span><p>※ down はコンテナとネットワークだけを消し、<code>./data</code> のようなホスト側ディレクトリ（バインドマウント）には触れない。<code>down -v</code> は compose.yaml で宣言した名前付きボリュームと匿名ボリュームを削除するオプションで、実習のバインドマウントは消えないが、名前付きボリュームにデータを置く構成では取り返しがつかない。癖として不用意に <code>-v</code> を付けないこと（もちろん、ホスト側で <code>rm -rf data</code> とすればワールドは消える）。<a href="ch08.html">第8章</a>のバックアップがあれば、こうした操作も恐れずに試せる。</p></div>
+
+      <h2 id="c10-8"><span class="no">10.8</span>コンテナのデバッグ</h2>
+      <p>コンテナの障害対応も、<a href="ch08.html">第8章</a>で学んだ「エラーを読む→仮説を立てる→確認する」の繰り返しであり、入口はほぼ常にログである。まず <code>docker ps -a</code> のSTATUS列で「Exited (1)」のような終了コードを確認し、<code>docker compose logs</code> でエラーメッセージを読む。よくある症状と確認手順を挙げる。</p>
+      <div class="scroll">
+      <table class="tbl">
+        <thead><tr><th>症状</th><th>確認すること</th></tr></thead>
+        <tbody>
+          <tr><td>起動してもすぐ落ちる</td><td><code>docker ps -a</code> で終了コード → logs でエラーを読む。設定の誤りかPUID/PGIDの不一致が定番</td></tr>
+          <tr><td>port is already allocated</td><td>ポートの先客がいる。<code>ss -tlnp</code>（UDPは -ulnp）で使用中のプロセスを探す</td></tr>
+          <tr><td>Permission denied</td><td>ボリュームの所有者とPUID/PGIDの不一致。<code>sudo chown -R 1000:1000 data</code></td></tr>
+          <tr><td>イメージをpullできない</td><td>ネットワーク疎通と、イメージがarm64（Raspberry Pi）に対応しているかを確認</td></tr>
+          <tr><td>ディスクを圧迫している</td><td><code>docker system df</code> で内訳を確認 → <code>docker system prune</code> で未使用の資源を掃除</td></tr>
+        </tbody>
+      </table>
+      </div>
+      <p>リソースの監視には <code>docker stats</code> が使える。コンテナごとのCPU・メモリ使用量をリアルタイム表示する、<a href="../day3.html">第3回</a>で使ったtopのコンテナ版である。「平常時の値を知っておく」という監視の基本（<a href="ch08.html#c8-5">8.5節</a>）は、コンテナになっても変わらない。</p>
+      <div class="call note"><span class="ct">Note</span><p>※ <code>docker system prune</code> は「使われていないもの」を一括削除する強力なコマンドである。停止中のコンテナも削除対象になるため、実行前に <code>docker ps -a</code> で消えて困るものがないかを必ず確認すること。</p></div>
+
+      <nav class="pager" aria-label="前後のページ">
+        <a class="prev" href="ch09.html"><span class="pl">前へ</span><span class="pt">シェルスクリプト入門</span></a>
+        <a class="next" href="ch11.html"><span class="pl">次へ</span><span class="pt">Luantiサーバの技術</span></a>
+      </nav>
+    </article>
+  </div>
+
+  <footer class="foot">
+    <span>知能情報実験実習1「インフラ構築基礎実習」指導書 2026年度版　作成者：木村祐太</span>
+    <a href="../../../index.html">木村祐太 研究室サイト</a>
+  </footer>
+</main>
+<script src="../lab.js"></script>
+</body>
+</html>

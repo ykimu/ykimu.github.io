@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>サーバ運用の基礎 | インフラ構築基礎実習 2026</title>
+<link rel="icon" href="../../../favicon.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&family=Noto+Sans+JP:wght@400;500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../lab.css">
+</head>
+<body>
+<a class="skip" href="#main">本文へスキップ</a>
+<header class="bar">
+  <div class="wrap">
+    <a class="brand" href="../index.html">インフラ構築基礎実習 <small>知能情報実験実習1 / 2026</small></a>
+    <nav class="barlinks" aria-label="実習ナビゲーション">
+      <a href="../index.html">実習トップ</a>
+      <a href="index.html" class="here">基礎知識</a>
+      <a href="../appendix.html">付録</a>
+    </nav>
+  </div>
+</header>
+
+<main id="main" class="page">
+  <div class="hero">
+    <p class="eyebrow">CHAPTER 08 / 第8章</p>
+    <h1>サーバ運用の基礎</h1>
+    <p class="lead">ログ、時刻同期、cronによる自動化、バックアップ設計、監視という、サーバを動かし続けるための運用の土台をまとめる。</p>
+  </div>
+
+  <div class="layout">
+    <aside class="toc" aria-label="このページの目次">
+      <p class="toc-head">このページ</p>
+      <ol></ol>
+    </aside>
+    <article class="doc">
+
+      <h2 id="c8-1"><span class="no">8-1</span>ログ管理</h2>
+      <p>ログは「サーバに起きたことの記録」であり、障害対応とセキュリティ調査の最重要資料である。Linuxのログは大きく、journald（systemd）が管理するサービスのログと、<code>/var/log</code> 以下のファイルに書かれるログ、アプリケーション自身が書くログに分かれる。ログを読むときは、①時刻、②深刻度（ERROR/WARN/INFO）、③メッセージ本文、の3点に注目する。「エラーの1行目だけ読んで検索する」のではなく、その前後の数行（何をしようとして失敗したのか）まで読むのが調査のコツである。</p>
+      <p>ログは放置すると際限なく増えてディスクを圧迫する。そこでlogrotateという仕組みが、一定期間・一定サイズごとにログを切り替え、古いものを圧縮・削除している。journaldも保存容量に上限を設けて古いログを自動削除しており（<code>journalctl --disk-usage</code> で使用量を確認できる）、発想は同じである。「ディスク使用率が徐々に増えて100%になる」障害の犯人は、たいてい肥大化したログかバックアップである。</p>
+
+      <h2 id="c8-2"><span class="no">8-2</span>時刻同期（NTP）</h2>
+      <p>複数のコンピュータが連携するシステムでは、時計のずれは致命的である。ログの時刻が信用できなければ障害の再構成ができず、認証や証明書の検証も時刻に依存している。NTP（Network Time Protocol）は、ネットワーク経由で正確な時刻源と同期する仕組みで、原子時計を頂点とした階層構造（stratum）で世界中に時刻を配っている。Raspberry Piは電源を切ると時計を保持できない（時計用の電池を持たない）ため、起動時のNTP同期が特に重要である。<code>timedatectl</code> で「System clock synchronized: yes」を確認する習慣をつけたい。</p>
+
+      <h2 id="c8-3"><span class="no">8-3</span>cronによる自動化</h2>
+      <p>cronは指定時刻にコマンドを自動実行する仕組みで、バックアップ、ログ集計、定期レポートなど運用作業の自動化の基本である。スケジュールは「分 時 日 月 曜日」の5フィールドで指定する。注意すべきは、cronがあなたのシェルとは別の最小限の環境で動くことである。PATHがほぼ設定されていないため、コマンドもファイルも絶対パスで書くのが原則である。「手で実行すると動くのにcronだと動かない」の原因はほぼこれである。また、cronの実行結果を確認する手段（ログへの追記や <code>2&gt;&amp;1</code> でのエラー記録）を仕込んでおくことも重要である。動いていないことに気づけない自動化は、自動化していないより危険である。</p>
+
+      <h2 id="c8-4"><span class="no">8-4</span>バックアップ設計</h2>
+      <figure><img src="../img/s13.png" alt="図8-1　世代管理付き自動バックアップ" width="1800" height="660"><figcaption>図8-1　世代管理付き自動バックアップ</figcaption></figure>
+      <p>バックアップ設計で考えるべきことは「何を・どこに・どれだけの頻度で・何世代」である。有名な指針が3-2-1ルールで、「3つのコピーを、2種類の媒体に、うち1つは別の場所に」置くことを推奨する。実習の構成（本体＋同一SD上の7世代）はこのうち「3つのコピー」を部分的に満たすに過ぎず、SDカード自体が壊れれば全滅する。<code>scp</code>で別のマシンに転送する発展課題は、「1つは別の場所に」への第一歩である。</p>
+      <p>もう1つの本質は「バックアップはリストアできて初めて意味がある」ことである。取得は成功していても、いざ戻すと壊れている・手順がわからない・時間がかかりすぎる、という事故は実務で後を絶たない。定期的なリストア訓練（実習第4回で行ったこと）は、プロの現場でも推奨される習慣である。</p>
+
+      <h2 id="c8-5"><span class="no">8-5</span>監視の考え方</h2>
+      <p>監視には3つの階層がある。①死活監視：サービスが生きているか（<code>systemctl status</code>、<code>ping</code>）。②リソース監視：CPU・メモリ・ディスク・温度などの数値が正常範囲か（<code>top</code>、<code>df</code>、<code>vcgencmd</code>）。③ログ監視：エラーや異常なアクセスが出ていないか（<code>journalctl</code>、<code>grep</code>）。実務ではこれらを自動化し、しきい値を超えたら通知する仕組み（Prometheus、Zabbix、Grafanaなど）を組む。実習第5回のWeb稼働状況ページは、この監視自動化のごく素朴な原型である。監視設計のコツは「平常時の値を知っておく」ことである。平常時のload averageや温度を記録したのは、異常を「いつもと違う」として検出するための基準線づくりだった。</p>
+
+      <nav class="pager" aria-label="前後のページ">
+        <a class="prev" href="ch07.html"><span class="pl">前へ</span><span class="pt">ネットワークの基礎</span></a>
+        <a class="next" href="ch09.html"><span class="pl">次へ</span><span class="pt">シェルスクリプト入門</span></a>
+      </nav>
+    </article>
+  </div>
+
+  <footer class="foot">
+    <span>知能情報実験実習1「インフラ構築基礎実習」指導書 2026年度版　作成者：木村祐太</span>
+    <a href="../../../index.html">木村祐太 研究室サイト</a>
+  </footer>
+</main>
+<script src="../lab.js"></script>
+</body>
+</html>

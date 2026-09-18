@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>第5回　Dockerによる再構築とWeb監視ページ | インフラ構築基礎実習 2026</title>
+<link rel="icon" href="../../favicon.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&family=Noto+Sans+JP:wght@400;500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="lab.css">
+</head>
+<body>
+<a class="skip" href="#main">本文へスキップ</a>
+<header class="bar">
+  <div class="wrap">
+    <a class="brand" href="index.html">インフラ構築基礎実習 <small>知能情報実験実習1 / 2026</small></a>
+    <nav class="barlinks" aria-label="実習ナビゲーション">
+      <a href="index.html">実習トップ</a>
+      <a href="ref/index.html">基礎知識</a>
+      <a href="appendix.html">付録</a>
+    </nav>
+  </div>
+</header>
+
+<main id="main" class="page">
+  <div class="hero">
+    <p class="eyebrow">DAY 05</p>
+    <h1>Dockerによる再構築とWeb監視ページ</h1>
+    <p class="lead">Docker、コンテナによる再構築、Web監視ページ</p>
+    <div class="meta"><span><b>所要時間</b> 180分</span> <span><b>補足資料</b> <a href="ref/ch10.html">第10章 仮想化とコンテナ</a></span></div>
+  </div>
+
+  <div class="layout">
+    <aside class="toc" aria-label="このページの目次">
+      <p class="toc-head">このページ</p>
+      <ol></ol>
+    </aside>
+    <article class="doc">
+
+      <div class="call goal"><span class="ct">本回の目標</span><p>サーバをDockerコンテナとして再構築し、ワールドデータを引き継ぐ。さらにWebサーバを構築し、サーバの稼働状況を確認できるページを公開する。</p></div>
+
+      <p>タイムテーブル（180分）</p>
+      <table class="tbl"><thead><tr><th>時間</th><th>内容</th></tr></thead><tbody>
+        <tr><td class="num">30分</td><td>ミニ講義：コンテナとは何か／なぜ実務でDockerが使われるか</td></tr>
+        <tr><td class="num">30分</td><td>Dockerのインストールと基本コマンド</td></tr>
+        <tr><td class="num">40分</td><td>Luantiサーバのコンテナ化とワールド移行</td></tr>
+        <tr><td class="num">40分</td><td>Webサーバ（nginx）と稼働状況ページの公開</td></tr>
+        <tr><td class="num">30分</td><td>総合演習：資産からの完全再構築</td></tr>
+        <tr><td class="num">10分</td><td>確認項目の達成チェック・最終課題の説明</td></tr>
+      </tbody></table>
+
+      <h2 id="s5-1"><span class="no">5-1</span>コンテナとは</h2>
+      <p><a href="day2.html">第2回</a>を思い出してほしい。パッケージを入れ、ワールドを生成し、設定を書き、ユニットファイルを書き……と1時間かけて構築した。もしサーバが10台あったら？　OSを入れ直すことになったら？　同じ作業を毎回繰り返すのは現実的でない。</p>
+      <p>この問題を解決するのが<strong>コンテナ</strong>である。アプリケーションと、その動作に必要な環境一式（ライブラリ、設定、手順）を「イメージ」としてパッケージ化し、どこでも同じように動かせる。コンテナを動かす代表的なソフトウェアが<strong>Docker</strong>であり、現在のサーバ運用（クラウドを含む）の標準技術になっている。仮想マシンと違いOSを丸ごと複製しないため、Raspberry Piでも軽快に動く。</p>
+      <p>本回のゴールは次のとおりである：<a href="day2.html">第2回</a>で1時間かけた構築を、設定ファイル1枚と1コマンドで再現する。ただしワールドデータは<a href="day4.html">第4回</a>のバックアップから引き継ぐ。「環境は使い捨て、データは資産」、これがコンテナを用いた運用の基本的な考え方である。</p>
+
+      <h2 id="s5-2"><span class="no">5-2</span>Dockerのインストールと基本操作</h2>
+      <div class="code">
+  <div class="code-head"><span class="code-title">Dockerのインストール</span></div>
+<pre><code><span class="in">curl -fsSL https://get.docker.com | sh <span class="c"># 公式スクリプトでインストール</span></span>
+<span class="in">sudo usermod -aG docker $USER <span class="c"># sudoなしでdockerを使えるようにする</span></span>
+<span class="in">exit <span class="c"># 一度ログアウトして入り直す（グループ反映）</span></span>
+<span class="in">docker run hello-world <span class="c"># 動作確認</span></span>
+<span class="out">Hello from Docker! ... <span class="c"># ←これが出ればOK</span></span></code></pre>
+      </div>
+      <p>hello-worldの出力をよく読むと、「イメージをダウンロード（pull）→コンテナを作成→実行」という流れが説明されている。基本コマンドを確認する。なお、この手順には2つの「実務の注意」がある。<code>curl | sh</code> は取得したスクリプトを即実行する書き方であり、本来は中身を確認してから実行するのが安全な作法である（今回は公式の定番手順として利用する）。また、dockerグループへの追加は実質root相当の権限を与える操作である（本実習は自分専用の実習機なので許容している）。</p>
+      <table class="tbl"><thead><tr><th>コマンド</th><th>役割</th></tr></thead><tbody>
+        <tr><td><code>docker ps</code>（<code>-a</code>）</td><td>実行中の（-a：停止中も含む）コンテナ一覧</td></tr>
+        <tr><td><code>docker images</code></td><td>手元にあるイメージの一覧</td></tr>
+        <tr><td><code>docker logs コンテナ名</code></td><td>コンテナのログを表示（-f：リアルタイム）</td></tr>
+        <tr><td><code>docker exec -it コンテナ名 bash</code></td><td>稼働中のコンテナの中に入る</td></tr>
+        <tr><td><code>docker stop／start コンテナ名</code></td><td>コンテナの停止／起動</td></tr>
+        <tr><td><code>docker rm コンテナ名</code></td><td>コンテナの削除</td></tr>
+      </tbody></table>
+
+      <h2 id="s5-3"><span class="no">5-3</span>Luantiサーバのコンテナ化</h2>
+      <p>Luantiサーバのコンテナイメージとして、広く使われている <code>lscr.io/linuxserver/luanti</code> を使う（arm64＝Raspberry PiのCPUアーキテクチャに対応）。サーバ本体の導入と起動をすべてイメージが面倒みてくれる。複数のコンテナ構成は<code>compose.yaml</code>という設定ファイルに記述し、<code>docker compose</code>コマンドで一括管理する。</p>
+      <p>まず、既存のサービス（systemd直起動版）を止めて、無効化する。</p>
+      <div class="code">
+  <div class="code-head"><span class="code-title">旧構成の停止</span></div>
+<pre><code><span class="in">sudo systemctl stop luanti</span>
+<span class="in">sudo systemctl disable luanti</span></code></pre>
+      </div>
+      <p>作業ディレクトリを作り、viで<code>compose.yaml</code>を作成する。</p>
+      <div class="code">
+  <div class="code-head"><span class="code-title">作業ディレクトリの作成</span></div>
+<pre><code><span class="in">mkdir ~/game &amp;&amp; cd ~/game</span>
+<span class="in">vi compose.yaml</span></code></pre>
+      </div>
+      <div class="code file">
+  <div class="code-head"><span class="code-title">compose.yaml</span></div>
+<pre><code><span class="in">services:</span>
+<span class="in">  game:</span>
+<span class="in">    image: lscr.io/linuxserver/luanti</span>
+<span class="in">    environment:</span>
+<span class="in">      PUID: "1000" # コンテナ内の実行ユーザID（自分のユーザに合わせる）</span>
+<span class="in">      PGID: "1000"</span>
+<span class="in">      TZ: Asia/Tokyo</span>
+<span class="in">      CLI_ARGS: "--gameid minetest --worldname world"</span>
+<span class="in">    ports:</span>
+<span class="in">      - "30000:30000/udp" # ポートの公開（UDP）</span>
+<span class="in">    volumes:</span>
+<span class="in">      - ./data:/config/.minetest # データの保存先（ボリューム）</span>
+<span class="in">    restart: unless-stopped # 自動再起動（systemdのRestart相当）</span></code></pre>
+      </div>
+      <p>重要なのは<strong>volumes</strong>の行である。コンテナは削除すると中のデータも消えるため、残したいデータはコンテナの外（ここではホストの <code>./data</code>）に置く。この対応付けをボリュームという。「環境は使い捨て、データは資産」を実現する仕組みである。</p>
+      <p>このイメージにはゲーム（Minetest Game）が含まれていないため、<a href="day2.html">第2回</a>でaptから導入したものをボリュームに配置する。これも「データは資産」の実践である。コピー元は第2回の対応表の「ゲームの場所」である。ディレクトリ名は <code>minetest_game</code> だが、Luanti はこれを gameid「minetest」として認識する（第2回の <code>luantiserver --gameid list</code> でも minetest と表示された）ので、<code>compose.yaml</code> の <code>--gameid</code> は minetest のままでよい。</p>
+      <div class="code">
+  <div class="code-head"><span class="code-title">ゲームデータの配置</span></div>
+<pre><code><span class="in">mkdir -p data/games</span>
+<span class="in">cp -r /usr/share/luanti/games/minetest_game data/games/</span>
+<span class="cm"># 旧名パターンなら /usr/share/games/minetest/games/minetest_game（第2回の対応表）</span></code></pre>
+      </div>
+      <div class="code">
+  <div class="code-head"><span class="code-title">コンテナの起動</span></div>
+<pre><code><span class="in">docker compose up -d <span class="c"># 起動（-d：バックグラウンド）</span></span>
+<span class="in">docker compose logs -f <span class="c"># 起動の様子を観察（listening が出るまで待つ）</span></span>
+<span class="in">docker ps <span class="c"># 稼働確認</span></span></code></pre>
+      </div>
+      <p><a href="day2.html">第2回</a>の手順と比較してほしい。パッケージのインストールも、ユニットファイルも書いていない。すべて<code>compose.yaml</code>の十数行に集約された。この設定ファイルさえあれば、明日別のマシンでも同じサーバを1コマンドで再現できる。</p>
+
+      <h3 id="s5-3-a">ワールドの移行</h3>
+      <p><a href="day4.html">第4回</a>のバックアップから、育てたワールドをコンテナ版に引き継ぐ。コンテナ版のワールド置き場は <code>data/worlds/</code> である。</p>
+      <div class="code">
+  <div class="code-head"><span class="code-title">ワールドデータの移行</span></div>
+<pre><code><span class="in">docker compose down <span class="c"># 一旦停止</span></span>
+<span class="in">mkdir -p data/worlds</span>
+<span class="in">sudo tar xzf /home/luanti/backup/world_<var>最新</var>.tar.gz -C data/worlds</span>
+<span class="in">sudo chown -R 1000:1000 data/worlds <span class="c"># PUIDに合わせる</span></span>
+<span class="in">docker compose up -d</span></code></pre>
+      </div>
+      <p>クライアントから接続し、自分の建築物がコンテナ版サーバに引き継がれていることを確認しよう。</p>
+      <p>もう一つ、忘れてはならない資産がある。<a href="day2.html">第2回</a>に書いた設定ファイル <code>luanti.conf</code> である。管理者の判定（name）は「接続してきた名前が設定ファイルの name と一致するか」で毎回行われ、<code>auth.sqlite</code> には保存されない。つまり設定ファイルを移さないと、コンテナ版では管理者が不在になり、空パスワード禁止（disallow_empty_password）などの設定も外れてしまう。このイメージは <code>/config/.minetest/main-config/minetest.conf</code>（ホスト側では <code>data/main-config/minetest.conf</code>）を設定ファイルとして読むので、そこへ内容を写す。</p>
+      <div class="code">
+  <div class="code-head"><span class="code-title">設定ファイル（luanti.conf）の移行</span></div>
+<pre><code><span class="in">docker compose down</span>
+<span class="in">mkdir -p data/main-config</span>
+<span class="in">sudo cp /home/luanti/server/luanti.conf data/main-config/minetest.conf</span>
+<span class="in">sudo chown -R 1000:1000 data/main-config</span>
+<span class="in">docker compose up -d</span></code></pre>
+      </div>
+      <p>クライアントから接続し直し、管理者の名前で <code>/status</code> などの管理コマンドが実行できること、motd が表示されることを確認しよう。「環境は使い捨て、データは資産」、ワールドだけでなく設定ファイルも資産である。</p>
+
+      <h2 id="s5-4"><span class="no">5-4</span>Web監視ページの公開</h2>
+      <p>運用しているサーバの状態を、チームの誰もがブラウザで見られるようにするのは実務の定番である。Webサーバ（nginx）のコンテナを追加し、サーバ紹介と稼働状況のページを公開する。<code>compose.yaml</code>に以下を追記しよう（<code>services</code>の下、<code>game</code>と同じ深さに<code>web</code>を並べる）。</p>
+      <div class="code file">
+  <div class="code-head"><span class="code-title">compose.yamlへの追記（webサービス）</span></div>
+<pre><code><span class="in">  web:</span>
+<span class="in">    image: nginx:alpine</span>
+<span class="in">    ports:</span>
+<span class="in">      - "8080:80" # 8080番で公開</span>
+<span class="in">    volumes:</span>
+<span class="in">      - ./html:/usr/share/nginx/html:ro # 公開するファイル置き場（読み取り専用）</span>
+<span class="in">    restart: unless-stopped</span></code></pre>
+      </div>
+
+      <figure><img src="img/g11.png" alt="図11　第5回終了時のコンテナ構成" width="1800" height="820"><figcaption>図11　第5回終了時のコンテナ構成</figcaption></figure>
+
+      <div class="code">
+  <div class="code-head"><span class="code-title">紹介ページの作成と公開</span></div>
+<pre><code><span class="in">mkdir ~/game/html</span>
+<span class="in">vi ~/game/html/index.html <span class="c"># 自分のサーバの紹介ページを書く（内容は自由）</span></span>
+<span class="in">sudo ufw allow 8080/tcp <span class="c"># 開放ポートとして記録（下のNoteを参照）</span></span>
+<span class="in">docker compose up -d <span class="c"># 追記分だけが起動される</span></span></code></pre>
+      </div>
+      <div class="call note"><span class="ct">Note</span><p>※ 実は、Dockerが公開したポート（composeの<code>ports:</code>）は、ufwの許可・拒否ルールを経由せずに外へ開かれる（Dockerがカーネルの転送ルールを直接操作するため）。つまり「ufwで閉じているから安全」はコンテナのポートには当てはまらない。公開するかどうかは <code>ports:</code> の書き方そのもので決まる。ここでufwにも登録するのは、開けているポートを一覧で管理・記録するためである（詳しくは補足資料<a href="ref/ch07.html">7.5節</a>）。</p></div>
+      <p>BYODのブラウザから <code>http://ホスト名.local:8080</code> にアクセスし、自分のページが表示されることを確認する。近くの人のページも見に行ってみよう。</p>
+
+      <h3 id="s5-4-a">稼働状況の自動更新（ミニ演習）</h3>
+      <p>サーバの稼働状況を定期的にテキストファイルへ書き出せば、簡易的な監視ページになる。cron（<a href="day4.html">第4回</a>の復習）で毎分、コンテナの状態を書き出してみよう。</p>
+      <div class="code">
+  <div class="code-head"><span class="code-title">稼働状況の書き出し</span></div>
+<pre><code><span class="in">crontab -e <span class="c"># 自分のユーザのcronに次の1行を追記</span></span></code></pre>
+      </div>
+      <div class="code file">
+  <div class="code-head"><span class="code-title">crontabに追記する1行</span></div>
+<pre><code><span class="in">* * * * * cd /home/<var>ユーザ名</var>/game &amp;&amp; docker compose ps &gt; html/status.txt 2&gt;&amp;1</span></code></pre>
+      </div>
+      <p><code>index.html</code>に次のようにリンクを張れば、ブラウザから常に最新の状況を確認できる。</p>
+      <div class="code file">
+  <div class="code-head"><span class="code-title">index.html に書くリンク</span></div>
+<pre><code><span class="in">&lt;a href="status.txt"&gt;サーバ稼働状況&lt;/a&gt;</span></code></pre>
+      </div>
+      <p>発展として、<code>docker compose logs</code> から「joins game」の行を抽出して「最近の入室者」を表示するのも面白い（自由に工夫してみよう）。</p>
+
+      <h2 id="s5-5"><span class="no">5-5</span>総合演習：資産からの完全再構築</h2>
+      <p>5回分の総仕上げとして、「サーバは、設定ファイルとデータさえあれば何度でも作り直せる」ことを自分の手で証明する。構成資産（<code>compose.yaml</code>・<code>html</code>・設定ファイル・ワールドのバックアップ）だけを残して環境を完全に破棄し、ゼロから復元しよう。所要時間を計ること。</p>
+      <div class="call note"><span class="ct">総合演習の進め方（コマンドは自分で組み立てよう）</span><ul>
+        <li>① 資産を退避する（最新ワールドと <code>compose.yaml</code>・<code>html</code>・設定ファイル <code>data/main-config</code> を tar で固める）</li>
+        <li>② 環境を破棄する（コンテナの停止・削除 → <code>~/game</code> を削除。イメージ削除は任意）</li>
+        <li>③ 資産から復元する（<code>~/game</code> を再作成 → 資産を展開 → ゲームデータの配置 → 所有者の調整）</li>
+        <li>④ 1コマンドで一式を起動する</li>
+        <li>⑤ ワールドとWebページの復活を確認し、所要時間を実験記録に残す</li>
+      </ul></div>
+      <div class="call note"><span class="ct">Note</span><p>※ 使うコマンドはすべて既出である：tar（<a href="day4.html">第4回4-1</a>）、<code>chown -R 1000:1000</code>（<a href="#s5-3">5-3</a>）、<code>docker compose down</code>／<code>up -d</code>（<a href="#s5-2">5-2</a>〜<a href="#s5-4">5-4</a>）。この演習は「手順書なしでも資産から再現できる」ことの証明なので、まず自分の実験記録を見返そう。どうしても手が止まったら、その工程だけ教員・支援員にヒントをもらえばよい。</p></div>
+      <p>クライアントから接続してワールドが戻っていること、Webページが表示されることを確認し、破棄から復元完了までの所要時間を実験記録に残す。<a href="day2.html">第2回</a>に1時間かけた構築が数分で戻るはずである。これがInfrastructure as Code（補足資料<a href="ref/ch10.html">第10章</a>）の威力の実測値であり、最終課題ではこの記録の質も評価対象になる。</p>
+      <div class="call note"><span class="ct">Note</span><p>※ 余裕があれば、<a href="day4.html">第4回</a>の「壊して学ぶ」をコンテナ環境でも試してみよう。<code>compose.yaml</code>の<code>ports</code>の数字を変える、<code>PUID</code>を別の値にする、などを仕込むと、<code>docker compose logs</code> での診断練習になる。</p></div>
+
+      <h2 id="s5-check">確認項目</h2>
+      <p>達成したら日時・実行コマンド・結果を実験記録に残すこと。</p>
+      <ul class="check">
+        <li><code>docker compose up -d</code> だけでサーバ一式（game＋web）が起動することを確認した</li>
+        <li>第4回までに育てたワールドがコンテナ版に引き継がれている</li>
+        <li><code>http://ホスト名.local:8080</code> で紹介ページと稼働状況が見られる</li>
+        <li>資産からの完全再構築に成功し、所要時間を実験記録に残した</li>
+        <li>最終課題のテーマを決め、投稿先（Qiita・Zenn等）のアカウントを作成した（<a href="day6.html">6-1、6-7節</a>参照）</li>
+      </ul>
+
+      <h2 id="s5-extra">発展課題</h2>
+      <div class="call extra"><span class="ct">発展課題（任意：早く終わった人向け）</span><ul>
+        <li>ContentDB（Luanti公式のコンテンツ配信サイト）から別のゲームやModを導入して、サーバの遊びを拡張してみよう。Androidスマホにも無料クライアントがあるので、スマホからの接続も試せる。</li>
+        <li>Dockerfileを書いて、自分専用のカスタムイメージを作ってみよう。</li>
+        <li><code>docker stats</code> でコンテナごとのリソース使用量を観察し、<a href="day3.html">第3回</a>の監視と比べてみよう。</li>
+      </ul></div>
+
+      <nav class="pager" aria-label="前後のページ">
+        <a class="prev" href="day4.html"><span class="pl">前へ</span><span class="pt">バックアップと自動化</span></a>
+        <a class="next" href="day6.html"><span class="pl">次へ</span><span class="pt">最終課題：総合演習と技術記事の執筆・公開</span></a>
+      </nav>
+    </article>
+  </div>
+
+  <footer class="foot">
+    <span>知能情報実験実習1「インフラ構築基礎実習」指導書 2026年度版　作成者：木村祐太</span>
+    <a href="../../index.html">木村祐太 研究室サイト</a>
+  </footer>
+</main>
+<script src="lab.js"></script>
+</body>
+</html>

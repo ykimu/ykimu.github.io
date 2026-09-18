@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>ユーザ・グループとパーミッション | インフラ構築基礎実習 2026</title>
+<link rel="icon" href="../../../favicon.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&family=Noto+Sans+JP:wght@400;500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../lab.css">
+</head>
+<body>
+<a class="skip" href="#main">本文へスキップ</a>
+<header class="bar">
+  <div class="wrap">
+    <a class="brand" href="../index.html">インフラ構築基礎実習 <small>知能情報実験実習1 / 2026</small></a>
+    <nav class="barlinks" aria-label="実習ナビゲーション">
+      <a href="../index.html">実習トップ</a>
+      <a href="index.html" class="here">基礎知識</a>
+      <a href="../appendix.html">付録</a>
+    </nav>
+  </div>
+</header>
+
+<main id="main" class="page">
+  <div class="hero">
+    <p class="eyebrow">CHAPTER 05 / 第5章</p>
+    <h1>ユーザ・グループとパーミッション</h1>
+    <p class="lead">Linuxは1台のコンピュータを複数の人間が同時に使うことを前提に設計されており、ユーザとグループ、そしてファイルのアクセス権が権限分離の土台になっている。</p>
+  </div>
+
+  <div class="layout">
+    <aside class="toc" aria-label="このページの目次">
+      <p class="toc-head">このページ</p>
+      <ol></ol>
+    </aside>
+    <article class="doc">
+
+      <h2 id="c5-1"><span class="no">5-1</span>マルチユーザシステム</h2>
+      <p>Linuxは誕生のときから、1台のコンピュータを複数の人間が同時に使うことを前提に設計されている。各ユーザには一意の番号（UID：User ID）が割り当てられ、ユーザは1つ以上のグループ（GID：Group ID）に所属する。ファイルの所有権もアクセス権もこのUID/GIDに基づいて管理される。実習でluantiユーザを作ってサービスを動かしたのは、このマルチユーザの仕組みを「権限の分離」に応用したものである。</p>
+      <p>ユーザの情報は次のファイルに保存されている。これらは「設定はテキストファイルに保存される」というLinuxの原則の好例であり、<code>cat</code>で中身を見ることができる。</p>
+      <div class="scroll">
+      <table class="tbl">
+        <thead><tr><th>ファイル</th><th>内容</th></tr></thead>
+        <tbody>
+          <tr><td><code>/etc/passwd</code></td><td>ユーザ名・UID・ホームディレクトリ・ログインシェルの一覧（名前に反しパスワードは入っていない）</td></tr>
+          <tr><td><code>/etc/shadow</code></td><td>パスワードのハッシュ値。rootのみ読める</td></tr>
+          <tr><td><code>/etc/group</code></td><td>グループとその所属メンバーの一覧</td></tr>
+        </tbody>
+      </table>
+      </div>
+      <div class="call note"><span class="ct">Note</span><p>※ パスワードは平文ではなく「ハッシュ値」で保存される。ハッシュは一方向の変換であり、元のパスワードには戻せない。ログイン時は入力をハッシュ化して保存値と比較する。パスワードを忘れたとき管理者でも「教える」ことができず「リセット」しかできないのはこのためである。</p></div>
+
+      <h2 id="c5-2"><span class="no">5-2</span>rootとsudo</h2>
+      <p>UID 0 のユーザをrootといい、すべての権限チェックを素通りできる特別な存在である。強力である反面、<code>rm -rf</code> の対象を打ち間違えるだけでシステムを破壊できる。そこで現代の運用では、rootで直接ログインする代わりに、一般ユーザとして作業し、必要なコマンドだけを<code>sudo</code>で実行する。sudoには次の利点がある。①root本人のパスワードを共有しなくてよい。②誰がいつ何を実行したかログに残る（<code>journalctl</code>で確認できる）。③操作のたびに「これは管理者権限が必要な操作だ」と意識する機会になる。sudoを使えるのはsudoグループ（ディストリビューションによってはwheelグループ）に所属するユーザだけであり、細かい許可設定は <code>/etc/sudoers</code> で管理される。</p>
+      <p>この考え方を一般化したものが最小権限の原則である。「プログラムにもユーザにも、目的に必要な最小限の権限だけを与える」。実習でsudo権限を持たないluantiユーザを作ってサービスを動かしたのは、万一ゲームサーバが乗っ取られても、被害をそのユーザの権限の範囲に閉じ込めるためである。</p>
+
+      <h2 id="c5-3"><span class="no">5-3</span>パーミッションの仕組み</h2>
+      <figure><img src="../img/s07.png" alt="図5-1　パーミッション表記の読み方" width="1800" height="590"><figcaption>図5-1　パーミッション表記の読み方</figcaption></figure>
+      <p>ファイルのアクセス権は、所有者・所有グループ・その他ユーザの3者それぞれに、r（読み取り）・w（書き込み）・x（実行）の3種類を設定する。ディレクトリの場合は意味が少し変わり、rは「中の一覧を見られる」、wは「中にファイルを作成・削除できる」、xは「中に入れる（<code>cd</code>できる）」である。数値表記はr=4、w=2、x=1の合計で表し、<code>chmod 755</code> のように使う。よく使うパターンを覚えておくとよい。</p>
+      <div class="scroll">
+      <table class="tbl">
+        <thead><tr><th>数値</th><th>記号</th><th>典型的な用途</th></tr></thead>
+        <tbody>
+          <tr><td><code>755</code></td><td><code>rwxr-xr-x</code></td><td>プログラム・スクリプト、ディレクトリ</td></tr>
+          <tr><td><code>644</code></td><td><code>rw-r--r--</code></td><td>一般的なファイル（他人は読めるが書けない）</td></tr>
+          <tr><td><code>600</code></td><td><code>rw-------</code></td><td>秘密にしたいファイル（SSH秘密鍵、パスワードファイル等）</td></tr>
+          <tr><td><code>700</code></td><td><code>rwx------</code></td><td>自分専用のディレクトリ</td></tr>
+        </tbody>
+      </table>
+      </div>
+      <p>なお、新規作成されるファイルのパーミッションの初期値はumaskという設定で決まる。また、<code>/tmp</code> のような共有ディレクトリには「作った本人しか消せない」ようにするスティッキービット（t）という特殊な権限が付いているなど、発展的な仕組みもある。<code>ls -ld /tmp</code> で確認してみてほしい。</p>
+
+      <nav class="pager" aria-label="前後のページ">
+        <a class="prev" href="ch04.html"><span class="pl">前へ</span><span class="pt">テキストエディタ（vi / Vim）</span></a>
+        <a class="next" href="ch06.html"><span class="pl">次へ</span><span class="pt">プロセスとサービス管理</span></a>
+      </nav>
+    </article>
+  </div>
+
+  <footer class="foot">
+    <span>知能情報実験実習1「インフラ構築基礎実習」指導書 2026年度版　作成者：木村祐太</span>
+    <a href="../../../index.html">木村祐太 研究室サイト</a>
+  </footer>
+</main>
+<script src="../lab.js"></script>
+</body>
+</html>

@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>第11章　Luantiサーバの技術 | インフラ構築基礎実習 2026</title>
+<link rel="icon" href="../../../favicon.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&family=Noto+Sans+JP:wght@400;500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../lab.css">
+</head>
+<body>
+<a class="skip" href="#main">本文へスキップ</a>
+<header class="bar">
+  <div class="wrap">
+    <a class="brand" href="../index.html">インフラ構築基礎実習 <small>知能情報実験実習1 / 2026</small></a>
+    <nav class="barlinks" aria-label="実習ナビゲーション">
+      <a href="../index.html">実習トップ</a>
+      <a href="../ref/index.html" class="here">基礎知識</a>
+      <a href="../appendix.html">付録</a>
+    </nav>
+  </div>
+</header>
+
+<main id="main" class="page">
+  <div class="hero">
+    <p class="eyebrow">CHAPTER 11 / 第11章</p>
+    <h1>Luantiサーバの技術</h1>
+    <p class="lead">Luantiのマルチプレイは典型的なクライアント／サーバ型のネットワークアプリケーションであり、その仕組みと負荷、アカウント、データ構造を解説する。</p>
+  </div>
+
+  <div class="layout">
+    <aside class="toc" aria-label="このページの目次">
+      <p class="toc-head">このページ</p>
+      <ol></ol>
+    </aside>
+    <article class="doc">
+
+      <h2 id="c11-1"><span class="no">11.1</span>クライアント／サーバモデル</h2>
+      <p>Luantiのマルチプレイは、典型的なクライアント／サーバ型のネットワークアプリケーションである。ワールドの状態（地形、持ち物、モンスターの位置）はすべてサーバが一元管理し、各プレイヤーのクライアントは「操作を送り、周辺の状態を受け取って描画する」ことに徹する。チートが難しいのは判定をサーバが握っているからであり、サーバが停止すれば全員が遊べなくなるのは状態がサーバに集中しているからである。この構図はオンラインゲーム全般はもちろん、Webサービス（ブラウザ＝クライアント、Webサーバ＝サーバ）とも同じである。</p>
+
+      <h2 id="c11-2"><span class="no">11.2</span>Luantiというソフトウェア</h2>
+      <p>Luantiは2010年に「Minetest」の名で公開され、2024年に現在の名前に改名された、オープンソースのボクセルゲームエンジンである。性能が重要な中核部分はC++で書かれ、ゲームのルールやアイテムはLuaというスクリプト言語で記述される。最大の特徴はエンジンとゲームの分離で、同じLuantiエンジンの上で「Minetest Game」（実習で使用）をはじめとする様々なゲームを動かせる。ゲームやMod（拡張機能）は公式のContentDB（<a href="https://content.luanti.org/">content.luanti.org</a>）で配布されている。</p>
+      <p>オープンソース（LGPLライセンス）であることの意味は実習で体感したとおりである。クライアントは誰でも無料で入手でき、サーバも自由に立てられる。全員が自分のBYODから当たり前のように接続できたのは、このライセンスのおかげである。また、C++製で軽量なため、Javaで動く同種のゲームサーバと比べてメモリ・CPU消費が小さく、Raspberry Piのような小型機に向いている。</p>
+
+      <h2 id="c11-3"><span class="no">11.3</span>サーバの仕組みと負荷</h2>
+      <p>Luantiサーバは30000番ポート（UDP）で独自プロトコルの通信を待ち受ける。位置情報のような高頻度・小サイズのデータをやりとりするため、確実さのTCPではなく速度のUDPが選ばれている（<a href="ch07.html">第7章</a>）。サーバは約0.1秒ごとに世界全体の状態を更新しており、この周期に処理が間に合わなくなると、操作への反応が遅れる「ラグ」として体感される。</p>
+      <p>ワールドは16×16×16ブロックの立方体（マップブロック）単位で管理され、プレイヤーの周囲のブロックだけが読み込まれて動作する（<code>active_block_range</code> 等の設定で範囲を調整できる）。未踏の地への移動が最も重いのは、マップブロックの新規生成（地形計算）が走るからである。<a href="../day3.html">第3回</a>の負荷実験で見たload averageの上昇とゲームのラグは、この処理がCPUを食い尽くしていく過程を、OS側とゲーム側の2つの窓から見ていたことになる。<code>max_users</code>（最大接続数）は、この負荷をサーバの性能に収めるための設計値である。</p>
+
+      <h2 id="c11-4"><span class="no">11.4</span>アカウントと権限（privs）</h2>
+      <p>Luantiのアカウントはサーバごとに独立している。中央の認証サーバは存在せず、プレイヤーが初回接続時に入力した名前とパスワードが、そのサーバのワールド内（auth.sqlite）にパスワードのハッシュとして登録される（<a href="ch05.html">第5章</a>で学んだ <code>/etc/shadow</code> とまったく同じ発想である）。プレイヤーの行動は privs（権限）で制御され、interact（ブロックの設置・破壊）、shout（チャット）、give（アイテム入手）、server（サーバ管理）などの権限を <code>/grant</code>・<code>/revoke</code> コマンドで付け外しする。なお <code>/ban</code> は名前ではなく、接続中のプレイヤーのIPアドレスを禁止するコマンドであり、オフラインの相手には使えない（アカウント単位の制限は権限の剥奪で行う）。luanti.conf の name に指定したプレイヤーは全権限を持つ管理者になる。</p>
+      <p>この仕組みには実習で学んだセキュリティの原則がそのまま現れる。管理者名は「最初に登録した者勝ち」なので公開前に自分で登録する（なりすまし防止）。プレイヤーのパスワードはハッシュで保存されるとはいえサーバ管理者の手元に渡るので、他サービスとの使い回しは厳禁である。そして一般プレイヤーには必要最小限の権限だけを与える：最小権限の原則（<a href="ch05.html">第5章</a>）である。</p>
+
+      <h2 id="c11-5"><span class="no">11.5</span>データと設定の構造</h2>
+      <div class="scroll">
+      <table class="tbl">
+        <thead><tr><th>ファイル／ディレクトリ</th><th>内容</th></tr></thead>
+        <tbody>
+          <tr><td><code>luanti.conf</code></td><td>サーバの設定（server_name、max_users、name等）。キー = 値 形式のテキスト。コンテナ版（<a href="../day5.html">第5回</a>）では <code>data/main-config/minetest.conf</code> がこれに相当する</td></tr>
+          <tr><td><code>world/</code></td><td>ワールド一式。バックアップ対象はこのディレクトリ</td></tr>
+          <tr><td><code>world/map.sqlite</code></td><td>地形データの本体。SQLiteというファイル型データベース</td></tr>
+          <tr><td><code>world/auth.sqlite</code></td><td>アカウント情報（パスワードはハッシュで保存）</td></tr>
+          <tr><td><code>world/world.mt</code></td><td>ワールドごとの設定（使用するゲーム、有効なMod等）</td></tr>
+        </tbody>
+      </table>
+      </div>
+      <p>「設定はテキストファイル、変更したら再起動」というLinuxサーバの原則が、Luantiにもそのまま当てはまる。一方でワールドの実体はSQLiteデータベースであり、稼働中にファイルをコピーすると書き込み途中の不整合を含む可能性がある。<a href="../day4.html">第4回</a>のバックアップで「確実なのは停止してから」としたのはこのためである。</p>
+
+      <h2 id="c11-6"><span class="no">11.6</span>Modとゲーム制作への入口</h2>
+      <p>LuantiのModはLuaで記述する。数十行のスクリプトで新しいアイテムやコマンドを追加でき、ワールドの <code>worldmods</code> ディレクトリに置くだけで読み込まれる。ContentDBには他者の作ったゲームやModが多数公開されており、導入はディレクトリに配置して world.mt で有効化するだけである。ただし、Modはサーバ上で動くプログラムそのものなので、出所の確認が必要である。<a href="ch10.html">第10章</a>で学んだ「イメージの出所を確認する」と同じ注意が、ここでも当てはまる。最終課題でMod導入・自作に挑戦する人は、公式ドキュメント（<a href="https://docs.luanti.org/">docs.luanti.org</a>）のModding Bookから始めるとよい。</p>
+
+      <h2 id="c11-7"><span class="no">11.7</span>ContentDBからのMod導入手順</h2>
+      <p>最終課題のテーマ「Mod・ゲーム運用」の出発点となる手順を示す。ModはContentDB（<a href="https://content.luanti.org/">https://content.luanti.org/</a>）からzipで入手し、サーバのmodsディレクトリに展開したうえで、ワールドごとに有効化する。<a href="../day5.html">第5回</a>のコンテナ構成（<code>~/game</code>）では、Modもボリューム内に置く。これも「データは資産」の実践である。</p>
+      <div class="code">
+        <div class="code-head"><span class="code-title">Modの導入（コンテナ版・第5回の構成）</span></div>
+<pre><code><span class="in">cd ~/game/data &amp;&amp; mkdir -p mods &amp;&amp; cd mods</span>
+<span class="in">wget <var>ContentDBのDownloadリンクのURL</var></span>
+<span class="in">unzip <var>ダウンロードしたファイル</var>.zip</span>
+<span class="in">vi ../worlds/world/world.mt</span>
+<span class="out">load_mod_<var>Mod名</var> = true　← この1行を追記して有効化</span>
+<span class="in">docker compose restart game</span></code></pre>
+      </div>
+      <p>ゲーム全体（実習で使っているMinetest Game以外のゲーム）を導入する場合は、mods ではなく <code>data/games</code> に展開し、compose.yaml の <code>CLI_ARGS</code> の <code>--gameid</code> を新しいゲームのIDに切り替える（実習の構成では minetest を指定している）。ワールドはゲームごとに互換性がないため、新しいワールド名を指定して生成し直すのが安全である。</p>
+      <div class="call note"><span class="ct">Note</span><p>※ Modには依存Modや対応バージョンがある。ContentDBの各ページで依存関係（Dependencies）を確認し、導入は1つずつ・直前にバックアップを取ってから行うこと。起動しなくなったら <code>docker compose logs</code> にModのエラーが出ている。</p></div>
+
+      <nav class="pager" aria-label="前後のページ">
+        <a class="prev" href="ch10.html"><span class="pl">前へ</span><span class="pt">仮想化とコンテナ</span></a>
+        <a class="next" href="appendix.html"><span class="pl">次へ</span><span class="pt">さらに学ぶために</span></a>
+      </nav>
+    </article>
+  </div>
+
+  <footer class="foot">
+    <span>知能情報実験実習1「インフラ構築基礎実習」指導書 2026年度版　作成者：木村祐太</span>
+    <a href="../../../index.html">木村祐太 研究室サイト</a>
+  </footer>
+</main>
+<script src="../lab.js"></script>
+</body>
+</html>

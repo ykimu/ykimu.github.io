@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>第1回　OSの導入・SSH接続・Linuxの基本操作 | インフラ構築基礎実習 2026</title>
+<link rel="icon" href="../../favicon.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&family=Noto+Sans+JP:wght@400;500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="lab.css">
+</head>
+<body>
+<a class="skip" href="#main">本文へスキップ</a>
+<header class="bar">
+  <div class="wrap">
+    <a class="brand" href="index.html">インフラ構築基礎実習 <small>知能情報実験実習1 / 2026</small></a>
+    <nav class="barlinks" aria-label="実習ナビゲーション">
+      <a href="index.html">実習トップ</a>
+      <a href="ref/index.html">基礎知識</a>
+      <a href="appendix.html">付録</a>
+    </nav>
+  </div>
+</header>
+
+<main id="main" class="page">
+  <div class="hero">
+    <p class="eyebrow">DAY 01</p>
+    <h1>OSの導入・SSH接続・Linuxの基本操作</h1>
+    <p class="lead">OS導入、SSH接続、Linuxの基本操作、テキストエディタ</p>
+    <div class="meta"><span><b>所要時間</b> 180分</span> <span><b>補足資料</b> <a href="ref/ch01.html">第1章</a>・<a href="ref/ch02.html">第2章</a>・<a href="ref/ch03.html">第3章</a>・<a href="ref/ch04.html">第4章</a></span></div>
+  </div>
+
+  <div class="layout">
+    <aside class="toc" aria-label="このページの目次">
+      <p class="toc-head">このページ</p>
+      <ol></ol>
+    </aside>
+    <article class="doc">
+
+      <div class="call goal"><span class="ct">本回の目標</span><p>Raspberry PiにOSを導入し、手元のPCからSSHで遠隔操作できるLinuxサーバを構築する。基本コマンドの演習（演習1）をすべて完了する。</p></div>
+
+      <h2 id="s1-timetable">タイムテーブル（180分）</h2>
+      <table class="tbl">
+        <thead><tr><th>時間</th><th>内容</th></tr></thead>
+        <tbody>
+          <tr><td class="num">30分</td><td>ミニ講義：Linuxとは／サーバとは／完成形のデモ</td></tr>
+          <tr><td class="num">40分</td><td>起動・初期設定（ユーザ作成・Wi-Fi・ホスト名）・SSH接続</td></tr>
+          <tr><td class="num">70分</td><td>コマンド操作演習（演習1）</td></tr>
+          <tr><td class="num">30分</td><td>viエディタ基礎と答案の提出</td></tr>
+          <tr><td class="num">10分</td><td>確認項目の達成チェック・振り返り</td></tr>
+        </tbody>
+      </table>
+
+      <h2 id="s1-1"><span class="no">1-1</span>Linuxの基礎知識</h2>
+
+      <h3 id="s1-1-a">Linuxとは</h3>
+      <p>Linuxは、当時大学生であったリーナス・トーバルズ氏らによって開発されたOS（オペレーティングシステム）である。オープンソースとして誰もが無償で入手・利用できることから広く利用されており、世界中のサーバの大半、Android、そして本実習で使うRaspberry PiのOSもLinuxをベースにしている。これから皆さんが構築するLuantiサーバも、世の中のゲームサーバやWebサービスと同じくLinuxの上で動く。</p>
+
+      <h3 id="s1-1-b">ディストリビューション</h3>
+      <p>カーネル（システムの中核）やシェル、各種ツールをまとめたパッケージをディストリビューションという。おもにRed Hat系（Red Hat Enterprise Linux、Rocky Linuxなど）とDebian系（Debian、Ubuntu、Raspberry Pi OSなど）の2系統がある。本実習で使うRaspberry Pi OSはDebian系であり、操作方法はUbuntuとほぼ共通である。</p>
+
+      <h3 id="s1-1-c">カーネル・シェル・コマンド</h3>
+      <ul>
+        <li><strong>カーネル：</strong>メモリ・プロセス・ネットワーク・ファイルシステムなど、システムの中核を管理する。</li>
+        <li><strong>シェル：</strong>カーネルと利用者を仲介するプログラム。コマンド入力を受け付けて実行する。本実習ではbashを使う。</li>
+        <li><strong>コマンド：</strong>シェルを介して実行するプログラム。数千種類あるが、日常的に使う基本コマンドは50個程度である。</li>
+      </ul>
+      <figure><img src="img/g02.png" alt="図2　コマンド実行の流れ（シェルとカーネルの関係）" width="1800" height="470"><figcaption>図2　コマンド実行の流れ（シェルとカーネルの関係）</figcaption></figure>
+
+      <h2 id="s1-2"><span class="no">1-2</span>サーバのセットアップ（起動とホスト名の設定）</h2>
+      <p>実験用のmicroSDカードには、OS（Raspberry Pi OS Lite 64-bit）だけが書き込まれている。ユーザ・Wi-Fi・ホスト名はまだ設定されていないので、モニタを接続したローカル作業で、①自分のユーザの作成、②Wi-Fiへの接続、③自分専用のホスト名の設定、④SSHサーバの有効化とタイムゾーン（日本時間）の設定、をひとつずつ自分の手で行うところから実験を始めよう。この初期設定そのものが「サーバを1台立ち上げる」最初の演習である。わからないところがあれば、遠慮なく教員・支援員の先生に聞いてほしい。</p>
+      <p>初回のみモニタをHDMIで接続して電源を入れる。初回起動では設定ウィザードが始まるので、画面の指示に従ってキーボード配列と自分のユーザ名・パスワードを設定する。続けて、そのままローカルで以下を実行しよう（終わったらモニタを外し、以降の操作はすべてBYODからのSSHで行う）。</p>
+      <div class="call note"><span class="ct">Note</span><p>※ コード枠の読み方：行頭の <code>$</code> はプロンプト（入力待ちの記号）を表し、<code>$</code> 自体は入力しない。<code>$</code> のない行はコマンドの出力例である。また、コマンド先頭の <code>sudo</code> は「管理者権限で実行する」という意味である（詳しくは<a href="day3.html">第3回</a>で学ぶ）。</p></div>
+      <div class="code">
+  <div class="code-head"><span class="code-title">初回セットアップ（ローカルで実行）</span></div>
+<pre><code><span class="cm">（ウィザード完了後、作成した自分のユーザでログインした状態から）</span>
+<span class="in">sudo raspi-config <span class="c"># ① Wi-Fiの設定</span></span>
+<span class="in">sudo raspi-config nonint do_hostname mc-<var>学籍番号</var> <span class="c"># ② ホスト名の設定（例：mc-24s1234）</span></span>
+<span class="in">sudo raspi-config nonint do_ssh 0 <span class="c"># ③ SSHサーバの有効化（既定では無効）</span></span>
+<span class="in">sudo timedatectl set-timezone Asia/Tokyo <span class="c"># ④ タイムゾーンを日本時間（JST）に設定</span></span>
+<span class="in">hostname -I <span class="c"># ⑤ IPアドレスが出ればWi-Fi接続成功</span></span>
+<span class="in">sudo reboot <span class="c"># ⑥ 再起動して設定を反映</span></span></code></pre>
+      </div>
+      <div class="call note"><span class="ct">Note</span><p>※ ホスト名は全員がユニークになるよう、必ず学籍番号を含めること。ユーザ名は英小文字で短く、パスワードは推測されにくい自分専用のもの（他サービスの使い回しは避ける）を設定する。Raspberry Pi OSはSSHサーバが既定で無効なので、③を忘れると次節でBYODから接続できない。タイムゾーンを設定しておかないと、<a href="day3.html">第3回</a>以降に読むログの時刻が日本時間とずれる。つまずいたら遠慮なく教員・支援員の先生に声をかけてほしい。</p></div>
+      <p>再起動してログインプロンプトに新しいホスト名が表示されたら、モニタを外してよい。ここから先はBYODだけで操作する。うまくいかないときは、遠慮なく教員・支援員の先生を呼んでほしい。</p>
+
+      <h2 id="s1-3"><span class="no">1-3</span>SSHでサーバに接続する</h2>
+      <p>SSH（Secure Shell）は、ネットワーク越しにサーバへ安全にログインして操作するためのプロトコルである。サーバ管理の最も基本的な手段であり、本実習ではすべての操作をSSH経由で行う。BYODのターミナル（Windowsは「ターミナル」または PowerShell、macOSは「ターミナル」）から以下を実行する。</p>
+      <div class="call note"><span class="ct">Note</span><p>※ ターミナルの開き方：Windowsはスタートボタンを右クリック→「ターミナル」（見つからなければ検索窓に <code>terminal</code> と入力）。macOSは <kbd>Cmd</kbd>+<kbd>Space</kbd> を押して「ターミナル」と検索する（アプリケーション→ユーティリティにもある）。黒い画面に文字が打てる状態になればOK。</p></div>
+      <div class="code">
+  <div class="code-head"><span class="code-title">SSH接続</span></div>
+<pre><code><span class="in">ssh <var>ユーザ名</var>@<var>ホスト名</var>.local</span>
+<span class="out">(例) ssh taro@mc-24s1234.local</span></code></pre>
+      </div>
+      <p>「ホスト名.local」はmDNSという仕組みによる名前解決で、同じネットワーク内にあるサーバのIPアドレスを知らなくても名前で見つけられる。初回接続時は「Are you sure you want to continue connecting?」と聞かれるので <code>yes</code> と入力する。これは接続先が本物かを確認するSSHの安全機構である。パスワードを入力してプロンプト（ユーザ名@ホスト名:~ $）が表示されたら接続成功である。本来はfingerprintを事前に照合してから <code>yes</code> と答えるのが正式な手順である。また、2回目以降の接続で英語の警告（REMOTE HOST IDENTIFICATION HAS CHANGED）が出たときは、そのまま進めず教員・支援員に相談すること。パスワードの入力中は画面に何も表示されないが、それが正常である（そのまま打って<kbd>Enter</kbd>）。</p>
+      <p>接続できたら、自分のサーバのIPアドレスを確認しておこう。</p>
+      <div class="code">
+  <div class="code-head"><span class="code-title">IPアドレスの確認</span></div>
+<pre><code><span class="in">hostname -I</span>
+<span class="out">10.20.30.41 ...</span>
+<span class="in">ip a <span class="c"># ネットワークインタフェースの詳細を表示</span></span></code></pre>
+      </div>
+      <div class="call note"><span class="ct">Note</span><p>※ <code>.local</code>で接続できない場合は、IPアドレスで接続する（<code>ssh ユーザ名@IPアドレス</code>）。IPアドレスはDHCPで自動的に割り当てられるため変わることがあるが、同じネットワークにいる間はほぼ変わらない。困ったときは教員・支援員に申し出ること。</p></div>
+
+      <h2 id="s1-4"><span class="no">1-4</span>ディレクトリ構造とパス</h2>
+      <p>Linuxのディレクトリはツリー状に構成される。頂点をルートディレクトリといい「/」で表す。ルート直下にはOSが用意する標準ディレクトリが並ぶ。</p>
+      <table class="tbl">
+        <thead><tr><th>ディレクトリ</th><th>役割</th></tr></thead>
+        <tbody>
+          <tr><td><code>/home</code></td><td>各ユーザのホームディレクトリ。自分の作業場所は <code>/home/ユーザ名</code></td></tr>
+          <tr><td><code>/etc</code></td><td>システムやサービスの設定ファイル。<a href="day2.html">第2回</a>以降で頻繁に使う</td></tr>
+          <tr><td><code>/var</code></td><td>ログ（<code>/var/log</code>）など、変化するデータ</td></tr>
+          <tr><td><code>/usr</code></td><td>ユーザが利用するプログラムやライブラリ</td></tr>
+          <tr><td><code>/tmp</code></td><td>一時ファイル。再起動で消える</td></tr>
+        </tbody>
+      </table>
+      <p>パスには2種類ある。<strong>絶対パス</strong>はルートから辿る道順（例：<code>/home/taro/quest/map.txt</code>）、<strong>相対パス</strong>は現在いるディレクトリ（カレントディレクトリ）から辿る道順（例：<code>quest/map.txt</code>）である。「<code>.</code>」はカレントディレクトリ、「<code>..</code>」は1つ上のディレクトリ、「<code>~</code>」は自分のホームディレクトリを表す。</p>
+      <figure><img src="img/g03.png" alt="図3　ディレクトリツリーと絶対パス・相対パス" width="1800" height="800"><figcaption>図3　ディレクトリツリーと絶対パス・相対パス</figcaption></figure>
+
+      <h2 id="s1-5"><span class="no">1-5</span>基本コマンド</h2>
+      <p>演習に取り組む前に、基本コマンドを確認する。まずは以下を実際に打って動きを確かめること。</p>
+      <div class="scroll">
+      <table class="tbl">
+        <thead><tr><th>コマンド</th><th>役割</th></tr></thead>
+        <tbody>
+          <tr><td><code>pwd</code></td><td>現在のディレクトリのパスを表示</td></tr>
+          <tr><td><code>ls</code>（<code>ls -l</code>、<code>ls -a</code>）</td><td>ディレクトリの内容を表示（<code>-l</code>：詳細、<code>-a</code>：隠しファイルも表示）</td></tr>
+          <tr><td><code>cd ディレクトリ</code></td><td>ディレクトリを移動（<code>cd</code> のみでホームに戻る）</td></tr>
+          <tr><td><code>mkdir ディレクトリ</code></td><td>ディレクトリを作成</td></tr>
+          <tr><td><code>touch ファイル</code></td><td>空のファイルを作成</td></tr>
+          <tr><td><code>cp コピー元 コピー先</code></td><td>ファイルやディレクトリ（<code>-r</code>）をコピー</td></tr>
+          <tr><td><code>mv 移動元 移動先</code></td><td>移動または名前の変更</td></tr>
+          <tr><td><code>rm ファイル</code></td><td>ファイルを削除（<code>-r</code>：ディレクトリごと削除。取り消し不可、慎重に！）</td></tr>
+          <tr><td><code>cat ファイル</code></td><td>ファイルの内容を表示</td></tr>
+          <tr><td><code>less ファイル</code></td><td>ページ送りで表示（<kbd>q</kbd>で終了、<code>/文字列</code> で検索）</td></tr>
+          <tr><td><code>head / tail ファイル</code></td><td>先頭／末尾を表示（<code>tail -f</code> でリアルタイム監視。<a href="day3.html">第3回</a>で活躍）</td></tr>
+          <tr><td><code>find パス -name 名前</code></td><td>ファイルを検索</td></tr>
+          <tr><td><code>grep 文字列 ファイル</code></td><td>文字列を含む行を検索（<code>-r</code>：ディレクトリ以下を再帰的に検索）</td></tr>
+          <tr><td><code>wc -l ファイル</code></td><td>行数を数える</td></tr>
+        </tbody>
+      </table>
+      </div>
+
+      <h3 id="s1-5-a">シェルの便利機能</h3>
+      <ul>
+        <li><strong>タブ補完：</strong>入力途中で<kbd>Tab</kbd>キーを押すと、コマンド名やファイル名が自動補完される。2回押すと候補一覧が表示される。長いファイル名は補完を使って正確に入力するとよい。</li>
+        <li><strong>コマンド履歴：</strong><kbd>↑</kbd>キーで過去のコマンドを呼び出せる。<kbd>Ctrl</kbd>+<kbd>R</kbd>で履歴を検索できる。</li>
+        <li><strong>パイプ「<code>|</code>」：</strong>コマンドの出力を次のコマンドの入力につなぐ。例：<code>ls | wc -l</code>（ファイル数を数える）。</li>
+        <li><strong>リダイレクト「<code>&gt;</code>」「<code>&gt;&gt;</code>」：</strong>コマンドの出力をファイルに書き出す（<code>&gt;</code>：上書き、<code>&gt;&gt;</code>：追記）。例：<code>ls -l &gt; list.txt</code>。</li>
+      </ul>
+      <figure><img src="img/g04.png" alt="図4　パイプとリダイレクトの仕組み" width="1800" height="560"><figcaption>図4　パイプとリダイレクトの仕組み</figcaption></figure>
+
+      <h2 id="s1-6"><span class="no">1-6</span>演習1：基本コマンドによるファイル探索</h2>
+      <p>教員が用意した演習用ファイルをサーバにダウンロードして展開すると、入り組んだディレクトリ群が現れる。基本コマンドを使って以下の問いに答えよう。答えは次の<a href="#s1-7">1-7節</a>の方法で答案ファイルに記録する。</p>
+      <div class="code">
+  <div class="code-head"><span class="code-title">演習ファイルの取得</span></div>
+<pre><code><span class="in">cd</span>
+<span class="in">wget http://<var>（当日指示するURL）</var>/quest.tar.gz <span class="c"># URLから取得</span></span>
+<span class="in">tar xzf quest.tar.gz <span class="c"># 圧縮ファイルを展開（詳細は第4回）</span></span>
+<span class="in">cd quest</span>
+<span class="in">cat README.txt <span class="c"># 演習の説明を読む</span></span></code></pre>
+      </div>
+      <div class="scroll">
+      <table class="tbl">
+        <thead><tr><th>問</th><th>問題</th><th>ヒント</th></tr></thead>
+        <tbody>
+          <tr><td>Q1</td><td><code>quest</code> ディレクトリの直下に、通常の方法では見えないファイルが1つ隠されている。その名前を答えよ</td><td><code>ls -a</code></td></tr>
+          <tr><td>Q2</td><td>ディレクトリ群のどこかに <code>treasure</code> という名前のディレクトリがある。その絶対パスを答えよ</td><td><code>find</code></td></tr>
+          <tr><td>Q3</td><td><code>mine</code> ディレクトリには1000個のファイルがある。「diamond」という文字列を含むファイルはどれか</td><td><code>grep -r</code></td></tr>
+          <tr><td>Q4</td><td><code>library/log.txt</code> は何行あるか</td><td><code>wc -l</code></td></tr>
+          <tr><td>Q5</td><td><code>library/log.txt</code> に「ERROR」は何回出現するか</td><td><code>grep -c</code></td></tr>
+          <tr><td>Q6</td><td><code>library/log.txt</code> の最後の5行に書かれている文字列を答えよ</td><td><code>tail</code></td></tr>
+          <tr><td>Q7</td><td><code>gate/key.txt</code> を <code>treasure</code> ディレクトリの中にコピーしよう（コピーできたことを <code>ls</code> で確認）</td><td><code>cp</code></td></tr>
+        </tbody>
+      </table>
+      </div>
+
+      <h2 id="s1-7"><span class="no">1-7</span>viエディタと答案の提出</h2>
+      <p>サーバの設定変更は「設定ファイル（テキストファイル）の編集」で行うことが多い。UNIX系OSに標準搭載されているviエディタ（Vim）は独特の操作体系だが、どのサーバにも必ず入っているため、基本操作は必ず身につける必要がある。本実習でも今後毎回使う。ただし、Raspberry Pi OS Liteに標準で入っているのは最小構成のvim-tinyであり、vimtutorが無く、入力モード中に矢印キーを押すと文字化けするなど不便が多い。まず次のコマンドでフル版のVimを導入する（aptについては<a href="day2.html">第2回</a>で学ぶ）。独習には、Vim付属の公式チュートリアル vimtutor（ターミナルで <code>vimtutor ja</code>、約30分）が優れている。第2回までの宿題として各自実施しておくこと。</p>
+      <div class="code">
+  <div class="code-head"><span class="code-title">フル版Vimの導入とvimtutor</span></div>
+<pre><code><span class="in">sudo apt update &amp;&amp; sudo apt install -y vim <span class="c"># 標準のvim-tinyをフル版に置き換える</span></span>
+<span class="in">vimtutor ja <span class="c"># 公式チュートリアル（約30分。宿題）</span></span></code></pre>
+      </div>
+      <p>viには<strong>コマンドモード</strong>と<strong>入力モード</strong>がある。起動直後はコマンドモードであり、文字を入力するには <kbd>i</kbd> キーで入力モードに切り替える。<kbd>Esc</kbd>キーでコマンドモードに戻る。「今どちらのモードか」を常に意識するのがコツである。操作がおかしくなったら、<kbd>Esc</kbd>を数回押してから <code>:q!</code> で「保存せずに終了」するのが安全な脱出方法である。</p>
+      <figure><img src="img/g05.png" alt="図5　viのモード遷移" width="1800" height="610"><figcaption>図5　viのモード遷移</figcaption></figure>
+      <table class="tbl">
+        <thead><tr><th>操作</th><th>意味</th></tr></thead>
+        <tbody>
+          <tr><td><code>i</code></td><td>カーソル位置から入力モードに切り替え（画面下に -- INSERT -- と表示）</td></tr>
+          <tr><td><code>Esc</code></td><td>コマンドモードに戻る</td></tr>
+          <tr><td><code>:w</code></td><td>保存（コマンドモードで入力）</td></tr>
+          <tr><td><code>:q</code>　／　<code>:q!</code></td><td>終了　／　保存せずに強制終了</td></tr>
+          <tr><td><code>:wq</code></td><td>保存して終了</td></tr>
+          <tr><td><code>x</code>　／　<code>dd</code></td><td>1文字削除　／　1行切り取り</td></tr>
+          <tr><td><code>yy</code>　／　<code>p</code></td><td>1行コピー　／　貼り付け</td></tr>
+          <tr><td><code>/文字列</code></td><td>検索（<code>n</code>で次の候補へ）</td></tr>
+          <tr><td><code>gg</code>　／　<code>G</code></td><td>先頭行へ移動　／　最終行へ移動</td></tr>
+          <tr><td><code>ZZ</code></td><td>保存して終了（コマンドモードで大文字ZZ。<code>:wq</code> と同じ）</td></tr>
+        </tbody>
+      </table>
+      <p>それでは、演習1の答案を vi で作成しよう。</p>
+      <div class="code">
+  <div class="code-head"><span class="code-title">答案ファイルの作成</span></div>
+<pre><code><span class="in">vi ~/quest/answer.txt</span>
+<span class="cm">（iキーで入力モードにして、以下の形式で答えを記入する）</span>
+<span class="out">Q1: .hidden_chest</span>
+<span class="out">Q2: /home/taro/quest/.../treasure</span>
+<span class="out">Q3: ...</span>
+<span class="cm">（EscキーののちZZまたは:wqで保存して終了）</span></code></pre>
+      </div>
+
+      <h2 id="s1-check">確認項目</h2>
+      <p>達成したら日時・実行コマンド・結果を実験記録に残すこと。</p>
+      <ul class="check">
+        <li>BYODからSSHでサーバに接続できた（接続コマンドと自分のIPアドレスを実験記録に残す）</li>
+        <li>演習1のQ1〜Q7をすべて完了した</li>
+        <li>viで作成した答案ファイル <code>~/quest/answer.txt</code> を提出した（提出方法は当日指示）</li>
+        <li>LuantiクライアントをBYODにインストールし、起動できることを確認した（注意事項<a href="index.html#rules-5">2.5節</a>。<a href="day2.html">第2回</a>の必需品）</li>
+      </ul>
+
+      <div class="call extra"><span class="ct">発展課題（任意：早く終わった人向け）</span>
+        <ul>
+          <li>シェルをカスタマイズしてみよう。<code>~/.bashrc</code> をviで開き、末尾に <code>alias ll='ls -la'</code> を追記して <code>source ~/.bashrc</code> で反映すると、<code>ll</code> と打つだけで詳細一覧が表示される。プロンプトの表示（環境変数PS1）を変えてみるのも面白い。</li>
+          <li>環境変数を調べてみよう。<code>echo $HOME</code>、<code>echo $PATH</code>、<code>env</code> を実行し、PATHの役割を調べてみよう。「コマンドを打つと何が起こるのか」の理解が深まる。</li>
+        </ul>
+      </div>
+
+      <nav class="pager" aria-label="前後のページ">
+        <a class="prev" href="index.html"><span class="pl">前へ</span><span class="pt">実習トップ</span></a>
+        <a class="next" href="day2.html"><span class="pl">次へ</span><span class="pt">Luantiサーバの構築とサービス化</span></a>
+      </nav>
+    </article>
+  </div>
+
+  <footer class="foot">
+    <span>知能情報実験実習1「インフラ構築基礎実習」指導書 2026年度版　作成者：木村祐太</span>
+    <a href="../../index.html">木村祐太 研究室サイト</a>
+  </footer>
+</main>
+<script src="lab.js"></script>
+</body>
+</html>

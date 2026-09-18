@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>プロセスとサービス管理 | インフラ構築基礎実習 2026</title>
+<link rel="icon" href="../../../favicon.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&family=Noto+Sans+JP:wght@400;500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../lab.css">
+</head>
+<body>
+<a class="skip" href="#main">本文へスキップ</a>
+<header class="bar">
+  <div class="wrap">
+    <a class="brand" href="../index.html">インフラ構築基礎実習 <small>知能情報実験実習1 / 2026</small></a>
+    <nav class="barlinks" aria-label="実習ナビゲーション">
+      <a href="../index.html">実習トップ</a>
+      <a href="index.html" class="here">基礎知識</a>
+      <a href="../appendix.html">付録</a>
+    </nav>
+  </div>
+</header>
+
+<main id="main" class="page">
+  <div class="hero">
+    <p class="eyebrow">CHAPTER 06 / 第6章</p>
+    <h1>プロセスとサービス管理</h1>
+    <p class="lead">実行中のプログラムであるプロセスと、その頂点に立ってサービスを起動・監視し続けるsystemdの仕組みを整理する。</p>
+  </div>
+
+  <div class="layout">
+    <aside class="toc" aria-label="このページの目次">
+      <p class="toc-head">このページ</p>
+      <ol></ol>
+    </aside>
+    <article class="doc">
+
+      <h2 id="c6-1"><span class="no">6-1</span>プロセスとは</h2>
+      <p>実行中のプログラムをプロセスと呼ぶ。ストレージ上のプログラムファイル（例：<code>/usr/games/luantiserver</code>）は単なるデータだが、実行されるとメモリに読み込まれ、CPU時間を割り当てられ、一意の番号（PID：Process ID）を持つプロセスになる。同じプログラムから複数のプロセスを起動することもできる。プロセスは別のプロセスから生み出され（親プロセス・子プロセス）、システム全体で1本の家系図を成す。その頂点（PID 1）が、次に述べるsystemdである。</p>
+      <figure><img src="../img/s08.png" alt="図6-1　プログラムとプロセスの関係" width="1800" height="660"><figcaption>図6-1　プログラムとプロセスの関係</figcaption></figure>
+      <p>プロセスへの介入はシグナルという通知で行う。<code>kill</code> コマンドは名前に反して「シグナルを送る」コマンドであり、標準では「終了してください」という丁寧な依頼（SIGTERM）を送る。プログラムはこれを受けて後片付け（Luantiサーバならワールドの保存）をしてから終了する。応答しない場合の最終手段が <code>kill -9</code>（SIGKILL）で、これは後片付けの機会を与えず即座に抹消するため、データ破損のリスクがある。<code>systemctl stop</code> が安全なのは、SIGTERMを送って行儀よく終了させているからである。</p>
+
+      <h2 id="c6-2"><span class="no">6-2</span>systemdとサービス</h2>
+      <p>OSの起動時に最初に立ち上がり、システム全体のサービスを管理するのがsystemdである。サービス（常時稼働するプログラム。デーモンとも呼ぶ）の定義はユニットファイルに記述し、<code>systemctl</code>コマンドで操作する。ユニットファイルの主要な項目の意味を整理する。</p>
+      <div class="scroll">
+      <table class="tbl">
+        <thead><tr><th>設定項目</th><th>意味</th></tr></thead>
+        <tbody>
+          <tr><td><code>Description</code></td><td>サービスの説明（statusで表示される）</td></tr>
+          <tr><td><code>After=network-online.target</code></td><td>起動順序の指定。「ネットワークが使えるようになってから起動」</td></tr>
+          <tr><td><code>User</code> / <code>WorkingDirectory</code></td><td>実行ユーザと作業ディレクトリ</td></tr>
+          <tr><td><code>ExecStart</code></td><td>起動コマンド（絶対パスで書く）</td></tr>
+          <tr><td><code>Restart=on-failure</code></td><td>異常終了時に自動で再起動する</td></tr>
+          <tr><td><code>WantedBy=multi-user.target</code></td><td>「通常のサーバ稼働状態」の一員として起動する（enable時に有効になる）</td></tr>
+        </tbody>
+      </table>
+      </div>
+      <figure><img src="../img/s09.png" alt="図6-2　手動起動とサービス化の違い" width="1800" height="650"><figcaption>図6-2　手動起動とサービス化の違い</figcaption></figure>
+      <p>混同しやすいのが <code>start</code> と <code>enable</code> の違いである。<code>start</code> は「今すぐ起動する」、<code>enable</code> は「OS起動時に自動で起動するよう登録する」であり、独立した操作である。「startしたのに再起動したら動いていない」はenable忘れ、「enableしたのに今動いていない」はstart忘れ、が典型である。また、ユニットファイルを編集したら <code>daemon-reload</code> で再読み込みしなければ反映されない。この3点は実務でも頻出のつまずきポイントである。</p>
+      <p>サービスのログはjournaldが一元管理しており、<code>journalctl -u サービス名</code> で読める。<code>-e</code>（末尾へ移動）、<code>-f</code>（リアルタイム追跡）、<code>--since "10 min ago"</code>（期間指定）などのオプションを覚えておくと調査が速くなる。</p>
+
+      <h2 id="c6-3"><span class="no">6-3</span>負荷の指標を正しく読む</h2>
+      <p>load averageは「実行したい（CPU待ちの）プロセスの平均数」である。厳密にはLinuxでは、ディスクI/Oの完了を待っているプロセス（割り込み不能スリープ）も数に入るため、SDカードの遅いRaspberry Piでは、CPUに余裕があってもI/O待ちで値が上がることがある。値がCPUコア数以下なら全プロセスに即座にCPUが行き渡っており、コア数を超えると順番待ちが発生している。Raspberry Pi 400は4コアなので、load averageが4を超え続ける状態は明確な過負荷である。<code>uptime</code>が表示する3つの数字は1分・5分・15分の平均であり、「1分値だけ高い」なら一時的なスパイク、「15分値まで高い」なら慢性的な過負荷、と時間方向の傾向も読み取れる。</p>
+      <p>メモリについては、<code>free -h</code> の available（実際に使える量）を見る。Linuxは空きメモリを積極的にキャッシュ（buff/cache）に使うため、freeの値が小さくても問題ないことが多い。危険なのはスワップ（メモリが足りないときにディスクを代用する仕組み）が常用されている状態で、ディスクはメモリより桁違いに遅いため、体感速度が急激に悪化する。「サービスに使わせるメモリ」と「OSに残すメモリ」を分けて考えるのがサーバのメモリ設計の基本である。Luantiのような軽量サーバでも、Modの追加や接続人数の増加で使用量は変わるため、<code>free -h</code> による定点観測が重要になる。</p>
+
+      <h2 id="c6-4"><span class="no">6-4</span>プロセスの操作（ps・kill・ジョブ制御）</h2>
+      <p><code>ps aux</code> の出力は、USER（実行ユーザ）、PID（プロセス番号）、%CPU・%MEM（資源の使用率）、STAT（状態）、COMMAND（起動コマンド）と読む。第3回で「luantiserverがluantiユーザで動いているか」を確かめたのは、このUSER列である。プロセスへの介入は<a href="#c6-1">6.1節</a>で述べたとおりシグナルで行い、その道具が<code>kill</code>である。</p>
+      <div class="scroll">
+      <table class="tbl">
+        <thead><tr><th>操作</th><th>はたらき</th></tr></thead>
+        <tbody>
+          <tr><td><code>ps aux | grep 名前</code></td><td>プロセスを探す（<code>pgrep -f 名前</code> でPIDだけを得る方法もある）</td></tr>
+          <tr><td><code>kill PID</code></td><td>SIGTERM（終了依頼）を送る。後片付けの機会が与えられる</td></tr>
+          <tr><td><code>kill -9 PID</code></td><td>SIGKILL（即時抹消）。応答しないときの最終手段</td></tr>
+          <tr><td><kbd>Ctrl</kbd>+<kbd>C</kbd></td><td>前面で実行中のコマンドに中断（SIGINT）を送る</td></tr>
+          <tr><td><kbd>Ctrl</kbd>+<kbd>Z</kbd> → <code>bg</code> ／ <code>fg</code></td><td>一時停止して背面へ回す／前面に呼び戻す。<code>jobs</code> で一覧</td></tr>
+          <tr><td><code>コマンド &amp;</code></td><td>最初から背面（バックグラウンド）で起動する</td></tr>
+        </tbody>
+      </table>
+      </div>
+      <div class="call note"><span class="ct">Note</span><p>※ 背面のジョブもSSHを切断すると一緒に終了してしまう。「ログアウト後も動き続けるサービス」にはやはりsystemd（<a href="#c6-2">6.2節</a>）が必要である。第2回でサービス化を学んだ理由がここにある。</p></div>
+
+      <nav class="pager" aria-label="前後のページ">
+        <a class="prev" href="ch05.html"><span class="pl">前へ</span><span class="pt">ユーザ・グループとパーミッション</span></a>
+        <a class="next" href="ch07.html"><span class="pl">次へ</span><span class="pt">ネットワークの基礎</span></a>
+      </nav>
+    </article>
+  </div>
+
+  <footer class="foot">
+    <span>知能情報実験実習1「インフラ構築基礎実習」指導書 2026年度版　作成者：木村祐太</span>
+    <a href="../../../index.html">木村祐太 研究室サイト</a>
+  </footer>
+</main>
+<script src="../lab.js"></script>
+</body>
+</html>

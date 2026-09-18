@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>最終課題 | インフラ構築基礎実習 2026</title>
+<link rel="icon" href="../../favicon.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&family=Noto+Sans+JP:wght@400;500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="lab.css">
+</head>
+<body>
+<a class="skip" href="#main">本文へスキップ</a>
+<header class="bar">
+  <div class="wrap">
+    <a class="brand" href="index.html">インフラ構築基礎実習 <small>知能情報実験実習1 / 2026</small></a>
+    <nav class="barlinks" aria-label="実習ナビゲーション">
+      <a href="index.html">実習トップ</a>
+      <a href="ref/index.html">基礎知識</a>
+      <a href="appendix.html">付録</a>
+    </nav>
+  </div>
+</header>
+
+<main id="main" class="page">
+  <div class="hero">
+    <p class="eyebrow">DAY 06</p>
+    <h1>最終課題</h1>
+    <p class="lead">総合演習と技術記事の執筆・公開</p>
+    <div class="meta"><span><b>所要時間</b> 180分</span> <span><b>補足資料</b> <a href="ref/index.html">全章</a>＋<a href="ref/appendix.html">付録</a></span></div>
+  </div>
+
+  <div class="layout">
+    <aside class="toc" aria-label="このページの目次">
+      <p class="toc-head">このページ</p>
+      <ol></ol>
+    </aside>
+    <article class="doc">
+
+      <div class="call goal"><span class="ct">本回の目標</span><p>第5回までに学んだ技術を組み合わせて自分のテーマに取り組み、その手順を「第三者が読んで再現できる技術記事」にまとめて、QiitaやZenn、note等で公開する。</p></div>
+
+      <p>タイムテーブル（180分）</p>
+      <table class="tbl"><thead><tr><th>時間</th><th>内容</th></tr></thead><tbody>
+        <tr><td class="num">30分</td><td>テーマ決定と記事の構成づくり</td></tr>
+        <tr><td class="num">120分</td><td>実践（構築・検証）と記事の執筆</td></tr>
+        <tr><td class="num">30分</td><td>相互レビュー（再現性チェック）、公開・提出</td></tr>
+      </tbody></table>
+
+      <h2 id="s6-1"><span class="no">6-1</span>課題内容</h2>
+      <p>以下のテーマから1つを選び（独自テーマでもよい。その場合は事前に教員に相談すること）、そのテーマの中で「何を作るか」を自分で決めて、自分のサーバで実践し、その全過程を技術記事として執筆・公開しよう。新規性よりも、「なぜその構成にしたのか」を自分の言葉で説明できること、記事を読んだ第三者が同じ結果に到達できることを重視する。表の「方向性」はテーマの向きを示すだけであり、各テーマの進め方の例（まず動かす最小形と、そこから広げる方向）は<a href="ref/appendix.html#ca-5">補足資料の付録A.5</a>にまとめてある。テーマの難易度や種類は評価に影響しない（評価基準は<a href="#s6-5">6-5節</a>）。第5回の終了時までにテーマを決めておくこと。</p>
+      <div class="scroll">
+      <table class="tbl"><thead><tr><th>テーマ例</th><th>方向性</th></tr></thead><tbody>
+        <tr><td>Mod・ゲーム運用</td><td>遊びを拡張する。ContentDBのModやゲームを導入し、設定と運用手順（更新・バックアップを含む）を整える</td></tr>
+        <tr><td>監視の高度化</td><td>サーバの状態を見える化する。定期記録から可視化・通知へと、監視の仕組みを作り込む</td></tr>
+        <tr><td>マルチサーバ構成</td><td>複数のサーバを運用する。複数コンテナ・複数ワールドの構成と、ポート・資産の設計を整理する</td></tr>
+        <tr><td>セキュリティ強化</td><td>攻撃を想定して堅くする。認証・検知・ファイアウォールの設計と、その検証を行う</td></tr>
+        <tr><td>Mod自作（Lua）</td><td>自分で機能を作る。Luaでサーバの振る舞いを追加し、自分のサーバに組み込んで動作検証する</td></tr>
+        <tr><td>バックアップの高度化</td><td>データを守る仕組みを完成させる。別マシンへの複製、無停止化、復旧の自動検証へ</td></tr>
+        <tr><td>構成管理・自動化</td><td>構築手順をコードにする。Ansible等で第2〜3回の手作業を再現可能にし、別のPiで実証する</td></tr>
+        <tr><td>資産のバージョン管理</td><td>構成資産をGitで管理する。履歴からの復元と、変更を配備する仕組みを作る</td></tr>
+      </tbody></table>
+      </div>
+
+      <h2 id="s6-2"><span class="no">6-2</span>技術記事の要件</h2>
+      <p>対象読者は「来年この実習を受ける後輩」を想定する。つまり、Linuxの基本操作はできるが、あなたのテーマについては何も知らない読者である。世の中の優れた技術記事も、まさにこの読者設定で書かれている。構成の目安は次のとおり。</p>
+      <div class="scroll">
+      <table class="tbl"><thead><tr><th>構成要素</th><th>内容</th></tr></thead><tbody>
+        <tr><td>タイトル・概要</td><td>何を作る記事か、完成すると何ができるか、使用環境（機材・OS・バージョン）</td></tr>
+        <tr><td>構成図</td><td>作るものの全体像（本指導書の図のような構成図を自分で描く）</td></tr>
+        <tr><td>手順</td><td>実行したコマンドとその結果（出力例）、設定ファイルの内容、画面のスクリーンショット</td></tr>
+        <tr><td>つまずきと解決</td><td>実際に遭遇したエラーと、その原因・解決方法（記事の価値が最も出る部分）</td></tr>
+        <tr><td>まとめ・参考文献</td><td>できたこと、次にやりたいこと、参照した一次情報のリンク</td></tr>
+      </tbody></table>
+      </div>
+      <p>執筆が一段落したら、公開前に近くの人と記事を交換し、記事だけを頼りに手順を再現できるかを確認し合うこと（相互レビュー）。「書いた本人には自明でも、読者には伝わらない」箇所は、この再現テストであぶり出される。指摘は実験記録に残し、記事に反映してから公開する。</p>
+
+      <h2 id="s6-3"><span class="no">6-3</span>公開時の注意（必読）</h2>
+      <ul>
+        <li>学内ネットワークの情報（Wi-FiのSSID・パスワード、実際のIPアドレス）や個人情報（学籍番号を含むホスト名等）は記載しない。記事中の値は <code>example.local</code> や <code>192.0.2.1</code> のような例示用の値に置き換えること。</li>
+        <li>パスワード・秘密鍵は絶対に掲載しない。スクリーンショットへの映り込み（ターミナルの履歴、ブラウザのタブ等）にも注意する。</li>
+        <li>他者の文章・画像を利用する場合は引用の要件（出典明記・主従関係）を守る。Luantiのスクリーンショットは自分で撮影したものを使い、出典として公式サイト（luanti.org）を記しておくと丁寧である。</li>
+        <li>掲載前チェック：ログ中のプレイヤー名、SSHの接続元表示、公開鍵末尾のコメント（ユーザ名@ホスト名）、crontabやパスの中のユーザ名も伏せる対象である。本文とスクリーンショットの両方を最終確認すること。</li>
+        <li>自分のサーバの防御構成の詳細（開放ポートの一覧、fail2ban等の検知設定の詳細）や、他の学生のサーバに関する情報は記事に書かないこと。</li>
+        <li>インターネットへの公開に抵抗がある場合は、限定公開（URLを知る人のみ閲覧可）や非公開の下書き提出でもよい。公開範囲は評価に影響しない。</li>
+      </ul>
+
+      <h2 id="s6-4"><span class="no">6-4</span>提出物</h2>
+      <ul>
+        <li><strong>技術記事：</strong>公開した記事のURL（限定公開・下書きの場合はその旨と閲覧手段）。</li>
+        <li><strong>実験記録：</strong>第1回からの全確認項目の達成記録と、障害対応・相互レビューの記録。</li>
+      </ul>
+
+      <h2 id="s6-5"><span class="no">6-5</span>評価基準（教員評価60点＋学生相互評価40点）</h2>
+      <div class="scroll">
+      <table class="tbl"><thead><tr><th>軸</th><th>配点</th><th>評価の内容</th></tr></thead><tbody>
+        <tr><td>教員評価（チェックリスト）</td><td class="num">60点</td><td>構成の技術的妥当性24点、運用の工夫18点、再現性・明瞭さ18点。動作検証の証跡・構成図・設計判断の理由・実験記録の達成状況など、証跡の有無で機械的に判定する</td></tr>
+        <tr><td>学生相互評価（アンケート）</td><td class="num">40点</td><td>割り当てられた4名の記事を読者として評価する（4段階×6問＋良かった点・改善点の自由記述）。受けた評価は評価者の甘辛を補正したうえで換算する</td></tr>
+      </tbody></table>
+      </div>
+      <p>学生相互評価は、提出後1週間以内にアンケートフォームで行う。評価対象の4名は提出後に通知し、評価者名は著者には公開しない。期限までに完了しなかった場合は、1件につき2点を自分の総合点から減点する（最大8点）。自由記述が空欄または無内容の回答は未実施として扱う。</p>
+      <p>このほか、生成AIの利用ルール（<a href="#s6-6">6-6</a>）に違反した場合は0点とし、公開時の注意（<a href="#s6-3">6-3</a>）に反する重大な情報漏れがあった場合は修正が確認されるまで成績を保留する。チェックリストの判定項目とアンケート設問の全文は、別紙「最終課題 評価要領」として公開する。</p>
+
+      <h2 id="s6-6"><span class="no">6-6</span>最終課題における生成AIの利用ルール</h2>
+      <ul>
+        <li>調査・エラー解決・技術の理解のために生成AIを利用することは自由である（むしろ推奨する）。</li>
+        <li>記事本文を生成AIの出力のまま公開・提出することは禁止する。必ず自分で実践した記録に基づき、自分の言葉で書くこと。</li>
+      </ul>
+
+      <h2 id="s6-7"><span class="no">6-7</span>取り組みのアドバイス</h2>
+      <ul>
+        <li><strong>小さく作って、動かしてから広げる。</strong>最初から完成形を目指さず、「30分で動く最小の姿」を決めてまずそこまで作る。動くものがあれば記事は書けるが、動かない大作は記事にならない。拡張は動いた後でよい。</li>
+        <li><strong>テーマは第6回より前に決めておく。</strong><a href="ref/appendix.html#ca-5">補足資料の付録A.5</a>を眺めて当日までにテーマを選び、必要なパッケージやModの情報を調べておくと、180分をまるごと実践と執筆に使える。第5回終了時が決めどきである。このため、テーマの決定と投稿先アカウントの作成は、<a href="day5.html">第5回</a>の確認項目にもなっている。</li>
+        <li><strong>実践と執筆を分けない。</strong>「全部作ってから書く」は失敗パターンである。コマンドを実行するたびに、その場でコマンド・出力・スクリーンショットを記事の下書きに貼っていく。後からの再現ややり直しは倍の時間がかかる。</li>
+        <li><strong>第5回までの資産を使い回す。</strong><code>backup.sh</code>、<code>compose.yaml</code>、ユニットファイル、実験記録。これまでに作ったものはすべて最終課題の部品である。ゼロから作る必要はない。</li>
+        <li><strong>挑戦の前にバックアップ。</strong>新しいことを試す直前に必ずバックアップを取る。「いつでも動く状態に戻せる」という安心があれば、大胆に実験できる（<a href="day4.html">第4回</a>で学んだとおりである）。</li>
+        <li><strong>30分悩んだら方針を変える。</strong>同じエラーに30分以上詰まったら、質問するか、別の方法に切り替えるか、そのつまずき自体を記事の題材にする。「解決できなかったが原因をここまで切り分けた」という記録にも価値がある。</li>
+        <li><strong>よい記事を真似る（コピーはしない）。</strong>QiitaやZennで構築系の記事をいくつか読み、「どんな構成だと読みやすいか」を観察してから書き始めるとよい。冒頭に完成形を見せる、コマンドと結果をセットで載せる、など優れた記事には共通の型がある。</li>
+      </ul>
+
+      <nav class="pager" aria-label="前後のページ">
+        <a class="prev" href="day5.html"><span class="pl">前へ</span><span class="pt">Dockerによる再構築とWeb監視ページ</span></a>
+        <a class="next" href="appendix.html"><span class="pl">次へ</span><span class="pt">付録：チートシート・FAQ・参考資料</span></a>
+      </nav>
+    </article>
+  </div>
+
+  <footer class="foot">
+    <span>知能情報実験実習1「インフラ構築基礎実習」指導書 2026年度版　作成者：木村祐太</span>
+    <a href="../../index.html">木村祐太 研究室サイト</a>
+  </footer>
+</main>
+<script src="lab.js"></script>
+</body>
+</html>

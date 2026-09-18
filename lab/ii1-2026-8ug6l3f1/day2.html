@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>第2回　Luantiサーバの構築とサービス化 | インフラ構築基礎実習 2026</title>
+<link rel="icon" href="../../favicon.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&family=Noto+Sans+JP:wght@400;500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="lab.css">
+</head>
+<body>
+<a class="skip" href="#main">本文へスキップ</a>
+<header class="bar">
+  <div class="wrap">
+    <a class="brand" href="index.html">インフラ構築基礎実習 <small>知能情報実験実習1 / 2026</small></a>
+    <nav class="barlinks" aria-label="実習ナビゲーション">
+      <a href="index.html">実習トップ</a>
+      <a href="ref/index.html">基礎知識</a>
+      <a href="appendix.html">付録</a>
+    </nav>
+  </div>
+</header>
+
+<main id="main" class="page">
+  <div class="hero">
+    <p class="eyebrow">DAY 02</p>
+    <h1>Luantiサーバの構築とサービス化</h1>
+    <p class="lead">パッケージ管理・systemd・ネットワーク</p>
+    <div class="meta"><span><b>所要時間</b> 180分</span> <span><b>補足資料</b> <a href="ref/ch06.html">第6章 プロセスとサービス管理</a>・<a href="ref/ch07.html">第7章 ネットワークの基礎</a>・<a href="ref/ch11.html">第11章 Luantiサーバの技術</a></span></div>
+  </div>
+
+  <div class="layout">
+    <aside class="toc" aria-label="このページの目次">
+      <p class="toc-head">このページ</p>
+      <ol></ol>
+    </aside>
+    <article class="doc">
+
+      <div class="call goal"><span class="ct">本回の目標</span><p>Luanti（ゲームサーバ）を導入し、OS起動時に自動で立ち上がるサービスとして稼働させる。自分のサーバに接続できること、他の学生のサーバと相互に接続できることを確認する。</p></div>
+
+      <h2 id="s2-time">タイムテーブル（180分）</h2>
+      <table class="tbl">
+        <thead><tr><th>時間</th><th>内容</th></tr></thead>
+        <tbody>
+          <tr><td class="num">20分</td><td>ミニ講義：パッケージ管理／プロセスとサービス／ポートとファイアウォール</td></tr>
+          <tr><td class="num">30分</td><td>aptによるシステム更新とLuantiのインストール</td></tr>
+          <tr><td class="num">40分</td><td>初回起動・ワールド生成・luanti.confの設定</td></tr>
+          <tr><td class="num">40分</td><td>systemdによるサービス化、ファイアウォール設定</td></tr>
+          <tr><td class="num">30分</td><td>相互接続演習：自分と他の学生のサーバへの接続確認</td></tr>
+          <tr><td class="num">20分</td><td>確認項目の達成チェック</td></tr>
+        </tbody>
+      </table>
+
+      <h2 id="s2-1"><span class="no">2-1</span>パッケージ管理（apt）</h2>
+
+      <div class="code">
+        <div class="code-head"><span class="code-title">システムの更新</span></div>
+<pre><code><span class="in">sudo apt update <span class="c"># パッケージ情報（カタログ）の更新</span></span>
+<span class="in">sudo apt upgrade -y <span class="c"># インストール済みパッケージの更新</span></span></code></pre>
+      </div>
+
+      <p>Linuxでは、ソフトウェアを「パッケージ」として管理する。Debian系では<code>apt</code>コマンドを使う（Red Hat系では<code>dnf</code>/<code>yum</code>）。依存関係の解決や更新をまとめて面倒みてくれるのがパッケージマネージャの利点である。コマンドの先頭に付けた<strong>sudo</strong>は、「管理者（root）権限でコマンドを実行する」ためのコマンドである。システムに変更を加える操作にはsudoが必要になる。詳しくは<a href="day3.html">第3回</a>で学ぶ。</p>
+
+      <h2 id="s2-2"><span class="no">2-2</span>Luantiのインストール</h2>
+
+      <p>本実習の題材であるLuantiは、エンジン本体（サーバプログラム）と、その上で動くゲーム（本実習ではMinetest Game）が分かれている構成が特徴である。両方をaptで一度にインストールできる。ただし、パッケージ名にはOSのバージョンによって新名（luanti系）と旧名（minetest系）の2パターンがある。まず自分の環境がどちらかを確かめよう。</p>
+
+      <div class="code">
+        <div class="code-head"><span class="code-title">パターンの判定</span></div>
+<pre><code><span class="in">apt-cache search luanti</span>
+<span class="out">（luanti-server などが表示されれば「新名パターン」）</span>
+<span class="out">（何も表示されなければ「旧名パターン」。下の表で読み替える）</span></code></pre>
+      </div>
+
+      <div class="scroll">
+      <table class="tbl">
+        <thead><tr><th>項目</th><th>新名パターン（luanti系）</th><th>旧名パターン（minetest系）</th></tr></thead>
+        <tbody>
+          <tr><td>インストール</td><td><code>luanti-server luanti-game-minetest</code></td><td><code>minetest-server minetest-data</code></td></tr>
+          <tr><td>サーバ本体</td><td><code>/usr/games/luantiserver</code></td><td><code>/usr/games/minetestserver</code></td></tr>
+          <tr><td>ゲームの場所</td><td><code>/usr/share/luanti/games/minetest_game</code></td><td><code>/usr/share/games/minetest/games/minetest_game</code></td></tr>
+          <tr><td>gameid</td><td><code>minetest</code></td><td><code>minetest_game</code></td></tr>
+        </tbody>
+      </table>
+      </div>
+
+      <div class="code">
+        <div class="code-head"><span class="code-title">Luantiのインストール（新名パターンの例）</span></div>
+<pre><code><span class="in">sudo apt install -y luanti-server luanti-game-minetest</span>
+<span class="in">which luantiserver</span>
+<span class="out">/usr/games/luantiserver <span class="c"># サーバ本体の場所を確認しメモしておく</span></span></code></pre>
+      </div>
+
+      <div class="call note"><span class="ct">Note</span><p>※ 本資料のコマンドはすべて新名パターンで表記する。旧名パターンの人は上の表のとおり読み替えること。自分の環境の4つの値（パッケージ名・本体の場所・ゲームの場所・gameid）を実験記録にメモしておくと、この後のユニットファイル作成や<a href="day5.html">第5回</a>のコンテナ化で迷わない。また、パッケージ付属のサービス（luanti-server）は導入直後から自動で動き始め、30000番ポートを先に取ってしまう。次節に進む前に必ず <code>sudo systemctl disable --now luanti-server</code>（旧名なら <code>minetest-server</code>）で停止・無効化しておくこと。なお <code>/usr/games/luantiserver</code> の実体は本体を呼び出す短いシェルスクリプトで、Debian独自の既定（ログの出力先など）を付け足している。次節の <code>--logfile ""</code> はそれを打ち消すための指定である。</p></div>
+
+      <h2 id="s2-3"><span class="no">2-3</span>初回起動とワールドの生成</h2>
+
+      <p>サーバ用のディレクトリを作り、まずは手動でサーバを起動してみる。<code>--world</code> はワールドの保存先、<code>--gameid</code> は動かすゲーム、<code>--config</code> は設定ファイルの指定である。なお <code>--gameid</code> には対応表の値を使う（旧名パターンなら <code>minetest_game</code>）。<code>--logfile ""</code> は、Debianのパッケージが既定でログを <code>/var/log/luanti/</code> に書こうとして権限エラー（Permission denied）で止まるのを避けるための指定で、ファイルへのログを切り、画面（サービス化後は journald）にだけ出す。この指定はユニットファイルの <code>ExecStart</code> にも同じく付ける。</p>
+
+      <div class="code">
+        <div class="code-head"><span class="code-title">初回起動</span></div>
+<pre><code><span class="in">mkdir ~/server &amp;&amp; cd ~/server</span>
+<span class="in">touch luanti.conf <span class="c"># 設定ファイル（今は空でよい）</span></span>
+<span class="in">luantiserver --world ~/server/world --gameid minetest --config ~/server/luanti.conf --logfile ""</span>
+<span class="out">...</span>
+<span class="out">ACTION[Main]: World at [/home/<var>ユーザ名</var>/server/world]</span>
+<span class="out">ACTION[Main]: Server for gameid="minetest" listening on 0.0.0.0:30000.</span></code></pre>
+      </div>
+
+      <p>「listening on 0.0.0.0:30000」と表示されれば、サーバは30000番ポート（UDP）で接続を待ち受けている。初回起動でworldディレクトリ（ワールドデータ）が自動生成される。<kbd>Ctrl</kbd>+<kbd>C</kbd>で停止し（ワールドは保存される）、<code>ls</code> でworldディレクトリができていることを確認しよう。プロンプトが返ってこないのはフリーズではなく、サーバが前面で動き続けている正常な状態である。</p>
+
+      <h2 id="s2-4"><span class="no">2-4</span>luanti.confの設定</h2>
+
+      <p>サーバの設定は <code>luanti.conf</code> ファイルで管理される。viで開き、以下の内容を記述しよう（viの実戦投入である）。注意：この設定ファイルは行頭の<code>#</code>だけがコメント扱いで、行の途中に<code>#</code>を書くと値の一部として読まれてしまう。</p>
+
+      <div class="code file">
+        <div class="code-head"><span class="code-title">~/server/luanti.conf</span></div>
+<pre><code><span class="in"># サーバ名（自由に付けよう）と、接続時に表示されるメッセージ</span>
+<span class="in">server_name = ○○のサーバ</span>
+<span class="in">motd = ようこそ！</span>
+<span class="in"># 最大同時接続数</span>
+<span class="in">max_users = 5</span>
+<span class="in"># 管理者となるプレイヤー名（第3回で使う）</span>
+<span class="in">name = <var>自分のプレイヤー名</var></span>
+<span class="in"># 空パスワードでの登録を禁止／TNTを有効化（第3回の負荷実験で使う）</span>
+<span class="in">disallow_empty_password = true</span>
+<span class="in">enable_tnt = true</span></code></pre>
+      </div>
+
+      <div class="call note"><span class="ct">Note</span><p>※ 設定変更のたびにサーバの再起動が必要である。「設定ファイルを編集→サービスを再起動→動作確認」はサーバ運用の基本サイクルであり、この後何度も繰り返すことになる。</p></div>
+
+      <h2 id="s2-5"><span class="no">2-5</span>systemdによるサービス化</h2>
+
+      <p>ここまでの起動方法には問題がある。SSHを切断するとサーバも止まってしまい、Raspberry Piを再起動したら手動で立ち上げ直さなければならない。世の中のサーバは「OSが起動すれば勝手にサービスが立ち上がり、落ちたら自動で復旧する」ように構成されている。それを担うのがsystemdであり、サービスの定義は「ユニットファイル」に記述する。</p>
+
+      <figure><img src="img/g06.png" alt="図6　手動起動とサービス化の違い" width="1800" height="650"><figcaption>図6　手動起動とサービス化の違い</figcaption></figure>
+
+      <p>viでユニットファイルを作成する（<code>/etc</code> 以下はシステムの設定領域なのでsudoが必要）。</p>
+
+      <div class="code">
+        <div class="code-head"><span class="code-title">ユニットファイルの作成</span></div>
+<pre><code><span class="in">sudo vi /etc/systemd/system/luanti.service</span></code></pre>
+      </div>
+
+      <div class="code file">
+        <div class="code-head"><span class="code-title">/etc/systemd/system/luanti.service</span></div>
+<pre><code><span class="in">[Unit]</span>
+<span class="in">Description=Luanti Game Server</span>
+<span class="in">After=network-online.target</span>
+<span class="in">Wants=network-online.target</span>
+<span class="in"></span>
+<span class="in">[Service]</span>
+<span class="in">User=<var>ユーザ名</var></span>
+<span class="in">WorkingDirectory=/home/<var>ユーザ名</var>/server</span>
+<span class="in">ExecStart=/usr/games/luantiserver --world /home/<var>ユーザ名</var>/server/world --gameid minetest --config /home/<var>ユーザ名</var>/server/luanti.conf --logfile ""</span>
+<span class="in">Restart=on-failure</span>
+<span class="in"></span>
+<span class="in">[Install]</span>
+<span class="in">WantedBy=multi-user.target</span></code></pre>
+      </div>
+
+      <p>記述内容の意味：<code>User</code> はサービスを実行するユーザ、<code>WorkingDirectory</code> は実行時のディレクトリ、<code>ExecStart</code> が起動コマンド（2-3節で手動実行したものと同じ。絶対パスで書く）、<code>Restart=on-failure</code> は異常終了時の自動再起動、<code>WantedBy=multi-user.target</code> が「OS起動時に立ち上げる」指定である。作成したら、systemdに読み込ませてサービスを起動する。なお、<strong><code>User</code>・<code>WorkingDirectory</code>・<code>ExecStart</code> の3行に書かれた「ユーザ名」は、すべて自分のユーザ名に置き換えること</strong>。<code>ExecStart</code> は1行で書く。ユニットファイルも行中コメントは書けない（コメントは行頭のみ）。</p>
+
+      <div class="code">
+        <div class="code-head"><span class="code-title">サービスの起動と自動起動の設定</span></div>
+<pre><code><span class="in">sudo systemctl daemon-reload <span class="c"># ユニットファイルの読み込み</span></span>
+<span class="in">sudo systemctl start luanti <span class="c"># サービスの起動</span></span>
+<span class="in">sudo systemctl status luanti <span class="c"># 状態確認</span></span>
+<span class="out">● luanti.service - Luanti Game Server</span>
+<span class="out">Active: active (running) ... <span class="c"># ←これが出れば稼働中</span></span>
+<span class="in">sudo systemctl enable luanti <span class="c"># OS起動時の自動起動を有効化</span></span></code></pre>
+      </div>
+
+      <p>本当に自動起動するか、疑って確かめるのがエンジニアである。<code>sudo reboot</code> でRaspberry Piを再起動し、SSHで接続し直して <code>systemctl status luanti</code> が active (running) になることを確認しよう。</p>
+
+      <h2 id="s2-6"><span class="no">2-6</span>ファイアウォールの設定</h2>
+
+      <p>サーバは<strong>ポート</strong>という番号付きの窓口で通信を受け付ける。SSHは22番（TCP）、Luantiは30000番（UDP）を使う。ファイアウォールは「どの窓口を開けるか」を制御する仕組みであり、Ubuntu/Raspberry Pi OSでは<code>ufw</code>コマンドで設定する。</p>
+
+      <figure><img src="img/g07.png" alt="図7　ポートとファイアウォール（ufw）の働き" width="1800" height="660"><figcaption>図7　ポートとファイアウォール（ufw）の働き</figcaption></figure>
+
+      <div class="code">
+        <div class="code-head"><span class="code-title">ファイアウォールの設定</span></div>
+<pre><code><span class="in">sudo apt install -y ufw</span>
+<span class="in">sudo ufw allow 22/tcp <span class="c"># SSH（★これを忘れて有効化すると自分が締め出される！）</span></span>
+<span class="in">sudo ufw allow 30000/udp <span class="c"># Luanti（UDPである点に注意）</span></span>
+<span class="in">sudo ufw enable <span class="c"># ファイアウォールの有効化</span></span>
+<span class="in">sudo ufw status</span>
+<span class="out">Status: active</span>
+<span class="out">22/tcp ALLOW Anywhere</span>
+<span class="out">30000/udp ALLOW Anywhere</span></code></pre>
+      </div>
+
+      <div class="call warn"><span class="ct">注意</span><p>※ 順番が重要である。SSHの許可（22/tcp）より先に <code>enable</code> すると、自分のSSH接続まで遮断され、サーバに入れなくなる。実務でも定番の事故なので、この順番を体で覚えること。万一締め出されたときは、モニタとキーボードを接続してローカルログインし、<code>sudo ufw disable</code> で一旦無効化してから設定をやり直す（救済用モニタを教卓に用意している）。</p></div>
+
+      <h2 id="s2-7"><span class="no">2-7</span>演習：サーバの相互接続</h2>
+
+      <p>いよいよ自分のワールドに入る。クライアント側（BYOD）の手順は次のとおりである。</p>
+
+      <table class="tbl">
+        <thead><tr><th>手順</th><th>操作</th></tr></thead>
+        <tbody>
+          <tr><td>①</td><td>Luantiクライアントを起動する（注意事項2.5節でインストール済み）</td></tr>
+          <tr><td>②</td><td>「ゲームに参加」（Join Game）タブを開く</td></tr>
+          <tr><td>③</td><td>アドレスに自分のサーバのホスト名（mc-学籍番号.local）またはIPアドレス、ポートに 30000 を入力する</td></tr>
+          <tr><td>④</td><td>名前とパスワードを入力し、初回は「登録」（Register）ボタンを押す（2回目以降は「ログイン」）。登録時に入力した名前とパスワードで、このサーバ専用のアカウントが作られる</td></tr>
+          <tr><td>⑤</td><td>ワールドに入れれば構築成功。luanti.confのmotdが表示されることも確認する</td></tr>
+        </tbody>
+      </table>
+
+      <div class="call note"><span class="ct">Note</span><p>※ 重要：<code>luanti.conf</code> の <code>name</code> に書いた名前（管理者）は、最初にその名前で登録した人のものになる。サーバを公開したら、真っ先に自分自身がその名前で登録すること。また、ここで使うパスワードは他のサービスのものを使い回さないこと。長さは12文字以上を目安に、推測されにくいものを使う。</p></div>
+
+      <figure><img src="img/g08.png" alt="図8　Luantiクライアントの接続画面（模式図。番号は上の手順表に対応）" width="1860" height="1000"><figcaption>図8　Luantiクライアントの接続画面（模式図。番号は上の手順表に対応）</figcaption></figure>
+
+      <p>自分のサーバに入れたら、近くの人とホスト名（またはIPアドレス）を交換し、お互いのサーバを行き来してみよう。接続できない場合は、<code>ping</code> で相手のサーバに届くか、<code>systemctl status</code> で相手のサーバが稼働しているか、<code>ufw status</code> でポートが開いているか、を順に確認する。この「切り分け」の手順こそネットワークトラブル対応の基本である。近くに相手がいない場合は、教員のデモサーバを相手にしてよい（アドレスは当日掲示する）。</p>
+
+      <div class="code">
+        <div class="code-head"><span class="code-title">疎通確認</span></div>
+<pre><code><span class="in">ping mc-24s5678.local <span class="c"># 相手のサーバに届くか確認（Ctrl+Cで停止）</span></span></code></pre>
+      </div>
+
+      <h2 id="s2-check">確認項目</h2>
+      <p>達成したら日時・実行コマンド・結果を実験記録に残すこと。</p>
+      <ul class="check">
+        <li>systemctl status luanti で active (running) を確認した</li>
+        <li>sudo reboot 後もサービスが自動起動することを確認した</li>
+        <li>自分のワールドに接続できた／他の学生が自分のサーバに接続できた</li>
+      </ul>
+
+      <h2 id="s2-extra">発展課題</h2>
+      <div class="call extra"><span class="ct">発展課題（任意）</span>
+        <ul>
+          <li>luanti.confの他の設定項目を調べてみよう。<code>creative_mode = true</code>（クリエイティブモード）、<code>fixed_map_seed</code>（地形の種）、<code>time_speed</code>（時間の速さ）などを変えると、まったく違うサーバになる。</li>
+          <li><code>server_description</code> を設定して、接続画面での見え方を工夫してみよう。</li>
+          <li><code>journalctl -u luanti</code> でサービスのログを眺めてみよう（<a href="day3.html">第3回</a>で本格的に扱う）。</li>
+        </ul>
+      </div>
+
+      <nav class="pager" aria-label="前後のページ">
+        <a class="prev" href="day1.html"><span class="pl">前へ</span><span class="pt">OSの導入・SSH接続・Linuxの基本操作</span></a>
+        <a class="next" href="day3.html"><span class="pl">次へ</span><span class="pt">ユーザ管理・パーミッション・監視・ログ</span></a>
+      </nav>
+    </article>
+  </div>
+
+  <footer class="foot">
+    <span>知能情報実験実習1「インフラ構築基礎実習」指導書 2026年度版　作成者：木村祐太</span>
+    <a href="../../index.html">木村祐太 研究室サイト</a>
+  </footer>
+</main>
+<script src="lab.js"></script>
+</body>
+</html>

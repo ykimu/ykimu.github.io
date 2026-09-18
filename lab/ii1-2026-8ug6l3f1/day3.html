@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>第3回　ユーザ管理・パーミッション・監視・ログ | インフラ構築基礎実習 2026</title>
+<link rel="icon" href="../../favicon.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&family=Noto+Sans+JP:wght@400;500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="lab.css">
+</head>
+<body>
+<a class="skip" href="#main">本文へスキップ</a>
+<header class="bar">
+  <div class="wrap">
+    <a class="brand" href="index.html">インフラ構築基礎実習 <small>知能情報実験実習1 / 2026</small></a>
+    <nav class="barlinks" aria-label="実習ナビゲーション">
+      <a href="index.html">実習トップ</a>
+      <a href="ref/index.html">基礎知識</a>
+      <a href="appendix.html">付録</a>
+    </nav>
+  </div>
+</header>
+
+<main id="main" class="page">
+  <div class="hero">
+    <p class="eyebrow">DAY 03</p>
+    <h1>ユーザ管理・パーミッション・監視・ログ</h1>
+    <p class="lead">サーバを非root運用に切り替え、権限・監視・ログの基本を身に付ける。</p>
+    <div class="meta"><span><b>所要時間</b> 180分</span> <span><b>補足資料</b> <a href="ref/ch05.html">第5章 ユーザ・グループとパーミッション</a>・<a href="ref/ch06.html">第6章 プロセスとサービス管理</a>・<a href="ref/ch07.html">第7章 ネットワークの基礎（7.6 SSH）</a>・<a href="ref/ch08.html">第8章 サーバ運用の基礎</a></span></div>
+  </div>
+
+  <div class="layout">
+    <aside class="toc" aria-label="このページの目次">
+      <p class="toc-head">このページ</p>
+      <ol></ol>
+    </aside>
+    <article class="doc">
+
+      <div class="call goal"><span class="ct">本回の目標</span><p>サーバを非root運用に切り替え、プレイヤーを権限（privs）とBANで管理する。監視コマンドとログからサーバの状態を読み取れるようになる。</p></div>
+
+      <h2 id="s3-time">タイムテーブル（180分）</h2>
+      <table class="tbl">
+        <thead><tr><th>時間</th><th>内容</th></tr></thead>
+        <tbody>
+          <tr><td class="num">20分</td><td>ミニ講義：なぜ運用が必要か（ゲームサーバの障害・乗っ取り事例）</td></tr>
+          <tr><td class="num">35分</td><td>パーミッションとユーザ管理、サービスの非root化</td></tr>
+          <tr><td class="num">30分</td><td>Luantiのプレイヤー管理（アカウント・権限・BAN）</td></tr>
+          <tr><td class="num">35分</td><td>負荷実験と監視コマンド</td></tr>
+          <tr><td class="num">35分</td><td>ログ解析演習</td></tr>
+          <tr><td class="num">15分</td><td>SSHの公開鍵認証への切替</td></tr>
+          <tr><td class="num">10分</td><td>確認項目の達成チェック</td></tr>
+        </tbody>
+      </table>
+
+      <h2 id="s3-1"><span class="no">3-1</span>パーミッション</h2>
+
+      <p>Linuxのすべてのファイル・ディレクトリには「誰が読めるか・書けるか・実行できるか」というアクセス権（パーミッション）が設定されている。<code>ls -l</code> で確認できる。</p>
+
+      <div class="code">
+        <div class="code-head"><span class="code-title">パーミッションの確認</span></div>
+<pre><code><span class="in">ls -l ~/server/luanti.conf</span>
+<span class="out">-rw-r--r-- 1 taro taro 214 ... luanti.conf</span>
+<span class="out">↑          ↑    ↑</span>
+<span class="out">アクセス権  所有者 所有グループ</span></code></pre>
+      </div>
+
+      <p>先頭の1文字は種類（-：ファイル、d：ディレクトリ、l：シンボリックリンク）を表し、続く9文字は3文字ずつ「<strong>所有者</strong>」「<strong>所有グループ</strong>」「<strong>その他ユーザ</strong>」のアクセス権を表す。<code>r</code> は読み取り、<code>w</code> は書き込み、<code>x</code> は実行（ディレクトリの場合は中に入れること）を意味する。上の例なら「所有者taroは読み書き可、それ以外は読み取りのみ可」である。</p>
+
+      <figure><img src="img/g09.png" alt="図9　パーミッション表記の読み方" width="1800" height="590"><figcaption>図9　パーミッション表記の読み方</figcaption></figure>
+
+      <h3 id="s3-1-a">パーミッションの変更（chmod）</h3>
+
+      <p>変更には<code>chmod</code>コマンドを使う。記号による指定と数値による指定がある。数値は r=4、w=2、x=1 の合計で表す（rwx=7、r-x=5、r--=4）。</p>
+
+      <div class="code">
+        <div class="code-head"><span class="code-title">chmodの使い方</span></div>
+<pre><code><span class="in">chmod u+x script.sh <span class="c"># 所有者(u)に実行権(x)を追加</span></span>
+<span class="in">chmod o-w file.txt <span class="c"># その他ユーザ(o)から書き込み権(w)を削除</span></span>
+<span class="in">chmod 755 script.sh <span class="c"># rwxr-xr-x に設定（数値指定）</span></span>
+<span class="in">chmod 600 secret.txt <span class="c"># rw------- 所有者以外は読めない</span></span></code></pre>
+      </div>
+
+      <h3 id="s3-1-b">所有者の変更（chown）</h3>
+
+      <div class="code">
+        <div class="code-head"><span class="code-title">chownの使い方</span></div>
+<pre><code><span class="in">sudo chown <var>ユーザ名</var> ファイル名 <span class="c"># 所有者の変更</span></span>
+<span class="in">sudo chown -R <var>ユーザ名</var>:グループ名 ディレクトリ <span class="c"># 所有者とグループを再帰的に変更</span></span></code></pre>
+      </div>
+
+      <h2 id="s3-2"><span class="no">3-2</span>ユーザ管理とsudo</h2>
+
+      <p>Linuxには全能の管理者ユーザ<strong>root</strong>と、一般ユーザが存在する。すべての作業をrootで行うと、操作ミス一発でシステムを破壊しかねず、乗っ取られたときの被害も甚大になる。そこで、通常の作業は一般ユーザで行い、管理者権限が必要なときだけ<strong>sudo</strong>で一時的に権限を借りる。これが現代のサーバ運用の基本原則（最小権限の原則）である。</p>
+
+      <table class="tbl">
+        <thead><tr><th>コマンド</th><th>役割</th></tr></thead>
+        <tbody>
+          <tr><td><code>sudo adduser ユーザ名</code></td><td>ユーザの新規作成（対話形式でパスワード等を設定）</td></tr>
+          <tr><td><code>sudo usermod -aG グループ ユーザ</code></td><td>ユーザをグループに追加（例：sudoグループ）</td></tr>
+          <tr><td><code>sudo userdel ユーザ名</code></td><td>ユーザの削除</td></tr>
+          <tr><td><code>su - ユーザ名</code></td><td>別ユーザに切り替え</td></tr>
+          <tr><td><code>whoami</code>　／　<code>id</code></td><td>現在のユーザ名／所属グループの確認</td></tr>
+        </tbody>
+      </table>
+
+      <h2 id="s3-3"><span class="no">3-3</span>演習：サービスの非root化</h2>
+
+      <p>現在、Luantiサーバは自分のユーザ（sudo権限を持つ）で動いている。もしサーバソフトに脆弱性があって乗っ取られたら、攻撃者は自分の権限をそのまま手に入れる。そこで、sudo権限を持たない専用ユーザ「luanti」を作り、サービスをそのユーザで動かすように変更する。これは実務のサーバ構築で必ず行う定番の作業である。<code>adduser</code> を実行すると英語の対話（パスワード設定、氏名などの質問）が始まる。氏名等は<kbd>Enter</kbd>連打で空欄のままでよい。ここで設定したluantiユーザのパスワードは<a href="day4.html">第4回</a>以降 <code>su - luanti</code> のたびに使うので、必ず記録しておくこと。なお、本来は「サーバを公開する前に非root化まで済ませる」のが望ましい順序である。実習では学習の順番の都合で公開が先になっているが、実務で自分のサーバを立てるときは「公開は最小権限にしてから」を原則にしよう。</p>
+
+      <div class="code">
+        <div class="code-head"><span class="code-title">専用ユーザの作成とデータ移動</span></div>
+<pre><code><span class="in">sudo adduser luanti <span class="c"># 専用ユーザの作成</span></span>
+<span class="in">sudo systemctl stop luanti <span class="c"># サービスを一旦停止</span></span>
+<span class="in">sudo mv ~/server /home/luanti/server <span class="c"># データの引っ越し</span></span>
+<span class="in">sudo chown -R luanti:luanti /home/luanti/server <span class="c"># 所有者の変更</span></span></code></pre>
+      </div>
+
+      <p>次に、ユニットファイルの <code>[Service]</code> セクションを書き換える。変更するのは <code>User</code>、<code>WorkingDirectory</code>、<code>ExecStart</code> 内の2か所のパスに加え、<code>Environment=HOME=/home/luanti</code> の1行を追加する点である。Luantiは実行ユーザのホームディレクトリを参照して動くため、この行がないと <code>User=luanti</code> に変えても起動に失敗することがある。書き換え後の <code>[Service]</code> セクションは次のとおり（<code>[Unit]</code> と <code>[Install]</code> は第2回のままでよい）。</p>
+
+      <div class="code file">
+        <div class="code-head"><span class="code-title">/etc/systemd/system/luanti.service の [Service] セクション（変更後）</span></div>
+<pre><code><span class="in">[Service]</span>
+<span class="in">User=luanti</span>
+<span class="in">Environment=HOME=/home/luanti</span>
+<span class="in">WorkingDirectory=/home/luanti/server</span>
+<span class="in">ExecStart=/usr/games/luantiserver --world /home/luanti/server/world --gameid minetest --config /home/luanti/server/luanti.conf --logfile ""</span>
+<span class="in">Restart=on-failure</span></code></pre>
+      </div>
+
+      <div class="code">
+        <div class="code-head"><span class="code-title">ユニットファイルの変更と再起動</span></div>
+<pre><code><span class="in">sudo vi /etc/systemd/system/luanti.service</span>
+<span class="cm">（上の [Service] セクションのとおりに書き換える）</span>
+<span class="in">sudo systemctl daemon-reload <span class="c"># 変更の読み込み（忘れがち！）</span></span>
+<span class="in">sudo systemctl start luanti</span>
+<span class="in">sudo systemctl status luanti <span class="c"># active (running) を確認</span></span></code></pre>
+      </div>
+
+      <p><code>ps aux | grep luanti</code> を実行し、luantiserverプロセスの実行ユーザがluantiになっていることを確認しよう。</p>
+
+      <div class="call note"><span class="ct">Note</span><p>※ うまく起動しない場合は <code>journalctl -u luanti -e</code> でエラーを読む。たいていは <code>chown</code> のし忘れ（Permission denied）か、パスの書き間違いである。エラーメッセージは敵ではなく、原因を教えてくれる味方である。教員・支援員を呼ぶ前のセルフチェック3点：①<code>whoami</code>（今どのユーザか）②<code>pwd</code>（どこにいるか）③直前のコマンドの誤字。<code>su</code> で入れ子になったら <code>exit</code> で戻れる。</p></div>
+
+      <h2 id="s3-4"><span class="no">3-4</span>Luantiのプレイヤー管理</h2>
+
+      <p>Linuxのユーザ管理と同じ発想が、Luantiサーバの中にもある。Luantiのアカウントはサーバごとに独立しており、プレイヤーが初回接続時に入力した名前とパスワードがそのサーバに登録される（登録内容はワールド内の <code>auth.sqlite</code> にパスワードのハッシュとして保存される。ハッシュについては<a href="ref/ch05.html">補足資料第5章</a>を参照）。</p>
+
+      <p>プレイヤーができることは<strong>privs（権限）</strong>で制御される。<code>luanti.conf</code> の <code>name</code> に指定したプレイヤー（＝あなた）は管理者としてすべての権限を持ち、ゲーム内のチャット（<kbd>T</kbd>キー）から管理コマンドを実行できる。Linuxのユーザ管理と対比して理解するとよい：アカウント登録⇔adduser、privs⇔グループと権限、/grant・/revoke⇔usermod（権限の付け外し）、/ban⇔特定の接続元（IPアドレス）からの接続拒否。</p>
+
+      <div class="code file">
+        <div class="code-head"><span class="code-title">管理コマンド（ゲーム内チャットで実行）</span></div>
+<pre><code><span class="in">/status <span class="c"># サーバの状態と接続者一覧</span></span>
+<span class="in">/privs <var>プレイヤー名</var> <span class="c"># 権限の確認</span></span>
+<span class="in">/grant <var>プレイヤー名</var> fly <span class="c"># 権限の付与（例：飛行）</span></span>
+<span class="in">/revoke <var>プレイヤー名</var> fly <span class="c"># 権限の剥奪</span></span>
+<span class="in">/ban <var>プレイヤー名</var> <span class="c"># 接続中のそのプレイヤーのIPアドレスを出入り禁止</span></span>
+<span class="in">/unban <var>プレイヤー名</var> <span class="c"># 解除</span></span>
+<span class="in">/grant <var>プレイヤー名</var> creative <span class="c"># クリエイティブ権限の付与（負荷実験で使う）</span></span></code></pre>
+      </div>
+
+      <div class="call note"><span class="ct">Note</span><p>※ アイテムを直接入手する <code>/giveme</code> は、本実習の環境では権限が登録されておらず（unknown privilege）使えない。TNTなどのアイテムが必要なときは、上のように <code>creative</code> 権限を与えてクリエイティブモードのインベントリから取り出す。サーバ全体をクリエイティブにしたい場合は <code>luanti.conf</code> に <code>creative_mode = true</code> を追記してサービスを再起動してもよい。</p></div>
+
+      <p>近くの人に自分のサーバへ接続してもらい、①一般プレイヤーには管理コマンドが実行できないこと、②<code>/grant</code> で権限を与えると実行できるようになること、③相手が接続中に <code>/ban</code> すると、その端末から再接続できなくなること（<code>/ban</code> は名前ではなくIPアドレスを禁止するため、接続中のプレイヤーにしか使えない。解除は <code>/unban</code>）を確認しよう。相手がいない場合は教員・支援員が接続役を務めるので申し出ること。</p>
+
+      <div class="call note"><span class="ct">Note</span><p>※ セキュリティ上の要点が2つある。第一に、管理者名の先取り登録：<code>name</code> に指定した名前は「最初にその名前で登録した人」のものになるため、サーバ公開後は真っ先に自分で登録する。第二に、パスワードの使い回し禁止：サーバ管理者は<code>auth.sqlite</code>内のハッシュにアクセスできるため、プレイヤーとして他人のサーバに登録するパスワードは、他のサービスと共用しない使い捨てのものにする。</p></div>
+
+      <h2 id="s3-5"><span class="no">3-5</span>サーバの監視</h2>
+
+      <p>サーバ管理者は「今サーバが健康かどうか」を数値で把握する。おもな確認項目は、負荷（load average）、メモリ、ディスク、プロセスの4つである。</p>
+
+      <div class="scroll">
+      <table class="tbl">
+        <thead><tr><th>コマンド</th><th>確認できること</th></tr></thead>
+        <tbody>
+          <tr><td><code>uptime</code></td><td>稼働時間とload average（1分・5分・15分の平均負荷）。CPUコア数（Pi 400は4）を下回っていれば正常</td></tr>
+          <tr><td><code>free -h</code></td><td>メモリの使用状況。スワップが常用されていたらメモリ不足</td></tr>
+          <tr><td><code>df -h</code></td><td>ディスクの使用状況。Use%が100%に近づくと危険</td></tr>
+          <tr><td><code>ps aux</code></td><td>実行中のプロセス一覧。<code>ps aux | grep luanti</code> でLuantiサーバを確認</td></tr>
+          <tr><td><code>top</code>（<code>htop</code>）</td><td>上記をリアルタイムに一括表示。qで終了</td></tr>
+          <tr><td><code>vcgencmd measure_temp</code></td><td>SoC温度（Raspberry Pi固有）。80℃を超えると性能が制限される。videoグループのユーザのみ実行できる（初回セットアップで作った自分のユーザは所属済み）</td></tr>
+        </tbody>
+      </table>
+      </div>
+
+      <h3 id="s3-5-a">演習：負荷実験</h3>
+
+      <p>BYODで<code>top</code>を表示したまま、ワールドに接続して次の実験を行い、数値の変化を実験記録に残そう。負荷をかける対象は必ず自分のサーバのみとする。他人のサーバへの負荷試験は、相手の明示的な同意がある場合に限る。</p>
+
+      <ul>
+        <li>平常時：接続者0人のときのload average・メモリ使用量・温度を記録する。</li>
+        <li>接続時：自分＋近くの人がワールドに入り、未踏の地へ全力で移動する（新しい地形＝マップブロックの生成はCPU負荷が高い処理である）。load averageの変化を観察する。</li>
+        <li>高負荷時：管理者のプレイヤーで <code>/grant 自分のプレイヤー名 creative</code> を実行し、インベントリ（<kbd>I</kbd>キー）のクリエイティブ欄からTNTを取り出して、大量に設置して起爆する。load averageが上がる様子と、ゲーム内の動きが遅れる（ラグ）との関係を体感する。</li>
+      </ul>
+
+      <p>この実験から「なぜmax_users=5に設定したのか」「サーバの性能設計とは何か」を自分の言葉で説明できるようになるはずである。</p>
+
+      <h2 id="s3-6"><span class="no">3-6</span>演習：ログ解析</h2>
+
+      <p>サーバに起きたことはすべてログに記録されている。ログを読む力は、障害対応・セキュリティ調査の生命線である。Luantiサーバのログは、systemdのログ基盤（journald）に集約されており、<code>journalctl</code>で読める。</p>
+
+      <div class="code">
+        <div class="code-head"><span class="code-title">サービスログの読み方</span></div>
+<pre><code><span class="in">journalctl -u luanti -e <span class="c"># 末尾（最新）へ移動して表示</span></span>
+<span class="in">journalctl -u luanti -f <span class="c"># リアルタイム監視（Ctrl+Cで終了）</span></span>
+<span class="in">journalctl -u luanti --since today <span class="c"># 今日の分だけ表示</span></span></code></pre>
+      </div>
+
+      <p>ログには、プレイヤーの入退室、チャット、管理コマンドの実行などが時刻付きで記録される。<code>grep</code>と組み合わせて必要な情報を抽出する。</p>
+
+      <div class="code">
+        <div class="code-head"><span class="code-title">ログの抽出</span></div>
+<pre><code><span class="in">journalctl -u luanti | grep "joins game" <span class="c"># 入室の記録</span></span>
+<span class="in">journalctl -u luanti | grep "leaves game" <span class="c"># 退室の記録</span></span>
+<span class="in">journalctl -u luanti | grep -c "joins game" <span class="c"># 入室回数を数える</span></span>
+<span class="in">journalctl -u luanti | grep CHAT <span class="c"># チャットの記録</span></span></code></pre>
+      </div>
+
+      <p><strong>課題：近くの人と互いのサーバで入退室・チャット・死亡などの操作を行い合ったのち、ログだけを証拠として「何時何分に誰が入り、何をして、何時に出て行ったか」を時系列で再構成した調査報告書（テキストファイルで数行程度）を作成しよう。報告書は当日の提出は不要で、実験記録に含めて最終課題として提出する。</strong></p>
+
+      <h2 id="s3-7"><span class="no">3-7</span>SSHを公開鍵認証に切り替える</h2>
+
+      <p>ここまでの接続はパスワード認証だった。パスワードは総当たり攻撃に狙われやすく、実務のサーバでは、パスワードの代わりに鍵ペアで本人確認を行う公開鍵認証が標準である（仕組みは<a href="ref/ch07.html">補足資料7.6節</a>）。本実習でもここで切り替えよう。鍵ペアはBYOD側で作り、公開鍵だけをサーバに登録する。秘密鍵はBYODから出さない。</p>
+
+      <div class="code">
+        <div class="code-head"><span class="code-title">公開鍵認証への切替（BYODのターミナルで実行）</span></div>
+<pre><code><span class="in">ssh-keygen -t ed25519 <span class="c"># 鍵ペアの作成（質問はEnterのままでよい）</span></span>
+<span class="in">ssh-copy-id <var>ユーザ名</var>@mc-<var>学籍番号</var>.local <span class="c"># 公開鍵をサーバへ登録</span></span>
+<span class="in">ssh <var>ユーザ名</var>@mc-<var>学籍番号</var>.local</span>
+<span class="out">→ パスワードを聞かれずにログインできれば成功</span></code></pre>
+      </div>
+
+      <div class="call note"><span class="ct">Note</span><p>※ 秘密鍵（<code>id_ed25519</code>）は絶対に他人に渡さない・記事に貼らない。Windowsのターミナルに <code>ssh-copy-id</code> がない場合は、<code>type $env:USERPROFILE\.ssh\id_ed25519.pub | ssh ユーザ名@ホスト名 "mkdir -p ~/.ssh &amp;&amp; chmod 700 ~/.ssh &amp;&amp; cat &gt;&gt; ~/.ssh/authorized_keys &amp;&amp; chmod 600 ~/.ssh/authorized_keys"</code> で登録できる（サーバ側に <code>~/.ssh</code> がまだ無い場合に備えて <code>mkdir</code> と <code>chmod</code> を含めている）。パスワード認証そのものの無効化（<code>PasswordAuthentication no</code>）は、設定を誤ると締め出されるため最終課題の発展テーマとする。</p></div>
+
+      <h2 id="s3-check">確認項目</h2>
+      <p>達成したら日時・実行コマンド・結果を実験記録に残すこと。</p>
+      <ul class="check">
+        <li>luantiserverプロセスが専用ユーザluantiで動いていることを ps aux で確認した</li>
+        <li>権限管理が機能している（一般プレイヤーは管理コマンドを実行できない）ことを確認した</li>
+        <li>負荷実験の記録（平常時・高負荷時のload average等）を実験記録に残した</li>
+        <li>ログ調査報告書を作成し、実験記録に含めた</li>
+        <li>公開鍵認証（パスワード入力なし）でSSHログインできることを確認した</li>
+      </ul>
+
+      <h2 id="s3-extra">発展課題</h2>
+      <div class="call extra"><span class="ct">発展課題（任意）</span>
+        <ul>
+          <li>luanti.confの負荷関連の設定（<code>max_block_send_distance</code>、<code>active_block_range</code> など）を調べて、性能と負荷のバランスを調整してみよう。</li>
+          <li>ワンライナーに挑戦：<code>journalctl</code>と<code>grep</code>、<code>sort</code>、<code>uniq</code>を組み合わせ、「プレイヤーごとの入室回数ランキング」を1行のコマンドで出力してみよう。</li>
+          <li><code>last</code>コマンドと<code>journalctl _COMM=sshd</code> で、自分のサーバへのSSHログイン履歴を調べてみよう。</li>
+        </ul>
+      </div>
+
+      <nav class="pager" aria-label="前後のページ">
+        <a class="prev" href="day2.html"><span class="pl">前へ</span><span class="pt">Luantiサーバの構築とサービス化</span></a>
+        <a class="next" href="day4.html"><span class="pl">次へ</span><span class="pt">バックアップと自動化</span></a>
+      </nav>
+    </article>
+  </div>
+
+  <footer class="foot">
+    <span>知能情報実験実習1「インフラ構築基礎実習」指導書 2026年度版　作成者：木村祐太</span>
+    <a href="../../index.html">木村祐太 研究室サイト</a>
+  </footer>
+</main>
+<script src="lab.js"></script>
+</body>
+</html>

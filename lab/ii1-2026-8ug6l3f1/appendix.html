@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>付録 | インフラ構築基礎実習 2026</title>
+<link rel="icon" href="../../favicon.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&family=Noto+Sans+JP:wght@400;500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="lab.css">
+</head>
+<body>
+<a class="skip" href="#main">本文へスキップ</a>
+<header class="bar">
+  <div class="wrap">
+    <a class="brand" href="index.html">インフラ構築基礎実習 <small>知能情報実験実習1 / 2026</small></a>
+    <nav class="barlinks" aria-label="実習ナビゲーション">
+      <a href="index.html">実習トップ</a>
+      <a href="ref/index.html">基礎知識</a>
+      <a href="appendix.html" class="here">付録</a>
+    </nav>
+  </div>
+</header>
+
+<main id="main" class="page">
+  <div class="hero">
+    <p class="eyebrow">APPENDIX</p>
+    <h1>付録</h1>
+    <p class="lead">コマンドチートシート、トラブルシューティングFAQ、参考資料</p>
+  </div>
+
+  <div class="layout">
+    <aside class="toc" aria-label="このページの目次">
+      <p class="toc-head">このページ</p>
+      <ol></ol>
+    </aside>
+    <article class="doc">
+
+      <h2 id="a"><span class="no">付録A</span>コマンドチートシート</h2>
+      <div class="scroll">
+      <table class="tbl"><thead><tr><th>分類</th><th>コマンド</th><th>覚え方・備考</th></tr></thead><tbody>
+        <tr><td>ファイル操作</td><td><code>ls / cd / pwd / mkdir / rm / cp / mv / find / touch</code></td><td>第1回。<code>rm -rf</code> は最終確認してから</td></tr>
+        <tr><td>テキスト</td><td><code>cat / less / head / tail / grep / wc / vi</code></td><td><code>tail -f</code> と <code>grep</code> はログ調査の相棒</td></tr>
+        <tr><td>パーミッション</td><td><code>chmod / chown / ls -l</code></td><td>r=4, w=2, x=1</td></tr>
+        <tr><td>ユーザ</td><td><code>adduser / usermod / userdel / su / sudo / whoami</code></td><td>通常は一般ユーザ、必要時のみsudo</td></tr>
+        <tr><td>サービス</td><td><code>systemctl start/stop/restart/enable/status / journalctl -u</code></td><td>変更後は <code>daemon-reload</code></td></tr>
+        <tr><td>監視</td><td><code>top / uptime / free -h / df -h / ps aux / vcgencmd measure_temp</code></td><td>load average はコア数と比較</td></tr>
+        <tr><td>ネットワーク</td><td><code>ip a / hostname -I / ping / ss -tlnp</code>（UDPは <code>-ulnp</code>）/ <code>ufw</code></td><td>開けるポートは必要最小限</td></tr>
+        <tr><td>アーカイブ</td><td><code>tar czf / tar xzf / tar tzf</code></td><td>c=作成, x=展開, t=一覧</td></tr>
+        <tr><td>スケジュール</td><td><code>crontab -e / crontab -l / timedatectl</code></td><td>分 時 日 月 曜日</td></tr>
+        <tr><td>Docker</td><td><code>docker ps / logs / exec / compose up -d / compose down</code></td><td>データはボリュームに置く</td></tr>
+      </tbody></table>
+      </div>
+
+      <h2 id="b"><span class="no">付録B</span>トラブルシューティングFAQ</h2>
+      <div class="scroll">
+      <table class="tbl"><thead><tr><th>症状</th><th>確認すること</th></tr></thead><tbody>
+        <tr><td>SSHで接続できない</td><td>電源とWi-Fi設定を確認。<code>.local</code> がだめならIPアドレスで接続。<code>ping</code> が通るか確認</td></tr>
+        <tr><td>サービスが起動しない</td><td><code>journalctl -u luanti -e</code> でエラーを読む。パスの誤字、<code>chown</code>忘れ、<code>daemon-reload</code>忘れが三大原因</td></tr>
+        <tr><td>ゲームから接続できない</td><td><code>systemctl status</code>（稼働しているか）→ <code>ss -ulnp</code>（30000を待ち受けているか）→ <code>ufw status</code>（開いているか）の順に切り分け。LuantiはUDPなので <code>ss</code> は <code>-u</code> で見る</td></tr>
+        <tr><td>サーバが重い（ラグい）</td><td><code>top</code> で load average を確認。接続人数を減らす、負荷設定（<code>active_block_range</code>等）を見直す。<code>vcgencmd measure_temp</code> で熱も疑う</td></tr>
+        <tr><td>ディスクがいっぱい</td><td><code>df -h</code> で確認 → <code>du -sh ~/backup</code> 等で犯人を探す。バックアップの世代数（KEEP）を見直す</td></tr>
+        <tr><td>Dockerコンテナがすぐ落ちる</td><td><code>docker ps -a</code> で状態確認 → <code>docker compose logs</code> でエラーを読む。ボリュームの所有者（PUID/PGID）の不一致も定番の原因</td></tr>
+        <tr><td>機材の不調（SDカード・Pi本体・BYOD）</td><td>自分で分解・復旧を試みず、教員・支援員に申し出て予備機材と交換する。SDカード破損時は新しいSDで起動し、直近のバックアップから復旧する（<a href="day4.html">第4回</a>の手順）</td></tr>
+        <tr><td>初回起動で Failed to open &quot;/var/log/luanti/default.log&quot;</td><td>Debianパッケージの既定のログ先に一般ユーザは書けない。コマンドと <code>ExecStart</code> に <code>--logfile &quot;&quot;</code> を付けているか確認（<a href="day2.html">2-3</a>）</td></tr>
+        <tr><td>起動時に Failed to setup server ports（CivetServer）</td><td>30000番の取り合い。付属サービス <code>luanti-server</code> が動いている（<a href="day2.html">2-2</a>）か、自分の <code>luanti</code> サービスが動いたまま手で起動している。<code>sudo ss -tulnp | grep 30000</code> で持ち主を確認し、止めてから起動する</td></tr>
+      </tbody></table>
+      </div>
+
+      <h2 id="c"><span class="no">付録C</span>参考資料</h2>
+      <ul>
+        <li>Luanti公式ドキュメント（<a href="https://docs.luanti.org/">https://docs.luanti.org/</a>）：サーバ設定・運用の一次情報</li>
+        <li>linuxserver/luanti ドキュメント（<a href="https://docs.linuxserver.io/images/docker-luanti/">https://docs.linuxserver.io/images/docker-luanti/</a>）：コンテナ版の設定一覧</li>
+        <li>ContentDB（<a href="https://content.luanti.org/">https://content.luanti.org/</a>）：ゲーム・Modの公式配信サイト。最終課題のテーマ探しに</li>
+        <li>Raspberry Pi公式ドキュメント（<a href="https://www.raspberrypi.com/documentation/">https://www.raspberrypi.com/documentation/</a>）：Imager・OS設定の一次情報</li>
+      </ul>
+
+      <nav class="pager" aria-label="前後のページ">
+        <a class="prev" href="day6.html"><span class="pl">前へ</span><span class="pt">最終課題：総合演習と技術記事の執筆・公開</span></a>
+        <a class="next" href="ref/index.html"><span class="pl">次へ</span><span class="pt">基礎知識：本資料について</span></a>
+      </nav>
+    </article>
+  </div>
+
+  <footer class="foot">
+    <span>知能情報実験実習1「インフラ構築基礎実習」指導書 2026年度版　作成者：木村祐太</span>
+    <a href="../../index.html">木村祐太 研究室サイト</a>
+  </footer>
+</main>
+<script src="lab.js"></script>
+</body>
+</html>

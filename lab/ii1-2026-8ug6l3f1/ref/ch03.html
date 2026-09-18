@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>第3章 シェルとコマンドライン | インフラ構築基礎実習 2026</title>
+<link rel="icon" href="../../../favicon.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&family=Noto+Sans+JP:wght@400;500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../lab.css">
+</head>
+<body>
+<a class="skip" href="#main">本文へスキップ</a>
+<header class="bar">
+  <div class="wrap">
+    <a class="brand" href="../index.html">インフラ構築基礎実習 <small>知能情報実験実習1 / 2026</small></a>
+    <nav class="barlinks" aria-label="実習ナビゲーション">
+      <a href="../index.html">実習トップ</a>
+      <a href="../ref/index.html" class="here">基礎知識</a>
+      <a href="../appendix.html">付録</a>
+    </nav>
+  </div>
+</header>
+
+<main id="main" class="page">
+  <div class="hero">
+    <p class="eyebrow">CHAPTER 03 / 第3章</p>
+    <h1>シェルとコマンドライン</h1>
+    <p class="lead">コンピュータの操作様式にはGUIとCLIがあり、サーバ管理で今も主役であるCLIと、その裏で働くシェルの仕組みを学ぶ。</p>
+  </div>
+
+  <div class="layout">
+    <aside class="toc" aria-label="このページの目次">
+      <p class="toc-head">このページ</p>
+      <ol></ol>
+    </aside>
+    <article class="doc">
+
+      <h2 id="c3-1"><span class="no">3-1</span>CLIとGUI</h2>
+      <p>コンピュータの操作方法には、マウスで画面上の部品を操作するGUI（Graphical User Interface）と、文字でコマンドを打ち込むCLI（Command Line Interface）の2つの様式がある。日常の利用にはGUIが便利だが、サーバ管理の世界では今もCLIが主役である。理由は3つある。第一に、操作を正確に記録・伝達できる。「この辺をこうクリックして……」ではなく、コマンドをそのまま書き写せば、誰でも寸分違わず同じ操作を再現できる（本資料や指導書のコード枠がまさにそれである）。第二に、自動化できる。CLIの操作はそのままシェルスクリプトやcronに載せられるが、GUIのクリック操作の自動化は難しい。第三に、軽い。GUIは描画のために多くのメモリとCPUを消費する。実習で使ったRaspberry Pi OS「Lite」はGUIを持たない構成であり、節約した資源をすべてLuantiサーバに回せている。</p>
+      <p>CLIの入口となる画面をターミナル（端末）と呼ぶ。そしてターミナルの向こう側で、入力されたコマンドを解釈・実行しているプログラムがシェルである。両者はセットで語られることが多いが、ターミナルは「窓口」、シェルは「通訳」と役割が異なる。</p>
+
+      <h2 id="c3-2"><span class="no">3-2</span>シェルは何をしているのか</h2>
+      <p>ターミナルに <code>ls -l /home</code> と入力して<kbd>Enter</kbd>を押したとき、シェル（bash）は次の仕事をしている。①入力を単語に分解する（コマンド名 <code>ls</code>、オプション <code>-l</code>、引数 <code>/home</code>）。②コマンドの実体を探す。③見つけたプログラムを実行するようカーネルに依頼する。④プログラムの出力を受け取って画面に流す。⑤終了を検知して次の入力を待つ。つまりシェルは「人間とカーネルの間に立つ通訳」である。GUIのファイルマネージャと違い、操作を文字で正確に表現できるため、記録・再現・自動化（シェルスクリプト）が容易であることがCLI最大の利点である。</p>
+
+      <h2 id="c3-3"><span class="no">3-3</span>コマンドはどこにあるのか：PATHの仕組み</h2>
+      <p><code>ls</code> と打つだけで <code>/usr/bin/ls</code> が実行されるのは、シェルが環境変数PATHに列挙されたディレクトリを先頭から順に探すからである。<code>echo $PATH</code> を実行すると <code>/usr/local/bin:/usr/bin:/bin</code> のようなコロン区切りのリストが表示される。「command not found」というエラーは、①コマンド名の打ち間違い、②未インストール、③インストール先がPATHに入っていない、のいずれかを意味する。<code>which コマンド名</code> で実体の場所を確認できる。cronに登録するコマンドを絶対パスで書くのも、cronの環境ではPATHがほとんど設定されていないからである（第8章）。</p>
+
+      <h2 id="c3-4"><span class="no">3-4</span>環境変数と設定ファイル</h2>
+      <p>シェルの動作を調整する設定値は環境変数として保持される。値の確認は <code>echo $変数名</code>、一時的な変更は <code>export 変数名=値</code> で行う。<code>export</code>による変更はそのシェルを閉じると消えるため、永続化したい設定は <code>~/.bashrc</code>（シェル起動のたびに読み込まれる）に書き込む。書き込んだ直後は <code>source ~/.bashrc</code> で再読み込みすると反映される。</p>
+
+      <table class="tbl">
+        <thead><tr><th>環境変数</th><th>意味</th></tr></thead>
+        <tbody>
+          <tr><td><code>PATH</code></td><td>コマンドを探すディレクトリのリスト</td></tr>
+          <tr><td><code>HOME</code></td><td>自分のホームディレクトリ（<code>~</code> の実体）</td></tr>
+          <tr><td><code>USER</code></td><td>現在のユーザ名</td></tr>
+          <tr><td><code>LANG</code></td><td>言語・地域設定（<code>ja_JP.UTF-8</code> など）</td></tr>
+          <tr><td><code>PS1</code></td><td>プロンプトの表示内容</td></tr>
+          <tr><td><code>HISTSIZE</code></td><td>コマンド履歴の保存件数</td></tr>
+          <tr><td><code>EDITOR</code></td><td>標準のテキストエディタ</td></tr>
+        </tbody>
+      </table>
+
+      <h2 id="c3-5"><span class="no">3-5</span>標準入出力とリダイレクト</h2>
+      <p>すべてのコマンドは、3本の「配管」を持って生まれる。標準入力（stdin、番号0）、標準出力（stdout、番号1）、標準エラー出力（stderr、番号2）である。通常はいずれも端末につながっているが、この配管をつなぎ替えるのがリダイレクトとパイプである。エラーメッセージが標準出力と別の配管（stderr）になっているのがポイントで、「正常な結果はファイルへ、エラーは画面へ」といった振り分けができる。</p>
+
+      <div class="code">
+        <div class="code-head"><span class="code-title">リダイレクトの書式</span></div>
+<pre><code><span class="in">ls &gt; list.txt <span class="c"># 標準出力をファイルへ（上書き）</span></span>
+<span class="in">ls &gt;&gt; list.txt <span class="c"># 標準出力をファイルへ（追記）</span></span>
+<span class="in">ls 2&gt; error.txt <span class="c"># 標準エラー出力をファイルへ</span></span>
+<span class="in">ls &gt; all.txt 2&gt;&amp;1 <span class="c"># 両方を同じファイルへ</span></span>
+<span class="in">wc -l &lt; list.txt <span class="c"># ファイルを標準入力として与える</span></span></code></pre>
+      </div>
+
+      <p>実習の第5回でcronに書いた「<code>&gt; …/status.txt 2&gt;&amp;1</code>」は、「正常な出力もエラーも同じファイルに書き出す」という意味だったことが、ここまで読むと分かるはずである。</p>
+
+      <figure><img src="../img/s05.png" alt="図3-1　パイプとリダイレクトの仕組み" width="1800" height="560"><figcaption>図3-1　パイプとリダイレクトの仕組み</figcaption></figure>
+
+      <p>パイプ「<code>|</code>」は、あるコマンドの標準出力を次のコマンドの標準入力に直結する。<code>ls | wc -l</code>、<code>grep xxx log.txt | sort | uniq -c</code> のように、小さな道具を組み合わせて複雑な処理を組み立てるのがUNIX流である。1つのコマンドの出力を「次の道具の材料」と考える発想に慣れると、コマンドラインの応用力が一気に上がる。</p>
+
+      <h2 id="c3-6"><span class="no">3-6</span>その他の便利機能</h2>
+      <ul>
+        <li><strong>ワイルドカード：</strong><code>*</code> は任意の文字列、<code>?</code> は任意の1文字に展開される。<code>rm world_*.tar.gz</code> のようにまとめて指定できる。展開はシェルが行っており、コマンド自身は展開後のファイル名リストを受け取っている。</li>
+        <li><strong>クォート：</strong>空白や記号を含む文字列は <code>"二重引用符"</code> で囲む。シェルスクリプトで変数を <code>"$SRC"</code> のように囲むのは、値に空白が含まれても1つの引数として扱われるようにするためである。</li>
+        <li><strong>履歴と補完：</strong><kbd>↑</kbd><kbd>↓</kbd>で履歴を辿り、<kbd>Ctrl</kbd>+<kbd>R</kbd>で検索できる。<kbd>Tab</kbd>キーの補完はコマンド名・ファイル名の打ち間違いを防ぐ最も簡単な方法であり、常用すべきである。</li>
+      </ul>
+
+      <h2 id="c3-7"><span class="no">3-7</span>パイプの道具箱（sort・uniq・cut・xargs）</h2>
+      <p>パイプ（3.5節）の真価は、小さな道具の組み合わせで集計や一括処理を組み立てられることにある。実習では、<code>backup.sh</code>の世代削除（第4回）や「プレイヤーごとの入室回数ランキング」（第3回の発展課題）がその実例である。部品となる道具を整理する。</p>
+
+      <div class="scroll">
+      <table class="tbl">
+        <thead><tr><th>コマンド</th><th>はたらき</th></tr></thead>
+        <tbody>
+          <tr><td><code>sort</code></td><td>行を並べ替える。<code>-n</code> 数値順、<code>-r</code> 逆順、<code>-h</code> サイズ表記（1K, 2Gなど）順</td></tr>
+          <tr><td><code>uniq -c</code></td><td>連続する重複行をまとめて数える。事前に <code>sort</code> しておくのが約束</td></tr>
+          <tr><td><code>cut -d区切り -f列</code></td><td>各行から指定した列を取り出す（例：<code>cut -d: -f1</code> で <code>/etc/passwd</code> のユーザ名）</td></tr>
+          <tr><td><code>wc -l</code></td><td>行数を数える（第1回の演習で使用）</td></tr>
+          <tr><td><code>xargs</code></td><td>標準入力をコマンドの引数に変換する。<code>-r</code> は入力が空なら何もしない</td></tr>
+        </tbody>
+      </table>
+      </div>
+
+      <div class="code">
+        <div class="code-head"><span class="code-title">組み合わせの実例</span></div>
+<pre><code><span class="in">grep "joins game" <var>ログ</var> | sort | uniq -c | sort -nr <span class="c"># 頻度集計の型</span></span>
+<span class="in">ls -1t world_*.tar.gz | tail -n +8 | xargs -r rm -- <span class="c"># 世代削除（第4回）</span></span>
+<span class="in">cut -d: -f1 /etc/passwd | sort | head <span class="c"># ユーザ名の一覧</span></span></code></pre>
+      </div>
+
+      <div class="call note"><span class="ct">Note</span><p>※ 集計の定石は「絞り込む（<code>grep</code>）→ 列を取り出す（<code>cut</code>）→ 並べる（<code>sort</code>）→ 数える（<code>uniq -c</code>）→ 多い順に並べ直す（<code>sort -nr</code>）」。この型を覚えると、ログ解析（第3回）の応用範囲が一気に広がる。</p></div>
+
+      <nav class="pager" aria-label="前後のページ">
+        <a class="prev" href="ch02.html"><span class="pl">前へ</span><span class="pt">ファイルシステムとディレクトリ構造</span></a>
+        <a class="next" href="ch04.html"><span class="pl">次へ</span><span class="pt">テキストエディタ（vi / Vim）</span></a>
+      </nav>
+    </article>
+  </div>
+
+  <footer class="foot">
+    <span>知能情報実験実習1「インフラ構築基礎実習」指導書 2026年度版　作成者：木村祐太</span>
+    <a href="../../../index.html">木村祐太 研究室サイト</a>
+  </footer>
+</main>
+<script src="../lab.js"></script>
+</body>
+</html>

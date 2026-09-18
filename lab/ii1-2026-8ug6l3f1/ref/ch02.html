@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>第2章 ファイルシステムとディレクトリ構造 | インフラ構築基礎実習 2026</title>
+<link rel="icon" href="../../../favicon.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&family=Noto+Sans+JP:wght@400;500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../lab.css">
+</head>
+<body>
+<a class="skip" href="#main">本文へスキップ</a>
+<header class="bar">
+  <div class="wrap">
+    <a class="brand" href="../index.html">インフラ構築基礎実習 <small>知能情報実験実習1 / 2026</small></a>
+    <nav class="barlinks" aria-label="実習ナビゲーション">
+      <a href="../index.html">実習トップ</a>
+      <a href="../ref/index.html" class="here">基礎知識</a>
+      <a href="../appendix.html">付録</a>
+    </nav>
+  </div>
+</header>
+
+<main id="main" class="page">
+  <div class="hero">
+    <p class="eyebrow">CHAPTER 02 / 第2章</p>
+    <h1>ファイルシステムとディレクトリ構造</h1>
+    <p class="lead">ファイルとは名前の付いたデータのまとまりであり、その種類とLinuxのディレクトリ階層、パスの表し方、マウントの考え方までを整理する。</p>
+  </div>
+
+  <div class="layout">
+    <aside class="toc" aria-label="このページの目次">
+      <p class="toc-head">このページ</p>
+      <ol></ol>
+    </aside>
+    <article class="doc">
+
+      <h2 id="c2-1"><span class="no">2-1</span>ファイルとは何か</h2>
+      <p>ファイルとは、名前の付いたデータのまとまりである。中身はどんなファイルであれ、突き詰めればバイト列（数値の並び）に過ぎず、それを「どう解釈するか」でテキストファイルとバイナリファイルに分かれる。テキストファイルは、バイト列を文字コードの規則にしたがって文字として解釈できるファイルで、<code>cat</code>や<code>vi</code>でそのまま読み書きできる。現在の標準的な文字コードはUTF-8で、日本語を含む世界中の文字を扱える。一方バイナリファイルは、プログラム（<code>luantiserver</code>本体など）、画像、圧縮ファイルのように、それぞれ独自の形式でデータを詰め込んだもので、対応するプログラムでないと解釈できない。</p>
+      <p>Linuxの設定ファイルがほぼすべてテキストファイルなのは偶然ではない。「人間が<code>cat</code>と<code>vi</code>さえあれば内容を確認・修正できる」「<code>grep</code>で検索でき、<code>diff</code>で差分が取れる」というテキストの利点を最大限に活かす設計文化だからである。実習で<code>luanti.conf</code>やユニットファイルを<code>vi</code>で編集できたのも、この文化の恩恵である。</p>
+
+      <h2 id="c2-2"><span class="no">2-2</span>「すべてはファイル」という思想</h2>
+      <p>UNIX/Linuxには「すべてはファイルである」という設計思想がある。文書やプログラムはもちろん、ディレクトリも、接続されたキーボードやディスクなどのデバイスも（<code>/dev</code>以下のデバイスファイル）、実行中のプロセスの情報も（<code>/proc</code>以下）、すべてファイルとして表現される。この統一のおかげで、「読む・書く」という同じ操作方法をあらゆる対象に使い回せる。たとえば<code>echo</code>で画面に文字を出すのも、リダイレクトでファイルに書くのも、本質的に同じ操作である。</p>
+
+      <h2 id="c2-3"><span class="no">2-3</span>ファイルの種類</h2>
+      <ul>
+        <li><strong>通常ファイル：</strong>テキストファイルとバイナリファイル。Linuxでは拡張子は単なるファイル名の一部であり、Windowsのようにアプリケーションと結び付いてはいない（人間が分かりやすいように付ける慣習である）。</li>
+        <li><strong>ディレクトリ：</strong>ファイルを束ねる入れ物。実体は「中にあるファイルの一覧表」を持つ特殊なファイルである。</li>
+        <li><strong>シンボリックリンク：</strong>別のファイルへの「ショートカット」。<code>ln -s</code> で作成する。実務ではApache/nginx系の設定有効化などで使われる定番の仕組みである。</li>
+        <li><strong>デバイスファイル：</strong>ハードウェアをファイルとして見せたもの。<code>/dev/sda</code>（ディスク）など。</li>
+      </ul>
+
+      <h2 id="c2-4"><span class="no">2-4</span>ディレクトリ階層の標準（FHS）</h2>
+      <p>Linuxのディレクトリ構成はFHS（Filesystem Hierarchy Standard）という標準でおおよそ決まっており、どのディストリビューションでも同じ場所に同じ種類のファイルがある。「どこに何があるか」を知っていることは、障害対応のスピードに直結する。</p>
+
+      <div class="scroll">
+      <table class="tbl">
+        <thead><tr><th>ディレクトリ</th><th>役割</th></tr></thead>
+        <tbody>
+          <tr><td><code>/bin</code>, <code>/usr/bin</code></td><td>コマンドの実体（<code>ls</code> や <code>cp</code> もここにあるプログラムである）</td></tr>
+          <tr><td><code>/etc</code></td><td>システム・サービスの設定ファイル。実習で編集した <code>luanti.service</code>（<code>/etc/systemd/system/</code>）もここ</td></tr>
+          <tr><td><code>/home</code></td><td>一般ユーザのホームディレクトリ。<code>/home/taro</code> など</td></tr>
+          <tr><td><code>/root</code></td><td>rootユーザ専用のホームディレクトリ（<code>/home</code> の下ではないことに注意）</td></tr>
+          <tr><td><code>/var</code></td><td>可変データ。ログ（<code>/var/log</code>）、Webコンテンツ（<code>/var/www</code>）など、運用中に増減するもの</td></tr>
+          <tr><td><code>/tmp</code></td><td>一時ファイル置き場。再起動などで消えるため、大事なものを置いてはいけない</td></tr>
+          <tr><td><code>/dev</code></td><td>デバイスファイル</td></tr>
+          <tr><td><code>/proc</code>, <code>/sys</code></td><td>カーネルやプロセスの情報を見せる仮想的なファイル群（<code>free</code> や <code>top</code> はここを読んでいる）</td></tr>
+        </tbody>
+      </table>
+      </div>
+
+      <figure><img src="../img/s04.png" alt="図2-1　ディレクトリツリーとパスの表現" width="1800" height="800"><figcaption>図2-1　ディレクトリツリーとパスの表現</figcaption></figure>
+
+      <h2 id="c2-5"><span class="no">2-5</span>パスの表現</h2>
+      <p>ファイルの場所は、ルートディレクトリ「/」からの道順である絶対パスか、現在いる場所（カレントディレクトリ）からの道順である相対パスで表す。スクリプトや設定ファイルに場所を書くときは、実行時のカレントディレクトリに左右されない絶対パスを使うのが安全である。<code>crontab</code>に登録するコマンドを絶対パスで書くのはこのためである（cronはあなたのシェルと違う環境で動くので、相対パスや省略したコマンド名は解決できないことがある）。</p>
+      <p>記号の意味を整理しておく：「.」はカレントディレクトリ、「..」は1つ上のディレクトリ、「~」は自分のホームディレクトリ、「-」（<code>cd -</code>）は直前にいたディレクトリを表す。また、名前が「.」で始まるファイルは隠しファイルとして扱われ、<code>ls -a</code> を付けないと表示されない。<code>~/.bashrc</code> のような設定ファイルが隠しファイルになっているのは、日常の操作で目に入って邪魔にならないようにするための慣習である。</p>
+
+      <h2 id="c2-6"><span class="no">2-6</span>マウントとディスク</h2>
+      <p>Windowsではドライブ（C:、D:）ごとに独立したツリーを持つが、Linuxではすべてのストレージが1本のディレクトリツリーに「接ぎ木」される。この接ぎ木をマウントという。たとえばUSBメモリを挿すと <code>/media/ユーザ名/…</code> の位置にマウントされ、その下に入るだけで中身にアクセスできる。<code>df -h</code> が表示する「Mounted on」列は、各ストレージがツリーのどこに接ぎ木されているかを示している。</p>
+
+      <h2 id="c2-7"><span class="no">2-7</span>ファイルの調査と参照（file・du・ln）</h2>
+      <p>Linuxでは拡張子が飾りにすぎない（2.3節）ため、ファイルの正体は中身で判定する。それを行うのが<code>file</code>コマンドである。また、「ディスクがいっぱい」という障害の調査では、<code>df -h</code> で全体を見たあと、<code>du</code> でどのディレクトリが太っているかを絞り込む。2.3節で触れたシンボリックリンクは <code>ln -s</code> で作成できる。</p>
+
+      <div class="code">
+        <div class="code-head"><span class="code-title">ファイルとディスクの調査</span></div>
+<pre><code><span class="in">file world/map.sqlite <span class="c"># 中身の種類を判定（SQLite 3.x database）</span></span>
+<span class="in">du -sh ~/backup <span class="c"># ディレクトリの合計サイズ</span></span>
+<span class="in">du -sh ~/backup/* | sort -h <span class="c"># 内訳をサイズ順に並べる</span></span>
+<span class="in">ln -s /var/log ~/mylog <span class="c"># シンボリックリンクの作成</span></span>
+<span class="in">ls -l ~/mylog <span class="c"># mylog -&gt; /var/log と表示される</span></span></code></pre>
+      </div>
+
+      <div class="call note"><span class="ct">Note</span><p>※ 容量調査の定石は「<code>df -h</code>（どのディスクが満杯か）→ <code>du -sh</code>（どのディレクトリが犯人か）」の順である。第4回の障害対応演習（シナリオD：ディスク枯渇）で実際に使う。</p></div>
+
+      <nav class="pager" aria-label="前後のページ">
+        <a class="prev" href="ch01.html"><span class="pl">前へ</span><span class="pt">OSとLinux</span></a>
+        <a class="next" href="ch03.html"><span class="pl">次へ</span><span class="pt">シェルとコマンドライン</span></a>
+      </nav>
+    </article>
+  </div>
+
+  <footer class="foot">
+    <span>知能情報実験実習1「インフラ構築基礎実習」指導書 2026年度版　作成者：木村祐太</span>
+    <a href="../../../index.html">木村祐太 研究室サイト</a>
+  </footer>
+</main>
+<script src="../lab.js"></script>
+</body>
+</html>
