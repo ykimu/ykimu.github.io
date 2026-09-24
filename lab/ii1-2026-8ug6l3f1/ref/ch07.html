@@ -38,44 +38,87 @@
     </aside>
     <article class="doc">
 
+      <div class="chapintro">
+        <div class="box"><span class="ct">この章で分かること</span><ul>
+          <li>LANとインターネットの関係、データがパケットに分けて運ばれること</li>
+          <li>IPアドレスとDHCP、名前解決（DNSと「ホスト名.local」のmDNS）</li>
+          <li>ポート番号とTCP/UDPの違い、ファイアウォールの「デフォルト拒否」</li>
+          <li>SSHが何を暗号化し、公開鍵認証が何を証明しているか</li>
+        </ul></div>
+        <div class="box use"><span class="ct">実習のどこで使うか</span><ul>
+          <li><a href="../day1.html#s1-3">第1回 1-3 SSHでサーバに接続する</a></li>
+          <li><a href="../day2.html#s2-6">第2回 2-6 ファイアウォールの設定</a></li>
+          <li><a href="../day2.html#s2-7">第2回 2-7 演習：サーバの相互接続</a></li>
+          <li><a href="../day3.html#s3-7">第3回 3-7 SSHを公開鍵認証に切り替える</a></li>
+        </ul></div>
+      </div>
+
       <h2 id="c7-1"><span class="no">7-1</span>ネットワークとは：LANとインターネット</h2>
       <p>複数のコンピュータをつないで、互いにデータをやりとりできるようにしたものがネットワークである。部屋や建物の中など限られた範囲のネットワークをLAN（Local Area Network）と呼び、有線（イーサネット）または無線（Wi-Fi）で機器をつなぐ。そしてLAN同士を世界規模で相互接続したものがインターネットであり、LANとその外側の境界に立って通信を中継する機器がルータである。実習のBYODとRaspberry Piは、同じ学内LANに属しているからこそ直接通信できる。</p>
       <figure><img src="../img/s10.png" alt="図7-1　LANとインターネット" width="1800" height="750"><figcaption>図7-1　LANとインターネット</figcaption></figure>
       <p>ネットワーク上のデータは、丸ごと一塊で送られるのではなく、パケットという小包に分割されて運ばれる。各パケットには宛先と送信元の住所（IPアドレス）が記されており、途中の機器はそれを見てバケツリレーのように転送する。回線を占有しないため多数の通信が共存でき、一部のパケットが失われても再送でリカバリできる。この「小包＋住所」の仕組みの上に、以降で説明するIPアドレス・ポート・プロトコルの話がすべて載っている。</p>
 
       <h2 id="c7-2"><span class="no">7-2</span>IPアドレスとDHCP</h2>
-      <p>ネットワーク上の機器は、IPアドレスという番号で識別される。IPv4アドレスは <code>10.20.30.41</code> のように4つの数値（各0〜255）で表される。このうち <code>10.x.x.x</code>、<code>172.16〜31.x.x</code>、<code>192.168.x.x</code> はプライベートアドレスと呼ばれ、組織内ネットワーク専用に使われる。学内Wi-Fiで自分のサーバに割り当てられるのもプライベートアドレスであり、だからこそ学外からは直接アクセスできない（本実習のサーバが学内限定公開なのはこの性質による）。</p>
+      <p>ネットワーク上の機器は、IPアドレスという番号で識別される。IPv4アドレスは <code>10.20.30.41</code> のように4つの数値（各0〜255）で表される。このうち <code>10.x.x.x</code>、<code>172.16〜31.x.x</code>、<code>192.168.x.x</code> はプライベートアドレスと呼ばれ、組織内ネットワーク専用に使われる。</p>
+      <p>学内Wi-Fiで自分のサーバに割り当てられるのもプライベートアドレスであり、だからこそ学外からは直接アクセスできない（本実習のサーバが学内限定公開なのはこの性質による）。</p>
       <p>IPアドレスを機器に割り当てる方法には、手動で固定する方法と、DHCPサーバから自動で借りる方法がある。実習環境はDHCPであり、アドレスは「リース（貸与）」されている。リースには期限があるが、同じネットワークにいる限り同じアドレスが再貸与されることが多い。とはいえ「変わりうる」ことに変わりはないため、実習ではIPアドレスではなく名前で接続する方法を基本とした。</p>
+      <dl class="term"><dt>IPアドレス<small>IP address</small></dt><dd>ネットワーク上の機器を識別する番号。<code>10.20.30.41</code> のように4つの数値で表す。実習で使う <code>10.x.x.x</code> などはプライベートアドレスで、組織の外からは直接届かない。</dd></dl>
+      <dl class="term"><dt>DHCP<small>Dynamic Host Configuration Protocol</small></dt><dd>IPアドレスを機器に自動で貸し出す仕組み。実習環境もこれなので、サーバのIPアドレスは電源を入れ直すと変わることがある。</dd></dl>
 
       <h2 id="c7-3"><span class="no">7-3</span>名前解決：DNSとmDNS</h2>
-      <p>人間が扱いやすい名前（<code>www.example.com</code>）を機器が扱うIPアドレスに変換する仕組みを名前解決という。インターネット全体の名前解決を担うのがDNS（Domain Name System）で、世界中に分散した階層型のデータベースになっている。一方、実習で使った「ホスト名.local」はmDNS（multicast DNS）という別の仕組みである。mDNSはDNSサーバを必要とせず、「mc-24s1234という名前の機器はいますか？」という問いかけを同じネットワーク全体に投げかけ（マルチキャスト）、本人が「私です。IPアドレスは10.20.30.41です」と応答する。サーバ側ではavahiというサービスがこの応答を担当している。同じLANの中でしか使えないが、設定なしで名前解決できる手軽さが利点である。</p>
+      <p>人間が扱いやすい名前（<code>www.example.com</code>）を機器が扱うIPアドレスに変換する仕組みを名前解決という。インターネット全体の名前解決を担うのがDNS（Domain Name System）で、世界中に分散した階層型のデータベースになっている。</p>
+      <p>一方、実習で使った「ホスト名.local」（<a href="../day1.html#s1-3">第1回 1-3</a>）はmDNS（multicast DNS）という別の仕組みである。mDNSはDNSサーバを必要とせず、「mc-24s1234という名前の機器はいますか？」という問いかけを同じネットワーク全体に投げかけ（マルチキャスト）、本人が「私です。IPアドレスは10.20.30.41です」と応答する。サーバ側ではavahiというサービスがこの応答を担当している。同じLANの中でしか使えないが、設定なしで名前解決できる手軽さが利点である。</p>
+      <dl class="term"><dt>mDNS<small>multicast DNS / .local</small></dt><dd>DNSサーバを使わず、同じLANの中に呼びかけて名前からIPアドレスを調べる仕組み。「ホスト名.local」で接続できるのはこれのおかげで、サーバ側ではavahiが応答している。</dd></dl>
+      <div class="call myth"><span class="ct">よくある誤解・トラブル</span>
+        <span class="q"><code>ホスト名.local</code> で繋がらないので、サーバが壊れている</span>
+        <p class="a">mDNSは同じLANの中でしか働かず、端末やネットワークの設定によっては使えないことがある。サーバ側で <code>hostname -I</code> を実行してIPアドレスを調べ、そのIPアドレスで接続すれば切り分けができる。繋がるならサーバは動いており、名前解決だけの問題である。</p>
+        <span class="q">一度調べたIPアドレスをメモしておけば、次回もそれで繋がる</span>
+        <p class="a">実習環境はDHCPなので、アドレスは貸与であり変わりうる。IPアドレスが通らなくなったら、まず現在のアドレスを調べ直すこと。</p>
+      </div>
 
       <h2 id="c7-4"><span class="no">7-4</span>TCP/UDPとポート番号</h2>
       <p>1台のサーバは複数のサービス（SSH、Luanti、Webなど）を同時に提供する。そこで通信の宛先には、IPアドレス（どの機器か）に加えてポート番号（機器の中のどのサービスか）を指定する。マンションの住所（IPアドレス）と部屋番号（ポート番号）の関係だと考えるとよい。サービス側は特定のポートで「待ち受け」ており、<code>ss -tlnp</code> コマンドで現在待ち受け中のポート一覧を確認できる。</p>
+      <dl class="term"><dt>ポート番号<small>port</small></dt><dd>1台の機器の中で、どのサービス宛ての通信かを区別する番号。SSHは22番、Luantiは30000番を使う。開いているポートは外部からの入口でもある。</dd></dl>
       <div class="scroll">
       <table class="tbl">
         <thead><tr><th>ポート</th><th>サービス</th><th>備考</th></tr></thead>
         <tbody>
           <tr><td><code>22</code></td><td>SSH</td><td>遠隔ログイン</td></tr>
-          <tr><td><code>80</code> / <code>443</code></td><td>HTTP / HTTPS</td><td>Web。実習ではnginxコンテナを8080で公開した</td></tr>
+          <tr><td><code>80</code> / <code>443</code></td><td>HTTP / HTTPS</td><td>Web。実習ではnginxコンテナを8080で公開した（<a href="../day5.html#s5-4">第5回 5-4</a>）</td></tr>
           <tr><td><code>123</code></td><td>NTP</td><td>時刻同期</td></tr>
           <tr><td><code>30000</code></td><td>Luanti（ゲームサーバ）</td><td>UDPを使用。実習で構築したサーバの待ち受けポート</td></tr>
         </tbody>
       </table>
       </div>
       <p>通信方式にはTCPとUDPの2種類がある。TCPは相手との接続を確立し、届いたかを確認しながら送る「確実さ重視」の方式で、SSHやWebが使う。UDPは確認なしで送りっぱなしにする「速度重視」の方式で、動画配信や、位置情報を高頻度でやりとりするオンラインゲーム（Luantiもこちら）が使う。</p>
+      <div class="call myth"><span class="ct">よくある誤解・トラブル</span>
+        <span class="q">ポート30000を開けたのに、Luantiサーバに接続できない</span>
+        <p class="a">LuantiはUDPを使う。<code>sudo ufw allow 30000/tcp</code> ではゲームの通信は通らず、<code>30000/udp</code> を開ける必要がある（<a href="../day2.html#s2-6">第2回 2-6</a>）。<code>ss -ulnp</code> でUDPの待ち受けを確認すると状況がはっきりする。</p>
+      </div>
 
       <h2 id="c7-5"><span class="no">7-5</span>ファイアウォール</h2>
       <figure><img src="../img/s11.png" alt="図7-2　ポートとファイアウォール（ufw）の働き" width="1800" height="660"><figcaption>図7-2　ポートとファイアウォール（ufw）の働き</figcaption></figure>
-      <p>ファイアウォールは、ポート単位・送信元単位で通信を許可・遮断する仕組みである。セキュリティの基本は「デフォルト拒否」、つまりすべてを閉じたうえで必要なポートだけを開けることである。ufw（Uncomplicated Firewall）はLinuxのファイアウォール機能（カーネル内のnetfilter）を簡単に操作できるようにしたツールで、実習では22番と30000番（第5回で8080番）だけを開けた。開いているポートはそれぞれが攻撃の入口になりうるため、「そのポートは本当に外部に公開する必要があるか」を常に考える習慣をつけてほしい。使っていないポートを開けない理由はまさにこれである。なお、第5回で使うDockerには注意がある。Dockerが公開するポート（composeの <code>ports:</code>）はカーネルの転送ルールを直接操作するため、ufwの許可・拒否を経由しない。コンテナのポートは「ufwで閉じたつもり」でも外から届く。公開の可否は <code>ports:</code> の記述そのもので制御するのが基本である。</p>
+      <p>ファイアウォールは、ポート単位・送信元単位で通信を許可・遮断する仕組みである。セキュリティの基本は「デフォルト拒否」、つまりすべてを閉じたうえで必要なポートだけを開けることである。ufw（Uncomplicated Firewall）はLinuxのファイアウォール機能（カーネル内のnetfilter）を簡単に操作できるようにしたツールで、実習では22番と30000番（<a href="../day5.html#s5-4">第5回</a>で8080番）だけを開けた。</p>
+      <p>開いているポートはそれぞれが攻撃の入口になりうるため、<b>「そのポートは本当に外部に公開する必要があるか」を常に考える習慣</b>をつけてほしい。使っていないポートを開けない理由はまさにこれである。</p>
+      <p>なお、<a href="../day5.html#s5-2">第5回</a>で使うDockerには注意がある。Dockerが公開するポート（composeの <code>ports:</code>）はカーネルの転送ルールを直接操作するため、ufwの許可・拒否を経由しない。コンテナのポートは「ufwで閉じたつもり」でも外から届く。公開の可否は <code>ports:</code> の記述そのもので制御するのが基本である。</p>
+      <dl class="term"><dt>ファイアウォール<small>ufw</small></dt><dd>ポート単位で通信を通すか遮断するかを決める仕組み。「まず全部閉じて、必要な分だけ開ける」（デフォルト拒否）が設計の基本である。</dd></dl>
 
       <h2 id="c7-6"><span class="no">7-6</span>SSHの仕組み</h2>
-      <p>SSH（Secure Shell）は、通信をすべて暗号化して遠隔操作を行うプロトコルである。暗号化のおかげで、同じネットワークにいる第三者が通信を盗み見てもパスワードや操作内容は読み取れない。初回接続時に表示される「fingerprint」の確認は、接続先が本物のサーバか（偽物にすり替わっていないか）を検証する仕組みで、サーバの「ホスト鍵」の指紋を照合している。2回目以降に何も聞かれないのは、BYOD側の <code>~/.ssh/known_hosts</code> に指紋が記録され、自動照合されているからである。</p>
+      <p>SSH（Secure Shell）は、通信をすべて暗号化して遠隔操作を行うプロトコルである。暗号化のおかげで、同じネットワークにいる第三者が通信を盗み見てもパスワードや操作内容は読み取れない。</p>
+      <p>初回接続時に表示される「fingerprint」の確認は、接続先が本物のサーバか（偽物にすり替わっていないか）を検証する仕組みで、サーバの「ホスト鍵」の指紋を照合している。2回目以降に何も聞かれないのは、BYOD側の <code>~/.ssh/known_hosts</code> に指紋が記録され、自動照合されているからである。</p>
       <figure><img src="../img/s12.png" alt="図7-3　SSH公開鍵認証の仕組み" width="1800" height="660"><figcaption>図7-3　SSH公開鍵認証の仕組み</figcaption></figure>
-      <p>ユーザ認証には、パスワード認証のほかに公開鍵認証がある。鍵ペア（公開鍵と秘密鍵）を作り、公開鍵をサーバに登録しておくと、接続時にサーバが出す「お題」に秘密鍵で署名して応えることで本人確認が行われる。秘密の情報が通信路に流れないためパスワードより安全であり、実務のサーバではパスワード認証を無効化して公開鍵認証のみとするのが標準である。公開鍵認証への切り替えは実習の第3回で行う（<code>ssh-keygen</code> で鍵ペア作成、<code>ssh-copy-id</code> で登録）。さらにパスワード認証そのものを無効化する堅牢化（<code>/etc/ssh/sshd_config</code> で <code>PasswordAuthentication no</code>）は、最終課題のセキュリティ強化テーマで挑戦してほしい。</p>
+      <p>ユーザ認証には、パスワード認証のほかに公開鍵認証がある。鍵ペア（公開鍵と秘密鍵）を作り、公開鍵をサーバに登録しておくと、接続時にサーバが出す「お題」に秘密鍵で署名して応えることで本人確認が行われる。秘密の情報が通信路に流れないためパスワードより安全であり、実務のサーバではパスワード認証を無効化して公開鍵認証のみとするのが標準である。</p>
+      <p>公開鍵認証への切り替えは実習の<a href="../day3.html#s3-7">第3回 3-7</a>で行う（<code>ssh-keygen</code> で鍵ペア作成、<code>ssh-copy-id</code> で登録）。さらにパスワード認証そのものを無効化する堅牢化（<code>/etc/ssh/sshd_config</code> で <code>PasswordAuthentication no</code>）は、<a href="../day6.html#s6-1">最終課題</a>のセキュリティ強化テーマで挑戦してほしい。</p>
+      <dl class="term"><dt>公開鍵認証<small>ssh-keygen / ssh-copy-id</small></dt><dd>公開鍵と秘密鍵のペアを使い、秘密鍵を通信路に流さずに本人であることを証明する方式。公開鍵はサーバに配ってよいが、秘密鍵は決して外に出さない。</dd></dl>
+      <div class="call myth"><span class="ct">よくある誤解・トラブル</span>
+        <span class="q">公開鍵認証を設定したので、もうパスワードでは入れない</span>
+        <p class="a">鍵を登録しただけでは、パスワード認証も有効なままである。本当に閉じるには <code>sshd_config</code> の <code>PasswordAuthentication no</code> が必要で、そのときは<b>別のSSH接続を開いたまま作業する</b>こと。設定を誤ると自分が締め出される。</p>
+        <span class="q">公開鍵と秘密鍵のどちらをサーバに置くか分からなくなる</span>
+        <p class="a">サーバに登録するのは公開鍵（<code>.pub</code> が付くほう）である。秘密鍵は手元の端末に置いたままにし、他人に渡さない。<code>ssh-copy-id</code> を使えば正しいほうが自動で登録される。</p>
+      </div>
 
       <h2 id="c7-7"><span class="no">7-7</span>ネットワークの調査と転送（ping・ss・wget/curl・scp）</h2>
-      <p>ネットワークまわりの道具は「疎通を確かめる」「待ち受けを確かめる」「ファイルを運ぶ」の3種類に整理できる。第2回の相互接続演習の切り分け（<code>ping</code> → <code>systemctl status</code> → <code>ufw status</code>）に、<code>ss</code> を加えると診断がさらに正確になる。</p>
+      <p>ネットワークまわりの道具は「疎通を確かめる」「待ち受けを確かめる」「ファイルを運ぶ」の3種類に整理できる。<a href="../day2.html#s2-7">第2回 2-7</a>の相互接続演習の切り分け（<code>ping</code> → <code>systemctl status</code> → <code>ufw status</code>）に、<code>ss</code> を加えると診断がさらに正確になる。</p>
       <div class="scroll">
       <table class="tbl">
         <thead><tr><th>コマンド</th><th>はたらき</th></tr></thead>
@@ -83,7 +126,7 @@
           <tr><td><code>ping ホスト</code></td><td>疎通確認（<kbd>Ctrl</kbd>+<kbd>C</kbd>で停止）。届かないなら電源・Wi-Fi・名前解決を疑う</td></tr>
           <tr><td><code>ip a</code> ／ <code>hostname -I</code></td><td>自分のIPアドレスとネットワークインタフェースの確認</td></tr>
           <tr><td><code>ss -tlnp</code> ／ <code>ss -ulnp</code></td><td>待ち受け中のポート一覧（t=TCP、u=UDP）。「そのポートを誰が使っているか」まで表示</td></tr>
-          <tr><td><code>wget URL</code></td><td>ファイルのダウンロード（第1回の <code>quest.tar.gz</code> で使用）</td></tr>
+          <tr><td><code>wget URL</code></td><td>ファイルのダウンロード（<a href="../day1.html#s1-6">第1回 1-6</a>の <code>quest.tar.gz</code> で使用）</td></tr>
           <tr><td><code>curl URL</code> ／ <code>curl -O URL</code></td><td>内容を画面に表示／ファイルに保存。Web APIの動作確認にも使える</td></tr>
           <tr><td><code>scp コピー元 コピー先</code></td><td>SSH経由の暗号化ファイル転送</td></tr>
         </tbody>
@@ -94,7 +137,461 @@
 <pre><code><span class="in">scp luanti@mc-24s1234.local:~/backup/world_最新.tar.gz . <span class="c"># サーバ → 手元（BYOD側で実行）</span></span>
 <span class="in">scp ./memo.txt taro@mc-24s1234.local:~/ <span class="c"># 手元 → サーバ</span></span></code></pre>
       </div>
-      <div class="call note"><span class="ct">Note</span><p>※ scpの実体はSSHであり、追加の設定なしに暗号化転送ができる。第4回の発展課題「バックアップを別マシンに転送（3-2-1ルールへの一歩）」は、この1行で実現する。</p></div>
+      <div class="call note"><span class="ct">Note</span><p>※ scpの実体はSSHであり、追加の設定なしに暗号化転送ができる。<a href="../day4.html#s4-extra">第4回の発展課題</a>「バックアップを別マシンに転送（3-2-1ルールへの一歩）」は、この1行で実現する。</p></div>
+
+
+      <h2 id="c7-add-1"><span class="no">7-8</span>ネットワークを調べるコマンド</h2>
+      <p>ここから先は冊子には無い補足である。ネットワークの障害調査は「自分の足元」「相手までの経路」「相手のサービス」の順に外側へ広げていくのが鉄則で、それぞれに対応する道具がある。まず足元を見る道具から順に使い方を身につけよう。</p>
+
+      <h3 id="c7-add-1-a">自分のアドレスと経路を見る（ip / hostname）</h3>
+      <p><code>ip</code> はLinuxでネットワーク設定を確認・変更する標準コマンドである。サーバ管理者が最初に打つのはたいてい <code>ip a</code>（アドレス一覧）と <code>ip r</code>（経路表）で、「自分にアドレスが付いているか」「外に出る出口が決まっているか」を一度に確認できる。古い資料にある <code>ifconfig</code> はDebian 12では既定で入っていないので、<code>ip</code> を覚えるのが正解である。</p>
+      <div class="code" data-ctx="server">
+  <div class="code-head"><span class="code-title">自分のアドレスと経路</span></div>
+<pre><code><span class="in">ip a <span class="c"># すべてのインタフェースとアドレス</span></span>
+<span class="in">ip -br a <span class="c"># 1行1インタフェースの要約表示</span></span>
+<span class="in">ip r <span class="c"># 経路表（デフォルトゲートウェイの確認）</span></span>
+<span class="in">hostname -I <span class="c"># 自分のIPアドレスだけを手早く知る</span></span></code></pre>
+      </div>
+      <div class="scroll">
+      <table class="tbl">
+        <thead><tr><th>書式</th><th>意味</th><th>例</th></tr></thead>
+        <tbody>
+          <tr><td><code>ip a</code></td><td><code>ip address show</code> の略。全インタフェースのアドレスを表示</td><td><code>ip a</code></td></tr>
+          <tr><td><code>ip -br a</code></td><td>brief（要約）表示。名前・状態・アドレスだけを1行で</td><td><code>ip -br a</code></td></tr>
+          <tr><td><code>ip a show <var>名前</var></code></td><td>指定したインタフェースだけを表示</td><td><code>ip a show wlan0</code></td></tr>
+          <tr><td><code>ip r</code></td><td><code>ip route show</code> の略。経路表を表示</td><td><code>ip r</code></td></tr>
+          <tr><td><code>ip -4 a</code></td><td>IPv4だけに絞る（<code>-6</code> ならIPv6だけ）</td><td><code>ip -4 a</code></td></tr>
+          <tr><td><code>hostname -I</code></td><td>割り当て済みIPアドレスを空白区切りで1行表示</td><td><code>hostname -I</code></td></tr>
+        </tbody>
+      </table>
+      </div>
+      <div class="code" data-ctx="server">
+  <div class="code-head"><span class="code-title">出力の読み方：ip a と ip r</span></div>
+<pre><code><span class="in">ip -br a</span>
+<span class="out">lo               UNKNOWN        127.0.0.1/8 ::1/128</span>
+<span class="out">eth0             UP             10.20.30.41/24 fe80::dea6:32ff:fe12:3456/64</span>
+<span class="out">wlan0            DOWN</span>
+<span class="in">ip r</span>
+<span class="out">default via 10.20.30.1 dev eth0 proto dhcp src 10.20.30.41 metric 100</span>
+<span class="out">10.20.30.0/24 dev eth0 proto kernel scope link src 10.20.30.41 metric 100</span></code></pre>
+      </div>
+      <p>見るべき点は3つである。第1に、使っているインタフェース（有線なら <code>eth0</code>、無線なら <code>wlan0</code>）が <code>UP</code> になっているか。<code>DOWN</code> ならケーブルか無線の接続からやり直す。第2に、そのインタフェースに <code>10.20.30.41/24</code> のようなIPv4アドレスが付いているか。付いていなければDHCPからアドレスをもらえていない。第3に、<code>ip r</code> の1行目に <code>default via</code> の行があるか。この行が無いと、同じLANの中とは話せても外には一切出られない。<code>lo</code>（127.0.0.1）は自分自身を指す特別なインタフェースで、常に存在する。</p>
+      <div class="call note"><span class="ct">実習ではここで使う</span><p>※ <a href="../day1.html#s1-3">第1回 1-3 SSHでサーバに接続する</a>で「ホスト名.local」が通らないとき、サーバ本体の画面で <code>hostname -I</code> を実行してIPアドレスを調べる場面がこれにあたる。<code>ip -br a</code> まで見ておくと、そもそもアドレスが付いていないのか、名前解決だけの問題なのかを即座に切り分けられる。</p></div>
+
+      <h3 id="c7-add-1-b">相手まで届くかを確かめる（ping / traceroute / nc）</h3>
+      <p>足元が正常だと分かったら、次は相手まで届くかである。<code>ping</code> は相手に小さなパケットを投げて返事を待つ最も基本的な疎通確認で、<code>traceroute</code> は途中の経路のどこまで届いているかを1台ずつ表示する。<code>nc</code>（netcat）はさらに一歩進めて「そのポートが開いているか」まで確かめられる。</p>
+      <div class="code" data-ctx="server">
+  <div class="code-head"><span class="code-title">疎通確認の三段構え</span></div>
+<pre><code><span class="in">ping -c 4 10.20.30.41 <span class="c"># 4回だけ送って自動終了する</span></span>
+<span class="in">ping -c 4 -W 1 <var>ホスト名</var>.local <span class="c"># 1回あたり最大1秒で見切りをつける</span></span>
+<span class="in">sudo apt install -y traceroute <span class="c"># 初回のみ</span></span>
+<span class="in">traceroute -n 8.8.8.8 <span class="c"># 経路を番号で表示（-n は名前解決をしない）</span></span>
+<span class="in">nc -zv 10.20.30.41 22 <span class="c"># 22番ポートが開いているかだけ調べる</span></span></code></pre>
+      </div>
+      <div class="scroll">
+      <table class="tbl">
+        <thead><tr><th>オプション</th><th>意味</th><th>例</th></tr></thead>
+        <tbody>
+          <tr><td><code>ping -c <var>回数</var></code></td><td>指定回数で自動終了する。付けないと<kbd>Ctrl</kbd>+<kbd>C</kbd>まで止まらない</td><td><code>ping -c 4 10.20.30.1</code></td></tr>
+          <tr><td><code>ping -W <var>秒</var></code></td><td>1回の応答待ち時間の上限。切り分けを急ぐときに短くする</td><td><code>ping -c 2 -W 1 ホスト</code></td></tr>
+          <tr><td><code>ping -i <var>秒</var></code></td><td>送信間隔。既定は1秒</td><td><code>ping -c 10 -i 2 ホスト</code></td></tr>
+          <tr><td><code>traceroute -n</code></td><td>各ホストの名前を引かずIPアドレスのまま表示。速く、名前解決の影響も受けない</td><td><code>traceroute -n 8.8.8.8</code></td></tr>
+          <tr><td><code>nc -z</code></td><td>データを送らず接続可否だけを調べる（スキャンモード）</td><td><code>nc -z 10.20.30.41 30000</code></td></tr>
+          <tr><td><code>nc -v</code></td><td>結果を人間向けに表示する。<code>-z</code> と組で使う</td><td><code>nc -zv ホスト 22</code></td></tr>
+          <tr><td><code>nc -u</code></td><td>UDPで調べる。ただしUDPは無反応と成功の区別が付きにくい</td><td><code>nc -zuv ホスト 30000</code></td></tr>
+        </tbody>
+      </table>
+      </div>
+      <div class="code" data-ctx="server">
+  <div class="code-head"><span class="code-title">出力の読み方：ping と nc</span></div>
+<pre><code><span class="in">ping -c 3 10.20.30.42</span>
+<span class="out">PING 10.20.30.42 (10.20.30.42) 56(84) bytes of data.</span>
+<span class="out">64 bytes from 10.20.30.42: icmp_seq=1 ttl=64 time=1.83 ms</span>
+<span class="out">64 bytes from 10.20.30.42: icmp_seq=2 ttl=64 time=2.11 ms</span>
+<span class="out">64 bytes from 10.20.30.42: icmp_seq=3 ttl=64 time=1.94 ms</span>
+<span class="out">--- 10.20.30.42 ping statistics ---</span>
+<span class="out">3 packets transmitted, 3 received, 0% packet loss, time 2003ms</span>
+<span class="in">nc -zv 10.20.30.42 22</span>
+<span class="out">Connection to 10.20.30.42 22 port [tcp/ssh] succeeded!</span></code></pre>
+      </div>
+      <p><code>ping</code> で最も重要な行は最後の <code>0% packet loss</code> である。ここが100%なら1つも返っていない。数パーセントの損失が続く場合は無線の電波状況を疑う。<code>time=1.83 ms</code> は往復にかかった時間で、同じLANなら数ミリ秒、遠いサーバなら数十ミリ秒が目安である。<code>ttl=64</code> は相手のOSがLinux系であることの目安になるが、深追いは不要である。<code>nc</code> は <code>succeeded!</code> なら開いており、<code>Connection refused</code> なら相手は生きているがそのポートで待ち受けていない、無反応のまま止まるならファイアウォールに捨てられている可能性が高い。この3つの違いが切り分けの決め手になる。</p>
+      <div class="call note"><span class="ct">実習ではここで使う</span><p>※ <a href="../day2.html#s2-7">第2回 2-7 演習：サーバの相互接続</a>で友人のサーバに繋がらないとき、<code>ping</code> が通るのに接続できないなら原因はサービスかファイアウォールに絞られる。そこで <code>nc -zuv <var>相手のホスト</var> 30000</code> や、相手側での <code>sudo ufw status</code> に進むとよい。</p></div>
+      <div class="call myth"><span class="ct">よくある誤解・トラブル</span>
+        <span class="q"><code>ping</code> が通らないから、そのサーバは落ちている</span>
+        <p class="a"><code>ping</code> が使うICMPというプロトコルは、ファイアウォールで遮断されていることが珍しくない。クラウドのサーバや一部の学内ネットワークでは既定で落とされる。<code>ping</code> は「通れば生きている」証拠にはなるが、「通らない＝死んでいる」証拠にはならない。ポート単位で確かめる <code>nc -zv</code> と併用すること。</p>
+        <span class="q"><code>ping</code> は通るのにSSHできないので、ネットワークがおかしい</span>
+        <p class="a">ここまで切り分けできていれば、ネットワークの経路は正常である。残る容疑者は相手側の <code>sshd</code> が動いていないか、22番がファイアウォールで閉じているかの2つで、<code>sudo systemctl status ssh</code> と <code>sudo ufw status</code> を順に見ればよい。</p>
+      </div>
+
+      <h3 id="c7-add-1-c">待ち受けているポートを調べる（ss）</h3>
+      <p><code>ss</code> は「このサーバのどのポートで、どのプログラムが通信を待っているか」を一覧するコマンドである。サービスを立ち上げた直後の確認、意図せず外に開いているポートの棚卸し、ポート番号の衝突調査という3つの場面で使う。旧来の <code>netstat</code> の後継にあたる。</p>
+      <div class="code" data-ctx="server">
+  <div class="code-head"><span class="code-title">待ち受けポートの確認</span></div>
+<pre><code><span class="in">ss -tulnp <span class="c"># TCPとUDPの待ち受けを、プロセス名付きで表示</span></span>
+<span class="in">sudo ss -tulnp <span class="c"># プロセス名まで見るにはsudoが要る</span></span>
+<span class="in">sudo ss -tlnp <span class="c"># TCPだけ（SSHやWeb）</span></span>
+<span class="in">sudo ss -ulnp <span class="c"># UDPだけ（Luanti）</span></span>
+<span class="in">sudo ss -tlnp 'sport = :22' <span class="c"># 22番に絞り込む</span></span></code></pre>
+      </div>
+      <div class="scroll">
+      <table class="tbl">
+        <thead><tr><th>オプション</th><th>意味</th><th>例</th></tr></thead>
+        <tbody>
+          <tr><td><code>-t</code></td><td>TCPを対象にする</td><td><code>ss -tln</code></td></tr>
+          <tr><td><code>-u</code></td><td>UDPを対象にする。Luantiの確認には必須</td><td><code>ss -uln</code></td></tr>
+          <tr><td><code>-l</code></td><td>待ち受け（LISTEN）中のものだけ表示する</td><td><code>ss -tl</code></td></tr>
+          <tr><td><code>-n</code></td><td>ポート番号を名前に直さず数字のまま表示する</td><td><code>ss -tln</code></td></tr>
+          <tr><td><code>-p</code></td><td>そのポートを使っているプロセス名とPIDを表示する（要sudo）</td><td><code>sudo ss -tlnp</code></td></tr>
+          <tr><td><code>-a</code></td><td>待ち受けだけでなく接続中のものも含める</td><td><code>ss -ta</code></td></tr>
+        </tbody>
+      </table>
+      </div>
+      <div class="code" data-ctx="server">
+  <div class="code-head"><span class="code-title">出力の読み方：ss -tulnp</span></div>
+<pre><code><span class="in">sudo ss -tulnp</span>
+<span class="out">Netid State  Recv-Q Send-Q Local Address:Port Peer Address:Port Process</span>
+<span class="out">udp   UNCONN 0      0            0.0.0.0:30000      0.0.0.0:*    users:(("luantiserver",pid=921,fd=8))</span>
+<span class="out">tcp   LISTEN 0      128          0.0.0.0:22         0.0.0.0:*    users:(("sshd",pid=512,fd=3))</span>
+<span class="out">tcp   LISTEN 0      128             [::]:22            [::]:*    users:(("sshd",pid=512,fd=4))</span></code></pre>
+      </div>
+      <p>読むべき列は <code>Netid</code>、<code>Local Address:Port</code>、<code>Process</code> の3つである。<code>Netid</code> が <code>udp</code> か <code>tcp</code> かは、ファイアウォールでどちらを開けるべきかに直結する。<code>Local Address</code> の <code>0.0.0.0</code> は「すべてのアドレスで待ち受ける」、つまり外部から到達できる状態を意味し、<code>127.0.0.1</code> なら自分自身からしか繋がらない。<code>[::]</code> はIPv6側の同じ意味である。<code>Process</code> 欄のプログラム名とPIDが分かれば、「30000番を先に取っているのは誰か」といった衝突調査がその場で終わる。</p>
+      <div class="call note"><span class="ct">実習ではここで使う</span><p>※ <a href="../day2.html#s2-2">第2回 2-2</a>で、パッケージ付属のサービスが30000番を先に取ってしまう問題を扱った。<code>sudo ss -ulnp</code> を見れば、30000番を掴んでいるプロセスのPIDまで判明するので、原因の特定が確実になる。</p></div>
+
+      <h3 id="c7-add-1-d">Webの応答を取ってくる（curl / wget）</h3>
+      <p><code>curl</code> はURLを指定して通信し、その結果を画面に出すコマンドである。Webサーバの動作確認、APIの試打ち、リダイレクトや証明書の調査に使う。<code>wget</code> はファイルをダウンロードして保存することに特化しており、用途で使い分ける。</p>
+      <div class="code" data-ctx="server">
+  <div class="code-head"><span class="code-title">curl と wget の基本</span></div>
+<pre><code><span class="in">curl -I http://localhost:8080/ <span class="c"># ヘッダだけ取得（動いているかの確認）</span></span>
+<span class="in">curl -s http://localhost:8080/ | head -n 20 <span class="c"># 本文の先頭だけ見る</span></span>
+<span class="in">curl -o page.html http://localhost:8080/ <span class="c"># 指定した名前で保存</span></span>
+<span class="in">curl -fsS -m 5 http://localhost:8080/ &gt; /dev/null <span class="c"># 監視スクリプト向け（失敗時のみエラー、5秒で打ち切り）</span></span>
+<span class="in">wget http://localhost:8080/ <span class="c"># 元のファイル名で保存</span></span></code></pre>
+      </div>
+      <div class="scroll">
+      <table class="tbl">
+        <thead><tr><th>オプション</th><th>意味</th><th>例</th></tr></thead>
+        <tbody>
+          <tr><td><code>-I</code></td><td>本文を取らずヘッダだけ取得する。生死確認に最適</td><td><code>curl -I http://localhost:8080/</code></td></tr>
+          <tr><td><code>-s</code></td><td>進捗表示を黙らせる。パイプに繋ぐときの定番</td><td><code>curl -s URL | head</code></td></tr>
+          <tr><td><code>-f</code></td><td>404などのエラー応答のとき終了コードを0以外にする</td><td><code>curl -fsS URL</code></td></tr>
+          <tr><td><code>-m <var>秒</var></code></td><td>全体の制限時間。応答が無いまま固まるのを防ぐ</td><td><code>curl -m 5 URL</code></td></tr>
+          <tr><td><code>-o <var>名前</var></code></td><td>指定した名前で保存する（<code>-O</code> はURL末尾の名前で保存）</td><td><code>curl -o a.html URL</code></td></tr>
+          <tr><td><code>-L</code></td><td>リダイレクト（301や302）を追いかける</td><td><code>curl -L URL</code></td></tr>
+        </tbody>
+      </table>
+      </div>
+      <div class="code" data-ctx="server">
+  <div class="code-head"><span class="code-title">出力の読み方：curl -I</span></div>
+<pre><code><span class="in">curl -I http://localhost:8080/</span>
+<span class="out">HTTP/1.1 200 OK</span>
+<span class="out">Server: nginx/1.25.3</span>
+<span class="out">Date: Mon, 12 Oct 2026 04:21:07 GMT</span>
+<span class="out">Content-Type: text/html</span>
+<span class="out">Content-Length: 1120</span>
+<span class="out">Last-Modified: Mon, 12 Oct 2026 04:00:11 GMT</span></code></pre>
+      </div>
+      <p>1行目の <code>200 OK</code> が最重要で、これが出ていればWebサーバは正常に応答している。<code>Server:</code> でどのソフトが応えているか、<code>Content-Length</code> で中身が空でないか、<code>Last-Modified</code> で更新が反映されたかが分かる。<code>curl: (7) Failed to connect</code> なら誰も待ち受けていないかポートが塞がれており、<code>curl: (28)</code> は時間切れである。</p>
+      <div class="call note"><span class="ct">実習ではここで使う</span><p>※ <a href="../day5.html#s5-4">第5回 5-4 Web監視ページの公開</a>でnginxコンテナを立ち上げたあと、ブラウザを開く前に <code>curl -I http://localhost:8080/</code> を打つと、サーバ側で完結した確認ができる。ブラウザで見えないときも、これが <code>200 OK</code> なら原因はサーバではなくBYODからの経路側にあると分かる。</p></div>
+
+      <h2 id="c7-add-2"><span class="no">7-9</span>名前解決の全体像</h2>
+      <p>7-3節ではDNSとmDNSの違いに触れた。ここでは、サーバ管理者が知っておくべき名前解決の全体像を整理する。名前からIPアドレスを引く経路は1本ではなく、優先順位のある複数の仕組みが順に試されている。この順番を知っていると、「あるマシンでは引けるのに別のマシンでは引けない」という不可解な現象の説明がつく。</p>
+
+      <h3 id="c7-add-2-a">問い合わせが通る順番と /etc/hosts</h3>
+      <p>Linuxで名前を引くとき、まず参照されるのは <code>/etc/nsswitch.conf</code> に書かれた優先順位で、通常は「<code>/etc/hosts</code> ファイル、次にmDNS、最後にDNSサーバ」の順である。<code>/etc/hosts</code> は名前とIPアドレスを手書きで対応させる小さな表で、ここに書いた内容はDNSより優先される。少数のサーバを固定的に呼び合うときや、DNSが壊れているときの応急処置に使える。</p>
+      <div class="code file" data-ctx="file" data-cwd="/etc/hosts">
+  <div class="code-head"><span class="code-title">/etc/hosts に追記する例（sudo で編集する）</span></div>
+<pre><code><span class="in">127.0.0.1	localhost</span>
+<span class="in">127.0.1.1	mc-24s1234</span>
+<span class="in">10.20.30.42	mc-24s5678 mc-24s5678.local</span></code></pre>
+      </div>
+      <p>DNSサーバ自体のアドレスは、DHCPからもらった値が <code>/etc/resolv.conf</code> に書かれている。<code>cat /etc/resolv.conf</code> で <code>nameserver 10.20.0.53</code> のような行が見えるはずで、この行が無いか宛先が誤っていると、インターネット上のどの名前も引けなくなる。</p>
+      <div class="call warn"><span class="ct">注意</span><p>※ <code>/etc/hosts</code> の既存の行、特に <code>127.0.0.1 localhost</code> と自分のホスト名の行は消さないこと。消すと <code>sudo</code> の実行が遅くなったり、一部のサービスが起動しなくなったりする。編集前に <code>sudo cp /etc/hosts /etc/hosts.bak</code> で控えを取る習慣をつけたい。</p></div>
+
+      <h3 id="c7-add-2-b">DNSの階層と再帰問い合わせ</h3>
+      <p>DNSは世界中のサーバに分散した階層型のデータベースである。<code>www.example.com</code> を引くとき、実際には右から順に、ルートサーバが「<code>com</code> の担当はあちら」と教え、<code>com</code> の担当が「<code>example.com</code> の担当はあちら」と教え、最後に <code>example.com</code> の担当が実際のIPアドレスを答える。この橋渡しを代行してくれるのが、手元の端末が設定しているDNSサーバ（フルサービスリゾルバ）で、この代行のことを再帰問い合わせという。</p>
+      <p>一度引いた答えは、有効期限（TTL）の間キャッシュされる。だからこそ名前解決は速いのだが、逆にドメインの設定を変えても古い答えが返り続けることがある。「設定は変えたのに反映されない」の多くはこのキャッシュが原因である。</p>
+      <dl class="term"><dt>DNS<small>Domain Name System</small></dt><dd>ドメイン名とIPアドレスを対応づける、世界中に分散した階層型のデータベース。手元の端末は代理のDNSサーバに問い合わせ、そのサーバが上位をたどって答えを集めてくる。</dd></dl>
+      <div class="scroll">
+      <table class="tbl">
+        <thead><tr><th>レコード</th><th>意味</th><th>例</th></tr></thead>
+        <tbody>
+          <tr><td><code>A</code></td><td>名前に対応するIPv4アドレス</td><td><code>example.com. A 93.184.216.34</code></td></tr>
+          <tr><td><code>AAAA</code></td><td>名前に対応するIPv6アドレス</td><td><code>example.com. AAAA 2606:2800:220:1:248:1893:25c8:1946</code></td></tr>
+          <tr><td><code>CNAME</code></td><td>別名。「この名前は実はあちらの名前である」と転送する</td><td><code>www.example.com. CNAME example.com.</code></td></tr>
+          <tr><td><code>MX</code></td><td>そのドメイン宛メールを受け取るサーバ</td><td><code>example.com. MX 10 mail.example.com.</code></td></tr>
+          <tr><td><code>NS</code></td><td>そのドメインを担当するDNSサーバ</td><td><code>example.com. NS a.iana-servers.net.</code></td></tr>
+          <tr><td><code>TXT</code></td><td>任意の文字列。ドメイン所有の証明などに使われる</td><td><code>example.com. TXT "v=spf1 ..."</code></td></tr>
+        </tbody>
+      </table>
+      </div>
+
+      <h3 id="c7-add-2-c">名前を引くコマンド（dig / getent hosts）</h3>
+      <p>名前解決を調べるときは、「DNSサーバに直接聞く道具」と「OSの優先順位どおりに引く道具」を使い分ける。前者が <code>dig</code>、後者が <code>getent hosts</code> である。両者の答えが食い違ったら、<code>/etc/hosts</code> かmDNSが割り込んでいるということで、それ自体が有力な手がかりになる。</p>
+      <div class="code" data-ctx="server">
+  <div class="code-head"><span class="code-title">名前解決の調査</span></div>
+<pre><code><span class="in">sudo apt install -y dnsutils <span class="c"># dig / nslookup を入れる（bind9-dnsutils が入る）</span></span>
+<span class="in">dig example.com <span class="c"># 既定のDNSサーバに聞く</span></span>
+<span class="in">dig +short example.com <span class="c"># 答えだけを簡潔に</span></span>
+<span class="in">dig @1.1.1.1 example.com <span class="c"># DNSサーバを指定して聞く（キャッシュの切り分け）</span></span>
+<span class="in">dig +short AAAA example.com <span class="c"># レコード種別を指定</span></span>
+<span class="in">getent hosts <var>ホスト名</var>.local <span class="c"># OSと同じ順番で引く（mDNSもここで効く）</span></span></code></pre>
+      </div>
+      <div class="scroll">
+      <table class="tbl">
+        <thead><tr><th>書式</th><th>意味</th><th>例</th></tr></thead>
+        <tbody>
+          <tr><td><code>dig <var>名前</var></code></td><td>A レコードを問い合わせ、応答の全体を表示する</td><td><code>dig example.com</code></td></tr>
+          <tr><td><code>dig +short</code></td><td>答えの値だけを表示する。スクリプト向き</td><td><code>dig +short example.com</code></td></tr>
+          <tr><td><code>dig @<var>サーバ</var></code></td><td>問い合わせ先のDNSサーバを指定する</td><td><code>dig @1.1.1.1 example.com</code></td></tr>
+          <tr><td><code>dig <var>種別</var> <var>名前</var></code></td><td>AAAA、MX、NS、TXT などを指定して引く</td><td><code>dig MX example.com</code></td></tr>
+          <tr><td><code>dig -x <var>IP</var></code></td><td>逆引き。IPアドレスから名前を引く</td><td><code>dig -x 93.184.216.34</code></td></tr>
+          <tr><td><code>getent hosts <var>名前</var></code></td><td>OSの解決順序（hosts、mDNS、DNS）に従って引く</td><td><code>getent hosts mc-24s5678.local</code></td></tr>
+        </tbody>
+      </table>
+      </div>
+      <div class="code" data-ctx="server">
+  <div class="code-head"><span class="code-title">出力の読み方：dig（抜粋）</span></div>
+<pre><code><span class="in">dig example.com</span>
+<span class="out">;; ANSWER SECTION:</span>
+<span class="out">example.com.		1800	IN	A	93.184.216.34</span>
+<span class="out">;; Query time: 12 msec</span>
+<span class="out">;; SERVER: 10.20.0.53#53(10.20.0.53) (UDP)</span>
+<span class="out">;; status: NOERROR, id: 45012</span></code></pre>
+      </div>
+      <p><code>ANSWER SECTION</code> に行があれば名前は引けている。左から名前、TTL（この例では1800秒キャッシュしてよい）、クラス、レコード種別、値の順である。<code>SERVER:</code> は実際に答えたDNSサーバで、<code>#53</code> はDNSのポート番号である。<code>status:</code> が <code>NOERROR</code> なら正常、<code>NXDOMAIN</code> は「その名前は存在しない」、<code>SERVFAIL</code> はDNSサーバ側の失敗を意味する。<code>ANSWER SECTION</code> が無く <code>NXDOMAIN</code> なら綴りの誤りを真っ先に疑う。</p>
+      <div class="call myth"><span class="ct">よくある誤解・トラブル</span>
+        <span class="q"><code>dig <var>ホスト名</var>.local</code> が答えないので、mDNSが壊れている</span>
+        <p class="a"><code>dig</code> はDNSサーバに直接問い合わせる道具なので、そもそもmDNSを使わない。<code>.local</code> の確認には <code>getent hosts <var>ホスト名</var>.local</code> や <code>ping</code> を使うこと。道具を取り違えると、正常な環境を壊れていると誤診してしまう。</p>
+        <span class="q">名前が引けないときは、いつもDNSサーバのせいである</span>
+        <p class="a">順番に切り分ける。<code>ping 8.8.8.8</code> のようにIPアドレス宛が通るのに名前だけ引けないなら、確かに名前解決の問題である。IPアドレス宛も通らないなら、原因は経路やゲートウェイの側にあり、DNSは無関係である。</p>
+      </div>
+
+      <h2 id="c7-add-3"><span class="no">7-10</span>IPアドレスの読み方</h2>
+      <p>7-2節でIPアドレスとDHCPの概要を扱った。ここではもう一歩踏み込んで、<code>10.20.30.41/24</code> という表記が何を意味するのか、なぜ学外から自分のサーバに届かないのかを説明する。ここは丸暗記ではなく「どこまでが同じ町内か」というイメージで理解するとよい。</p>
+
+      <h3 id="c7-add-3-a">サブネットと /24 の意味</h3>
+      <p>IPv4アドレスは32ビットの数値で、前半が「ネットワーク部（どの町内か）」、後半が「ホスト部（町内の何番地か）」に分かれる。どこまでが前半かを示すのがサブネットマスクで、<code>/24</code> は「先頭24ビットがネットワーク部」という意味である。<code>10.20.30.41/24</code> なら <code>10.20.30.</code> までが町内で、最後の数値が番地にあたる。同じ町内の相手には直接パケットを届けられ、違う町内が相手ならルータ（デフォルトゲートウェイ）に託す。<code>ip r</code> の出力が2行あったのは、この「直接届く範囲」と「それ以外の行き先」を表していたのである。</p>
+      <div class="scroll">
+      <table class="tbl">
+        <thead><tr><th>表記</th><th>サブネットマスク</th><th>同じ町内に入る台数（おおよそ）</th></tr></thead>
+        <tbody>
+          <tr><td><code>/24</code></td><td><code>255.255.255.0</code></td><td>254台（最もよく使われる）</td></tr>
+          <tr><td><code>/16</code></td><td><code>255.255.0.0</code></td><td>65534台</td></tr>
+          <tr><td><code>/8</code></td><td><code>255.0.0.0</code></td><td>約1677万台</td></tr>
+          <tr><td><code>/32</code></td><td><code>255.255.255.255</code></td><td>1台のみ（特定のホストを指す書き方）</td></tr>
+        </tbody>
+      </table>
+      </div>
+      <p>各ネットワークの先頭アドレス（<code>10.20.30.0</code>）はネットワークそのものを指し、末尾（<code>10.20.30.255</code>）は全員宛のブロードキャストに予約されている。だから254台なのである。</p>
+      <dl class="term"><dt>サブネットマスク<small>subnet mask / prefix</small></dt><dd>IPアドレスのうち、どこまでが同じネットワークを指す部分かを決める指定。<code>/24</code> なら先頭3つの数値が同じ相手には直接、違う相手にはルータ経由で届ける。</dd></dl>
+      <dl class="term"><dt>デフォルトゲートウェイ<small>default gateway</small></dt><dd>同じネットワークにいない相手へパケットを託す出口のルータ。<code>ip r</code> の <code>default via</code> の行がこれで、この行が無いと外部のどこにも出られない。</dd></dl>
+
+      <h3 id="c7-add-3-b">プライベートアドレスとNAT</h3>
+      <p>プライベートアドレス（<code>10.0.0.0/8</code>、<code>172.16.0.0/12</code>、<code>192.168.0.0/16</code>）はインターネット上では使えない、組織内専用の番号である。にもかかわらず学内のサーバからインターネットに出られるのは、NAT（Network Address Translation）という仕組みが境界のルータで働き、外へ出るパケットの送信元をルータ自身のグローバルアドレスに書き換えているからである。戻ってきた応答は、ルータが記録した対応表をもとに元の機器へ配送される。</p>
+      <p>この仕組みは「内側から始めた通信」しか対応表に載らない。だから外から中へ突然やってくる通信は行き先が分からず、届かない。これが「学外から自分のRaspberry Piに直接アクセスできない」理由であり、同時に素朴な防御としても働いている。外部に公開したいときは、ルータ側でポート開放（ポートフォワード）の設定をするか、グローバルアドレスを持つVPSを使うことになる。</p>
+      <dl class="term"><dt>NAT<small>Network Address Translation</small></dt><dd>プライベートアドレスをルータのグローバルアドレスに書き換えて外部と通信させる仕組み。内側から始めた通信しか戻り道が分からないため、外から中への接続は既定では届かない。</dd></dl>
+      <div class="call myth"><span class="ct">よくある誤解・トラブル</span>
+        <span class="q">NATの内側にいるから、セキュリティ対策は考えなくてよい</span>
+        <p class="a">NATが防いでいるのは「外から突然来る通信」だけである。同じLANの中にいる機器からは普通に届くし、こちらから怪しいサイトに接続すれば通信は成立してしまう。学内LANも不特定多数が同居する場所であり、<a href="ch05.html#c5-2">第5章 5-2</a>の最小権限やパスワードの強度は、NATの内側でも同じように必要である。</p>
+      </div>
+
+      <h3 id="c7-add-3-c">DHCPと固定IPの使い分け</h3>
+      <p>アドレスの決め方には、DHCPで借りる方法と、手動で固定する方法がある。クライアント機器はDHCPでよいが、他から接続される側であるサーバは、アドレスが変わると困る。実務では固定IPにするか、DHCPサーバ側で「このMACアドレスにはいつもこのアドレスを渡す」と予約する方法を取る。</p>
+      <p>Raspberry Pi OS（bookworm以降）はNetworkManagerがネットワークを管理しており、固定化は <code>nmcli</code> で行う。設定を誤るとSSHが切れて復旧にモニタとキーボードが必要になるため、本実習では扱わない。概要だけ示すと、<code>nmcli connection show</code> で接続の名前を調べ、その接続に対して <code>ipv4.method manual</code>、<code>ipv4.addresses</code>、<code>ipv4.gateway</code>、<code>ipv4.dns</code> を設定したうえで接続し直す、という手順になる。学内ネットワークでは管理者の許可なくアドレスを固定してはならない点にも注意したい。</p>
+      <div class="code" data-ctx="server">
+  <div class="code-head"><span class="code-title">現在の設定を読むだけのコマンド（変更はしない）</span></div>
+<pre><code><span class="in">nmcli connection show <span class="c"># 接続プロファイルの一覧</span></span>
+<span class="in">nmcli device status <span class="c"># インタフェースごとの状態</span></span>
+<span class="in">nmcli -f IP4 device show eth0 <span class="c"># 現在のIPv4設定の詳細</span></span></code></pre>
+      </div>
+      <div class="call warn"><span class="ct">注意</span><p>※ ネットワーク設定の変更は、SSHで接続したまま行うと自分の接続ごと切れることがある。やむを得ず変更する場合は、サーバ本体にモニタとキーボードを繋いだ状態で行うか、元に戻す手順を先に紙に書いてから着手すること。</p></div>
+
+      <h2 id="c7-add-4"><span class="no">7-11</span>SSHを使いこなす</h2>
+      <p>7-6節ではSSHの仕組みを扱った。ここでは日々の運用で効いてくる実用的な使い方をまとめる。毎回長いコマンドを打つ必要はなく、設定ファイルを1つ書けばSSHもscpもrsyncも短い名前で呼べるようになる。</p>
+
+      <h3 id="c7-add-4-a">~/.ssh/config で接続先に名前を付ける</h3>
+      <p>接続元（BYODや自分のPC）の <code>~/.ssh/config</code> に接続先を登録しておくと、<code>ssh mc</code> のような短い指定で接続できる。ポート番号や鍵ファイル、ユーザ名も接続先ごとに覚えさせられるので、打ち間違いが激減する。ファイルが無ければ新規に作ってよい。</p>
+      <div class="code file" data-ctx="file" data-cwd="~/.ssh/config">
+  <div class="code-head"><span class="code-title">~/.ssh/config（接続元の端末に置く）</span></div>
+<pre><code><span class="in">Host mc</span>
+<span class="in">    HostName mc-24s1234.local</span>
+<span class="in">    User taro</span>
+<span class="in">    IdentityFile ~/.ssh/id_ed25519</span>
+<span class="in">    ServerAliveInterval 60</span>
+<span class="in"></span>
+<span class="in">Host mc-ip</span>
+<span class="in">    HostName 10.20.30.41</span>
+<span class="in">    User taro</span></code></pre>
+      </div>
+      <div class="code" data-ctx="byod">
+  <div class="code-head"><span class="code-title">設定後の使い方（接続元で実行）</span></div>
+<pre><code><span class="in">chmod 600 ~/.ssh/config <span class="c"># 自分だけが読める権限にしておく</span></span>
+<span class="in">ssh mc <span class="c"># これだけで接続できる</span></span>
+<span class="in">scp ./memo.txt mc:~/ <span class="c"># scpでも同じ名前が使える</span></span>
+<span class="in">ssh mc 'uptime' <span class="c"># 接続してコマンドを1つだけ実行して戻る</span></span></code></pre>
+      </div>
+      <p><code>ServerAliveInterval 60</code> は60秒ごとに小さな信号を送って接続を維持する設定で、しばらく操作しないと切れてしまう環境で効く。<code>Host</code> の行の名前は自由に決めてよい。</p>
+
+      <h3 id="c7-add-4-b">よく使うオプションとポート転送</h3>
+      <p>SSHの主なオプションは数えるほどしかない。特に <code>-L</code> によるポート転送は、「サーバの中からしか見えないサービスを、手元のブラウザで見る」ための強力な道具である。</p>
+      <div class="scroll">
+      <table class="tbl">
+        <thead><tr><th>オプション</th><th>意味</th><th>例</th></tr></thead>
+        <tbody>
+          <tr><td><code>-p <var>番号</var></code></td><td>接続先のSSHポートを指定する（scpは大文字の <code>-P</code>）</td><td><code>ssh -p 2222 taro@host</code></td></tr>
+          <tr><td><code>-i <var>鍵</var></code></td><td>使う秘密鍵のファイルを指定する</td><td><code>ssh -i ~/.ssh/id_ed25519 taro@host</code></td></tr>
+          <tr><td><code>-v</code></td><td>接続過程を詳しく表示する。認証が通らない原因調査に使う</td><td><code>ssh -v taro@host</code></td></tr>
+          <tr><td><code>-L <var>手元</var>:<var>宛先</var>:<var>宛先ポート</var></code></td><td>手元のポートをサーバ経由で転送する</td><td><code>ssh -L 8080:localhost:8080 taro@host</code></td></tr>
+          <tr><td><code>-N</code></td><td>シェルを開かず転送だけ行う。<code>-L</code> と組で使う</td><td><code>ssh -N -L 8080:localhost:8080 taro@host</code></td></tr>
+          <tr><td><code>-t</code></td><td>リモートで対話的なコマンドを動かすときに端末を割り当てる</td><td><code>ssh -t taro@host 'sudo journalctl -f'</code></td></tr>
+        </tbody>
+      </table>
+      </div>
+      <div class="code" data-ctx="byod">
+  <div class="code-head"><span class="code-title">ポート転送の例（接続元で実行）</span></div>
+<pre><code><span class="in">ssh -N -L 8080:localhost:8080 taro@mc-24s1234.local <span class="c"># この端末はつないだままにする</span></span>
+<span class="cm">（別の端末やブラウザから http://localhost:8080/ を開くと、サーバ側の8080番に繋がる）</span></code></pre>
+      </div>
+      <p>この仕組みなら、サーバ側でファイアウォールを開けなくても手元から中身を確認できる。<kbd>Ctrl</kbd>+<kbd>C</kbd>で転送を終了する。</p>
+
+      <h3 id="c7-add-4-c">scp と rsync でファイルを運ぶ</h3>
+      <p><code>scp</code> は1回きりのコピー、<code>rsync</code> は差分だけを送る繰り返しのコピーに向く。バックアップを別のマシンに置く運用では、2回目以降が圧倒的に速い <code>rsync</code> が定番である。</p>
+      <div class="code" data-ctx="server">
+  <div class="code-head"><span class="code-title">scp と rsync</span></div>
+<pre><code><span class="in">scp -r ~/backup taro@10.20.30.42:~/backup-from-mc <span class="c"># ディレクトリごと送る（-r）</span></span>
+<span class="in">scp -P 2222 ./memo.txt taro@host:~/ <span class="c"># ポート指定は大文字のP</span></span>
+<span class="in">rsync -avn ~/backup/ taro@10.20.30.42:~/backup-from-mc/ <span class="c"># -n で予行演習（何もコピーしない）</span></span>
+<span class="in">rsync -av ~/backup/ taro@10.20.30.42:~/backup-from-mc/ <span class="c"># 実行。差分だけ転送される</span></span>
+<span class="in">rsync -av -e 'ssh -p 2222' ~/backup/ taro@host:~/backup/ <span class="c"># SSHのポートを変えている場合</span></span></code></pre>
+      </div>
+      <div class="scroll">
+      <table class="tbl">
+        <thead><tr><th>オプション</th><th>意味</th><th>例</th></tr></thead>
+        <tbody>
+          <tr><td><code>-a</code></td><td>属性（所有者、時刻、権限）を保ったまま再帰的にコピーする</td><td><code>rsync -a src/ dst/</code></td></tr>
+          <tr><td><code>-v</code></td><td>転送したファイル名を表示する</td><td><code>rsync -av src/ dst/</code></td></tr>
+          <tr><td><code>-n</code></td><td>予行演習。実際には転送せず、何が起きるかだけ表示する</td><td><code>rsync -avn src/ dst/</code></td></tr>
+          <tr><td><code>-z</code></td><td>転送中に圧縮する。低速な回線で効く</td><td><code>rsync -avz src/ dst/</code></td></tr>
+          <tr><td><code>--delete</code></td><td>送り元に無いファイルを送り先から削除する（危険）</td><td><code>rsync -av --delete src/ dst/</code></td></tr>
+          <tr><td><code>-e <var>コマンド</var></code></td><td>転送に使うリモートシェルを指定する</td><td><code>rsync -av -e ssh src/ host:dst/</code></td></tr>
+        </tbody>
+      </table>
+      </div>
+      <div class="call warn"><span class="ct">注意</span><p>※ <code>rsync</code> の <code>--delete</code> は送り先を送り元に合わせて削除する。送り元のパスを打ち間違えたまま実行すると、送り先のファイルが消える。必ず先に <code>-n</code> を付けて予行演習し、表示された内容を確認してから本番を実行すること。末尾のスラッシュの有無で意味が変わる点にも注意が必要で、<code>~/backup/</code> は「中身を」、<code>~/backup</code> は「そのディレクトリごと」を意味する。</p></div>
+
+      <h3 id="c7-add-4-d">known_hosts と鍵の管理</h3>
+      <p>初回接続で確認したサーバの指紋は、接続元の <code>~/.ssh/known_hosts</code> に保存される。サーバを作り直すと指紋が変わるため、次の接続時に大きな警告が出て接続を拒否される。これは「偽のサーバにすり替わっていないか」を守る大切な機能なので、警告そのものは正常な動作である。自分でOSを入れ直したなど心当たりがあるときだけ、古い記録を消してやり直す。</p>
+      <div class="code" data-ctx="byod">
+  <div class="code-head"><span class="code-title">古いホスト鍵の記録を消す（接続元で実行）</span></div>
+<pre><code><span class="in">ssh-keygen -R mc-24s1234.local <span class="c"># そのホストの記録だけを削除</span></span>
+<span class="in">ssh-keygen -R 10.20.30.41 <span class="c"># IPアドレスで記録されている分も削除</span></span>
+<span class="in">ssh mc-24s1234.local <span class="c"># 再接続し、指紋を確認してyesと答える</span></span></code></pre>
+      </div>
+      <p>鍵そのものの管理では、次の3点を守れば大きな事故は起きない。第1に、秘密鍵（<code>id_ed25519</code>、<code>.pub</code> の付かないほう）は絶対に他人に渡さず、クラウドストレージや公開リポジトリにも置かない。第2に、鍵を作るときはパスフレーズを付ける。第3に、権限を正しくする。<code>~/.ssh</code> は700、秘密鍵は600、<code>authorized_keys</code> は600でないとSSHは鍵を拒否する（理由は<a href="ch05.html#c5-3">第5章 5-3</a>のパーミッションのとおりである）。</p>
+      <div class="call note"><span class="ct">実習ではここで使う</span><p>※ 鍵ペアの作成と登録は<a href="../day3.html#s3-7">第3回 3-7 SSHを公開鍵認証に切り替える</a>で行う。<code>~/.ssh/config</code> の作成はそこまで進んだあとに取り組むと、<code>IdentityFile</code> の意味がそのまま理解できる。</p></div>
+
+      <h2 id="c7-add-5"><span class="no">7-12</span>HTTPとTLSの基礎</h2>
+      <p>Webは最も身近なネットワークサービスであり、<a href="../day5.html#s5-4">第5回</a>で公開する稼働状況ページもHTTPで配信されている。ここではサーバ管理者として最低限知っておきたいHTTPの構造と、HTTPSが何を守っているのかを整理する。</p>
+
+      <h3 id="c7-add-5-a">リクエストとレスポンス</h3>
+      <p>HTTPは「クライアントが要求（リクエスト）を1つ送り、サーバが応答（レスポンス）を1つ返す」という、驚くほど単純な文字のやりとりである。要求はメソッド（<code>GET</code> や <code>POST</code>）とパス、ヘッダからなり、応答はステータス行、ヘッダ、本文からなる。ブラウザが画面に描いているのは、この応答の本文（HTML）である。</p>
+      <div class="scroll">
+      <table class="tbl">
+        <thead><tr><th>ステータス</th><th>意味</th><th>サーバ管理者としての読み方</th></tr></thead>
+        <tbody>
+          <tr><td><code>200 OK</code></td><td>成功</td><td>正常。まずここを目指す</td></tr>
+          <tr><td><code>301</code> / <code>302</code></td><td>移動した（リダイレクト）</td><td><code>curl -L</code> で追わないと本文が空に見える</td></tr>
+          <tr><td><code>403 Forbidden</code></td><td>権限が無い</td><td>ファイルの権限や、Webサーバの設定を疑う</td></tr>
+          <tr><td><code>404 Not Found</code></td><td>そのパスに何も無い</td><td>URLの綴りか、置き場所のディレクトリが違う</td></tr>
+          <tr><td><code>500</code> 系</td><td>サーバ内部のエラー</td><td>クライアントではなくサーバ側の問題。ログを読む</td></tr>
+          <tr><td><code>502</code> / <code>504</code></td><td>後ろ側のサービスが応答しない</td><td>コンテナやアプリが落ちていないか確認する</td></tr>
+        </tbody>
+      </table>
+      </div>
+      <p>大まかには、4で始まる番号は要求した側の問題、5で始まる番号はサーバ側の問題である。この区別だけでも、原因を探す場所が半分に絞れる。</p>
+      <dl class="term"><dt>ステータスコード<small>HTTP status code</small></dt><dd>HTTPの応答の1行目に付く3桁の番号。200番台は成功、300番台は移動、400番台は要求側の誤り、500番台はサーバ側の障害を表す。</dd></dl>
+
+      <h3 id="c7-add-5-b">curl -v でやりとりを覗く</h3>
+      <p>実際のやりとりは <code>curl -v</code> で見える。<code>&gt;</code> で始まる行が自分が送った要求、<code>&lt;</code> で始まる行がサーバから返ってきた応答である。教科書の図より、この生の出力を一度見ておくほうが理解が早い。</p>
+      <div class="code" data-ctx="server">
+  <div class="code-head"><span class="code-title">出力の読み方：curl -v（抜粋）</span></div>
+<pre><code><span class="in">curl -v -s -o /dev/null http://localhost:8080/</span>
+<span class="out">*   Trying 127.0.0.1:8080...</span>
+<span class="out">* Connected to localhost (127.0.0.1) port 8080</span>
+<span class="out">&gt; GET / HTTP/1.1</span>
+<span class="out">&gt; Host: localhost:8080</span>
+<span class="out">&gt; User-Agent: curl/7.88.1</span>
+<span class="out">&gt; Accept: */*</span>
+<span class="out">&gt;</span>
+<span class="out">&lt; HTTP/1.1 200 OK</span>
+<span class="out">&lt; Server: nginx/1.25.3</span>
+<span class="out">&lt; Content-Type: text/html</span>
+<span class="out">&lt; Content-Length: 1120</span>
+<span class="out">&lt;</span>
+<span class="out">* Connection #0 to host localhost left intact</span></code></pre>
+      </div>
+      <p><code>*</code> で始まる行はcurl自身の説明である。<code>Trying</code> と <code>Connected</code> まで進んでいれば、TCPの接続そのものは成功している。ここで止まるならポートかファイアウォールの問題で、HTTPの話ではない。<code>&lt; HTTP/1.1 200 OK</code> まで来ればサーバの設定は正しい。<code>-o /dev/null</code> は本文を捨てる指定で、ヘッダの流れだけを見たいときに便利である。</p>
+
+      <h3 id="c7-add-5-c">HTTPSは何を守っているか</h3>
+      <p>HTTPSは、HTTPの通信をTLS（Transport Layer Security）で包んだものである。TLSが提供するのは次の3つで、この3点を区別できると「HTTPSだから安全」という雑な理解から抜け出せる。</p>
+      <ol>
+        <li>暗号化：通信路の途中にいる第三者に中身を読ませない。</li>
+        <li>完全性：途中で書き換えられたら検知できる。</li>
+        <li>認証：接続先が名乗ったとおりのドメインの持ち主であることを確かめる。</li>
+      </ol>
+      <p>3番目を支えているのがサーバ証明書である。証明書には「このドメインの公開鍵はこれである」と書かれ、認証局（CA）の署名が付いている。ブラウザやOSは信頼できる認証局の一覧をあらかじめ持っていて、その署名を検証することで証明書の正しさを確かめる。証明書には有効期限があり、期限切れはWebサイトの障害原因として非常にありふれている。</p>
+      <p>逆に、TLSが守らないものもはっきりしている。サーバの中身が安全かどうか、置いてあるファイルの権限が適切かどうか、そのサイトの運営者が善良かどうかは、TLSの関知するところではない。鍵マークは「通信路が保護されている」ことの印であって、「相手が信頼できる」ことの印ではない。</p>
+      <dl class="term"><dt>TLS<small>Transport Layer Security / HTTPS</small></dt><dd>通信を暗号化し、改ざんを検知し、接続先のドメインを証明書で確認する仕組み。HTTPをこれで包んだものがHTTPSである。守るのは通信路であって、サーバの中身の安全ではない。</dd></dl>
+      <p>公開サーバに証明書を用意する方法としては、Let's Encryptという無料の認証局と、その自動取得ツールであるcertbotが広く使われている。ドメイン名を持ち、インターネットから到達できるサーバがあれば、証明書の取得と自動更新まで自動化できる。ただし本実習のサーバは学内のプライベートアドレスにあり、インターネットから到達できないため、この手順は扱わない。仕組みとして「証明書は無料で自動更新できる時代になった」ことだけ知っておけば十分である。</p>
+      <div class="call myth"><span class="ct">よくある誤解・トラブル</span>
+        <span class="q">鍵マークが付いていれば、そのサイトは安全なサイトである</span>
+        <p class="a">証明書が証明しているのは「接続先が確かにそのドメインである」ことだけで、運営者の善良さは証明していない。詐欺サイトもHTTPSを使える。ドメイン名そのものを注意して読むことが最終的な防衛線である。</p>
+        <span class="q">社内やLANの中だけならHTTPで十分である</span>
+        <p class="a">同じLANにいる第三者には通信が見えうるし、学内Wi-Fiも不特定多数が同居する場所である。パスワードや個人情報を扱うなら、内部向けでもHTTPSにするか、7-11のSSHポート転送のように別の手段で保護すべきである。</p>
+      </div>
+
+      <h2 id="c7-add-6"><span class="no">7-13</span>ufw コマンドリファレンス</h2>
+      <p>7-5節のとおり、ufwはファイアウォールを簡単に操作するためのツールである。日常的に使うのは状態確認と許可の追加、そして不要になった規則の削除の3つだけである。規則は上から順に評価されるのではなく、ufwが内部で整理するため、番号を指定した削除ができるように <code>status numbered</code> をまず覚えるとよい。</p>
+      <div class="code" data-ctx="server">
+  <div class="code-head"><span class="code-title">ufw の基本操作</span></div>
+<pre><code><span class="in">sudo ufw status verbose <span class="c"># 現在の状態と既定の方針を確認</span></span>
+<span class="in">sudo ufw status numbered <span class="c"># 番号付きで規則を一覧（削除の前に必ず）</span></span>
+<span class="in">sudo ufw allow 22/tcp <span class="c"># SSHを許可（これを忘れて有効化すると締め出される）</span></span>
+<span class="in">sudo ufw allow 30000/udp <span class="c"># LuantiはUDP</span></span>
+<span class="in">sudo ufw allow from 10.20.30.0/24 to any port 8080 proto tcp <span class="c"># 送信元を限定して許可</span></span>
+<span class="in">sudo ufw delete 3 <span class="c"># numbered で表示された3番の規則を削除</span></span>
+<span class="in">sudo ufw limit 22/tcp <span class="c"># 短時間に繰り返す接続を絞る（総当たり対策）</span></span></code></pre>
+      </div>
+      <div class="scroll">
+      <table class="tbl">
+        <thead><tr><th>サブコマンド</th><th>意味</th><th>例</th></tr></thead>
+        <tbody>
+          <tr><td><code>status</code></td><td>有効か無効か、どの規則があるかを表示する</td><td><code>sudo ufw status verbose</code></td></tr>
+          <tr><td><code>status numbered</code></td><td>規則に番号を付けて表示する。削除の前に使う</td><td><code>sudo ufw status numbered</code></td></tr>
+          <tr><td><code>allow</code> / <code>deny</code></td><td>指定したポートや送信元を許可、または拒否する</td><td><code>sudo ufw allow 8080/tcp</code></td></tr>
+          <tr><td><code>delete <var>番号</var></code></td><td>番号で規則を削除する（<code>delete allow 8080/tcp</code> とも書ける）</td><td><code>sudo ufw delete 2</code></td></tr>
+          <tr><td><code>limit</code></td><td>同じ送信元からの短時間の連続接続を制限する</td><td><code>sudo ufw limit 22/tcp</code></td></tr>
+          <tr><td><code>default</code></td><td>規則に当てはまらない通信の既定の扱いを決める</td><td><code>sudo ufw default deny incoming</code></td></tr>
+          <tr><td><code>enable</code> / <code>disable</code></td><td>ファイアウォール自体を有効、無効にする</td><td><code>sudo ufw enable</code></td></tr>
+          <tr><td><code>reset</code></td><td>すべての規則を消して初期状態に戻す</td><td><code>sudo ufw reset</code></td></tr>
+        </tbody>
+      </table>
+      </div>
+      <div class="code" data-ctx="server">
+  <div class="code-head"><span class="code-title">出力の読み方：ufw status numbered</span></div>
+<pre><code><span class="in">sudo ufw status numbered</span>
+<span class="out">Status: active</span>
+<span class="out"></span>
+<span class="out">     To                         Action      From</span>
+<span class="out">     --                         ------      ----</span>
+<span class="out">[ 1] 22/tcp                     ALLOW IN    Anywhere</span>
+<span class="out">[ 2] 30000/udp                  ALLOW IN    Anywhere</span>
+<span class="out">[ 3] 8080/tcp                   ALLOW IN    10.20.30.0/24</span>
+<span class="out">[ 4] 22/tcp (v6)                ALLOW IN    Anywhere (v6)</span></code></pre>
+      </div>
+      <p>まず1行目の <code>Status: active</code> を見る。<code>inactive</code> なら規則を書いても何も効いていない。各行は左から番号、宛先のポート、動作、送信元である。<code>From</code> が <code>Anywhere</code> なら誰からでも入れる状態で、<code>10.20.30.0/24</code> のようにネットワークが書かれていれば送信元が限定されている。<code>(v6)</code> の行はIPv6用に自動生成された対の規則なので、1つ許可すると2行増えるのが普通である。削除するときは、番号が振り直されるため、<b>1つ消すたびに <code>status numbered</code> を取り直す</b>こと。</p>
+      <div class="call warn"><span class="ct">注意</span><p>※ <code>sudo ufw reset</code> はすべての規則を削除してufwを無効化する。作業前に <code>sudo ufw status numbered</code> の出力を実験記録に控えておくこと。また、SSHの規則を消したうえで有効化すると、その瞬間に自分が締め出されて、モニタとキーボードを繋がない限り復旧できなくなる。規則を触る前に <code>sudo ufw status</code> で22番の許可があることを必ず確かめる。</p></div>
+      <div class="call note"><span class="ct">実習ではここで使う</span><p>※ <a href="../day2.html#s2-6">第2回 2-6 ファイアウォールの設定</a>で22番と30000番を開ける。<a href="../day5.html#s5-4">第5回 5-4</a>で8080番を扱うときは、7-5節で述べたとおりDockerが公開するポートはufwを経由しない点を思い出してほしい。</p></div>
 
       <nav class="pager" aria-label="前後のページ">
         <a class="prev" href="ch06.html"><span class="pl">前へ</span><span class="pt">プロセスとサービス管理</span></a>

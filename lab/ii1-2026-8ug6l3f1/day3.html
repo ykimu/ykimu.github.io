@@ -55,11 +55,22 @@
         </tbody>
       </table>
 
+      <h2 id="s3-flow">この回の流れ</h2>
+      <ol class="flow">
+        <li><a href="#s3-1">権限の読み方を覚える</a><span class="fm">ls -l と chmod</span></li>
+        <li><a href="#s3-2">ユーザとsudoを整理する</a><span class="fm">最小権限の原則</span></li>
+        <li><a href="#s3-3">サービスを非root化する</a><span class="fm">この回の山場 35分</span></li>
+        <li><a href="#s3-4">プレイヤーを管理する</a><span class="fm">privsとBAN 30分</span></li>
+        <li><a href="#s3-5">負荷をかけて監視する</a><span class="fm">35分</span></li>
+        <li><a href="#s3-6">ログから事実を読み取る</a><span class="fm">35分</span></li>
+        <li><a href="#s3-7">SSHを公開鍵認証にする</a><span class="fm">15分</span></li>
+      </ol>
+
       <h2 id="s3-1"><span class="no">3-1</span>パーミッション</h2>
 
-      <p>Linuxのすべてのファイル・ディレクトリには「誰が読めるか・書けるか・実行できるか」というアクセス権（パーミッション）が設定されている。<code>ls -l</code> で確認できる。</p>
+      <p>Linuxのすべてのファイル・ディレクトリには「誰が読めるか・書けるか・実行できるか」というアクセス権（パーミッション）が設定されている。<code>ls -l</code> で確認できる。（背景は<a href="ref/ch05.html#c5-3">第5章 5-3 パーミッションの仕組み</a>）</p>
 
-      <div class="code">
+      <div class="code" data-ctx="server">
         <div class="code-head"><span class="code-title">パーミッションの確認</span></div>
 <pre><code><span class="in">ls -l ~/server/luanti.conf</span>
 <span class="out">-rw-r--r-- 1 taro taro 214 ... luanti.conf</span>
@@ -75,7 +86,9 @@
 
       <p>変更には<code>chmod</code>コマンドを使う。記号による指定と数値による指定がある。数値は r=4、w=2、x=1 の合計で表す（rwx=7、r-x=5、r--=4）。</p>
 
-      <div class="code">
+      <p class="why"><b>いま何をするか：</b>記号指定と数値指定の両方を実際に打って、権限の足し引きの感覚をつかむ。</p>
+
+      <div class="code" data-ctx="server">
         <div class="code-head"><span class="code-title">chmodの使い方</span></div>
 <pre><code><span class="in">chmod u+x script.sh <span class="c"># 所有者(u)に実行権(x)を追加</span></span>
 <span class="in">chmod o-w file.txt <span class="c"># その他ユーザ(o)から書き込み権(w)を削除</span></span>
@@ -83,9 +96,13 @@
 <span class="in">chmod 600 secret.txt <span class="c"># rw------- 所有者以外は読めない</span></span></code></pre>
       </div>
 
+      <div class="call pit" id="pit-d3-1"><span class="ct">つまずきポイント</span><p>記号指定と数値指定を混ぜてはいけない。<code>chmod +755</code> や <code>chmod u+755</code> は誤りで、数値指定は <code>chmod 755</code> のように数字だけを書く。記号指定は「足す・引く」（<code>u+x</code>、<code>o-w</code>）、数値指定は「3桁で丸ごと置き換える」という別々の考え方である。数値は左から所有者・グループ・その他の順なので、<code>chmod 644</code> と <code>chmod 664</code> は意味が違う。なお <code>chmod 777</code> は「誰でも書き換えられる」という意味であり、困ったときの解決策として使ってはならない。</p></div>
+
       <h3 id="s3-1-b">所有者の変更（chown）</h3>
 
-      <div class="code">
+      <p class="why"><b>いま何をするか：</b>ファイルの持ち主そのものを変える<code>chown</code>を確認する。3-3節でデータをluantiユーザに引き渡すときに使う。</p>
+
+      <div class="code" data-ctx="server">
         <div class="code-head"><span class="code-title">chownの使い方</span></div>
 <pre><code><span class="in">sudo chown <var>ユーザ名</var> ファイル名 <span class="c"># 所有者の変更</span></span>
 <span class="in">sudo chown -R <var>ユーザ名</var>:グループ名 ディレクトリ <span class="c"># 所有者とグループを再帰的に変更</span></span></code></pre>
@@ -93,7 +110,9 @@
 
       <h2 id="s3-2"><span class="no">3-2</span>ユーザ管理とsudo</h2>
 
-      <p>Linuxには全能の管理者ユーザ<strong>root</strong>と、一般ユーザが存在する。すべての作業をrootで行うと、操作ミス一発でシステムを破壊しかねず、乗っ取られたときの被害も甚大になる。そこで、通常の作業は一般ユーザで行い、管理者権限が必要なときだけ<strong>sudo</strong>で一時的に権限を借りる。これが現代のサーバ運用の基本原則（最小権限の原則）である。</p>
+      <p>Linuxには全能の管理者ユーザ<strong>root</strong>と、一般ユーザが存在する。すべての作業をrootで行うと、操作ミス一発でシステムを破壊しかねず、乗っ取られたときの被害も甚大になる。</p>
+
+      <p>そこで、通常の作業は一般ユーザで行い、管理者権限が必要なときだけ<strong>sudo</strong>で一時的に権限を借りる。これが現代のサーバ運用の基本原則（最小権限の原則）である。（背景は<a href="ref/ch05.html#c5-2">第5章 5-2 rootとsudo</a>）</p>
 
       <table class="tbl">
         <thead><tr><th>コマンド</th><th>役割</th></tr></thead>
@@ -106,11 +125,19 @@
         </tbody>
       </table>
 
+      <div class="call pit" id="pit-d3-2"><span class="ct">つまずきポイント</span><p><code>sudo</code> が聞いてくるパスワードは<strong>rootのパスワードではなく、今ログインしている自分のパスワード</strong>である。打ち込んでも画面には何も表示されないが、これは仕様なのでそのまま入力して<kbd>Enter</kbd>を押す。また <code>su - luanti</code> と <code>su luanti</code> は別物で、前者は相手ユーザのホームディレクトリと環境変数まで引き継ぐ「ログインし直し」、後者はユーザだけ変わって<code>$HOME</code>などが元のままになる。本実習では必ず <code>-</code> を付けた <code>su - luanti</code> を使う。今どのユーザなのか分からなくなったら <code>whoami</code> と <code>pwd</code> で確かめる。</p></div>
+
       <h2 id="s3-3"><span class="no">3-3</span>演習：サービスの非root化</h2>
 
-      <p>現在、Luantiサーバは自分のユーザ（sudo権限を持つ）で動いている。もしサーバソフトに脆弱性があって乗っ取られたら、攻撃者は自分の権限をそのまま手に入れる。そこで、sudo権限を持たない専用ユーザ「luanti」を作り、サービスをそのユーザで動かすように変更する。これは実務のサーバ構築で必ず行う定番の作業である。<code>adduser</code> を実行すると英語の対話（パスワード設定、氏名などの質問）が始まる。氏名等は<kbd>Enter</kbd>連打で空欄のままでよい。ここで設定したluantiユーザのパスワードは<a href="day4.html">第4回</a>以降 <code>su - luanti</code> のたびに使うので、必ず記録しておくこと。なお、本来は「サーバを公開する前に非root化まで済ませる」のが望ましい順序である。実習では学習の順番の都合で公開が先になっているが、実務で自分のサーバを立てるときは「公開は最小権限にしてから」を原則にしよう。</p>
+      <p>現在、Luantiサーバは自分のユーザ（sudo権限を持つ）で動いている。もしサーバソフトに脆弱性があって乗っ取られたら、攻撃者は自分の権限をそのまま手に入れる。そこで、sudo権限を持たない専用ユーザ「luanti」を作り、サービスをそのユーザで動かすように変更する。これは実務のサーバ構築で必ず行う定番の作業である。</p>
 
-      <div class="code">
+      <p><code>adduser</code> を実行すると英語の対話（パスワード設定、氏名などの質問）が始まる。氏名等は<kbd>Enter</kbd>連打で空欄のままでよい。<strong>ここで設定したluantiユーザのパスワードは<a href="day4.html">第4回</a>以降 <code>su - luanti</code> のたびに使うので、必ず記録しておくこと。</strong></p>
+
+      <p>なお、本来は「サーバを公開する前に非root化まで済ませる」のが望ましい順序である。実習では学習の順番の都合で公開が先になっているが、実務で自分のサーバを立てるときは「公開は最小権限にしてから」を原則にしよう。（サービスの仕組みの背景は<a href="ref/ch06.html#c6-2">第6章 6-2 systemdとサービス</a>）</p>
+
+      <p class="why"><b>いま何をするか：</b>専用ユーザを作り、サービスを止めてからワールドのデータを丸ごとそのユーザの持ち物にする。</p>
+
+      <div class="code" data-ctx="server">
         <div class="code-head"><span class="code-title">専用ユーザの作成とデータ移動</span></div>
 <pre><code><span class="in">sudo adduser luanti <span class="c"># 専用ユーザの作成</span></span>
 <span class="in">sudo systemctl stop luanti <span class="c"># サービスを一旦停止</span></span>
@@ -120,7 +147,7 @@
 
       <p>次に、ユニットファイルの <code>[Service]</code> セクションを書き換える。変更するのは <code>User</code>、<code>WorkingDirectory</code>、<code>ExecStart</code> 内の2か所のパスに加え、<code>Environment=HOME=/home/luanti</code> の1行を追加する点である。Luantiは実行ユーザのホームディレクトリを参照して動くため、この行がないと <code>User=luanti</code> に変えても起動に失敗することがある。書き換え後の <code>[Service]</code> セクションは次のとおり（<code>[Unit]</code> と <code>[Install]</code> は第2回のままでよい）。</p>
 
-      <div class="code file">
+      <div class="code file" data-ctx="file" data-cwd="/etc/systemd/system/luanti.service">
         <div class="code-head"><span class="code-title">/etc/systemd/system/luanti.service の [Service] セクション（変更後）</span></div>
 <pre><code><span class="in">[Service]</span>
 <span class="in">User=luanti</span>
@@ -130,7 +157,9 @@
 <span class="in">Restart=on-failure</span></code></pre>
       </div>
 
-      <div class="code">
+      <p class="why"><b>いま何をするか：</b>ユニットファイルを書き換え、systemdに読み直させてから起動し、動いているユーザが変わったことを確かめる。</p>
+
+      <div class="code" data-ctx="server">
         <div class="code-head"><span class="code-title">ユニットファイルの変更と再起動</span></div>
 <pre><code><span class="in">sudo vi /etc/systemd/system/luanti.service</span>
 <span class="cm">（上の [Service] セクションのとおりに書き換える）</span>
@@ -143,13 +172,30 @@
 
       <div class="call note"><span class="ct">Note</span><p>※ うまく起動しない場合は <code>journalctl -u luanti -e</code> でエラーを読む。たいていは <code>chown</code> のし忘れ（Permission denied）か、パスの書き間違いである。エラーメッセージは敵ではなく、原因を教えてくれる味方である。教員・支援員を呼ぶ前のセルフチェック3点：①<code>whoami</code>（今どのユーザか）②<code>pwd</code>（どこにいるか）③直前のコマンドの誤字。<code>su</code> で入れ子になったら <code>exit</code> で戻れる。</p></div>
 
+      <div class="call pit" id="pit-d3-3"><span class="ct">つまずきポイント</span><p>ユニットファイルを書き換えただけでは変更は効かない。<code>sudo systemctl daemon-reload</code> を挟まずに <code>start</code> すると、systemdは<strong>古い内容のまま起動する</strong>ので、「直したのに直らない」と悩むことになる。もう一つの定番は <code>sudo chown -R luanti:luanti /home/luanti/server</code> のし忘れで、このときログには <code>Permission denied</code> が並ぶ。<code>journalctl -u luanti -e</code> でそれを見つけたら、<code>ls -l /home/luanti/server</code> で所有者を確かめ、<code>chown</code> をやり直す。<code>-R</code>（再帰的）を付けないと中のファイルは自分のユーザのままなので、必ず付けること。</p></div>
+
+      <div class="mini"><span class="ct">ここまでの確認</span><ul>
+        <li><code>systemctl status luanti</code> が <code>active (running)</code> になっている</li>
+        <li><code>ps aux | grep luanti</code> の行の先頭（実行ユーザ）が <code>luanti</code> になっている</li>
+        <li><code>ls -l /home/luanti/server</code> の所有者とグループが <code>luanti luanti</code> になっている</li>
+      </ul></div>
+
       <h2 id="s3-4"><span class="no">3-4</span>Luantiのプレイヤー管理</h2>
 
       <p>Linuxのユーザ管理と同じ発想が、Luantiサーバの中にもある。Luantiのアカウントはサーバごとに独立しており、プレイヤーが初回接続時に入力した名前とパスワードがそのサーバに登録される（登録内容はワールド内の <code>auth.sqlite</code> にパスワードのハッシュとして保存される。ハッシュについては<a href="ref/ch05.html">補足資料第5章</a>を参照）。</p>
 
-      <p>プレイヤーができることは<strong>privs（権限）</strong>で制御される。<code>luanti.conf</code> の <code>name</code> に指定したプレイヤー（＝あなた）は管理者としてすべての権限を持ち、ゲーム内のチャット（<kbd>T</kbd>キー）から管理コマンドを実行できる。Linuxのユーザ管理と対比して理解するとよい：アカウント登録⇔adduser、privs⇔グループと権限、/grant・/revoke⇔usermod（権限の付け外し）、/ban⇔特定の接続元（IPアドレス）からの接続拒否。</p>
+      <p>プレイヤーができることは<strong>privs（権限）</strong>で制御される。<code>luanti.conf</code> の <code>name</code> に指定したプレイヤー（＝あなた）は管理者としてすべての権限を持ち、ゲーム内のチャット（<kbd>T</kbd>キー）から管理コマンドを実行できる。Linuxのユーザ管理と対比して理解するとよい。</p>
 
-      <div class="code file">
+      <ul>
+        <li>アカウント登録⇔adduser</li>
+        <li>privs⇔グループと権限</li>
+        <li>/grant・/revoke⇔usermod（権限の付け外し）</li>
+        <li>/ban⇔特定の接続元（IPアドレス）からの接続拒否</li>
+      </ul>
+
+      <p class="why"><b>いま何をするか：</b>ゲーム内チャットから使う管理コマンドを一通り押さえる。これらはサーバのターミナルではなく、Luantiのチャット欄に打ち込む。</p>
+
+      <div class="code file" data-ctx="chat">
         <div class="code-head"><span class="code-title">管理コマンド（ゲーム内チャットで実行）</span></div>
 <pre><code><span class="in">/status <span class="c"># サーバの状態と接続者一覧</span></span>
 <span class="in">/privs <var>プレイヤー名</var> <span class="c"># 権限の確認</span></span>
@@ -162,13 +208,25 @@
 
       <div class="call note"><span class="ct">Note</span><p>※ アイテムを直接入手する <code>/giveme</code> は、本実習の環境では権限が登録されておらず（unknown privilege）使えない。TNTなどのアイテムが必要なときは、上のように <code>creative</code> 権限を与えてクリエイティブモードのインベントリから取り出す。サーバ全体をクリエイティブにしたい場合は <code>luanti.conf</code> に <code>creative_mode = true</code> を追記してサービスを再起動してもよい。</p></div>
 
-      <p>近くの人に自分のサーバへ接続してもらい、①一般プレイヤーには管理コマンドが実行できないこと、②<code>/grant</code> で権限を与えると実行できるようになること、③相手が接続中に <code>/ban</code> すると、その端末から再接続できなくなること（<code>/ban</code> は名前ではなくIPアドレスを禁止するため、接続中のプレイヤーにしか使えない。解除は <code>/unban</code>）を確認しよう。相手がいない場合は教員・支援員が接続役を務めるので申し出ること。</p>
+      <p>近くの人に自分のサーバへ接続してもらい、次の3点を確認しよう。相手がいない場合は教員・支援員が接続役を務めるので申し出ること。</p>
+
+      <ol>
+        <li>一般プレイヤーには管理コマンドが実行できないこと。</li>
+        <li><code>/grant</code> で権限を与えると実行できるようになること。</li>
+        <li>相手が接続中に <code>/ban</code> すると、その端末から再接続できなくなること（<code>/ban</code> は名前ではなくIPアドレスを禁止するため、接続中のプレイヤーにしか使えない。解除は <code>/unban</code>）。</li>
+      </ol>
 
       <div class="call note"><span class="ct">Note</span><p>※ セキュリティ上の要点が2つある。第一に、管理者名の先取り登録：<code>name</code> に指定した名前は「最初にその名前で登録した人」のものになるため、サーバ公開後は真っ先に自分で登録する。第二に、パスワードの使い回し禁止：サーバ管理者は<code>auth.sqlite</code>内のハッシュにアクセスできるため、プレイヤーとして他人のサーバに登録するパスワードは、他のサービスと共用しない使い捨てのものにする。</p></div>
 
+      <div class="mini"><span class="ct">ここまでの確認</span><ul>
+        <li><code>/status</code> で自分と接続者の名前が表示される</li>
+        <li><code>/privs 相手の名前</code> の結果が、<code>/grant</code> や <code>/revoke</code> の前後で変わる</li>
+        <li><code>/ban</code> した相手が再接続できず、<code>/unban</code> で戻せることを確認した</li>
+      </ul></div>
+
       <h2 id="s3-5"><span class="no">3-5</span>サーバの監視</h2>
 
-      <p>サーバ管理者は「今サーバが健康かどうか」を数値で把握する。おもな確認項目は、負荷（load average）、メモリ、ディスク、プロセスの4つである。</p>
+      <p>サーバ管理者は「今サーバが健康かどうか」を数値で把握する。おもな確認項目は、負荷（load average）、メモリ、ディスク、プロセスの4つである。（load averageの読み方の背景は<a href="ref/ch06.html#c6-3">第6章 6-3 負荷の指標を正しく読む</a>）</p>
 
       <div class="scroll">
       <table class="tbl">
@@ -196,11 +254,19 @@
 
       <p>この実験から「なぜmax_users=5に設定したのか」「サーバの性能設計とは何か」を自分の言葉で説明できるようになるはずである。</p>
 
+      <div class="mini"><span class="ct">ここまでの確認</span><ul>
+        <li>平常時と高負荷時のload average（<code>uptime</code>の3つの数値）を数字で記録した</li>
+        <li><code>free -h</code> と <code>vcgencmd measure_temp</code> の値も、同じタイミングで記録した</li>
+        <li>数値の変化と、ゲーム内で感じたラグとを結び付けて説明できる</li>
+      </ul></div>
+
       <h2 id="s3-6"><span class="no">3-6</span>演習：ログ解析</h2>
 
-      <p>サーバに起きたことはすべてログに記録されている。ログを読む力は、障害対応・セキュリティ調査の生命線である。Luantiサーバのログは、systemdのログ基盤（journald）に集約されており、<code>journalctl</code>で読める。</p>
+      <p>サーバに起きたことはすべてログに記録されている。ログを読む力は、障害対応・セキュリティ調査の生命線である。Luantiサーバのログは、systemdのログ基盤（journald）に集約されており、<code>journalctl</code>で読める。（背景は<a href="ref/ch08.html#c8-1">第8章 8-1 ログ管理</a>）</p>
 
-      <div class="code">
+      <p class="why"><b>いま何をするか：</b>Luantiサービスのログを、末尾だけ・リアルタイム・今日の分、と3通りの見方で開いてみる。</p>
+
+      <div class="code" data-ctx="server">
         <div class="code-head"><span class="code-title">サービスログの読み方</span></div>
 <pre><code><span class="in">journalctl -u luanti -e <span class="c"># 末尾（最新）へ移動して表示</span></span>
 <span class="in">journalctl -u luanti -f <span class="c"># リアルタイム監視（Ctrl+Cで終了）</span></span>
@@ -209,7 +275,7 @@
 
       <p>ログには、プレイヤーの入退室、チャット、管理コマンドの実行などが時刻付きで記録される。<code>grep</code>と組み合わせて必要な情報を抽出する。</p>
 
-      <div class="code">
+      <div class="code" data-ctx="server">
         <div class="code-head"><span class="code-title">ログの抽出</span></div>
 <pre><code><span class="in">journalctl -u luanti | grep "joins game" <span class="c"># 入室の記録</span></span>
 <span class="in">journalctl -u luanti | grep "leaves game" <span class="c"># 退室の記録</span></span>
@@ -217,13 +283,19 @@
 <span class="in">journalctl -u luanti | grep CHAT <span class="c"># チャットの記録</span></span></code></pre>
       </div>
 
+      <div class="call pit" id="pit-d3-4"><span class="ct">つまずきポイント</span><p><code>-e</code> と <code>-f</code> は役割が違う。<code>-e</code> は「これまでのログの末尾を開く」で、読み終わったら <code>q</code> で抜ける。<code>-f</code> は「これから出るログを流し続ける」ので、プロンプトが戻ってこないのは正常であり、止めるには<kbd>Ctrl</kbd>+<kbd>C</kbd>を押す。入退室を実際に起こしながら観察したいときは <code>-f</code>、起動失敗の原因を探すときは <code>-e</code> と使い分ける。<strong><code>grep</code> の検索語に空白が入るときは <code>"joins game"</code> のように必ず引用符で囲む。</strong>何も出ないときは、まだその操作をしていないか、大文字小文字が違う（<code>grep -i</code> で試す）ことを疑う。</p></div>
+
       <p><strong>課題：近くの人と互いのサーバで入退室・チャット・死亡などの操作を行い合ったのち、ログだけを証拠として「何時何分に誰が入り、何をして、何時に出て行ったか」を時系列で再構成した調査報告書（テキストファイルで数行程度）を作成しよう。報告書は当日の提出は不要で、実験記録に含めて最終課題として提出する。</strong></p>
 
       <h2 id="s3-7"><span class="no">3-7</span>SSHを公開鍵認証に切り替える</h2>
 
-      <p>ここまでの接続はパスワード認証だった。パスワードは総当たり攻撃に狙われやすく、実務のサーバでは、パスワードの代わりに鍵ペアで本人確認を行う公開鍵認証が標準である（仕組みは<a href="ref/ch07.html">補足資料7.6節</a>）。本実習でもここで切り替えよう。鍵ペアはBYOD側で作り、公開鍵だけをサーバに登録する。秘密鍵はBYODから出さない。</p>
+      <p>ここまでの接続はパスワード認証だった。パスワードは総当たり攻撃に狙われやすく、実務のサーバでは、パスワードの代わりに鍵ペアで本人確認を行う公開鍵認証が標準である（仕組みは<a href="ref/ch07.html#c7-6">補足資料7.6節</a>）。本実習でもここで切り替えよう。</p>
 
-      <div class="code">
+      <p><strong>鍵ペアはBYOD側で作り、公開鍵だけをサーバに登録する。秘密鍵はBYODから出さない。</strong></p>
+
+      <p class="why"><b>いま何をするか：</b>BYODで鍵ペアを作り、公開鍵をサーバへ送り込んでから、パスワードなしでログインできるかを試す。</p>
+
+      <div class="code" data-ctx="byod">
         <div class="code-head"><span class="code-title">公開鍵認証への切替（BYODのターミナルで実行）</span></div>
 <pre><code><span class="in">ssh-keygen -t ed25519 <span class="c"># 鍵ペアの作成（質問はEnterのままでよい）</span></span>
 <span class="in">ssh-copy-id <var>ユーザ名</var>@mc-<var>学籍番号</var>.local <span class="c"># 公開鍵をサーバへ登録</span></span>
@@ -232,6 +304,15 @@
       </div>
 
       <div class="call note"><span class="ct">Note</span><p>※ 秘密鍵（<code>id_ed25519</code>）は絶対に他人に渡さない・記事に貼らない。Windowsのターミナルに <code>ssh-copy-id</code> がない場合は、<code>type $env:USERPROFILE\.ssh\id_ed25519.pub | ssh ユーザ名@ホスト名 "mkdir -p ~/.ssh &amp;&amp; chmod 700 ~/.ssh &amp;&amp; cat &gt;&gt; ~/.ssh/authorized_keys &amp;&amp; chmod 600 ~/.ssh/authorized_keys"</code> で登録できる（サーバ側に <code>~/.ssh</code> がまだ無い場合に備えて <code>mkdir</code> と <code>chmod</code> を含めている）。パスワード認証そのものの無効化（<code>PasswordAuthentication no</code>）は、設定を誤ると締め出されるため最終課題の発展テーマとする。</p></div>
+
+      <div class="call pit" id="pit-d3-5"><span class="ct">つまずきポイント</span><p>この3行は<strong>サーバにSSHでログインした画面ではなく、BYOD自身のターミナルで実行する</strong>。サーバ側で <code>ssh-keygen</code> や <code>ssh-copy-id</code> を打っても、BYODからログインできるようにはならない。今どちらにいるかは、プロンプトのホスト名（<code>mc-学籍番号</code> ならサーバ側）で判断する。また <code>ssh-copy-id</code> はサーバのパスワードを1度だけ聞いてくる。これは公開鍵を置くためのログインであり、正常な動作である。</p>
+        <p>パスワード認証を止める設定（<code>PasswordAuthentication no</code>）は、鍵でログインできることを確かめる前に入れてはならない。設定を誤ったまま接続を切ると、自分が締め出されて復旧にモニタとキーボードが必要になる。試すなら、<strong>ログイン中のターミナルはそのまま開いておき、別のターミナルをもう1つ開いて新規ログインできるか確かめる</strong>のが鉄則である。本実習では最終課題の発展テーマなので、今日は無理に触らなくてよい。</p></div>
+
+      <div class="mini"><span class="ct">ここまでの確認</span><ul>
+        <li>BYODの <code>~/.ssh</code> に <code>id_ed25519</code> と <code>id_ed25519.pub</code> の2つができている</li>
+        <li><code>ssh ユーザ名@mc-学籍番号.local</code> がパスワードを聞かずにログインできる</li>
+        <li>サーバ側の <code>~/.ssh/authorized_keys</code> に自分の公開鍵の行が入っている</li>
+      </ul></div>
 
       <h2 id="s3-check">確認項目</h2>
       <p>達成したら日時・実行コマンド・結果を実験記録に残すこと。</p>
@@ -244,7 +325,7 @@
       </ul>
 
       <h2 id="s3-extra">発展課題</h2>
-      <div class="call extra"><span class="ct">発展課題（任意）</span>
+      <div class="call extra"><span class="ct">発展課題（任意：早く終わった人向け）</span>
         <ul>
           <li>luanti.confの負荷関連の設定（<code>max_block_send_distance</code>、<code>active_block_range</code> など）を調べて、性能と負荷のバランスを調整してみよう。</li>
           <li>ワンライナーに挑戦：<code>journalctl</code>と<code>grep</code>、<code>sort</code>、<code>uniq</code>を組み合わせ、「プレイヤーごとの入室回数ランキング」を1行のコマンドで出力してみよう。</li>

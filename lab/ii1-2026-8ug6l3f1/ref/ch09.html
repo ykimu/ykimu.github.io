@@ -38,9 +38,32 @@
     </aside>
     <article class="doc">
 
+      <div class="chapintro">
+        <div class="box"><span class="ct">この章で分かること</span><ul>
+          <li>シェルスクリプトが「一度手で成功させた作業」を再実行可能にする仕組みであること</li>
+          <li>変数・コマンド置換・条件分岐・繰り返しという4つの基本文法の読み方</li>
+          <li>実習のbackup.shが、なぜあの書き方になっているか</li>
+          <li><code>bash -x</code> と <code>set -eu</code> を使ったデバッグと事故の予防</li>
+        </ul></div>
+        <div class="box use"><span class="ct">実習のどこで使うか</span><ul>
+          <li><a href="../day4.html#s4-2">第4回 4-2 シェルスクリプト（backup.sh）</a></li>
+          <li><a href="../day4.html#s4-3">第4回 4-3 cronによる自動化</a></li>
+          <li><a href="../day5.html#s5-4-a">第5回 稼働状況の自動更新（ミニ演習）</a></li>
+          <li><a href="../day6.html#s6-1">第6回 6-1 課題内容（自動化のテーマ）</a></li>
+        </ul></div>
+      </div>
+
       <h2 id="c9-1"><span class="no">9.1</span>シェルスクリプトとは</h2>
       <p>シェルスクリプトは、シェルに打ち込むコマンドをファイルにまとめたものである。手作業の記録がそのままプログラムになるため、「一度手で成功させた作業を、二度と間違えずに再実行できる」のが本質的な価値である。運用作業（バックアップ、デプロイ、集計）の自動化は、ほとんどここから始まる。</p>
+      <dl class="term"><dt>シェルスクリプト<small>shell script</small></dt><dd>シェルに打ち込むコマンドを順に並べたテキストファイル。新しい言語を覚えるのではなく、普段のコマンドをそのまま書けばよい。</dd></dl>
       <p>1行目の <code>#!/bin/bash</code> はシバン（shebang）と呼ばれ、「このファイルは <code>/bin/bash</code> で実行せよ」という宣言である。スクリプトの実行には、実行権を付与して <code>./backup.sh</code> とする方法と、<code>bash backup.sh</code> とシェルに直接渡す方法がある。前者にはシバンと実行権（<code>chmod +x</code>）が必要で、こちらが実務の標準である。</p>
+      <dl class="term"><dt>シバン<small>shebang / #!</small></dt><dd>スクリプトの1行目に書く <code>#!/bin/bash</code> のこと。どのプログラムでこのファイルを解釈するかをカーネルに伝える。</dd></dl>
+      <div class="call myth"><span class="ct">よくある誤解・トラブル</span>
+        <span class="q"><code>./backup.sh</code> と打ったのに Permission denied と言われる</span>
+        <p class="a">スクリプトに実行権が付いていない。<code>chmod +x ~/backup.sh</code> を実行するか、その場しのぎなら <code>bash ~/backup.sh</code> とシェルに直接渡す。なお、実行権のないファイルは <code>ls -l</code> の並びに <code>x</code> が出ない（<a href="ch05.html">第5章</a>）。</p>
+        <span class="q">スクリプトを置いたディレクトリで <code>backup.sh</code> と打てば動くはず</span>
+        <p class="a">カレントディレクトリはPATHに含まれないのが普通なので、<code>./backup.sh</code> のように「どこにあるか」を明示する必要がある。</p>
+      </div>
 
       <h2 id="c9-2"><span class="no">9.2</span>基本文法</h2>
       <div class="code file">
@@ -70,9 +93,20 @@
         </tbody>
       </table>
       </div>
+      <dl class="term"><dt>コマンド置換<small>$(コマンド)</small></dt><dd>コマンドの実行結果を、その場の文字列として埋め込む書き方。<code>DATE=$(date +%Y%m%d)</code> のように、実行時の日付をファイル名に入れるときに使う。</dd></dl>
+      <dl class="term"><dt>終了コード<small>exit status / $?</small></dt><dd>コマンドが終わるときに返す数値で、0が成功、0以外が失敗を表す。直前のコマンドの値は <code>$?</code> で読め、<code>&amp;&amp;</code> や <code>||</code>、<code>if</code> の判定もこの値を見ている。</dd></dl>
+      <div class="call myth"><span class="ct">よくある誤解・トラブル</span>
+        <span class="q">代入は <code>NAME = "world"</code> と書いても同じ</span>
+        <p class="a">シェルでは <code>=</code> の前後に空白を入れてはいけない。空白を入れると「NAMEというコマンドを引数付きで実行する」と解釈され、command not found になる。</p>
+        <span class="q">変数を引用符で囲むかどうかは好みの問題</span>
+        <p class="a">囲まないと、値に空白が含まれたときに複数の引数に分解される。<code>rm $DEST</code> のような行では、意図しないファイルを消す事故につながる。変数は常に <code>"$DEST"</code> と囲む。</p>
+      </div>
 
       <h2 id="c9-3"><span class="no">9.3</span>backup.shを読み解く</h2>
-      <p>実習<a href="../day4.html">第4回</a>のbackup.shは、基本要素の実践例になっている。改めて各行の意図を追ってみよう。SRC・DEST・KEEPを冒頭で変数にしたのは、設定を1か所に集めて変更しやすくするためである（マジックナンバーを本文に散らばらせない）。<code>DATE=$(date +%Y%m%d_%H%M%S)</code> はコマンド置換で実行時刻をファイル名に埋め込み、世代を区別する。<code>cd "$DEST" || exit 1</code> は「移動に失敗したらそこで止める」安全装置で、もしこれがないと、移動失敗時に意図しないディレクトリで削除処理が走る危険がある。世代削除の1行は、<code>ls -1t</code>（新しい順に1列で表示）→ <code>tail -n +8</code>（8行目以降＝8世代目以降の古い世代）→ <code>xargs -r rm</code>（それらをrmに渡す。-rは対象なしなら何もしない）というパイプの合わせ技である。同じ発想で、tarの行に <code>|| { 作りかけのファイルの削除; 失敗の記録; exit 1; }</code> を付けておくと、「バックアップが失敗したのに完了と記録される」事故も防げる（指導書のbackup.shはこの形にしている）。</p>
+      <p>実習<a href="../day4.html#s4-2">第4回 4-2</a>のbackup.shは、基本要素の実践例になっている。改めて各行の意図を追ってみよう。SRC・DEST・KEEPを冒頭で変数にしたのは、設定を1か所に集めて変更しやすくするためである（マジックナンバーを本文に散らばらせない）。<code>DATE=$(date +%Y%m%d_%H%M%S)</code> はコマンド置換で実行時刻をファイル名に埋め込み、世代を区別する。</p>
+      <p><code>cd "$DEST" || exit 1</code> は「移動に失敗したらそこで止める」安全装置で、もしこれがないと、移動失敗時に意図しないディレクトリで削除処理が走る危険がある。世代削除の1行は、<code>ls -1t</code>（新しい順に1列で表示）→ <code>tail -n +8</code>（8行目以降＝8世代目以降の古い世代）→ <code>xargs -r rm</code>（それらをrmに渡す。-rは対象なしなら何もしない）というパイプの合わせ技である。</p>
+      <p>同じ発想で、tarの行に <code>|| { 作りかけのファイルの削除; 失敗の記録; exit 1; }</code> を付けておくと、「バックアップが失敗したのに完了と記録される」事故も防げる（指導書のbackup.shはこの形にしている）。<strong>失敗を失敗として記録することが、自動化の最低条件である</strong>。このスクリプトを<a href="../day4.html#s4-3">第4回 4-3</a>でcronに載せると、以後は人が見ていない時間に動き続けることになる。</p>
+      <p>世代削除の行に見られるように、小さな道具をパイプでつないで目的の処理を組み立てるのがシェルの流儀である（<a href="ch03.html">第3章</a>）。</p>
 
       <h2 id="c9-4"><span class="no">9.4</span>スクリプトのデバッグ</h2>
       <p>スクリプトが思いどおりに動かないときは、当てずっぽうに書き換える前に「どの行まで進み、変数に何が入っているか」を見えるようにする。最も手軽なのは <code>bash -x</code> による実行トレースと、echoによる変数の確認である。</p>
@@ -86,8 +120,379 @@
 <pre><code><span class="in">#!/bin/bash</span>
 <span class="in">set -eu</span></code></pre>
       </div>
-      <p><code>set -e</code> はコマンドが失敗した時点でスクリプトを止め、<code>-u</code> は未定義の変数をエラーにする。backup.sh の <code>cd "$DEST" || exit 1</code> のような明示的な安全装置と併用するとよい。また、静的検査ツールのshellcheck（Webブラウザ版もある）は、引用符の付け忘れなど定番のミスを自動で指摘してくれる。最終課題でスクリプトを書くときの心強い味方である。</p>
+      <p><code>set -e</code> はコマンドが失敗した時点でスクリプトを止め、<code>-u</code> は未定義の変数をエラーにする。backup.sh の <code>cd "$DEST" || exit 1</code> のような明示的な安全装置と併用するとよい。</p>
+      <p>また、静的検査ツールのshellcheck（Webブラウザ版もある）は、引用符の付け忘れなど定番のミスを自動で指摘してくれる。最終課題（<a href="../day6.html#s6-1">第6回 6-1</a>）でスクリプトを書くときの心強い味方である。</p>
+      <dl class="term"><dt>set -eu</dt><dd>スクリプト冒頭に書く安全装置。<code>-e</code> はコマンドが失敗した時点で実行を止め、<code>-u</code> は未定義の変数の参照をエラーにする。</dd></dl>
+      <dl class="term"><dt>bash -x</dt><dd>スクリプトを実行しながら、各行と変数の展開結果を表示するトレース実行。「どの行まで進み、変数に何が入っているか」を直接目で見るための第一の道具。</dd></dl>
+      <div class="call myth"><span class="ct">よくある誤解・トラブル</span>
+        <span class="q"><code>set -eu</code> を書けば、どんな失敗でも必ず止まる</span>
+        <p class="a">万能ではない。<code>if</code> の条件や <code>||</code> の左側など、失敗が前提の場所では止まらず、パイプの途中のコマンドが失敗しても最後のコマンドが成功すれば通過してしまう。重要な行には <code>|| exit 1</code> を自分で付けるのが確実である。</p>
+        <span class="q">手で実行して動いたのだから、cronでも同じように動くはずだ</span>
+        <p class="a">cronの実行環境は対話シェルとは別物で、PATHも短く、<code>~</code> の展開や作業ディレクトリの前提も異なる。パスは絶対パスで書き、出力はログにリダイレクトして残す（<a href="../day4.html#s4-3">第4回 4-3</a>、<a href="ch08.html#c8-3">8.3節</a>）。</p>
+      </div>
       <div class="call note"><span class="ct">Note</span><p>※ 「手で実行すると動くのにcronだと動かない」ときは、まず絶対パスとPATH（<a href="ch08.html#c8-3">8.3節</a>）を疑う。<code>bash -x</code> の出力をリダイレクトでログに残しておくと、cron環境での調査も速くなる。</p></div>
+
+
+      <h2 id="c9-add-1"><span class="no">9.5</span>文法リファレンス</h2>
+      <p><a href="#c9-2">9.2節</a>では最小限の文法だけを示したが、実際に運用スクリプトを書き始めると、引数の受け取り方や安全装置の書き方が必要になる。ここではそれらを「書くときに引く順」で並べる。文法は暗記するものではなく、必要になったときに正しい形を写せばよい。</p>
+
+      <h3 id="c9-add-1-a">変数と展開</h3>
+      <p>変数は「名前=値」の1行で作る。<code>=</code> の前後に空白を入れないこと、参照するときは二重引用符で囲むこと、この2つが事故を防ぐ原則である。値に空白が含まれていても、囲んであれば1つの値として扱われる。</p>
+      <div class="code file" data-ctx="file" data-cwd="~/vars.sh">
+        <div class="code-head"><span class="code-title">変数と展開の書き方</span></div>
+<pre><code><span class="in">#!/bin/bash</span>
+<span class="in">DEST="$HOME/backup"          # 代入。= の前後に空白を入れない</span>
+<span class="in">KEEP=7                       # 数値もそのまま書く（型はない）</span>
+<span class="in">DATE=$(date +%F)             # コマンド置換</span>
+<span class="in">TOTAL=$((KEEP * 2))          # 算術展開（整数のみ）</span>
+<span class="in">echo "保存先は $DEST です"     # "" の中では $ が展開される</span>
+<span class="in">echo '保存先は $DEST です'     # '' の中では展開されない</span>
+<span class="in">echo "${DATE}_world.tar.gz"  # 変数名の切れ目を {} で明示する</span></code></pre>
+      </div>
+      <div class="scroll">
+      <table class="tbl">
+        <thead><tr><th>書き方</th><th>意味</th><th>例</th></tr></thead>
+        <tbody>
+          <tr><td><code>"$VAR"</code></td><td>値の展開。空白入りでも1つの値として渡る</td><td><code>rm -- "$FILE"</code></td></tr>
+          <tr><td><code>${VAR}</code></td><td>変数名の範囲を明示する。直後に文字が続くとき必須</td><td><code>"${DATE}_world"</code></td></tr>
+          <tr><td><code>${VAR:-既定値}</code></td><td>未設定または空なら既定値を使う（VARは書き換えない）</td><td><code>KEEP="${KEEP:-7}"</code></td></tr>
+          <tr><td><code>${VAR:?メッセージ}</code></td><td>未設定ならメッセージを出して即座に終了する</td><td><code>DEST="${DEST:?保存先が未設定}"</code></td></tr>
+          <tr><td><code>$(コマンド)</code></td><td>コマンド置換。実行結果を文字列として埋め込む</td><td><code>NOW=$(date '+%F %T')</code></td></tr>
+          <tr><td><code>$((式))</code></td><td>算術展開。整数の計算に使う</td><td><code>$((KEEP + 1))</code></td></tr>
+          <tr><td><code>$?</code> ／ <code>$$</code></td><td>直前の終了コード ／ 実行中のスクリプト自身のPID</td><td><code>TMP="/tmp/work.$$"</code></td></tr>
+        </tbody>
+      </table>
+      </div>
+      <dl class="term"><dt>パラメータ展開<small>parameter expansion</small></dt><dd><code>${VAR:-既定値}</code> のように、変数の値を取り出すときに既定値や検査を同時に行う書き方。設定漏れのまま処理が進む事故を、1行で防げる。</dd></dl>
+
+      <h3 id="c9-add-1-b">クォートの規則</h3>
+      <p>シェルのつまずきの多くは引用符に由来する。覚えるのは3つだけである。二重引用符は変数とコマンド置換だけを展開し、単引用符は何も展開せず文字どおりに扱う。バックスラッシュは直後の1文字だけを文字として扱う。</p>
+      <div class="code" data-ctx="server">
+        <div class="code-head"><span class="code-title">クォートの効き方を確かめる</span></div>
+<pre><code><span class="in">NAME="my world"</span>
+<span class="in">echo "$NAME"</span>
+<span class="out">my world</span>
+<span class="in">echo '$NAME'</span>
+<span class="out">$NAME</span>
+<span class="in">echo \$NAME</span>
+<span class="out">$NAME</span>
+<span class="in">ls "$NAME"      <span class="c"># 1つのディレクトリ名として渡る（正しい）</span></span>
+<span class="in">ls $NAME        <span class="c"># my と world の2引数に分解される（事故のもと）</span></span>
+<span class="out">ls: 'my' にアクセスできません: そのようなファイルやディレクトリはありません</span></code></pre>
+      </div>
+      <div class="call warn"><span class="ct">注意</span><p>※ 引用符を省いた <code>rm -rf $DEST</code> は、<code>DEST</code> が空のときに <code>rm -rf</code> だけが残り、値に空白が入っていれば複数の対象を消しにいく。削除を伴う行では、変数を必ず <code>"$DEST"</code> と囲み、<code>${DEST:?}</code> で未設定を弾き、<code>--</code> を付けてオプション誤認を防ぐ。この3点セットは習慣にしてよい。</p></div>
+
+      <h3 id="c9-add-1-c">条件判定：test と [ ] と [[ ]]</h3>
+      <p><code>if</code> が見ているのは「コマンドの終了コードが0かどうか」だけである。<code>[ 条件 ]</code> は <code>test</code> というコマンドの別名であり、角括弧の内側には必ず空白が要る。bashでは <code>[[ 条件 ]]</code> も使え、こちらは変数の分解が起きないぶん安全で、文字列の一致にパターンを書ける。移植性が要るときは <code>[ ]</code>、bash前提でよいときは <code>[[ ]]</code> と使い分ければよい。</p>
+      <div class="scroll">
+      <table class="tbl">
+        <thead><tr><th>条件</th><th>真になるとき</th><th>例</th></tr></thead>
+        <tbody>
+          <tr><td><code>-f パス</code> ／ <code>-d パス</code></td><td>通常ファイルである ／ ディレクトリである</td><td><code>[ -d "$DEST" ]</code></td></tr>
+          <tr><td><code>-e パス</code> ／ <code>-s パス</code></td><td>存在する ／ 存在してサイズが0でない</td><td><code>[ -s "$LOG" ]</code></td></tr>
+          <tr><td><code>-r</code> ／ <code>-w</code> ／ <code>-x</code></td><td>読める ／ 書ける ／ 実行できる</td><td><code>[ -x /usr/games/luantiserver ]</code></td></tr>
+          <tr><td><code>-z 文字列</code> ／ <code>-n 文字列</code></td><td>空である ／ 空でない</td><td><code>[ -z "$1" ]</code></td></tr>
+          <tr><td><code>"$a" = "$b"</code> ／ <code>!=</code></td><td>文字列として等しい ／ 等しくない</td><td><code>[ "$MODE" = "full" ]</code></td></tr>
+          <tr><td><code>-eq -ne -lt -le -gt -ge</code></td><td>整数として等しい、異なる、より小さい など</td><td><code>[ "$USED" -ge 80 ]</code></td></tr>
+          <tr><td><code>!</code> ／ <code>-a</code> ／ <code>-o</code></td><td>否定 ／ かつ ／ または（<code>[[ ]]</code> では <code>&amp;&amp;</code> <code>||</code>）</td><td><code>[ ! -d "$DEST" ]</code></td></tr>
+        </tbody>
+      </table>
+      </div>
+      <div class="code file" data-ctx="file" data-cwd="~/cond.sh">
+        <div class="code-head"><span class="code-title">条件分岐の基本形</span></div>
+<pre><code><span class="in">#!/bin/bash</span>
+<span class="in">DEST="$HOME/backup"</span>
+<span class="in">if [ ! -d "$DEST" ]; then</span>
+<span class="in">  mkdir -p "$DEST"</span>
+<span class="in">elif [ ! -w "$DEST" ]; then</span>
+<span class="in">  echo "保存先に書き込めない: $DEST" &gt;&amp;2</span>
+<span class="in">  exit 1</span>
+<span class="in">fi</span>
+<span class="in"># [[ ]] ならパターンも書ける（右辺は引用符で囲まない）</span>
+<span class="in">if [[ "$(hostname)" == mc-* ]]; then</span>
+<span class="in">  echo "実習用のサーバである"</span>
+<span class="in">fi</span></code></pre>
+      </div>
+      <div class="call myth"><span class="ct">よくある誤解・トラブル</span>
+        <span class="q"><code>if [$# -eq 0]</code> と書いたら unary operator expected と言われる</span>
+        <p class="a"><code>[</code> はコマンド名なので、その後ろに空白が必要である。<code>if [ "$#" -eq 0 ]</code> と、角括弧の内側の両端に空白を入れる。</p>
+        <span class="q">数値の比較にも <code>=</code> を使えばよい</span>
+        <p class="a"><code>[ "$USED" = "80" ]</code> は文字列比較なので、<code>080</code> と <code>80</code> は別物と判定される。数値は <code>-eq</code> や <code>-ge</code> を使う。逆に文字列の比較に <code>-eq</code> を使うと integer expression expected になる。</p>
+      </div>
+
+      <h3 id="c9-add-1-d">繰り返しと分岐：for・while・case</h3>
+      <p>運用スクリプトでよく使う形は3つである。ファイルを1つずつ処理する <code>for</code>、コマンドの出力を1行ずつ読む <code>while read</code>、引数の値で処理を振り分ける <code>case</code> である。</p>
+      <div class="code file" data-ctx="file" data-cwd="~/loop.sh">
+        <div class="code-head"><span class="code-title">for・while・case</span></div>
+<pre><code><span class="in">#!/bin/bash</span>
+<span class="in"># 1) ファイルを1つずつ処理する</span>
+<span class="in">for f in "$HOME"/backup/*.tar.gz; do</span>
+<span class="in">  [ -e "$f" ] || continue        # 1件もないときは *.tar.gz のまま渡るので弾く</span>
+<span class="in">  echo "$f"</span>
+<span class="in">done</span>
+<span class="in"></span>
+<span class="in"># 2) 数値を数える（seq を使わない書き方）</span>
+<span class="in">for i in {1..5}; do echo "回数 $i"; done</span>
+<span class="in"></span>
+<span class="in"># 3) コマンドの出力を1行ずつ読む</span>
+<span class="in">df -h --output=pcent,target | tail -n +2 | while read -r pcent target; do</span>
+<span class="in">  echo "$target が $pcent"</span>
+<span class="in">done</span>
+<span class="in"></span>
+<span class="in"># 4) 引数で処理を振り分ける</span>
+<span class="in">case "${1:-status}" in</span>
+<span class="in">  start)  systemctl start luanti ;;</span>
+<span class="in">  stop)   systemctl stop luanti ;;</span>
+<span class="in">  status) systemctl is-active luanti ;;</span>
+<span class="in">  *)      echo "使い方: $0 {start|stop|status}" &gt;&amp;2; exit 2 ;;</span>
+<span class="in">esac</span></code></pre>
+      </div>
+      <p><code>while read -r 行</code> の <code>-r</code> は、バックスラッシュを特別扱いしないための指定であり、付けるのが既定と考えてよい。<code>break</code> で繰り返しを抜け、<code>continue</code> で次の周回に進む。<code>case</code> の各枝は <code>;;</code> で閉じ、<code>*)</code> が「どれにも当てはまらないとき」である。</p>
+
+      <h3 id="c9-add-1-e">関数と引数</h3>
+      <p>同じ処理が2回出てきたら関数にする。関数の中でも引数は <code>$1</code>、<code>$2</code> で受け取れる（スクリプト自身の引数とは別物になる）。全部まとめて次のコマンドに渡したいときは <code>"$@"</code> を使う。<code>"$*"</code> は全体が1つの文字列に潰れてしまうので、通常は <code>"$@"</code> が正しい。</p>
+      <div class="code file" data-ctx="file" data-cwd="~/args.sh">
+        <div class="code-head"><span class="code-title">引数の受け取りと関数</span></div>
+<pre><code><span class="in">#!/bin/bash</span>
+<span class="in">usage() {                       # 関数の定義</span>
+<span class="in">  echo "使い方: $0 &lt;世代数&gt; [保存先]" &gt;&amp;2</span>
+<span class="in">  exit 2</span>
+<span class="in">}</span>
+<span class="in"></span>
+<span class="in">[ "$#" -ge 1 ] || usage         # 引数が足りなければ使い方を出して終了</span>
+<span class="in">KEEP="$1"                       # 1番目の引数</span>
+<span class="in">DEST="${2:-$HOME/backup}"       # 2番目。省略時は既定値</span>
+<span class="in">echo "引数の個数: $#"</span>
+<span class="in">echo "スクリプト名: $0"</span>
+<span class="in">echo "全部まとめて: $@"</span></code></pre>
+      </div>
+      <div class="scroll">
+      <table class="tbl">
+        <thead><tr><th>変数</th><th>意味</th><th>例</th></tr></thead>
+        <tbody>
+          <tr><td><code>$0</code></td><td>実行されたスクリプト自身の名前（使い方の表示に使う）</td><td><code>echo "使い方: $0 ..."</code></td></tr>
+          <tr><td><code>$1</code> <code>$2</code> …</td><td>1番目、2番目の引数</td><td><code>KEEP="$1"</code></td></tr>
+          <tr><td><code>$#</code></td><td>引数の個数</td><td><code>[ "$#" -ge 1 ] || usage</code></td></tr>
+          <tr><td><code>"$@"</code></td><td>全引数を個々の値のまま渡す（通常はこちら）</td><td><code>tar czf a.tgz -- "$@"</code></td></tr>
+          <tr><td><code>shift</code></td><td>引数を1つずつ前にずらす（順に処理するとき）</td><td><code>while [ "$#" -gt 0 ]; do … shift; done</code></td></tr>
+          <tr><td><code>return</code> ／ <code>exit</code></td><td>関数から戻る ／ スクリプト全体を終了する</td><td><code>return 1</code></td></tr>
+        </tbody>
+      </table>
+      </div>
+
+      <h3 id="c9-add-1-f">安全装置：set -euo pipefail と trap</h3>
+      <p><a href="#c9-4">9.4節</a>で <code>set -eu</code> を紹介した。運用スクリプトではこれに <code>-o pipefail</code> を足すことが多い。<code>-e</code> は失敗したら止める、<code>-u</code> は未定義変数をエラーにする、<code>-o pipefail</code> はパイプの途中が失敗したらパイプ全体を失敗扱いにする、である。3つ目がないと、<code>ls ... | tail | xargs rm</code> のような行で最初のコマンドが失敗しても素通りしてしまう。</p>
+      <p>途中で終了したときの後始末には <code>trap</code> を使う。<code>trap '処理' EXIT</code> と書くと、正常終了でも異常終了でも、スクリプトを抜けるときに必ずその処理が走る。一時ファイルの削除やロックの解放はここに書く。</p>
+      <div class="code file" data-ctx="file" data-cwd="~/safe.sh">
+        <div class="code-head"><span class="code-title">冒頭に置く定型</span></div>
+<pre><code><span class="in">#!/bin/bash</span>
+<span class="in">set -euo pipefail</span>
+<span class="in">IFS=$'\n\t'                      # 単語の区切りを空白から改行とタブだけに絞る</span>
+<span class="in"></span>
+<span class="in">TMP="$(mktemp -d)"               # 一時ディレクトリを安全に作る</span>
+<span class="in">cleanup() { rm -rf -- "$TMP"; }  # 後始末</span>
+<span class="in">trap cleanup EXIT                # どんな終わり方でも cleanup を実行する</span>
+<span class="in"></span>
+<span class="in">echo "作業用: $TMP"</span></code></pre>
+      </div>
+      <dl class="term"><dt>trap<small>trap 処理 EXIT</small></dt><dd>スクリプトが終了するときや、中断（<kbd>Ctrl</kbd>+<kbd>C</kbd>）を受け取ったときに実行する後始末を登録する組み込みコマンド。一時ファイルの削除を書いておけば、途中で失敗してもゴミが残らない。</dd></dl>
+      <div class="call myth"><span class="ct">よくある誤解・トラブル</span>
+        <span class="q"><code>set -u</code> を付けたら <code>"$1"</code> の参照でスクリプトが止まった</span>
+        <p class="a">引数が渡されていないと <code>$1</code> は未定義であり、<code>-u</code> はそれをエラーにする。<code>"${1:-}"</code> と既定値を書くか、<code>[ "$#" -ge 1 ] || usage</code> で先に個数を検査する。</p>
+      </div>
+
+      <h3 id="c9-add-1-g">ヒアドキュメントとログ関数</h3>
+      <p>複数行のテキストをそのままコマンドに渡したり、ファイルに書き出したりするにはヒアドキュメントを使う。区切り語を引用符で囲む（<code>&lt;&lt;'EOF'</code>）と中身は展開されず、囲まなければ変数が展開される。設定ファイルの雛形を書き出すときに便利である。</p>
+      <p>あわせて、運用スクリプトには必ずログ関数を用意する。「いつ、何をして、成功したか失敗したか」が残っていないスクリプトは、自動実行した瞬間にブラックボックスになる。<a href="../day4.html#s4-2">第4回 4-2</a>のbackup.shが <code>backup.log</code> に1行ずつ記録しているのは、この考え方の最小形である。</p>
+      <div class="code file" data-ctx="file" data-cwd="~/logdemo.sh">
+        <div class="code-head"><span class="code-title">ヒアドキュメントとログ関数</span></div>
+<pre><code><span class="in">#!/bin/bash</span>
+<span class="in">set -euo pipefail</span>
+<span class="in">LOG="$HOME/work.log"</span>
+<span class="in"></span>
+<span class="in">log() { echo "$(date '+%F %T') $*" &gt;&gt; "$LOG"; }   # 時刻付きで1行追記</span>
+<span class="in">die() { log "ERROR $*"; echo "$*" &gt;&amp;2; exit 1; }  # 記録してから異常終了</span>
+<span class="in"></span>
+<span class="in">log "処理を開始した"</span>
+<span class="in">[ -d "$HOME/server" ] || die "server ディレクトリがない"</span>
+<span class="in"></span>
+<span class="in"># 変数を展開してファイルへ書き出す</span>
+<span class="in">cat &gt; "$HOME/report.txt" &lt;&lt;EOF</span>
+<span class="in">ホスト名: $(hostname)</span>
+<span class="in">日時: $(date '+%F %T')</span>
+<span class="in">EOF</span>
+<span class="in"></span>
+<span class="in"># 展開させたくないときは区切り語を '' で囲む</span>
+<span class="in">cat &gt; "$HOME/note.txt" &lt;&lt;'EOF'</span>
+<span class="in">$HOME はそのままの文字として書き出される</span>
+<span class="in">EOF</span>
+<span class="in"></span>
+<span class="in">log "処理を終了した"</span></code></pre>
+      </div>
+      <dl class="term"><dt>ヒアドキュメント<small>here document / &lt;&lt;EOF</small></dt><dd>複数行のテキストをその場でコマンドの入力やファイルの中身として与える書き方。区切り語を <code>&lt;&lt;'EOF'</code> のように引用符で囲むと、中の <code>$</code> が展開されない。</dd></dl>
+      <div class="call note"><span class="ct">実習ではここで使う</span><p>※ 日付入りのファイル名とログ追記は<a href="../day4.html#s4-2">第4回 4-2 シェルスクリプト（backup.sh）</a>で、<code>case</code> による振り分けと引数の受け取りは<a href="../day6.html#s6-1">第6回 6-1</a>の自動化テーマで、そのまま使える形である。</p></div>
+
+      <h2 id="c9-add-2"><span class="no">9.6</span>安全なスクリプトの作法</h2>
+      <p>スクリプトは人が見ていない時間に動く。だからこそ、手で打つときには気にしなくてよかったことが問題になる。ここでは、事故を起こしたスクリプトに共通する原因と、その潰し方をまとめる。</p>
+
+      <h3 id="c9-add-2-a">パスは絶対で書き、一時ファイルは mktemp で作る</h3>
+      <p>スクリプトは実行時のカレントディレクトリが分からない。相対パスで書くと、手で動かしたときだけ成功し、cronから動かすと別の場所を触る。<code>$HOME</code> か絶対パスで書き、どうしても移動が必要なら <code>cd "$DIR" || exit 1</code> と失敗を捕まえる。</p>
+      <p>一時ファイルを <code>/tmp/work.txt</code> のような固定名で作るのも危険である。他人（や自分の二重起動）と衝突するうえ、共有ディレクトリでは先回りして作られたファイルを掴まされる恐れがある。<code>mktemp</code> は衝突しない名前で、所有者だけが読み書きできる権限のファイルを作ってくれる。</p>
+      <div class="code" data-ctx="server">
+        <div class="code-head"><span class="code-title">mktemp の使い方</span></div>
+<pre><code><span class="in">mktemp <span class="c"># 一時ファイルを作り、そのパスを表示する</span></span>
+<span class="out">/tmp/tmp.9kQ2fVb1Ac</span>
+<span class="in">mktemp -d <span class="c"># 一時ディレクトリを作る</span></span>
+<span class="out">/tmp/tmp.Hs7mWq0Tzr</span>
+<span class="in">ls -ld /tmp/tmp.Hs7mWq0Tzr</span>
+<span class="out">drwx------ 2 pi pi 4096 Sep 19 14:20 /tmp/tmp.Hs7mWq0Tzr</span></code></pre>
+      </div>
+      <p>出力の <code>drwx------</code> に注目してほしい。所有者以外は読むことも入ることもできない。これが固定名の一時ファイルとの決定的な違いである（パーミッションの読み方は<a href="ch05.html">第5章</a>）。</p>
+
+      <h3 id="c9-add-2-b">破壊的な操作の前に確認を入れる</h3>
+      <p>削除や上書きを含む行は、書いた直後に必ず「空だったらどうなるか」を考える。実際に消す前に、対象の一覧を表示して目で確かめる手順を挟むのが確実である。</p>
+      <div class="code file" data-ctx="file" data-cwd="~/prune.sh">
+        <div class="code-head"><span class="code-title">削除の前に一覧を出す</span></div>
+<pre><code><span class="in">#!/bin/bash</span>
+<span class="in">set -euo pipefail</span>
+<span class="in">DEST="${DEST:?保存先が未設定}"   # 空なら即座に停止する</span>
+<span class="in">KEEP=7</span>
+<span class="in">cd "$DEST" || exit 1</span>
+<span class="in"></span>
+<span class="in"># まず対象を数え、表示する（DRYRUN=1 で実行すると消さずに確認だけ）</span>
+<span class="in">TARGETS="$(ls -1t world_*.tar.gz 2&gt;/dev/null | tail -n +$((KEEP+1)) || true)"</span>
+<span class="in">[ -n "$TARGETS" ] || { echo "削除対象なし"; exit 0; }</span>
+<span class="in">echo "$TARGETS"</span>
+<span class="in">[ "${DRYRUN:-0}" = "1" ] &amp;&amp; exit 0</span>
+<span class="in">echo "$TARGETS" | xargs -r rm --</span></code></pre>
+      </div>
+      <div class="call warn"><span class="ct">注意</span><p>※ <code>rm -rf "$DIR"/</code> のように末尾へスラッシュを足したり、変数が空になったりすると、削除範囲が意図せず広がる。書いたら必ず <code>DRYRUN=1</code> のような確認経路で一度動かし、表示された一覧が想定どおりであることを目で確認してから本番で動かすこと。<code>chmod -R 777</code> で権限の問題を「解決」するのも同類の事故であり、直すべきは所有者である（<a href="ch05.html">第5章</a>）。</p></div>
+
+      <h3 id="c9-add-2-c">shellcheck で静的に検査する</h3>
+      <p>shellcheckは、スクリプトを実行せずに読んで、引用符の付け忘れや使われていない変数、移植性の問題を指摘してくれる静的検査ツールである。人が見落とす定番のミスをほぼ機械的に拾ってくれるので、書き終えたら必ず一度は通す習慣を付けたい。Debian系では apt で入る。</p>
+      <div class="code" data-ctx="server">
+        <div class="code-head"><span class="code-title">shellcheck の導入と実行</span></div>
+<pre><code><span class="in">sudo apt update</span>
+<span class="in">sudo apt install -y shellcheck</span>
+<span class="in">shellcheck ~/backup.sh <span class="c"># 指摘の一覧を表示</span></span>
+<span class="in">shellcheck -S warning ~/backup.sh <span class="c"># warning 以上だけに絞る</span></span>
+<span class="in">shellcheck -f gcc ~/backup.sh <span class="c"># 1行1件の簡潔な形式で出す</span></span></code></pre>
+      </div>
+      <div class="scroll">
+      <table class="tbl">
+        <thead><tr><th>オプション</th><th>意味</th><th>例</th></tr></thead>
+        <tbody>
+          <tr><td><code>-S 重大度</code></td><td>表示する重大度の下限（style / info / warning / error）</td><td><code>shellcheck -S warning a.sh</code></td></tr>
+          <tr><td><code>-f 形式</code></td><td>出力形式。<code>gcc</code> は1行1件で読みやすい</td><td><code>shellcheck -f gcc a.sh</code></td></tr>
+          <tr><td><code>-e 番号</code></td><td>指定した指摘番号を除外する（理由が説明できるときだけ）</td><td><code>shellcheck -e SC2086 a.sh</code></td></tr>
+          <tr><td><code>-x</code></td><td><code>source</code> で読み込む別ファイルも追跡する</td><td><code>shellcheck -x a.sh</code></td></tr>
+        </tbody>
+      </table>
+      </div>
+      <p><b>出力の読み方</b></p>
+      <div class="code" data-ctx="server">
+        <div class="code-head"><span class="code-title">shellcheck の出力</span></div>
+<pre><code><span class="in">shellcheck ~/backup.sh</span>
+<span class="out">In /home/pi/backup.sh line 12:</span>
+<span class="out">tar czf $DEST/world_$DATE.tar.gz -C $HOME/server world</span>
+<span class="out">        ^-- SC2086: Double quote to prevent globbing and word splitting.</span>
+<span class="out"></span>
+<span class="out">For more information:</span>
+<span class="out">  https://www.shellcheck.net/wiki/SC2086 -- Double quote to prevent globbing...</span></code></pre>
+      </div>
+      <p>見るのは3点である。まず行番号（<code>line 12</code>）で場所を特定し、次に <code>^--</code> が指している列で「どの語」が問題かを知り、最後に <code>SC</code> で始まる番号を控える。番号はそのまま検索語になり、shellcheck.net のwikiに理由と直し方が載っている。<code>SC2086</code>（引用符の付け忘れ）と <code>SC2164</code>（<code>cd</code> の失敗を無視している）は、運用スクリプトで最も頻出する2つである。</p>
+      <dl class="term"><dt>shellcheck<small>静的検査</small></dt><dd>シェルスクリプトを実行せずに読んで、引用符の付け忘れなど定番のミスを指摘するツール。<code>sudo apt install -y shellcheck</code> で導入でき、指摘には <code>SC2086</code> のような番号が付く。</dd></dl>
+
+      <h3 id="c9-add-2-d">cron から動かすときの注意</h3>
+      <p>cronの実行環境は、SSHでログインした対話シェルとは別物である。<code>~/.bashrc</code> は読まれず、PATHは短く、ホームディレクトリの前提も違う。「手では動くのにcronだと動かない」の原因はほぼここに集約される。</p>
+      <ul>
+        <li>コマンドもファイルも絶対パスで書く（<code>/usr/bin/docker</code>、<code>/home/luanti/backup.sh</code>）。またはスクリプトの冒頭で <code>PATH=/usr/local/bin:/usr/bin:/bin</code> を明示する。</li>
+        <li>標準出力と標準エラーをログに落とす（<code>&gt;&gt; /home/luanti/backup.log 2&gt;&amp;1</code>）。落とさないと、出力はメールに回されて事実上消える。</li>
+        <li>実行ユーザを意識する。<code>crontab -e</code> はそのユーザのcronであり、<code>$HOME</code> もそのユーザのものになる。</li>
+        <li>まず <code>env -i /bin/bash --noprofile --norc /home/luanti/backup.sh</code> のように環境変数をほぼ空にして手元で試すと、cron相当の条件を再現できる。</li>
+      </ul>
+      <div class="call note"><span class="ct">実習ではここで使う</span><p>※ cronの書式と登録手順は<a href="../day4.html#s4-3">第4回 4-3 cronによる自動化</a>にある。書式そのものの詳しい解説は<a href="ch08.html#c8-3">8.3節</a>を参照のこと。</p></div>
+
+      <h2 id="c9-add-3"><span class="no">9.7</span>実用例2本</h2>
+      <p>ここまでの文法と作法を使った、そのまま動く例を2つ示す。どちらも<a href="../day6.html#s6-1">第6回 6-1</a>の自動化テーマの出発点にできる。写して動かし、自分のサーバに合わせて数値やパスを変えてみてほしい。</p>
+
+      <h3 id="c9-add-3-a">例1：サービスの死活確認と自動再起動</h3>
+      <p>サービスが落ちていたら再起動し、その事実をログに残すスクリプトである。systemdの <code>Restart=on-failure</code> があっても、起動直後に落ち続ける場合や、プロセスは生きているのに応答しない場合には、こうした外側からの監視が効く。<code>systemctl is-active</code> は稼働中なら終了コード0を返すので、<code>if</code> でそのまま判定できる。</p>
+      <div class="code file" data-ctx="file" data-cwd="~/watch-luanti.sh">
+        <div class="code-head"><span class="code-title">~/watch-luanti.sh</span></div>
+<pre><code><span class="in">#!/bin/bash</span>
+<span class="in"># Luantiサービスの死活確認と自動再起動</span>
+<span class="in">set -uo pipefail</span>
+<span class="in">PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin</span>
+<span class="in">UNIT="luanti"</span>
+<span class="in">LOG="/home/luanti/watch.log"</span>
+<span class="in"></span>
+<span class="in">log() { echo "$(date '+%F %T') $*" &gt;&gt; "$LOG"; }</span>
+<span class="in"></span>
+<span class="in">if systemctl is-active --quiet "$UNIT"; then</span>
+<span class="in">  exit 0                                  # 正常。何も記録しない</span>
+<span class="in">fi</span>
+<span class="in"></span>
+<span class="in">log "WARN $UNIT is not active. restarting"</span>
+<span class="in">systemctl restart "$UNIT"</span>
+<span class="in">sleep 5                                   # 起動を待つ</span>
+<span class="in"></span>
+<span class="in">if systemctl is-active --quiet "$UNIT"; then</span>
+<span class="in">  log "INFO $UNIT restarted"</span>
+<span class="in">else</span>
+<span class="in">  log "ERROR $UNIT failed to restart"</span>
+<span class="in">  journalctl -u "$UNIT" -n 20 --no-pager &gt;&gt; "$LOG"   # 直近のログを証拠として残す</span>
+<span class="in">  exit 1</span>
+<span class="in">fi</span></code></pre>
+      </div>
+      <p>このスクリプトは <code>systemctl restart</code> を実行するため、root権限が要る。rootのcron（<code>sudo crontab -e</code>）に登録するのが素直である。<code>set -e</code> をあえて外しているのは、<code>is-active</code> が「落ちている」を終了コード3で伝えるためで、ここで止まってしまうと再起動処理に進めない。</p>
+      <div class="code" data-ctx="server">
+        <div class="code-head"><span class="code-title">rootのcronに5分ごとで登録する</span></div>
+<pre><code><span class="in">sudo chmod +x /home/luanti/watch-luanti.sh</span>
+<span class="in">sudo crontab -e</span>
+<span class="cm">（エディタが開いたら次の1行を追記して保存する）</span>
+<span class="cm">*/5 * * * * /home/luanti/watch-luanti.sh &gt;&gt; /home/luanti/watch.log 2&gt;&amp;1</span>
+<span class="in">sudo crontab -l <span class="c"># 登録内容の確認</span></span></code></pre>
+      </div>
+      <div class="call warn"><span class="ct">注意</span><p>※ 自動再起動は「落ちた事実」を隠してしまう仕掛けでもある。再起動した回数がログに増え続けているのに気付かなければ、根本原因は放置されたままになる。<code>watch.log</code> を定期的に見ること、そして落ちた原因（<code>journalctl -u luanti -p err</code>）を必ず1度は読むことをセットにする。</p></div>
+
+      <h3 id="c9-add-3-b">例2：ディスク使用率の警告</h3>
+      <p>ディスクが満杯になると、ログもバックアップも書けなくなり、サービスが不可解な壊れ方をする。使用率がしきい値を超えたら記録して知らせるスクリプトを用意しておくと、満杯になる前に手を打てる。<code>df</code> の出力から使用率だけを取り出し、<code>%</code> を外して数値として比較するのが要点である。</p>
+      <div class="code file" data-ctx="file" data-cwd="~/disk-check.sh">
+        <div class="code-head"><span class="code-title">~/disk-check.sh</span></div>
+<pre><code><span class="in">#!/bin/bash</span>
+<span class="in"># ルートパーティションの使用率がしきい値を超えたら警告する</span>
+<span class="in">set -euo pipefail</span>
+<span class="in">PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin</span>
+<span class="in">THRESHOLD="${1:-80}"                 # 引数で変えられる。既定は80パーセント</span>
+<span class="in">TARGET="/"</span>
+<span class="in">LOG="$HOME/disk.log"</span>
+<span class="in"></span>
+<span class="in">USED="$(df --output=pcent "$TARGET" | tail -n 1 | tr -dc '0-9')"</span>
+<span class="in">[ -n "$USED" ] || { echo "使用率を取得できない" &gt;&amp;2; exit 1; }</span>
+<span class="in"></span>
+<span class="in">if [ "$USED" -ge "$THRESHOLD" ]; then</span>
+<span class="in">  echo "$(date '+%F %T') WARN $TARGET is ${USED}% (threshold ${THRESHOLD}%)" &gt;&gt; "$LOG"</span>
+<span class="in">  du -xh --max-depth=1 "$HOME" 2&gt;/dev/null | sort -h | tail -n 5 &gt;&gt; "$LOG"</span>
+<span class="in">  exit 1                             # 異常を終了コードでも伝える</span>
+<span class="in">fi</span>
+<span class="in"></span>
+<span class="in">echo "$(date '+%F %T') INFO $TARGET is ${USED}%" &gt;&gt; "$LOG"</span></code></pre>
+      </div>
+      <p><b>出力の読み方</b></p>
+      <div class="code" data-ctx="server">
+        <div class="code-head"><span class="code-title">動作の確認</span></div>
+<pre><code><span class="in">chmod +x ~/disk-check.sh</span>
+<span class="in">~/disk-check.sh 10 <span class="c"># しきい値を10にして、わざと警告させる</span></span>
+<span class="in">echo "終了コード: $?"</span>
+<span class="out">終了コード: 1</span>
+<span class="in">tail -n 3 ~/disk.log</span>
+<span class="out">2026-09-19 14:32:05 WARN / is 27% (threshold 10%)</span>
+<span class="out">180M	/home/pi/backup</span>
+<span class="out">1.2G	/home/pi</span></code></pre>
+      </div>
+      <p>1行目が判定の結果で、使用率としきい値が両方記録されている点が重要である。あとから見たときに「何パーセントで鳴ったのか」が分かるからである。続く行は容量を食っている上位のディレクトリで、警告が出たらまずここを見る。終了コードを1にしてあるので、cronから呼ぶ側でも失敗として扱える。</p>
+      <div class="call note"><span class="ct">実習ではここで使う</span><p>※ しきい値を超えたときの通知や、記録をWebページに出す発展は<a href="../day5.html#s5-4-a">第5回 稼働状況の自動更新（ミニ演習）</a>と、<a href="appendix.html#ca-5-c">付録A.5 監視の高度化</a>につながる。まず記録を残すところから始めるとよい。</p></div>
 
       <nav class="pager" aria-label="前後のページ">
         <a class="prev" href="ch08.html"><span class="pl">前へ</span><span class="pt">サーバ運用の基礎</span></a>

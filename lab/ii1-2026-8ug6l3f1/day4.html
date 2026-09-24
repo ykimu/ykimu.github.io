@@ -41,7 +41,7 @@
 
       <div class="call goal"><span class="ct">本回の目標</span><p>ワールドデータを失わないためのバックアップの仕組みを構築する。バックアップをスクリプト化してcronで自動化し、削除したワールドをバックアップから復旧する。</p></div>
 
-      <p>タイムテーブル（180分）</p>
+      <h2 id="s4-time">タイムテーブル（180分）</h2>
       <table class="tbl"><thead><tr><th>時間</th><th>内容</th></tr></thead><tbody>
         <tr><td class="num">20分</td><td>ミニ講義：バックアップ設計の考え方（3-2-1ルール、世代管理）</td></tr>
         <tr><td class="num">30分</td><td>tarによる手動バックアップ</td></tr>
@@ -51,21 +51,35 @@
         <tr><td class="num">20分</td><td>確認項目の達成チェック・振り返り</td></tr>
       </tbody></table>
 
+      <h2 id="s4-flow">この回の流れ</h2>
+      <ol class="flow">
+        <li><a href="#s4-1">バックアップの考え方を知る</a><span class="fm">ミニ講義 20分</span></li>
+        <li><a href="#s4-1-b">tarで手動バックアップ</a><span class="fm">30分</span></li>
+        <li><a href="#s4-2">backup.shを書く</a><span class="fm">世代管理つき 40分</span></li>
+        <li><a href="#s4-3">cronで自動実行する</a><span class="fm">30分</span></li>
+        <li><a href="#s4-4">壊して復旧する</a><span class="fm">リストア訓練</span></li>
+        <li><a href="#s4-5">障害対応を演習する</a><span class="fm">2シナリオ以上</span></li>
+        <li><a href="#s4-check">確認項目と振り返り</a><span class="fm">20分</span></li>
+      </ol>
+
       <h2 id="s4-1"><span class="no">4-1</span>バックアップの考え方</h2>
-      <p>何日もかけて建てた建築物が、ディスク故障や操作ミス、荒らしによって一瞬で消える。ゲームサーバに限らず、データ消失はサーバ運用最大の事故である。防ぐ手段はただ一つ、バックアップである。実務では「3-2-1ルール」（3つのコピーを、2種類の媒体に、1つはリモートに置く）が知られる。本実習ではその第一歩として、世代管理付きの自動バックアップを構築する。</p>
+      <p>何日もかけて建てた建築物が、ディスク故障や操作ミス、荒らしによって一瞬で消える。ゲームサーバに限らず、データ消失はサーバ運用最大の事故である。防ぐ手段はただ一つ、バックアップである。</p>
+      <p>実務では「3-2-1ルール」（3つのコピーを、2種類の媒体に、1つはリモートに置く）が知られる。本実習ではその第一歩として、世代管理付きの自動バックアップを構築する。（背景は<a href="ref/ch08.html#c8-4">第8章 8-4 バックアップ設計</a>）</p>
 
       <h3 id="s4-1-a">tarによるアーカイブ</h3>
       <p>複数のファイルを1つにまとめる（アーカイブする）には<code>tar</code>コマンドを使う。gzipによる圧縮も同時に行える（拡張子 <code>.tar.gz</code>）。</p>
-      <div class="code">
+      <p class="why"><b>いま何をするか：</b>作成・展開・一覧という3つの型を、フラグの意味とセットで覚える。ここを取り違えると、あとの演習がすべてずれる。</p>
+      <div class="code" data-ctx="server">
   <div class="code-head"><span class="code-title">tarの基本</span></div>
 <pre><code><span class="in">tar czf <var>出力ファイル</var>.tar.gz <var>対象ディレクトリ</var> <span class="c"># 作成（c:作成 z:gzip圧縮 f:ファイル名）</span></span>
 <span class="in">tar xzf <var>アーカイブ</var>.tar.gz <span class="c"># 展開（x:展開）</span></span>
 <span class="in">tar tzf <var>アーカイブ</var>.tar.gz <span class="c"># 中身の確認（t:一覧表示）</span></span></code></pre>
       </div>
+      <div class="call pit" id="pit-d4-1"><span class="ct">つまずきポイント</span><p>取り違えやすいのは <code>czf</code>（作成）と <code>xzf</code>（展開）である。違うのは先頭の1文字だけで、<strong><code>c</code> は create（作る）、<code>x</code> は extract（取り出す）、<code>t</code> は list（中身を見る）</strong>と覚える。<code>f</code> は「次に来るのがファイル名」という意味なので、<code>f</code> の直後には必ず出力するアーカイブ名を書く。引数の順番は「<code>czf</code> 出力先 対象」であり、逆に書くと対象のほうがアーカイブ名だと解釈されてエラーになるか、意図しない名前のファイルができる。迷ったら <code>tar tzf</code> で中身を見て、期待どおりか確かめればよい。</p></div>
 
       <h3 id="s4-1-b">演習：手動バックアップ</h3>
       <p>luantiユーザに切り替えて、ワールドデータ（<code>world</code>ディレクトリ）を手動でバックアップしてみる。</p>
-      <div class="code">
+      <div class="code" data-ctx="luanti">
   <div class="code-head"><span class="code-title">手動バックアップ</span></div>
 <pre><code><span class="in">su - luanti <span class="c"># luantiユーザに切り替え</span></span>
 <span class="in">mkdir -p ~/backup</span>
@@ -73,10 +87,15 @@
 <span class="in">tar tzf ~/backup/world_test.tar.gz | head <span class="c"># 中身を確認</span></span></code></pre>
       </div>
       <div class="call note"><span class="ct">Note</span><p>※ <code>-C ~/server</code> は「<code>~/server</code>に移動してから<code>world</code>をまとめる」という指定で、展開時に余計な深い階層ができるのを防ぐ。バックアップは「取れた」だけで安心せず、必ず中身を確認する癖をつけること。</p></div>
+      <div class="mini"><span class="ct">ここまでの確認</span><ul>
+        <li><code>whoami</code> が <code>luanti</code> になっている</li>
+        <li><code>ls -lh ~/backup</code> に <code>world_test.tar.gz</code> があり、サイズが0ではない</li>
+        <li><code>tar tzf</code> の出力が <code>world/</code> から始まっている（<code>home/luanti/...</code> になっていない）</li>
+      </ul></div>
 
       <h2 id="s4-2"><span class="no">4-2</span>シェルスクリプト（backup.sh）</h2>
-      <p>毎回手でコマンドを打つのは面倒だし、打ち間違いも起こる。一連のコマンドをファイルにまとめたものがシェルスクリプトである。変数・コマンド置換・条件分岐が使えるため、「日付入りのファイル名を付けて、古い世代を自動で消す」といった賢いバックアップが書ける。luantiユーザのまま、viで <code>~/backup.sh</code> を作成しよう。</p>
-      <div class="code file">
+      <p>毎回手でコマンドを打つのは面倒だし、打ち間違いも起こる。一連のコマンドをファイルにまとめたものがシェルスクリプトである。変数・コマンド置換・条件分岐が使えるため、「日付入りのファイル名を付けて、古い世代を自動で消す」といった賢いバックアップが書ける。luantiユーザのまま、viで <code>~/backup.sh</code> を作成しよう。（背景は<a href="ref/ch09.html#c9-3">第9章 9.3 backup.shを読み解く</a>）</p>
+      <div class="code file" data-ctx="file" data-cwd="/home/luanti/backup.sh">
   <div class="code-head"><span class="code-title">~/backup.sh</span></div>
 <pre><code><span class="in">#!/bin/bash</span>
 <span class="in"># Luantiワールドの世代管理付きバックアップ</span>
@@ -92,35 +111,48 @@
 <span class="in">ls -1t world_*.tar.gz 2&gt;/dev/null | tail -n +$((KEEP+1)) | xargs -r rm --</span>
 <span class="in">echo "$(date '+%F %T') backup done: world_$DATE.tar.gz" &gt;&gt; "$DEST/backup.log"</span></code></pre>
       </div>
-      <p>1行目の <code>#!/bin/bash</code> はシバンといい、このファイルをbashで実行することを宣言する。<code>$( )</code> はコマンド置換で、コマンドの実行結果を変数に入れられる。世代削除の行は、<code>ls</code>・<code>tail</code>・<code>xargs</code>をパイプでつないだ応用例である（<a href="day1.html">第1回</a>の知識が総動員されている）。作成したら実行権を付与して動かす。各道具の詳しい説明は補足資料<a href="ref/ch03.html">3.7節</a>にまとめてある。また、tarの行に付けた <code>|| { … }</code> は「失敗したら、作りかけの壊れたファイルを消し、失敗の記録を残して即終了する」仕掛けである。これがないと、ディスク枯渇などでバックアップが壊れても <code>backup done</code> と記録され、さらに壊れた作りかけのファイルが世代として数えられて、正常な旧世代が世代削除で押し出されてしまう（<a href="#s4-5">4-5節</a>のシナリオDで実際に確かめられる）。</p>
+      <p>1行目の <code>#!/bin/bash</code> はシバンといい、このファイルをbashで実行することを宣言する。<code>$( )</code> はコマンド置換で、コマンドの実行結果を変数に入れられる。世代削除の行は、<code>ls</code>・<code>tail</code>・<code>xargs</code>をパイプでつないだ応用例である（<a href="day1.html">第1回</a>の知識が総動員されている）。各道具の詳しい説明は補足資料<a href="ref/ch03.html">3.7節</a>にまとめてある。</p>
+      <p>また、tarの行に付けた <code>|| { … }</code> は「失敗したら、作りかけの壊れたファイルを消し、失敗の記録を残して即終了する」仕掛けである。これがないと、ディスク枯渇などでバックアップが壊れても <code>backup done</code> と記録され、さらに壊れた作りかけのファイルが世代として数えられて、正常な旧世代が世代削除で押し出されてしまう（<a href="#s4-5">4-5節</a>のシナリオDで実際に確かめられる）。</p>
+      <p><strong>スクリプトの中では、パスを <code>$HOME</code> や絶対パスで書く。</strong>これは、どのディレクトリから実行されても同じ場所を指すようにするためである。相対パス（<code>server/world</code> のような書き方）にすると、実行したときのカレントディレクトリしだいで動いたり動かなかったりする。作成したら実行権を付与して動かす。</p>
 
       <figure><img src="img/g10.png" alt="図10　backup.shによる世代管理と自動実行" width="1800" height="660"><figcaption>図10　backup.shによる世代管理と自動実行</figcaption></figure>
 
-      <div class="code">
+      <p class="why"><b>いま何をするか：</b>書いたファイルに実行権を付けてから動かし、バックアップとログが実際に増えることを目で確かめる。</p>
+      <div class="code" data-ctx="luanti">
   <div class="code-head"><span class="code-title">実行権の付与と実行</span></div>
 <pre><code><span class="in">chmod +x ~/backup.sh <span class="c"># 実行権の付与（第3回のパーミッションの実践）</span></span>
 <span class="in">~/backup.sh <span class="c"># 実行</span></span>
 <span class="in">ls -lt ~/backup <span class="c"># 日付入りのバックアップができていることを確認</span></span>
 <span class="in">cat ~/backup/backup.log <span class="c"># 実行記録の確認</span></span></code></pre>
       </div>
+      <div class="call pit" id="pit-d4-2"><span class="ct">つまずきポイント</span><p><code>~/backup.sh: Permission denied</code> と出たら、<strong><code>chmod +x</code> を先に実行したか</strong>を確かめる。ファイルは作っただけでは実行できない。<code>ls -l ~/backup.sh</code> の表示に <code>x</code> が並んでいるかで判断できる（<a href="day3.html#s3-1-a">第3回 3-1 chmod</a>の実践である）。もう一つの定番は <code>command not found</code> で、これはスクリプトの置き場所がPATHに入っていないために起こる。<code>~/backup.sh</code> や <code>./backup.sh</code> のように、必ずパスを付けて実行する。ファイルの1行目が <code>#!/bin/bash</code> になっているかも確認しよう。</p></div>
+
       <p>何度か実行して、バックアップが増えること、8世代目を作ると最も古いものが消えることを確認しよう。</p>
 
+      <div class="mini"><span class="ct">ここまでの確認</span><ul>
+        <li><code>ls -lt ~/backup</code> に <code>world_日付_時刻.tar.gz</code> が並び、実行するたびに増える</li>
+        <li><code>cat ~/backup/backup.log</code> に <code>backup done</code> の行が実行回数ぶん記録されている</li>
+        <li>8回目を実行すると、いちばん古いファイルが消えて7個に保たれる</li>
+      </ul></div>
+
       <h2 id="s4-3"><span class="no">4-3</span>cronによる自動化</h2>
-      <p>人間は実行を忘れる。だから自動化する。指定した時刻にコマンドを定期実行する仕組みがcronであり、<code>crontab</code>コマンドで設定する。</p>
-      <div class="code">
+      <p>人間は実行を忘れる。だから自動化する。指定した時刻にコマンドを定期実行する仕組みがcronであり、<code>crontab</code>コマンドで設定する。（背景は<a href="ref/ch08.html#c8-3">第8章 8-3 cronによる自動化</a>）</p>
+      <p class="why"><b>いま何をするか：</b>luantiユーザ自身の予定表に1行書き加えて、backup.shを10分ごとに自動実行させる。</p>
+      <div class="code" data-ctx="luanti">
   <div class="code-head"><span class="code-title">cronの設定</span></div>
 <pre><code><span class="in">crontab -e <span class="c"># スケジュールの編集（luantiユーザのまま実行）</span></span>
 <span class="cm">（末尾に次の1行を追記）</span></code></pre>
       </div>
-      <div class="code file">
+      <div class="code file" data-ctx="file">
   <div class="code-head"><span class="code-title">crontabに追記する1行</span></div>
 <pre><code><span class="in">*/10 * * * * /home/luanti/backup.sh</span></code></pre>
       </div>
-      <div class="code">
+      <div class="code" data-ctx="luanti">
   <div class="code-head"><span class="code-title">設定の確認</span></div>
 <pre><code><span class="in">crontab -l <span class="c"># 設定の確認</span></span></code></pre>
       </div>
-      <p>スケジュールは左から「分 時 日 月 曜日」で指定する。上の例は動作確認用に「10分ごと」としている。確認できたら、実運用を想定して「毎日朝6時」（<code>0 6 * * *</code>）に変更しよう。なお、初回の <code>crontab -e</code> ではエディタの選択画面（英語）が表示される。番号で使い慣れたもの（vim.basic等）を選べばよい。間違えたら <code>select-editor</code> でやり直せる。</p>
+      <p>スケジュールは左から「分 時 日 月 曜日」で指定する。上の例は動作確認用に「10分ごと」としている。確認できたら、実運用を想定して「毎日朝6時」（<code>0 6 * * *</code>）に変更しよう。</p>
+      <p>なお、初回の <code>crontab -e</code> ではエディタの選択画面（英語）が表示される。番号で使い慣れたもの（vim.basic等）を選べばよい。間違えたら <code>select-editor</code> でやり直せる。</p>
       <table class="tbl"><thead><tr><th>書式例</th><th>意味</th></tr></thead><tbody>
         <tr><td><code>0 6 * * *</code></td><td>毎日6時0分</td></tr>
         <tr><td><code>30 23 * * 0</code></td><td>毎週日曜23時30分</td></tr>
@@ -128,9 +160,12 @@
         <tr><td><code>0 */6 * * *</code></td><td>6時間ごと（0時、6時、12時、18時）</td></tr>
       </tbody></table>
 
+      <div class="call pit" id="pit-d4-3"><span class="ct">つまずきポイント</span><p>cronは、自分でログインしたときとは違う、ごく限られた環境でコマンドを動かす。<strong>PATHが最小限しか設定されていないので、cronに書くコマンドは <code>/home/luanti/backup.sh</code> のように必ず絶対パスで書く</strong>（上の例がそうなっている）。手で打つときは動くのにcronでは動かない、という相談のほとんどがこれである。スクリプトの中で呼ぶコマンドも、凝ったものを使うなら絶対パスにしておくと安全である。</p>
+        <p>10分待っても <code>~/backup/backup.log</code> に新しい行が増えないときは、<code>crontab -l</code> で1行が残っているか、<code>date</code> でサーバの時刻が正しいか、<code>journalctl -u cron -e</code> でcronが実行を試みた記録があるかの順に調べる。<code>crontab -e</code> はluantiユーザのまま実行すること。別のユーザで編集すると、そのユーザの予定表に登録されてしまう。</p></div>
+
       <h3 id="s4-3-a">時刻管理（NTP）</h3>
-      <p>cronは「サーバの時計」に従って動く。時計がずれていれば、バックアップの時刻もログの時刻もすべてずれ、障害調査で「いつ何が起きたか」を特定できなくなる。サーバの時刻はNTP（ネットワーク経由の時刻同期）で自動調整されており、<code>timedatectl</code>で確認できる。</p>
-      <div class="code">
+      <p>cronは「サーバの時計」に従って動く。時計がずれていれば、バックアップの時刻もログの時刻もすべてずれ、障害調査で「いつ何が起きたか」を特定できなくなる。サーバの時刻はNTP（ネットワーク経由の時刻同期）で自動調整されており、<code>timedatectl</code>で確認できる。（背景は<a href="ref/ch08.html#c8-2">第8章 8-2 時刻同期（NTP）</a>）</p>
+      <div class="code" data-ctx="server">
   <div class="code-head"><span class="code-title">時刻の確認</span></div>
 <pre><code><span class="in">timedatectl</span>
 <span class="out">Local time: Thu 2026-07-02 14:00:12 JST</span>
@@ -140,9 +175,16 @@
 <span class="in">sudo timedatectl set-timezone Asia/Tokyo</span></code></pre>
       </div>
 
+      <div class="mini"><span class="ct">ここまでの確認</span><ul>
+        <li><code>crontab -l</code> に自分が書いた1行が表示される</li>
+        <li>10分ほど待つと、手で実行していないのに <code>~/backup/backup.log</code> に行が増えている</li>
+        <li><code>timedatectl</code> が <code>Asia/Tokyo</code> かつ <code>System clock synchronized: yes</code> になっている</li>
+      </ul></div>
+
       <h2 id="s4-4"><span class="no">4-4</span>リストア訓練</h2>
       <p>「バックアップを取っている」と「復旧できる」の間には大きな溝がある。復旧手順を試したことがなければ、本番の障害時には必ず手が止まる。だから平時に訓練する。これから自分のワールドを自分で破壊し、バックアップから復旧しよう。</p>
-      <div class="code">
+      <p class="why"><b>いま何をするか：</b>復旧用のバックアップを1つ取り、サービスを止めてから、わざとワールドを削除する。</p>
+      <div class="code" data-ctx="luanti">
   <div class="code-head"><span class="code-title">ワールドの破壊</span></div>
 <pre><code><span class="in">~/backup.sh <span class="c"># 直前のバックアップを取る（復旧用の確保）</span></span>
 <span class="in">exit <span class="c"># 自分のユーザに戻る</span></span>
@@ -151,7 +193,11 @@
 <span class="in">rm -rf ~/server/world <span class="c"># ②ワールドを完全に削除（！）</span></span>
 <span class="in">ls ~/server <span class="c"># worldが消えたことを確認</span></span></code></pre>
       </div>
-      <div class="code">
+      <div class="call pit" id="pit-d4-4"><span class="ct">つまずきポイント</span><p>この手順は<strong>ユーザを行き来しながら進む</strong>。<code>luanti</code>ユーザにはsudo権限がないので、<code>sudo systemctl stop luanti</code> は <code>exit</code> で自分のユーザに戻ってから実行する。逆に <code>rm -rf ~/server/world</code> や <code>tar xzf</code> は <code>su - luanti</code> の側で行う（自分のユーザで実行すると、復元したファイルの持ち主が変わってサービスが起動できなくなる）。迷ったら <code>whoami</code> である。なお <code>rm -rf</code> は取り消せない。<strong>打つ前にもう一度パスを読み、<code>~/server/world</code> であることを確かめる。</strong></p>
+        <p>また、サービスを止めずにワールドを消したり書き戻したりしてはいけない。稼働中のLuantiはメモリ上の内容を随時書き出しているため、「止める→復元する→動かす」の順を守らないと、戻したはずのデータが上書きされて消えることがある。</p></div>
+
+      <p class="why"><b>いま何をするか：</b>バックアップを展開して元の場所に戻し、サービスを再開して、ゲーム内で建築物が戻ったことを確かめる。</p>
+      <div class="code" data-ctx="luanti">
   <div class="code-head"><span class="code-title">ワールドの復旧</span></div>
 <pre><code><span class="in">tar xzf ~/backup/world_<var>最新の日時</var>.tar.gz -C ~/server <span class="c"># ③復元</span></span>
 <span class="in">ls ~/server/world <span class="c"># 戻ったことを確認</span></span>
@@ -161,9 +207,23 @@
       <p>ワールドに接続し、建築物が破壊前の状態に戻っていることを自分の目で確認しよう。この「停止→復元→再開→確認」の流れが、あらゆるデータ復旧の基本形である。</p>
       <div class="call note"><span class="ct">Note</span><p>※ ワールドの実体はSQLiteデータベース（<code>world/map.sqlite</code>）であり、稼働中のコピーはまれに不整合を起こしうる。確実なのはサービスを停止してからのバックアップである。毎朝6時の自動実行なら利用者が少なく実害はほぼないが、「停止→バックアップ→再開」の自動化は発展課題とする。</p></div>
 
+      <div class="mini"><span class="ct">ここまでの確認</span><ul>
+        <li><code>ls ~/server/world</code> にファイルが戻っており、所有者が <code>luanti</code> のままである</li>
+        <li><code>systemctl status luanti</code> が <code>active (running)</code> に戻っている</li>
+        <li>ゲーム内に接続し、破壊前の建築物が見えることを自分の目で確認した</li>
+      </ul></div>
+
       <h2 id="s4-5"><span class="no">4-5</span>障害対応演習（壊して学ぶ）</h2>
       <p>障害対応の力は、実際に壊れたサーバを直した経験の数で決まる。そこで、自分のサーバに自分で障害を起こし、症状を観察してから復旧する訓練を行う。意図的に障害を起こして耐性を確かめる手法は「障害注入」と呼ばれ、実務でも大規模サービスの信頼性向上に使われている。<a href="#s4-4">4-4節</a>でバックアップと復旧手順を確認済みだからこそ、安全に壊せる。</p>
-      <p>下の障害シナリオから2つ以上を選び、次の手順で取り組む。①壊す前に「どんな症状が出るか」「どの診断コマンドに現れるか」を予想して実験記録に書く。②壊す。③診断コマンドで症状を確認し、予想と比べる。④復旧する。⑤原因・症状・復旧手順を実験記録にまとめる。予想と違う症状が出たときこそ、学びが大きい。</p>
+      <p>下の障害シナリオから2つ以上を選び、次の手順で取り組む。</p>
+      <ol>
+        <li>壊す前に「どんな症状が出るか」「どの診断コマンドに現れるか」を予想して実験記録に書く。</li>
+        <li>壊す。</li>
+        <li>診断コマンドで症状を確認し、予想と比べる。</li>
+        <li>復旧する。</li>
+        <li>原因・症状・復旧手順を実験記録にまとめる。</li>
+      </ol>
+      <p><strong>予想と違う症状が出たときこそ、学びが大きい。</strong></p>
       <div class="scroll">
       <table class="tbl"><thead><tr><th>シナリオ</th><th>壊し方（自分のサーバで実行）</th><th>学べること</th></tr></thead><tbody>
         <tr><td>A</td><td>ユニットファイルの<code>ExecStart</code>のパスを1文字書き換えて <code>daemon-reload</code> → <code>restart</code></td><td>サービス起動失敗の診断（status／journalctl）</td></tr>
@@ -172,7 +232,7 @@
         <tr><td>D</td><td><code>df -h</code> で空き容量を確認したうえで、空きを数MBだけ残す巨大ファイルを作る：<code>fallocate -l $(( $(df --output=avail -BM ~ | tail -1 | tr -dc 0-9) - 5 ))M ~/bigfile</code> 。その後 <code>backup.sh</code> を実行する（ワールドは数MB〜数十MBなので「9割」程度では失敗しない。復旧は <code>rm ~/bigfile</code>）</td><td>ディスク枯渇の症状とバックアップ失敗の検知</td></tr>
       </tbody></table>
       </div>
-      <p>診断の基本手順は次のとおりである。「エラーメッセージを読む→仮説を立てる→確認する」を繰り返すのが障害対応であり、当てずっぽうで設定をいじり回すと障害が増えるだけである。</p>
+      <p>診断の基本手順は次のとおりである。「エラーメッセージを読む→仮説を立てる→確認する」を繰り返すのが障害対応であり、当てずっぽうで設定をいじり回すと障害が増えるだけである。（監視の考え方の背景は<a href="ref/ch08.html#c8-5">第8章 8-5 監視の考え方</a>、ディスクの調べ方は<a href="ref/ch02.html#c2-7">第2章 2-7 ファイルの調査と参照</a>）</p>
       <table class="tbl"><thead><tr><th>手順</th><th>コマンド</th></tr></thead><tbody>
         <tr><td>① サービスの状態を見る</td><td><code>systemctl status luanti</code></td></tr>
         <tr><td>② ログでエラーを読む</td><td><code>journalctl -u luanti -e</code></td></tr>

@@ -54,9 +54,21 @@
         </tbody>
       </table>
 
+      <h2 id="s2-flow">この回の流れ</h2>
+      <ol class="flow">
+        <li><a href="#s2-1">aptでシステムを更新する</a><span class="fm">10分</span></li>
+        <li><a href="#s2-2">Luantiを入れる</a><span class="fm">パッケージ名の判定つき 20分</span></li>
+        <li><a href="#s2-3">手動で起動しワールドを作る</a><span class="fm">20分</span></li>
+        <li><a href="#s2-4">luanti.confを書く</a><span class="fm">viの実戦投入 20分</span></li>
+        <li><a href="#s2-5">systemdでサービス化する</a><span class="fm">この回の山場 30分</span></li>
+        <li><a href="#s2-6">ファイアウォールを開ける</a><span class="fm">順番に注意 10分</span></li>
+        <li><a href="#s2-7">相互接続を試す</a><span class="fm">30分</span></li>
+      </ol>
+
       <h2 id="s2-1"><span class="no">2-1</span>パッケージ管理（apt）</h2>
 
-      <div class="code">
+      <p class="why"><b>いま何をするか：</b>ソフトウェアを入れる前に、パッケージの一覧（カタログ）とインストール済みパッケージを最新にしておく。</p>
+      <div class="code" data-ctx="server">
         <div class="code-head"><span class="code-title">システムの更新</span></div>
 <pre><code><span class="in">sudo apt update <span class="c"># パッケージ情報（カタログ）の更新</span></span>
 <span class="in">sudo apt upgrade -y <span class="c"># インストール済みパッケージの更新</span></span></code></pre>
@@ -64,11 +76,14 @@
 
       <p>Linuxでは、ソフトウェアを「パッケージ」として管理する。Debian系では<code>apt</code>コマンドを使う（Red Hat系では<code>dnf</code>/<code>yum</code>）。依存関係の解決や更新をまとめて面倒みてくれるのがパッケージマネージャの利点である。コマンドの先頭に付けた<strong>sudo</strong>は、「管理者（root）権限でコマンドを実行する」ためのコマンドである。システムに変更を加える操作にはsudoが必要になる。詳しくは<a href="day3.html">第3回</a>で学ぶ。</p>
 
+      <p><code>update</code> と <code>upgrade</code> は名前が似ているが役割が違う。<strong><code>update</code> はカタログを取り直すだけで、ソフトウェア自体は新しくならない。</strong>実際に新しくするのが <code>upgrade</code> である。この2つはいつもこの順で実行する。</p>
+
       <h2 id="s2-2"><span class="no">2-2</span>Luantiのインストール</h2>
 
-      <p>本実習の題材であるLuantiは、エンジン本体（サーバプログラム）と、その上で動くゲーム（本実習ではMinetest Game）が分かれている構成が特徴である。両方をaptで一度にインストールできる。ただし、パッケージ名にはOSのバージョンによって新名（luanti系）と旧名（minetest系）の2パターンがある。まず自分の環境がどちらかを確かめよう。</p>
+      <p>本実習の題材であるLuantiは、エンジン本体（サーバプログラム）と、その上で動くゲーム（本実習ではMinetest Game）が分かれている構成が特徴である。両方をaptで一度にインストールできる。ただし、パッケージ名にはOSのバージョンによって新名（luanti系）と旧名（minetest系）の2パターンがある。まず自分の環境がどちらかを確かめよう。（背景は<a href="ref/ch11.html#c11-2">第11章 11.2 Luantiというソフトウェア</a>）</p>
 
-      <div class="code">
+      <p class="why"><b>いま何をするか：</b>自分のRaspberry Pi OSが新名（luanti系）と旧名（minetest系）のどちらのパッケージを持っているかを、検索して見分ける。</p>
+      <div class="code" data-ctx="server">
         <div class="code-head"><span class="code-title">パターンの判定</span></div>
 <pre><code><span class="in">apt-cache search luanti</span>
 <span class="out">（luanti-server などが表示されれば「新名パターン」）</span>
@@ -87,7 +102,8 @@
       </table>
       </div>
 
-      <div class="code">
+      <p class="why"><b>いま何をするか：</b>エンジン本体とゲームデータをまとめて入れ、サーバ本体がどこに置かれたかを <code>which</code> で確かめる。旧名パターンの人は上の表のとおり読み替える。</p>
+      <div class="code" data-ctx="server">
         <div class="code-head"><span class="code-title">Luantiのインストール（新名パターンの例）</span></div>
 <pre><code><span class="in">sudo apt install -y luanti-server luanti-game-minetest</span>
 <span class="in">which luantiserver</span>
@@ -96,11 +112,22 @@
 
       <div class="call note"><span class="ct">Note</span><p>※ 本資料のコマンドはすべて新名パターンで表記する。旧名パターンの人は上の表のとおり読み替えること。自分の環境の4つの値（パッケージ名・本体の場所・ゲームの場所・gameid）を実験記録にメモしておくと、この後のユニットファイル作成や<a href="day5.html">第5回</a>のコンテナ化で迷わない。また、パッケージ付属のサービス（luanti-server）は導入直後から自動で動き始め、30000番ポートを先に取ってしまう。次節に進む前に必ず <code>sudo systemctl disable --now luanti-server</code>（旧名なら <code>minetest-server</code>）で停止・無効化しておくこと。なお <code>/usr/games/luantiserver</code> の実体は本体を呼び出す短いシェルスクリプトで、Debian独自の既定（ログの出力先など）を付け足している。次節の <code>--logfile ""</code> はそれを打ち消すための指定である。</p></div>
 
+      <div class="call pit" id="pit-d2-1"><span class="ct">つまずきポイント</span><p>インストールしただけで、実はもうLuantiが動き始めている。パッケージ付属のサービス <code>luanti-server</code>（旧名なら <code>minetest-server</code>）が自動で起動し、30000番ポートを先に押さえてしまうためである。この状態で次節の手動起動を行うと <code>Address already in use</code> や <code>Bind failed</code> で即座に終了する。<strong>先に進む前に <code>sudo systemctl disable --now luanti-server</code> を実行して、停止と自動起動の解除を済ませておくこと。</strong>これを忘れると、2-5節でサービス化したあとも「自分が作ったほうのサーバが動かない」という分かりにくい形でつまずく。</p></div>
+
+      <div class="mini"><span class="ct">ここまでの確認</span><ul>
+        <li><code>which luantiserver</code>（旧名なら <code>which minetestserver</code>）がパスを1行返す</li>
+        <li>自分の環境の4つの値（パッケージ名・本体の場所・ゲームの場所・gameid）を実験記録に控えた</li>
+        <li><code>systemctl status luanti-server</code> が <code>inactive (dead)</code> かつ <code>disabled</code> になっている</li>
+      </ul></div>
+
       <h2 id="s2-3"><span class="no">2-3</span>初回起動とワールドの生成</h2>
 
-      <p>サーバ用のディレクトリを作り、まずは手動でサーバを起動してみる。<code>--world</code> はワールドの保存先、<code>--gameid</code> は動かすゲーム、<code>--config</code> は設定ファイルの指定である。なお <code>--gameid</code> には対応表の値を使う（旧名パターンなら <code>minetest_game</code>）。<code>--logfile ""</code> は、Debianのパッケージが既定でログを <code>/var/log/luanti/</code> に書こうとして権限エラー（Permission denied）で止まるのを避けるための指定で、ファイルへのログを切り、画面（サービス化後は journald）にだけ出す。この指定はユニットファイルの <code>ExecStart</code> にも同じく付ける。</p>
+      <p>サーバ用のディレクトリを作り、まずは手動でサーバを起動してみる。<code>--world</code> はワールドの保存先、<code>--gameid</code> は動かすゲーム、<code>--config</code> は設定ファイルの指定である。なお <code>--gameid</code> には対応表の値を使う（旧名パターンなら <code>minetest_game</code>）。</p>
 
-      <div class="code">
+      <p><code>--logfile ""</code> は、Debianのパッケージが既定でログを <code>/var/log/luanti/</code> に書こうとして権限エラー（Permission denied）で止まるのを避けるための指定で、ファイルへのログを切り、画面（サービス化後は journald）にだけ出す。<strong>この指定はユニットファイルの <code>ExecStart</code> にも同じく付ける。</strong></p>
+
+      <p class="why"><b>いま何をするか：</b>作業用ディレクトリと空の設定ファイルを用意し、サーバを一度だけ手で起動して、ワールドが生成されるところを自分の目で見る。</p>
+      <div class="code" data-ctx="server">
         <div class="code-head"><span class="code-title">初回起動</span></div>
 <pre><code><span class="in">mkdir ~/server &amp;&amp; cd ~/server</span>
 <span class="in">touch luanti.conf <span class="c"># 設定ファイル（今は空でよい）</span></span>
@@ -110,13 +137,24 @@
 <span class="out">ACTION[Main]: Server for gameid="minetest" listening on 0.0.0.0:30000.</span></code></pre>
       </div>
 
-      <p>「listening on 0.0.0.0:30000」と表示されれば、サーバは30000番ポート（UDP）で接続を待ち受けている。初回起動でworldディレクトリ（ワールドデータ）が自動生成される。<kbd>Ctrl</kbd>+<kbd>C</kbd>で停止し（ワールドは保存される）、<code>ls</code> でworldディレクトリができていることを確認しよう。プロンプトが返ってこないのはフリーズではなく、サーバが前面で動き続けている正常な状態である。</p>
+      <p>「listening on 0.0.0.0:30000」と表示されれば、サーバは30000番ポート（UDP）で接続を待ち受けている。初回起動でworldディレクトリ（ワールドデータ）が自動生成される。</p>
+
+      <p><strong>プロンプトが返ってこないのはフリーズではなく、サーバが前面で動き続けている正常な状態である。</strong><kbd>Ctrl</kbd>+<kbd>C</kbd>で停止し（ワールドは保存される）、<code>ls</code> でworldディレクトリができていることを確認しよう。</p>
+
+      <div class="call pit" id="pit-d2-2"><span class="ct">つまずきポイント</span><p>起動した直後に <code>Permission denied</code> で終わるときは、<code>--logfile ""</code> を書き忘れていないか確かめる。ダブルクォート2つの間には何も入れない（空文字列を渡す指定である）。<code>Address already in use</code> で終わるときは、2-2節の <code>sudo systemctl disable --now luanti-server</code> がまだ済んでいない。どちらのエラーも、原因は自分の打ち間違いではなくパッケージ既定の設定にある。</p></div>
+
+      <div class="mini"><span class="ct">ここまでの確認</span><ul>
+        <li>画面に <code>listening on 0.0.0.0:30000</code> が出た</li>
+        <li><kbd>Ctrl</kbd>+<kbd>C</kbd>で停止したあと <code>ls ~/server</code> に <code>world</code> と <code>luanti.conf</code> がある</li>
+        <li><code>ls ~/server/world</code> の中にファイルが生成されている</li>
+      </ul></div>
 
       <h2 id="s2-4"><span class="no">2-4</span>luanti.confの設定</h2>
 
-      <p>サーバの設定は <code>luanti.conf</code> ファイルで管理される。viで開き、以下の内容を記述しよう（viの実戦投入である）。注意：この設定ファイルは行頭の<code>#</code>だけがコメント扱いで、行の途中に<code>#</code>を書くと値の一部として読まれてしまう。</p>
+      <p>サーバの設定は <code>luanti.conf</code> ファイルで管理される。viで開き、以下の内容を記述しよう（viの実戦投入である）。注意：この設定ファイルは行頭の<code>#</code>だけがコメント扱いで、行の途中に<code>#</code>を書くと値の一部として読まれてしまう。（設定ファイルの構造は<a href="ref/ch11.html#c11-5">第11章 11.5 データと設定の構造</a>）</p>
 
-      <div class="code file">
+      <p class="why"><b>いま何をするか：</b><code>vi ~/server/luanti.conf</code> で設定ファイルを開き、サーバ名・最大人数・管理者名などを書き込む。<code>自分のプレイヤー名</code> のような下線付きの箇所は、自分の値に置き換えて入力する。</p>
+      <div class="code file" data-ctx="file" data-cwd="~/server/luanti.conf">
         <div class="code-head"><span class="code-title">~/server/luanti.conf</span></div>
 <pre><code><span class="in"># サーバ名（自由に付けよう）と、接続時に表示されるメッセージ</span>
 <span class="in">server_name = ○○のサーバ</span>
@@ -132,20 +170,32 @@
 
       <div class="call note"><span class="ct">Note</span><p>※ 設定変更のたびにサーバの再起動が必要である。「設定ファイルを編集→サービスを再起動→動作確認」はサーバ運用の基本サイクルであり、この後何度も繰り返すことになる。</p></div>
 
+      <div class="call pit" id="pit-d2-3"><span class="ct">つまずきポイント</span><p><code>max_users = 5 # 最大5人</code> のように行の途中にコメントを書いてはいけない。<code>luanti.conf</code> が値として読むのは <code>=</code> の右側すべてなので、この書き方だと最大人数が「5 # 最大5人」という壊れた値になる。<strong>コメントは必ず行頭の <code>#</code> から始まる独立した行にする。</strong>同じ制約はこの後のユニットファイルにもある。設定が効いていないと感じたら、まずこの点を疑うとよい。</p></div>
+
+      <div class="mini"><span class="ct">ここまでの確認</span><ul>
+        <li><code>cat ~/server/luanti.conf</code> で、書いたはずの行がすべて表示される</li>
+        <li><code>name = </code> の行が、自分がクライアントで使うプレイヤー名と一致している</li>
+        <li>値を書いた行の途中に <code>#</code> が混ざっていない</li>
+      </ul></div>
+
       <h2 id="s2-5"><span class="no">2-5</span>systemdによるサービス化</h2>
 
-      <p>ここまでの起動方法には問題がある。SSHを切断するとサーバも止まってしまい、Raspberry Piを再起動したら手動で立ち上げ直さなければならない。世の中のサーバは「OSが起動すれば勝手にサービスが立ち上がり、落ちたら自動で復旧する」ように構成されている。それを担うのがsystemdであり、サービスの定義は「ユニットファイル」に記述する。</p>
+      <p>ここまでの起動方法には問題がある。SSHを切断するとサーバも止まってしまい、Raspberry Piを再起動したら手動で立ち上げ直さなければならない。</p>
+
+      <p>世の中のサーバは「OSが起動すれば勝手にサービスが立ち上がり、落ちたら自動で復旧する」ように構成されている。それを担うのが<strong>systemd</strong>であり、サービスの定義は「ユニットファイル」に記述する。（背景は<a href="ref/ch06.html#c6-2">第6章 6-2 systemdとサービス</a>、プロセスそのものは<a href="ref/ch06.html#c6-1">第6章 6-1 プロセスとは</a>）</p>
 
       <figure><img src="img/g06.png" alt="図6　手動起動とサービス化の違い" width="1800" height="650"><figcaption>図6　手動起動とサービス化の違い</figcaption></figure>
 
       <p>viでユニットファイルを作成する（<code>/etc</code> 以下はシステムの設定領域なのでsudoが必要）。</p>
 
-      <div class="code">
+      <p class="why"><b>いま何をするか：</b>systemdがサービスを読み込む場所にユニットファイルを新規作成する。存在しないファイル名なので、viは空の画面で開く。</p>
+      <div class="code" data-ctx="server">
         <div class="code-head"><span class="code-title">ユニットファイルの作成</span></div>
 <pre><code><span class="in">sudo vi /etc/systemd/system/luanti.service</span></code></pre>
       </div>
 
-      <div class="code file">
+      <p class="why"><b>いま何をするか：</b>「誰が」「どこで」「何を」起動するのかをsystemdに伝える定義を書く。<code>ユーザ名</code> は4か所に現れるので、すべて自分のユーザ名に直すこと。</p>
+      <div class="code file" data-ctx="file" data-cwd="/etc/systemd/system/luanti.service">
         <div class="code-head"><span class="code-title">/etc/systemd/system/luanti.service</span></div>
 <pre><code><span class="in">[Unit]</span>
 <span class="in">Description=Luanti Game Server</span>
@@ -162,9 +212,17 @@
 <span class="in">WantedBy=multi-user.target</span></code></pre>
       </div>
 
-      <p>記述内容の意味：<code>User</code> はサービスを実行するユーザ、<code>WorkingDirectory</code> は実行時のディレクトリ、<code>ExecStart</code> が起動コマンド（2-3節で手動実行したものと同じ。絶対パスで書く）、<code>Restart=on-failure</code> は異常終了時の自動再起動、<code>WantedBy=multi-user.target</code> が「OS起動時に立ち上げる」指定である。作成したら、systemdに読み込ませてサービスを起動する。なお、<strong><code>User</code>・<code>WorkingDirectory</code>・<code>ExecStart</code> の3行に書かれた「ユーザ名」は、すべて自分のユーザ名に置き換えること</strong>。<code>ExecStart</code> は1行で書く。ユニットファイルも行中コメントは書けない（コメントは行頭のみ）。</p>
+      <p>記述内容の意味：<code>User</code> はサービスを実行するユーザ、<code>WorkingDirectory</code> は実行時のディレクトリ、<code>ExecStart</code> が起動コマンド（2-3節で手動実行したものと同じ。絶対パスで書く）、<code>Restart=on-failure</code> は異常終了時の自動再起動、<code>WantedBy=multi-user.target</code> が「OS起動時に立ち上げる」指定である。</p>
 
-      <div class="code">
+      <p>なお、<strong><code>User</code>・<code>WorkingDirectory</code>・<code>ExecStart</code> の3行に書かれた「ユーザ名」は、すべて自分のユーザ名に置き換えること</strong>。<code>ExecStart</code> は1行で書く。ユニットファイルも行中コメントは書けない（コメントは行頭のみ）。</p>
+
+      <div class="call pit" id="pit-d2-4"><span class="ct">つまずきポイント</span><p>「ユーザ名」の置き換え漏れは、この回で最も多い失敗である。<code>User=</code> に1か所、<code>WorkingDirectory=</code> に1か所、<code>ExecStart=</code> の <code>--world</code> と <code>--config</code> のパスに1か所ずつ、合わせて<strong>3行・計4か所</strong>ある。1か所でも残っていると <code>systemctl status luanti</code> が <code>failed</code> になり、<code>Failed to determine user credentials</code> や <code>No such file or directory</code> といったメッセージが出る。<code>grep ユーザ名 /etc/systemd/system/luanti.service</code> を実行して何も表示されなければ、置き換えは完了している。</p>
+        <p>もう1つ多いのが <code>daemon-reload</code> の忘れである。ユニットファイルを書き換えても、<code>sudo systemctl daemon-reload</code> を実行しなければsystemdは古い内容のまま動き続ける。<strong>「直したはずなのに症状が変わらない」ときは、まずdaemon-reloadを疑うこと。</strong>正しい順番は「ファイルを編集する、<code>daemon-reload</code>、<code>restart</code>、<code>status</code> で確認」である。<code>status</code> で原因が読み取れないときは <code>journalctl -u luanti -n 30</code> で直近のログを見るとよい。</p></div>
+
+      <p>作成したら、systemdに読み込ませてサービスを起動する。</p>
+
+      <p class="why"><b>いま何をするか：</b>書いたユニットファイルをsystemdに読み込ませ、起動して状態を確かめ、最後にOS起動時の自動起動を有効にする。</p>
+      <div class="code" data-ctx="server">
         <div class="code-head"><span class="code-title">サービスの起動と自動起動の設定</span></div>
 <pre><code><span class="in">sudo systemctl daemon-reload <span class="c"># ユニットファイルの読み込み</span></span>
 <span class="in">sudo systemctl start luanti <span class="c"># サービスの起動</span></span>
@@ -176,13 +234,20 @@
 
       <p>本当に自動起動するか、疑って確かめるのがエンジニアである。<code>sudo reboot</code> でRaspberry Piを再起動し、SSHで接続し直して <code>systemctl status luanti</code> が active (running) になることを確認しよう。</p>
 
+      <div class="mini"><span class="ct">ここまでの確認</span><ul>
+        <li><code>systemctl status luanti</code> が <code>active (running)</code> と表示される</li>
+        <li><code>systemctl is-enabled luanti</code> が <code>enabled</code> を返す</li>
+        <li><code>sudo reboot</code> のあとSSHで入り直しても、何もしないうちから <code>active (running)</code> である</li>
+      </ul></div>
+
       <h2 id="s2-6"><span class="no">2-6</span>ファイアウォールの設定</h2>
 
-      <p>サーバは<strong>ポート</strong>という番号付きの窓口で通信を受け付ける。SSHは22番（TCP）、Luantiは30000番（UDP）を使う。ファイアウォールは「どの窓口を開けるか」を制御する仕組みであり、Ubuntu/Raspberry Pi OSでは<code>ufw</code>コマンドで設定する。</p>
+      <p>サーバは<strong>ポート</strong>という番号付きの窓口で通信を受け付ける。SSHは22番（TCP）、Luantiは30000番（UDP）を使う。ファイアウォールは「どの窓口を開けるか」を制御する仕組みであり、Ubuntu/Raspberry Pi OSでは<code>ufw</code>コマンドで設定する。（背景は<a href="ref/ch07.html#c7-4">第7章 7-4 TCP/UDPとポート番号</a>、<a href="ref/ch07.html#c7-5">第7章 7-5 ファイアウォール</a>）</p>
 
       <figure><img src="img/g07.png" alt="図7　ポートとファイアウォール（ufw）の働き" width="1800" height="660"><figcaption>図7　ポートとファイアウォール（ufw）の働き</figcaption></figure>
 
-      <div class="code">
+      <p class="why"><b>いま何をするか：</b>ufwを入れ、必要な窓口（SSHの22番とLuantiの30000番）を開けてから有効化する。<strong>許可を先、<code>enable</code> は最後</strong>という順番が命である。</p>
+      <div class="code" data-ctx="server">
         <div class="code-head"><span class="code-title">ファイアウォールの設定</span></div>
 <pre><code><span class="in">sudo apt install -y ufw</span>
 <span class="in">sudo ufw allow 22/tcp <span class="c"># SSH（★これを忘れて有効化すると自分が締め出される！）</span></span>
@@ -196,9 +261,17 @@
 
       <div class="call warn"><span class="ct">注意</span><p>※ 順番が重要である。SSHの許可（22/tcp）より先に <code>enable</code> すると、自分のSSH接続まで遮断され、サーバに入れなくなる。実務でも定番の事故なので、この順番を体で覚えること。万一締め出されたときは、モニタとキーボードを接続してローカルログインし、<code>sudo ufw disable</code> で一旦無効化してから設定をやり直す（救済用モニタを教卓に用意している）。</p></div>
 
+      <div class="call pit" id="pit-d2-5"><span class="ct">つまずきポイント</span><p>Luantiのポートは <code>30000/udp</code> であって <code>30000/tcp</code> ではない。ここを間違えると、SSHは通るのにクライアントからだけ繋がらないという、原因の見えにくい状態になる。<code>sudo ufw status</code> の出力に <code>30000/udp</code> と表示されているかを必ず目で確かめること。間違えて <code>30000/tcp</code> を開けてしまった場合は <code>sudo ufw delete allow 30000/tcp</code> で消してから開け直す。</p></div>
+
+      <div class="mini"><span class="ct">ここまでの確認</span><ul>
+        <li><code>sudo ufw status</code> の1行目が <code>Status: active</code> である</li>
+        <li>一覧に <code>22/tcp</code> と <code>30000/udp</code> の両方が <code>ALLOW</code> で出ている</li>
+        <li>この状態でSSHを一度切断し、もう一度接続できる（締め出されていない）</li>
+      </ul></div>
+
       <h2 id="s2-7"><span class="no">2-7</span>演習：サーバの相互接続</h2>
 
-      <p>いよいよ自分のワールドに入る。クライアント側（BYOD）の手順は次のとおりである。</p>
+      <p>いよいよ自分のワールドに入る。クライアント側（BYOD）の手順は次のとおりである。（クライアントとサーバの関係は<a href="ref/ch11.html#c11-1">第11章 11.1 クライアント／サーバモデル</a>）</p>
 
       <table class="tbl">
         <thead><tr><th>手順</th><th>操作</th></tr></thead>
@@ -215,9 +288,18 @@
 
       <figure><img src="img/g08.png" alt="図8　Luantiクライアントの接続画面（模式図。番号は上の手順表に対応）" width="1860" height="1000"><figcaption>図8　Luantiクライアントの接続画面（模式図。番号は上の手順表に対応）</figcaption></figure>
 
-      <p>自分のサーバに入れたら、近くの人とホスト名（またはIPアドレス）を交換し、お互いのサーバを行き来してみよう。接続できない場合は、<code>ping</code> で相手のサーバに届くか、<code>systemctl status</code> で相手のサーバが稼働しているか、<code>ufw status</code> でポートが開いているか、を順に確認する。この「切り分け」の手順こそネットワークトラブル対応の基本である。近くに相手がいない場合は、教員のデモサーバを相手にしてよい（アドレスは当日掲示する）。</p>
+      <p>自分のサーバに入れたら、近くの人とホスト名（またはIPアドレス）を交換し、お互いのサーバを行き来してみよう。近くに相手がいない場合は、教員のデモサーバを相手にしてよい（アドレスは当日掲示する）。</p>
 
-      <div class="code">
+      <p>接続できない場合は、次の順に確認する。</p>
+      <ol>
+        <li><code>ping</code> で相手のサーバに届くか</li>
+        <li><code>systemctl status</code> で相手のサーバが稼働しているか</li>
+        <li><code>ufw status</code> でポートが開いているか</li>
+      </ol>
+      <p><strong>この「切り分け」の手順こそネットワークトラブル対応の基本である。</strong>（調査コマンドの使い分けは<a href="ref/ch07.html#c7-7">第7章 7-7 ネットワークの調査と転送</a>）</p>
+
+      <p class="why"><b>いま何をするか：</b>切り分けの1段目として、相手のサーバまでネットワークが通っているかだけを確かめる。応答が続くので<kbd>Ctrl</kbd>+<kbd>C</kbd>で止める。</p>
+      <div class="code" data-ctx="byod">
         <div class="code-head"><span class="code-title">疎通確認</span></div>
 <pre><code><span class="in">ping mc-24s5678.local <span class="c"># 相手のサーバに届くか確認（Ctrl+Cで停止）</span></span></code></pre>
       </div>

@@ -38,23 +38,492 @@
     </aside>
     <article class="doc">
 
+      <div class="chapintro">
+        <div class="box"><span class="ct">この章で分かること</span><ul>
+          <li>ログをどこで読み、どの3点に注目するか。logrotateが何をしているか</li>
+          <li>時刻同期（NTP）がログと認証の前提になっていること</li>
+          <li>cronの5フィールドと、「手では動くのにcronだと動かない」の原因</li>
+          <li>バックアップ設計の4つの観点と3-2-1ルール、監視の3階層</li>
+        </ul></div>
+        <div class="box use"><span class="ct">実習のどこで使うか</span><ul>
+          <li><a href="../day3.html#s3-6">第3回 3-6 演習：ログ解析</a></li>
+          <li><a href="../day4.html#s4-3">第4回 4-3 cronによる自動化</a></li>
+          <li><a href="../day4.html#s4-4">第4回 4-4 リストア訓練</a></li>
+          <li><a href="../day5.html#s5-4">第5回 5-4 Web監視ページの公開</a></li>
+        </ul></div>
+      </div>
+
       <h2 id="c8-1"><span class="no">8-1</span>ログ管理</h2>
-      <p>ログは「サーバに起きたことの記録」であり、障害対応とセキュリティ調査の最重要資料である。Linuxのログは大きく、journald（systemd）が管理するサービスのログと、<code>/var/log</code> 以下のファイルに書かれるログ、アプリケーション自身が書くログに分かれる。ログを読むときは、①時刻、②深刻度（ERROR/WARN/INFO）、③メッセージ本文、の3点に注目する。「エラーの1行目だけ読んで検索する」のではなく、その前後の数行（何をしようとして失敗したのか）まで読むのが調査のコツである。</p>
+      <p>ログは「サーバに起きたことの記録」であり、障害対応とセキュリティ調査の最重要資料である。Linuxのログは大きく、journald（systemd）が管理するサービスのログと、<code>/var/log</code> 以下のファイルに書かれるログ、アプリケーション自身が書くログに分かれる。サービスのログの読み出し方（<code>journalctl</code>）は<a href="ch06.html#c6-2">第6章 6.2</a>で扱った。</p>
+      <p>ログを読むときは、次の3点に注目する。</p>
+      <ol>
+        <li>時刻</li>
+        <li>深刻度（ERROR/WARN/INFO）</li>
+        <li>メッセージ本文</li>
+      </ol>
+      <p><b>「エラーの1行目だけ読んで検索する」のではなく、その前後の数行（何をしようとして失敗したのか）まで読む</b>のが調査のコツである。<a href="../day3.html#s3-6">第3回 3-6</a>のログ解析演習は、この読み方を身につけるためのものである。</p>
       <p>ログは放置すると際限なく増えてディスクを圧迫する。そこでlogrotateという仕組みが、一定期間・一定サイズごとにログを切り替え、古いものを圧縮・削除している。journaldも保存容量に上限を設けて古いログを自動削除しており（<code>journalctl --disk-usage</code> で使用量を確認できる）、発想は同じである。「ディスク使用率が徐々に増えて100%になる」障害の犯人は、たいてい肥大化したログかバックアップである。</p>
+      <dl class="term"><dt>logrotate<small>log rotation</small></dt><dd>ログファイルを一定期間・一定サイズごとに新しいものへ切り替え、古い世代を圧縮・削除する仕組み。これがないとログは増え続け、いつかディスクを埋める。</dd></dl>
+      <div class="call myth"><span class="ct">よくある誤解・トラブル</span>
+        <span class="q">ディスクがいっぱいになるのは、大きなファイルを置いたときだけ</span>
+        <p class="a">実際には、少しずつ増えるログと、消し忘れたバックアップが原因であることが多い。<code>df -h</code> で使用率を、<code>du -sh *</code> でどのディレクトリが重いかを定期的に見る習慣をつけたい。バックアップスクリプトに世代数の上限を設けるのも同じ理由である（<a href="../day4.html#s4-2">第4回 4-2</a>）。</p>
+      </div>
 
       <h2 id="c8-2"><span class="no">8-2</span>時刻同期（NTP）</h2>
-      <p>複数のコンピュータが連携するシステムでは、時計のずれは致命的である。ログの時刻が信用できなければ障害の再構成ができず、認証や証明書の検証も時刻に依存している。NTP（Network Time Protocol）は、ネットワーク経由で正確な時刻源と同期する仕組みで、原子時計を頂点とした階層構造（stratum）で世界中に時刻を配っている。Raspberry Piは電源を切ると時計を保持できない（時計用の電池を持たない）ため、起動時のNTP同期が特に重要である。<code>timedatectl</code> で「System clock synchronized: yes」を確認する習慣をつけたい。</p>
+      <p>複数のコンピュータが連携するシステムでは、時計のずれは致命的である。ログの時刻が信用できなければ障害の再構成ができず、認証や証明書の検証も時刻に依存している。NTP（Network Time Protocol）は、ネットワーク経由で正確な時刻源と同期する仕組みで、原子時計を頂点とした階層構造（stratum）で世界中に時刻を配っている。</p>
+      <p>Raspberry Piは電源を切ると時計を保持できない（時計用の電池を持たない）ため、起動時のNTP同期が特に重要である。<code>timedatectl</code> で「System clock synchronized: yes」を確認する習慣をつけたい（<a href="../day4.html#s4-3-a">第4回 4-3 時刻管理（NTP）</a>）。</p>
+      <dl class="term"><dt>NTP<small>Network Time Protocol</small></dt><dd>ネットワーク越しに正確な時刻をもらって時計を合わせる仕組み。ログの時刻も、cronが動く時刻も、これが合っていることが前提になっている。</dd></dl>
+      <div class="call myth"><span class="ct">よくある誤解・トラブル</span>
+        <span class="q">ログの時刻がずれていても、内容が読めれば支障はない</span>
+        <p class="a">時刻がずれていると、複数の記録を突き合わせて「何が先に起きたか」を再構成できなくなる。バックアップのファイル名に時刻を入れている場合は、世代の順序まで狂う。原因調査の土台が崩れるので、まず <code>timedatectl</code> を確認する。</p>
+      </div>
 
       <h2 id="c8-3"><span class="no">8-3</span>cronによる自動化</h2>
-      <p>cronは指定時刻にコマンドを自動実行する仕組みで、バックアップ、ログ集計、定期レポートなど運用作業の自動化の基本である。スケジュールは「分 時 日 月 曜日」の5フィールドで指定する。注意すべきは、cronがあなたのシェルとは別の最小限の環境で動くことである。PATHがほぼ設定されていないため、コマンドもファイルも絶対パスで書くのが原則である。「手で実行すると動くのにcronだと動かない」の原因はほぼこれである。また、cronの実行結果を確認する手段（ログへの追記や <code>2&gt;&amp;1</code> でのエラー記録）を仕込んでおくことも重要である。動いていないことに気づけない自動化は、自動化していないより危険である。</p>
+      <p>cronは指定時刻にコマンドを自動実行する仕組みで、バックアップ、ログ集計、定期レポートなど運用作業の自動化の基本である。スケジュールは「分 時 日 月 曜日」の5フィールドで指定する（<a href="../day4.html#s4-3">第4回 4-3</a>）。</p>
+      <p>注意すべきは、cronがあなたのシェルとは別の最小限の環境で動くことである。PATHがほぼ設定されていないため、<b>コマンドもファイルも絶対パスで書く</b>のが原則である。「手で実行すると動くのにcronだと動かない」の原因はほぼこれである。</p>
+      <p>また、cronの実行結果を確認する手段（ログへの追記や <code>2&gt;&amp;1</code> でのエラー記録）を仕込んでおくことも重要である。動いていないことに気づけない自動化は、自動化していないより危険である。</p>
+      <dl class="term"><dt>cron<small>crontab</small></dt><dd>指定した日時にコマンドを自動実行する仕組み。設定は <code>crontab -e</code> で編集し、「分 時 日 月 曜日 コマンド」の形で1行ずつ書く。</dd></dl>
+      <div class="call myth"><span class="ct">よくある誤解・トラブル</span>
+        <span class="q">手で実行すると成功するのに、cronに登録すると何も起きない</span>
+        <p class="a">cronはPATHも作業ディレクトリもほとんど設定されていない環境でコマンドを動かす。スクリプトもその中で呼ぶコマンドも絶対パスで書き、出力をログファイルに追記しておけば、次からは原因がログに残る。</p>
+        <span class="q">登録したのだから、あとは動いているはず</span>
+        <p class="a">自動化は「失敗しても誰も気づかない」ことが最大の弱点である。出力の記録先を決め、しばらくは翌日にログとバックアップの実体（ファイルが増えているか）を自分の目で確認すること。</p>
+      </div>
 
       <h2 id="c8-4"><span class="no">8-4</span>バックアップ設計</h2>
       <figure><img src="../img/s13.png" alt="図8-1　世代管理付き自動バックアップ" width="1800" height="660"><figcaption>図8-1　世代管理付き自動バックアップ</figcaption></figure>
-      <p>バックアップ設計で考えるべきことは「何を・どこに・どれだけの頻度で・何世代」である。有名な指針が3-2-1ルールで、「3つのコピーを、2種類の媒体に、うち1つは別の場所に」置くことを推奨する。実習の構成（本体＋同一SD上の7世代）はこのうち「3つのコピー」を部分的に満たすに過ぎず、SDカード自体が壊れれば全滅する。<code>scp</code>で別のマシンに転送する発展課題は、「1つは別の場所に」への第一歩である。</p>
-      <p>もう1つの本質は「バックアップはリストアできて初めて意味がある」ことである。取得は成功していても、いざ戻すと壊れている・手順がわからない・時間がかかりすぎる、という事故は実務で後を絶たない。定期的なリストア訓練（実習第4回で行ったこと）は、プロの現場でも推奨される習慣である。</p>
+      <p>バックアップ設計で考えるべきことは「何を・どこに・どれだけの頻度で・何世代」である。有名な指針が3-2-1ルールで、「3つのコピーを、2種類の媒体に、うち1つは別の場所に」置くことを推奨する。実習の構成（本体＋同一SD上の7世代）はこのうち「3つのコピー」を部分的に満たすに過ぎず、SDカード自体が壊れれば全滅する。<code>scp</code>で別のマシンに転送する<a href="../day4.html#s4-extra">発展課題</a>は、「1つは別の場所に」への第一歩である。</p>
+      <dl class="term"><dt>3-2-1ルール<small>3-2-1 rule</small></dt><dd>バックアップの指針。3つのコピーを、2種類の媒体に持ち、うち1つは別の場所に置く。同じSDカードの中に何世代置いても、カードが壊れれば同時に失われる。</dd></dl>
+      <dl class="term"><dt>世代管理<small>generation / rotation</small></dt><dd>バックアップを1つで上書きせず、日付ごとに複数残し、古いものから消していく運用。「壊れたことに数日後に気づいた」場合でも、壊れる前の状態に戻せる。</dd></dl>
+      <p>もう1つの本質は「バックアップはリストアできて初めて意味がある」ことである。取得は成功していても、いざ戻すと壊れている・手順がわからない・時間がかかりすぎる、という事故は実務で後を絶たない。</p>
+      <p>定期的なリストア訓練（<a href="../day4.html#s4-4">実習第4回 4-4</a>で行ったこと）は、プロの現場でも推奨される習慣である。</p>
 
       <h2 id="c8-5"><span class="no">8-5</span>監視の考え方</h2>
-      <p>監視には3つの階層がある。①死活監視：サービスが生きているか（<code>systemctl status</code>、<code>ping</code>）。②リソース監視：CPU・メモリ・ディスク・温度などの数値が正常範囲か（<code>top</code>、<code>df</code>、<code>vcgencmd</code>）。③ログ監視：エラーや異常なアクセスが出ていないか（<code>journalctl</code>、<code>grep</code>）。実務ではこれらを自動化し、しきい値を超えたら通知する仕組み（Prometheus、Zabbix、Grafanaなど）を組む。実習第5回のWeb稼働状況ページは、この監視自動化のごく素朴な原型である。監視設計のコツは「平常時の値を知っておく」ことである。平常時のload averageや温度を記録したのは、異常を「いつもと違う」として検出するための基準線づくりだった。</p>
+      <p>監視には3つの階層がある。</p>
+      <ol>
+        <li>死活監視：サービスが生きているか（<code>systemctl status</code>、<code>ping</code>）。</li>
+        <li>リソース監視：CPU・メモリ・ディスク・温度などの数値が正常範囲か（<code>top</code>、<code>df</code>、<code>vcgencmd</code>）。</li>
+        <li>ログ監視：エラーや異常なアクセスが出ていないか（<code>journalctl</code>、<code>grep</code>）。</li>
+      </ol>
+      <p>実務ではこれらを自動化し、しきい値を超えたら通知する仕組み（Prometheus、Zabbix、Grafanaなど）を組む。<a href="../day5.html#s5-4">実習第5回 5-4</a>のWeb稼働状況ページは、この監視自動化のごく素朴な原型である。</p>
+      <p>監視設計のコツは<b>「平常時の値を知っておく」</b>ことである。平常時のload averageや温度を記録した（<a href="../day3.html#s3-5">第3回 3-5</a>）のは、異常を「いつもと違う」として検出するための基準線づくりだった。数値の読み方そのものは<a href="ch06.html#c6-3">第6章 6.3</a>にまとめてある。</p>
+      <dl class="term"><dt>死活監視<small>alive monitoring</small></dt><dd>サービスが動いているかどうかだけを繰り返し確かめる、最も基本的な監視。<code>systemctl status</code> や <code>ping</code> の結果を定期的に記録するだけでも成立する。</dd></dl>
+
+
+      <h2 id="c8-add-1"><span class="no">8-6</span>ログの置き場所と読み方</h2>
+      <p>ここから先は冊子には無い補足である。8-1節ではログの重要性を述べたが、実際に障害対応をするには「どこを見るか」を知っていなければならない。Linuxのログの窓口は大きく2つ、journald（<code>journalctl</code>）と <code>/var/log</code> 以下のテキストファイルである。どちらを見るべきかは、対象がsystemdのサービスかどうかで決まる。</p>
+
+      <h3 id="c8-add-1-a">/var/log の主なファイル</h3>
+      <p>まず <code>ls /var/log</code> で自分の環境に何があるかを確かめる習慣をつけたい。Debian 12系のシステムは、伝統的なテキストログを書くrsyslogが入っている構成と、journaldだけで完結している構成の両方があり、後者では <code>/var/log/syslog</code> が存在しない。<b>手元に無いファイルの話をいくら調べても時間の無駄なので、最初に一覧を見ること</b>である。</p>
+      <div class="code" data-ctx="server">
+  <div class="code-head"><span class="code-title">ログの置き場所を確かめる</span></div>
+<pre><code><span class="in">ls -lh /var/log <span class="c"># 何があるか、どれが大きいかを一目で</span></span>
+<span class="in">sudo tail -n 30 /var/log/auth.log <span class="c"># 認証の記録（無い環境もある）</span></span>
+<span class="in">sudo tail -f /var/log/syslog <span class="c"># 流れ続けるログを追う（Ctrl+Cで終了）</span></span>
+<span class="in">less /var/log/apt/history.log <span class="c"># いつ何をaptで入れたかの履歴</span></span></code></pre>
+      </div>
+      <div class="scroll">
+      <table class="tbl">
+        <thead><tr><th>場所</th><th>内容</th><th>読む場面</th></tr></thead>
+        <tbody>
+          <tr><td><code>/var/log/syslog</code></td><td>システム全般のメッセージ（rsyslogがある環境のみ）</td><td>全体に何が起きたかを時系列で追う</td></tr>
+          <tr><td><code>/var/log/auth.log</code></td><td>ログイン、<code>sudo</code>、SSHの認証記録</td><td>不審なログイン試行の調査</td></tr>
+          <tr><td><code>/var/log/kern.log</code></td><td>カーネルからのメッセージ</td><td>ハードウェアやSDカードの異常</td></tr>
+          <tr><td><code>/var/log/apt/history.log</code></td><td>aptの操作履歴</td><td>「いつから壊れたか」を更新履歴から探す</td></tr>
+          <tr><td><code>/var/log/ufw.log</code></td><td>ufwが遮断した通信（ログ有効時）</td><td>通信が届かない原因の確認</td></tr>
+          <tr><td><code>/var/log/journal/</code></td><td>journaldのログ本体（バイナリ、直接は読まない）</td><td><code>journalctl</code> 経由で読む</td></tr>
+        </tbody>
+      </table>
+      </div>
+      <p>テキストのログは <code>tail</code>、<code>less</code>、<code>grep</code> で読む。特に <code>tail -f</code> は「これから起きること」を眺めながら操作を再現するのに向いており、障害の再現手順が分かっているときの定番である。</p>
+
+      <h3 id="c8-add-1-b">journalctl との使い分け</h3>
+      <p>systemdが起動したサービス（Luanti、ssh、cron、Dockerなど）のログは、標準出力ごとjournaldが預かっている。したがって<b>サービスの調査は <code>journalctl -u <var>サービス名</var></code> が出発点</b>であり、<code>/var/log</code> を探し回る必要はない。オプションの詳細は<a href="ch06.html#c6-2">第6章 6.2</a>にまとめたとおりだが、運用でよく使う組み合わせを再掲する。</p>
+      <div class="code" data-ctx="server">
+  <div class="code-head"><span class="code-title">運用でよく使う journalctl</span></div>
+<pre><code><span class="in">journalctl -u luanti --since today <span class="c"># 今日の分だけ</span></span>
+<span class="in">journalctl -u luanti --since "1 hour ago" <span class="c"># 直近1時間</span></span>
+<span class="in">journalctl -p err -b <span class="c"># 今回の起動以降のエラーだけを全サービス横断で</span></span>
+<span class="in">journalctl _COMM=sudo --since today <span class="c"># sudoが実行された記録</span></span>
+<span class="in">journalctl -u luanti -o short-iso <span class="c"># 時刻をISO形式で（他の記録と突き合わせやすい）</span></span>
+<span class="in">journalctl --disk-usage <span class="c"># ログがディスクをどれだけ使っているか</span></span></code></pre>
+      </div>
+      <p>1つ注意がある。journaldの保存先が <code>/var/log/journal</code> に作られていない環境では、ログはメモリ上の一時領域に置かれ、<b>再起動すると消える</b>。「昨日のエラーを見ようとしたら何も残っていない」のはこれが原因である。<code>journalctl --disk-usage</code> の出力が <code>/run/log/journal</code> を指していればその状態で、永続化したい場合は <code>/etc/systemd/journald.conf</code> の <code>Storage=persistent</code> を有効にして <code>sudo systemctl restart systemd-journald</code> を実行する。ただし書き込みが増えるので、SDカードの寿命とのかね合いになる。</p>
+      <div class="call note"><span class="ct">実習ではここで使う</span><p>※ <a href="../day3.html#s3-6">第3回 3-6 演習：ログ解析</a>では <code>journalctl -u luanti</code> と <code>grep</code> を組み合わせて入退室を数えた。<code>--since today</code> を足すと、その日の演習中の記録だけに絞れる。</p></div>
+
+      <h3 id="c8-add-1-c">logrotate の設定ファイルを読む</h3>
+      <p>logrotateは <code>/etc/logrotate.conf</code> の全体設定と、<code>/etc/logrotate.d/</code> にあるソフトごとの設定で動く。新しくソフトを入れるとここにファイルが1つ増える、と考えてよい。自分で書く機会は少ないが、<b>読めるようになっておくと「このログは何日分残るのか」がすぐ分かる</b>。</p>
+      <div class="code" data-ctx="server">
+  <div class="code-head"><span class="code-title">設定を読む（変更はしない）</span></div>
+<pre><code><span class="in">cat /etc/logrotate.conf <span class="c"># 全体の既定</span></span>
+<span class="in">ls /etc/logrotate.d/ <span class="c"># ソフトごとの設定</span></span>
+<span class="in">sudo logrotate -d /etc/logrotate.conf <span class="c"># 予行演習（-d は何も変更しない）</span></span></code></pre>
+      </div>
+      <div class="scroll">
+      <table class="tbl">
+        <thead><tr><th>設定項目</th><th>意味</th><th>例</th></tr></thead>
+        <tbody>
+          <tr><td><code>daily</code> / <code>weekly</code></td><td>切り替える周期</td><td><code>weekly</code></td></tr>
+          <tr><td><code>rotate <var>数</var></code></td><td>何世代残すか。これを超えた古い分は削除される</td><td><code>rotate 4</code></td></tr>
+          <tr><td><code>size <var>大きさ</var></code></td><td>指定サイズを超えたら周期を待たずに切り替える</td><td><code>size 10M</code></td></tr>
+          <tr><td><code>compress</code></td><td>切り替えた古いログをgzipで圧縮する</td><td><code>compress</code></td></tr>
+          <tr><td><code>missingok</code></td><td>対象ファイルが無くてもエラーにしない</td><td><code>missingok</code></td></tr>
+          <tr><td><code>notifempty</code></td><td>中身が空なら切り替えない</td><td><code>notifempty</code></td></tr>
+          <tr><td><code>create <var>権限 所有者 グループ</var></code></td><td>切り替え後に新しい空ファイルをこの権限で作る</td><td><code>create 640 root adm</code></td></tr>
+        </tbody>
+      </table>
+      </div>
+      <p><code>weekly</code> と <code>rotate 4</code> が書いてあれば、そのログは約4週間分残る。障害調査で「1か月以上前の記録」を求められたときに、そもそも残っていないと分かるのはこの読み方ができるからである。</p>
+
+      <h3 id="c8-add-1-d">ログに残してはいけない情報</h3>
+      <p>ログは長く残り、しばしば複数人が読み、バックアップにも入る。したがって、次のものはログに書いてはいけない。自作のスクリプトやアプリを作るときに特に注意が要る。</p>
+      <ul>
+        <li>パスワード、APIキー、トークン、秘密鍵の内容。</li>
+        <li>個人情報（氏名、学籍番号、メールアドレス、位置情報など）を必要以上に。</li>
+        <li>クレジットカード番号などの決済情報。</li>
+      </ul>
+      <p>「デバッグのために一時的に出す」つもりの出力が、そのまま本番に残ってしまう事故は実務でも多い。<b>ログに出す前に「これが第三者に読まれても困らないか」を一度考える</b>のが唯一の確実な予防策である。技術記事を書くとき（<a href="../day6.html#s6-4">第6回</a>）にログを貼る場合も同じで、IPアドレスやホスト名、ユーザ名は伏せるか架空のものに置き換える。</p>
+      <div class="call myth"><span class="ct">よくある誤解・トラブル</span>
+        <span class="q">ログは多ければ多いほどよい</span>
+        <p class="a">量が多すぎるログは読まれず、ディスクを食い、肝心の1行を埋もれさせる。「異常時に原因が特定できる最小限」を目指すのが設計である。逆に、成功したときに何も残さない設計も困る。<b>始まりと終わり、そして失敗の理由</b>の3つが残っていれば、たいていの調査はできる。</p>
+      </div>
+
+      <h2 id="c8-add-2"><span class="no">8-7</span>時刻を合わせる（timedatectl）</h2>
+      <p>8-2節で述べたとおり、時刻はログと認証の前提である。Raspberry Piは電源を切ると時計を保持できないため、起動のたびにネットワーク越しに時刻を取り直している。その状態を確認・設定するコマンドが <code>timedatectl</code> である。</p>
+      <div class="code" data-ctx="server">
+  <div class="code-head"><span class="code-title">時刻の確認と設定</span></div>
+<pre><code><span class="in">timedatectl <span class="c"># 現在時刻、タイムゾーン、同期状態をまとめて表示</span></span>
+<span class="in">timedatectl timesync-status <span class="c"># どのNTPサーバとどれだけずれているか</span></span>
+<span class="in">sudo timedatectl set-timezone Asia/Tokyo <span class="c"># タイムゾーンを日本時間に</span></span>
+<span class="in">sudo timedatectl set-ntp true <span class="c"># 自動同期を有効にする</span></span>
+<span class="in">date <span class="c"># 今の時刻を1行で確認</span></span></code></pre>
+      </div>
+      <div class="scroll">
+      <table class="tbl">
+        <thead><tr><th>サブコマンド</th><th>意味</th><th>例</th></tr></thead>
+        <tbody>
+          <tr><td>（なし）</td><td>時刻、タイムゾーン、NTP同期の状態を表示する</td><td><code>timedatectl</code></td></tr>
+          <tr><td><code>timesync-status</code></td><td>同期先のサーバ、ずれ幅、次の同期までの間隔を表示する</td><td><code>timedatectl timesync-status</code></td></tr>
+          <tr><td><code>set-timezone <var>地域</var></code></td><td>タイムゾーンを設定する</td><td><code>sudo timedatectl set-timezone Asia/Tokyo</code></td></tr>
+          <tr><td><code>list-timezones</code></td><td>指定できるタイムゾーンの一覧を表示する</td><td><code>timedatectl list-timezones | grep Tokyo</code></td></tr>
+          <tr><td><code>set-ntp <var>true/false</var></code></td><td>ネットワーク時刻同期の有効、無効を切り替える</td><td><code>sudo timedatectl set-ntp true</code></td></tr>
+        </tbody>
+      </table>
+      </div>
+      <div class="code" data-ctx="server">
+  <div class="code-head"><span class="code-title">出力の読み方：timedatectl</span></div>
+<pre><code><span class="in">timedatectl</span>
+<span class="out">               Local time: Mon 2026-10-12 13:21:44 JST</span>
+<span class="out">           Universal time: Mon 2026-10-12 04:21:44 UTC</span>
+<span class="out">                 Time zone: Asia/Tokyo (JST, +0900)</span>
+<span class="out">System clock synchronized: yes</span>
+<span class="out">              NTP service: active</span></code></pre>
+      </div>
+      <p>見るべきは下の3行である。<code>Time zone</code> が <code>Asia/Tokyo</code> になっていないと、ログの時刻が9時間ずれて記録され、後から突き合わせるときに混乱する。<code>System clock synchronized: yes</code> は「時刻合わせに成功している」印で、<code>no</code> のままならネットワークに出られていないか、同期サービスが動いていない。<code>NTP service: active</code> はその同期サービス（多くの環境では <code>systemd-timesyncd</code>）が稼働中であることを示す。なお環境によってはchronyなど別のNTPクライアントが使われており、その場合は <code>timesync-status</code> が使えないかわりに <code>chronyc tracking</code> で同じことを確認する。</p>
+      <p>時刻が狂うと何が起きるか。第1に、ログの時系列が信用できなくなり障害の再構成ができない。第2に、日付を含むファイル名でバックアップを取っていると、世代の順序が狂う（<a href="../day4.html#s4-2">第4回 4-2</a>）。第3に、cronが意図しない時刻に動くか、まったく動かない。第4に、TLSの証明書は有効期間を時刻で判定するため、大きくずれると正常な証明書まで「期限切れ」と判定されて通信できなくなる。<b>原因不明の不具合に出会ったら、早い段階で <code>timedatectl</code> を確認する</b>のは費用対効果の高い習慣である。</p>
+
+      <h2 id="c8-add-3"><span class="no">8-8</span>cron コマンドリファレンス</h2>
+      <p>8-3節で触れたcronの書式を、実務で必要な全項目に広げて整理する。cronは「決まった時刻に決まったコマンドを実行する」だけの素朴な仕組みだが、書式の読み書きができると自動化の幅が一気に広がる。</p>
+
+      <h3 id="c8-add-3-a">5つのフィールドと書き方</h3>
+      <p>1行は「分 時 日 月 曜日 コマンド」の6つの部分からなる。時刻のフィールドは左から順に細かい単位ではなく、分、時、日、月、曜日の順である点に注意したい。</p>
+      <div class="scroll">
+      <table class="tbl">
+        <thead><tr><th>位置</th><th>項目</th><th>範囲</th><th>備考</th></tr></thead>
+        <tbody>
+          <tr><td>1</td><td>分</td><td><code>0</code> から <code>59</code></td><td>毎時の何分か</td></tr>
+          <tr><td>2</td><td>時</td><td><code>0</code> から <code>23</code></td><td>24時間制</td></tr>
+          <tr><td>3</td><td>日</td><td><code>1</code> から <code>31</code></td><td>日付</td></tr>
+          <tr><td>4</td><td>月</td><td><code>1</code> から <code>12</code></td><td><code>jan</code> などの英字も可</td></tr>
+          <tr><td>5</td><td>曜日</td><td><code>0</code> から <code>7</code></td><td><code>0</code> と <code>7</code> が日曜、<code>1</code> が月曜</td></tr>
+          <tr><td>6</td><td>コマンド</td><td>自由</td><td>絶対パスで書く</td></tr>
+        </tbody>
+      </table>
+      </div>
+      <p>各フィールドでは <code>*</code>（毎回）、<code>,</code>（列挙）、<code>-</code>（範囲）、<code>/</code>（間隔）が使える。日と曜日の両方を指定した場合は「どちらかに当てはまれば実行」というやや直感に反する動きをするので、片方は <code>*</code> にしておくのが無難である。</p>
+      <div class="code file" data-ctx="file">
+  <div class="code-head"><span class="code-title">crontab の記述例</span></div>
+<pre><code><span class="in">PATH=/usr/local/bin:/usr/bin:/bin</span>
+<span class="in">MAILTO=""</span>
+<span class="in"></span>
+<span class="in">0 6 * * * /home/luanti/backup.sh &gt;&gt; /home/luanti/backup.log 2&gt;&amp;1</span>
+<span class="in">*/10 * * * * /home/luanti/monitor.sh &gt;&gt; /home/luanti/monitor.log 2&gt;&amp;1</span>
+<span class="in">30 8 * * 1-5 /home/luanti/report.sh &gt;&gt; /home/luanti/report.log 2&gt;&amp;1</span>
+<span class="in">0 3 1 * * /home/luanti/monthly.sh &gt;&gt; /home/luanti/monthly.log 2&gt;&amp;1</span>
+<span class="in">@reboot /home/luanti/startup-check.sh &gt;&gt; /home/luanti/startup.log 2&gt;&amp;1</span></code></pre>
+      </div>
+      <div class="scroll">
+      <table class="tbl">
+        <thead><tr><th>書式</th><th>意味</th></tr></thead>
+        <tbody>
+          <tr><td><code>0 6 * * *</code></td><td>毎日6時00分</td></tr>
+          <tr><td><code>*/10 * * * *</code></td><td>10分ごと</td></tr>
+          <tr><td><code>0 */6 * * *</code></td><td>6時間ごと（0時、6時、12時、18時）</td></tr>
+          <tr><td><code>30 8 * * 1-5</code></td><td>平日（月曜から金曜）の8時30分</td></tr>
+          <tr><td><code>0 3 1 * *</code></td><td>毎月1日の3時00分</td></tr>
+          <tr><td><code>0 0,12 * * *</code></td><td>毎日0時と12時</td></tr>
+          <tr><td><code>@reboot</code></td><td>起動のたびに1回</td></tr>
+        </tbody>
+      </table>
+      </div>
+
+      <h3 id="c8-add-3-b">crontab コマンドと環境変数</h3>
+      <p>予定表はユーザごとに別々に管理される。<b>編集したいユーザ本人でログインした状態で <code>crontab -e</code> を実行する</b>のが原則で、これを忘れて別のユーザの予定表に書いてしまう失敗が非常に多い。</p>
+      <div class="code" data-ctx="luanti">
+  <div class="code-head"><span class="code-title">crontab の操作</span></div>
+<pre><code><span class="in">crontab -l <span class="c"># 現在の設定を表示</span></span>
+<span class="in">crontab -e <span class="c"># 編集（初回はエディタの選択画面が出る）</span></span>
+<span class="in">crontab -l &gt; ~/crontab.bak <span class="c"># 編集前に控えを取っておく</span></span>
+<span class="in">crontab ~/crontab.bak <span class="c"># 控えから復元する</span></span>
+<span class="in">sudo crontab -l -u luanti <span class="c"># 他ユーザの設定を管理者として確認</span></span></code></pre>
+      </div>
+      <div class="call warn"><span class="ct">注意</span><p>※ <code>crontab -r</code> は確認なしで、そのユーザの予定表をすべて削除する。<code>-e</code> と隣り合っているため押し間違いが起きやすい。消す前に必ず <code>crontab -l &gt; ~/crontab.bak</code> で控えを取ること。控えさえあれば <code>crontab ~/crontab.bak</code> で元に戻せる。</p></div>
+      <div class="scroll">
+      <table class="tbl">
+        <thead><tr><th>項目</th><th>意味</th><th>書き方</th></tr></thead>
+        <tbody>
+          <tr><td><code>PATH</code></td><td>コマンドを探す場所。既定はほぼ空なので明示すると安全</td><td><code>PATH=/usr/local/bin:/usr/bin:/bin</code></td></tr>
+          <tr><td><code>MAILTO</code></td><td>出力の送り先メールアドレス。空にすると送らない</td><td><code>MAILTO=""</code></td></tr>
+          <tr><td><code>SHELL</code></td><td>実行に使うシェル。既定は <code>/bin/sh</code></td><td><code>SHELL=/bin/bash</code></td></tr>
+          <tr><td><code>&gt;&gt; <var>ファイル</var></code></td><td>標準出力をログに追記する</td><td><code>&gt;&gt; /home/luanti/backup.log</code></td></tr>
+          <tr><td><code>2&gt;&amp;1</code></td><td>エラー出力も同じログに混ぜる。必ず追記指定の後に書く</td><td><code>&gt;&gt; x.log 2&gt;&amp;1</code></td></tr>
+          <tr><td><code>\%</code></td><td>crontabの中では <code>%</code> が改行扱いになるので、<code>date</code> の書式指定などでは <code>\</code> で打ち消す</td><td><code>/usr/bin/date +\%F</code></td></tr>
+        </tbody>
+      </table>
+      </div>
+      <p>システム全体の予定表としては、<code>/etc/crontab</code> と <code>/etc/cron.d/</code> もある。こちらは書式が1列多く、コマンドの前に<b>実行ユーザ</b>を書く点が個人のcrontabと異なる。また <code>/etc/cron.daily/</code> などのディレクトリに実行可能なスクリプトを置くと、1日1回自動で実行される。logrotateもこの仕組みで動いている。</p>
+      <div class="code" data-ctx="server">
+  <div class="code-head"><span class="code-title">出力の読み方：cronが動いたかを確かめる</span></div>
+<pre><code><span class="in">systemctl status cron</span>
+<span class="out">● cron.service - Regular background program processing daemon</span>
+<span class="out">     Loaded: loaded (/lib/systemd/system/cron.service; enabled; preset: enabled)</span>
+<span class="out">     Active: active (running) since Mon 2026-10-12 08:02:11 JST; 5h 19min ago</span>
+<span class="in">journalctl -u cron --since today | tail -n 5</span>
+<span class="out">Oct 12 13:00:01 mc-24s1234 CRON[3411]: (luanti) CMD (/home/luanti/monitor.sh &gt;&gt; /home/luanti/monitor.log 2&gt;&amp;1)</span>
+<span class="out">Oct 12 13:10:01 mc-24s1234 CRON[3502]: (luanti) CMD (/home/luanti/monitor.sh &gt;&gt; /home/luanti/monitor.log 2&gt;&amp;1)</span></code></pre>
+      </div>
+      <p>まず <code>Active: active (running)</code> でcron自体が動いていることを確かめる。次に <code>journalctl -u cron</code> の行を見る。<code>(luanti) CMD (...)</code> の形で行が残っていれば、cronは指定どおり<b>実行を試みている</b>。それでも結果が出ていないなら、原因はcronではなくスクリプトの側にあり、リダイレクト先のログファイル（この例では <code>monitor.log</code>）を読むべきである。逆にCMDの行自体が無ければ、書式かユーザの取り違えを疑う。</p>
+      <div class="call note"><span class="ct">実習ではここで使う</span><p>※ <a href="../day4.html#s4-3">第4回 4-3 cronによる自動化</a>でバックアップを自動化する。動作確認用の <code>*/10</code> のまま放置せず、確認できたら <code>0 6 * * *</code> に直すところまでが演習である。</p></div>
+
+      <h3 id="c8-add-3-c">systemd timer との比較</h3>
+      <p>同じ定期実行を、systemdのtimerで実現することもできる。近年のDebian系ではこちらに移行しているソフトも多い。cronのほうが手軽だが、timerには「サービスとして管理できる」「電源が落ちていて実行できなかった分を後から実行できる」という明確な利点がある。</p>
+      <div class="scroll">
+      <table class="tbl">
+        <thead><tr><th>観点</th><th>cron</th><th>systemd timer</th></tr></thead>
+        <tbody>
+          <tr><td>設定の書き方</td><td>1行で済む。手軽</td><td><code>.timer</code> と <code>.service</code> の2ファイルが要る</td></tr>
+          <tr><td>ログ</td><td>自分でリダイレクトを書く必要がある</td><td>journaldに自動で残る</td></tr>
+          <tr><td>実行し損ねた分</td><td>そのまま流れる</td><td><code>Persistent=true</code> で起動後に追いかけ実行できる</td></tr>
+          <tr><td>状態の確認</td><td><code>crontab -l</code> で予定を見るだけ</td><td><code>systemctl list-timers</code> で次回と前回が分かる</td></tr>
+          <tr><td>依存関係</td><td>書けない</td><td><code>After=</code> などで他のサービスとの順序を指定できる</td></tr>
+        </tbody>
+      </table>
+      </div>
+      <div class="code file" data-ctx="file" data-cwd="/etc/systemd/system/backup.service">
+  <div class="code-head"><span class="code-title">/etc/systemd/system/backup.service</span></div>
+<pre><code><span class="in">[Unit]</span>
+<span class="in">Description=Luanti world backup</span>
+<span class="in"></span>
+<span class="in">[Service]</span>
+<span class="in">Type=oneshot</span>
+<span class="in">User=luanti</span>
+<span class="in">ExecStart=/home/luanti/backup.sh</span></code></pre>
+      </div>
+      <div class="code file" data-ctx="file" data-cwd="/etc/systemd/system/backup.timer">
+  <div class="code-head"><span class="code-title">/etc/systemd/system/backup.timer</span></div>
+<pre><code><span class="in">[Unit]</span>
+<span class="in">Description=Run Luanti world backup daily</span>
+<span class="in"></span>
+<span class="in">[Timer]</span>
+<span class="in">OnCalendar=*-*-* 06:00:00</span>
+<span class="in">Persistent=true</span>
+<span class="in"></span>
+<span class="in">[Install]</span>
+<span class="in">WantedBy=timers.target</span></code></pre>
+      </div>
+      <div class="code" data-ctx="server">
+  <div class="code-head"><span class="code-title">timer の有効化と確認</span></div>
+<pre><code><span class="in">sudo systemctl daemon-reload <span class="c"># ユニットを作ったら必ず実行</span></span>
+<span class="in">sudo systemctl enable --now backup.timer <span class="c"># 有効化して今から動かす</span></span>
+<span class="in">systemctl list-timers --all <span class="c"># 次回と前回の実行時刻の一覧</span></span>
+<span class="in">journalctl -u backup.service --since today <span class="c"># 実行結果のログ</span></span></code></pre>
+      </div>
+      <p>有効化するのは <code>.timer</code> のほうで、<code>.service</code> は有効化しない（timerに呼び出してもらう側だからである）。<code>OnCalendar</code> の書式はcronとは別物で、<code>*-*-* 06:00:00</code> は「毎日6時ちょうど」を意味する。</p>
+      <dl class="term"><dt>systemd timer<small>.timer unit</small></dt><dd>systemdが持つ定期実行の仕組み。<code>.timer</code> が時刻を、<code>.service</code> が実行内容を受け持つ。ログがjournaldに残り、実行できなかった分を後から追いかけ実行できる点がcronとの違いである。</dd></dl>
+
+      <h2 id="c8-add-4"><span class="no">8-9</span>バックアップ設計を実装に落とす</h2>
+      <p>8-4節では3-2-1ルールと世代管理の考え方を扱った。ここでは、それを実際の手順とコマンドに落とすときの選択肢を整理する。設計で決めるべきことは「何を」「どの方式で」「どこに」「どれだけの頻度で」「何世代」「どう戻すか」の6つである。</p>
+
+      <h3 id="c8-add-4-a">フル・差分・増分</h3>
+      <p>取得方式には3つある。どれが正しいということはなく、復元の速さと保存容量のどちらを優先するかの選択である。</p>
+      <div class="scroll">
+      <table class="tbl">
+        <thead><tr><th>方式</th><th>取るもの</th><th>容量</th><th>復元の手間</th></tr></thead>
+        <tbody>
+          <tr><td>フル</td><td>毎回すべて</td><td>大きい</td><td>最新の1つを戻すだけ。最も簡単</td></tr>
+          <tr><td>差分</td><td>直近のフル以降に変わった分</td><td>中くらい</td><td>フル1つ＋最新の差分1つ</td></tr>
+          <tr><td>増分</td><td>直前の取得以降に変わった分</td><td>小さい</td><td>フル1つ＋その後の増分をすべて順に</td></tr>
+        </tbody>
+      </table>
+      </div>
+      <p>実習で作ったのは「毎回フル＋7世代」という最も単純な構成である。ワールドデータが数十メガバイト程度なら、この単純さが最大の利点になる。<b>復元の手順が複雑な設計は、いざというときに使えない</b>ことを忘れてはならない。</p>
+      <dl class="term"><dt>増分バックアップ<small>incremental backup</small></dt><dd>前回の取得から変わった分だけを保存する方式。容量は小さく済むが、復元にはフルとその後の増分をすべて順に戻す必要があり、1つでも欠けると復元できない。</dd></dl>
+
+      <h3 id="c8-add-4-b">rsync によるミラーと世代の整理</h3>
+      <p><code>tar</code> で固めて世代を残す方式に対し、<code>rsync</code> でそのままの形を別の場所に写す方式もある。ミラーは「開いてすぐ使える」「差分転送で速い」のが利点で、別マシンへの複製（3-2-1ルールの「1つは別の場所に」）との相性がよい。</p>
+      <div class="code" data-ctx="luanti">
+  <div class="code-head"><span class="code-title">ミラーと世代の整理</span></div>
+<pre><code><span class="in">rsync -avn ~/server/world/ ~/mirror/world/ <span class="c"># まず予行演習（-n）で内容を確認</span></span>
+<span class="in">rsync -av ~/server/world/ ~/mirror/world/ <span class="c"># 実行</span></span>
+<span class="in">ls -lt ~/backup | head <span class="c"># 世代が新しい順に並ぶ</span></span>
+<span class="in">find ~/backup -name 'world_*.tar.gz' -mtime +7 <span class="c"># 8日以上前の世代を「一覧するだけ」</span></span>
+<span class="in">find ~/backup -name 'world_*.tar.gz' -mtime +7 -delete <span class="c"># 確認してから削除</span></span></code></pre>
+      </div>
+      <div class="call warn"><span class="ct">注意</span><p>※ <code>find ... -delete</code> は確認なしで消す。<b>必ず <code>-delete</code> を付けない形で先に実行し、表示された一覧が消してよいものだけであることを目で確かめてから</b>、同じ条件に <code>-delete</code> を足すこと。<code>-name</code> の条件を書き忘れると、ディレクトリの中身すべてが対象になってしまう。同様に、<code>rsync --delete</code> は送り先の余分なファイルを消すので、必ず <code>-n</code> で予行演習してから実行する。</p></div>
+      <p>バックアップは取ったら壊れていないかを確かめる。圧縮ファイルなら <code>gzip -t</code> で伸長できるかを検査でき、<code>sha256sum</code> でコピー前後が同一かを確認できる。取得直後の検査を自動化しておけば、「壊れたバックアップを7世代持っていた」という最悪の事態を防げる。</p>
+      <div class="code" data-ctx="luanti">
+  <div class="code-head"><span class="code-title">バックアップの健全性を確かめる</span></div>
+<pre><code><span class="in">gzip -t ~/backup/world_20261012_060001.tar.gz <span class="c"># 壊れていれば何か出力される（正常なら無言）</span></span>
+<span class="in">tar tzf ~/backup/world_20261012_060001.tar.gz | head <span class="c"># 中身の先頭を目視</span></span>
+<span class="in">sha256sum ~/backup/world_20261012_060001.tar.gz <span class="c"># 転送前後の同一性の確認に使う</span></span></code></pre>
+      </div>
+
+      <h3 id="c8-add-4-c">暗号化と復元訓練</h3>
+      <p>バックアップを別の場所に置くということは、<b>そのファイルを持つ人は中身をすべて読める</b>ということである。個人情報や認証情報を含むデータを外部に置くなら暗号化する。最も手軽なのは <code>gpg</code> による共通鍵暗号で、合言葉（パスフレーズ）を知っている人だけが復号できる。</p>
+      <div class="code" data-ctx="luanti">
+  <div class="code-head"><span class="code-title">バックアップの暗号化と復号</span></div>
+<pre><code><span class="in">gpg -c ~/backup/world_20261012_060001.tar.gz <span class="c"># .gpg が作られる（パスフレーズを2回入力）</span></span>
+<span class="in">gpg -o ~/restore/world.tar.gz -d ~/backup/world_20261012_060001.tar.gz.gpg <span class="c"># 復号</span></span></code></pre>
+      </div>
+      <p>言うまでもないが、パスフレーズを忘れると自分でも復元できない。<b>鍵や合言葉の保管場所も含めてバックアップ設計である</b>。暗号化したファイルと同じ場所にパスフレーズを書いたメモを置くのでは意味がない、という点も押さえておきたい。</p>
+      <p>そして最後に、最も大切な習慣が復元訓練である。訓練では次の4点を確認し、かかった時間を記録する。</p>
+      <ol>
+        <li>最新のバックアップから実際にデータを取り出せるか。</li>
+        <li>取り出したデータでサービスが正常に起動するか。</li>
+        <li>手順書を見ながら、作った本人でなくても実行できるか。</li>
+        <li>復元完了までに何分かかるか（これが実質的な復旧目標時間になる）。</li>
+      </ol>
+      <div class="call note"><span class="ct">実習ではここで使う</span><p>※ <a href="../day4.html#s4-4">第4回 4-4 リストア訓練</a>がまさにこの訓練である。<a href="../day4.html#s4-extra">第4回の発展課題</a>で別マシンに転送すれば、3-2-1ルールの「1つは別の場所に」に一歩近づく。</p></div>
+      <div class="call myth"><span class="ct">よくある誤解・トラブル</span>
+        <span class="q">バックアップスクリプトが毎日成功しているので、安心である</span>
+        <p class="a">確かめているのは「スクリプトが最後まで走ったこと」だけかもしれない。中身が空のアーカイブを作り続けていても、スクリプトは成功で終わる。<b>ファイルのサイズが妥当か、中身の一覧が取れるか</b>まで確認してはじめて「取れている」と言える。</p>
+        <span class="q">RAIDやクラウドの同期フォルダがあるので、バックアップは不要である</span>
+        <p class="a">それらは機器の故障には強いが、誤って削除した場合や、壊れたデータを書いてしまった場合はその状態がそのまま複製される。過去の時点に戻せることがバックアップの本質であり、同期はバックアップの代わりにならない。</p>
+      </div>
+
+      <h2 id="c8-add-5"><span class="no">8-10</span>監視の組み立て方</h2>
+      <p>8-5節で監視の3階層を示した。ここでは、その3階層をどう具体化するか、しきい値をどう決めるか、そして実務で使われる道具がどういう位置づけにあるかを整理する。監視は「異常を早く知るための投資」であり、作り込みすぎないことも設計のうちである。</p>
+
+      <h3 id="c8-add-5-a">何を、どのしきい値で見るか</h3>
+      <p>監視項目は、異常のときに<b>人が何か行動できるもの</b>に絞る。誰も対応しない通知は、やがて全員に無視されるようになり、本当に重要な通知まで埋もれさせる。</p>
+      <div class="scroll">
+      <table class="tbl">
+        <thead><tr><th>階層</th><th>見るもの</th><th>確認コマンド</th><th>しきい値の例</th></tr></thead>
+        <tbody>
+          <tr><td>死活</td><td>サービスが動いているか</td><td><code>systemctl is-active luanti</code></td><td><code>active</code> 以外なら異常</td></tr>
+          <tr><td>死活</td><td>ポートが応答するか</td><td><code>nc -zuv localhost 30000</code></td><td>接続不可なら異常</td></tr>
+          <tr><td>リソース</td><td>ディスク使用率</td><td><code>df -h /</code></td><td>80%で警告、90%で危険</td></tr>
+          <tr><td>リソース</td><td>メモリの空き</td><td><code>free -h</code></td><td>スワップが増え続けていれば注意</td></tr>
+          <tr><td>リソース</td><td>CPU温度（Raspberry Pi）</td><td><code>vcgencmd measure_temp</code></td><td>80度前後で性能が落ち始める</td></tr>
+          <tr><td>ログ</td><td>エラーの発生</td><td><code>journalctl -p err -b</code></td><td>新規のエラー行が出たら確認</td></tr>
+        </tbody>
+      </table>
+      </div>
+      <p>しきい値は教科書から借りるのではなく、<b>自分のサーバの平常値から決める</b>のが正しい順序である。<a href="../day3.html#s3-5">第3回 3-5</a>で平常時のload averageや温度を記録したのは、この基準線を作るためだった。「いつも0.3なのに今は4.0」という判断は、平常値を知っている人にしかできない。</p>
+      <dl class="term"><dt>しきい値<small>threshold</small></dt><dd>これを超えたら異常とみなす境界の値。平常時の値を先に知らないと決められない。厳しすぎると通知が多すぎて無視され、緩すぎると手遅れになる。</dd></dl>
+
+      <h3 id="c8-add-5-b">自作の最小限の監視</h3>
+      <p>本格的な監視ツールを入れる前に、cronとシェルスクリプトだけでも実用的な監視は作れる。要点は「判定する」「記録する」「異常時だけ目立たせる」の3つである。次は死活とディスクを見る最小限の例である。</p>
+      <div class="code file" data-ctx="file" data-cwd="/home/luanti/monitor.sh">
+  <div class="code-head"><span class="code-title">/home/luanti/monitor.sh</span></div>
+<pre><code><span class="in">#!/bin/bash</span>
+<span class="in">set -u</span>
+<span class="in">LOG=/home/luanti/monitor.log</span>
+<span class="in">STAMP=$(date '+%Y-%m-%d %H:%M:%S')</span>
+<span class="in"></span>
+<span class="in">if systemctl is-active --quiet luanti; then</span>
+<span class="in">  echo "$STAMP luanti OK" &gt;&gt; "$LOG"</span>
+<span class="in">else</span>
+<span class="in">  echo "$STAMP luanti DOWN" &gt;&gt; "$LOG"</span>
+<span class="in">fi</span>
+<span class="in"></span>
+<span class="in">USE=$(df -P / | awk 'NR==2 {gsub("%","",$5); print $5}')</span>
+<span class="in">if [ "$USE" -ge 80 ]; then</span>
+<span class="in">  echo "$STAMP DISK WARN ${USE}%" &gt;&gt; "$LOG"</span>
+<span class="in">else</span>
+<span class="in">  echo "$STAMP disk ${USE}%" &gt;&gt; "$LOG"</span>
+<span class="in">fi</span></code></pre>
+      </div>
+      <div class="code" data-ctx="luanti">
+  <div class="code-head"><span class="code-title">実行権の付与と動作確認</span></div>
+<pre><code><span class="in">chmod +x ~/monitor.sh</span>
+<span class="in">~/monitor.sh <span class="c"># 手で1回動かす</span></span>
+<span class="in">cat ~/monitor.log <span class="c"># 記録されたか確認</span></span>
+<span class="in">grep -E 'DOWN|WARN' ~/monitor.log <span class="c"># 異常だけを抜き出す</span></span></code></pre>
+      </div>
+      <p>通知の手段は環境によって異なる。学内サーバでメールを送るのは難しいことが多いので、実習の範囲では「異常行だけを抜き出して読む」「<a href="../day5.html#s5-4">第5回 5-4</a>の稼働状況ページに出す」までで十分である。実務ではチャットツールへの送信や監視サービスへの通知を組み込むが、考え方は同じで、<b>判定と通知を分けて作る</b>と後から差し替えやすい。</p>
+      <div class="call note"><span class="ct">実習ではここで使う</span><p>※ <a href="../day5.html#s5-4">第5回 5-4 Web監視ページの公開</a>は、この「記録する」の出力先をHTMLにしたものにあたる。<a href="ch09.html">第9章</a>のシェルスクリプトの文法と合わせて読むと、自分で書き換えられるようになる。</p></div>
+
+      <h3 id="c8-add-5-c">監視ツールの位置づけ</h3>
+      <p>実務で使われる道具は、だいたい次のように役割が分かれている。名前を聞いたときに「どの層の話か」が分かれば十分である。</p>
+      <div class="scroll">
+      <table class="tbl">
+        <thead><tr><th>名前</th><th>役割</th><th>ひとこと</th></tr></thead>
+        <tbody>
+          <tr><td>Prometheus</td><td>数値（メトリクス）を定期収集して保存する</td><td>各サーバから値を取りに行く方式。しきい値での通知も担う</td></tr>
+          <tr><td>Grafana</td><td>集めた数値をグラフとして見せる</td><td>収集はしない。Prometheusなどと組み合わせる</td></tr>
+          <tr><td>Zabbix</td><td>収集、判定、通知、画面までを1つで担う</td><td>企業のサーバ監視で古くから使われる総合型</td></tr>
+          <tr><td>Uptime Kuma</td><td>URLやポートの死活を監視して通知する</td><td>導入が簡単で、個人や小規模の用途に向く</td></tr>
+          <tr><td>Munin</td><td>リソースの推移をグラフにする</td><td>設定が少なく、学習用にも扱いやすい</td></tr>
+        </tbody>
+      </table>
+      </div>
+      <p>いずれも導入より<b>運用のほうが難しい</b>。監視項目が増えるほど、誤検知の手入れや通知の整理という仕事が生まれる。まずは自作の数行から始めて、手に負えなくなったら道具に置き換える、という順序が現実的である。</p>
+
+      <h2 id="c8-add-6"><span class="no">8-11</span>障害対応の型</h2>
+      <p>サーバは必ず壊れる。大切なのは壊れないことではなく、壊れたときに慌てず、同じ失敗を繰り返さないことである。ここでは、経験の浅いうちほど効く「型」を示す。</p>
+
+      <h3 id="c8-add-6-a">切り分けの順序</h3>
+      <p>障害対応の第一歩は、原因の候補を絞ることである。<b>自分側、経路、相手側</b>の3つに分けて、近いほうから順に確かめていく。この順序を守るだけで、無駄な調査が大きく減る。</p>
+      <div class="scroll">
+      <table class="tbl">
+        <thead><tr><th>場所</th><th>確かめること</th><th>コマンドの例</th></tr></thead>
+        <tbody>
+          <tr><td>自分側</td><td>手元の端末がネットワークに繋がっているか</td><td><code>ip -br a</code>、<code>ping 8.8.8.8</code></td></tr>
+          <tr><td>経路</td><td>相手のIPアドレスまで届くか、名前が引けるか</td><td><code>ping <var>相手</var></code>、<code>getent hosts <var>相手</var></code></td></tr>
+          <tr><td>経路</td><td>そのポートが開いているか</td><td><code>nc -zv <var>相手</var> 22</code></td></tr>
+          <tr><td>相手側</td><td>サービスが動いているか</td><td><code>systemctl status luanti</code></td></tr>
+          <tr><td>相手側</td><td>ファイアウォールが遮っていないか</td><td><code>sudo ufw status numbered</code></td></tr>
+          <tr><td>相手側</td><td>直前に何が起きたか</td><td><code>journalctl -u luanti -n 50</code></td></tr>
+        </tbody>
+      </table>
+      </div>
+      <p>もう1つの強力な問いが「いつから、何を変えたか」である。動いていたものが動かなくなったなら、その間に必ず何かが変わっている。設定の編集、パッケージの更新（<code>/var/log/apt/history.log</code>）、再起動、ディスクの残量。<b>変更の直後に壊れたなら、まずその変更を戻す</b>のが最短経路であり、原因の究明はサービスを復旧させてからでよい。</p>
+      <dl class="term"><dt>切り分け<small>isolation</small></dt><dd>障害の原因がどこにあるかを、範囲を狭めながら特定していく作業。自分側、経路、相手側の順に確かめるのが基本で、思いつきで試すより早く確実である。</dd></dl>
+
+      <h3 id="c8-add-6-b">記録を残しながら直す</h3>
+      <p>対応中は焦るので、後から思い出そうとしても正確には思い出せない。<b>実行したコマンドと、そのときの出力、時刻を、直しながら残す</b>こと。これは実験記録の書き方そのものであり、実習で練習していることがそのまま実務の作法になっている。</p>
+      <p>記録があると、次の3つが可能になる。第1に、自分の変更を元に戻せる。第2に、他の人に状況を正確に伝えられる。第3に、同じ障害が再発したときに、前回の記録が最良の手順書になる。逆に記録の無い対応は、たとえ直っても「なぜ直ったか分からない」という状態を残し、次に同じことが起きる。</p>
+      <div class="call warn"><span class="ct">注意</span><p>※ 対応中の思いつきで、複数の設定を同時に変えないこと。1つ変えて、確かめて、記録する。まとめて変えると、どれが効いたのか分からなくなるうえ、元に戻すこともできなくなる。<code>sudo cp <var>ファイル</var> <var>ファイル</var>.bak</code> を編集前に打つ習慣が、最後にあなたを助ける。</p></div>
+
+      <h3 id="c8-add-6-c">ポストモーテムと手順書</h3>
+      <p>復旧したら終わりではない。落ち着いてから、起きたことを振り返って短い文書にまとめる。これをポストモーテム（事後検証）と呼ぶ。重要なのは、<b>誰の責任かではなく、何が起きたかと、次はどうすれば防げるか</b>を書くことである。人を責める文化では、事故が隠されるようになり、組織全体が同じ失敗を繰り返す。</p>
+      <ol>
+        <li>いつ、何が起きたか（時刻と現象）。</li>
+        <li>利用者への影響（誰が、どれだけの時間、何をできなかったか）。</li>
+        <li>直接の原因と、それを生んだ背景。</li>
+        <li>どうやって復旧したか（実行した手順）。</li>
+        <li>再発を防ぐために次にすること（担当と期限まで書く）。</li>
+      </ol>
+      <p>そして、繰り返す作業は手順書（ランブック）にする。手順書は「その場にいない人が、それだけを読んで実行できる」ことが条件である。具体的には、前提（どのユーザで、どのマシンで）、手順（コマンドを省略せずに）、成功の判定方法（この出力が出れば成功）、失敗したときの戻し方の4つを書く。<a href="../day6.html#s6-4">第6回</a>で技術記事を書く作業は、この手順書を書く練習でもある。</p>
+      <dl class="term"><dt>ポストモーテム<small>postmortem</small></dt><dd>障害が収まった後に、何が起きて、どう直して、次にどう防ぐかをまとめる文書。人を責めるのではなく仕組みを直すことを目的とする。</dd></dl>
+      <dl class="term"><dt>手順書<small>runbook</small></dt><dd>定型作業や復旧作業の手順を、その場にいない人でも実行できるように書いた文書。前提、手順、成功の判定方法、失敗時の戻し方の4点が揃っていることが条件である。</dd></dl>
+      <div class="call myth"><span class="ct">よくある誤解・トラブル</span>
+        <span class="q">とりあえず再起動すれば直るので、原因は調べなくてよい</span>
+        <p class="a">再起動は確かに多くの症状を消すが、消えるのは症状だけで、原因は残っている。同じ障害は必ず戻ってくる。再起動する前に <code>journalctl -p err -b</code> と <code>df -h</code> の出力だけでも控えておけば、次に起きたときの手がかりになる。</p>
+        <span class="q">障害対応は詳しい人に任せたほうが早い</span>
+        <p class="a">確かに早いが、それだけでは自分は何も学べず、次も同じ人を待つことになる。<a href="ch07.html#c7-add-1">7-8</a>の切り分けを自分で一通りやってから、どこまで確かめたかを添えて助けを求めると、助ける側も格段に動きやすい。「何が正常で、何が異常だったか」を伝えられることが、技術者としての第一歩である。</p>
+      </div>
 
       <nav class="pager" aria-label="前後のページ">
         <a class="prev" href="ch07.html"><span class="pl">前へ</span><span class="pt">ネットワークの基礎</span></a>

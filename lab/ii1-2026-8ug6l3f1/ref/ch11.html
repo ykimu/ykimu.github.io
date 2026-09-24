@@ -38,8 +38,25 @@
     </aside>
     <article class="doc">
 
+      <div class="chapintro">
+        <div class="box"><span class="ct">この章で分かること</span><ul>
+          <li>Luantiのマルチプレイがクライアント／サーバ型であることの意味</li>
+          <li>サーバの負荷がどこで生まれ、なぜラグとして体感されるか</li>
+          <li>アカウントとprivs（権限）の仕組み、Linuxのユーザ管理との対応</li>
+          <li>ワールドと設定ファイルの構造、Mod導入の入口</li>
+        </ul></div>
+        <div class="box use"><span class="ct">実習のどこで使うか</span><ul>
+          <li><a href="../day2.html#s2-4">第2回 2-4 luanti.confの設定</a></li>
+          <li><a href="../day3.html#s3-4">第3回 3-4 Luantiのプレイヤー管理</a></li>
+          <li><a href="../day3.html#s3-5-a">第3回 演習：負荷実験</a></li>
+          <li><a href="../day5.html#s5-3">第5回 5-3 Luantiサーバのコンテナ化</a></li>
+        </ul></div>
+      </div>
+
       <h2 id="c11-1"><span class="no">11.1</span>クライアント／サーバモデル</h2>
-      <p>Luantiのマルチプレイは、典型的なクライアント／サーバ型のネットワークアプリケーションである。ワールドの状態（地形、持ち物、モンスターの位置）はすべてサーバが一元管理し、各プレイヤーのクライアントは「操作を送り、周辺の状態を受け取って描画する」ことに徹する。チートが難しいのは判定をサーバが握っているからであり、サーバが停止すれば全員が遊べなくなるのは状態がサーバに集中しているからである。この構図はオンラインゲーム全般はもちろん、Webサービス（ブラウザ＝クライアント、Webサーバ＝サーバ）とも同じである。</p>
+      <p>Luantiのマルチプレイは、典型的なクライアント／サーバ型のネットワークアプリケーションである。ワールドの状態（地形、持ち物、モンスターの位置）はすべてサーバが一元管理し、各プレイヤーのクライアントは「操作を送り、周辺の状態を受け取って描画する」ことに徹する。</p>
+      <p>チートが難しいのは判定をサーバが握っているからであり、サーバが停止すれば全員が遊べなくなるのは状態がサーバに集中しているからである。この構図はオンラインゲーム全般はもちろん、Webサービス（ブラウザ＝クライアント、Webサーバ＝サーバ）とも同じである。</p>
+      <dl class="term"><dt>クライアント／サーバモデル<small>client-server model</small></dt><dd>状態と判定を1か所（サーバ）に集め、利用者側の端末（クライアント）は操作の送信と表示に徹する構成。あなたが管理するPiがサーバ、BYODのLuantiがクライアントである。</dd></dl>
 
       <h2 id="c11-2"><span class="no">11.2</span>Luantiというソフトウェア</h2>
       <p>Luantiは2010年に「Minetest」の名で公開され、2024年に現在の名前に改名された、オープンソースのボクセルゲームエンジンである。性能が重要な中核部分はC++で書かれ、ゲームのルールやアイテムはLuaというスクリプト言語で記述される。最大の特徴はエンジンとゲームの分離で、同じLuantiエンジンの上で「Minetest Game」（実習で使用）をはじめとする様々なゲームを動かせる。ゲームやMod（拡張機能）は公式のContentDB（<a href="https://content.luanti.org/">content.luanti.org</a>）で配布されている。</p>
@@ -47,10 +64,23 @@
 
       <h2 id="c11-3"><span class="no">11.3</span>サーバの仕組みと負荷</h2>
       <p>Luantiサーバは30000番ポート（UDP）で独自プロトコルの通信を待ち受ける。位置情報のような高頻度・小サイズのデータをやりとりするため、確実さのTCPではなく速度のUDPが選ばれている（<a href="ch07.html">第7章</a>）。サーバは約0.1秒ごとに世界全体の状態を更新しており、この周期に処理が間に合わなくなると、操作への反応が遅れる「ラグ」として体感される。</p>
-      <p>ワールドは16×16×16ブロックの立方体（マップブロック）単位で管理され、プレイヤーの周囲のブロックだけが読み込まれて動作する（<code>active_block_range</code> 等の設定で範囲を調整できる）。未踏の地への移動が最も重いのは、マップブロックの新規生成（地形計算）が走るからである。<a href="../day3.html">第3回</a>の負荷実験で見たload averageの上昇とゲームのラグは、この処理がCPUを食い尽くしていく過程を、OS側とゲーム側の2つの窓から見ていたことになる。<code>max_users</code>（最大接続数）は、この負荷をサーバの性能に収めるための設計値である。</p>
+      <p>ワールドは16×16×16ブロックの立方体（マップブロック）単位で管理され、プレイヤーの周囲のブロックだけが読み込まれて動作する（<code>active_block_range</code> 等の設定で範囲を調整できる）。未踏の地への移動が最も重いのは、マップブロックの新規生成（地形計算）が走るからである。<a href="../day3.html#s3-5-a">第3回の負荷実験</a>で見たload averageの上昇とゲームのラグは、この処理がCPUを食い尽くしていく過程を、OS側とゲーム側の2つの窓から見ていたことになる。<code>max_users</code>（最大接続数）は、この負荷をサーバの性能に収めるための設計値である。</p>
+      <dl class="term"><dt>マップブロック<small>mapblock</small></dt><dd>ワールドを管理する単位となる16×16×16の立方体。プレイヤーの周囲のブロックだけが読み込まれ、未踏の地では新しく生成されるため負荷が高くなる。</dd></dl>
+      <div class="call myth"><span class="ct">よくある誤解・トラブル</span>
+        <span class="q">ゲームが重いのは、サーバのメモリが足りないからだ</span>
+        <p class="a">原因は多くの場合CPUである。未踏の地の地形生成が約0.1秒ごとの更新周期に間に合わなくなることでラグが生じる。<code>top</code> とload average（<a href="ch08.html#c8-5">8.5節</a>）で、どの資源が足りていないかを先に確かめる。</p>
+      </div>
 
       <h2 id="c11-4"><span class="no">11.4</span>アカウントと権限（privs）</h2>
-      <p>Luantiのアカウントはサーバごとに独立している。中央の認証サーバは存在せず、プレイヤーが初回接続時に入力した名前とパスワードが、そのサーバのワールド内（auth.sqlite）にパスワードのハッシュとして登録される（<a href="ch05.html">第5章</a>で学んだ <code>/etc/shadow</code> とまったく同じ発想である）。プレイヤーの行動は privs（権限）で制御され、interact（ブロックの設置・破壊）、shout（チャット）、give（アイテム入手）、server（サーバ管理）などの権限を <code>/grant</code>・<code>/revoke</code> コマンドで付け外しする。なお <code>/ban</code> は名前ではなく、接続中のプレイヤーのIPアドレスを禁止するコマンドであり、オフラインの相手には使えない（アカウント単位の制限は権限の剥奪で行う）。luanti.conf の name に指定したプレイヤーは全権限を持つ管理者になる。</p>
+      <p>Luantiのアカウントはサーバごとに独立している。中央の認証サーバは存在せず、プレイヤーが初回接続時に入力した名前とパスワードが、そのサーバのワールド内（auth.sqlite）にパスワードのハッシュとして登録される（<a href="ch05.html">第5章</a>で学んだ <code>/etc/shadow</code> とまったく同じ発想である）。</p>
+      <p>プレイヤーの行動は privs（権限）で制御され、interact（ブロックの設置・破壊）、shout（チャット）、give（アイテム入手）、server（サーバ管理）などの権限を <code>/grant</code>・<code>/revoke</code> コマンドで付け外しする。なお <code>/ban</code> は名前ではなく、接続中のプレイヤーのIPアドレスを禁止するコマンドであり、オフラインの相手には使えない（アカウント単位の制限は権限の剥奪で行う）。luanti.conf の name に指定したプレイヤーは全権限を持つ管理者になる。</p>
+      <dl class="term"><dt>privs<small>privileges / 権限</small></dt><dd>プレイヤーごとに与えられる、サーバ内でできることの一覧。ゲーム内チャットから <code>/privs</code> で確認し、<code>/grant</code>・<code>/revoke</code> で付け外しする。Linuxのグループと権限にあたる。</dd></dl>
+      <div class="call myth"><span class="ct">よくある誤解・トラブル</span>
+        <span class="q">アイテムが欲しいときは <code>/giveme</code> を使えばよい</span>
+        <p class="a">本実習の環境では <code>/giveme</code> に必要な権限が登録されておらず（unknown privilege）使えない。<a href="../day3.html#s3-4">第3回 3-4</a> のとおり <code>/grant</code> で <code>creative</code> 権限を与え、クリエイティブモードのインベントリからアイテムを取り出す。</p>
+        <span class="q"><code>/ban</code> を使えば、その人のアカウントを追放できる</span>
+        <p class="a"><code>/ban</code> が禁止するのは接続中のプレイヤーのIPアドレスであり、オフラインの相手には使えない。アカウント単位で行動を制限したいときは、<code>/revoke</code> で interact や shout を取り上げる。</p>
+      </div>
       <p>この仕組みには実習で学んだセキュリティの原則がそのまま現れる。管理者名は「最初に登録した者勝ち」なので公開前に自分で登録する（なりすまし防止）。プレイヤーのパスワードはハッシュで保存されるとはいえサーバ管理者の手元に渡るので、他サービスとの使い回しは厳禁である。そして一般プレイヤーには必要最小限の権限だけを与える：最小権限の原則（<a href="ch05.html">第5章</a>）である。</p>
 
       <h2 id="c11-5"><span class="no">11.5</span>データと設定の構造</h2>
@@ -66,10 +96,18 @@
         </tbody>
       </table>
       </div>
-      <p>「設定はテキストファイル、変更したら再起動」というLinuxサーバの原則が、Luantiにもそのまま当てはまる。一方でワールドの実体はSQLiteデータベースであり、稼働中にファイルをコピーすると書き込み途中の不整合を含む可能性がある。<a href="../day4.html">第4回</a>のバックアップで「確実なのは停止してから」としたのはこのためである。</p>
+      <p>「設定はテキストファイル、変更したら再起動」というLinuxサーバの原則が、Luantiにもそのまま当てはまる。一方でワールドの実体はSQLiteデータベースであり、稼働中にファイルをコピーすると書き込み途中の不整合を含む可能性がある。<a href="../day4.html#s4-1">第4回 4-1</a>のバックアップで「確実なのは停止してから」としたのはこのためである。</p>
+      <dl class="term"><dt>SQLite</dt><dd>1つのファイルがそのままデータベースになる軽量なデータベース。Luantiの <code>map.sqlite</code>・<code>auth.sqlite</code> がこれで、サーバ稼働中は常に書き込まれている。</dd></dl>
+      <div class="call myth"><span class="ct">よくある誤解・トラブル</span>
+        <span class="q">サーバを動かしたままワールドをコピーしても、ファイルさえあれば復元できる</span>
+        <p class="a">書き込みの途中でコピーしたSQLiteファイルは壊れていることがあり、しかも壊れているかどうかはコピーした時点では分からない。サービスを停止してから取るのが確実で、取ったバックアップは<a href="../day4.html#s4-4">第4回 4-4</a>のように実際に戻して確かめるまで「バックアップがある」とは言えない。</p>
+        <span class="q">設定を書き換えれば、その場でサーバに反映される</span>
+        <p class="a">luanti.conf は起動時に読まれるため、書き換えたあとサービスを再起動するまで反映されない（<a href="../day2.html#s2-5">第2回 2-5</a>、コンテナ版は <code>docker compose restart game</code>）。</p>
+      </div>
 
       <h2 id="c11-6"><span class="no">11.6</span>Modとゲーム制作への入口</h2>
-      <p>LuantiのModはLuaで記述する。数十行のスクリプトで新しいアイテムやコマンドを追加でき、ワールドの <code>worldmods</code> ディレクトリに置くだけで読み込まれる。ContentDBには他者の作ったゲームやModが多数公開されており、導入はディレクトリに配置して world.mt で有効化するだけである。ただし、Modはサーバ上で動くプログラムそのものなので、出所の確認が必要である。<a href="ch10.html">第10章</a>で学んだ「イメージの出所を確認する」と同じ注意が、ここでも当てはまる。最終課題でMod導入・自作に挑戦する人は、公式ドキュメント（<a href="https://docs.luanti.org/">docs.luanti.org</a>）のModding Bookから始めるとよい。</p>
+      <p>LuantiのModはLuaで記述する。数十行のスクリプトで新しいアイテムやコマンドを追加でき、ワールドの <code>worldmods</code> ディレクトリに置くだけで読み込まれる。ContentDBには他者の作ったゲームやModが多数公開されており、導入はディレクトリに配置して world.mt で有効化するだけである。ただし、Modはサーバ上で動くプログラムそのものなので、出所の確認が必要である。<a href="ch10.html">第10章</a>で学んだ「イメージの出所を確認する」と同じ注意が、ここでも当てはまる。最終課題（<a href="../day6.html#s6-1">第6回 6-1</a>）でMod導入・自作に挑戦する人は、公式ドキュメント（<a href="https://docs.luanti.org/">docs.luanti.org</a>）のModding Bookから始めるとよい。</p>
+      <dl class="term"><dt>Mod<small>modification</small></dt><dd>Luaで書かれたLuantiの拡張機能。アイテムやチャットコマンドを追加できるが、サーバ上で動くプログラムそのものなので、出所の確認が必要である。</dd></dl>
 
       <h2 id="c11-7"><span class="no">11.7</span>ContentDBからのMod導入手順</h2>
       <p>最終課題のテーマ「Mod・ゲーム運用」の出発点となる手順を示す。ModはContentDB（<a href="https://content.luanti.org/">https://content.luanti.org/</a>）からzipで入手し、サーバのmodsディレクトリに展開したうえで、ワールドごとに有効化する。<a href="../day5.html">第5回</a>のコンテナ構成（<code>~/game</code>）では、Modもボリューム内に置く。これも「データは資産」の実践である。</p>
@@ -84,6 +122,236 @@
       </div>
       <p>ゲーム全体（実習で使っているMinetest Game以外のゲーム）を導入する場合は、mods ではなく <code>data/games</code> に展開し、compose.yaml の <code>CLI_ARGS</code> の <code>--gameid</code> を新しいゲームのIDに切り替える（実習の構成では minetest を指定している）。ワールドはゲームごとに互換性がないため、新しいワールド名を指定して生成し直すのが安全である。</p>
       <div class="call note"><span class="ct">Note</span><p>※ Modには依存Modや対応バージョンがある。ContentDBの各ページで依存関係（Dependencies）を確認し、導入は1つずつ・直前にバックアップを取ってから行うこと。起動しなくなったら <code>docker compose logs</code> にModのエラーが出ている。</p></div>
+
+
+      <h2 id="c11-add-1"><span class="no">11.8</span>luanti.conf 主要設定リファレンス</h2>
+      <p><a href="../day2.html#s2-4">第2回 2-4</a>で書いた <code>luanti.conf</code> には数行しか書かなかったが、Luantiの設定項目は数百ある。ここでは、学内でサーバを運用するうえで実際に触る価値のあるものだけを、目的別に並べる。書式は <code>キー = 値</code> の1行1項目で、真偽値は <code>true</code> か <code>false</code> である。</p>
+      <div class="call warn"><span class="ct">注意</span><p>※ 行の途中に <code>#</code> を書いてはいけない。<code>max_users = 5 # 最大5人</code> と書くと、値が「5 # 最大5人」という壊れた文字列として読まれる。コメントは行頭の <code>#</code> から始まる独立した行にする（<a href="../day2.html#s2-4">第2回 2-4</a>のつまずきポイント）。</p></div>
+
+      <h3 id="c11-add-1-a">サーバの見せ方と接続に関する設定</h3>
+      <div class="scroll">
+      <table class="tbl">
+        <thead><tr><th>キー</th><th>意味</th><th>例と既定値</th></tr></thead>
+        <tbody>
+          <tr><td><code>server_name</code></td><td>サーバ一覧やクライアントに表示される名前</td><td><code>server_name = 24s1234のサーバ</code></td></tr>
+          <tr><td><code>server_description</code></td><td>サーバの説明文。一覧に出す短い紹介</td><td><code>server_description = 実習用サーバ</code></td></tr>
+          <tr><td><code>motd</code></td><td>接続したプレイヤーにチャットで表示される挨拶</td><td><code>motd = ようこそ！</code></td></tr>
+          <tr><td><code>max_users</code></td><td>同時接続できる人数の上限。既定は15</td><td><code>max_users = 5</code></td></tr>
+          <tr><td><code>port</code></td><td>待ち受けるUDPポート番号。既定は30000</td><td><code>port = 30000</code></td></tr>
+          <tr><td><code>bind_address</code></td><td>待ち受けるアドレス。空なら全てのネットワーク側で待つ</td><td><code>bind_address = 0.0.0.0</code></td></tr>
+          <tr><td><code>server_announce</code></td><td>公開サーバ一覧に自分を登録するか。既定はfalse</td><td><code>server_announce = false</code>（学内では必ずfalse）</td></tr>
+        </tbody>
+      </table>
+      </div>
+      <div class="call warn"><span class="ct">注意</span><p>※ <code>server_announce = true</code> にすると、サーバの情報が世界中に公開されるサーバ一覧に登録される。本実習のサーバは学内ネットワークに閉じており、外部への公開は<a href="../index.html#rules-4">2.4 ネットワーク利用上の注意</a>で禁止されている。この項目は <code>false</code> のまま（または書かないまま）にしておくこと。</p></div>
+      <dl class="term"><dt>server_announce<small>公開サーバ一覧への登録</small></dt><dd>Luantiの公開サーバ一覧に自分のサーバを登録するかどうかの設定。既定は <code>false</code> で、本実習では絶対に <code>true</code> にしてはならない。</dd></dl>
+      <p><code>port</code> を変更した場合は、ufwの許可（<code>sudo ufw allow 30000/udp</code>）と、<a href="../day5.html">第5回</a>のコンテナ構成における <code>ports</code> の記述も同時に直す必要がある。設定ファイルだけを変えてもクライアントは届かない。3か所がそろって初めて通る、という点は<a href="ch07.html#c7-5">第7章 7-5</a>のファイアウォールの考え方そのものである。</p>
+
+      <h3 id="c11-add-1-b">アカウントと権限に関する設定</h3>
+      <div class="scroll">
+      <table class="tbl">
+        <thead><tr><th>キー</th><th>意味</th><th>例と既定値</th></tr></thead>
+        <tbody>
+          <tr><td><code>name</code></td><td>管理者にするプレイヤー名。この名前は全権限を持つ</td><td><code>name = <var>自分のプレイヤー名</var></code></td></tr>
+          <tr><td><code>disallow_empty_password</code></td><td>空パスワードでの登録を禁止する。既定はfalse</td><td><code>disallow_empty_password = true</code></td></tr>
+          <tr><td><code>default_privs</code></td><td>新規プレイヤーに自動で与える権限。既定は <code>interact, shout</code></td><td><code>default_privs = interact, shout</code></td></tr>
+          <tr><td><code>default_password</code></td><td>新規登録時の既定パスワード。空なら本人が決める</td><td>（通常は設定しない）</td></tr>
+          <tr><td><code>enable_rollback_recording</code></td><td>誰がどのブロックを変えたかを記録し、<code>/rollback</code> で戻せるようにする。既定はfalse</td><td><code>enable_rollback_recording = false</code></td></tr>
+        </tbody>
+      </table>
+      </div>
+      <p><code>name</code> の値は「そのサーバの管理者」を意味するだけで、アカウントを作るわけではない。実際にその名前で接続して登録した人が管理者になるので、サーバを他人に見せる前に自分で登録しておくこと（<a href="../day3.html#s3-4">第3回 3-4</a>）。</p>
+      <dl class="term"><dt>default_privs<small>新規プレイヤーの初期権限</small></dt><dd>初めて接続したプレイヤーに自動で与えられる権限の一覧。既定は <code>interact, shout</code>（建築とチャット）で、見学だけさせたいなら <code>default_privs = shout</code> のように絞る。最小権限の原則をLuantiで実践する場所である。</dd></dl>
+
+      <h3 id="c11-add-1-c">遊び方を決める設定</h3>
+      <div class="scroll">
+      <table class="tbl">
+        <thead><tr><th>キー</th><th>意味</th><th>例と既定値</th></tr></thead>
+        <tbody>
+          <tr><td><code>creative_mode</code></td><td>サーバ全体をクリエイティブモードにする。既定はfalse</td><td><code>creative_mode = true</code></td></tr>
+          <tr><td><code>enable_damage</code></td><td>プレイヤーがダメージを受けるか。既定はtrue</td><td><code>enable_damage = false</code></td></tr>
+          <tr><td><code>enable_pvp</code></td><td>プレイヤー同士の攻撃を許すか。既定はtrue</td><td><code>enable_pvp = false</code></td></tr>
+          <tr><td><code>enable_tnt</code></td><td>Minetest GameのTNTを有効にする（負荷実験で使う）</td><td><code>enable_tnt = true</code></td></tr>
+          <tr><td><code>time_speed</code></td><td>ゲーム内時間の進む速さ。既定は72（現実の1日が20分）</td><td><code>time_speed = 0</code>（時間を止める）</td></tr>
+          <tr><td><code>fixed_map_seed</code></td><td>地形生成の乱数の種。同じ値なら同じ地形が生成される</td><td><code>fixed_map_seed = 1234567</code></td></tr>
+        </tbody>
+      </table>
+      </div>
+      <p><code>fixed_map_seed</code> は、新しくワールドを作るときにだけ効く。すでに生成された地形は <code>map.sqlite</code> に保存されているので、あとから変えても既存のワールドは変化しない。全員で同じ地形を使いたい場合や、<a href="../day5.html#s5-5">第5回 5-5</a>の再構築で「同じ世界がもう一度作れること」を示したい場合に使える。</p>
+
+      <h3 id="c11-add-1-d">負荷に効く設定</h3>
+      <p><a href="#c11-3">11.3節</a>で述べたとおり、Luantiサーバの負荷の中心はマップブロックの生成と送信である。Raspberry Piで動かすときは、次の項目を小さめにすると体感が安定する。ただし小さくしすぎると見える範囲が狭くなるので、1つずつ変えて<a href="../day3.html#s3-5">第3回 3-5</a>の平常値と比べながら調整すること。</p>
+      <div class="scroll">
+      <table class="tbl">
+        <thead><tr><th>キー</th><th>意味</th><th>例と既定値</th></tr></thead>
+        <tbody>
+          <tr><td><code>active_block_range</code></td><td>プレイヤーの周囲で常時動かすマップブロックの範囲。既定は4</td><td><code>active_block_range = 2</code></td></tr>
+          <tr><td><code>max_block_send_distance</code></td><td>クライアントへ送るマップブロックの最大距離。既定は12</td><td><code>max_block_send_distance = 8</code></td></tr>
+          <tr><td><code>max_simultaneous_block_sends_per_client</code></td><td>1人あたり同時に送るブロック数の上限</td><td><code>max_simultaneous_block_sends_per_client = 16</code></td></tr>
+          <tr><td><code>max_objects_per_block</code></td><td>1ブロックに置ける物体の数の上限。増えすぎ対策</td><td><code>max_objects_per_block = 64</code></td></tr>
+          <tr><td><code>server_unload_unused_data_timeout</code></td><td>使われなくなったデータをメモリから解放するまでの秒数</td><td><code>server_unload_unused_data_timeout = 29</code></td></tr>
+          <tr><td><code>max_users</code></td><td>同時接続人数の上限。負荷設計としては最も効く1行</td><td><code>max_users = 5</code></td></tr>
+        </tbody>
+      </table>
+      </div>
+      <dl class="term"><dt>active_block_range<small>アクティブブロック範囲</small></dt><dd>プレイヤーの周囲でモンスターや装置を動かし続けるマップブロックの範囲。広いほど世界が生き生きする代わりにCPUを食う。Raspberry Piでラグが出るときに最初に下げる値である。</dd></dl>
+
+      <h3 id="c11-add-1-e">変更を反映させる</h3>
+      <p><code>luanti.conf</code> は起動時に読み込まれる。編集しただけでは何も起こらないので、必ずサービスを再起動する。<a href="../day2.html">第2回</a>のsystemd構成と<a href="../day5.html">第5回</a>のコンテナ構成で手順が違う点に注意すること。</p>
+      <div class="code" data-ctx="server">
+        <div class="code-head"><span class="code-title">設定変更から反映までの手順（systemd構成）</span></div>
+<pre><code><span class="in">sudo cp /home/luanti/server/luanti.conf /home/luanti/server/luanti.conf.bak <span class="c"># 先に控えを取る</span></span>
+<span class="in">sudo -u luanti vi /home/luanti/server/luanti.conf</span>
+<span class="in">sudo systemctl restart luanti</span>
+<span class="in">systemctl is-active luanti</span>
+<span class="out">active</span>
+<span class="in">journalctl -u luanti -n 20 --no-pager <span class="c"># 起動時のログで設定の読み込みを確認</span></span></code></pre>
+      </div>
+      <div class="code" data-ctx="server" data-cwd="~/game">
+        <div class="code-head"><span class="code-title">設定変更から反映までの手順（コンテナ構成）</span></div>
+<pre><code><span class="in">cp data/main-config/minetest.conf data/main-config/minetest.conf.bak</span>
+<span class="in">vi data/main-config/minetest.conf</span>
+<span class="in">docker compose restart game</span>
+<span class="in">docker compose logs --tail 30 game</span></code></pre>
+      </div>
+      <div class="call myth"><span class="ct">よくある誤解・トラブル</span>
+        <span class="q">設定を書いたのに、ゲーム内の表示が変わらない</span>
+        <p class="a">原因は3つのどれかである。再起動していない、キーの綴りが違う（Luantiは知らないキーを黙って無視する）、あるいは行の途中にコメントを書いて値が壊れている。<code>journalctl -u luanti -n 30</code> で起動時のログを読み、設定ファイルのパスが意図したものかを確かめる。</p>
+        <span class="q">コンテナ版でも <code>luanti.conf</code> という名前で置けばよい</span>
+        <p class="a">コンテナ版（linuxserver/luanti）が読むのは <code>data/main-config/minetest.conf</code> である。名前も場所も異なるので、<a href="../day5.html#s5-3">第5回 5-3</a>のとおりコピー時に名前を変える。</p>
+      </div>
+
+      <h2 id="c11-add-2"><span class="no">11.9</span>権限（privs）の一覧と運用</h2>
+      <p><a href="#c11-4">11.4節</a>で述べたとおり、プレイヤーができることはprivsで決まる。ここでは実際に使う権限を一覧にし、付け外しの運用をまとめる。Linuxのユーザとグループ（<a href="ch05.html">第5章</a>）と同じく、「必要な人に、必要な権限だけを、必要な期間だけ」が原則である。</p>
+      <div class="scroll">
+      <table class="tbl">
+        <thead><tr><th>権限</th><th>できること</th><th>運用の目安</th></tr></thead>
+        <tbody>
+          <tr><td><code>interact</code></td><td>ブロックの設置と破壊、物に触れる。ゲームの中心</td><td>既定で全員に与える。取り上げれば見学専用になる</td></tr>
+          <tr><td><code>shout</code></td><td>チャットで発言する</td><td>既定で全員に与える。迷惑行為の一時的な抑止に剥奪する</td></tr>
+          <tr><td><code>fly</code> ／ <code>fast</code> ／ <code>noclip</code></td><td>飛行 ／ 高速移動 ／ ブロックをすり抜ける</td><td>建築の補助として一時的に与える。通常は与えない</td></tr>
+          <tr><td><code>creative</code></td><td>クリエイティブモードのインベントリを使う（Minetest Gameが提供）</td><td>アイテムが必要なときに与える。<a href="../day3.html#s3-4">第3回 3-4</a>で使う</td></tr>
+          <tr><td><code>give</code></td><td><code>/give</code>・<code>/giveme</code> でアイテムを直接出す</td><td>本実習の環境では登録されていない（後述）</td></tr>
+          <tr><td><code>teleport</code> ／ <code>bring</code></td><td>自分が移動する ／ 他人を自分のところへ呼ぶ</td><td>管理者のみ。イベントの整列などに使う</td></tr>
+          <tr><td><code>settime</code></td><td><code>/time</code> でゲーム内の時刻を変える</td><td>管理者のみ</td></tr>
+          <tr><td><code>kick</code> ／ <code>ban</code></td><td>接続を切る ／ 接続元を出入り禁止にする</td><td>管理者のみ。行使したら必ず記録を残す</td></tr>
+          <tr><td><code>password</code></td><td>他人のパスワードを変更・消去する</td><td>管理者のみ。取り扱いに最も注意が要る</td></tr>
+          <tr><td><code>basic_privs</code> ／ <code>privs</code></td><td><code>interact</code> と <code>shout</code> の付け外し ／ 全権限の付け外し</td><td><code>basic_privs</code> を補助役に渡し、<code>privs</code> は自分だけが持つ</td></tr>
+          <tr><td><code>protection_bypass</code></td><td>他人が保護した領域でも操作できる</td><td>管理者のみ。原則として使わない</td></tr>
+          <tr><td><code>server</code> ／ <code>debug</code></td><td>サーバの停止などの管理操作 ／ 詳細な内部情報の表示</td><td>管理者のみ</td></tr>
+        </tbody>
+      </table>
+      </div>
+      <p>新規プレイヤーが最初に持つ権限は <code>default_privs</code> で決まる（既定は <code>interact, shout</code>）。公開直前の準備中や、見学者だけを入れたいときは <code>default_privs = shout</code> としておき、必要な人に <code>/grant</code> で <code>interact</code> を与える運用にすると安全である。</p>
+      <div class="code file" data-ctx="chat">
+        <div class="code-head"><span class="code-title">権限の確認と付け外し（ゲーム内チャットで実行）</span></div>
+<pre><code><span class="in">/privs <span class="c"># 自分の権限を表示</span></span>
+<span class="in">/privs <var>プレイヤー名</var> <span class="c"># 相手の権限を表示</span></span>
+<span class="in">/grant <var>プレイヤー名</var> interact <span class="c"># 建築を許可</span></span>
+<span class="in">/grant <var>プレイヤー名</var> fly, fast <span class="c"># 複数をまとめて付与（カンマ区切り）</span></span>
+<span class="in">/revoke <var>プレイヤー名</var> fly <span class="c"># 剥奪</span></span>
+<span class="in">/grant <var>プレイヤー名</var> creative <span class="c"># クリエイティブのインベントリを使えるようにする</span></span>
+<span class="in">/grantme fly <span class="c"># 自分に付与（privs 権限が要る）</span></span>
+<span class="in">/haspriv interact <span class="c"># その権限を持つ接続中のプレイヤーを一覧</span></span></code></pre>
+      </div>
+      <p>出力の読み方は単純で、<code>/privs 相手の名前</code> はカンマ区切りの権限名を1行で返す。<code>/grant</code> や <code>/revoke</code> の前後で同じコマンドを打ち、一覧が変わったことを目で確かめるのが確実な確認方法である。権限のないコマンドを実行すると <code>You don't have permission to run this command</code> と返り、存在しない権限名を指定すると <code>Unknown privilege</code> と返る。どちらのメッセージが出たかで、原因が権限不足なのか綴り誤りなのかを切り分けられる。</p>
+      <div class="call myth"><span class="ct">よくある誤解・トラブル</span>
+        <span class="q">アイテムが欲しいので <code>/giveme</code> を使う</span>
+        <p class="a">本実習の環境では <code>/giveme</code> に必要な権限が登録されておらず（unknown privilege）使えない。<a href="../day3.html#s3-4">第3回 3-4</a>のとおり <code>/grant <var>プレイヤー名</var> creative</code> で権限を与え、クリエイティブモードのインベントリからアイテムを取り出すこと。サーバ全体をクリエイティブにしたいときは <code>luanti.conf</code> に <code>creative_mode = true</code> を書いて再起動してもよい。</p>
+        <span class="q"><code>/grant</code> したのに相手の画面で何も変わらない</span>
+        <p class="a"><code>fly</code> や <code>fast</code> は権限を与えただけでは効かず、相手がクライアント側の操作（飛行の切り替えなど）を行う必要がある。まず <code>/privs 相手の名前</code> で権限が実際に付いたかを確認し、付いていれば操作方法の問題である。</p>
+      </div>
+      <div class="call warn"><span class="ct">注意</span><p>※ 一般プレイヤーに <code>privs</code>、<code>password</code>、<code>server</code>、<code>protection_bypass</code> を与えてはならない。<code>privs</code> を持つ相手は自分自身に全権限を付与でき、管理者からその権限を取り上げることもできる。これはLinuxで一般ユーザをsudoグループに入れるのと同じ重みの操作である（<a href="ch05.html">第5章</a>）。</p></div>
+
+      <h2 id="c11-add-3"><span class="no">11.10</span>ワールドの中身と保守</h2>
+      <p><a href="#c11-5">11.5節</a>の表をもう一段掘り下げる。ワールドディレクトリの中身を知っておくと、バックアップで何を残すべきか、壊れたときにどこを見るかが分かる。</p>
+
+      <h3 id="c11-add-3-a">ワールドディレクトリの構成</h3>
+      <div class="code" data-ctx="server">
+        <div class="code-head"><span class="code-title">ワールドの中身を見る</span></div>
+<pre><code><span class="in">sudo ls -la /home/luanti/server/world</span>
+<span class="out">合計 2216</span>
+<span class="out">drwxr-xr-x 3 luanti luanti    4096  9月 19 14:02 .</span>
+<span class="out">drwxr-xr-x 4 luanti luanti    4096  9月 19 13:02 ..</span>
+<span class="out">-rw-r--r-- 1 luanti luanti   24576  9月 19 14:02 auth.sqlite</span>
+<span class="out">-rw-r--r-- 1 luanti luanti     102  9月 19 14:02 env_meta.txt</span>
+<span class="out">-rw-r--r-- 1 luanti luanti 2179072  9月 19 14:02 map.sqlite</span>
+<span class="out">drwxr-xr-x 2 luanti luanti    4096  9月 19 13:40 players</span>
+<span class="out">-rw-r--r-- 1 luanti luanti      86  9月 19 13:02 world.mt</span></code></pre>
+      </div>
+      <div class="scroll">
+      <table class="tbl">
+        <thead><tr><th>名前</th><th>中身</th><th>失うと何が起きるか</th></tr></thead>
+        <tbody>
+          <tr><td><code>world.mt</code></td><td>使用するゲーム（<code>gameid</code>）、バックエンド、有効なModの一覧</td><td>ワールドとして認識されなくなる</td></tr>
+          <tr><td><code>map.sqlite</code></td><td>地形とブロックの本体。最も大きくなるファイル</td><td>建築物がすべて消える</td></tr>
+          <tr><td><code>auth.sqlite</code></td><td>アカウント名、パスワードのハッシュ、各人のprivs</td><td>全員が再登録になり、権限もやり直しになる</td></tr>
+          <tr><td><code>players/</code></td><td>プレイヤーごとの位置、体力、持ち物</td><td>持ち物と位置が初期化される</td></tr>
+          <tr><td><code>env_meta.txt</code></td><td>ゲーム内時刻や経過日数などの環境情報</td><td>時刻と日数が初期化される（影響は小さい）</td></tr>
+        </tbody>
+      </table>
+      </div>
+      <p>バックアップの対象は個々のファイルではなく、<strong>ワールドディレクトリ全体</strong>である。<a href="../day4.html#s4-2">第4回 4-2</a>のbackup.shが <code>tar czf ... -C "$HOME/server" world</code> とディレクトリごと固めているのはこのためで、<code>map.sqlite</code> だけを取っても権限も持ち物も戻らない。</p>
+      <dl class="term"><dt>world.mt</dt><dd>ワールドごとの設定ファイル。使用するゲームのIDや、<code>load_mod_名前 = true</code> の行によるModの有効化がここに書かれる。ワールドディレクトリの中で最も小さいが、これが無いとワールドとして開けない。</dd></dl>
+
+      <h3 id="c11-add-3-b">安全なバックアップ手順</h3>
+      <p>SQLiteは稼働中も書き込まれ続けているため、サーバを動かしたままコピーすると、書き込み途中の不整合を含む可能性がある。確実なのは「止めて、取って、動かす」である。停止時間は数十秒で済む。</p>
+      <div class="code" data-ctx="server">
+        <div class="code-head"><span class="code-title">停止して取るバックアップ（systemd構成）</span></div>
+<pre><code><span class="in">sudo systemctl stop luanti <span class="c"># 止める（終了時にワールドが保存される）</span></span>
+<span class="in">sudo -u luanti tar czf /home/luanti/backup/world_$(date +%Y%m%d_%H%M%S).tar.gz -C /home/luanti/server world</span>
+<span class="in">sudo systemctl start luanti <span class="c"># すぐ動かす</span></span>
+<span class="in">systemctl is-active luanti</span>
+<span class="out">active</span>
+<span class="in">ls -lh /home/luanti/backup | tail -n 3</span>
+<span class="out">-rw-r--r-- 1 luanti luanti 1.4M  9月 19 14:35 world_20260919_143512.tar.gz</span></code></pre>
+      </div>
+      <p>確認するのは2点である。<code>is-active</code> が <code>active</code> に戻っていること、そして出来上がったファイルのサイズが前回と比べて極端に小さくないことである。数キロバイトしかないバックアップは、対象を取り違えているか、途中で失敗している。<a href="../day4.html#s4-4">第4回 4-4</a>のとおり、実際に展開して起動できるところまで確かめて初めて「バックアップがある」と言える。</p>
+      <div class="call note"><span class="ct">Note</span><p>※ どうしても止めたくない場合は、<code>sqlite3</code> の <code>.backup</code> コマンドを使うと稼働中でも整合性のあるコピーが取れる（<code>sudo apt install -y sqlite3</code> が必要）。ただし <code>players/</code> や <code>world.mt</code> は別途コピーする必要があり、手順が増える。実習の規模では停止して取るほうが確実である。発展の例は<a href="appendix.html#ca-5-f">付録A.5 バックアップの高度化</a>にある。</p></div>
+
+      <h3 id="c11-add-3-c">ログの見方</h3>
+      <p><a href="../day2.html#s2-5">第2回 2-5</a>のユニットファイルは <code>--logfile ""</code> を指定しており、Luantiが自前のファイルに書く代わりに、出力がそのままjournaldへ渡るようにしてある。したがってLuantiのログは <code>journalctl</code> で読む（<a href="ch06.html#c6-2">6.2節</a>）。</p>
+      <div class="code" data-ctx="server">
+        <div class="code-head"><span class="code-title">Luantiのログを読む</span></div>
+<pre><code><span class="in">journalctl -u luanti -n 30 --no-pager <span class="c"># 直近30行</span></span>
+<span class="in">journalctl -u luanti -f <span class="c"># 接続や切断をリアルタイムで見る</span></span>
+<span class="in">journalctl -u luanti --since today | grep -i "joins game" <span class="c"># 今日の入室だけを抜き出す</span></span>
+<span class="out">Sep 19 14:05:11 mc-24s1234 luantiserver[812]: ACTION[Server]: taro [192.168.1.44] joins game.</span>
+<span class="out">Sep 19 14:31:02 mc-24s1234 luantiserver[812]: ACTION[Server]: taro leaves game. List of players:</span></code></pre>
+      </div>
+      <p>見るべきは行頭の分類である。<code>ACTION</code> は入退室やブロックの設置といった通常の出来事、<code>WARNING</code> は動作は続くが注意すべきこと、<code>ERROR</code> は失敗である。<code>joins game</code> の行にはプレイヤー名と接続元のIPアドレスが両方出るので、<a href="../day3.html#s3-6">第3回 3-6 演習：ログ解析</a>ではこの行を数えて利用状況を集計している。コンテナ構成では同じ内容が <code>docker compose logs game</code> に出る。</p>
+      <div class="call warn"><span class="ct">注意</span><p>※ ログにはプレイヤー名とIPアドレスが記録される。これは個人に結び付きうる情報なので、技術記事や発表資料に貼るときは必ず伏せること（<a href="../day6.html#s6-3">第6回 6-3 公開時の注意</a>）。</p></div>
+
+      <h2 id="c11-add-4"><span class="no">11.11</span>管理チャットコマンド一覧</h2>
+      <p>管理コマンドはサーバのターミナルではなく、Luantiクライアントのチャット欄（<kbd>T</kbd>キーで開く）に入力する。ここでは実習と運用で使うものを目的別にまとめる。すべて <code>/help</code> と <code>/help コマンド名</code> で確認できるので、迷ったらまずそれを打てばよい。</p>
+      <div class="scroll">
+      <table class="tbl">
+        <thead><tr><th>コマンド</th><th>はたらき</th><th>必要な権限</th></tr></thead>
+        <tbody>
+          <tr><td><code>/status</code></td><td>サーバのバージョン、稼働時間、接続中のプレイヤー一覧</td><td>不要</td></tr>
+          <tr><td><code>/help</code> ／ <code>/help all</code></td><td>使えるコマンドの一覧と説明</td><td>不要</td></tr>
+          <tr><td><code>/privs [名前]</code></td><td>権限の確認</td><td>不要</td></tr>
+          <tr><td><code>/grant 名前 権限</code> ／ <code>/revoke</code></td><td>権限の付与 ／ 剥奪</td><td><code>privs</code>（一部は <code>basic_privs</code>）</td></tr>
+          <tr><td><code>/kick 名前 [理由]</code></td><td>指定したプレイヤーの接続を切る</td><td><code>kick</code></td></tr>
+          <tr><td><code>/ban 名前</code> ／ <code>/unban 名前またはIP</code></td><td>接続中のプレイヤーのIPを出入り禁止 ／ 解除</td><td><code>ban</code></td></tr>
+          <tr><td><code>/teleport X,Y,Z</code> ／ <code>/teleport 名前</code></td><td>座標へ移動 ／ 相手のところへ移動</td><td><code>teleport</code></td></tr>
+          <tr><td><code>/time 時:分</code></td><td>ゲーム内の時刻を変える（<code>/time 6:00</code> で朝）</td><td><code>settime</code></td></tr>
+          <tr><td><code>/set キー 値</code></td><td>設定値をその場で変更する（永続化はされない）</td><td><code>server</code></td></tr>
+          <tr><td><code>/mods</code> ／ <code>/days</code></td><td>読み込まれているModの一覧 ／ 経過日数</td><td>不要</td></tr>
+          <tr><td><code>/shutdown [秒] [再起動] [メッセージ]</code></td><td>サーバを停止する。予告してから落とせる</td><td><code>server</code></td></tr>
+          <tr><td><code>/clearobjects [full|quick]</code></td><td>ワールド上の物体を削除する（後述の注意を必ず読むこと）</td><td><code>server</code></td></tr>
+        </tbody>
+      </table>
+      </div>
+      <p><code>/shutdown 60 false 60秒後に再起動します</code> のように書くと、メッセージを表示してから60秒後に停止する。全員を巻き込む操作なので、必ず予告してから実行すること。なお <code>/shutdown</code> で止めた場合、systemdの <code>Restart=on-failure</code> は正常終了とみなして再起動しない。作業後は <code>sudo systemctl start luanti</code> で自分で起動する。</p>
+      <div class="call warn"><span class="ct">注意</span><p>※ <code>/clearobjects</code> は、ワールド上のアイテムや乗り物、Modが置いた物体をまとめて削除する。<code>full</code> を付けると読み込まれていない領域まで対象になり、ワールド全体を走査するためRaspberry Piでは数分間サーバが応答しなくなる。地面に落ちたアイテムが増えすぎて重い、といった明確な理由があるときだけ、バックアップを取り、プレイヤーに予告してから実行すること。取り消しはできない。</p></div>
+      <div class="call note"><span class="ct">実習ではここで使う</span><p>※ <code>/status</code>・<code>/privs</code>・<code>/grant</code>・<code>/revoke</code>・<code>/ban</code>・<code>/unban</code> は<a href="../day3.html#s3-4">第3回 3-4 Luantiのプレイヤー管理</a>で実際に打つ。<code>/status</code> の出力は<a href="../day5.html#s5-4">第5回 5-4</a>の監視ページに載せる情報の候補でもある。</p></div>
+      <div class="call myth"><span class="ct">よくある誤解・トラブル</span>
+        <span class="q">コマンドを打っても Invalid command としか返ってこない</span>
+        <p class="a">先頭の <code>/</code> を忘れていないか、全角で入力していないかを確かめる。チャット欄では全角の「／」はコマンドとして認識されない。綴りが正しくても権限が無い場合は、別のメッセージ（権限が無い旨）が返る。</p>
+        <span class="q"><code>/set</code> で設定を変えたので、<code>luanti.conf</code> は直さなくてよい</span>
+        <p class="a"><code>/set</code> の変更は動作中のサーバにだけ効き、再起動すると <code>luanti.conf</code> の内容に戻る。恒久的に変えたいなら設定ファイルを直し、サービスを再起動すること（<a href="#c11-add-1-e">11.8 変更を反映させる</a>）。</p>
+      </div>
 
       <nav class="pager" aria-label="前後のページ">
         <a class="prev" href="ch10.html"><span class="pl">前へ</span><span class="pt">仮想化とコンテナ</span></a>

@@ -38,13 +38,42 @@
     </aside>
     <article class="doc">
 
+      <div class="chapintro">
+        <div class="box"><span class="ct">この章で分かること</span><ul>
+          <li>最小構成のサーバでも必ず使えるエディタとして、viを学ぶ理由</li>
+          <li>「入力する状態」と「操作する状態」を分けるモードという考え方</li>
+          <li>移動・削除・検索・置換・保存・終了の最小限の操作</li>
+          <li>操作がおかしくなったときの安全な脱出方法</li>
+        </ul></div>
+        <div class="box use"><span class="ct">実習のどこで使うか</span><ul>
+          <li><a href="../day1.html#s1-7">第1回 1-7 viエディタと答案の提出</a></li>
+          <li><a href="../day2.html#s2-4">第2回 2-4 luanti.confの設定</a></li>
+          <li><a href="../day2.html#s2-5">第2回 2-5 systemdによるサービス化</a></li>
+          <li><a href="../day4.html#s4-2">第4回 4-2 シェルスクリプト（backup.sh）</a></li>
+        </ul></div>
+      </div>
+
       <h2 id="c4-1"><span class="no">4-1</span>なぜ今もviなのか</h2>
-      <p>viは1976年に生まれたテキストエディタであり、現在広く使われているのはその改良版のVimである。半世紀近く前のソフトウェアを今も学ぶ理由は明快で、viはPOSIXという標準規格に含まれており、どんなに最小構成のLinuxサーバにも必ず入っているからである。障害対応で緊急ログインしたサーバに、使い慣れたエディタがインストールされている保証はない。viさえ使えれば、世界中のどのUNIX系サーバでも設定ファイルを編集できる。</p>
+      <p>viは1976年に生まれたテキストエディタであり、現在広く使われているのはその改良版のVimである。半世紀近く前のソフトウェアを今も学ぶ理由は明快で、viはPOSIXという標準規格に含まれており、どんなに最小構成のLinuxサーバにも必ず入っているからである。</p>
+      <p>障害対応で緊急ログインしたサーバに、使い慣れたエディタがインストールされている保証はない。<b>viさえ使えれば、世界中のどのUNIX系サーバでも設定ファイルを編集できる。</b></p>
+
+      <dl class="term"><dt>vi / Vim<small>vi improved</small></dt><dd>UNIX系OSの標準的なテキストエディタ。現在使われているのはほぼ改良版のVimで、実習で <code>vi</code> と打つと起動するのもVimである。</dd></dl>
+      <dl class="term"><dt>POSIX<small>portable operating system interface</small></dt><dd>UNIX系OSが共通して備えるべき機能を定めた標準規格。viがここに含まれるため、どのサーバにも必ず入っていると期待できる。</dd></dl>
 
       <h2 id="c4-2"><span class="no">4-2</span>モードという考え方</h2>
       <p>viの最大の特徴は、「文字を入力する状態」と「編集操作をする状態」が分かれていることである。通常のエディタでは<kbd>Ctrl</kbd>キーなどとの組み合わせで操作を行うが、viではモードを切り替えることで、単独のキーを強力な編集命令として使う。慣れるとホームポジションから手を動かさずに高速な編集ができるため、現在でも多くのエンジニアが愛用している。</p>
 
+      <dl class="term"><dt>コマンドモード<small>normal mode</small></dt><dd>viを起動した直後の状態。キーがそのまま編集命令として働く（<kbd>x</kbd>で1文字削除、<kbd>dd</kbd>で1行切り取りなど）。迷ったら<kbd>Esc</kbd>を押せばここに戻る。</dd></dl>
+      <dl class="term"><dt>入力モード<small>insert mode</small></dt><dd>打ったキーがそのまま文字として入るモード。<kbd>i</kbd>／<kbd>a</kbd>／<kbd>o</kbd>で入り、<kbd>Esc</kbd>で抜ける。画面下に <code>-- INSERT --</code> と出ているのが目印である。</dd></dl>
+
       <figure><img src="../img/s06.png" alt="図4-1　viのモード遷移" width="1800" height="610"><figcaption>図4-1　viのモード遷移</figcaption></figure>
+
+      <div class="call myth"><span class="ct">よくある誤解・トラブル</span>
+        <span class="q">viを開いて文字を打っているのに、入力されずに画面がおかしくなる</span>
+        <p class="a">起動直後はコマンドモードで、キーは編集命令として解釈されている。文字を入れたいときは<kbd>i</kbd>を押して入力モードに移る。おかしくなったら<kbd>Esc</kbd>を数回押してコマンドモードに戻り、<kbd>u</kbd>で取り消せばよい。</p>
+        <span class="q">入力中にカーソルキーを押したら <code>A</code> や <code>B</code> が入ってしまった</span>
+        <p class="a">Raspberry Pi OS Lite の標準は最小構成の <code>vim-tiny</code> で、この症状が起きることがある。<code>sudo apt install vim</code> でフル版を入れると解消する（<a href="../day1.html#s1-7">第1回 1-7</a>）。入力モードでは<kbd>h</kbd><kbd>j</kbd><kbd>k</kbd><kbd>l</kbd>も移動にはならないので、いったん<kbd>Esc</kbd>で抜けてから移動するのが確実である。</p>
+      </div>
 
       <h2 id="c4-3"><span class="no">4-3</span>操作リファレンス</h2>
 
@@ -67,7 +96,278 @@
       </table>
       </div>
 
-      <div class="call note"><span class="ct">Note</span><p>※ 独習には、Vimに付属する公式チュートリアル <code>vimtutor</code> が優れている（ターミナルで <code>vimtutor ja</code> と実行。約30分）。<code>vimtutor</code> はフル版の <code>vim</code> パッケージに含まれる。Raspberry Pi OS Lite の標準は最小構成の <code>vim-tiny</code> なので、<code>sudo apt install vim</code> で導入しておく（指導書1-7節）。また、誤操作でおかしくなったら、<kbd>Esc</kbd>を数回押してから <code>:q!</code> で「保存せずに出る」のが安全な脱出方法である。</p></div>
+      <div class="call note"><span class="ct">Note</span><p>※ 独習には、Vimに付属する公式チュートリアル <code>vimtutor</code> が優れている（ターミナルで <code>vimtutor ja</code> と実行。約30分）。<code>vimtutor</code> はフル版の <code>vim</code> パッケージに含まれる。Raspberry Pi OS Lite の標準は最小構成の <code>vim-tiny</code> なので、<code>sudo apt install vim</code> で導入しておく（<a href="../day1.html#s1-7">第1回 1-7</a>）。また、誤操作でおかしくなったら、<kbd>Esc</kbd>を数回押してから <code>:q!</code> で「保存せずに出る」のが安全な脱出方法である。</p></div>
+
+      <dl class="term"><dt>vimtutor<small>vimtutor ja</small></dt><dd>Vimに付属する公式の練習用チュートリアル。約30分で基本操作をひととおり体験できる。フル版の <code>vim</code> パッケージに含まれる。</dd></dl>
+
+      <div class="call myth"><span class="ct">よくある誤解・トラブル</span>
+        <span class="q"><code>:wq</code> と打ったのに <code>E212: Can't open file for writing</code> と出て保存できない</span>
+        <p class="a"><code>/etc</code> 以下などの設定ファイルは、一般ユーザには書き込み権限がない。<code>:q!</code> でいったん抜けて、<code>sudo vi ファイル名</code> で開き直す（<a href="ch05.html">第5章</a>）。</p>
+        <span class="q">開き直したら <code>E325: ATTENTION</code> とスワップファイルの警告が出る</span>
+        <p class="a">前回viが正常に終了しなかったときに残る作業用ファイルの警告である。同じファイルを別の端末で開いていないことを確かめたうえで、編集内容を取り戻したいなら回復、不要なら削除を選ぶ。判断に迷うときは、いったん終了して<b>教員に確認する</b>のが安全である。</p>
+        <span class="q">設定ファイルを保存したのに、サービスの動きが変わらない</span>
+        <p class="a">viでの保存は設定ファイルを書き換えただけである。systemdのユニットファイルなら <code>sudo systemctl daemon-reload</code>、サービスの設定なら再起動が必要になる（<a href="../day2.html#s2-5">第2回 2-5</a>、<a href="ch06.html#c6-2">第6章 6-2</a>）。</p>
+      </div>
+
+      <h2 id="c4-add-1"><span class="no">4-4</span>Vimをもう一歩使いこなす</h2>
+      <p><a href="#c4-3">4-3節</a>の操作リファレンスは「設定ファイルを1行直して保存する」ために必要な最小限だった。しかしサーバの運用では、数百行のログを追いかけたり、設定ファイル全体の書式を一括で直したりする場面が出てくる。その場でVimの機能をもう少し知っているだけで、作業時間は目に見えて短くなる。</p>
+      <p>以下で紹介するキー操作は、すべてコマンドモード（<kbd>Esc</kbd>を押した状態）で行う。入力モードのまま打つと文字がそのまま入ってしまうので、迷ったらまず<kbd>Esc</kbd>である。</p>
+
+      <h3 id="c4-add-1-a">開き方を使い分ける</h3>
+      <p>Vimは「ファイル名を渡して開く」以外の開き方も用意している。長い設定ファイルの目的の行にいきなり飛べると、探す手間が消える。読むだけのときに書き込めない状態で開くのも、事故を防ぐうえで有効である。</p>
+      <div class="code" data-ctx="server">
+        <div class="code-head"><span class="code-title">Vimの起動のしかた</span></div>
+<pre><code><span class="in">vi <var>ファイル名</var> <span class="c"># 基本形</span></span>
+<span class="in">vi +42 /etc/systemd/system/luanti.service <span class="c"># 42行目にカーソルを置いて開く</span></span>
+<span class="in">vi +/ExecStart /etc/systemd/system/luanti.service <span class="c"># 最初のExecStartの行に飛んで開く</span></span>
+<span class="in">view /var/log/syslog <span class="c"># 読み取り専用で開く（誤って書き換えない）</span></span>
+<span class="in">vi -O /home/luanti/server/luanti.conf /home/luanti/server/world/world.mt <span class="c"># 2つを左右に並べて開く</span></span></code></pre>
+      </div>
+      <div class="scroll">
+      <table class="tbl">
+        <thead><tr><th>オプション</th><th>意味</th><th>例</th></tr></thead>
+        <tbody>
+          <tr><td><code>+<var>行番号</var></code></td><td>その行にカーソルを置いて開く</td><td><code>vi +42 file</code></td></tr>
+          <tr><td><code>+/<var>文字列</var></code></td><td>その文字列を最初に見つけた行を開く</td><td><code>vi +/User= file</code></td></tr>
+          <tr><td><code>-R</code></td><td>読み取り専用。<code>view</code> と同じ</td><td><code>vi -R file</code></td></tr>
+          <tr><td><code>-O</code> ／ <code>-o</code></td><td>複数ファイルを左右／上下に並べて開く</td><td><code>vi -O a.conf b.conf</code></td></tr>
+          <tr><td><code>-d</code></td><td>2つのファイルの差分を色付きで表示する（vimdiffと同じ）</td><td><code>vi -d a.conf a.conf.bak</code></td></tr>
+        </tbody>
+      </table>
+      </div>
+      <p>複数のウィンドウを開いた状態では、<kbd>Ctrl</kbd>+<kbd>w</kbd>を押してから<kbd>w</kbd>でウィンドウを移り、<code>:qa</code>で全部まとめて閉じる。<code>-d</code>と<code>-R</code>は、実習のようにsudoで開く設定ファイルを「見るだけ」にしたいときに特に役立つ。</p>
+
+      <h3 id="c4-add-1-b">移動を速くする</h3>
+      <p>1文字ずつ<kbd>h</kbd><kbd>j</kbd><kbd>k</kbd><kbd>l</kbd>で動いていては、100行を超えるファイルでは疲れてしまう。単語単位・行単位・ファイル単位の移動を覚えると、カーソルは一気に目的地へ届く。</p>
+      <div class="scroll">
+      <table class="tbl">
+        <thead><tr><th>キー</th><th>移動先</th><th>使いどころ</th></tr></thead>
+        <tbody>
+          <tr><td><kbd>w</kbd> ／ <kbd>b</kbd></td><td>次の単語の先頭／前の単語の先頭</td><td><code>ExecStart=</code> の行でオプションごとに飛ぶ</td></tr>
+          <tr><td><kbd>0</kbd> ／ <kbd>^</kbd> ／ <kbd>$</kbd></td><td>行頭／行の最初の文字／行末</td><td>行頭に<code>#</code>を足してコメントアウトする</td></tr>
+          <tr><td><kbd>gg</kbd> ／ <kbd>G</kbd></td><td>ファイルの先頭行／最終行</td><td>ログの末尾（最新）をすぐ見る</td></tr>
+          <tr><td><code>:<var>行番号</var></code> ／ <var>行番号</var><kbd>G</kbd></td><td>指定した行</td><td>エラーが「9行目」と言っているとき</td></tr>
+          <tr><td><kbd>Ctrl</kbd>+<kbd>f</kbd> ／ <kbd>Ctrl</kbd>+<kbd>b</kbd></td><td>1画面下／1画面上</td><td>長いファイルをざっと眺める</td></tr>
+          <tr><td><kbd>%</kbd></td><td>対応する括弧</td><td>スクリプトの<code>(</code>と<code>)</code>の対応を確かめる</td></tr>
+        </tbody>
+      </table>
+      </div>
+      <p>行番号を表示しておくと、エラーメッセージが指す行にすぐ移動できる。<code>:set number</code>（略記は <code>:set nu</code>）で表示、<code>:set nonumber</code>（<code>:set nonu</code>）で非表示である。systemdやsshdの構文エラーは「ファイル名:行番号:」の形で出るので、行番号表示は設定ファイルを触るときの必需品といってよい。</p>
+
+      <h3 id="c4-add-1-c">検索と置換</h3>
+      <p>「この設定はどこに書いてあるのか」を探すのが検索、「この文字列を全部書き換えたい」のが置換である。置換はまとめて直せるぶん失敗も大きいので、確認付きの形を覚えておくと安全である。</p>
+      <div class="scroll">
+      <table class="tbl">
+        <thead><tr><th>入力</th><th>はたらき</th><th>例</th></tr></thead>
+        <tbody>
+          <tr><td><code>/<var>文字列</var></code> → <kbd>n</kbd> ／ <kbd>N</kbd></td><td>下方向に検索し、次／前の候補へ</td><td><code>/ExecStart</code></td></tr>
+          <tr><td><code>?<var>文字列</var></code></td><td>上方向に検索する</td><td><code>?Restart</code></td></tr>
+          <tr><td><code>:noh</code></td><td>検索語のハイライトを消す</td><td>読みづらくなったとき</td></tr>
+          <tr><td><code>:%s/<var>旧</var>/<var>新</var>/g</code></td><td>ファイル全体を置換する</td><td><code>:%s/pi/luanti/g</code></td></tr>
+          <tr><td><code>:%s/<var>旧</var>/<var>新</var>/gc</code></td><td>1か所ずつ確認しながら置換する</td><td>置換前にまずこれを使う</td></tr>
+          <tr><td><code>:10,20s/<var>旧</var>/<var>新</var>/g</code></td><td>10行目から20行目だけを置換する</td><td>特定のセクションだけ直す</td></tr>
+        </tbody>
+      </table>
+      </div>
+      <p><code>gc</code>を付けると、1か所ごとに <code>replace with luanti (y/n/a/q/l/^E/^Y)?</code> と聞かれる。<kbd>y</kbd>で置換、<kbd>n</kbd>で飛ばす、<kbd>a</kbd>で残り全部、<kbd>q</kbd>で中断である。ユニットファイルのユーザ名を置き換えるような作業では、まず<code>gc</code>で1件ずつ見るのが確実である。</p>
+      <p class="why"><b>出力の読み方：</b>置換すると、Vimは画面のいちばん下に結果を1行で報告する。</p>
+      <div class="code" data-ctx="server">
+        <div class="code-head"><span class="code-title">置換後に画面下に出るメッセージ</span></div>
+<pre><code><span class="cm">（コマンドモードで :%s/pi/luanti/g と入力した直後）</span>
+<span class="out">3 substitutions on 3 lines</span>
+<span class="cm">（置換する文字列が見つからなかったとき）</span>
+<span class="out">E486: Pattern not found: pi</span></code></pre>
+      </div>
+      <p>大切なのは「いくつ置換されたか」を必ず見ることである。3か所直すつもりが <code>4 substitutions</code> と出たなら、意図しない行まで書き換えている。その場で<kbd>u</kbd>を押せば置換はまとめて取り消せるので、慌てて<code>:wq</code>で保存しないこと。<code>E486</code>は「1つも見つからなかった」という意味で、綴りの間違いか、すでに置換済みかのどちらかである。</p>
+
+      <h3 id="c4-add-1-d">取り消し・やり直しと、まとめて編集する</h3>
+      <p>Vimを安心して使えるかどうかは、<kbd>u</kbd>（取り消し）を知っているかどうかで決まる。何行消してしまっても、保存していなければ<kbd>u</kbd>を連打すれば元に戻る。取り消しすぎたときは<kbd>Ctrl</kbd>+<kbd>r</kbd>でやり直す。</p>
+      <p>複数行をまとめて扱うには、操作キーの前に回数を付ける方法と、ビジュアルモードで範囲を選ぶ方法の2通りがある。前者は「3行コピー」のように回数がはっきりしているとき、後者は画面を見ながら範囲を決めたいときに向いている。</p>
+      <div class="scroll">
+      <table class="tbl">
+        <thead><tr><th>キー</th><th>はたらき</th><th>例</th></tr></thead>
+        <tbody>
+          <tr><td><kbd>u</kbd> ／ <kbd>Ctrl</kbd>+<kbd>r</kbd></td><td>取り消し／やり直し</td><td>消しすぎたらまず<kbd>u</kbd></td></tr>
+          <tr><td><kbd>3</kbd><kbd>y</kbd><kbd>y</kbd> ／ <kbd>3</kbd><kbd>d</kbd><kbd>d</kbd></td><td>カーソル行から3行をコピー／切り取り</td><td>設定の3行ブロックを複製する</td></tr>
+          <tr><td><kbd>p</kbd> ／ <kbd>P</kbd></td><td>カーソル行の下／上に貼り付け</td><td>コピーした行を置く</td></tr>
+          <tr><td><kbd>v</kbd> ／ <kbd>V</kbd></td><td>文字単位／行単位のビジュアルモードに入る</td><td>範囲を目で見て選ぶ</td></tr>
+          <tr><td><kbd>V</kbd> → <kbd>j</kbd><kbd>j</kbd> → <kbd>d</kbd></td><td>3行を選んで削除する</td><td>不要なセクションを消す</td></tr>
+          <tr><td><kbd>V</kbd> → <kbd>j</kbd> → <kbd>&gt;</kbd></td><td>選んだ行をまとめて字下げする</td><td>スクリプトの整形</td></tr>
+          <tr><td><kbd>.</kbd></td><td>直前の編集操作をもう一度繰り返す</td><td>同じ修正を続けて当てる</td></tr>
+        </tbody>
+      </table>
+      </div>
+      <dl class="term"><dt>ビジュアルモード<small>visual mode</small></dt><dd>範囲を選んでからまとめて操作するためのモード。<kbd>v</kbd>で文字単位、<kbd>V</kbd>で行単位に入り、移動キーで範囲を伸ばして<kbd>y</kbd>（コピー）や<kbd>d</kbd>（削除）を押す。<kbd>Esc</kbd>で抜ける。</dd></dl>
+
+      <h3 id="c4-add-1-e">外部コマンドの結果を取り込む</h3>
+      <p>実験記録を書いているときに「いま実行したコマンドの出力をそのまま貼りたい」ことがある。Vimはコマンドモードから外部コマンドを呼び出し、その出力をカーソルの下に挿入できる。画面をコピーして貼り直すよりも確実で、打ち間違いも混ざらない。</p>
+      <div class="code" data-ctx="server">
+        <div class="code-head"><span class="code-title">Vimの中から外部コマンドを使う（コマンドモードで入力）</span></div>
+<pre><code><span class="cm">（:r ! で、コマンドの出力をカーソルの下の行に読み込む）</span>
+<span class="in">:r !date</span>
+<span class="in">:r !systemctl is-active luanti</span>
+<span class="in">:r !ls -l /home/luanti/server</span>
+<span class="cm">（:! だけなら、いったんVimを抜けずにコマンドを実行して結果を見るだけ）</span>
+<span class="in">:!df -h</span></code></pre>
+      </div>
+      <p>読み込んだ行はふつうのテキストなので、要らなければ<kbd>u</kbd>で取り消せる。<code>:!</code>のほうは実行結果を表示するだけで、ファイルには何も入らない。<kbd>Enter</kbd>を押すとVimの画面に戻る。</p>
+      <div class="call note"><span class="ct">実習ではここで使う</span><p><a href="../day1.html#s1-7">第1回 1-7 viエディタと答案の提出</a>で作る答案ファイルや、<a href="../day4.html#s4-2">第4回 4-2</a>のシェルスクリプトを書くときに、<code>:r !</code>でコマンドの実行結果をそのまま貼り込めると記録が正確になる。<code>:set nu</code>は<a href="../day2.html#s2-5">第2回 2-5</a>でユニットファイルのエラー行を探すときに効く。</p></div>
+
+      <h3 id="c4-add-1-f">.vimrc でVimを自分好みにする</h3>
+      <p>Vimの設定は、ホームディレクトリの <code>~/.vimrc</code> というファイルに書く。起動のたびに読み込まれるので、<code>:set nu</code> のように毎回打っていた設定を1回書けば済む。次は、サーバの設定ファイルを編集する用途に絞った最小限の例である。</p>
+      <div class="code file" data-ctx="file" data-cwd="~/.vimrc">
+        <div class="code-head"><span class="code-title">~/.vimrc（最小設定の例）</span></div>
+<pre><code><span class="in">" 行番号を表示する</span>
+<span class="in">set number</span>
+<span class="in">" 検索結果を強調し、打ちながら移動する</span>
+<span class="in">set hlsearch</span>
+<span class="in">set incsearch</span>
+<span class="in">" 小文字で検索したときは大文字小文字を区別しない</span>
+<span class="in">set ignorecase</span>
+<span class="in">set smartcase</span>
+<span class="in">" Tabキーで半角スペース4つを入力する（設定ファイル向け）</span>
+<span class="in">set tabstop=4</span>
+<span class="in">set shiftwidth=4</span>
+<span class="in">set expandtab</span>
+<span class="in">" 入力モードでもBackspaceが効くようにする</span>
+<span class="in">set backspace=indent,eol,start</span>
+<span class="in">" 文法に応じた色分けを有効にする</span>
+<span class="in">syntax on</span></code></pre>
+      </div>
+      <p>作成したら、いったんVimを終了して開き直せば反映される。<code>~/.vimrc</code>は自分のホームディレクトリにあるので、<code>sudo vi</code>で開いたVimには適用されない点に注意する（sudoで実行するとrootのホームディレクトリ <code>/root</code> が参照されるため）。行頭の <code>"</code> はVimの設定ファイルにおけるコメントである。</p>
+      <dl class="term"><dt>.vimrc<small>~/.vimrc</small></dt><dd>Vimの設定をまとめて書いておくファイル。ホームディレクトリに置くと起動時に自動で読み込まれ、<code>set number</code> などの設定を毎回打たずに済む。</dd></dl>
+      <div class="call myth"><span class="ct">よくある誤解・トラブル</span>
+        <span class="q"><code>~/.vimrc</code> に <code>syntax on</code> と書いたら <code>E319</code> などのエラーが出る</span>
+        <p class="a">Raspberry Pi OS Lite の標準は最小構成の <code>vim-tiny</code> で、色分けなど一部の機能が入っていない。<code>sudo apt install -y vim</code> でフル版を入れると解消する（<a href="../day1.html#s1-7">第1回 1-7</a>）。</p>
+        <span class="q"><code>sudo vi</code> で開くと、設定した行番号表示が効かない</span>
+        <p class="a">sudoで起動したVimはrootの設定（<code>/root/.vimrc</code>）を読む。自分の設定を使いたいなら、その場で <code>:set nu</code> と打つか、rootにも同じ設定ファイルを置く。実習では前者で十分である。</p>
+      </div>
+
+      <h2 id="c4-add-2"><span class="no">4-5</span>nanoという選択肢</h2>
+      <p>viは強力だが、モードの切り替えに慣れるまで時間がかかる。Debian系のLinuxには、もう1つnanoという素直なエディタが用意されている。nanoにはモードが無く、開いたらそのまま文字を打てて、画面の下に操作方法が常時表示されている。「設定ファイルを1行だけ直したい」という場面では、nanoのほうが速いことも多い。</p>
+      <p>ただし<a href="#c4-1">4-1節</a>で述べたとおり、nanoが入っていないサーバは実在する。<b>「nanoを使うが、viも読み書きできる」という状態を目指すのがよい。</b></p>
+      <div class="code" data-ctx="server">
+        <div class="code-head"><span class="code-title">nanoの導入と起動</span></div>
+<pre><code><span class="in">nano --version <span class="c"># 入っているか確認（バージョンが出れば導入済み）</span></span>
+<span class="in">sudo apt install -y nano <span class="c"># 入っていない場合だけ実行</span></span>
+<span class="in">nano <var>ファイル名</var> <span class="c"># 基本形</span></span>
+<span class="in">sudo nano /etc/systemd/system/luanti.service <span class="c"># システムの設定ファイルはsudoで</span></span>
+<span class="in">nano -l /home/luanti/server/luanti.conf <span class="c"># -l で行番号を表示する</span></span></code></pre>
+      </div>
+      <div class="scroll">
+      <table class="tbl">
+        <thead><tr><th>キー操作</th><th>はたらき</th><th>補足</th></tr></thead>
+        <tbody>
+          <tr><td><kbd>Ctrl</kbd>+<kbd>O</kbd></td><td>保存する（write out）</td><td>ファイル名を聞かれるので<kbd>Enter</kbd></td></tr>
+          <tr><td><kbd>Ctrl</kbd>+<kbd>X</kbd></td><td>終了する</td><td>未保存なら保存するか聞かれる</td></tr>
+          <tr><td><kbd>Ctrl</kbd>+<kbd>W</kbd></td><td>文字列を検索する</td><td><kbd>Alt</kbd>+<kbd>W</kbd>で次の候補</td></tr>
+          <tr><td><kbd>Ctrl</kbd>+<kbd>K</kbd> ／ <kbd>Ctrl</kbd>+<kbd>U</kbd></td><td>1行切り取り／貼り付け</td><td>続けて押せば複数行</td></tr>
+          <tr><td><kbd>Ctrl</kbd>+<kbd>C</kbd></td><td>現在の行番号を表示する</td><td>nanoでは中断の意味ではない</td></tr>
+          <tr><td><kbd>Alt</kbd>+<kbd>U</kbd></td><td>直前の操作を取り消す</td><td>viの<kbd>u</kbd>に相当</td></tr>
+        </tbody>
+      </table>
+      </div>
+      <p>画面下に並ぶ <code>^O Write Out</code> のような表示の <code>^</code> は<kbd>Ctrl</kbd>キーを、<code>M-</code> は<kbd>Alt</kbd>キーを表す。つまり <code>^X</code> は<kbd>Ctrl</kbd>+<kbd>X</kbd>である。この対応さえ分かれば、操作を暗記しなくても画面を見れば使える。</p>
+      <dl class="term"><dt>nano<small>GNU nano</small></dt><dd>モードを持たない素直なテキストエディタ。開いたらすぐ入力でき、操作方法が画面下に常に出ている。<code>^X</code> の <code>^</code> は<kbd>Ctrl</kbd>キーを意味する。</dd></dl>
+      <div class="call myth"><span class="ct">よくある誤解・トラブル</span>
+        <span class="q">nanoで<kbd>Ctrl</kbd>+<kbd>C</kbd>を押したのに終了できない</span>
+        <p class="a">nanoでは<kbd>Ctrl</kbd>+<kbd>C</kbd>は「現在位置の表示」であり、終了は<kbd>Ctrl</kbd>+<kbd>X</kbd>である。シェルで実行中のコマンドを止める<kbd>Ctrl</kbd>+<kbd>C</kbd>とは意味が違うので混同しないこと。</p>
+        <span class="q">nanoで編集したら、設定ファイルの行が勝手に折り返された</span>
+        <p class="a">古い設定では長い行を自動改行することがある。ユニットファイルの <code>ExecStart=</code> のような長い行が2行に割れると、サービスは起動しなくなる。心配なら <code>nano -w ファイル名</code>（折り返しを無効にする）で開き、保存後に <code>cat</code> で1行になっているか確かめる。</p>
+      </div>
+
+      <h2 id="c4-add-3"><span class="no">4-6</span>設定ファイルを安全に編集する作法</h2>
+      <p>サーバの障害の多くは、攻撃ではなく「設定ファイルの編集ミス」で起きる。エディタの操作を覚えることと同じくらい、編集の前後で何をするかという作法が大切である。ここでは、実務で当たり前に行われている3つの手順、つまり「取っておく」「見比べる」「確かめる」を扱う。</p>
+
+      <h3 id="c4-add-3-a">編集前に取っておく</h3>
+      <p>設定ファイルを開く前に、必ず複製を作る。1行のコマンドで済み、元に戻すときの安心料としては安すぎるほどである。<code>cp -a</code> は、所有者・パーミッション・更新日時をそのまま保って複製するオプションである。</p>
+      <div class="code" data-ctx="server">
+        <div class="code-head"><span class="code-title">編集前のバックアップ</span></div>
+<pre><code><span class="in">sudo cp -a /etc/systemd/system/luanti.service /etc/systemd/system/luanti.service.bak</span>
+<span class="in">sudo cp -a /etc/ssh/sshd_config /etc/ssh/sshd_config.$(date +%Y%m%d) <span class="c"># 日付を付けて残す</span></span>
+<span class="in">ls -l /etc/systemd/system/ <span class="c"># 複製できたか確認</span></span>
+<span class="out">-rw-r--r-- 1 root root 412 May 12 14:02 luanti.service</span>
+<span class="out">-rw-r--r-- 1 root root 412 May 12 14:02 luanti.service.bak</span></code></pre>
+      </div>
+      <div class="scroll">
+      <table class="tbl">
+        <thead><tr><th>オプション</th><th>意味</th><th>例</th></tr></thead>
+        <tbody>
+          <tr><td><code>-a</code></td><td>所有者・パーミッション・日時を保ったまま複製する</td><td><code>sudo cp -a a a.bak</code></td></tr>
+          <tr><td><code>-i</code></td><td>上書きする前に確認を求める</td><td><code>cp -i a b</code></td></tr>
+          <tr><td><code>-n</code></td><td>既にあるファイルは上書きしない</td><td><code>cp -n a b</code></td></tr>
+          <tr><td><code>-r</code></td><td>ディレクトリごと複製する</td><td><code>cp -r dir dir.bak</code></td></tr>
+          <tr><td><code>-v</code></td><td>何を複製したか表示する</td><td><code>cp -av a a.bak</code></td></tr>
+        </tbody>
+      </table>
+      </div>
+      <div class="call warn"><span class="ct">注意</span><p><code>cp</code>は既にあるファイルを黙って上書きする。<code>sudo cp -a luanti.service luanti.service.bak</code> を2回実行すると、<b>1回目に取った「編集前の状態」は消えて、編集後の内容で上書きされる</b>。同じ名前のバックアップを作り直す前に、必ず中身を <code>cat</code> で確かめること。不安なら上の例のように <code>$(date +%Y%m%d)</code> で日付を付けて別名にする。</p></div>
+
+      <h3 id="c4-add-3-b">diff で見比べる</h3>
+      <p><code>diff</code>は2つのファイルの違いだけを表示するコマンドである。「自分が何を変えたのか」を自分で説明できる状態にしてから保存するのが、設定変更の基本である。<code>-u</code>（unified形式）を付けると、変更箇所の前後数行も一緒に表示され、人間にとって格段に読みやすくなる。</p>
+      <div class="code" data-ctx="server">
+        <div class="code-head"><span class="code-title">変更点の確認</span></div>
+<pre><code><span class="in">diff -u /etc/systemd/system/luanti.service.bak /etc/systemd/system/luanti.service</span>
+<span class="in">diff -u --color=always a.conf b.conf <span class="c"># 色を付けて見やすくする</span></span>
+<span class="in">diff -q a.conf b.conf <span class="c"># 違いの有無だけを知りたいとき</span></span>
+<span class="in">diff -r /home/luanti/server /home/luanti/server.bak <span class="c"># ディレクトリ全体を比較する</span></span></code></pre>
+      </div>
+      <div class="scroll">
+      <table class="tbl">
+        <thead><tr><th>オプション</th><th>意味</th><th>例</th></tr></thead>
+        <tbody>
+          <tr><td><code>-u</code></td><td>前後の行を含むunified形式で表示する</td><td><code>diff -u a a.bak</code></td></tr>
+          <tr><td><code>-q</code></td><td>違うかどうかだけを1行で報告する</td><td><code>diff -q a b</code></td></tr>
+          <tr><td><code>-r</code></td><td>ディレクトリを再帰的に比較する</td><td><code>diff -r dir1 dir2</code></td></tr>
+          <tr><td><code>-w</code></td><td>空白の違いを無視する</td><td><code>diff -uw a b</code></td></tr>
+          <tr><td><code>--color=always</code></td><td>追加行と削除行に色を付ける</td><td><code>diff -u --color=always a b</code></td></tr>
+        </tbody>
+      </table>
+      </div>
+      <p class="why"><b>出力の読み方：</b>変更した行だけが前後の行とともに並ぶので、自分の編集を1画面で点検できる。</p>
+      <div class="code" data-ctx="server">
+        <div class="code-head"><span class="code-title">diff -u の出力例</span></div>
+<pre><code><span class="in">diff -u /etc/systemd/system/luanti.service.bak /etc/systemd/system/luanti.service</span>
+<span class="out">--- /etc/systemd/system/luanti.service.bak	2026-05-12 14:02:11.000000000 +0900</span>
+<span class="out">+++ /etc/systemd/system/luanti.service	2026-05-12 14:18:47.000000000 +0900</span>
+<span class="out">@@ -5,7 +5,8 @@</span>
+<span class="out"> [Service]</span>
+<span class="out">-User=taro</span>
+<span class="out">+User=luanti</span>
+<span class="out">+Environment=HOME=/home/luanti</span>
+<span class="out"> WorkingDirectory=/home/luanti/server</span>
+<span class="out"> Restart=on-failure</span></code></pre>
+      </div>
+      <p>先頭の <code>---</code> が変更前のファイル、<code>+++</code> が変更後のファイルである。<code>@@ -5,7 +5,8 @@</code> は「変更前は5行目から7行分、変更後は5行目から8行分」を表しており、この部分を見れば行数が1行増えたことも分かる。以降、行頭が <code>-</code> の行は削除、<code>+</code> の行は追加、半角スペースの行は変更なしである。この例では <code>User=</code> を書き換え、<code>Environment=HOME=/home/luanti</code> を1行追加したことが読み取れる（<a href="../day3.html#s3-3">第3回 3-3</a>で実際に行う変更である）。</p>
+      <p><b>意図していない行が <code>-</code> や <code>+</code> に現れていないかを確認するのが、この作業のいちばんの目的である。</b>見覚えのない差分があれば、それは打ち間違いか、カーソルが違う行にあったまま編集したかのどちらかである。</p>
+      <dl class="term"><dt>diff<small>diff -u / unified形式</small></dt><dd>2つのファイルの違いだけを表示するコマンド。<code>-u</code>を付けた形式では、<code>-</code>で始まる行が削除、<code>+</code>で始まる行が追加を表す。編集前のバックアップと見比べるのが定番の使い方である。</dd></dl>
+
+      <h3 id="c4-add-3-c">保存したら検証する</h3>
+      <p>設定ファイルを書き換えたあと、いきなりサービスを再起動するのは危険である。書式に誤りがあれば起動に失敗し、SSHの設定であれば自分が接続できなくなることさえある。多くのサーバソフトには「設定ファイルの書式だけを検査する」機能が用意されているので、<b>再起動の前に必ず検査を通す</b>という習慣を付けたい。</p>
+      <div class="code" data-ctx="server">
+        <div class="code-head"><span class="code-title">書式の検査</span></div>
+<pre><code><span class="in">sudo systemd-analyze verify /etc/systemd/system/luanti.service <span class="c"># systemdのユニットファイル</span></span>
+<span class="in">sudo sshd -t <span class="c"># SSHサーバの設定（何も出なければ正常）</span></span>
+<span class="in">sudo visudo -c <span class="c"># sudoの設定（第5章で扱う）</span></span>
+<span class="in">bash -n <var>スクリプト名</var>.sh <span class="c"># シェルスクリプトの文法検査（第9章で扱う）</span></span></code></pre>
+      </div>
+      <p class="why"><b>出力の読み方：</b>検査に通れば何も出ない。出たメッセージは、その場で直すべき箇所を行番号で教えている。</p>
+      <div class="code" data-ctx="server">
+        <div class="code-head"><span class="code-title">systemd-analyze verify の出力例</span></div>
+<pre><code><span class="in">sudo systemd-analyze verify /etc/systemd/system/luanti.service</span>
+<span class="out">/etc/systemd/system/luanti.service:9: Unknown key name 'ExecStar' in section 'Service', ignoring.</span>
+<span class="cm">（誤りが無い場合は、何も表示されずにプロンプトが戻る）</span></code></pre>
+      </div>
+      <p>出力は「ファイル名:行番号: 内容」の形である。この例は9行目の <code>ExecStart</code> を <code>ExecStar</code> と打ち間違えた場合で、systemdは知らない項目を黙って無視するため、検査しなければ「起動コマンドが書かれていないサービス」ができあがってしまう。<b>何も表示されないことが正常である</b>点に注意したい。エラーが出たら、<code>vi +9 /etc/systemd/system/luanti.service</code> のように行番号を指定して開けばすぐ直せる。</p>
+      <div class="call warn"><span class="ct">注意</span><p>SSHの設定ファイル <code>/etc/ssh/sshd_config</code> を編集して <code>sudo systemctl restart ssh</code> する作業は、<b>書式を誤ると自分がサーバから締め出される</b>。必ず <code>sudo sshd -t</code> で検査し、さらに<b>現在のSSH接続はつないだまま</b>、別のターミナルから新しく接続できることを確かめてから、元の接続を閉じること。接続できなくなった場合は、Raspberry Pi にモニタとキーボードを直接つないで復旧する（<a href="ch05.html#c5-add-4">第5章 5-7</a>）。</p></div>
+      <div class="call note"><span class="ct">実習ではここで使う</span><p><a href="../day2.html#s2-5">第2回 2-5</a>と<a href="../day3.html#s3-3">第3回 3-3</a>でユニットファイルを編集するとき、<a href="../day3.html#s3-7">第3回 3-7</a>でSSHを公開鍵認証に切り替えるときが、この作法の出番である。特に3-7は締め出しの危険がある作業なので、バックアップと検査を省略しないこと。</p></div>
+      <dl class="term"><dt>構文チェック<small>systemd-analyze verify / sshd -t</small></dt><dd>設定ファイルの書式だけを検査する機能。サービスを再起動する前に実行すると、起動失敗や締め出しの多くを未然に防げる。何も表示されないのが正常という点に注意する。</dd></dl>
+      <div class="mini"><span class="ct">ここまでの確認</span><ul>
+        <li><code>:set nu</code> で行番号を出し、<code>:42</code> で42行目へ移動できる</li>
+        <li><code>:%s/旧/新/gc</code> で1か所ずつ確認しながら置換し、<kbd>u</kbd>で取り消せる</li>
+        <li>設定ファイルを直す前に <code>sudo cp -a</code> でバックアップを取り、<code>diff -u</code> で差分を説明できる</li>
+        <li><code>sudo systemd-analyze verify</code> が何も出力しないことを確かめてから再起動している</li>
+      </ul></div>
 
       <nav class="pager" aria-label="前後のページ">
         <a class="prev" href="ch03.html"><span class="pl">前へ</span><span class="pt">シェルとコマンドライン</span></a>

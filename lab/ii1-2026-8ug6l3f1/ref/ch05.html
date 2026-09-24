@@ -38,8 +38,24 @@
     </aside>
     <article class="doc">
 
+      <div class="chapintro">
+        <div class="box"><span class="ct">この章で分かること</span><ul>
+          <li>ユーザとグループがUID・GIDという番号で管理され、その情報が <code>/etc/passwd</code> などのテキストファイルにあること</li>
+          <li>rootとsudoの関係、そして「最小権限の原則」という考え方</li>
+          <li>rwxとパーミッションの数値表記（<code>755</code> や <code>600</code>）の読み書き</li>
+          <li>ファイルとディレクトリでrwxの意味が変わること</li>
+        </ul></div>
+        <div class="box use"><span class="ct">実習のどこで使うか</span><ul>
+          <li><a href="../day3.html#s3-1">第3回 3-1 パーミッション</a></li>
+          <li><a href="../day3.html#s3-2">第3回 3-2 ユーザ管理とsudo</a></li>
+          <li><a href="../day3.html#s3-3">第3回 3-3 演習：サービスの非root化</a></li>
+          <li><a href="../day3.html#s3-7">第3回 3-7 SSHを公開鍵認証に切り替える</a></li>
+        </ul></div>
+      </div>
+
       <h2 id="c5-1"><span class="no">5-1</span>マルチユーザシステム</h2>
-      <p>Linuxは誕生のときから、1台のコンピュータを複数の人間が同時に使うことを前提に設計されている。各ユーザには一意の番号（UID：User ID）が割り当てられ、ユーザは1つ以上のグループ（GID：Group ID）に所属する。ファイルの所有権もアクセス権もこのUID/GIDに基づいて管理される。実習でluantiユーザを作ってサービスを動かしたのは、このマルチユーザの仕組みを「権限の分離」に応用したものである。</p>
+      <p>Linuxは誕生のときから、1台のコンピュータを複数の人間が同時に使うことを前提に設計されている。各ユーザには一意の番号（UID：User ID）が割り当てられ、ユーザは1つ以上のグループ（GID：Group ID）に所属する。ファイルの所有権もアクセス権もこのUID/GIDに基づいて管理される。実習でluantiユーザを作ってサービスを動かした（<a href="../day3.html#s3-3">第3回 3-3</a>）のは、このマルチユーザの仕組みを「権限の分離」に応用したものである。</p>
+      <dl class="term"><dt>UID・GID<small>User ID / Group ID</small></dt><dd>ユーザとグループに割り当てられる一意の番号。Linuxが権限を判断するときに見ているのは、画面に表示される名前ではなくこの番号である。</dd></dl>
       <p>ユーザの情報は次のファイルに保存されている。これらは「設定はテキストファイルに保存される」というLinuxの原則の好例であり、<code>cat</code>で中身を見ることができる。</p>
       <div class="scroll">
       <table class="tbl">
@@ -54,12 +70,30 @@
       <div class="call note"><span class="ct">Note</span><p>※ パスワードは平文ではなく「ハッシュ値」で保存される。ハッシュは一方向の変換であり、元のパスワードには戻せない。ログイン時は入力をハッシュ化して保存値と比較する。パスワードを忘れたとき管理者でも「教える」ことができず「リセット」しかできないのはこのためである。</p></div>
 
       <h2 id="c5-2"><span class="no">5-2</span>rootとsudo</h2>
-      <p>UID 0 のユーザをrootといい、すべての権限チェックを素通りできる特別な存在である。強力である反面、<code>rm -rf</code> の対象を打ち間違えるだけでシステムを破壊できる。そこで現代の運用では、rootで直接ログインする代わりに、一般ユーザとして作業し、必要なコマンドだけを<code>sudo</code>で実行する。sudoには次の利点がある。①root本人のパスワードを共有しなくてよい。②誰がいつ何を実行したかログに残る（<code>journalctl</code>で確認できる）。③操作のたびに「これは管理者権限が必要な操作だ」と意識する機会になる。sudoを使えるのはsudoグループ（ディストリビューションによってはwheelグループ）に所属するユーザだけであり、細かい許可設定は <code>/etc/sudoers</code> で管理される。</p>
+      <p>UID 0 のユーザをrootといい、すべての権限チェックを素通りできる特別な存在である。強力である反面、<code>rm -rf</code> の対象を打ち間違えるだけでシステムを破壊できる。そこで現代の運用では、rootで直接ログインする代わりに、一般ユーザとして作業し、必要なコマンドだけを<code>sudo</code>で実行する。</p>
+      <dl class="term"><dt>root<small>UID 0</small></dt><dd>すべての権限チェックを免除される管理者ユーザ。できないことがない代わりに、打ち間違い1つでシステムを壊せる。</dd></dl>
+      <p>sudoには次の利点がある。</p>
+      <ol>
+        <li>root本人のパスワードを共有しなくてよい。</li>
+        <li>誰がいつ何を実行したかログに残る（<code>journalctl</code>で確認できる）。</li>
+        <li>操作のたびに「これは管理者権限が必要な操作だ」と意識する機会になる。</li>
+      </ol>
+      <p>sudoを使えるのはsudoグループ（ディストリビューションによってはwheelグループ）に所属するユーザだけであり、細かい許可設定は <code>/etc/sudoers</code> で管理される。</p>
+      <dl class="term"><dt>sudo<small>superuser do</small></dt><dd>1つのコマンドだけを管理者権限で実行するための道具。普段は一般ユーザのまま作業し、必要なときだけ権限を借りる、という運用を可能にする。</dd></dl>
       <p>この考え方を一般化したものが最小権限の原則である。「プログラムにもユーザにも、目的に必要な最小限の権限だけを与える」。実習でsudo権限を持たないluantiユーザを作ってサービスを動かしたのは、万一ゲームサーバが乗っ取られても、被害をそのユーザの権限の範囲に閉じ込めるためである。</p>
+      <dl class="term"><dt>最小権限の原則<small>least privilege</small></dt><dd>目的に必要な最小限の権限だけを与えるという設計指針。サービス専用ユーザを作る、鍵ファイルを本人だけに読ませる、といった具体策はすべてこの原則の表れである。</dd></dl>
+      <div class="call myth"><span class="ct">よくある誤解・トラブル</span>
+        <span class="q">sudo を付ければ何でも安全に実行できる</span>
+        <p class="a">sudo は「管理者として実行する」だけで、安全性は上がらない。むしろ普段なら失敗するはずの危険な操作が通ってしまう。<code>sudo rm -rf</code> を打つ前には、対象のパスを <code>ls</code> で一度確かめるとよい。</p>
+        <span class="q">Permission denied が出たら、とりあえず sudo を付ければよい</span>
+        <p class="a">Permission denied の原因は「所有者が違う」「ディレクトリにxが無くて入れない」など様々である。まず <code>ls -l</code> で所有者とパーミッションを見て、本来そのユーザが触るべきファイルなら <code>chown</code> で所有者を直すのが筋である。サービス用のファイルにsudoで書き込んでしまうと、以後そのサービスが自分のファイルを書けなくなることがある。</p>
+      </div>
 
       <h2 id="c5-3"><span class="no">5-3</span>パーミッションの仕組み</h2>
       <figure><img src="../img/s07.png" alt="図5-1　パーミッション表記の読み方" width="1800" height="590"><figcaption>図5-1　パーミッション表記の読み方</figcaption></figure>
-      <p>ファイルのアクセス権は、所有者・所有グループ・その他ユーザの3者それぞれに、r（読み取り）・w（書き込み）・x（実行）の3種類を設定する。ディレクトリの場合は意味が少し変わり、rは「中の一覧を見られる」、wは「中にファイルを作成・削除できる」、xは「中に入れる（<code>cd</code>できる）」である。数値表記はr=4、w=2、x=1の合計で表し、<code>chmod 755</code> のように使う。よく使うパターンを覚えておくとよい。</p>
+      <p>ファイルのアクセス権は、所有者・所有グループ・その他ユーザの3者それぞれに、r（読み取り）・w（書き込み）・x（実行）の3種類を設定する。ディレクトリの場合は意味が少し変わり、rは「中の一覧を見られる」、wは「中にファイルを作成・削除できる」、xは「中に入れる（<code>cd</code>できる）」である。</p>
+      <p>数値表記はr=4、w=2、x=1の合計で表し、<code>chmod 755</code> のように使う。よく使うパターンを覚えておくとよい。実際に <code>chmod</code> と <code>chown</code> を手で動かすのは<a href="../day3.html#s3-1">第3回 3-1</a>である。</p>
+      <dl class="term"><dt>パーミッション<small>permission / rwx</small></dt><dd>ファイルやディレクトリに設定されたアクセス権。所有者・所有グループ・その他の3者について、r（4）・w（2）・x（1）の組み合わせを3桁の数字で表す。</dd></dl>
       <div class="scroll">
       <table class="tbl">
         <thead><tr><th>数値</th><th>記号</th><th>典型的な用途</th></tr></thead>
@@ -72,6 +106,332 @@
       </table>
       </div>
       <p>なお、新規作成されるファイルのパーミッションの初期値はumaskという設定で決まる。また、<code>/tmp</code> のような共有ディレクトリには「作った本人しか消せない」ようにするスティッキービット（t）という特殊な権限が付いているなど、発展的な仕組みもある。<code>ls -ld /tmp</code> で確認してみてほしい。</p>
+      <dl class="term"><dt>スティッキービット<small>sticky bit / t</small></dt><dd><code>/tmp</code> のような誰でも書ける共有ディレクトリに付ける特殊な権限。全員がファイルを作れる一方、削除できるのは作った本人（と所有者・root）だけになる。</dd></dl>
+      <div class="call myth"><span class="ct">よくある誤解・トラブル</span>
+        <span class="q">権限エラーが出たら chmod 777 にすれば解決する</span>
+        <p class="a">777は「誰でも読み書き実行できる」という意味であり、問題を隠すだけで原因は直らない。必要なのはたいてい所有者の修正（<code>chown</code>）か、ディレクトリにxを付けることである。サーバ上で777を使う癖は、そのままセキュリティ事故につながる。</p>
+        <span class="q">SSHの秘密鍵を置いたのに公開鍵認証で接続できない</span>
+        <p class="a">秘密鍵のパーミッションが緩いと、SSHは安全でないとみなして鍵の使用を拒否する。秘密鍵は <code>600</code>、<code>~/.ssh</code> ディレクトリは <code>700</code> が原則である（<a href="../day3.html#s3-7">第3回 3-7</a>）。</p>
+      </div>
+
+      <h2 id="c5-add-1"><span class="no">5-4</span>アカウントを操作するコマンド</h2>
+      <p><a href="#c5-1">5-1節</a>ではユーザとグループの仕組みを見た。ここでは、その仕組みを実際に動かすコマンドを整理する。サーバ管理者がユーザを触るのは、人を増やすときだけではない。<a href="../day3.html#s3-3">第3回 3-3</a>で作ったluantiユーザのように、<b>サービスを動かすためだけの人間ではないユーザ</b>を作る場面のほうが、実務では多い。</p>
+      <dl class="term"><dt>サービスアカウント<small>service account</small></dt><dd>人間がログインするためではなく、特定のサービスを動かすために作るユーザ。実習のluantiユーザがこれにあたる。乗っ取られたときの被害をそのサービスの範囲に閉じ込めるために用意する。</dd></dl>
+
+      <h3 id="c5-add-1-a">ユーザを作る・変える・消す</h3>
+      <p>Debian系のLinuxでは <code>adduser</code> と <code>deluser</code> を使う。これらは対話形式でホームディレクトリの作成まで面倒を見てくれる、初心者に優しいコマンドである。より低レベルの <code>useradd</code> / <code>userdel</code> もあるが、ホームディレクトリを自動では作らないなど挙動が異なるので、Raspberry Pi OSでは <code>adduser</code> を使えばよい。</p>
+      <div class="code" data-ctx="server">
+        <div class="code-head"><span class="code-title">ユーザとグループの操作</span></div>
+<pre><code><span class="in">sudo adduser <var>ユーザ名</var> <span class="c"># 基本形。パスワードなどを対話で聞かれる</span></span>
+<span class="in">sudo usermod -aG sudo <var>ユーザ名</var> <span class="c"># sudoグループに追加する（-a を必ず付ける）</span></span>
+<span class="in">sudo passwd <var>ユーザ名</var> <span class="c"># パスワードを再設定する</span></span>
+<span class="in">sudo adduser <var>ユーザ名</var> <var>グループ名</var> <span class="c"># 既存ユーザを既存グループに入れる書き方</span></span>
+<span class="in">sudo deluser --remove-home <var>ユーザ名</var> <span class="c"># ユーザとホームディレクトリを削除する</span></span></code></pre>
+      </div>
+      <div class="scroll">
+      <table class="tbl">
+        <thead><tr><th>コマンドとオプション</th><th>意味</th><th>例</th></tr></thead>
+        <tbody>
+          <tr><td><code>adduser <var>名前</var></code></td><td>ユーザを作り、ホームディレクトリと同名グループも作る</td><td><code>sudo adduser luanti</code></td></tr>
+          <tr><td><code>usermod -aG <var>グループ</var> <var>名前</var></code></td><td>いま所属しているグループを保ったまま追加する</td><td><code>sudo usermod -aG sudo taro</code></td></tr>
+          <tr><td><code>usermod -s <var>シェル</var> <var>名前</var></code></td><td>ログインシェルを変える</td><td><code>sudo usermod -s /usr/sbin/nologin luanti</code></td></tr>
+          <tr><td><code>passwd</code></td><td>自分のパスワードを変える（引数を付ければ他人の再設定、要sudo）</td><td><code>passwd</code></td></tr>
+          <tr><td><code>deluser <var>名前</var></code></td><td>ユーザを削除する。<code>--remove-home</code> でホームも消す</td><td><code>sudo deluser taro</code></td></tr>
+          <tr><td><code>deluser <var>名前</var> <var>グループ</var></code></td><td>グループから外す（ユーザは残る）</td><td><code>sudo deluser taro sudo</code></td></tr>
+        </tbody>
+      </table>
+      </div>
+      <div class="call warn"><span class="ct">注意</span><p><code>sudo deluser --remove-home <var>ユーザ名</var></code> は、そのユーザのホームディレクトリを<b>確認なしに丸ごと削除する</b>。実習のluantiユーザに対してこれを実行すると、<code>/home/luanti/server</code> にあるワールドデータも一緒に消える。<b>実習中にこのコマンドを使う場面は無い。</b>どうしても必要なときは、先に <code>ls -l /home/<var>ユーザ名</var></code> で中身を確かめ、バックアップを取ってから実行すること。</p></div>
+      <div class="call myth"><span class="ct">よくある誤解・トラブル</span>
+        <span class="q"><code>sudo usermod -G sudo taro</code> を実行したら、他のグループから外れてしまった</span>
+        <p class="a"><code>-G</code> は「所属グループをこの一覧に置き換える」という意味である。追加したいときは必ず <code>-a</code>（append）を付けて <code>-aG</code> とする。外れてしまった場合は <code>sudo usermod -aG <var>元のグループ</var> taro</code> で戻せるが、sudoグループから自分が外れると復旧にモニタ接続が必要になるので特に注意する。</p>
+        <span class="q">グループに追加したのに、権限が増えていない</span>
+        <p class="a">グループの所属はログインしたときに読み込まれる。追加した本人は、いったんログアウトして入り直す（SSHなら接続し直す）まで反映されない。<code>id</code> で確認して古いままなら、まず接続し直すこと。</p>
+      </div>
+
+      <h3 id="c5-add-1-b">いまの自分と相手を確かめる</h3>
+      <p>権限のトラブルは、たいてい「自分が思っているユーザと、実際に動いているユーザが違う」ことから起きる。作業の前後で確認する癖を付けたい。<code>id</code> と <code>groups</code> は一瞬で終わるので、<code>su</code> や <code>sudo -i</code> の直後には必ず打つとよい。</p>
+      <div class="code" data-ctx="server">
+        <div class="code-head"><span class="code-title">ユーザ情報の確認</span></div>
+<pre><code><span class="in">whoami <span class="c"># 今のユーザ名だけ</span></span>
+<span class="in">id <span class="c"># UID・GID・所属グループをまとめて</span></span>
+<span class="in">id luanti <span class="c"># 他のユーザを調べる</span></span>
+<span class="in">groups <span class="c"># 所属グループ名の一覧</span></span>
+<span class="in">getent passwd luanti <span class="c"># /etc/passwd の該当行を引く</span></span></code></pre>
+      </div>
+      <p class="why"><b>出力の読み方：</b>番号と名前の対応、そして所属グループの並びを見る。</p>
+      <div class="code" data-ctx="server">
+        <div class="code-head"><span class="code-title">id と getent の出力例</span></div>
+<pre><code><span class="in">id</span>
+<span class="out">uid=1000(taro) gid=1000(taro) groups=1000(taro),4(adm),27(sudo),44(video),997(gpio)</span>
+<span class="in">id luanti</span>
+<span class="out">uid=1001(luanti) gid=1001(luanti) groups=1001(luanti)</span>
+<span class="in">getent passwd luanti</span>
+<span class="out">luanti:x:1001:1001:,,,:/home/luanti:/bin/bash</span></code></pre>
+      </div>
+      <p>1行目の <code>groups=</code> に <code>27(sudo)</code> が含まれていれば、そのユーザはsudoを使える。2行目のluantiユーザには自分自身のグループしかない。<b>これが「sudo権限を持たない専用ユーザ」であることの確認方法である</b>（<a href="../day3.html#s3-3">第3回 3-3</a>）。<code>getent passwd</code> の出力は <code>/etc/passwd</code> の1行そのもので、コロンで区切られた7つの項目からなる。</p>
+      <div class="scroll">
+      <table class="tbl">
+        <thead><tr><th>位置</th><th>項目</th><th>例の値</th><th>意味</th></tr></thead>
+        <tbody>
+          <tr><td>1</td><td>ユーザ名</td><td><code>luanti</code></td><td>ログイン名</td></tr>
+          <tr><td>2</td><td>パスワード欄</td><td><code>x</code></td><td>実体は <code>/etc/shadow</code> にあるという印</td></tr>
+          <tr><td>3</td><td>UID</td><td><code>1001</code></td><td>一般ユーザは1000番台から</td></tr>
+          <tr><td>4</td><td>GID</td><td><code>1001</code></td><td>主グループの番号</td></tr>
+          <tr><td>5</td><td>コメント欄</td><td><code>,,,</code></td><td>氏名など。<code>adduser</code> で空欄にするとこうなる</td></tr>
+          <tr><td>6</td><td>ホームディレクトリ</td><td><code>/home/luanti</code></td><td>ログイン時の初期位置</td></tr>
+          <tr><td>7</td><td>ログインシェル</td><td><code>/bin/bash</code></td><td><code>/usr/sbin/nologin</code> ならログイン不可</td></tr>
+        </tbody>
+      </table>
+      </div>
+      <p>7番目の項目は覚えておく価値がある。Webサーバなどのサービス専用ユーザは、ログインシェルが <code>/usr/sbin/nologin</code> に設定されていることが多い。これは「このユーザではログインさせない」という設定で、乗っ取り対策の1つである。<code>grep nologin /etc/passwd</code> を実行すると、システムがどれだけ多くのサービス用ユーザを抱えているかが分かる。</p>
+
+      <h3 id="c5-add-1-c">別のユーザとして実行する3つの方法</h3>
+      <p>実習では <code>su - luanti</code> を使ったが、似た目的のコマンドが他にもあり、混乱しやすい。違いは「相手のパスワードが要るか」「環境変数を引き継ぐか」「1コマンドだけか、入りっぱなしか」の3点である。</p>
+      <div class="scroll">
+      <table class="tbl">
+        <thead><tr><th>書き方</th><th>聞かれるパスワード</th><th>環境</th><th>使いどころ</th></tr></thead>
+        <tbody>
+          <tr><td><code>su - luanti</code></td><td>luantiのパスワード</td><td>luantiのものに入れ替わる</td><td>luantiとして何度も作業する</td></tr>
+          <tr><td><code>su luanti</code></td><td>luantiのパスワード</td><td><code>$HOME</code>などが元のまま</td><td>使わないほうがよい</td></tr>
+          <tr><td><code>sudo -u luanti <var>コマンド</var></code></td><td>自分のパスワード</td><td>おおむね元のまま</td><td>1つのコマンドだけ試す</td></tr>
+          <tr><td><code>sudo -i -u luanti</code></td><td>自分のパスワード</td><td>luantiとしてログインし直したのと同じ</td><td>パスワードを知らなくても入れる</td></tr>
+          <tr><td><code>sudo -i</code></td><td>自分のパスワード</td><td>rootとしてログインし直したのと同じ</td><td>管理作業を続けて行う</td></tr>
+        </tbody>
+      </table>
+      </div>
+      <div class="code" data-ctx="server">
+        <div class="code-head"><span class="code-title">別ユーザでの実行</span></div>
+<pre><code><span class="in">sudo -u luanti ls -l /home/luanti/server <span class="c"># luantiが本当に読めるかを試す</span></span>
+<span class="in">sudo -u luanti touch /home/luanti/server/test.txt <span class="c"># 書けるかを試す</span></span>
+<span class="in">sudo -u luanti rm /home/luanti/server/test.txt <span class="c"># 試した後片付け</span></span>
+<span class="in">su - luanti <span class="c"># luantiとして作業を続ける（パスワードが必要）</span></span>
+<span class="in">exit <span class="c"># 元のユーザに戻る</span></span></code></pre>
+      </div>
+      <p><code>sudo -u luanti</code> は、サービスが起動に失敗したときの切り分けに非常に役立つ。<b>「systemdが悪いのか、それとも権限が足りないのか」を切り分けるには、そのユーザになって同じ操作を手で試すのがいちばん速い。</b>上の例で <code>Permission denied</code> が出れば、原因は <code>chown</code> のし忘れだと分かる。</p>
+      <div class="call note"><span class="ct">実習ではここで使う</span><p><a href="../day3.html#s3-3">第3回 3-3 演習：サービスの非root化</a>で <code>adduser</code>・<code>chown -R</code>・<code>su - luanti</code> を、<a href="../day4.html#s4-2">第4回 4-2</a>以降でluantiユーザとしてのバックアップ作業を行う。うまく動かないときは <code>id</code> と <code>sudo -u luanti</code> で切り分けるとよい。</p></div>
+
+      <h2 id="c5-add-2"><span class="no">5-5</span>sudoの設定を読む・書く</h2>
+      <p><a href="#c5-2">5-2節</a>で見たとおり、sudoが使えるかどうかはsudoグループへの所属で決まる。しかし実務では「特定のコマンドだけをパスワードなしで許す」といった細かい設定が必要になる。たとえば監視スクリプトからサービスを再起動させたいが、そのために管理者パスワードを自動化の仕組みに埋め込むのは避けたい、という場面である。その設定を行うのが <code>/etc/sudoers</code> と <code>/etc/sudoers.d/</code> である。</p>
+      <dl class="term"><dt>sudoers<small>/etc/sudoers</small></dt><dd>誰がどのコマンドをsudoで実行できるかを定めた設定ファイル。書式を誤るとsudoが一切使えなくなるため、必ず <code>visudo</code> 経由で編集する。</dd></dl>
+      <div class="call warn"><span class="ct">注意</span><p><code>/etc/sudoers</code> を <code>sudo vi</code> で直接編集してはいけない。書式を1文字でも誤ると<b>sudoがまったく使えなくなり、設定を直すためのsudoも使えないという状態に陥る</b>。<code>visudo</code> は保存時に書式を検査し、誤りがあれば保存を拒んでやり直させてくれる。復旧にはモニタとキーボードを直接つないでrootで入る必要があるため、この一手間を省いてはならない。</p></div>
+      <div class="code" data-ctx="server">
+        <div class="code-head"><span class="code-title">sudoの設定を安全に編集する</span></div>
+<pre><code><span class="in">sudo visudo <span class="c"># /etc/sudoers を検査付きで開く</span></span>
+<span class="in">sudo visudo -f /etc/sudoers.d/010-luanti <span class="c"># 追加設定を別ファイルとして作る（推奨）</span></span>
+<span class="in">sudo visudo -c <span class="c"># 現在の設定全体の書式を検査する</span></span>
+<span class="out">/etc/sudoers: parsed OK</span>
+<span class="out">/etc/sudoers.d/010-luanti: parsed OK</span>
+<span class="in">sudo -l <span class="c"># 自分に許されている操作の一覧を見る</span></span></code></pre>
+      </div>
+      <div class="scroll">
+      <table class="tbl">
+        <thead><tr><th>オプション</th><th>意味</th><th>例</th></tr></thead>
+        <tbody>
+          <tr><td><code>visudo</code></td><td>検査付きで <code>/etc/sudoers</code> を編集する</td><td><code>sudo visudo</code></td></tr>
+          <tr><td><code>visudo -f <var>ファイル</var></code></td><td>指定したファイルを検査付きで編集する</td><td><code>sudo visudo -f /etc/sudoers.d/010-luanti</code></td></tr>
+          <tr><td><code>visudo -c</code></td><td>編集せずに書式だけ検査する</td><td><code>sudo visudo -c</code></td></tr>
+          <tr><td><code>sudo -l</code></td><td>自分に許可されているコマンドを一覧する</td><td><code>sudo -l</code></td></tr>
+          <tr><td><code>sudo -k</code></td><td>パスワードを覚えている状態を破棄する</td><td>席を離れる前に</td></tr>
+        </tbody>
+      </table>
+      </div>
+      <p>設定を追加するときは、<code>/etc/sudoers</code> 本体ではなく <code>/etc/sudoers.d/</code> に新しいファイルを置くのが現代の作法である。本体を汚さないのでOSの更新時に衝突せず、不要になったらファイルごと消せばよい。<b>ファイル名にドット（<code>.</code>）やチルダ（<code>~</code>）を含めると読み込まれない</b>ので、<code>010-luanti</code> のように英数字とハイフンだけで付ける。<code>visudo -f</code> で作れば、パーミッションも適切に設定される。</p>
+      <div class="code file" data-ctx="file" data-cwd="/etc/sudoers.d/010-luanti">
+        <div class="code-head"><span class="code-title">/etc/sudoers.d/010-luanti（特定のコマンドだけ許可する例）</span></div>
+<pre><code><span class="in"># 監視スクリプトからLuantiサーバを再起動できるようにする</span>
+<span class="in"># 書式: ユーザ ホスト=(実行ユーザ) NOPASSWD: コマンドの絶対パス</span>
+<span class="in">taro ALL=(root) NOPASSWD: /usr/bin/systemctl restart luanti</span>
+<span class="in">taro ALL=(root) NOPASSWD: /usr/bin/systemctl status luanti</span></code></pre>
+      </div>
+      <p>1行の意味は「taroは、どのホストからでも、rootとして、パスワードなしで、この絶対パスのコマンドをこの引数で実行してよい」である。コマンドは必ず絶対パスで書く。<code>which systemctl</code> で確認できる。</p>
+      <p>NOPASSWDは便利だが、安易に <code>NOPASSWD: ALL</code> と書くと、そのユーザはパスワードなしで何でもできるようになり、sudoを使う意味がほぼ失われる。<b>NOPASSWDを許すのは、自動化のために必要な特定のコマンドだけにとどめる</b>のが原則である。</p>
+      <p class="why"><b>出力の読み方：</b>誰が、いつ、どのコマンドをsudoで実行したかはすべてログに残る。</p>
+      <div class="code" data-ctx="server">
+        <div class="code-head"><span class="code-title">sudoのログを読む</span></div>
+<pre><code><span class="in">journalctl _COMM=sudo -n 5 --no-pager</span>
+<span class="out">May 12 14:31:02 mc-24s1234 sudo[2411]:     taro : TTY=pts/0 ; PWD=/home/taro ; USER=root ; COMMAND=/usr/bin/systemctl restart luanti</span>
+<span class="out">May 12 14:35:40 mc-24s1234 sudo[2455]:     taro : TTY=pts/0 ; PWD=/home/taro ; USER=root ; COMMAND=/usr/bin/apt update</span>
+<span class="out">May 12 14:38:07 mc-24s1234 sudo[2478]: pam_unix(sudo:auth): authentication failure; logname=taro uid=1000 euid=0 tty=/dev/pts/0 ruser=taro rhost=  user=taro</span></code></pre>
+      </div>
+      <p>見るべきは、実行者（コロンの前の名前）、<code>USER=</code>（どのユーザとして実行したか）、<code>COMMAND=</code>（何を実行したか）の3つである。3行目の <code>authentication failure</code> はパスワードの入力ミスで、<b>これが短時間に何度も並んでいれば、誰かが総当たりを試みている可能性を疑う</b>。<code>_COMM=sudo</code> は「sudoというコマンドが出したログだけ」という絞り込みで、ログの読み方は<a href="ch08.html#c8-1">第8章 8.1</a>と<a href="ch06.html#c6-add-3">第6章 6-7</a>でさらに詳しく扱う。</p>
+
+      <h2 id="c5-add-3"><span class="no">5-6</span>パーミッション実用リファレンス</h2>
+      <p><a href="#c5-3">5-3節</a>で数値表記の読み方を学んだ。ここでは、実際にアクセス権を変えるコマンドと、初心者がはまりやすい落とし穴を扱う。<code>chmod</code> はパーミッション（何ができるか）を、<code>chown</code> は所有者（誰のものか）を変えるコマンドである。<b>「権限が足りない」という症状に対して、どちらを直すべきかを見極めるのがこの節の目的である。</b></p>
+
+      <h3 id="c5-add-3-a">chmod：数値と記号</h3>
+      <p><code>chmod</code> には、<code>755</code> のようにまとめて指定する数値表記と、<code>u+x</code> のように差分を指定する記号表記の2通りがある。「実行権だけ足したい」ような場面では、他の権限を壊さずに済む記号表記のほうが安全である。</p>
+      <div class="code" data-ctx="server">
+        <div class="code-head"><span class="code-title">chmodの使い方</span></div>
+<pre><code><span class="in">chmod 600 ~/.ssh/id_ed25519 <span class="c"># 秘密鍵は本人だけが読み書きできる状態に</span></span>
+<span class="in">chmod 700 ~/.ssh <span class="c"># 鍵を置くディレクトリは本人専用に</span></span>
+<span class="in">chmod u+x ~/backup.sh <span class="c"># 所有者に実行権を足す（他はそのまま）</span></span>
+<span class="in">chmod go-w /home/luanti/server/luanti.conf <span class="c"># グループと他人から書き込み権を外す</span></span>
+<span class="in">ls -l ~/backup.sh <span class="c"># 結果を確かめる</span></span>
+<span class="out">-rwxr--r-- 1 taro taro 412 May 12 14:40 /home/taro/backup.sh</span></code></pre>
+      </div>
+      <div class="scroll">
+      <table class="tbl">
+        <thead><tr><th>書き方</th><th>意味</th><th>例</th></tr></thead>
+        <tbody>
+          <tr><td>数値3桁</td><td>所有者・グループ・その他をまとめて指定する</td><td><code>chmod 644 file</code></td></tr>
+          <tr><td><code>u</code> <code>g</code> <code>o</code> <code>a</code></td><td>対象（所有者・グループ・その他・全員）</td><td><code>chmod a+r file</code></td></tr>
+          <tr><td><code>+</code> <code>-</code> <code>=</code></td><td>権限を足す・外す・そのとおりにする</td><td><code>chmod u=rw file</code></td></tr>
+          <tr><td><code>-R</code></td><td>ディレクトリの中身にも再帰的に適用する</td><td><code>chmod -R u+w dir</code></td></tr>
+          <tr><td><code>--reference=<var>ファイル</var></code></td><td>別のファイルと同じ権限にそろえる</td><td><code>chmod --reference=a.conf b.conf</code></td></tr>
+        </tbody>
+      </table>
+      </div>
+      <div class="call warn"><span class="ct">注意</span><p><code>chmod -R 777 <var>ディレクトリ</var></code> は、<b>その下のすべてのファイルを誰でも書き換え・実行できる状態にする</b>。権限エラーはいったん消えるが、セキュリティ上の穴を開けただけで原因は何も直っていない。また <code>chmod -R 755</code> のような指定も、本来実行する必要のないデータファイルにまで実行権を付けてしまう。ディレクトリとファイルで分けたいときは <code>find <var>ディレクトリ</var> -type d -exec chmod 755 {} +</code> と <code>find <var>ディレクトリ</var> -type f -exec chmod 644 {} +</code> のように <code>find</code> と組み合わせる。</p></div>
+
+      <h3 id="c5-add-3-b">chown：所有者を直す</h3>
+      <p>「サービスがファイルを読めない」という症状の多くは、パーミッションではなく所有者の問題である。<a href="../day3.html#s3-3">第3回 3-3</a>でワールドデータをluantiユーザの持ち物にしたのは、まさにこの作業である。</p>
+      <div class="code" data-ctx="server">
+        <div class="code-head"><span class="code-title">chownの使い方</span></div>
+<pre><code><span class="in">sudo chown luanti /home/luanti/server/luanti.conf <span class="c"># 所有者だけ変える</span></span>
+<span class="in">sudo chown luanti:luanti /home/luanti/server/luanti.conf <span class="c"># 所有者とグループを変える</span></span>
+<span class="in">sudo chown -R luanti:luanti /home/luanti/server <span class="c"># 中身もすべて変える</span></span>
+<span class="in">ls -ld /home/luanti/server <span class="c"># ディレクトリ自身の情報を見る</span></span>
+<span class="out">drwxr-xr-x 4 luanti luanti 4096 May 12 14:45 /home/luanti/server</span>
+<span class="in">stat -c '%a %U %G %n' /home/luanti/server <span class="c"># 数値表記と所有者だけを抜き出す</span></span>
+<span class="out">755 luanti luanti /home/luanti/server</span></code></pre>
+      </div>
+      <p><code>ls -l</code> の代わりに <code>stat -c '%a %U %G %n'</code> を使うと、パーミッションを数値のまま確認できる。<code>rwxr-xr-x</code> と <code>755</code> を頭の中で変換する手間が省けるので、慣れないうちはこちらが読みやすい。<code>ls -ld</code> の <code>-d</code> は「ディレクトリの中身ではなくディレクトリ自身を見る」という意味である。</p>
+      <div class="call myth"><span class="ct">よくある誤解・トラブル</span>
+        <span class="q">ファイルは<code>644</code>で誰でも読めるはずなのに、他のユーザが <code>Permission denied</code> になる</span>
+        <p class="a">ファイルにたどり着くまでの<b>すべてのディレクトリにx（実行）権が必要</b>である。ディレクトリのxは「中に入れる」という意味であり、これが無いと中のファイルの権限は見てもらえない。<code>ls -ld /home/luanti /home/luanti/server</code> のように上の階層から順に確かめるとよい。</p>
+        <span class="q"><code>chmod -R</code> でまとめて直したら、シェルスクリプトが動かなくなった</span>
+        <p class="a">再帰的な指定は、ディレクトリとファイルを区別しない。<code>chmod -R 644</code> ならディレクトリからxが消えて中に入れなくなり、<code>chmod -R 755</code> なら全ファイルが実行可能になる。上の<code>find</code>と組み合わせる方法で直せる。</p>
+      </div>
+
+      <h3 id="c5-add-3-c">umaskと、新しく作られるファイルの権限</h3>
+      <p>新しく作ったファイルが <code>644</code>、ディレクトリが <code>755</code> になるのはなぜか。これはumaskという設定が「初期値から取り除く権限」を決めているためである。ファイルは <code>666</code>、ディレクトリは <code>777</code> を出発点とし、そこからumaskの分を引いた値になる。</p>
+      <div class="code" data-ctx="server">
+        <div class="code-head"><span class="code-title">umaskの確認</span></div>
+<pre><code><span class="in">umask <span class="c"># 現在の値（数値）</span></span>
+<span class="out">0022</span>
+<span class="in">umask -S <span class="c"># 記号で分かりやすく</span></span>
+<span class="out">u=rwx,g=rx,o=rx</span>
+<span class="in">touch /tmp/umask-test.txt</span>
+<span class="in">ls -l /tmp/umask-test.txt <span class="c"># 666 から 022 を引いて 644 になる</span></span>
+<span class="out">-rw-r--r-- 1 taro taro 0 May 12 14:50 /tmp/umask-test.txt</span>
+<span class="in">rm /tmp/umask-test.txt</span></code></pre>
+      </div>
+      <p>標準の <code>0022</code> は「グループと他人から書き込み権を取り除く」設定である。より厳しくしたい場合は <code>umask 0077</code>（自分以外は何もできない）を使う。<code>~/.bashrc</code> に書けばログインのたびに適用されるが、<b>umaskは「これから作るファイル」にしか効かない</b>点に注意する。既存のファイルは <code>chmod</code> で直す必要がある。</p>
+      <dl class="term"><dt>umask<small>user file creation mask</small></dt><dd>これから作られるファイルやディレクトリから取り除く権限を決める設定。標準の <code>0022</code> では、ファイルは <code>644</code>、ディレクトリは <code>755</code> で作られる。既存のファイルには影響しない。</dd></dl>
+
+      <h3 id="c5-add-3-d">setuid：passwdコマンドが動く仕組み</h3>
+      <p>一般ユーザが <code>passwd</code> でパスワードを変えられるのは、よく考えると不思議である。パスワードの実体はrootしか読めない <code>/etc/shadow</code> にあるはずなのに、なぜ書き換えられるのか。答えがsetuidという特殊な権限である。</p>
+      <div class="code" data-ctx="server">
+        <div class="code-head"><span class="code-title">setuidが付いたコマンドを見る</span></div>
+<pre><code><span class="in">ls -l /usr/bin/passwd</span>
+<span class="out">-rwsr-xr-x 1 root root 63960 Feb  7  2023 /usr/bin/passwd</span>
+<span class="in">ls -l /etc/shadow</span>
+<span class="out">-rw-r----- 1 root shadow 1042 May 12 09:12 /etc/shadow</span>
+<span class="in">find /usr/bin -perm -4000 -type f <span class="c"># setuidが付いたコマンドを探す</span></span>
+<span class="out">/usr/bin/passwd</span>
+<span class="out">/usr/bin/sudo</span>
+<span class="out">/usr/bin/su</span></code></pre>
+      </div>
+      <p>所有者の実行権の位置が <code>x</code> ではなく <code>s</code> になっているのがsetuidの印である。これは「このプログラムを実行している間だけ、実行者ではなく<b>ファイルの所有者（この場合root）の権限で動く</b>」という意味である。だから <code>passwd</code> は一般ユーザが起動しても <code>/etc/shadow</code> を書き換えられる。<code>sudo</code> 自身がrootの権限を持てるのも、同じ仕組みによる。</p>
+      <p>便利な反面、setuidの付いたプログラムに欠陥があれば、そこから誰でもroot権限を得られてしまう。<b>自作のスクリプトにsetuidを付けるのは、原則として避けるべきである</b>（そもそもLinuxのシェルスクリプトではsetuidは無視される）。必要な権限の委譲は、5-5節で見たsudoersで行うのが正しい方法である。</p>
+      <dl class="term"><dt>setuid<small>setuid bit / rwsr-xr-x</small></dt><dd>実行中だけファイルの所有者の権限で動くようにする特殊な権限。<code>ls -l</code> で <code>s</code> と表示される。<code>passwd</code> や <code>sudo</code> がこれにより動いている。</dd></dl>
+
+      <h2 id="c5-add-4"><span class="no">5-7</span>サーバセキュリティの基本原則</h2>
+      <p>権限の話は、そのままサーバのセキュリティの話につながる。この節は実習の範囲を越えた一般的な基礎であり、学内ネットワークの中だけで動く実習サーバには必要のない設定も含む。しかし<b>いずれ自分のサーバをインターネットに公開するときには、ここに書いたことが最低限の出発点になる</b>。考え方を先に知っておいてほしい。</p>
+
+      <h3 id="c5-add-4-a">5つの原則</h3>
+      <ol>
+        <li><b>最小権限</b>。ユーザにもプログラムにも、目的に必要な権限だけを与える。実習でluantiユーザを作ったのがこれにあたる。</li>
+        <li><b>攻撃面を小さくする</b>。使わないソフトを入れない、使わないサービスを止める、開ける必要のないポートを開けない。攻撃者が触れる場所そのものを減らすのがいちばん確実である。</li>
+        <li><b>更新を当て続ける</b>。侵入の多くは、既に修正が出ている欠陥を放置したサーバが狙われて起きる。</li>
+        <li><b>認証を強くする</b>。推測できるパスワードを使わない。可能なら公開鍵認証に切り替え、パスワードログインを止める。</li>
+        <li><b>多層防御</b>。1つの対策が破られても次で止まるように、独立した対策を重ねる。</li>
+      </ol>
+      <dl class="term"><dt>攻撃面<small>attack surface</small></dt><dd>外部から触れられる入口の総量。動いているサービス、開いているポート、インストールされたソフトの数だけ攻撃面は広がる。使わないものを減らすことが、そのまま防御になる。</dd></dl>
+      <dl class="term"><dt>多層防御<small>defense in depth</small></dt><dd>性質の異なる対策を重ねて、1つ破られても被害が広がらないようにする考え方。ファイアウォール、公開鍵認証、専用ユーザ、fail2banはそれぞれ別の層にあたる。</dd></dl>
+
+      <h3 id="c5-add-4-b">更新を当てる</h3>
+      <p>Debian系では、更新は <code>apt</code> で行う。<code>apt update</code> は「パッケージ一覧を最新にする」だけで、実際の更新は <code>apt upgrade</code> である点に注意したい（<a href="ch01.html">第1章</a>）。</p>
+      <div class="code" data-ctx="server">
+        <div class="code-head"><span class="code-title">更新の確認と適用</span></div>
+<pre><code><span class="in">sudo apt update <span class="c"># パッケージ一覧の更新</span></span>
+<span class="in">apt list --upgradable <span class="c"># 更新できるものを確認する</span></span>
+<span class="out">openssh-server/stable 1:9.2p1-2+deb12u3 arm64 [upgradable from: 1:9.2p1-2+deb12u2]</span>
+<span class="in">sudo apt upgrade <span class="c"># 実際に更新する</span></span>
+<span class="in">sudo apt autoremove <span class="c"># 不要になった依存パッケージを整理する</span></span></code></pre>
+      </div>
+      <p>更新の適用にはサービスの再起動が伴うことがあるため、学生や利用者がいる時間帯を避けるのが運用の常識である。自動で更新を当てる <code>unattended-upgrades</code> という仕組みもあり、個人のサーバでは有効にしておく価値がある。ただし<b>自動更新は「気付かないうちにサービスが再起動される」ことを意味する</b>ので、何が自動で更新されるのかを理解したうえで使う。</p>
+
+      <h3 id="c5-add-4-c">SSHを固める</h3>
+      <p>インターネットに公開したサーバのSSHポートには、数分と経たずに世界中から総当たりのログイン試行が来る。対策の基本は「パスワードで入れないようにする」ことである。<a href="../day3.html#s3-7">第3回 3-7</a>で公開鍵認証に切り替えたのは、その第一歩である。</p>
+      <dl class="term"><dt>公開鍵認証<small>public key authentication</small></dt><dd>手元に秘密鍵、サーバに公開鍵を置き、パスワードを送らずに本人確認を行う方式。秘密鍵はパーミッション <code>600</code> で厳重に守り、絶対に他人に渡さない。</dd></dl>
+      <div class="code file" data-ctx="file" data-cwd="/etc/ssh/sshd_config.d/10-hardening.conf">
+        <div class="code-head"><span class="code-title">/etc/ssh/sshd_config.d/10-hardening.conf（公開する場合の例）</span></div>
+<pre><code><span class="in"># rootで直接ログインさせない</span>
+<span class="in">PermitRootLogin no</span>
+<span class="in"># 公開鍵認証だけを許可し、パスワードログインを止める</span>
+<span class="in">PubkeyAuthentication yes</span>
+<span class="in">PasswordAuthentication no</span>
+<span class="in"># 認証に失敗し続ける接続を早めに切る</span>
+<span class="in">MaxAuthTries 3</span></code></pre>
+      </div>
+      <p>Debian 12 の <code>/etc/ssh/sshd_config</code> は先頭付近に <code>Include /etc/ssh/sshd_config.d/*.conf</code> という行を持つ。そのため、本体を書き換えるより、上のように <code>/etc/ssh/sshd_config.d/</code> に設定ファイルを1つ置くほうが分かりやすく、元に戻すのもファイルを消すだけで済む。</p>
+      <div class="code" data-ctx="server">
+        <div class="code-head"><span class="code-title">設定の検査と反映</span></div>
+<pre><code><span class="in">sudo sshd -t <span class="c"># 書式の検査（何も出なければ正常）</span></span>
+<span class="in">sudo systemctl restart ssh <span class="c"># 設定の反映</span></span>
+<span class="in">sudo systemctl status ssh <span class="c"># active (running) を確認</span></span></code></pre>
+      </div>
+      <div class="call warn"><span class="ct">注意</span><p><code>PasswordAuthentication no</code> を入れる前に、<b>必ず公開鍵でログインできることを確かめる</b>こと。鍵の設置に失敗したままこの設定を反映すると、誰もSSHで入れなくなる。手順は、（1）現在のSSH接続はつないだままにする、（2）別のターミナルから新しく接続して鍵で入れることを確かめる、（3）確認できてから元の接続を閉じる、である。締め出された場合の復旧手段は、Raspberry Pi にモニタとキーボードを直接つなぐことだけである。</p></div>
+
+      <h3 id="c5-add-4-d">fail2banという層を足す</h3>
+      <p>公開鍵認証に切り替えても、ログイン試行そのものは来続ける。fail2banは、ログを監視して「短時間に何度も認証に失敗したIPアドレス」を一定時間ファイアウォールで遮断するソフトである。攻撃を根本から防ぐものではないが、ログの量を減らし、総当たりを現実的でなくする効果がある。多層防御の一層として広く使われている。</p>
+      <div class="code" data-ctx="server">
+        <div class="code-head"><span class="code-title">fail2banの導入と確認</span></div>
+<pre><code><span class="in">sudo apt install -y fail2ban</span>
+<span class="in">sudo systemctl status fail2ban <span class="c"># active (running) を確認</span></span>
+<span class="in">sudo fail2ban-client status <span class="c"># 有効なjail（監視単位）の一覧</span></span>
+<span class="in">sudo fail2ban-client status sshd <span class="c"># SSHの監視状況</span></span></code></pre>
+      </div>
+      <p class="why"><b>出力の読み方：</b>失敗の回数と、いま遮断しているIPアドレスの数を見る。</p>
+      <div class="code" data-ctx="server">
+        <div class="code-head"><span class="code-title">fail2ban-client status sshd の出力例</span></div>
+<pre><code><span class="in">sudo fail2ban-client status sshd</span>
+<span class="out">Status for the jail: sshd</span>
+<span class="out">|- Filter</span>
+<span class="out">|  |- Currently failed: 1</span>
+<span class="out">|  |- Total failed:     37</span>
+<span class="out">|  `- Journal matches:  _SYSTEMD_UNIT=ssh.service + _COMM=sshd</span>
+<span class="out">`- Actions</span>
+<span class="out">   |- Currently banned: 2</span>
+<span class="out">   |- Total banned:     5</span>
+<span class="out">   `- Banned IP list:   203.0.113.45 198.51.100.7</span></code></pre>
+      </div>
+      <p><code>Currently banned</code> がいま遮断中のIPアドレスの数、<code>Total failed</code> が起動以来の認証失敗の総数である。<b>この数字が日々増え続けるのが、インターネットに公開されたサーバの日常である</b>と知っておくとよい。Debian系では導入しただけでSSHの監視が有効になるが、環境によってはログの取得方法（backend）の設定が必要になることがあるので、<code>fail2ban-client status</code> にjailが表示されるかを必ず確かめる。</p>
+      <dl class="term"><dt>fail2ban<small>fail2ban-client</small></dt><dd>認証の失敗ログを監視し、短時間に失敗を繰り返すIPアドレスを一時的に遮断するソフト。総当たり攻撃を現実的でなくする、多層防御の一層である。</dd></dl>
+
+      <h3 id="c5-add-4-e">公開してはいけないもの</h3>
+      <p>技術記事やリポジトリに作業の記録を載せるときは、次のものが混ざっていないかを必ず確かめる。<a href="../day6.html#s6-4">第6回</a>で記事を公開する前のチェックにも使ってほしい。</p>
+      <ul>
+        <li>パスワード、APIキー、トークンの類（履歴 <code>~/.bash_history</code> に残っていることもある）</li>
+        <li>SSHの秘密鍵（<code>id_ed25519</code> など。<b>公開鍵 <code>.pub</code> と取り違えないこと</b>）</li>
+        <li>グローバルIPアドレス、学内ネットワークの構成、機器の設置場所が分かる写真</li>
+        <li>学籍番号や氏名など、他人の個人情報</li>
+        <li><code>/etc/shadow</code> や設定ファイルの中身をそのまま貼ったもの</li>
+      </ul>
+      <div class="call myth"><span class="ct">よくある誤解・トラブル</span>
+        <span class="q">学内ネットワークの中だから、セキュリティは気にしなくてよい</span>
+        <p class="a">学内も多数の端末が繋がる立派なネットワークであり、感染した端末が内部から他を探すこともある。また、実習で身につけた手癖は、そのまま公開サーバでも出る。<b>実習の環境こそ、正しい作法を練習する場である</b>と考えたい。</p>
+        <span class="q">ファイアウォールを入れたから、もう安全である</span>
+        <p class="a">ファイアウォールは「開けたポートは通す」ものである。実習では22番（SSH）と30000番（Luanti）を開けており、その先で動くソフトに欠陥があれば通用しない。だから更新を当て、専用ユーザで動かし、認証を強くする層を重ねる（多層防御）。ファイアウォールの操作は<a href="ch07.html">第7章</a>で扱う。</p>
+      </div>
+      <div class="mini"><span class="ct">ここまでの確認</span><ul>
+        <li><code>id luanti</code> の出力に <code>sudo</code> グループが含まれていないことを説明できる</li>
+        <li><code>sudo -u luanti <var>コマンド</var></code> で、そのユーザが読み書きできるかを試せる</li>
+        <li><code>/etc/sudoers</code> は <code>visudo</code> 以外で編集してはいけない理由を言える</li>
+        <li><code>chmod -R 777</code> が解決策にならない理由を、自分の言葉で説明できる</li>
+      </ul></div>
 
       <nav class="pager" aria-label="前後のページ">
         <a class="prev" href="ch04.html"><span class="pl">前へ</span><span class="pt">テキストエディタ（vi / Vim）</span></a>

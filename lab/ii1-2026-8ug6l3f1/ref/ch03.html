@@ -38,18 +38,57 @@
     </aside>
     <article class="doc">
 
+      <div class="chapintro">
+        <div class="box"><span class="ct">この章で分かること</span><ul>
+          <li>ターミナルとシェルの役割の違い、シェルがEnterのあとに何をしているか</li>
+          <li>PATHの仕組みと、「command not found」の3つの原因</li>
+          <li>標準入出力・リダイレクト・パイプという「配管」の考え方</li>
+          <li><code>sort</code>・<code>uniq -c</code>・<code>cut</code>・<code>xargs</code>を組み合わせた集計の型</li>
+        </ul></div>
+        <div class="box use"><span class="ct">実習のどこで使うか</span><ul>
+          <li><a href="../day1.html#s1-5">第1回 1-5 基本コマンド</a></li>
+          <li><a href="../day1.html#s1-6">第1回 1-6 演習1：基本コマンドによるファイル探索</a></li>
+          <li><a href="../day3.html#s3-6">第3回 3-6 演習：ログ解析</a></li>
+          <li><a href="../day4.html#s4-2">第4回 4-2 シェルスクリプト（backup.sh）</a></li>
+        </ul></div>
+      </div>
+
       <h2 id="c3-1"><span class="no">3-1</span>CLIとGUI</h2>
-      <p>コンピュータの操作方法には、マウスで画面上の部品を操作するGUI（Graphical User Interface）と、文字でコマンドを打ち込むCLI（Command Line Interface）の2つの様式がある。日常の利用にはGUIが便利だが、サーバ管理の世界では今もCLIが主役である。理由は3つある。第一に、操作を正確に記録・伝達できる。「この辺をこうクリックして……」ではなく、コマンドをそのまま書き写せば、誰でも寸分違わず同じ操作を再現できる（本資料や指導書のコード枠がまさにそれである）。第二に、自動化できる。CLIの操作はそのままシェルスクリプトやcronに載せられるが、GUIのクリック操作の自動化は難しい。第三に、軽い。GUIは描画のために多くのメモリとCPUを消費する。実習で使ったRaspberry Pi OS「Lite」はGUIを持たない構成であり、節約した資源をすべてLuantiサーバに回せている。</p>
+      <p>コンピュータの操作方法には、マウスで画面上の部品を操作するGUI（Graphical User Interface）と、文字でコマンドを打ち込むCLI（Command Line Interface）の2つの様式がある。日常の利用にはGUIが便利だが、サーバ管理の世界では今もCLIが主役である。理由は3つある。第一に、操作を正確に記録・伝達できる。「この辺をこうクリックして……」ではなく、コマンドをそのまま書き写せば、誰でも寸分違わず同じ操作を再現できる（本資料や指導書のコード枠がまさにそれである）。第二に、自動化できる。CLIの操作はそのままシェルスクリプトやcronに載せられるが、GUIのクリック操作の自動化は難しい。</p>
+      <p>第三に、軽い。GUIは描画のために多くのメモリとCPUを消費する。実習で使ったRaspberry Pi OS「Lite」はGUIを持たない構成であり、節約した資源をすべてLuantiサーバに回せている。</p>
       <p>CLIの入口となる画面をターミナル（端末）と呼ぶ。そしてターミナルの向こう側で、入力されたコマンドを解釈・実行しているプログラムがシェルである。両者はセットで語られることが多いが、ターミナルは「窓口」、シェルは「通訳」と役割が異なる。</p>
 
+      <dl class="term"><dt>ターミナル<small>terminal</small></dt><dd>文字を入出力するための窓口となる画面。実習でBYODから<code>ssh</code>して開くのも、この窓口である（<a href="../day1.html#s1-3">第1回 1-3</a>）。</dd></dl>
+      <dl class="term"><dt>シェル<small>shell / bash</small></dt><dd>入力されたコマンドを解釈し、カーネルに実行を依頼するプログラム。人間とカーネルの間に立つ通訳にあたる。実習の標準はbashである。</dd></dl>
+
       <h2 id="c3-2"><span class="no">3-2</span>シェルは何をしているのか</h2>
-      <p>ターミナルに <code>ls -l /home</code> と入力して<kbd>Enter</kbd>を押したとき、シェル（bash）は次の仕事をしている。①入力を単語に分解する（コマンド名 <code>ls</code>、オプション <code>-l</code>、引数 <code>/home</code>）。②コマンドの実体を探す。③見つけたプログラムを実行するようカーネルに依頼する。④プログラムの出力を受け取って画面に流す。⑤終了を検知して次の入力を待つ。つまりシェルは「人間とカーネルの間に立つ通訳」である。GUIのファイルマネージャと違い、操作を文字で正確に表現できるため、記録・再現・自動化（シェルスクリプト）が容易であることがCLI最大の利点である。</p>
+      <p>ターミナルに <code>ls -l /home</code> と入力して<kbd>Enter</kbd>を押したとき、シェル（bash）は次の仕事をしている。</p>
+      <ol>
+        <li>入力を単語に分解する（コマンド名 <code>ls</code>、オプション <code>-l</code>、引数 <code>/home</code>）。</li>
+        <li>コマンドの実体を探す。</li>
+        <li>見つけたプログラムを実行するようカーネルに依頼する。</li>
+        <li>プログラムの出力を受け取って画面に流す。</li>
+        <li>終了を検知して次の入力を待つ。</li>
+      </ol>
+      <p>つまりシェルは「人間とカーネルの間に立つ通訳」である。GUIのファイルマネージャと違い、操作を文字で正確に表現できるため、<b>記録・再現・自動化（シェルスクリプト）が容易である</b>ことがCLI最大の利点である。</p>
 
       <h2 id="c3-3"><span class="no">3-3</span>コマンドはどこにあるのか：PATHの仕組み</h2>
-      <p><code>ls</code> と打つだけで <code>/usr/bin/ls</code> が実行されるのは、シェルが環境変数PATHに列挙されたディレクトリを先頭から順に探すからである。<code>echo $PATH</code> を実行すると <code>/usr/local/bin:/usr/bin:/bin</code> のようなコロン区切りのリストが表示される。「command not found」というエラーは、①コマンド名の打ち間違い、②未インストール、③インストール先がPATHに入っていない、のいずれかを意味する。<code>which コマンド名</code> で実体の場所を確認できる。cronに登録するコマンドを絶対パスで書くのも、cronの環境ではPATHがほとんど設定されていないからである（第8章）。</p>
+      <p><code>ls</code> と打つだけで <code>/usr/bin/ls</code> が実行されるのは、シェルが環境変数PATHに列挙されたディレクトリを先頭から順に探すからである。<code>echo $PATH</code> を実行すると <code>/usr/local/bin:/usr/bin:/bin</code> のようなコロン区切りのリストが表示される。</p>
+      <p>「command not found」というエラーは、①コマンド名の打ち間違い、②未インストール、③インストール先がPATHに入っていない、のいずれかを意味する。<code>which コマンド名</code> で実体の場所を確認できる。cronに登録するコマンドを絶対パスで書くのも、cronの環境ではPATHがほとんど設定されていないからである（<a href="ch08.html#c8-3">第8章 8-3</a>）。</p>
+
+      <dl class="term"><dt>PATH<small>環境変数</small></dt><dd>シェルがコマンドの実体を探すディレクトリのリスト。コロン区切りで、先頭から順に探される。<code>echo $PATH</code> で内容、<code>which ls</code> で実際に選ばれる実体を確認できる。</dd></dl>
+
+      <div class="call myth"><span class="ct">よくある誤解・トラブル</span>
+        <span class="q">コード枠の <code>$</code> も一緒にコピーして貼り付ける</span>
+        <p class="a"><code>$</code> はシェルが表示しているプロンプト（入力待ちの目印）であって、打ち込む文字ではない。本サイトのコード枠は<code>$</code>を含まない形でコピーされるので、そのまま貼り付けてよい。</p>
+        <span class="q">command not found が出たら、そのソフトが入っていないという意味だ</span>
+        <p class="a">原因は3つある。打ち間違い、未インストール、PATHに入っていない場所にある、のいずれかである。まず綴りを見直し、次に <code>which コマンド名</code> で実体を探す。</p>
+      </div>
 
       <h2 id="c3-4"><span class="no">3-4</span>環境変数と設定ファイル</h2>
       <p>シェルの動作を調整する設定値は環境変数として保持される。値の確認は <code>echo $変数名</code>、一時的な変更は <code>export 変数名=値</code> で行う。<code>export</code>による変更はそのシェルを閉じると消えるため、永続化したい設定は <code>~/.bashrc</code>（シェル起動のたびに読み込まれる）に書き込む。書き込んだ直後は <code>source ~/.bashrc</code> で再読み込みすると反映される。</p>
+
+      <dl class="term"><dt>環境変数<small>environment variable</small></dt><dd>シェルとその配下のプログラムが参照する設定値。<code>echo $変数名</code> で確認し、<code>export 変数名=値</code> で変更する。変更はそのシェルを閉じると消える。</dd></dl>
 
       <table class="tbl">
         <thead><tr><th>環境変数</th><th>意味</th></tr></thead>
@@ -67,6 +106,8 @@
       <h2 id="c3-5"><span class="no">3-5</span>標準入出力とリダイレクト</h2>
       <p>すべてのコマンドは、3本の「配管」を持って生まれる。標準入力（stdin、番号0）、標準出力（stdout、番号1）、標準エラー出力（stderr、番号2）である。通常はいずれも端末につながっているが、この配管をつなぎ替えるのがリダイレクトとパイプである。エラーメッセージが標準出力と別の配管（stderr）になっているのがポイントで、「正常な結果はファイルへ、エラーは画面へ」といった振り分けができる。</p>
 
+      <dl class="term"><dt>標準エラー出力<small>stderr（番号2）</small></dt><dd>エラーメッセージが流れる出口。標準出力（番号1）とは別の配管なので、<code>&gt;</code> でファイルに送っただけではエラーは記録されない。両方まとめたいときは <code>2&gt;&amp;1</code> を付ける。</dd></dl>
+
       <div class="code">
         <div class="code-head"><span class="code-title">リダイレクトの書式</span></div>
 <pre><code><span class="in">ls &gt; list.txt <span class="c"># 標準出力をファイルへ（上書き）</span></span>
@@ -76,11 +117,20 @@
 <span class="in">wc -l &lt; list.txt <span class="c"># ファイルを標準入力として与える</span></span></code></pre>
       </div>
 
-      <p>実習の第5回でcronに書いた「<code>&gt; …/status.txt 2&gt;&amp;1</code>」は、「正常な出力もエラーも同じファイルに書き出す」という意味だったことが、ここまで読むと分かるはずである。</p>
+      <p>実習の<a href="../day5.html#s5-4-a">第5回</a>でcronに書いた「<code>&gt; …/status.txt 2&gt;&amp;1</code>」は、「正常な出力もエラーも同じファイルに書き出す」という意味だったことが、ここまで読むと分かるはずである。</p>
+
+      <div class="call myth"><span class="ct">よくある誤解・トラブル</span>
+        <span class="q"><code>&gt;</code> でファイルに保存すれば、エラーも残る</span>
+        <p class="a"><code>&gt;</code> が拾うのは標準出力だけで、エラーは画面に出たまま消える。ログとして残したいときは <code>2&gt;&amp;1</code> を付けて標準エラー出力も同じ先へ送る。</p>
+        <span class="q"><code>&gt;</code> を何度か実行して、結果を溜めていく</span>
+        <p class="a"><code>&gt;</code> は毎回<b>上書き</b>である。追記したいときは <code>&gt;&gt;</code> を使う。大事なファイルに <code>&gt;</code> を向けると中身が一瞬で空になるので、書き先の名前は打つ前に確認する。</p>
+      </div>
 
       <figure><img src="../img/s05.png" alt="図3-1　パイプとリダイレクトの仕組み" width="1800" height="560"><figcaption>図3-1　パイプとリダイレクトの仕組み</figcaption></figure>
 
       <p>パイプ「<code>|</code>」は、あるコマンドの標準出力を次のコマンドの標準入力に直結する。<code>ls | wc -l</code>、<code>grep xxx log.txt | sort | uniq -c</code> のように、小さな道具を組み合わせて複雑な処理を組み立てるのがUNIX流である。1つのコマンドの出力を「次の道具の材料」と考える発想に慣れると、コマンドラインの応用力が一気に上がる。</p>
+
+      <dl class="term"><dt>パイプ<small>|</small></dt><dd>あるコマンドの標準出力を、次のコマンドの標準入力に直結する記号。<code>ls | wc -l</code> のように、小さな道具をつないで複雑な処理を組み立てられる。</dd></dl>
 
       <h2 id="c3-6"><span class="no">3-6</span>その他の便利機能</h2>
       <ul>
@@ -90,7 +140,7 @@
       </ul>
 
       <h2 id="c3-7"><span class="no">3-7</span>パイプの道具箱（sort・uniq・cut・xargs）</h2>
-      <p>パイプ（3.5節）の真価は、小さな道具の組み合わせで集計や一括処理を組み立てられることにある。実習では、<code>backup.sh</code>の世代削除（第4回）や「プレイヤーごとの入室回数ランキング」（第3回の発展課題）がその実例である。部品となる道具を整理する。</p>
+      <p>パイプ（<a href="#c3-5">3-5節</a>）の真価は、小さな道具の組み合わせで集計や一括処理を組み立てられることにある。実習では、<code>backup.sh</code>の世代削除（<a href="../day4.html#s4-2">第4回 4-2</a>）や「プレイヤーごとの入室回数ランキング」（<a href="../day3.html#s3-extra">第3回の発展課題</a>）がその実例である。部品となる道具を整理する。</p>
 
       <div class="scroll">
       <table class="tbl">
@@ -112,7 +162,393 @@
 <span class="in">cut -d: -f1 /etc/passwd | sort | head <span class="c"># ユーザ名の一覧</span></span></code></pre>
       </div>
 
-      <div class="call note"><span class="ct">Note</span><p>※ 集計の定石は「絞り込む（<code>grep</code>）→ 列を取り出す（<code>cut</code>）→ 並べる（<code>sort</code>）→ 数える（<code>uniq -c</code>）→ 多い順に並べ直す（<code>sort -nr</code>）」。この型を覚えると、ログ解析（第3回）の応用範囲が一気に広がる。</p></div>
+      <div class="call note"><span class="ct">Note</span><p>※ 集計の定石は「絞り込む（<code>grep</code>）→ 列を取り出す（<code>cut</code>）→ 並べる（<code>sort</code>）→ 数える（<code>uniq -c</code>）→ 多い順に並べ直す（<code>sort -nr</code>）」。この型を覚えると、ログ解析（<a href="../day3.html#s3-6">第3回 3-6</a>）の応用範囲が一気に広がる。</p></div>
+
+      <div class="call myth"><span class="ct">よくある誤解・トラブル</span>
+        <span class="q"><code>uniq -c</code> を使ったのに、同じ名前が何度も別々に数えられる</span>
+        <p class="a"><code>uniq</code> がまとめるのは<b>連続した</b>重複行だけである。数える前に <code>sort</code> で同じ行を隣り合わせておく必要がある。</p>
+        <span class="q"><code>ls ... | xargs rm</code> は、対象がなければ何も起きない</span>
+        <p class="a">入力が空でも <code>rm</code> は起動してしまうことがある。<code>xargs -r</code> を付けると、入力が空のときはコマンド自体を実行しない。<code>backup.sh</code>の世代削除でこの書き方をしているのはそのためである。</p>
+      </div>
+
+      <h2 id="c3-add-1"><span class="no">3-8</span>bashを速く正確に使う</h2>
+      <p>サーバ管理では、同じコマンドを何度も打ち、長いパスを正確に入力する場面が続く。打鍵を減らすことは、単に楽をするためではなく、打ち間違いによる事故を減らすためである。ここでは履歴・別名・クォート・展開・終了コードという、bashを安全に速く使うための5つの仕組みを整理する。</p>
+
+      <h3 id="c3-add-1-a">履歴を使い回す</h3>
+      <p>bashは実行したコマンドを記憶しており、<kbd>↑</kbd>で1つずつ遡れる。しかし100回前のコマンドを<kbd>↑</kbd>で探すのは現実的でない。実用になるのは<kbd>Ctrl</kbd>+<kbd>R</kbd>による検索で、押したあとに一部の文字を打つと、それを含む直近のコマンドが呼び出される。さらに<kbd>Ctrl</kbd>+<kbd>R</kbd>を押すと、より古い一致へ移動する。<kbd>Enter</kbd>で実行、<kbd>Esc</kbd>または<kbd>→</kbd>で編集に移れる。</p>
+
+      <div class="code" data-ctx="server">
+        <div class="code-head"><span class="code-title">履歴の使い方</span></div>
+<pre><code><span class="in">history <span class="c"># 履歴を番号付きで一覧</span></span>
+<span class="in">history | grep systemctl <span class="c"># 履歴から探す</span></span>
+<span class="in">!! <span class="c"># 直前のコマンドをもう一度</span></span>
+<span class="in">sudo !! <span class="c"># 直前のコマンドをsudoを付けてやり直す</span></span>
+<span class="in">ls -l ~/server/luanti.conf</span>
+<span class="in">vi !$ <span class="c"># 直前のコマンドの最後の引数を使い回す</span></span>
+<span class="in">!123 <span class="c"># 履歴番号123のコマンドを実行</span></span></code></pre>
+      </div>
+
+      <div class="scroll">
+      <table class="tbl">
+        <thead><tr><th>操作</th><th>意味</th><th>例</th></tr></thead>
+        <tbody>
+          <tr><td><kbd>Ctrl</kbd>+<kbd>R</kbd></td><td>履歴を後ろ向きに検索する。繰り返し押すと次の一致へ</td><td>打ってから <code>systemctl</code></td></tr>
+          <tr><td><code>!!</code></td><td>直前のコマンド全体</td><td><code>sudo !!</code></td></tr>
+          <tr><td><code>!$</code></td><td>直前のコマンドの最後の引数</td><td><code>vi !$</code></td></tr>
+          <tr><td><code>!文字列</code></td><td>その文字列で始まる直近のコマンド</td><td><code>!systemctl</code></td></tr>
+          <tr><td><kbd>Ctrl</kbd>+<kbd>A</kbd> / <kbd>Ctrl</kbd>+<kbd>E</kbd></td><td>行頭へ／行末へ移動する</td><td>長いコマンドの修正時</td></tr>
+          <tr><td><kbd>Ctrl</kbd>+<kbd>U</kbd> / <kbd>Ctrl</kbd>+<kbd>K</kbd></td><td>カーソルより前を／後ろを消す</td><td>打ち直すとき</td></tr>
+        </tbody>
+      </table>
+      </div>
+
+      <div class="call warn"><span class="ct">注意</span><p><code>sudo !!</code>は便利だが、<b>直前のコマンドが何だったかを確認せずに使ってはいけない</b>。<code>rm</code>を含むコマンドが権限不足で失敗したあとに<code>sudo !!</code>を打つと、今度は本当に消える。危険なコマンドのやり直しは<kbd>↑</kbd>で呼び戻し、内容を目で読んでから<kbd>Enter</kbd>を押すこと。</p></div>
+
+      <h3 id="c3-add-1-b">alias と ~/.bashrc</h3>
+      <p>よく使う長いコマンドには別名（alias）を付けられる。ただし<code>alias</code>をその場で実行しても、そのシェルを閉じれば消える（<a href="#c3-4">3-4節</a>）。恒久的にしたいなら<code>~/.bashrc</code>に書き足す。<code>~/.bashrc</code>はシェルが起動するたびに読み込まれる設定ファイルで、環境変数もここで設定する。</p>
+
+      <div class="code file" data-ctx="file">
+        <div class="code-head"><span class="code-title">~/.bashrc に書き足す例（末尾に追記）</span></div>
+<pre><code><span class="in"># 自分用の設定（ここから）</span>
+<span class="in">alias ll='ls -alF'</span>
+<span class="in">alias la='ls -A'</span>
+<span class="in">alias lt='ls -lt'</span>
+<span class="in">alias df='df -h'</span>
+<span class="in">alias jl='journalctl -u luanti -n 50 --no-pager'</span>
+<span class="in">export HISTSIZE=5000</span>
+<span class="in">export HISTCONTROL=ignoredups</span>
+<span class="in"># 自分用の設定（ここまで）</span></code></pre>
+      </div>
+
+      <div class="code" data-ctx="server">
+        <div class="code-head"><span class="code-title">設定の反映と確認</span></div>
+<pre><code><span class="in">cp ~/.bashrc ~/.bashrc.bak <span class="c"># 編集前に必ず控えを取る</span></span>
+<span class="in">vi ~/.bashrc</span>
+<span class="in">source ~/.bashrc <span class="c"># 開いているシェルに反映させる</span></span>
+<span class="in">alias <span class="c"># 現在有効な別名の一覧</span></span>
+<span class="in">type ll <span class="c"># 別名が効いているかの確認</span></span>
+<span class="in">\ls <span class="c"># 別名を一時的に無視して本来のコマンドを実行</span></span></code></pre>
+      </div>
+
+      <div class="call myth"><span class="ct">よくある誤解・トラブル</span>
+        <span class="q"><code>~/.bashrc</code> に書いたのに、別名が効かない</span>
+        <p class="a">編集しただけでは、いま開いているシェルには読み込まれない。<code>source ~/.bashrc</code>を実行するか、いったんログアウトして入り直す。</p>
+        <span class="q">危険を防ぐため <code>alias rm='rm -i'</code> にしておけば安心だ</span>
+        <p class="a">自分の環境では確認が出るようになるが、スクリプトの中や他のユーザ、別のサーバでは効かない。別名に頼った安全は、環境が変わった瞬間に失われる。確認する習慣そのものを身につけるほうが確実である。</p>
+      </div>
+
+      <h3 id="c3-add-1-c">クォートと展開</h3>
+      <p>シェルは<kbd>Enter</kbd>の直後、コマンドを実行する前に文字列を書き換えている（<a href="#c3-2">3-2節</a>）。この書き換えを展開という。どこまで展開させ、どこから文字どおりに扱わせるかを決めるのがクォートである。3種類の使い分けを覚えれば、空白を含むファイル名や記号で失敗しなくなる。</p>
+
+      <div class="scroll">
+      <table class="tbl">
+        <thead><tr><th>書き方</th><th>意味</th><th>例と結果</th></tr></thead>
+        <tbody>
+          <tr><td><code>'シングルクォート'</code></td><td>中身を完全に文字どおり扱う。展開は一切されない</td><td><code>echo '$HOME'</code> → <code>$HOME</code></td></tr>
+          <tr><td><code>"ダブルクォート"</code></td><td>空白はまとめるが、<code>$変数</code>とコマンド置換は展開される</td><td><code>echo "$HOME"</code> → <code>/home/taro</code></td></tr>
+          <tr><td><code>\</code>（バックスラッシュ）</td><td>直後の1文字だけを文字どおり扱う</td><td><code>echo \$HOME</code> → <code>$HOME</code></td></tr>
+          <tr><td><code>*</code> <code>?</code></td><td>ファイル名に展開される（該当が無ければそのまま残る）</td><td><code>ls *.conf</code></td></tr>
+          <tr><td><code>{a,b}</code> <code>{1..5}</code></td><td>括弧展開。ファイル名の有無に関係なく文字列を作る</td><td><code>echo file{1..3}</code> → <code>file1 file2 file3</code></td></tr>
+          <tr><td><code>$(コマンド)</code></td><td>コマンドの出力に置き換わる</td><td><code>echo $(date +%Y%m%d)</code></td></tr>
+        </tbody>
+      </table>
+      </div>
+
+      <dl class="term"><dt>クォート<small>quoting</small></dt><dd>シェルによる展開をどこまで許すかを決める引用符。シングルクォートは中身を完全に文字どおり扱い、ダブルクォートは<code>$変数</code>とコマンド置換だけを展開する。空白を含むファイル名を1つの引数にまとめる役割もある。</dd></dl>
+
+      <div class="code" data-ctx="server">
+        <div class="code-head"><span class="code-title">クォートと展開を試す</span></div>
+<pre><code><span class="in">echo "今日は $(date +%Y-%m-%d) です" <span class="c"># 変数とコマンド置換は展開される</span></span>
+<span class="in">echo '今日は $(date) です' <span class="c"># シングルなら文字どおり</span></span>
+<span class="in">cp ~/server/luanti.conf{,.bak} <span class="c"># 括弧展開で「同じ名前+.bak」を作る定番の書き方</span></span>
+<span class="in">mkdir -p ~/work/{src,log,tmp} <span class="c"># 3つのディレクトリを一度に作る</span></span>
+<span class="in">touch "my file.txt" <span class="c"># 空白を含む名前はクォートで1つの引数にする</span></span>
+<span class="in">ls -l "my file.txt"</span></code></pre>
+      </div>
+
+      <p class="why"><b>出力の読み方：</b>同じ<code>echo</code>でもクォートの種類で結果が変わることを確かめる。</p>
+      <div class="code" data-ctx="server">
+        <div class="code-head"><span class="code-title">クォートの違いの出力例</span></div>
+<pre><code><span class="in">echo "$HOME"</span>
+<span class="out">/home/taro</span>
+<span class="in">echo '$HOME'</span>
+<span class="out">$HOME</span>
+<span class="in">echo file{1..3}.txt</span>
+<span class="out">file1.txt file2.txt file3.txt</span>
+<span class="in">cp ~/server/luanti.conf{,.bak}</span>
+<span class="in">ls ~/server</span>
+<span class="out">luanti.conf  luanti.conf.bak  world</span></code></pre>
+      </div>
+      <p>ダブルクォートでは<code>$HOME</code>が値に置き換わり、シングルクォートでは文字のまま残る。この違いが分かっていれば、シェルスクリプトで「変数を展開したいのか、記号を守りたいのか」を意識して書けるようになる（<a href="ch09.html">第9章</a>）。<code>cp file{,.bak}</code>は<code>cp file file.bak</code>に展開される慣用表現で、設定ファイルを編集する前の控えを最短で作れる。ワイルドカードと違い、括弧展開は実在するファイルと無関係に文字列を作る点が重要である。</p>
+
+      <h3 id="c3-add-1-d">終了コードとコマンドの連結</h3>
+      <p>すべてのコマンドは、終わるときに0から255の数値（終了コード）を残す。0が成功、0以外が失敗を表す。直前の終了コードは変数<code>$?</code>で読める。この値をもとに次の動作を決めるのが<code>&amp;&amp;</code>と<code>||</code>であり、実習で何度も書いた<code>sudo apt update &amp;&amp; sudo apt install -y vim</code>は、「更新が成功したときだけ導入する」という意味だった（<a href="../day1.html#s1-5">第1回 1-5</a>）。</p>
+
+      <div class="code" data-ctx="server">
+        <div class="code-head"><span class="code-title">終了コードと連結</span></div>
+<pre><code><span class="in">ls /etc/hostname</span>
+<span class="in">echo $? <span class="c"># 直前の終了コード（0なら成功）</span></span>
+<span class="in">ls /no/such/file</span>
+<span class="in">echo $? <span class="c"># 0以外なら失敗</span></span>
+<span class="in">sudo apt update &amp;&amp; sudo apt upgrade -y <span class="c"># 前が成功したときだけ次を実行</span></span>
+<span class="in">systemctl is-active luanti || sudo systemctl start luanti <span class="c"># 前が失敗したときだけ次を実行</span></span>
+<span class="in">cd ~/server; ls <span class="c"># セミコロンは成否に関係なく順に実行</span></span></code></pre>
+      </div>
+
+      <dl class="term"><dt>終了コード<small>exit status / $?</small></dt><dd>コマンドが終わるときに残す0から255の数値。0が成功、0以外が失敗を表す。直前の値は<code>echo $?</code>で読め、<code>&amp;&amp;</code>（成功なら次へ）と<code>||</code>（失敗なら次へ）の判断材料になる。</dd></dl>
+
+      <p class="why"><b>出力の読み方：</b>成功と失敗で<code>$?</code>の値がどう変わるかを見る。</p>
+      <div class="code" data-ctx="server">
+        <div class="code-head"><span class="code-title">終了コードの出力例</span></div>
+<pre><code><span class="in">ls /etc/hostname &gt; /dev/null; echo $?</span>
+<span class="out">0</span>
+<span class="in">ls /no/such/file 2&gt; /dev/null; echo $?</span>
+<span class="out">2</span>
+<span class="in">systemctl is-active luanti</span>
+<span class="out">active</span>
+<span class="in">echo $?</span>
+<span class="out">0</span></code></pre>
+      </div>
+      <p>成功なら0、失敗なら0以外という約束は、すべてのコマンドに共通である。<code>systemctl is-active</code>が典型で、画面に<code>active</code>と出すだけでなく終了コードでも成否を返すため、スクリプトやcronからそのまま条件として使える（<a href="ch09.html">第9章</a>、<a href="../day5.html#s5-4-a">第5回 5-4</a>）。<code>2</code>や<code>1</code>といった具体的な数値の意味はコマンドごとに違うので、<code>man</code>の<code>EXIT STATUS</code>の項を読む。</p>
+
+      <h3 id="c3-add-1-e">出力を分岐させる（2&gt;&amp;1・tee・xargs）</h3>
+      <p><a href="#c3-5">3-5節</a>のリダイレクトを、実務でよく使う3つの形にまとめる。<code>2&gt;&amp;1</code>はエラーも同じ行き先へ送る指定、<code>tee</code>は画面に出しつつファイルにも残す分岐、<code>xargs</code>は前のコマンドの出力を次のコマンドの引数に変える変換器である。</p>
+
+      <div class="code" data-ctx="server">
+        <div class="code-head"><span class="code-title">出力の取り回し</span></div>
+<pre><code><span class="in">./backup.sh &gt; ~/backup/backup.log 2&gt;&amp;1 <span class="c"># 出力もエラーも同じファイルへ（順序が重要）</span></span>
+<span class="in">df -h | tee ~/disk.txt <span class="c"># 画面に出しつつファイルにも保存</span></span>
+<span class="in">df -h | tee -a ~/disk.txt <span class="c"># 追記する</span></span>
+<span class="in">echo 'net.ipv4.ip_forward=0' | sudo tee /etc/sysctl.d/99-local.conf <span class="c"># 管理者権限でファイルに書く定番</span></span>
+<span class="in">ls -1t ~/backup/world_*.tar.gz | tail -n +8 | xargs -r rm -- <span class="c"># 新しい7件を残して削除</span></span>
+<span class="in">find ~/server -name '*.conf' -print0 | xargs -0 ls -lh <span class="c"># 空白入りの名前でも壊れない形</span></span></code></pre>
+      </div>
+
+      <div class="scroll">
+      <table class="tbl">
+        <thead><tr><th>書き方</th><th>意味</th><th>注意点</th></tr></thead>
+        <tbody>
+          <tr><td><code>&gt; file 2&gt;&amp;1</code></td><td>標準出力とエラーを同じファイルへ</td><td>順序が逆（<code>2&gt;&amp;1 &gt; file</code>）だとエラーは画面に残る</td></tr>
+          <tr><td><code>&gt; /dev/null</code></td><td>出力を捨てる</td><td><code>2&gt; /dev/null</code>ならエラーだけ捨てる</td></tr>
+          <tr><td><code>| tee file</code></td><td>画面とファイルの両方へ分岐</td><td><code>-a</code>を付けないと上書きになる</td></tr>
+          <tr><td><code>| sudo tee file</code></td><td>管理者権限が要るファイルへ書き込む</td><td><code>sudo echo ... &gt; file</code>は権限不足で失敗する</td></tr>
+          <tr><td><code>| xargs -r cmd</code></td><td>入力を引数に変えて実行。<code>-r</code>は空なら実行しない</td><td>空白を含む名前は<code>-print0</code>と<code>-0</code>で対処</td></tr>
+          <tr><td><code>| xargs -I{} cmd {}</code></td><td>引数の位置を自分で指定する</td><td>1件ずつ実行されるので遅い</td></tr>
+        </tbody>
+      </table>
+      </div>
+
+      <div class="call myth"><span class="ct">よくある誤解・トラブル</span>
+        <span class="q"><code>sudo echo "行" &gt; /etc/xxx.conf</code> で管理者用のファイルに書ける</span>
+        <p class="a">リダイレクトを行うのは<code>sudo</code>ではなく、それを起動したシェル（一般ユーザ）である。そのため<code>Permission denied</code>になる。<code>echo "行" | sudo tee /etc/xxx.conf</code>と書くのが定石である。</p>
+        <span class="q"><code>cmd 2&gt;&amp;1 &gt; log.txt</code> と <code>cmd &gt; log.txt 2&gt;&amp;1</code> は同じだ</span>
+        <p class="a">順番で意味が変わる。<code>2&gt;&amp;1</code>は「その時点の標準出力と同じ行き先」を指すので、先に書くとまだ画面を指しており、エラーは画面に出たままになる。ログに両方残したいときは必ず<code>&gt; log.txt</code>を先に書く。</p>
+      </div>
+
+      <h2 id="c3-add-2"><span class="no">3-9</span>テキスト処理の道具箱</h2>
+      <p>Linuxの設定もログも、ほとんどがテキストである（<a href="ch02.html#c2-1">第2章 2-1</a>）。だから「テキストを絞り込み、切り出し、数える」道具を使えることが、そのままサーバの調査能力になる。ここでは<a href="#c3-7">3-7節</a>の一覧を、コマンドごとの実用オプションまで掘り下げる。</p>
+
+      <h3 id="c3-add-2-a">grep：まず絞り込む</h3>
+      <p>調査はいつも「大量の行から関係する行だけを取り出す」ことから始まる。それが<code>grep</code>である。基本形は<code>grep 探す語 ファイル</code>で、ファイル名を省くと標準入力（パイプの前段の出力）を対象にする。</p>
+
+      <div class="code" data-ctx="server">
+        <div class="code-head"><span class="code-title">grep の実用形</span></div>
+<pre><code><span class="in">grep 'error' ~/backup/backup.log <span class="c"># 単純に含む行を探す</span></span>
+<span class="in">grep -i 'error' ~/backup/backup.log <span class="c"># 大文字小文字を区別しない</span></span>
+<span class="in">grep -n 'port' ~/server/luanti.conf <span class="c"># 行番号を付ける</span></span>
+<span class="in">grep -c 'joins game' ~/backup/backup.log <span class="c"># 該当した行数を数える</span></span>
+<span class="in">grep -v '^#' ~/server/luanti.conf | grep -v '^$' <span class="c"># コメントと空行を除いて設定だけ見る</span></span>
+<span class="in">grep -rn 'luanti' /etc/systemd/system/ <span class="c"># ディレクトリ以下を再帰的に探す</span></span>
+<span class="in">grep -E 'error|failed|warn' ~/backup/backup.log <span class="c"># 複数の語のいずれか</span></span></code></pre>
+      </div>
+
+      <div class="scroll">
+      <table class="tbl">
+        <thead><tr><th>オプション</th><th>意味</th><th>例</th></tr></thead>
+        <tbody>
+          <tr><td><code>-i</code></td><td>大文字小文字を区別しない</td><td><code>grep -i error log</code></td></tr>
+          <tr><td><code>-n</code></td><td>行番号を付ける。<code>vi</code>で直す前に位置を知る</td><td><code>grep -n port conf</code></td></tr>
+          <tr><td><code>-r</code></td><td>ディレクトリ以下を再帰的に探す</td><td><code>grep -rn luanti /etc</code></td></tr>
+          <tr><td><code>-c</code></td><td>一致した行数だけを出す</td><td><code>grep -c error log</code></td></tr>
+          <tr><td><code>-v</code></td><td>一致<b>しない</b>行を出す。除外に使う</td><td><code>grep -v '^#' conf</code></td></tr>
+          <tr><td><code>-E</code></td><td>拡張正規表現を使う。<code>|</code>で「または」</td><td><code>grep -E 'a|b' log</code></td></tr>
+          <tr><td><code>-A N</code> / <code>-B N</code></td><td>一致行の後ろ／前をN行も表示する</td><td><code>grep -A 3 error log</code></td></tr>
+        </tbody>
+      </table>
+      </div>
+
+      <p class="why"><b>出力の読み方：</b><code>-n</code>や<code>-r</code>を付けたときに増える列の意味を確認する。</p>
+      <div class="code" data-ctx="server">
+        <div class="code-head"><span class="code-title">grep の出力例</span></div>
+<pre><code><span class="in">grep -n 'port' ~/server/luanti.conf</span>
+<span class="out">14:port = 30000</span>
+<span class="in">grep -rn 'ExecStart' /etc/systemd/system/</span>
+<span class="out">/etc/systemd/system/luanti.service:9:ExecStart=/usr/games/luantiserver --config /home/taro/server/luanti.conf --world /home/taro/server/world</span>
+<span class="in">grep -c 'joins game' ~/backup/backup.log</span>
+<span class="out">37</span></code></pre>
+      </div>
+      <p><code>-n</code>を付けると<code>行番号:内容</code>、<code>-r</code>を付けると<code>ファイル名:行番号:内容</code>という形になる。この形はそのまま「どのファイルの何行目を直せばよいか」の指示書になる。<code>-c</code>は行数だけを返すので、「エラーが今日何回出たか」のような集計に向く。<code>^#</code>の<code>^</code>は行頭を表す正規表現で、<code>-v</code>と組み合わせた<code>grep -v '^#'</code>は設定ファイルから実際に効いている行だけを抜き出す定番である。</p>
+
+      <dl class="term"><dt>正規表現<small>regular expression</small></dt><dd>文字列の形を表す記法。<code>^</code>は行頭、<code>$</code>は行末、<code>.</code>は任意の1文字を表す。<code>grep -v '^#'</code>のように「コメント行を除く」といった指定ができる。</dd></dl>
+
+      <h3 id="c3-add-2-b">切り出す・数える（cut・tr・wc・head・tail）</h3>
+      <p>絞り込んだあとは、必要な列だけを取り出して数える。<code>cut</code>は区切り文字で列を切り、<code>tr</code>は文字を置き換えたり削ったりし、<code>wc</code>は数える。<code>head</code>と<code>tail</code>は先頭と末尾を切り出すが、<code>tail -f</code>だけは性格が違い、ファイルが伸びるのを画面で待ち続ける「監視」の道具になる。</p>
+
+      <div class="code" data-ctx="server">
+        <div class="code-head"><span class="code-title">切り出しと集計</span></div>
+<pre><code><span class="in">cut -d: -f1 /etc/passwd <span class="c"># コロン区切りの1列目（ユーザ名）</span></span>
+<span class="in">cut -d: -f1,3 /etc/passwd <span class="c"># 1列目と3列目</span></span>
+<span class="in">cut -c1-8 ~/backup/backup.log <span class="c"># 各行の1文字目から8文字目まで</span></span>
+<span class="in">echo 'hello' | tr 'a-z' 'A-Z' <span class="c"># 小文字を大文字に</span></span>
+<span class="in">cat ~/backup/backup.log | tr -s ' ' <span class="c"># 連続する空白を1つにまとめる</span></span>
+<span class="in">wc -l ~/backup/backup.log <span class="c"># 行数を数える</span></span>
+<span class="in">tail -n 50 ~/backup/backup.log <span class="c"># 末尾50行</span></span>
+<span class="in">tail -f ~/backup/backup.log <span class="c"># 追記されるのを待ち続ける（Ctrl+C で終了）</span></span></code></pre>
+      </div>
+
+      <div class="scroll">
+      <table class="tbl">
+        <thead><tr><th>コマンド</th><th>主なオプション</th><th>意味</th></tr></thead>
+        <tbody>
+          <tr><td><code>cut</code></td><td><code>-d区切り -f列番号</code></td><td>区切り文字で切って指定の列を取り出す</td></tr>
+          <tr><td><code>cut</code></td><td><code>-c範囲</code></td><td>文字位置で切り出す（固定幅のログ向き）</td></tr>
+          <tr><td><code>tr</code></td><td><code>'a-z' 'A-Z'</code></td><td>文字を1対1で置き換える</td></tr>
+          <tr><td><code>tr</code></td><td><code>-d 文字</code> / <code>-s 文字</code></td><td>削除する／連続を1つにまとめる</td></tr>
+          <tr><td><code>wc</code></td><td><code>-l</code> / <code>-w</code> / <code>-c</code></td><td>行数／単語数／バイト数を数える</td></tr>
+          <tr><td><code>head</code> / <code>tail</code></td><td><code>-n N</code></td><td>先頭／末尾のN行を出す</td></tr>
+          <tr><td><code>tail</code></td><td><code>-f</code></td><td>追記を待ち続けて画面に流す</td></tr>
+          <tr><td><code>tail</code></td><td><code>-n +N</code></td><td>N行目から最後まで（<code>tail -n +8</code>で8件目以降）</td></tr>
+        </tbody>
+      </table>
+      </div>
+
+      <div class="call note"><span class="ct">実習ではここで使う</span><p>※ <code>tail -f</code>はログを見ながら操作するときの基本姿勢である。<a href="../day3.html#s3-6">第3回 3-6 演習：ログ解析</a>では<code>grep</code>と<code>cut</code>と<code>uniq -c</code>を組み合わせ、<a href="../day4.html#s4-2">第4回 4-2</a>の<code>backup.sh</code>では<code>tail -n +8</code>で古い世代を選んでいる。</p></div>
+
+      <h3 id="c3-add-2-c">awk と sed の最小限</h3>
+      <p><code>awk</code>と<code>sed</code>は単独で1冊の本になるほど大きな道具だが、サーバ管理で日常的に使うのはごく一部である。ここでは覚える価値の高い形だけに絞る。<code>awk</code>は「空白区切りのN列目を取り出す」、<code>sed</code>は「範囲を表示する」と「文字列を置き換える」の3つを覚えれば、当面は足りる。</p>
+
+      <div class="code" data-ctx="server">
+        <div class="code-head"><span class="code-title">awk と sed の実用形</span></div>
+<pre><code><span class="in">ps aux | awk '{print $1, $2, $11}' <span class="c"># 1列目・2列目・11列目だけを出す</span></span>
+<span class="in">df -h | awk '{print $5, $6}' <span class="c"># 使用率とマウント先だけ</span></span>
+<span class="in">awk -F: '{print $1}' /etc/passwd <span class="c"># 区切りをコロンに変える（cutと同じ働き）</span></span>
+<span class="in">awk -F: '$3 &gt;= 1000 {print $1}' /etc/passwd <span class="c"># 条件を付けて絞る（一般ユーザだけ）</span></span>
+<span class="in">sed -n '1,5p' ~/server/luanti.conf <span class="c"># 1行目から5行目だけを表示</span></span>
+<span class="in">sed 's/30000/30001/' ~/server/luanti.conf <span class="c"># 各行の最初の一致を置換して表示（ファイルは変わらない）</span></span>
+<span class="in">sed -i.bak 's/30000/30001/g' ~/server/luanti.conf <span class="c"># ファイルを書き換える（.bakに原本を残す）</span></span></code></pre>
+      </div>
+
+      <div class="call warn"><span class="ct">注意</span><p><code>sed -i</code>はファイルを直接書き換える。置換の指定を間違えると設定ファイルが壊れ、サービスが起動しなくなる。必ず<b>先に<code>-i</code>を付けずに実行して結果を画面で確かめ</b>、そのうえで<code>-i.bak</code>のように控えを残す形で実行すること。控えがあれば<code>mv luanti.conf.bak luanti.conf</code>で戻せる。</p></div>
+
+      <p class="why"><b>出力の読み方：</b>列番号の数え方と、置換が反映される範囲を確認する。</p>
+      <div class="code" data-ctx="server">
+        <div class="code-head"><span class="code-title">awk と sed の出力例</span></div>
+<pre><code><span class="in">df -h | awk '{print $5, $6}'</span>
+<span class="out">Use% Mounted</span>
+<span class="out">16% /</span>
+<span class="out">0% /dev/shm</span>
+<span class="out">13% /boot/firmware</span>
+<span class="in">awk -F: '$3 &gt;= 1000 {print $1, $3}' /etc/passwd</span>
+<span class="out">taro 1000</span>
+<span class="out">luanti 1001</span>
+<span class="in">sed -n '1,3p' ~/server/luanti.conf</span>
+<span class="out">name = taro</span>
+<span class="out">server_name = taro Server</span>
+<span class="out">max_users = 15</span></code></pre>
+      </div>
+      <p><code>awk</code>の<code>$1</code>は1列目、<code>$5</code>は5列目で、区切りは既定では空白である。<code>df -h</code>の見出し行も一緒に処理されるため、1行目に<code>Use% Mounted</code>という列名が混ざる点に注意する。見出しを除くには<code>df -h | tail -n +2 | awk ...</code>のように前段で落とす。<code>-F:</code>でコロン区切りに変えれば<code>cut -d:</code>と同じことができるが、<code>awk</code>は<code>$3 &gt;= 1000</code>のような条件を書ける点で強い。UID 1000以上が人間のユーザだという約束は<a href="ch05.html">第5章</a>で扱う。</p>
+
+      <div class="call myth"><span class="ct">よくある誤解・トラブル</span>
+        <span class="q"><code>sed 's/a/b/'</code> を実行したのに、ファイルの中身が変わらない</span>
+        <p class="a"><code>sed</code>は既定では結果を画面に出すだけで、ファイルは書き換えない。書き換えるには<code>-i</code>が要る。逆に言えば、<code>-i</code>を付けずに試せば安全に結果を確認できる。</p>
+        <span class="q"><code>sed 's/a/b/'</code> で行中のすべての「a」が置き換わる</span>
+        <p class="a">既定では各行の<b>最初の1つ</b>だけである。すべてを置き換えるには末尾に<code>g</code>を付けて<code>s/a/b/g</code>とする。</p>
+      </div>
+
+      <h2 id="c3-add-3"><span class="no">3-10</span>長時間コマンドと端末の切り離し</h2>
+      <p>バックアップ、大量のファイルの圧縮、<code>apt</code>の大規模な更新。数分から数十分かかる処理をSSH越しに実行したとき、途中で回線が切れたらどうなるか。既定では、その処理も一緒に終了してしまう。ここではその理由と、3つの対処法を扱う。</p>
+
+      <h3 id="c3-add-3-a">前面・背面とジョブ制御</h3>
+      <p>端末で実行中のコマンドは前面（フォアグラウンド）にあり、その間ほかの操作はできない。末尾に<code>&amp;</code>を付けると背面（バックグラウンド）で動き、すぐプロンプトが戻る。前面のコマンドを<kbd>Ctrl</kbd>+<kbd>Z</kbd>で一時停止して<code>bg</code>で背面に回すこともできる。これらをまとめてジョブ制御と呼ぶ（<a href="ch06.html#c6-4">第6章 6-4</a>）。</p>
+
+      <div class="code" data-ctx="server">
+        <div class="code-head"><span class="code-title">ジョブ制御</span></div>
+<pre><code><span class="in">tar czf ~/backup/world_test.tar.gz -C ~/server world &amp; <span class="c"># 最初から背面で実行</span></span>
+<span class="in">jobs <span class="c"># 背面のジョブの一覧</span></span>
+<span class="in">fg %1 <span class="c"># 1番のジョブを前面に戻す</span></span>
+<span class="in">bg %1 <span class="c"># 一時停止中の1番を背面で再開する</span></span>
+<span class="in">wait <span class="c"># 背面のジョブがすべて終わるまで待つ</span></span></code></pre>
+      </div>
+
+      <p class="why"><b>出力の読み方：</b>ジョブ番号とPID、そして状態を確認する。</p>
+      <div class="code" data-ctx="server">
+        <div class="code-head"><span class="code-title">jobs の出力例</span></div>
+<pre><code><span class="in">jobs</span>
+<span class="out">[1]+  Running                 tar czf /home/taro/backup/world_test.tar.gz -C /home/taro/server world &amp;</span>
+<span class="in">jobs -l</span>
+<span class="out">[1]+  1842 Running                 tar czf /home/taro/backup/world_test.tar.gz -C /home/taro/server world &amp;</span></code></pre>
+      </div>
+      <p>角括弧の中がジョブ番号で、<code>fg</code>や<code>bg</code>では<code>%1</code>のように指定する。<code>+</code>は「既定で対象になるジョブ」の印である。<code>Running</code>は実行中、<code>Stopped</code>は<kbd>Ctrl</kbd>+<kbd>Z</kbd>で一時停止中を意味する。<code>-l</code>を付けると表示されるのがPIDで、これは<code>ps</code>や<code>kill</code>で使う番号と同じである（<a href="ch06.html#c6-1">第6章 6-1</a>）。ジョブ番号は端末ごとの通し番号にすぎず、別の端末からは見えない点に注意する。</p>
+
+      <h3 id="c3-add-3-b">nohup：切断されても止めない</h3>
+      <p>SSHが切れると、その端末につながっていたプロセスにはHUP（hangup、回線切断）というシグナルが送られ、既定ではそれを受けて終了する。<code>nohup</code>はこのシグナルを無視させるコマンドで、<code>nohup コマンド &amp;</code>の形で使えば、ログアウトしても処理が続く。出力先を指定しないと<code>nohup.out</code>というファイルに溜まるので、明示的にログへ流すほうがよい。</p>
+
+      <dl class="term"><dt>SIGHUP<small>hangup / nohup</small></dt><dd>端末が切断されたときに、その端末で動いていたプロセスへ送られるシグナル。既定ではこれを受けて終了する。<code>nohup</code>を前に付けると無視させられるので、ログアウトしても処理が続く。</dd></dl>
+
+      <div class="code" data-ctx="server">
+        <div class="code-head"><span class="code-title">nohup の使い方</span></div>
+<pre><code><span class="in">nohup ~/backup.sh &gt; ~/backup/nohup.log 2&gt;&amp;1 &amp; <span class="c"># 切断されても続く形</span></span>
+<span class="in">echo $! <span class="c"># いま背面に回したプロセスのPID</span></span>
+<span class="in">tail -f ~/backup/nohup.log <span class="c"># 進捗をログで追う</span></span>
+<span class="in">ps -p <var>PID</var> -o pid,etime,cmd <span class="c"># まだ動いているかを確認</span></span></code></pre>
+      </div>
+
+      <div class="call note"><span class="ct">Note</span><p>※ <code>nohup</code>で走らせた処理は、あなたがログアウトしても動き続けるが、サーバを再起動すれば当然消える。「再起動しても勝手に立ち上がる」ことを求めるなら、それはsystemdのサービスにすべき対象である（<a href="ch06.html#c6-2">第6章 6-2</a>、<a href="../day2.html#s2-5">第2回 2-5</a>）。<code>nohup</code>は「今回だけ長く走らせたい」一時的な処理のための道具である。</p></div>
+
+      <h3 id="c3-add-3-c">tmux：作業そのものを置いておく</h3>
+      <p><code>nohup</code>は処理を切り離すだけで、画面は失われる。「作業中の端末ごと」サーバに置いておき、あとで別の場所から同じ画面に戻りたい場合に使うのが<code>tmux</code>である。SSHが切れても、サーバ側ではセッションが生き続けている。翌日、別のPCからSSHして<code>tmux attach</code>すれば、昨日の画面がそのまま現れる。</p>
+
+      <div class="code" data-ctx="server">
+        <div class="code-head"><span class="code-title">tmux の最小操作</span></div>
+<pre><code><span class="in">sudo apt install -y tmux <span class="c"># 導入（Raspberry Pi OS Liteには入っていない）</span></span>
+<span class="in">tmux new -s work <span class="c"># work という名前でセッションを作って入る</span></span>
+<span class="in">tmux ls <span class="c"># 動いているセッションの一覧</span></span>
+<span class="in">tmux attach -t work <span class="c"># work に戻る</span></span>
+<span class="in">tmux kill-session -t work <span class="c"># 不要になったセッションを片付ける</span></span></code></pre>
+      </div>
+
+      <div class="scroll">
+      <table class="tbl">
+        <thead><tr><th>操作</th><th>意味</th><th>備考</th></tr></thead>
+        <tbody>
+          <tr><td><code>tmux new -s 名前</code></td><td>名前を付けてセッションを開始する</td><td>名前を付けないと数字になり分かりにくい</td></tr>
+          <tr><td><kbd>Ctrl</kbd>+<kbd>B</kbd> のあと <kbd>d</kbd></td><td>切り離す（detach）。処理は動いたまま端末だけ抜ける</td><td>最重要の操作</td></tr>
+          <tr><td><code>tmux ls</code></td><td>生きているセッションの一覧</td><td>何も無ければ<code>no server running</code></td></tr>
+          <tr><td><code>tmux attach -t 名前</code></td><td>切り離したセッションに戻る</td><td>別のPCからSSHしても戻れる</td></tr>
+          <tr><td><kbd>Ctrl</kbd>+<kbd>B</kbd> のあと <kbd>c</kbd> / <kbd>n</kbd></td><td>新しいウィンドウを作る／次へ移る</td><td>1セッション内で画面を増やせる</td></tr>
+          <tr><td><code>exit</code></td><td>そのウィンドウを閉じる。最後の1つならセッションも終わる</td><td>detachとは違う点に注意</td></tr>
+        </tbody>
+      </table>
+      </div>
+
+      <dl class="term"><dt>tmux<small>terminal multiplexer</small></dt><dd>サーバ側に端末の作業画面を置いておける道具。<kbd>Ctrl</kbd>+<kbd>B</kbd>のあと<kbd>d</kbd>で切り離すと、SSHが切れても中の処理と画面が残り、<code>tmux attach</code>で同じ状態に戻れる。</dd></dl>
+
+      <p class="why"><b>出力の読み方：</b>切り離したあと、セッションが生きていることを一覧で確かめる。</p>
+      <div class="code" data-ctx="server">
+        <div class="code-head"><span class="code-title">tmux ls の出力例</span></div>
+<pre><code><span class="in">tmux ls</span>
+<span class="out">work: 1 windows (created Sat Sep 19 14:20:11 2026)</span>
+<span class="in">tmux attach -t work</span>
+<span class="out">(昨日と同じ画面がそのまま表示される)</span></code></pre>
+      </div>
+      <p><code>work:</code>がセッション名、<code>1 windows</code>がその中の画面数、括弧内が作成時刻である。<code>(attached)</code>と付いていれば、今どこかの端末から接続されている状態を意味する。<code>tmux ls</code>が<code>no server running on /tmp/tmux-1000/default</code>と答えたら、生きているセッションは1つも無い。<kbd>Ctrl</kbd>+<kbd>B</kbd>は「これからtmuxへの命令を送る」という合図（プレフィックスキー）で、続けて押すキーで動作が決まる。まずは<kbd>d</kbd>（切り離し）だけ覚えれば十分である。</p>
+
+      <div class="call myth"><span class="ct">よくある誤解・トラブル</span>
+        <span class="q">長い処理は <code>&amp;</code> を付けて背面に回しておけば、SSHが切れても安全だ</span>
+        <p class="a"><code>&amp;</code>だけでは端末につながったままなので、切断されると一緒に終了する。切断に耐えさせたいなら<code>nohup</code>か<code>tmux</code>を使う。</p>
+        <span class="q">tmuxから抜けるときは <code>exit</code> でよい</span>
+        <p class="a"><code>exit</code>はウィンドウを閉じる操作で、最後の1つなら作業ごと終了してしまう。処理を残したまま抜けるのは<kbd>Ctrl</kbd>+<kbd>B</kbd>のあと<kbd>d</kbd>（detach）である。</p>
+      </div>
 
       <nav class="pager" aria-label="前後のページ">
         <a class="prev" href="ch02.html"><span class="pl">前へ</span><span class="pt">ファイルシステムとディレクトリ構造</span></a>

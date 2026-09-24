@@ -38,21 +38,54 @@
     </aside>
     <article class="doc">
 
+      <div class="chapintro">
+        <div class="box"><span class="ct">この章で分かること</span><ul>
+          <li>仮想マシン型とコンテナ型の違い、コンテナがRaspberry Piでも実用になる理由</li>
+          <li>イメージとコンテナの区別、レイヤという構造</li>
+          <li>ボリュームによる「環境は使い捨て、データは資産」という運用の原則</li>
+          <li>composeによる宣言的な構成管理と、動かないときの調べ方</li>
+        </ul></div>
+        <div class="box use"><span class="ct">実習のどこで使うか</span><ul>
+          <li><a href="../day5.html#s5-1">第5回 5-1 コンテナとは</a></li>
+          <li><a href="../day5.html#s5-3">第5回 5-3 Luantiサーバのコンテナ化</a></li>
+          <li><a href="../day5.html#s5-5">第5回 5-5 総合演習：資産からの完全再構築</a></li>
+          <li><a href="../day6.html#s6-1">第6回 6-1 課題内容（再構築・自動化のテーマ）</a></li>
+        </ul></div>
+      </div>
+
       <h2 id="c10-1"><span class="no">10.1</span>仮想化の2つの方式</h2>
       <figure><img src="../img/s14.png" alt="図10-1　仮想マシン型とコンテナ型の違い" width="1800" height="800"><figcaption>図10-1　仮想マシン型とコンテナ型の違い</figcaption></figure>
-      <p>1台の物理マシンの上に複数の独立した実行環境を作る技術を仮想化という。方式は大きく2つある。仮想マシン型は、ハイパーバイザという仮想化ソフトの上に、ゲストOSを丸ごと含む仮想マシンを立てる。完全な分離が得られる反面、OSを1台分ずつ動かすためメモリもストレージも多く消費し、起動にも分単位の時間がかかる。コンテナ型は、ホストOSのカーネルを共有したまま、プロセスの見える世界（ファイルシステム、ネットワーク、プロセス一覧）だけを区切る。ゲストOSを持たないため軽量で、起動は秒単位、Raspberry Piのような小型機でも実用になる。</p>
+      <p>1台の物理マシンの上に複数の独立した実行環境を作る技術を仮想化という。方式は大きく2つある。仮想マシン型は、ハイパーバイザという仮想化ソフトの上に、ゲストOSを丸ごと含む仮想マシンを立てる。完全な分離が得られる反面、OSを1台分ずつ動かすためメモリもストレージも多く消費し、起動にも分単位の時間がかかる。</p>
+      <p>コンテナ型は、ホストOSのカーネルを共有したまま、プロセスの見える世界（ファイルシステム、ネットワーク、プロセス一覧）だけを区切る。ゲストOSを持たないため軽量で、起動は秒単位、Raspberry Piのような小型機でも実用になる。</p>
+      <dl class="term"><dt>コンテナ<small>container</small></dt><dd>ホストOSのカーネルを共有したまま、ファイルシステムやネットワークなどの見える範囲を区切って動かすプロセス。ゲストOSを持たない分だけ軽い。</dd></dl>
+      <div class="call myth"><span class="ct">よくある誤解・トラブル</span>
+        <span class="q">コンテナは軽い仮想マシンなので、どんなOSでも中で動かせる</span>
+        <p class="a">コンテナはホストのカーネルをそのまま使う。したがってCPUの種類も共有され、Raspberry Pi（arm64）ではarm64に対応したイメージしか動かない。「イメージをpullできない」「exec format error」はここが原因のことが多い。</p>
+      </div>
 
       <h2 id="c10-2"><span class="no">10.2</span>Dockerの基本概念</h2>
       <p>Dockerを理解する鍵は、イメージとコンテナの区別である。イメージは「アプリケーションと依存物一式を固めた読み取り専用のひな型」、コンテナは「イメージから起動した実行中の実体」である。プログラムとプロセスの関係（<a href="ch06.html">第6章</a>）とちょうど同じで、1つのイメージから何個でもコンテナを起動できる。イメージはDocker Hubなどのレジストリで共有されており、<code>docker compose up</code> しただけでlinuxserver/luantiのサーバが動いたのは、ビルド済みイメージをレジストリから取得（pull）したからである。</p>
+      <dl class="term"><dt>イメージ<small>image</small></dt><dd>アプリケーションと依存物一式を固めた読み取り専用のひな型。1つのイメージから何個でもコンテナを起動できる。</dd></dl>
       <p>イメージはレイヤ（層）の重なりでできている。「OSの基本部分」＋「共通ライブラリ」＋「サーバ本体」のように差分を積み重ねる構造のため、共通部分は複数のイメージで共有され、ダウンロードもストレージも節約される。自分でレイヤを定義してイメージを作るための設計図がDockerfileである（最終課題の発展テーマ）。</p>
 
       <h2 id="c10-3"><span class="no">10.3</span>データの扱い：ボリューム</h2>
-      <p>コンテナ内で書き込んだデータは、コンテナを削除すると一緒に消える。これは欠点ではなく「環境をいつでも作り直せる」ための設計であり、残したいデータだけをボリューム（ホスト側のディレクトリとの対応付け）としてコンテナの外に出す。実習のcompose.yamlで <code>./data:/config/.minetest</code> と書いたのは、「コンテナ内の <code>/config/.minetest</code> を、ホストの <code>./data</code> に重ねる」という意味である。ワールドデータはホスト側に実体があるため、コンテナを何度作り直しても失われない。「環境は使い捨て、データは資産」というコンテナ運用の原則は、この仕組みに支えられている。</p>
+      <p>コンテナ内で書き込んだデータは、コンテナを削除すると一緒に消える。これは欠点ではなく「環境をいつでも作り直せる」ための設計であり、残したいデータだけをボリューム（ホスト側のディレクトリとの対応付け）としてコンテナの外に出す。</p>
+      <p>実習（<a href="../day5.html#s5-3">第5回 5-3</a>）のcompose.yamlで <code>./data:/config/.minetest</code> と書いたのは、「コンテナ内の <code>/config/.minetest</code> を、ホストの <code>./data</code> に重ねる」という意味である。ワールドデータはホスト側に実体があるため、コンテナを何度作り直しても失われない。<strong>「環境は使い捨て、データは資産」</strong>というコンテナ運用の原則は、この仕組みに支えられている。</p>
+      <dl class="term"><dt>ボリューム<small>volume / バインドマウント</small></dt><dd>コンテナの中の特定のパスを、ホスト側のディレクトリに対応付ける仕組み。実習の <code>./data</code> のようにホストのパスを直接指定する形をバインドマウントと呼ぶ。</dd></dl>
+      <div class="call myth"><span class="ct">よくある誤解・トラブル</span>
+        <span class="q">コンテナの中に入って設定ファイルを直せば、それで設定変更は完了する</span>
+        <p class="a">その修正はコンテナを作り直した瞬間に消える。直すのはホスト側のファイル（ボリューム）か compose.yaml であり、そのうえでコンテナを作り直すのがコンテナ流の運用である。</p>
+        <span class="q">ボリュームの中のファイルが Permission denied で書けない</span>
+        <p class="a">ホスト側のファイルの所有者と、コンテナが使うPUID/PGIDが食い違っている。<code>ls -ln data</code> で数値のUID・GIDを確かめ、必要なら <code>sudo chown -R 1000:1000 data</code> でそろえる（<a href="ch05.html">第5章</a>）。</p>
+      </div>
       <figure><img src="../img/s15.png" alt="図10-2　実習で構築したコンテナ構成" width="1800" height="820"><figcaption>図10-2　実習で構築したコンテナ構成</figcaption></figure>
 
       <h2 id="c10-4"><span class="no">10.4</span>ComposeとInfrastructure as Code</h2>
-      <p><code>docker compose</code> は、複数コンテナの構成をcompose.yamlという1つのファイルに宣言的に記述し、一括で管理するツールである。「宣言的」とは、手順（どうやって作るか）ではなく、あるべき状態（何がどう動いているべきか）を書くという意味である。composeは現在の状態と記述を比較し、差分だけを適用する。<a href="../day5.html">第5回</a>でwebサービスを追記して up し直したとき、gameコンテナは再起動されず、webだけが新規に起動されたのはこのためである。</p>
-      <p>この「インフラの構成をコードとして記述し、バージョン管理し、何度でも同じ環境を再現する」という考え方をInfrastructure as Code（IaC）と呼ぶ。クラウド時代の運用の中心概念であり、compose.yamlはその入門である。設定ファイルさえ保存しておけば環境を捨てても再現できる、という感覚を実習で体験したことは、TerraformやKubernetesといった実務のツール群を学ぶときの土台になる。</p>
+      <p><code>docker compose</code> は、複数コンテナの構成をcompose.yamlという1つのファイルに宣言的に記述し、一括で管理するツールである。「宣言的」とは、手順（どうやって作るか）ではなく、あるべき状態（何がどう動いているべきか）を書くという意味である。composeは現在の状態と記述を比較し、差分だけを適用する。<a href="../day5.html#s5-4">第5回 5-4</a>でwebサービスを追記して up し直したとき、gameコンテナは再起動されず、webだけが新規に起動されたのはこのためである。</p>
+      <dl class="term"><dt>compose.yaml</dt><dd>複数のコンテナの構成（イメージ、ポート、ボリューム、環境変数）を1つのファイルに宣言的に書いたもの。<code>docker compose up -d</code> でその状態を実現する。</dd></dl>
+      <p>この「インフラの構成をコードとして記述し、バージョン管理し、何度でも同じ環境を再現する」という考え方をInfrastructure as Code（IaC）と呼ぶ。クラウド時代の運用の中心概念であり、compose.yamlはその入門である。</p>
+      <p>設定ファイルさえ保存しておけば環境を捨てても再現できる、という感覚を<a href="../day5.html#s5-5">第5回 5-5 の総合演習</a>で体験したことは、TerraformやKubernetesといった実務のツール群を学ぶときの土台になる。</p>
+      <dl class="term"><dt>Infrastructure as Code<small>IaC</small></dt><dd>サーバやネットワークの構成を手順ではなくコードとして記述し、バージョン管理して何度でも同じ環境を再現する考え方。compose.yamlはその入門である。</dd></dl>
 
       <h2 id="c10-5"><span class="no">10.5</span>コンテナ利用の注意点</h2>
       <ul>
@@ -62,7 +95,7 @@
       </ul>
 
       <h2 id="c10-6"><span class="no">10.6</span>Dockerの基本操作：コンテナのライフサイクル</h2>
-      <p>コンテナには「イメージの取得（pull）→作成→起動→停止→削除」というライフサイクルがある。<code>docker run</code> はこのうち取得（手元になければ）・作成・起動をまとめて実行する複合コマンドであり、実習で最初に実行した <code>docker run hello-world</code> の出力には、まさにこの流れが説明されている。コンテナを削除（rm）してもイメージは手元に残るため、同じイメージから何度でも新しいコンテナを作り直せる。「環境は使い捨て、データは資産」という原則は、このライフサイクルに支えられている。</p>
+      <p>コンテナには「イメージの取得（pull）→作成→起動→停止→削除」というライフサイクルがある。<code>docker run</code> はこのうち取得（手元になければ）・作成・起動をまとめて実行する複合コマンドであり、実習（<a href="../day5.html#s5-2">第5回 5-2</a>）で最初に実行した <code>docker run hello-world</code> の出力には、まさにこの流れが説明されている。コンテナを削除（rm）してもイメージは手元に残るため、同じイメージから何度でも新しいコンテナを作り直せる。「環境は使い捨て、データは資産」という原則は、このライフサイクルに支えられている。</p>
       <div class="scroll">
       <table class="tbl">
         <thead><tr><th>コマンド</th><th>はたらき</th></tr></thead>
@@ -127,8 +160,275 @@
         </tbody>
       </table>
       </div>
-      <p>リソースの監視には <code>docker stats</code> が使える。コンテナごとのCPU・メモリ使用量をリアルタイム表示する、<a href="../day3.html">第3回</a>で使ったtopのコンテナ版である。「平常時の値を知っておく」という監視の基本（<a href="ch08.html#c8-5">8.5節</a>）は、コンテナになっても変わらない。</p>
+      <p>リソースの監視には <code>docker stats</code> が使える。コンテナごとのCPU・メモリ使用量をリアルタイム表示する、<a href="../day3.html#s3-5">第3回 3-5</a>で使ったtopのコンテナ版である。「平常時の値を知っておく」という監視の基本（<a href="ch08.html#c8-5">8.5節</a>）は、コンテナになっても変わらない。</p>
+      <div class="call myth"><span class="ct">よくある誤解・トラブル</span>
+        <span class="q"><code>docker ps</code> に出てこないので、そのコンテナは作られていない</span>
+        <p class="a"><code>docker ps</code> は実行中のものしか表示しない。起動直後に落ちたコンテナは <code>docker ps -a</code> に Exited として残っており、原因は <code>docker compose logs</code> に書かれている。まず一覧、次にログという順で見る。</p>
+        <span class="q">動かないので、とりあえず <code>down</code> して作り直せば直る</span>
+        <p class="a">設定が誤っていれば作り直しても同じ結果になる。ログを読んで原因を1つ特定してから compose.yaml を直すこと。なお <code>docker compose config</code> を使えば、起動せずに文法だけを検証できる。</p>
+      </div>
       <div class="call note"><span class="ct">Note</span><p>※ <code>docker system prune</code> は「使われていないもの」を一括削除する強力なコマンドである。停止中のコンテナも削除対象になるため、実行前に <code>docker ps -a</code> で消えて困るものがないかを必ず確認すること。</p></div>
+
+
+      <h2 id="c10-add-1"><span class="no">10.9</span>docker コマンドリファレンス</h2>
+      <p><a href="#c10-6">10.6節</a>で主要なコマンドの一覧を示したが、実際に運用していると「いまどうなっているかを調べる」「ログを読む」「散らかったものを片付ける」という3つの場面で、もう少し細かいオプションが要る。ここではその実用範囲をまとめる。<a href="../day5.html">第5回</a>の構成（<code>~/game</code> の下に <code>compose.yaml</code>、<code>data</code>、<code>html</code> がある状態）を前提に読んでほしい。</p>
+
+      <h3 id="c10-add-1-a">いまの状態を調べる</h3>
+      <p>障害対応の第一歩は一覧である。<code>docker ps</code> は実行中のコンテナだけを表示するので、落ちたコンテナを探すときは必ず <code>-a</code> を付ける。イメージの一覧は <code>docker images</code>、ディスクの内訳は <code>docker system df</code> で見る。</p>
+      <div class="code" data-ctx="server" data-cwd="~/game">
+        <div class="code-head"><span class="code-title">状態を調べる基本形</span></div>
+<pre><code><span class="in">docker ps <span class="c"># 実行中のコンテナ</span></span>
+<span class="in">docker ps -a <span class="c"># 停止中も含めた全部</span></span>
+<span class="in">docker ps -a --filter status=exited <span class="c"># 落ちたものだけに絞る</span></span>
+<span class="in">docker images <span class="c"># 手元のイメージ一覧</span></span>
+<span class="in">docker system df <span class="c"># 何がディスクを使っているか</span></span>
+<span class="in">docker inspect --format '{{.State.ExitCode}}' game-game-1 <span class="c"># 終了コードだけを取り出す</span></span></code></pre>
+      </div>
+      <div class="scroll">
+      <table class="tbl">
+        <thead><tr><th>オプション</th><th>意味</th><th>例</th></tr></thead>
+        <tbody>
+          <tr><td><code>-a</code></td><td>停止中のコンテナも表示する。障害調査では必須</td><td><code>docker ps -a</code></td></tr>
+          <tr><td><code>--filter 条件</code></td><td>状態や名前で絞り込む（<code>status=exited</code>、<code>name=web</code>）</td><td><code>docker ps --filter name=web</code></td></tr>
+          <tr><td><code>--format '{{.項目}}'</code></td><td>必要な列だけを取り出す。スクリプトから使うときに便利</td><td><code>docker ps --format '{{.Names}}'</code></td></tr>
+          <tr><td><code>-q</code></td><td>IDだけを出す。他のコマンドへ渡すために使う</td><td><code>docker ps -aq</code></td></tr>
+          <tr><td><code>docker inspect 名前</code></td><td>コンテナやイメージの設定をJSONで詳細表示する</td><td><code>docker inspect game-web-1</code></td></tr>
+          <tr><td><code>docker stats</code></td><td>コンテナごとのCPU・メモリをリアルタイム表示（topのコンテナ版）</td><td><code>docker stats --no-stream</code></td></tr>
+        </tbody>
+      </table>
+      </div>
+      <p><b>出力の読み方</b></p>
+      <div class="code" data-ctx="server" data-cwd="~/game">
+        <div class="code-head"><span class="code-title">docker ps -a の出力</span></div>
+<pre><code><span class="in">docker ps -a</span>
+<span class="out">CONTAINER ID   IMAGE                        COMMAND                   CREATED       STATUS                   PORTS                      NAMES</span>
+<span class="out">0f1c2d3e4a5b   lscr.io/linuxserver/luanti   "/init"                   2 hours ago   Up 2 hours               0.0.0.0:30000-&gt;30000/udp   game-game-1</span>
+<span class="out">7a8b9c0d1e2f   nginx:alpine                 "/docker-entrypoint.sh"   2 hours ago   Up 2 hours               0.0.0.0:8080-&gt;80/tcp       game-web-1</span>
+<span class="out">3c4d5e6f7a8b   hello-world                  "/hello"                  3 hours ago   Exited (0) 3 hours ago                              friendly_kepler</span></code></pre>
+      </div>
+      <p>見るべき列は3つである。STATUSが <code>Up</code> なら稼働中、<code>Exited (0)</code> は正常終了、<code>Exited (1)</code> や <code>Exited (137)</code> は異常終了で、括弧の中が終了コードである（137はSIGKILLで殺されたことを示す）。PORTSは <code>ホスト側-&gt;コンテナ側</code> の対応で、ここに何も出ていないコンテナは外から接続できない。NAMESはcomposeが付けた名前で、「プロジェクト名（ディレクトリ名）とサービス名と連番」を <code>-</code> でつないだ形になる。以降のコマンドではこの名前を指定する。</p>
+      <div class="code" data-ctx="server" data-cwd="~/game">
+        <div class="code-head"><span class="code-title">docker system df の出力</span></div>
+<pre><code><span class="in">docker system df</span>
+<span class="out">TYPE            TOTAL     ACTIVE    SIZE      RECLAIMABLE</span>
+<span class="out">Images          4         2         612.3MB   271.5MB (44%)</span>
+<span class="out">Containers      3         2         1.1MB     0B (0%)</span>
+<span class="out">Local Volumes   1         0         0B        0B</span>
+<span class="out">Build Cache     0         0         0B        0B</span></code></pre>
+      </div>
+      <p>RECLAIMABLE（回収可能）の列が、掃除で取り戻せる容量である。上の例ではイメージの271.5MBが使われていない分で、これは古いタグや、更新して置き換わった前のイメージが残っているためである。SDカードは容量が小さいので、この値が大きくなってきたら片付けどきである。</p>
+
+      <h3 id="c10-add-1-b">docker run の主要オプション</h3>
+      <p><code>docker run</code> は「イメージの取得（手元になければ）、コンテナの作成、起動」をまとめて行う複合コマンドである。実習ではcomposeを使うので直接打つ機会は少ないが、<code>compose.yaml</code> の各キーがこのオプションと1対1に対応しているため、両方を見比べておくと理解が早い。</p>
+      <div class="code" data-ctx="server" data-cwd="~/game">
+        <div class="code-head"><span class="code-title">docker run の代表例</span></div>
+<pre><code><span class="in">docker run --rm hello-world <span class="c"># 動作確認。--rm で終了後に自動削除</span></span>
+<span class="in">docker run -d --name web -p 8080:80 -v "$PWD/html:/usr/share/nginx/html:ro" --restart unless-stopped nginx:alpine</span>
+<span class="in">docker run -d --name game -p 30000:30000/udp -v "$PWD/data:/config/.minetest" -e TZ=Asia/Tokyo lscr.io/linuxserver/luanti</span>
+<span class="in">docker run --rm -it debian:bookworm-slim bash <span class="c"># 使い捨てのシェルで試す</span></span></code></pre>
+      </div>
+      <div class="scroll">
+      <table class="tbl">
+        <thead><tr><th>オプション</th><th>意味</th><th>compose.yaml の対応キー</th></tr></thead>
+        <tbody>
+          <tr><td><code>-d</code></td><td>バックグラウンドで実行する（付けないと端末が占有される）</td><td>（<code>up -d</code> で指定）</td></tr>
+          <tr><td><code>--name 名前</code></td><td>コンテナに名前を付ける。付けないとランダムな名前になる</td><td><code>container_name</code>（通常は不要）</td></tr>
+          <tr><td><code>-p ホスト:コンテナ</code></td><td>ポートを公開する。<code>/udp</code> を付けるとUDP</td><td><code>ports</code></td></tr>
+          <tr><td><code>-v ホスト:コンテナ[:ro]</code></td><td>ボリューム。<code>:ro</code> で読み取り専用</td><td><code>volumes</code></td></tr>
+          <tr><td><code>-e キー=値</code></td><td>環境変数を渡す（<code>TZ</code>、<code>PUID</code> など）</td><td><code>environment</code></td></tr>
+          <tr><td><code>--restart 方針</code></td><td>自動再起動。<code>unless-stopped</code> は手で止めた場合以外は再起動</td><td><code>restart</code></td></tr>
+          <tr><td><code>--rm</code></td><td>終了したらコンテナを自動削除する（使い捨ての確認用）</td><td>（composeでは使わない）</td></tr>
+          <tr><td><code>-it</code></td><td>端末をつないで対話的に操作する（<code>bash</code> を動かすとき）</td><td><code>stdin_open</code> / <code>tty</code></td></tr>
+        </tbody>
+      </table>
+      </div>
+      <p><code>-p</code> の左がホスト側、右がコンテナ側である。<code>-p 8080:80</code> は「ホストの8080番に来た通信を、コンテナの80番へ渡す」という意味であり、左右を逆にすると当然つながらない。Luantiは <code>-p 30000:30000/udp</code> のように <code>/udp</code> が必須で、これを忘れるとTCPの30000番が開くだけでクライアントからは接続できない（<a href="ch07.html#c7-4">第7章 7-4</a>）。</p>
+      <dl class="term"><dt>ポートの公開<small>publish / -p ホスト:コンテナ</small></dt><dd>コンテナ内のポートを、ホストのポートに結び付けて外から届くようにする設定。書かなければコンテナはホストの外から一切見えない。既定はTCPで、UDPを使うサービスは <code>30000:30000/udp</code> のように明示する。</dd></dl>
+
+      <h3 id="c10-add-1-c">ログを読む、中に入る</h3>
+      <p>コンテナの調査はログから始まる。コンテナが標準出力に書いたものはDockerが受け取って保持しており、<code>docker logs</code> でいつでも読める。systemdのサービスに対する <code>journalctl -u</code>（<a href="ch06.html#c6-2">6.2節</a>）とまったく同じ位置付けの道具である。</p>
+      <div class="code" data-ctx="server" data-cwd="~/game">
+        <div class="code-head"><span class="code-title">ログと調査</span></div>
+<pre><code><span class="in">docker logs game-game-1 <span class="c"># 最初から全部</span></span>
+<span class="in">docker logs --tail 50 game-game-1 <span class="c"># 末尾50行だけ</span></span>
+<span class="in">docker logs -f --since 10m game-game-1 <span class="c"># 直近10分ぶんを追跡表示</span></span>
+<span class="in">docker exec -it game-web-1 sh <span class="c"># コンテナの中でシェルを開く（alpineはbashが無い）</span></span>
+<span class="in">docker exec game-web-1 ls /usr/share/nginx/html <span class="c"># 1コマンドだけ実行する</span></span></code></pre>
+      </div>
+      <div class="scroll">
+      <table class="tbl">
+        <thead><tr><th>オプション</th><th>意味</th><th>例</th></tr></thead>
+        <tbody>
+          <tr><td><code>-f</code></td><td>リアルタイムに追跡する（止めるのは <kbd>Ctrl</kbd>+<kbd>C</kbd>）</td><td><code>docker logs -f game-web-1</code></td></tr>
+          <tr><td><code>--tail N</code></td><td>末尾のN行だけ表示する。長いログの入口として使う</td><td><code>docker logs --tail 50 game-game-1</code></td></tr>
+          <tr><td><code>--since 時間</code></td><td>指定時間より新しいログだけ（<code>10m</code>、<code>1h</code>、日時指定も可）</td><td><code>docker logs --since 1h game-game-1</code></td></tr>
+          <tr><td><code>-t</code></td><td>各行に時刻を付ける。いつ起きたかを特定したいとき</td><td><code>docker logs -t --tail 20 game-web-1</code></td></tr>
+          <tr><td><code>exec -it 名前 sh</code></td><td>中でシェルを開く。軽量イメージには <code>bash</code> が無いことが多い</td><td><code>docker exec -it game-web-1 sh</code></td></tr>
+        </tbody>
+      </table>
+      </div>
+      <div class="call note"><span class="ct">Note</span><p>※ <code>docker logs -f</code> を <kbd>Ctrl</kbd>+<kbd>C</kbd> で止めても、コンテナは動いたままである。止まるのは表示だけであり、ここは <code>journalctl -f</code> と同じ感覚でよい。</p></div>
+      <div class="call myth"><span class="ct">よくある誤解・トラブル</span>
+        <span class="q"><code>docker exec -it 名前 bash</code> が OCI runtime exec failed で失敗する</span>
+        <p class="a">そのイメージに <code>bash</code> が入っていないだけである。alpine系の軽量イメージには <code>sh</code> しかないので <code>docker exec -it 名前 sh</code> とする。そもそもコンテナの中に入って直すのはコンテナ流ではなく、直す対象はホスト側のファイルか <code>compose.yaml</code> である（<a href="#c10-3">10.3節</a>）。</p>
+      </div>
+
+      <h3 id="c10-add-1-d">止める、消す、掃除する</h3>
+      <p>コンテナの停止と削除は別の操作である。<code>stop</code> は止めるだけで、<code>docker ps -a</code> には Exited として残る。完全に消すのが <code>rm</code> で、イメージを消すのは <code>rmi</code> である。散らかったものをまとめて片付けるのが <code>system prune</code> だが、これは強力なので実行前の確認が要る。</p>
+      <div class="code" data-ctx="server" data-cwd="~/game">
+        <div class="code-head"><span class="code-title">停止と片付け</span></div>
+<pre><code><span class="in">docker stop game-web-1 <span class="c"># 終了依頼を送り、応答がなければ強制停止</span></span>
+<span class="in">docker start game-web-1 <span class="c"># 停止中のコンテナを再開</span></span>
+<span class="in">docker restart game-web-1 <span class="c"># 停止して起動</span></span>
+<span class="in">docker rm game-web-1 <span class="c"># コンテナの削除（イメージとボリュームは残る）</span></span>
+<span class="in">docker rmi nginx:alpine <span class="c"># イメージの削除（使用中なら拒否される）</span></span>
+<span class="in">docker container prune <span class="c"># 停止中のコンテナをまとめて削除</span></span>
+<span class="in">docker image prune <span class="c"># タグの付いていない不要イメージを削除</span></span></code></pre>
+      </div>
+      <div class="call warn"><span class="ct">注意</span><p>※ <code>docker system prune -a</code> は「いま使われていないイメージ」を全部消す。次に <code>docker compose up -d</code> したときに、消したイメージを回線から取り直すことになるため、学内ネットワークの状況によっては復旧に時間がかかる。実行前に必ず <code>docker system df</code> で回収量を確かめ、<code>docker ps -a</code> で消えて困るコンテナがないことを確認すること。<code>--volumes</code> を足すと名前付きボリュームまで消えるので、この実習では付けない。</p></div>
+
+      <h2 id="c10-add-2"><span class="no">10.10</span>docker compose リファレンス</h2>
+      <p>composeは、複数のコンテナの「あるべき状態」を1つのファイルに書いて一括で扱うための道具である。<a href="#c10-7">10.7節</a>で操作の一覧を示したので、ここでは <code>compose.yaml</code> の書き方そのものを整理する。</p>
+
+      <h3 id="c10-add-2-a">compose.yaml の主要キー</h3>
+      <p>トップレベルの <code>services</code> の下に、サービス名（<a href="../day5.html">第5回</a>では <code>game</code> と <code>web</code>）を並べ、その中に設定を書く。インデントは半角スペースだけを使い、同じ階層は同じ桁にそろえる。</p>
+      <div class="scroll">
+      <table class="tbl">
+        <thead><tr><th>キー</th><th>意味</th><th>実習での値</th></tr></thead>
+        <tbody>
+          <tr><td><code>services</code></td><td>動かすコンテナの集合。この下に1つずつサービスを書く</td><td><code>game</code>、<code>web</code></td></tr>
+          <tr><td><code>image</code></td><td>使うイメージ。<code>レジストリ/リポジトリ:タグ</code> の形</td><td><code>lscr.io/linuxserver/luanti</code>、<code>nginx:alpine</code></td></tr>
+          <tr><td><code>ports</code></td><td>公開するポート。<code>"ホスト:コンテナ"</code>、UDPは <code>/udp</code> を付ける</td><td><code>"30000:30000/udp"</code>、<code>"8080:80"</code></td></tr>
+          <tr><td><code>volumes</code></td><td>ホストとコンテナのディレクトリ対応。<code>:ro</code> で読み取り専用</td><td><code>./data:/config/.minetest</code>、<code>./html:/usr/share/nginx/html:ro</code></td></tr>
+          <tr><td><code>environment</code></td><td>コンテナに渡す環境変数</td><td><code>PUID</code>、<code>PGID</code>、<code>TZ</code>、<code>CLI_ARGS</code></td></tr>
+          <tr><td><code>restart</code></td><td>自動再起動の方針。<code>unless-stopped</code> が実用的</td><td><code>unless-stopped</code></td></tr>
+          <tr><td><code>depends_on</code></td><td>起動の順序。先に立ち上げたいサービスを指定する</td><td>（実習では未使用）</td></tr>
+        </tbody>
+      </table>
+      </div>
+      <div class="call note"><span class="ct">Note</span><p>※ <code>depends_on</code> が保証するのは「起動した順番」だけで、「相手が受け付けられる状態になったこと」ではない。データベースとアプリのように相手の準備完了を待ちたい場合は、アプリ側が接続に失敗したら再試行するように作るのが定石である。実習の <code>game</code> と <code>web</code> は互いに依存していないため、指定していない。</p></div>
+
+      <h3 id="c10-add-2-b">実習の compose.yaml を通して読む</h3>
+      <p><a href="../day5.html#s5-3">第5回 5-3</a>と<a href="../day5.html#s5-4">5-4</a>で書いた2つのサービスを、1枚にまとめた形が次である。ポートもボリュームも実習と同じ値であり、<code>web</code> は <code>game</code> と同じ深さ（2桁のインデント）に並ぶ。</p>
+      <div class="code file" data-ctx="file" data-cwd="~/game/compose.yaml">
+        <div class="code-head"><span class="code-title">2サービス構成の compose.yaml（第5回の完成形）</span></div>
+<pre><code><span class="in">services:</span>
+<span class="in">  game:</span>
+<span class="in">    image: lscr.io/linuxserver/luanti</span>
+<span class="in">    environment:</span>
+<span class="in">      PUID: "1000"</span>
+<span class="in">      PGID: "1000"</span>
+<span class="in">      TZ: Asia/Tokyo</span>
+<span class="in">      CLI_ARGS: "--gameid minetest --worldname world"</span>
+<span class="in">    ports:</span>
+<span class="in">      - "30000:30000/udp"</span>
+<span class="in">    volumes:</span>
+<span class="in">      - ./data:/config/.minetest</span>
+<span class="in">    restart: unless-stopped</span>
+<span class="in">  web:</span>
+<span class="in">    image: nginx:alpine</span>
+<span class="in">    ports:</span>
+<span class="in">      - "8080:80"</span>
+<span class="in">    volumes:</span>
+<span class="in">      - ./html:/usr/share/nginx/html:ro</span>
+<span class="in">    restart: unless-stopped</span></code></pre>
+      </div>
+      <p>読み方の勘所は3つである。第一に、<code>ports</code> と <code>volumes</code> は「ホスト側が左」で統一されている。第二に、<code>./data</code> と <code>./html</code> の <code>./</code> は「<code>compose.yaml</code> のあるディレクトリから見た相対パス」であり、これを省くとホストのディレクトリではなくDockerが管理する名前付きボリュームになってしまう。第三に、<code>web</code> 側だけ <code>:ro</code> が付いている。Webサーバは配るだけで書き込む必要がないので、読み取り専用にして事故の範囲を狭めている。最小権限の原則（<a href="ch05.html">第5章</a>）がここにも現れている。</p>
+
+      <h3 id="c10-add-2-c">サブコマンドと出力の読み方</h3>
+      <p>composeのコマンドは <code>compose.yaml</code> のあるディレクトリで実行する。実習では <code>cd ~/game</code> してから打つ。編集したら、まず <code>config</code> で文法を確かめてから <code>up -d</code> するのが安全な順序である。</p>
+      <div class="code" data-ctx="server" data-cwd="~/game">
+        <div class="code-head"><span class="code-title">編集から反映までの定番手順</span></div>
+<pre><code><span class="in">docker compose config <span class="c"># 文法と解釈結果の確認（起動しない）</span></span>
+<span class="in">docker compose up -d <span class="c"># 差分だけを作成・再作成して起動</span></span>
+<span class="in">docker compose ps <span class="c"># 状態の確認</span></span>
+<span class="in">docker compose logs -f web <span class="c"># 特定のサービスのログを追う</span></span>
+<span class="in">docker compose restart game <span class="c"># 設定ファイルの変更を反映させる</span></span>
+<span class="in">docker compose down <span class="c"># コンテナとネットワークを削除（./data と ./html は残る）</span></span></code></pre>
+      </div>
+      <p><b>出力の読み方</b></p>
+      <div class="code" data-ctx="server" data-cwd="~/game">
+        <div class="code-head"><span class="code-title">docker compose ps の出力</span></div>
+<pre><code><span class="in">docker compose ps</span>
+<span class="out">NAME          IMAGE                        COMMAND                   SERVICE   CREATED       STATUS       PORTS</span>
+<span class="out">game-game-1   lscr.io/linuxserver/luanti   "/init"                   game      2 hours ago   Up 2 hours   0.0.0.0:30000-&gt;30000/udp</span>
+<span class="out">game-web-1    nginx:alpine                 "/docker-entrypoint.sh"   web       2 hours ago   Up 2 hours   0.0.0.0:8080-&gt;80/tcp</span></code></pre>
+      </div>
+      <p>SERVICE列が <code>compose.yaml</code> に書いたサービス名、NAME列がDockerが実際に付けたコンテナ名である。<code>game-</code> という接頭辞はプロジェクト名、すなわち <code>compose.yaml</code> を置いたディレクトリ名（<code>~/game</code>）から自動的に付く。したがって、別のディレクトリで同じ <code>compose.yaml</code> を使えば別のプロジェクトとして動く。PORTS列が空のサービスは外から接続できないので、つながらないときは最初にここを見る。STATUSが <code>Up</code> でなければ <code>docker compose logs サービス名</code> に進む（<a href="#c10-8">10.8節</a>）。</p>
+      <div class="call note"><span class="ct">実習ではここで使う</span><p>※ 実習で実際に打つのは<a href="../day5.html#s5-3">第5回 5-3 Luantiサーバのコンテナ化</a>と<a href="../day5.html#s5-5">5-5 総合演習</a>である。総合演習では、<code>compose.yaml</code> と <code>data</code> と <code>html</code> の3つさえあれば環境を作り直せることを確かめる。</p></div>
+
+      <h2 id="c10-add-3"><span class="no">10.11</span>Dockerfile の最小知識</h2>
+      <p>ここまでは他人が作った既製のイメージを使ってきた。自分でイメージを作るための設計図がDockerfileである。命令は多いが、最初に覚えるのは5つで足りる。</p>
+      <div class="scroll">
+      <table class="tbl">
+        <thead><tr><th>命令</th><th>意味</th><th>例</th></tr></thead>
+        <tbody>
+          <tr><td><code>FROM</code></td><td>土台にするイメージ。必ず1行目に書く</td><td><code>FROM nginx:alpine</code></td></tr>
+          <tr><td><code>RUN</code></td><td>イメージを作るときに実行するコマンド（1行が1レイヤ）</td><td><code>RUN apt-get update &amp;&amp; apt-get install -y curl</code></td></tr>
+          <tr><td><code>COPY</code></td><td>手元のファイルをイメージの中へ入れる</td><td><code>COPY html/ /usr/share/nginx/html/</code></td></tr>
+          <tr><td><code>CMD</code></td><td>コンテナ起動時に動かす既定のコマンド</td><td><code>CMD ["nginx", "-g", "daemon off;"]</code></td></tr>
+          <tr><td><code>EXPOSE</code></td><td>このイメージが使うポートの申告（公開は <code>-p</code> で行う）</td><td><code>EXPOSE 80</code></td></tr>
+        </tbody>
+      </table>
+      </div>
+      <div class="code file" data-ctx="file" data-cwd="~/site/Dockerfile">
+        <div class="code-head"><span class="code-title">~/site/Dockerfile</span></div>
+<pre><code><span class="in">FROM nginx:alpine</span>
+<span class="in">COPY html/ /usr/share/nginx/html/</span>
+<span class="in">EXPOSE 80</span>
+<span class="in">CMD ["nginx", "-g", "daemon off;"]</span></code></pre>
+      </div>
+      <div class="code" data-ctx="server" data-cwd="~/site">
+        <div class="code-head"><span class="code-title">イメージの構築と実行</span></div>
+<pre><code><span class="in">docker build -t mysite:1.0 . <span class="c"># . は Dockerfile のある場所</span></span>
+<span class="in">docker images mysite <span class="c"># 出来たイメージを確認</span></span>
+<span class="out">REPOSITORY   TAG   IMAGE ID       CREATED          SIZE</span>
+<span class="out">mysite       1.0   5b6c7d8e9f01   10 seconds ago   48.3MB</span>
+<span class="in">docker run -d --name mysite -p 8081:80 mysite:1.0</span></code></pre>
+      </div>
+      <p><code>-t 名前:タグ</code> で名前を付ける。タグは省略すると <code>latest</code> になるが、<code>1.0</code> のように自分でバージョンを振っておくと、更新して壊れたときに前の版へ戻せる（<a href="#c10-5">10.5節</a>）。<code>CMD</code> に <code>daemon off;</code> を渡しているのは、nginxを背面に回さず前面で動かし続けるためである。コンテナは「最初のプロセスが終わったら終了する」ので、サービスを背面に回してしまうとコンテナが即座に終了する。これはコンテナ初学者がつまずく定番である。</p>
+      <div class="call note"><span class="ct">Note</span><p>※ ビルドしたイメージをそのままcomposeから使うこともできる。サービスの <code>image:</code> の代わりに <code>build: .</code> と書くと、<code>docker compose up -d --build</code> でビルドから起動までを一括で行える。<a href="../day6.html#s6-1">第6回 6-1</a>で自作イメージに挑戦する場合の入口である。</p></div>
+      <dl class="term"><dt>Dockerfile</dt><dd>イメージの作り方を1行ずつ書いた設計図。<code>FROM</code> で土台を選び、<code>RUN</code> や <code>COPY</code> で中身を積み、<code>docker build -t 名前:タグ .</code> でイメージにする。</dd></dl>
+      <dl class="term"><dt>レジストリ<small>registry / Docker Hub</small></dt><dd>イメージを保管して配布する場所。<code>nginx:alpine</code> のようにレジストリ名を省くとDocker Hubが使われ、<code>lscr.io/linuxserver/luanti</code> は lscr.io というレジストリを明示した書き方である。</dd></dl>
+
+      <h2 id="c10-add-4"><span class="no">10.12</span>構成管理とクラウドの入口</h2>
+      <p>ここは実習の範囲を超えた一般的な基礎知識である。コマンドを打つ必要はないが、<code>compose.yaml</code> でつかんだ感覚がこの先どこへつながるのかを知っておくと、次に何を学ぶかを決めやすい。</p>
+
+      <h3 id="c10-add-4-a">Infrastructure as Code と Ansible</h3>
+      <p><a href="#c10-4">10.4節</a>で述べたとおり、構成をコードとして書き、バージョン管理し、何度でも同じ環境を再現するのがInfrastructure as Code（IaC）である。<code>compose.yaml</code> が扱えるのはコンテナの構成だけだが、OSそのものの設定、すなわちユーザの作成、パッケージの導入、ufwのルール、ユニットファイルの配置まで含めてコードにしたい場面がある。そこで使われる代表的な道具がAnsibleである。</p>
+      <p>Ansibleは、管理する側のマシンからSSHで相手のサーバに接続し、YAMLで書いた手順書（Playbook）のとおりの状態にする。相手側に専用のソフトを入れなくてよいのが特徴で、<a href="../day3.html#s3-7">第3回 3-7</a>で設定した公開鍵認証のSSHがそのまま通り道になる。重要な性質が冪等性で、「同じPlaybookを2回流しても、2回目は何も変更が起きない」ように書く。手順ではなく状態を書くという点は、composeと同じ発想である。</p>
+      <dl class="term"><dt>Ansible<small>Playbook / 冪等性</small></dt><dd>SSH経由でサーバを「あるべき状態」にそろえる構成管理ツール。YAMLで書いた手順書をPlaybookと呼び、同じものを何度流しても結果が変わらないこと（冪等性）を目標に書く。</dd></dl>
+      <div class="call note"><span class="ct">実習ではここで使う</span><p>※ 最終課題のテーマ「構成管理・自動化」がこれにあたる。最小形と発展の例は<a href="appendix.html#ca-5-g">付録A.5 構成管理・自動化</a>にまとめてある。</p></div>
+
+      <h3 id="c10-add-4-b">VPSやクラウドで同じことをするときの違い</h3>
+      <p>この実習で身に付けた手順は、レンタルサーバやクラウド（IaaS）上の仮想サーバでもほぼそのまま通用する。aptもsystemdもufwもDockerも同じである。違うのは、サーバが学内ネットワークの中ではなくインターネットに直接面している点と、使った分だけ課金される点である。</p>
+      <div class="scroll">
+      <table class="tbl">
+        <thead><tr><th>観点</th><th>実習のRaspberry Pi</th><th>VPS・クラウド</th></tr></thead>
+        <tbody>
+          <tr><td>アドレス</td><td>学内LANのプライベートIP。外からは届かない</td><td>グローバルIP。世界中から届く（不正アクセスも即座に来る）</td></tr>
+          <tr><td>ファイアウォール</td><td>サーバ内の <code>ufw</code> だけ</td><td>サーバ内の設定に加えて、事業者側のセキュリティグループでも絞る（二重）</td></tr>
+          <tr><td>ログイン</td><td>パスワードでも実害が小さい</td><td>公開鍵認証が事実上必須。パスワード認証は無効化する</td></tr>
+          <tr><td>停止と復旧</td><td>電源を入れ直せばよい</td><td>コンソール機能から操作する。締め出されると復旧手段が限られる</td></tr>
+          <tr><td>費用</td><td>電気代のみ</td><td>稼働時間、通信量、ディスク容量で課金。消し忘れが請求になる</td></tr>
+        </tbody>
+      </table>
+      </div>
+      <dl class="term"><dt>セキュリティグループ<small>security group</small></dt><dd>クラウド事業者が提供する、仮想サーバの手前に置かれるファイアウォール。サーバ内の <code>ufw</code> とは別物なので、両方で許可しないと通信は通らない。</dd></dl>
+      <p>グローバルIPを持つサーバは、公開した直後からSSHへの不正ログイン試行を受ける。これは例外ではなく通常の状態であり、だからこそ公開鍵認証、更新の適用、fail2banといった対策が前提になる（<a href="ch05.html">第5章</a>）。</p>
+
+      <h3 id="c10-add-4-c">公開する前の安全確認リスト</h3>
+      <p>実習の範囲では学内ネットワークに閉じているが、将来どこかでサーバを外に出すときのために、確認すべき点を並べておく。どれも本実習で学んだ原則の再確認である。</p>
+      <ul>
+        <li>開いているポートを自分で説明できるか。<code>sudo ss -tulnp</code> と <code>sudo ufw status numbered</code> の結果を突き合わせ、理由を言えないポートは閉じる。</li>
+        <li>SSHはパスワード認証を無効にし、rootログインを禁止しているか（<code>PermitRootLogin no</code>）。設定を変える前に、締め出されたときの復旧手段を確認したか。</li>
+        <li>初期パスワードや既定のアカウントが残っていないか。Luantiの管理者名（<code>name</code>）は自分で先に登録したか（<a href="ch11.html#c11-4">第11章 11.4</a>）。</li>
+        <li>更新を当てる仕組みがあるか。ホストは <code>apt upgrade</code>、コンテナは <code>docker compose pull</code> と <code>up -d</code> が定期的に回っているか。</li>
+        <li>バックアップがあり、実際に復元して確かめたか（<a href="../day4.html#s4-4">第4回 4-4</a>）。</li>
+        <li>公開ディレクトリに秘密情報を置いていないか。<code>compose.yaml</code> やスクリプトをGitに上げるとき、パスワードや鍵を含めていないか。</li>
+        <li>ログを見る習慣があるか。誰が入ってきているかを知らないサーバは、壊れていることに気付けない。</li>
+      </ul>
+      <div class="call warn"><span class="ct">注意</span><p>※ 本実習のサーバを学外に公開してはならない。ルータのポート開放やDDNSの利用は<a href="../index.html#rules-4">2.4 ネットワーク利用上の注意</a>の規則に反する。上のリストは、卒業後や自宅の環境で自分の責任において公開するときのためのものである。</p></div>
 
       <nav class="pager" aria-label="前後のページ">
         <a class="prev" href="ch09.html"><span class="pl">前へ</span><span class="pt">シェルスクリプト入門</span></a>

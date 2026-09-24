@@ -25,7 +25,7 @@
         .code (terminal): copies only the .in lines, without the prompt and without .c comments.
         .code.file        : copies the whole code text verbatim. */
   function textOf(block){
-    var code = block.querySelector('code');
+    var code = block.querySelector('pre code');
     if (!code) return '';
     if (block.classList.contains('file')){
       return code.textContent.replace(/\s+$/,'') + '\n';
@@ -65,6 +65,7 @@
     (function(block){
       var head = block.querySelector('.code-head');
       if (!head) return;
+      if (!textOf(block).trim()){ block.classList.add('noin'); return; }
       var btn = head.querySelector('.copy');
       if (!btn){
         btn = document.createElement('button');
@@ -151,7 +152,8 @@
       ['ref/ch09.html','第9章','シェルスクリプト入門'],
       ['ref/ch10.html','第10章','仮想化とコンテナ'],
       ['ref/ch11.html','第11章','Luantiサーバの技術'],
-      ['ref/appendix.html','付録','さらに学ぶために', 'appx']
+      ['ref/appendix.html','付録','さらに学ぶために', 'appx'],
+      ['ref/glossary.html','用語集','115語を章ごとに一覧・検索', 'appx']
     ];
     var menus = [];
     var closeAll = function(except){
@@ -193,5 +195,265 @@
       if (!inside) closeAll(null);
     });
     document.addEventListener('keydown', function(e){ if (e.key === 'Escape'){ closeAll(null); if (document.activeElement) document.activeElement.blur(); } });
+  }
+  /* 5. glossary filter */
+  var q = document.getElementById('glo-q');
+  if (q){
+    var cards = document.querySelectorAll('.glo .term');
+    var groups = document.querySelectorAll('.glo');
+    var none = document.getElementById('glo-none');
+    var run = function(){
+      var v = q.value.trim().toLowerCase();
+      var shown = 0;
+      for (var i = 0; i < cards.length; i++){
+        var hit = !v || (cards[i].getAttribute('data-k') || '').indexOf(v) !== -1;
+        cards[i].hidden = !hit; if (hit) shown++;
+      }
+      for (var g = 0; g < groups.length; g++){
+        var any = groups[g].querySelector('.term:not([hidden])');
+        groups[g].hidden = !any;
+        var h = groups[g].previousElementSibling;
+        if (h && h.tagName === 'H2') h.hidden = !any;
+      }
+      if (none) none.hidden = shown > 0;
+    };
+    q.addEventListener('input', run);
+  }
+  /* 6. execution context badge on code blocks */
+  var CTX = {server:'サーバで実行（自分のユーザ）', luanti:'サーバで実行（luantiユーザ）', byod:'BYODで実行', local:'Raspberry Pi 本体で実行（モニタ接続時）', chat:'ゲーム内チャットで入力', file:'ファイルの内容（エディタに貼り付け）'};
+  var cblocks = document.querySelectorAll('.code[data-ctx]');
+  for (var c = 0; c < cblocks.length; c++){
+    var ctx = cblocks[c].getAttribute('data-ctx'), head = cblocks[c].querySelector('.code-head');
+    if (!head || !CTX[ctx]) continue;
+    var strip = document.createElement('span'); strip.className = 'ctx ctx-' + ctx;
+    var lab = document.createElement('span'); lab.className = 'ctx-l'; lab.textContent = CTX[ctx]; strip.appendChild(lab);
+    var cwd = cblocks[c].getAttribute('data-cwd');
+    if (cwd){ var cw = document.createElement('code'); cw.className = 'ctx-cwd'; cw.textContent = (ctx === 'file' ? '' : 'cd ') + cwd; strip.appendChild(cw); }
+    var ttl = head.querySelector('.code-title');
+    if (ttl && ttl.nextSibling) head.insertBefore(strip, ttl.nextSibling); else head.appendChild(strip);
+  }
+
+  /* 7. progress: real check boxes on 確認項目 and ここまでの確認, saved in localStorage['lab-progress'] */
+  var PK = 'lab-progress';
+  function loadP(){ try { return JSON.parse(localStorage.getItem(PK) || '{}') || {}; } catch(e){ return {}; } }
+  function saveP(p){ try { localStorage.setItem(PK, JSON.stringify(p)); } catch(e){} }
+  var page = (location.pathname.split('/').pop() || 'index.html').replace('.html','');
+  var dayNo = /^day(\d)$/.test(page) ? RegExp.$1 : null;
+  if (dayNo){
+    var P = loadP(); P[page] = P[page] || {};
+    var groups2 = [['check', document.querySelectorAll('ul.check li')], ['mini', document.querySelectorAll('.mini li')]];
+    var pad = function(n){ return (n < 10 ? '0' : '') + n; };
+    var summary = null;
+    var refresh = function(){
+      var st = P[page];
+      var d = 0, t = 0; for (var i = 0; i < (st.check || []).length; i++){ t++; if (st.check[i]) d++; }
+      st.checkTotal = t; st.checkDone = d;
+      var md = 0, mt = 0; for (var j = 0; j < (st.mini || []).length; j++){ mt++; if (st.mini[j]) md++; }
+      st.miniTotal = mt; st.miniDone = md; st.updated = Date.now();
+      saveP(P);
+      if (summary){ summary.textContent = '確認項目 ' + d + ' / ' + t + '　ここまでの確認 ' + md + ' / ' + mt; }
+    };
+    for (var g = 0; g < groups2.length; g++){
+      var kind = groups2[g][0], items2 = groups2[g][1];
+      var arr = P[page][kind] = P[page][kind] || [];
+      while (arr.length < items2.length) arr.push(false);
+      arr.length = items2.length;
+      for (var i2 = 0; i2 < items2.length; i2++){
+        (function(li, idx, kind){
+          var cb = document.createElement('input'); cb.type = 'checkbox'; cb.className = 'pcb'; cb.checked = !!P[page][kind][idx];
+          cb.setAttribute('aria-label', '達成した');
+          var lbl = document.createElement('label'); lbl.className = 'plabel';
+          while (li.firstChild) lbl.appendChild(li.firstChild);
+          li.appendChild(cb); li.appendChild(lbl); li.classList.toggle('on', cb.checked);
+          cb.addEventListener('change', function(){ P[page][kind][idx] = cb.checked; li.classList.toggle('on', cb.checked); refresh(); });
+          lbl.addEventListener('click', function(e){ if (e.target.closest('a, button')) return; cb.checked = !cb.checked; cb.dispatchEvent(new Event('change')); });
+          if (kind === 'check'){
+            var tb = document.createElement('button'); tb.type = 'button'; tb.className = 'tpl';
+            tb.textContent = '記録テンプレをコピー'; tb.title = '実験記録の雛形（日時・回・確認項目番号入り）をコピー';
+            tb.addEventListener('click', function(e){
+              e.stopPropagation();
+              var now = new Date();
+              var text = '[' + pad(now.getMonth() + 1) + '/' + pad(now.getDate()) + ' ' + pad(now.getHours()) + ':' + pad(now.getMinutes()) + '] 第' + dayNo + '回 確認項目' + (idx + 1) + '\nコマンド: \n結果 : \nメモ : \n';
+              var ok = function(){ tb.classList.add('ok'); tb.textContent = 'コピーしました'; setTimeout(function(){ tb.classList.remove('ok'); tb.textContent = '記録テンプレをコピー'; }, 1600); };
+              if (navigator.clipboard && window.isSecureContext) navigator.clipboard.writeText(text).then(ok, function(){ if (fallbackCopy(text)) ok(); });
+              else if (fallbackCopy(text)) ok();
+            });
+            li.appendChild(tb);
+          }
+        })(items2[i2], i2, kind);
+      }
+    }
+    var checkUl = document.querySelector('ul.check');
+    if (checkUl){
+      var pbarEl = document.createElement('div'); pbarEl.className = 'pbar';
+      summary = document.createElement('span'); summary.className = 'psum';
+      var rs = document.createElement('button'); rs.type = 'button'; rs.className = 'preset'; rs.textContent = 'この回の記録をリセット';
+      rs.addEventListener('click', function(){
+        var ins = document.querySelectorAll('.pcb');
+        for (var k = 0; k < ins.length; k++){ if (ins[k].checked){ ins[k].checked = false; ins[k].dispatchEvent(new Event('change')); } }
+      });
+      pbarEl.appendChild(summary); pbarEl.appendChild(rs);
+      checkUl.parentNode.insertBefore(pbarEl, checkUl);
+    }
+    refresh();
+  }
+  /* progress on the lab index cards (shown from the start; totals fall back to the static counts) */
+  var cards = document.querySelectorAll('a.dcard[href^="day"]');
+  if (cards.length){
+    var PP = loadP(), TOT = {day1:4, day2:3, day3:5, day4:4, day5:5};
+    var tot = 0, done = 0;
+    for (var cd = 0; cd < cards.length; cd++){
+      var key = cards[cd].getAttribute('href').replace('.html',''), st2 = PP[key] || {};
+      var t2 = st2.checkTotal || TOT[key] || 0, d2 = st2.checkDone || 0;
+      if (!t2) continue;
+      tot += t2; done += d2;
+      var pr = document.createElement('span'); pr.className = 'dprog' + (d2 === t2 ? ' done' : '');
+      var pct = Math.round(100 * d2 / t2);
+      pr.innerHTML = '<span class="track"><i style="width:' + pct + '%"></i></span><b>確認項目 ' + d2 + ' / ' + t2 + (d2 === t2 ? '　達成' : '') + '</b>';
+      cards[cd].appendChild(pr);
+    }
+    var daysH = document.getElementById('days');
+    if (daysH && tot){
+      var ov = document.createElement('div'); ov.className = 'overall';
+      var pc = Math.round(100 * done / tot);
+      ov.innerHTML = '<div class="ov-row"><b>全6回の確認項目</b><span>' + done + ' / ' + tot + '（' + pc + '%）' + (done === tot ? '　すべて達成' : '') + '</span></div><div class="ov-bar"><i style="width:' + pc + '%"></i></div>' +
+        '<p class="ov-note">確認項目は<a href="day6.html#s6-4">最終課題の提出物</a>（実験記録）の一部になる。各ページ末尾の「確認項目」にチェックを入れると、この画面に進み具合が表示される（記録はこのブラウザにだけ保存される）。</p>';
+      daysH.parentNode.insertBefore(ov, daysH.nextSibling);
+    }
+  }
+
+  /* 8. 詰まったら: floating trouble finder */
+  var relRoot = (function(){ var a = document.querySelector('header.bar .barlinks a'); var m2 = /^((?:\.\.\/)*)index\.html$/.exec(a ? a.getAttribute('href') || '' : ''); return m2 ? m2[1] : ''; })();
+  if (document.querySelector('main.page')){
+    var fab = document.createElement('button'); fab.type = 'button'; fab.className = 'help-fab'; fab.setAttribute('aria-expanded', 'false');
+    fab.innerHTML = '<svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M9.5 9.5a2.5 2.5 0 1 1 3.5 2.3c-.7.3-1 .8-1 1.5"/><circle cx="12" cy="17" r=".6"/></svg>詰まったら';
+    var pan = document.createElement('div'); pan.className = 'help-panel'; pan.hidden = true; pan.setAttribute('role', 'dialog'); pan.setAttribute('aria-label', 'つまずきポイントを探す');
+    pan.innerHTML = '<div class="hp-head"><b>症状から探す</b><button type="button" class="hp-close" aria-label="閉じる">×</button></div>' +
+      '<input type="search" class="hp-q" placeholder="例: Permission denied, ssh, 起動しない">' +
+      '<div class="hp-list"></div>' +
+      '<p class="hp-foot">見つからなければ <a href="' + relRoot + 'appendix.html#b">付録B トラブルシューティングFAQ</a> へ。それでも解決しなければ教員・支援員へ。</p>';
+    document.body.appendChild(fab); document.body.appendChild(pan);
+    var list = pan.querySelector('.hp-list'), hq = pan.querySelector('.hp-q'), data = null;
+    var here2 = location.pathname.split('/').pop() || 'index.html';
+    var render = function(){
+      var v = (hq.value || '').trim().toLowerCase(); list.innerHTML = '';
+      if (!data){ list.innerHTML = '<p class="hp-empty">読み込み中…</p>'; return; }
+      var groupsT = {}, order = [];
+      for (var i = 0; i < data.length; i++){
+        var e = data[i]; var hay = (e.symptom + ' ' + (e.tags || []).join(' ')).toLowerCase();
+        if (v && hay.indexOf(v) === -1) continue;
+        var gk = e.page; if (!groupsT[gk]){ groupsT[gk] = []; order.push(gk); }
+        groupsT[gk].push(e);
+      }
+      if (!order.length){ list.innerHTML = '<p class="hp-empty">該当する症状がありません。</p>'; return; }
+      order.sort(function(a, b){ return (a === here2 ? -1 : b === here2 ? 1 : 0) || a.localeCompare(b); });
+      for (var o = 0; o < order.length; o++){
+        var pg2 = order[o], h = document.createElement('div'); h.className = 'hp-g';
+        h.textContent = '第' + pg2.replace(/\D/g, '') + '回' + (pg2 === here2 ? '（このページ）' : ''); list.appendChild(h);
+        for (var k2 = 0; k2 < groupsT[pg2].length; k2++){
+          var it = groupsT[pg2][k2], a2 = document.createElement('a'); a2.className = 'hp-i';
+          a2.href = (pg2 === here2 ? '' : relRoot + pg2) + '#' + it.id; a2.textContent = it.symptom; list.appendChild(a2);
+          a2.addEventListener('click', function(){ setHelp(false); });
+        }
+      }
+    };
+    var setHelp = function(o){ pan.hidden = !o; fab.setAttribute('aria-expanded', o ? 'true' : 'false'); document.body.classList.toggle('help-open', o); if (o){ render(); setTimeout(function(){ hq.focus(); }, 50); } };
+    fab.addEventListener('click', function(){
+      setHelp(pan.hidden);
+      if (!data){
+        var fb = function(){ data = []; var pits = document.querySelectorAll('.call.pit[id]'); for (var q = 0; q < pits.length; q++){ var p1 = pits[q].querySelector('p'); data.push({symptom:(p1 ? p1.textContent : '').slice(0, 26), page:here2, id:pits[q].id}); } render(); };
+        if (window.fetch){ fetch(relRoot + 'trouble.json').then(function(r){ return r.json(); }).then(function(j){ data = j; render(); }).catch(fb); } else fb();
+      }
+    });
+    pan.querySelector('.hp-close').addEventListener('click', function(){ setHelp(false); });
+    hq.addEventListener('input', render);
+    document.addEventListener('keydown', function(e){ if (e.key === 'Escape' && !pan.hidden) setHelp(false); });
+  }
+
+  /* 9. term tooltips: first mention of each glossary term in the body text */
+  var docEl = document.querySelector('.doc');
+  if (docEl && !document.getElementById('glo-q') && window.fetch){
+    fetch(relRoot + 'terms.json').then(function(r){ return r.json(); }).then(function(terms){
+      terms.sort(function(a, b){ return b.term.length - a.term.length; });
+      var tip = document.createElement('div'); tip.className = 'ttip'; tip.hidden = true; document.body.appendChild(tip);
+      var skip = function(n){ for (var p = n.parentNode; p && p !== docEl; p = p.parentNode){ var tg = p.tagName; if (/^(A|CODE|KBD|PRE|H1|H2|H3|BUTTON|DT|VAR|SUMMARY)$/.test(tg)) return true; if (p.classList && (p.classList.contains('code') || p.classList.contains('term') || p.classList.contains('tt') || p.classList.contains('chapintro') || p.classList.contains('flow') || p.classList.contains('pager'))) return true; } return false; };
+      var walker = document.createTreeWalker(docEl, NodeFilter.SHOW_TEXT, null);
+      var nodes = []; var nd; while ((nd = walker.nextNode())) if (nd.nodeValue.trim().length > 1 && !skip(nd)) nodes.push(nd);
+      var used = {};
+      for (var t2 = 0; t2 < terms.length; t2++){
+        var T = terms[t2]; if (T.term.length < 2 || used[T.term]) continue;
+        for (var n2 = 0; n2 < nodes.length; n2++){
+          var tn = nodes[n2]; if (!tn.parentNode) continue;
+          var pos = tn.nodeValue.indexOf(T.term); if (pos === -1) continue;
+          var after = tn.splitText(pos), rest = after.splitText(T.term.length);
+          var sp = document.createElement('span'); sp.className = 'tt'; sp.tabIndex = 0; sp.setAttribute('data-def', T.def); sp.setAttribute('data-src', T.chapter); sp.textContent = T.term;
+          after.parentNode.replaceChild(sp, after);
+          nodes.splice(n2, 1, tn, rest); used[T.term] = true; break;
+        }
+      }
+      var show = function(el){
+        tip.innerHTML = '<b></b><span></span><a></a>';
+        tip.querySelector('b').textContent = el.textContent; tip.querySelector('span').textContent = el.getAttribute('data-def');
+        var la = tip.querySelector('a'); la.href = relRoot + 'ref/' + el.getAttribute('data-src') + '.html'; la.textContent = '用語集・該当章へ';
+        tip.hidden = false;
+        var r = el.getBoundingClientRect(), tw = Math.min(360, window.innerWidth - 24);
+        tip.style.width = tw + 'px';
+        var left = Math.max(12, Math.min(r.left, window.innerWidth - tw - 12));
+        tip.style.left = left + 'px';
+        var th = tip.offsetHeight;
+        tip.style.top = (r.top - th - 8 > 80 ? r.top - th - 8 : r.bottom + 8) + window.pageYOffset + 'px';
+      };
+      var hideT = function(){ tip.hidden = true; };
+      var hoverable = window.matchMedia && window.matchMedia('(hover:hover)').matches;
+      var tts = docEl.querySelectorAll('.tt');
+      for (var u = 0; u < tts.length; u++){
+        (function(el){
+          if (hoverable){ el.addEventListener('mouseenter', function(){ show(el); }); el.addEventListener('mouseleave', hideT); }
+          el.addEventListener('focus', function(){ show(el); }); el.addEventListener('blur', hideT);
+          el.addEventListener('click', function(e){ e.preventDefault(); if (tip.hidden) show(el); else hideT(); });
+        })(tts[u]);
+      }
+      tip.addEventListener('mouseenter', function(){ tip.hidden = false; }); tip.addEventListener('mouseleave', hideT);
+      document.addEventListener('click', function(e){ if (!e.target.closest('.tt, .ttip')) hideT(); });
+    }).catch(function(){});
+  }
+
+  /* 10. mobile: pin the current "いま何をするか" line to the bottom while its code block is on screen */
+  var whys = document.querySelectorAll('.why');
+  if (whys.length && 'IntersectionObserver' in window){
+    var nb = document.createElement('div'); nb.className = 'nowbar'; nb.hidden = true; document.body.appendChild(nb);
+    var map = [], cur = null;
+    for (var w2 = 0; w2 < whys.length; w2++){
+      var nxt = whys[w2].nextElementSibling; if (nxt && nxt.classList.contains('code')) map.push({why:whys[w2], code:nxt});
+    }
+    var io2 = new IntersectionObserver(function(entries){
+      for (var e2 = 0; e2 < entries.length; e2++){
+        for (var m3 = 0; m3 < map.length; m3++){
+          if (map[m3].code !== entries[e2].target) continue;
+          if (entries[e2].isIntersecting){ cur = map[m3]; nb.textContent = ''; var bb = document.createElement('b'); bb.textContent = 'いま：'; nb.appendChild(bb); nb.appendChild(document.createTextNode(map[m3].why.textContent.replace(/^いま何をするか：/, '').trim())); nb.hidden = false; }
+          else if (cur === map[m3]){ cur = null; nb.hidden = true; }
+        }
+      }
+    }, {rootMargin:'-70px 0px -20% 0px', threshold:0});
+    for (var m4 = 0; m4 < map.length; m4++) io2.observe(map[m4].code);
+  }
+  /* 12. figure lightbox */
+  var figs = document.querySelectorAll('figure img');
+  if (figs.length){
+    var lb = document.createElement('div'); lb.className = 'lb'; lb.hidden = true;
+    lb.innerHTML = '<button type="button" class="lb-x" aria-label="閉じる">×</button><img alt=""><p class="lb-cap"></p>';
+    document.body.appendChild(lb);
+    var lbImg = lb.querySelector('img'), lbCap = lb.querySelector('.lb-cap');
+    var closeLb = function(){ lb.hidden = true; document.body.classList.remove('lb-open'); };
+    var openLb = function(img){ lbImg.src = img.currentSrc || img.src; lbImg.alt = img.alt; var fc = img.parentNode.querySelector('figcaption'); lbCap.textContent = fc ? fc.textContent : img.alt; lb.hidden = false; document.body.classList.add('lb-open'); lb.querySelector('.lb-x').focus(); };
+    for (var fi = 0; fi < figs.length; fi++){
+      (function(img){
+        img.classList.add('zoomable'); img.tabIndex = 0; img.setAttribute('role', 'button'); img.title = 'クリックで拡大';
+        img.addEventListener('click', function(){ openLb(img); });
+        img.addEventListener('keydown', function(e){ if (e.key === 'Enter' || e.key === ' '){ e.preventDefault(); openLb(img); } });
+      })(figs[fi]);
+    }
+    lb.addEventListener('click', function(e){ if (e.target !== lbImg) closeLb(); });
+    document.addEventListener('keydown', function(e){ if (e.key === 'Escape' && !lb.hidden) closeLb(); });
   }
 })();
