@@ -68,12 +68,13 @@
       <p>本回のゴールは次のとおりである：<a href="day2.html">第2回</a>で1時間かけた構築を、設定ファイル1枚と1コマンドで再現する。ただしワールドデータは<a href="day4.html">第4回</a>のバックアップから引き継ぐ。「環境は使い捨て、データは資産」、これがコンテナを用いた運用の基本的な考え方である。</p>
 
       <h2 id="s5-2"><span class="no">5-2</span>Dockerのインストールと基本操作</h2>
-      <p class="why"><b>いま何をするか：</b>公式スクリプトでDocker本体を入れ、自分のユーザをdockerグループに入れてから、hello-worldで動作を確かめる。</p>
+      <p class="why"><b>いま何をするか：</b>公式スクリプトでDocker本体を入れ、自分のユーザをdockerグループに入れてから、hello-worldで動作を確かめる。exit で一度切断し、SSHで入り直してから hello-world を実行する。</p>
       <div class="code" data-ctx="server">
   <div class="code-head"><span class="code-title">Dockerのインストール</span></div>
 <pre><code><span class="in">curl -fsSL https://get.docker.com | sh <span class="c"># 公式スクリプトでインストール</span></span>
 <span class="in">sudo usermod -aG docker $USER <span class="c"># sudoなしでdockerを使えるようにする</span></span>
 <span class="in">exit <span class="c"># 一度ログアウトして入り直す（グループ反映）</span></span>
+<span class="cm">（ここで ssh <var>ユーザ名</var>@<var>ホスト名</var>.local で接続し直す）</span>
 <span class="in">docker run hello-world <span class="c"># 動作確認</span></span>
 <span class="out">Hello from Docker! ... <span class="c"># ←これが出ればOK</span></span></code></pre>
       </div>
@@ -89,6 +90,7 @@
         <tr><td><code>docker stop／start コンテナ名</code></td><td>コンテナの停止／起動</td></tr>
         <tr><td><code>docker rm コンテナ名</code></td><td>コンテナの削除</td></tr>
       </tbody></table>
+      <p>ほかのコマンドやオプションは<a href="ref/ch10.html#c10-add-1">第10章 10.9 docker コマンドリファレンス</a>にまとめてある。</p>
       <div class="mini"><span class="ct">ここまでの確認</span><ul>
         <li><code>sudo</code> を付けずに <code>docker ps</code> が実行でき、エラーにならない</li>
         <li><code>docker run hello-world</code> で「Hello from Docker!」が表示された</li>
@@ -104,7 +106,7 @@
 <span class="in">sudo systemctl disable luanti</span></code></pre>
       </div>
       <div class="call pit" id="pit-d5-2"><span class="ct">つまずきポイント</span><p>この2行を飛ばすと、あとでコンテナが起動できない。<strong>30000/udp を使えるのは1つのプロセスだけ</strong>であり、第2回のサービスが動いたままだとコンテナ側がポートを確保できずに落ちる（<code>docker compose logs</code> に address already in use や bind の失敗が出る）。</p>
-        <p><code>stop</code> はいま止めるだけ、<code>disable</code> は次の起動時に自動で立ち上がらないようにする設定である。<code>disable</code> を忘れると、再起動した瞬間に旧サービスが復活してコンテナとポートを奪い合う（背景は<a href="ref/ch06.html#c6-2">第6章 6-2</a>）。</p></div>
+        <p><code>stop</code> はいま止めるだけ、<code>disable</code> は次の起動時に自動で立ち上がらないようにする設定である。<code>disable</code> を忘れると、再起動した瞬間に旧サービスが復活してコンテナとポートを奪い合う（背景は<a href="ref/ch06.html#c6-2">第6章 6.2</a>）。</p></div>
       <p>作業ディレクトリを作り、viで<code>compose.yaml</code>を作成する。</p>
       <div class="code" data-ctx="server" data-cwd="~">
   <div class="code-head"><span class="code-title">作業ディレクトリの作成</span></div>
@@ -132,12 +134,12 @@
       <div class="call pit" id="pit-d5-3"><span class="ct">つまずきポイント</span><p>YAMLは書き方に厳しい。写し間違えやすいのは次の3点である。</p>
         <ul>
           <li>インデントは<strong>半角スペースだけ</strong>で、タブは使えない。<code>vi</code> でタブを入れると起動時に yaml のエラーになる。階層は上の行より深く、同じ階層は必ず同じ桁にそろえる。</li>
-          <li><code>"30000:30000/udp"</code> の <code>/udp</code> を落とすとTCPの30000番が開いてしまい、ポートは開いているように見えるのにクライアントから繋がらない。LuantiはUDPを使う（<a href="ref/ch07.html#c7-4">第7章 7-4</a>）。</li>
-          <li>ボリュームの左側は <code>./data</code> のように <code>./</code>（またはフルパス）で書く。<code>data:/config/.minetest</code> と書くとホストのディレクトリではなく、Dockerが管理する別の場所に作られてしまい、<code>~/game/data</code> を見てもファイルが増えない。</li>
+          <li><code>"30000:30000/udp"</code> の <code>/udp</code> を落とすとTCPの30000番が開いてしまい、ポートは開いているように見えるのにクライアントから繋がらない。LuantiはUDPを使う（<a href="ref/ch07.html#c7-4">第7章 7.4</a>）。</li>
+          <li>ボリュームの左側は <code>./data</code> のように <code>./</code>（またはフルパス）で書く。<code>data:/config/.minetest</code> と書くと名前付きボリュームの指定と解釈され、<code>refers to undefined volume data</code> というエラーで起動できない。</li>
         </ul>
         <p>書き換えたあとは <code>docker compose config</code> で解釈結果を表示させると、思ったとおりに読めているか確認できる。それでもコンテナが起動しない、起動してもすぐ消えるというときは、<code>docker ps -a</code> で Exited になっていないかを見て、<code>docker compose logs -f</code> でログを読む（<kbd>Ctrl</kbd>+<kbd>C</kbd>で表示を止めてもコンテナは動いたままである）。失敗の原因はログの最後の数行にほぼ書かれている（読み方は<a href="ref/ch10.html#c10-8">第10章 10.8</a>）。</p></div>
       <p>このイメージにはゲーム（Minetest Game）が含まれていないため、<a href="day2.html">第2回</a>でaptから導入したものをボリュームに配置する。これも「データは資産」の実践である。コピー元は<a href="day2.html#s2-2">第2回 2-2</a>の対応表の「ゲームの場所」である。</p>
-      <p>ディレクトリ名は <code>minetest_game</code> だが、Luanti はこれを gameid「minetest」として認識する（第2回の <code>luantiserver --gameid list</code> でも minetest と表示された）ので、<code>compose.yaml</code> の <code>--gameid</code> は minetest のままでよい。</p>
+      <p>ディレクトリ名は <code>minetest_game</code> だが、Luanti はこれを gameid「minetest」として認識する（試しに <code>luantiserver --gameid list</code> を実行すると、minetest と表示される）ので、<code>compose.yaml</code> の <code>--gameid</code> は minetest のままでよい。</p>
       <p class="why"><b>いま何をするか：</b>ホスト側にあるゲーム本体を、ボリュームとして見える <code>data/games</code> にコピーして、コンテナから読めるようにする。</p>
       <div class="code" data-ctx="server" data-cwd="~/game">
   <div class="code-head"><span class="code-title">ゲームデータの配置</span></div>
@@ -164,15 +166,17 @@
       <p class="why"><b>いま何をするか：</b>コンテナを一旦止め、バックアップのワールドを <code>data/worlds</code> に展開し、所有者をコンテナの実行ユーザに合わせてから起動し直す。</p>
       <div class="code" data-ctx="server" data-cwd="~/game">
   <div class="code-head"><span class="code-title">ワールドデータの移行</span></div>
-<pre><code><span class="in">docker compose down <span class="c"># 一旦停止</span></span>
+<pre><code><span class="in">sudo ls -lt /home/luanti/backup | head -n 3 <span class="c"># 最新のファイル名を確かめる</span></span>
+<span class="in">docker compose down <span class="c"># 一旦停止</span></span>
 <span class="in">mkdir -p data/worlds</span>
 <span class="in">sudo tar xzf /home/luanti/backup/world_<var>最新</var>.tar.gz -C data/worlds</span>
 <span class="in">sudo chown -R 1000:1000 data/worlds <span class="c"># PUIDに合わせる</span></span>
 <span class="in">docker compose up -d</span></code></pre>
       </div>
+      <div class="call note"><span class="ct">補足</span><p>※ 5-3で自動生成された新しいワールドのファイルが残ることがある。気になる場合は展開前に <code>data/worlds/world</code> を消してから展開する。</p></div>
       <p>クライアントから接続し、自分の建築物がコンテナ版サーバに引き継がれていることを確認しよう。</p>
       <div class="call pit" id="pit-d5-4"><span class="ct">つまずきポイント</span><p>ワールドを置いたのにコンテナが読み書きできない、ログに Permission denied が出る、という失敗の原因はほぼ<strong>所有者（UID）のずれ</strong>である。<code>sudo tar</code> で展開したファイルは元の所有者（第3回で作った <code>luanti</code> ユーザなど）のまま復元されるため、<code>chown -R 1000:1000</code> で <code>PUID</code>／<code>PGID</code> に合わせる必要がある。</p>
-        <p>コンテナの中と外でユーザ名は共有されず、一致するのは数字のUIDだけである。自分のユーザが1000番かどうかは <code>id -u</code> で確かめられる。1000でなければ <code>compose.yaml</code> の <code>PUID</code>／<code>PGID</code> と <code>chown</code> の数字を自分の値にそろえること（所有者とパーミッションの背景は<a href="ref/ch05.html#c5-3">第5章 5-3</a>）。</p>
+        <p>コンテナの中と外でユーザ名は共有されず、一致するのは数字のUIDだけである。自分のユーザが1000番かどうかは <code>id -u</code> で確かめられる。1000でなければ <code>compose.yaml</code> の <code>PUID</code>／<code>PGID</code> と <code>chown</code> の数字を自分の値にそろえること（所有者とパーミッションの背景は<a href="ref/ch05.html#c5-3">第5章 5.3</a>）。</p>
         <p>展開先も取り違えやすい。<code>data/worlds/</code> の直下にワールドのディレクトリ（中に <code>map.sqlite</code> や <code>world.mt</code> がある）が来る形が正しい。<code>ls data/worlds</code> で階層が1段深くなっていないか確認しよう。</p></div>
       <p>もう一つ、忘れてはならない資産がある。<a href="day2.html#s2-4">第2回 2-4</a>に書いた設定ファイル <code>luanti.conf</code> である。管理者の判定（name）は「接続してきた名前が設定ファイルの name と一致するか」で毎回行われ、<code>auth.sqlite</code> には保存されない。</p>
       <p>つまり設定ファイルを移さないと、コンテナ版では<strong>管理者が不在になり</strong>、空パスワード禁止（disallow_empty_password）などの設定も外れてしまう。このイメージは <code>/config/.minetest/main-config/minetest.conf</code>（ホスト側では <code>data/main-config/minetest.conf</code>）を設定ファイルとして読むので、そこへ内容を写す。</p>
@@ -188,7 +192,7 @@
       <p>クライアントから接続し直し、管理者の名前で <code>/status</code> などの管理コマンドが実行できること、motd が表示されることを確認しよう。「環境は使い捨て、データは資産」、ワールドだけでなく設定ファイルも資産である（設定とデータの構造は<a href="ref/ch11.html#c11-5">第11章 11.5</a>）。</p>
       <div class="mini"><span class="ct">ここまでの確認</span><ul>
         <li>クライアントから入ると、第4回までに育てた自分の建築物がそのまま残っている</li>
-        <li><code>ls -l data/worlds data/main-config</code> の所有者がすべて <code>PUID</code> と同じ数字（既定では1000）になっている</li>
+        <li><code>ls -ln data/worlds data/main-config</code> の所有者とグループの列が、<code>PUID</code>・<code>PGID</code> と同じ数字（既定では <code>1000 1000</code>）になっている</li>
         <li>管理者の名前で接続すると motd が表示され、<code>/status</code> などの管理コマンドが通る</li>
       </ul></div>
 
@@ -213,14 +217,14 @@
   <div class="code-head"><span class="code-title">紹介ページの作成と公開</span></div>
 <pre><code><span class="in">mkdir ~/game/html</span>
 <span class="in">vi ~/game/html/index.html <span class="c"># 自分のサーバの紹介ページを書く（内容は自由）</span></span>
-<span class="in">sudo ufw allow 8080/tcp <span class="c"># 開放ポートとして記録（下のNoteを参照）</span></span>
+<span class="in">sudo ufw allow 8080/tcp <span class="c"># 開放ポートとして記録（下の補足を参照）</span></span>
 <span class="in">docker compose up -d <span class="c"># 追記分だけが起動される</span></span></code></pre>
       </div>
-      <div class="call note"><span class="ct">Note</span><p>※ 実は、Dockerが公開したポート（composeの<code>ports:</code>）は、ufwの許可・拒否ルールを経由せずに外へ開かれる（Dockerがカーネルの転送ルールを直接操作するため）。つまり「ufwで閉じているから安全」はコンテナのポートには当てはまらない。公開するかどうかは <code>ports:</code> の書き方そのもので決まる。ここでufwにも登録するのは、開けているポートを一覧で管理・記録するためである（詳しくは補足資料<a href="ref/ch07.html#c7-5">7-5節</a>）。</p></div>
+      <div class="call note"><span class="ct">補足</span><p>※ 実は、Dockerが公開したポート（composeの<code>ports:</code>）は、ufwの許可・拒否ルールを経由せずに外へ開かれる（Dockerがカーネルの転送ルールを直接操作するため）。つまり「ufwで閉じているから安全」はコンテナのポートには当てはまらない。公開するかどうかは <code>ports:</code> の書き方そのもので決まる。ここでufwにも登録するのは、開けているポートを一覧で管理・記録するためである（詳しくは補足資料<a href="ref/ch07.html#c7-5">7.5節</a>）。</p></div>
       <p>BYODのブラウザから <code>http://ホスト名.local:8080</code> にアクセスし、自分のページが表示されることを確認する。近くの人のページも見に行ってみよう。</p>
       <div class="call pit" id="pit-d5-5"><span class="ct">つまずきポイント</span><p>ページが出ないときは、切り分けを順に行う。<code>docker ps</code> で web のコンテナが Up か、<code>ls ~/game/html</code> にファイルがあるか、<code>http://</code> を付けたか（<code>https://</code> では繋がらない）、ポート番号 <code>:8080</code> を書いたか、の4点である。</p>
-        <p>ufwを有効にしている場合、ホスト自身が待ち受けるポート（第2回で開けた22番など）は <code>sudo ufw allow</code> で明示的に許可しないと閉じたままである。ここで <code>8080/tcp</code> を登録するのは、上のNoteのとおり<strong>開けているポートを自分で一覧管理する</strong>ためでもある。<code>sudo ufw status</code> で記録されたか確かめておこう。</p>
-        <p><code>.local</code> の名前で開けないときは、<code>hostname -I</code> で表示されるIPアドレスを使って <code>http://192.168.…:8080</code> の形で試す（mDNSの背景は<a href="ref/ch07.html#c7-3">第7章 7-3</a>）。</p></div>
+        <p>8080番はDockerが公開しているため、ufw に登録しなくてもページ自体は見える（上の補足のとおり）。それでも <code>sudo ufw allow 8080/tcp</code> を打つのは、開けているポートを <code>ufw status</code> で一覧できるようにするためである。<code>sudo ufw status</code> に <code>8080/tcp</code> が載ったか確かめておこう。</p>
+        <p><code>.local</code> の名前で開けないときは、<code>hostname -I</code> で表示されるIPアドレスを使って <code>http://192.168.…:8080</code> の形で試す（mDNSの背景は<a href="ref/ch07.html#c7-3">第7章 7.3</a>）。</p></div>
       <div class="mini"><span class="ct">ここまでの確認</span><ul>
         <li><code>docker ps</code> に game と web の2つのコンテナが並んでいる</li>
         <li>BYODのブラウザから <code>http://ホスト名.local:8080</code> で自分のページが表示される</li>
@@ -245,14 +249,14 @@
 <pre><code><span class="in">&lt;a href="status.txt"&gt;サーバ稼働状況&lt;/a&gt;</span></code></pre>
       </div>
       <div class="call pit" id="pit-d5-6"><span class="ct">つまずきポイント</span><p>リンクを押しても404になる、中身が古いままだ、という場合は<strong>書き出し先がnginxの公開ディレクトリになっているか</strong>を疑う。nginxが配るのは <code>~/game/html</code> の中身だけなので、<code>status.txt</code> もそこに生まれていなければならない。<code>ls -l ~/game/html/status.txt</code> で、ファイルがあることと時刻が毎分更新されることを確かめる。</p>
-        <p>cronは自分のホームディレクトリから、しかも最小限の環境変数で実行される。<code>cd</code> を省くと <code>html/status.txt</code> はホーム直下に作られてしまい、<code>docker</code> が見つからないときは <code>/usr/bin/docker</code> のようにフルパスで書く。<code>2&gt;&amp;1</code> はエラーも同じファイルに残すための指定で、失敗の原因がそのままページに出る（cronの背景は<a href="ref/ch08.html#c8-3">第8章 8-3</a>）。</p>
+        <p>cronは自分のホームディレクトリから、しかも最小限の環境変数で実行される。<code>cd</code> を省くと <code>html/status.txt</code> はホーム直下に作られてしまい、<code>docker</code> が見つからないときは <code>/usr/bin/docker</code> のようにフルパスで書く。<code>2&gt;&amp;1</code> はエラーも同じファイルに残すための指定で、失敗の原因がそのままページに出る（cronの背景は<a href="ref/ch08.html#c8-3">第8章 8.3</a>）。</p>
         <p>なお <code>./html</code> はコンテナ側から読み取り専用（<code>:ro</code>）で渡しているが、書き込むのはホスト側のcronなので問題はない。</p></div>
       <div class="mini"><span class="ct">ここまでの確認</span><ul>
         <li><code>crontab -l</code> に追記した1行が表示される</li>
         <li>1分ほど待つと <code>~/game/html/status.txt</code> が作られ、<code>docker compose ps</code> と同じ内容が入っている</li>
         <li>ブラウザで紹介ページのリンクから稼働状況が開き、時刻が更新されていく</li>
       </ul></div>
-      <p>発展として、<code>docker compose logs</code> から「joins game」の行を抽出して「最近の入室者」を表示するのも面白い（監視の考え方は<a href="ref/ch08.html#c8-5">第8章 8-5</a>。自由に工夫してみよう）。</p>
+      <p>発展として、<code>docker compose logs</code> から「joins game」の行を抽出して「最近の入室者」を表示するのも面白い（監視の考え方は<a href="ref/ch08.html#c8-5">第8章 8.5</a>。自由に工夫してみよう）。</p>
 
       <h2 id="s5-5"><span class="no">5-5</span>総合演習：資産からの完全再構築</h2>
       <p>5回分の総仕上げとして、「サーバは、設定ファイルとデータさえあれば何度でも作り直せる」ことを自分の手で証明する。<strong>構成資産（<code>compose.yaml</code>・<code>html</code>・設定ファイル・ワールドのバックアップ）だけを残して環境を完全に破棄し</strong>、ゼロから復元しよう。所要時間を計ること。</p>
@@ -263,14 +267,14 @@
         <li>④ 1コマンドで一式を起動する</li>
         <li>⑤ ワールドとWebページの復活を確認し、所要時間を実験記録に残す</li>
       </ul></div>
-      <div class="call note"><span class="ct">Note</span><p>※ 使うコマンドはすべて既出である：tar（<a href="day4.html#s4-1">第4回4-1</a>）、<code>chown -R 1000:1000</code>（<a href="#s5-3">5-3</a>）、<code>docker compose down</code>／<code>up -d</code>（<a href="#s5-2">5-2</a>〜<a href="#s5-4">5-4</a>）。この演習は「手順書なしでも資産から再現できる」ことの証明なので、まず自分の実験記録を見返そう。どうしても手が止まったら、その工程だけ教員・支援員にヒントをもらえばよい。</p></div>
+      <div class="call note"><span class="ct">補足</span><p>※ 使うコマンドはすべて既出である：tar（<a href="day4.html#s4-1">第4回4-1</a>）、<code>chown -R 1000:1000</code>（<a href="#s5-3">5-3</a>）、<code>docker compose down</code>／<code>up -d</code>（<a href="#s5-2">5-2</a>〜<a href="#s5-4">5-4</a>）。この演習は「手順書なしでも資産から再現できる」ことの証明なので、まず自分の実験記録を見返そう。どうしても手が止まったら、その工程だけ教員・支援員にヒントをもらえばよい。</p></div>
       <p>クライアントから接続してワールドが戻っていること、Webページが表示されることを確認し、破棄から復元完了までの所要時間を実験記録に残す。<a href="day2.html">第2回</a>に1時間かけた構築が数分で戻るはずである。これがInfrastructure as Code（補足資料<a href="ref/ch10.html#c10-4">第10章 10.4</a>）の威力の実測値であり、最終課題ではこの記録の質も評価対象になる（<a href="day6.html#s6-5">6-5節の評価基準</a>）。</p>
       <div class="mini"><span class="ct">ここまでの確認</span><ul>
         <li><code>~/game</code> を消したあと、資産を展開して <code>docker compose up -d</code> だけで game と web が復活した</li>
         <li>クライアントからワールドに入れ、建築物とWebページの両方が元どおりである</li>
         <li>破棄から復元完了までの所要時間を実験記録に書いた</li>
       </ul></div>
-      <div class="call note"><span class="ct">Note</span><p>※ 余裕があれば、<a href="day4.html">第4回</a>の「壊して学ぶ」をコンテナ環境でも試してみよう。<code>compose.yaml</code>の<code>ports</code>の数字を変える、<code>PUID</code>を別の値にする、などを仕込むと、<code>docker compose logs</code> での診断練習になる。</p></div>
+      <div class="call note"><span class="ct">補足</span><p>※ 余裕があれば、<a href="day4.html">第4回</a>の「壊して学ぶ」をコンテナ環境でも試してみよう。<code>compose.yaml</code>の<code>ports</code>の数字を変える、<code>PUID</code>を別の値にする、などを仕込むと、<code>docker compose logs</code> での診断練習になる。</p></div>
 
       <h2 id="s5-check">確認項目</h2>
       <p>達成したら日時・実行コマンド・結果を実験記録に残すこと。</p>

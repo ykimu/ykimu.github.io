@@ -53,7 +53,7 @@
         </ul></div>
       </div>
 
-      <h2 id="c8-1"><span class="no">8-1</span>ログ管理</h2>
+      <h2 id="c8-1"><span class="no">8.1</span>ログ管理</h2>
       <p>ログは「サーバに起きたことの記録」であり、障害対応とセキュリティ調査の最重要資料である。Linuxのログは大きく、journald（systemd）が管理するサービスのログと、<code>/var/log</code> 以下のファイルに書かれるログ、アプリケーション自身が書くログに分かれる。サービスのログの読み出し方（<code>journalctl</code>）は<a href="ch06.html#c6-2">第6章 6.2</a>で扱った。</p>
       <p>ログを読むときは、次の3点に注目する。</p>
       <ol>
@@ -69,7 +69,7 @@
         <p class="a">実際には、少しずつ増えるログと、消し忘れたバックアップが原因であることが多い。<code>df -h</code> で使用率を、<code>du -sh *</code> でどのディレクトリが重いかを定期的に見る習慣をつけたい。バックアップスクリプトに世代数の上限を設けるのも同じ理由である（<a href="../day4.html#s4-2">第4回 4-2</a>）。</p>
       </div>
 
-      <h2 id="c8-2"><span class="no">8-2</span>時刻同期（NTP）</h2>
+      <h2 id="c8-2"><span class="no">8.2</span>時刻同期（NTP）</h2>
       <p>複数のコンピュータが連携するシステムでは、時計のずれは致命的である。ログの時刻が信用できなければ障害の再構成ができず、認証や証明書の検証も時刻に依存している。NTP（Network Time Protocol）は、ネットワーク経由で正確な時刻源と同期する仕組みで、原子時計を頂点とした階層構造（stratum）で世界中に時刻を配っている。</p>
       <p>Raspberry Piは電源を切ると時計を保持できない（時計用の電池を持たない）ため、起動時のNTP同期が特に重要である。<code>timedatectl</code> で「System clock synchronized: yes」を確認する習慣をつけたい（<a href="../day4.html#s4-3-a">第4回 4-3 時刻管理（NTP）</a>）。</p>
       <dl class="term"><dt>NTP<small>Network Time Protocol</small></dt><dd>ネットワーク越しに正確な時刻をもらって時計を合わせる仕組み。ログの時刻も、cronが動く時刻も、これが合っていることが前提になっている。</dd></dl>
@@ -78,7 +78,7 @@
         <p class="a">時刻がずれていると、複数の記録を突き合わせて「何が先に起きたか」を再構成できなくなる。バックアップのファイル名に時刻を入れている場合は、世代の順序まで狂う。原因調査の土台が崩れるので、まず <code>timedatectl</code> を確認する。</p>
       </div>
 
-      <h2 id="c8-3"><span class="no">8-3</span>cronによる自動化</h2>
+      <h2 id="c8-3"><span class="no">8.3</span>cronによる自動化</h2>
       <p>cronは指定時刻にコマンドを自動実行する仕組みで、バックアップ、ログ集計、定期レポートなど運用作業の自動化の基本である。スケジュールは「分 時 日 月 曜日」の5フィールドで指定する（<a href="../day4.html#s4-3">第4回 4-3</a>）。</p>
       <p>注意すべきは、cronがあなたのシェルとは別の最小限の環境で動くことである。PATHがほぼ設定されていないため、<b>コマンドもファイルも絶対パスで書く</b>のが原則である。「手で実行すると動くのにcronだと動かない」の原因はほぼこれである。</p>
       <p>また、cronの実行結果を確認する手段（ログへの追記や <code>2&gt;&amp;1</code> でのエラー記録）を仕込んでおくことも重要である。動いていないことに気づけない自動化は、自動化していないより危険である。</p>
@@ -90,7 +90,7 @@
         <p class="a">自動化は「失敗しても誰も気づかない」ことが最大の弱点である。出力の記録先を決め、しばらくは翌日にログとバックアップの実体（ファイルが増えているか）を自分の目で確認すること。</p>
       </div>
 
-      <h2 id="c8-4"><span class="no">8-4</span>バックアップ設計</h2>
+      <h2 id="c8-4"><span class="no">8.4</span>バックアップ設計</h2>
       <figure><img src="../img/s13.png" alt="図8-1　世代管理付き自動バックアップ" width="1800" height="660"><figcaption>図8-1　世代管理付き自動バックアップ</figcaption></figure>
       <p>バックアップ設計で考えるべきことは「何を・どこに・どれだけの頻度で・何世代」である。有名な指針が3-2-1ルールで、「3つのコピーを、2種類の媒体に、うち1つは別の場所に」置くことを推奨する。実習の構成（本体＋同一SD上の7世代）はこのうち「3つのコピー」を部分的に満たすに過ぎず、SDカード自体が壊れれば全滅する。<code>scp</code>で別のマシンに転送する<a href="../day4.html#s4-extra">発展課題</a>は、「1つは別の場所に」への第一歩である。</p>
       <dl class="term"><dt>3-2-1ルール<small>3-2-1 rule</small></dt><dd>バックアップの指針。3つのコピーを、2種類の媒体に持ち、うち1つは別の場所に置く。同じSDカードの中に何世代置いても、カードが壊れれば同時に失われる。</dd></dl>
@@ -98,7 +98,7 @@
       <p>もう1つの本質は「バックアップはリストアできて初めて意味がある」ことである。取得は成功していても、いざ戻すと壊れている・手順がわからない・時間がかかりすぎる、という事故は実務で後を絶たない。</p>
       <p>定期的なリストア訓練（<a href="../day4.html#s4-4">実習第4回 4-4</a>で行ったこと）は、プロの現場でも推奨される習慣である。</p>
 
-      <h2 id="c8-5"><span class="no">8-5</span>監視の考え方</h2>
+      <h2 id="c8-5"><span class="no">8.5</span>監視の考え方</h2>
       <p>監視には3つの階層がある。</p>
       <ol>
         <li>死活監視：サービスが生きているか（<code>systemctl status</code>、<code>ping</code>）。</li>
@@ -110,8 +110,8 @@
       <dl class="term"><dt>死活監視<small>alive monitoring</small></dt><dd>サービスが動いているかどうかだけを繰り返し確かめる、最も基本的な監視。<code>systemctl status</code> や <code>ping</code> の結果を定期的に記録するだけでも成立する。</dd></dl>
 
 
-      <h2 id="c8-add-1"><span class="no">8-6</span>ログの置き場所と読み方</h2>
-      <p>ここから先は冊子には無い補足である。8-1節ではログの重要性を述べたが、実際に障害対応をするには「どこを見るか」を知っていなければならない。Linuxのログの窓口は大きく2つ、journald（<code>journalctl</code>）と <code>/var/log</code> 以下のテキストファイルである。どちらを見るべきかは、対象がsystemdのサービスかどうかで決まる。</p>
+      <h2 id="c8-add-1"><span class="no">8.6</span>ログの置き場所と読み方</h2>
+      <p>8.1節ではログの重要性を述べたが、実際に障害対応をするには「どこを見るか」を知っていなければならない。Linuxのログの窓口は大きく2つ、journald（<code>journalctl</code>）と <code>/var/log</code> 以下のテキストファイルである。どちらを見るべきかは、対象がsystemdのサービスかどうかで決まる。</p>
 
       <h3 id="c8-add-1-a">/var/log の主なファイル</h3>
       <p>まず <code>ls /var/log</code> で自分の環境に何があるかを確かめる習慣をつけたい。Debian 12系のシステムは、伝統的なテキストログを書くrsyslogが入っている構成と、journaldだけで完結している構成の両方があり、後者では <code>/var/log/syslog</code> が存在しない。<b>手元に無いファイルの話をいくら調べても時間の無駄なので、最初に一覧を見ること</b>である。</p>
@@ -119,7 +119,7 @@
   <div class="code-head"><span class="code-title">ログの置き場所を確かめる</span></div>
 <pre><code><span class="in">ls -lh /var/log <span class="c"># 何があるか、どれが大きいかを一目で</span></span>
 <span class="in">sudo tail -n 30 /var/log/auth.log <span class="c"># 認証の記録（無い環境もある）</span></span>
-<span class="in">sudo tail -f /var/log/syslog <span class="c"># 流れ続けるログを追う（Ctrl+Cで終了）</span></span>
+<span class="in">sudo tail -f /var/log/syslog <span class="c"># 流れ続けるログを追う（rsyslogがある環境のみ。無ければ journalctl -f。Ctrl+Cで終了）</span></span>
 <span class="in">less /var/log/apt/history.log <span class="c"># いつ何をaptで入れたかの履歴</span></span></code></pre>
       </div>
       <div class="scroll">
@@ -127,10 +127,10 @@
         <thead><tr><th>場所</th><th>内容</th><th>読む場面</th></tr></thead>
         <tbody>
           <tr><td><code>/var/log/syslog</code></td><td>システム全般のメッセージ（rsyslogがある環境のみ）</td><td>全体に何が起きたかを時系列で追う</td></tr>
-          <tr><td><code>/var/log/auth.log</code></td><td>ログイン、<code>sudo</code>、SSHの認証記録</td><td>不審なログイン試行の調査</td></tr>
-          <tr><td><code>/var/log/kern.log</code></td><td>カーネルからのメッセージ</td><td>ハードウェアやSDカードの異常</td></tr>
+          <tr><td><code>/var/log/auth.log</code></td><td>ログイン、<code>sudo</code>、SSHの認証記録（rsyslogがある環境のみ）</td><td>不審なログイン試行の調査</td></tr>
+          <tr><td><code>/var/log/kern.log</code></td><td>カーネルからのメッセージ（rsyslogがある環境のみ）</td><td>ハードウェアやSDカードの異常</td></tr>
           <tr><td><code>/var/log/apt/history.log</code></td><td>aptの操作履歴</td><td>「いつから壊れたか」を更新履歴から探す</td></tr>
-          <tr><td><code>/var/log/ufw.log</code></td><td>ufwが遮断した通信（ログ有効時）</td><td>通信が届かない原因の確認</td></tr>
+          <tr><td><code>/var/log/ufw.log</code></td><td>ufwが遮断した通信（ログ有効時。rsyslogがある環境のみ）</td><td>通信が届かない原因の確認</td></tr>
           <tr><td><code>/var/log/journal/</code></td><td>journaldのログ本体（バイナリ、直接は読まない）</td><td><code>journalctl</code> 経由で読む</td></tr>
         </tbody>
       </table>
@@ -138,7 +138,7 @@
       <p>テキストのログは <code>tail</code>、<code>less</code>、<code>grep</code> で読む。特に <code>tail -f</code> は「これから起きること」を眺めながら操作を再現するのに向いており、障害の再現手順が分かっているときの定番である。</p>
 
       <h3 id="c8-add-1-b">journalctl との使い分け</h3>
-      <p>systemdが起動したサービス（Luanti、ssh、cron、Dockerなど）のログは、標準出力ごとjournaldが預かっている。したがって<b>サービスの調査は <code>journalctl -u <var>サービス名</var></code> が出発点</b>であり、<code>/var/log</code> を探し回る必要はない。オプションの詳細は<a href="ch06.html#c6-2">第6章 6.2</a>にまとめたとおりだが、運用でよく使う組み合わせを再掲する。</p>
+      <p>systemdが起動したサービス（Luanti、ssh、cron、Dockerなど）のログは、標準出力ごとjournaldが預かっている。したがって<b>サービスの調査は <code>journalctl -u <var>サービス名</var></code> が出発点</b>であり、<code>/var/log</code> を探し回る必要はない。オプションの詳細は<a href="ch06.html#c6-add-3">第6章 6.7</a>にまとめたとおりだが、運用でよく使う組み合わせを再掲する。</p>
       <div class="code" data-ctx="server">
   <div class="code-head"><span class="code-title">運用でよく使う journalctl</span></div>
 <pre><code><span class="in">journalctl -u luanti --since today <span class="c"># 今日の分だけ</span></span>
@@ -148,7 +148,7 @@
 <span class="in">journalctl -u luanti -o short-iso <span class="c"># 時刻をISO形式で（他の記録と突き合わせやすい）</span></span>
 <span class="in">journalctl --disk-usage <span class="c"># ログがディスクをどれだけ使っているか</span></span></code></pre>
       </div>
-      <p>1つ注意がある。journaldの保存先が <code>/var/log/journal</code> に作られていない環境では、ログはメモリ上の一時領域に置かれ、<b>再起動すると消える</b>。「昨日のエラーを見ようとしたら何も残っていない」のはこれが原因である。<code>journalctl --disk-usage</code> の出力が <code>/run/log/journal</code> を指していればその状態で、永続化したい場合は <code>/etc/systemd/journald.conf</code> の <code>Storage=persistent</code> を有効にして <code>sudo systemctl restart systemd-journald</code> を実行する。ただし書き込みが増えるので、SDカードの寿命とのかね合いになる。</p>
+      <p>1つ注意がある。journaldの保存先が <code>/var/log/journal</code> に作られていない環境では、ログはメモリ上の一時領域に置かれ、<b>再起動すると消える</b>。「昨日のエラーを見ようとしたら何も残っていない」のはこれが原因である。<code>ls /var/log/journal</code> でディレクトリがあれば永続保存、無ければ再起動で消える一時保存である。永続化したい場合は <code>/etc/systemd/journald.conf</code> の <code>Storage=persistent</code> を有効にして <code>sudo systemctl restart systemd-journald</code> を実行する。なお <code>/etc/systemd/journald.conf.d/</code> 以下に別の <code>Storage=</code> 指定があると、本体の設定よりそちらが優先される。ただし書き込みが増えるので、SDカードの寿命とのかね合いになる。</p>
       <div class="call note"><span class="ct">実習ではここで使う</span><p>※ <a href="../day3.html#s3-6">第3回 3-6 演習：ログ解析</a>では <code>journalctl -u luanti</code> と <code>grep</code> を組み合わせて入退室を数えた。<code>--since today</code> を足すと、その日の演習中の記録だけに絞れる。</p></div>
 
       <h3 id="c8-add-1-c">logrotate の設定ファイルを読む</h3>
@@ -188,8 +188,8 @@
         <p class="a">量が多すぎるログは読まれず、ディスクを食い、肝心の1行を埋もれさせる。「異常時に原因が特定できる最小限」を目指すのが設計である。逆に、成功したときに何も残さない設計も困る。<b>始まりと終わり、そして失敗の理由</b>の3つが残っていれば、たいていの調査はできる。</p>
       </div>
 
-      <h2 id="c8-add-2"><span class="no">8-7</span>時刻を合わせる（timedatectl）</h2>
-      <p>8-2節で述べたとおり、時刻はログと認証の前提である。Raspberry Piは電源を切ると時計を保持できないため、起動のたびにネットワーク越しに時刻を取り直している。その状態を確認・設定するコマンドが <code>timedatectl</code> である。</p>
+      <h2 id="c8-add-2"><span class="no">8.7</span>時刻を合わせる（timedatectl）</h2>
+      <p>8.2節で述べたとおり、時刻はログと認証の前提である。Raspberry Piは電源を切ると時計を保持できないため、起動のたびにネットワーク越しに時刻を取り直している。その状態を確認・設定するコマンドが <code>timedatectl</code> である。</p>
       <div class="code" data-ctx="server">
   <div class="code-head"><span class="code-title">時刻の確認と設定</span></div>
 <pre><code><span class="in">timedatectl <span class="c"># 現在時刻、タイムゾーン、同期状態をまとめて表示</span></span>
@@ -222,8 +222,8 @@
       <p>見るべきは下の3行である。<code>Time zone</code> が <code>Asia/Tokyo</code> になっていないと、ログの時刻が9時間ずれて記録され、後から突き合わせるときに混乱する。<code>System clock synchronized: yes</code> は「時刻合わせに成功している」印で、<code>no</code> のままならネットワークに出られていないか、同期サービスが動いていない。<code>NTP service: active</code> はその同期サービス（多くの環境では <code>systemd-timesyncd</code>）が稼働中であることを示す。なお環境によってはchronyなど別のNTPクライアントが使われており、その場合は <code>timesync-status</code> が使えないかわりに <code>chronyc tracking</code> で同じことを確認する。</p>
       <p>時刻が狂うと何が起きるか。第1に、ログの時系列が信用できなくなり障害の再構成ができない。第2に、日付を含むファイル名でバックアップを取っていると、世代の順序が狂う（<a href="../day4.html#s4-2">第4回 4-2</a>）。第3に、cronが意図しない時刻に動くか、まったく動かない。第4に、TLSの証明書は有効期間を時刻で判定するため、大きくずれると正常な証明書まで「期限切れ」と判定されて通信できなくなる。<b>原因不明の不具合に出会ったら、早い段階で <code>timedatectl</code> を確認する</b>のは費用対効果の高い習慣である。</p>
 
-      <h2 id="c8-add-3"><span class="no">8-8</span>cron コマンドリファレンス</h2>
-      <p>8-3節で触れたcronの書式を、実務で必要な全項目に広げて整理する。cronは「決まった時刻に決まったコマンドを実行する」だけの素朴な仕組みだが、書式の読み書きができると自動化の幅が一気に広がる。</p>
+      <h2 id="c8-add-3"><span class="no">8.8</span>cron コマンドリファレンス</h2>
+      <p>8.3節で触れたcronの書式を、実務で必要な全項目に広げて整理する。cronは「決まった時刻に決まったコマンドを実行する」だけの素朴な仕組みだが、書式の読み書きができると自動化の幅が一気に広がる。</p>
 
       <h3 id="c8-add-3-a">5つのフィールドと書き方</h3>
       <p>1行は「分 時 日 月 曜日 コマンド」の6つの部分からなる。時刻のフィールドは左から順に細かい単位ではなく、分、時、日、月、曜日の順である点に注意したい。</p>
@@ -291,7 +291,7 @@
         </tbody>
       </table>
       </div>
-      <p>システム全体の予定表としては、<code>/etc/crontab</code> と <code>/etc/cron.d/</code> もある。こちらは書式が1列多く、コマンドの前に<b>実行ユーザ</b>を書く点が個人のcrontabと異なる。また <code>/etc/cron.daily/</code> などのディレクトリに実行可能なスクリプトを置くと、1日1回自動で実行される。logrotateもこの仕組みで動いている。</p>
+      <p>システム全体の予定表としては、<code>/etc/crontab</code> と <code>/etc/cron.d/</code> もある。こちらは書式が1列多く、コマンドの前に<b>実行ユーザ</b>を書く点が個人のcrontabと異なる。また <code>/etc/cron.daily/</code> などのディレクトリに実行可能なスクリプトを置くと、1日1回自動で実行される。なお logrotate は、Debian系の現在の版では systemd の timer（<code>systemctl list-timers</code> に logrotate.timer として出る）で1日1回動いている。</p>
       <div class="code" data-ctx="server">
   <div class="code-head"><span class="code-title">出力の読み方：cronが動いたかを確かめる</span></div>
 <pre><code><span class="in">systemctl status cron</span>
@@ -327,6 +327,7 @@
 <span class="in">[Service]</span>
 <span class="in">Type=oneshot</span>
 <span class="in">User=luanti</span>
+<span class="in">Environment=HOME=/home/luanti</span>
 <span class="in">ExecStart=/home/luanti/backup.sh</span></code></pre>
       </div>
       <div class="code file" data-ctx="file" data-cwd="/etc/systemd/system/backup.timer">
@@ -341,6 +342,7 @@
 <span class="in">[Install]</span>
 <span class="in">WantedBy=timers.target</span></code></pre>
       </div>
+      <p>同じ仕組みの例を、別の名前（luanti-backup、毎日4時30分）で<a href="ch06.html#c6-add-4">第6章 6.8</a>にも載せている。各行の意味はそちらで説明している。試すときはどちらか一方だけを作ればよい。</p>
       <div class="code" data-ctx="server">
   <div class="code-head"><span class="code-title">timer の有効化と確認</span></div>
 <pre><code><span class="in">sudo systemctl daemon-reload <span class="c"># ユニットを作ったら必ず実行</span></span>
@@ -351,8 +353,8 @@
       <p>有効化するのは <code>.timer</code> のほうで、<code>.service</code> は有効化しない（timerに呼び出してもらう側だからである）。<code>OnCalendar</code> の書式はcronとは別物で、<code>*-*-* 06:00:00</code> は「毎日6時ちょうど」を意味する。</p>
       <dl class="term"><dt>systemd timer<small>.timer unit</small></dt><dd>systemdが持つ定期実行の仕組み。<code>.timer</code> が時刻を、<code>.service</code> が実行内容を受け持つ。ログがjournaldに残り、実行できなかった分を後から追いかけ実行できる点がcronとの違いである。</dd></dl>
 
-      <h2 id="c8-add-4"><span class="no">8-9</span>バックアップ設計を実装に落とす</h2>
-      <p>8-4節では3-2-1ルールと世代管理の考え方を扱った。ここでは、それを実際の手順とコマンドに落とすときの選択肢を整理する。設計で決めるべきことは「何を」「どの方式で」「どこに」「どれだけの頻度で」「何世代」「どう戻すか」の6つである。</p>
+      <h2 id="c8-add-4"><span class="no">8.9</span>バックアップ設計を実装に落とす</h2>
+      <p>8.4節では3-2-1ルールと世代管理の考え方を扱った。ここでは、それを実際の手順とコマンドに落とすときの選択肢を整理する。設計で決めるべきことは「何を」「どの方式で」「どこに」「どれだけの頻度で」「何世代」「どう戻すか」の6つである。</p>
 
       <h3 id="c8-add-4-a">フル・差分・増分</h3>
       <p>取得方式には3つある。どれが正しいということはなく、復元の速さと保存容量のどちらを優先するかの選択である。</p>
@@ -411,8 +413,8 @@
         <p class="a">それらは機器の故障には強いが、誤って削除した場合や、壊れたデータを書いてしまった場合はその状態がそのまま複製される。過去の時点に戻せることがバックアップの本質であり、同期はバックアップの代わりにならない。</p>
       </div>
 
-      <h2 id="c8-add-5"><span class="no">8-10</span>監視の組み立て方</h2>
-      <p>8-5節で監視の3階層を示した。ここでは、その3階層をどう具体化するか、しきい値をどう決めるか、そして実務で使われる道具がどういう位置づけにあるかを整理する。監視は「異常を早く知るための投資」であり、作り込みすぎないことも設計のうちである。</p>
+      <h2 id="c8-add-5"><span class="no">8.10</span>監視の組み立て方</h2>
+      <p>8.5節で監視の3階層を示した。ここでは、その3階層をどう具体化するか、しきい値をどう決めるか、そして実務で使われる道具がどういう位置づけにあるかを整理する。監視は「異常を早く知るための投資」であり、作り込みすぎないことも設計のうちである。</p>
 
       <h3 id="c8-add-5-a">何を、どのしきい値で見るか</h3>
       <p>監視項目は、異常のときに<b>人が何か行動できるもの</b>に絞る。誰も対応しない通知は、やがて全員に無視されるようになり、本当に重要な通知まで埋もれさせる。</p>
@@ -480,7 +482,7 @@
       </div>
       <p>いずれも導入より<b>運用のほうが難しい</b>。監視項目が増えるほど、誤検知の手入れや通知の整理という仕事が生まれる。まずは自作の数行から始めて、手に負えなくなったら道具に置き換える、という順序が現実的である。</p>
 
-      <h2 id="c8-add-6"><span class="no">8-11</span>障害対応の型</h2>
+      <h2 id="c8-add-6"><span class="no">8.11</span>障害対応の型</h2>
       <p>サーバは必ず壊れる。大切なのは壊れないことではなく、壊れたときに慌てず、同じ失敗を繰り返さないことである。ここでは、経験の浅いうちほど効く「型」を示す。</p>
 
       <h3 id="c8-add-6-a">切り分けの順序</h3>
@@ -522,7 +524,7 @@
         <span class="q">とりあえず再起動すれば直るので、原因は調べなくてよい</span>
         <p class="a">再起動は確かに多くの症状を消すが、消えるのは症状だけで、原因は残っている。同じ障害は必ず戻ってくる。再起動する前に <code>journalctl -p err -b</code> と <code>df -h</code> の出力だけでも控えておけば、次に起きたときの手がかりになる。</p>
         <span class="q">障害対応は詳しい人に任せたほうが早い</span>
-        <p class="a">確かに早いが、それだけでは自分は何も学べず、次も同じ人を待つことになる。<a href="ch07.html#c7-add-1">7-8</a>の切り分けを自分で一通りやってから、どこまで確かめたかを添えて助けを求めると、助ける側も格段に動きやすい。「何が正常で、何が異常だったか」を伝えられることが、技術者としての第一歩である。</p>
+        <p class="a">確かに早いが、それだけでは自分は何も学べず、次も同じ人を待つことになる。<a href="ch07.html#c7-add-1">7.8</a>の切り分けを自分で一通りやってから、どこまで確かめたかを添えて助けを求めると、助ける側も格段に動きやすい。「何が正常で、何が異常だったか」を伝えられることが、技術者としての第一歩である。</p>
       </div>
 
       <nav class="pager" aria-label="前後のページ">

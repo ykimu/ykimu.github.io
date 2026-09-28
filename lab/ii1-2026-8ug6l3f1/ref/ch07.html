@@ -53,19 +53,19 @@
         </ul></div>
       </div>
 
-      <h2 id="c7-1"><span class="no">7-1</span>ネットワークとは：LANとインターネット</h2>
+      <h2 id="c7-1"><span class="no">7.1</span>ネットワークとは：LANとインターネット</h2>
       <p>複数のコンピュータをつないで、互いにデータをやりとりできるようにしたものがネットワークである。部屋や建物の中など限られた範囲のネットワークをLAN（Local Area Network）と呼び、有線（イーサネット）または無線（Wi-Fi）で機器をつなぐ。そしてLAN同士を世界規模で相互接続したものがインターネットであり、LANとその外側の境界に立って通信を中継する機器がルータである。実習のBYODとRaspberry Piは、同じ学内LANに属しているからこそ直接通信できる。</p>
       <figure><img src="../img/s10.png" alt="図7-1　LANとインターネット" width="1800" height="750"><figcaption>図7-1　LANとインターネット</figcaption></figure>
       <p>ネットワーク上のデータは、丸ごと一塊で送られるのではなく、パケットという小包に分割されて運ばれる。各パケットには宛先と送信元の住所（IPアドレス）が記されており、途中の機器はそれを見てバケツリレーのように転送する。回線を占有しないため多数の通信が共存でき、一部のパケットが失われても再送でリカバリできる。この「小包＋住所」の仕組みの上に、以降で説明するIPアドレス・ポート・プロトコルの話がすべて載っている。</p>
 
-      <h2 id="c7-2"><span class="no">7-2</span>IPアドレスとDHCP</h2>
+      <h2 id="c7-2"><span class="no">7.2</span>IPアドレスとDHCP</h2>
       <p>ネットワーク上の機器は、IPアドレスという番号で識別される。IPv4アドレスは <code>10.20.30.41</code> のように4つの数値（各0〜255）で表される。このうち <code>10.x.x.x</code>、<code>172.16〜31.x.x</code>、<code>192.168.x.x</code> はプライベートアドレスと呼ばれ、組織内ネットワーク専用に使われる。</p>
       <p>学内Wi-Fiで自分のサーバに割り当てられるのもプライベートアドレスであり、だからこそ学外からは直接アクセスできない（本実習のサーバが学内限定公開なのはこの性質による）。</p>
       <p>IPアドレスを機器に割り当てる方法には、手動で固定する方法と、DHCPサーバから自動で借りる方法がある。実習環境はDHCPであり、アドレスは「リース（貸与）」されている。リースには期限があるが、同じネットワークにいる限り同じアドレスが再貸与されることが多い。とはいえ「変わりうる」ことに変わりはないため、実習ではIPアドレスではなく名前で接続する方法を基本とした。</p>
       <dl class="term"><dt>IPアドレス<small>IP address</small></dt><dd>ネットワーク上の機器を識別する番号。<code>10.20.30.41</code> のように4つの数値で表す。実習で使う <code>10.x.x.x</code> などはプライベートアドレスで、組織の外からは直接届かない。</dd></dl>
       <dl class="term"><dt>DHCP<small>Dynamic Host Configuration Protocol</small></dt><dd>IPアドレスを機器に自動で貸し出す仕組み。実習環境もこれなので、サーバのIPアドレスは電源を入れ直すと変わることがある。</dd></dl>
 
-      <h2 id="c7-3"><span class="no">7-3</span>名前解決：DNSとmDNS</h2>
+      <h2 id="c7-3"><span class="no">7.3</span>名前解決：DNSとmDNS</h2>
       <p>人間が扱いやすい名前（<code>www.example.com</code>）を機器が扱うIPアドレスに変換する仕組みを名前解決という。インターネット全体の名前解決を担うのがDNS（Domain Name System）で、世界中に分散した階層型のデータベースになっている。</p>
       <p>一方、実習で使った「ホスト名.local」（<a href="../day1.html#s1-3">第1回 1-3</a>）はmDNS（multicast DNS）という別の仕組みである。mDNSはDNSサーバを必要とせず、「mc-24s1234という名前の機器はいますか？」という問いかけを同じネットワーク全体に投げかけ（マルチキャスト）、本人が「私です。IPアドレスは10.20.30.41です」と応答する。サーバ側ではavahiというサービスがこの応答を担当している。同じLANの中でしか使えないが、設定なしで名前解決できる手軽さが利点である。</p>
       <dl class="term"><dt>mDNS<small>multicast DNS / .local</small></dt><dd>DNSサーバを使わず、同じLANの中に呼びかけて名前からIPアドレスを調べる仕組み。「ホスト名.local」で接続できるのはこれのおかげで、サーバ側ではavahiが応答している。</dd></dl>
@@ -76,7 +76,7 @@
         <p class="a">実習環境はDHCPなので、アドレスは貸与であり変わりうる。IPアドレスが通らなくなったら、まず現在のアドレスを調べ直すこと。</p>
       </div>
 
-      <h2 id="c7-4"><span class="no">7-4</span>TCP/UDPとポート番号</h2>
+      <h2 id="c7-4"><span class="no">7.4</span>TCP/UDPとポート番号</h2>
       <p>1台のサーバは複数のサービス（SSH、Luanti、Webなど）を同時に提供する。そこで通信の宛先には、IPアドレス（どの機器か）に加えてポート番号（機器の中のどのサービスか）を指定する。マンションの住所（IPアドレス）と部屋番号（ポート番号）の関係だと考えるとよい。サービス側は特定のポートで「待ち受け」ており、<code>ss -tlnp</code> コマンドで現在待ち受け中のポート一覧を確認できる。</p>
       <dl class="term"><dt>ポート番号<small>port</small></dt><dd>1台の機器の中で、どのサービス宛ての通信かを区別する番号。SSHは22番、Luantiは30000番を使う。開いているポートは外部からの入口でもある。</dd></dl>
       <div class="scroll">
@@ -96,14 +96,14 @@
         <p class="a">LuantiはUDPを使う。<code>sudo ufw allow 30000/tcp</code> ではゲームの通信は通らず、<code>30000/udp</code> を開ける必要がある（<a href="../day2.html#s2-6">第2回 2-6</a>）。<code>ss -ulnp</code> でUDPの待ち受けを確認すると状況がはっきりする。</p>
       </div>
 
-      <h2 id="c7-5"><span class="no">7-5</span>ファイアウォール</h2>
+      <h2 id="c7-5"><span class="no">7.5</span>ファイアウォール</h2>
       <figure><img src="../img/s11.png" alt="図7-2　ポートとファイアウォール（ufw）の働き" width="1800" height="660"><figcaption>図7-2　ポートとファイアウォール（ufw）の働き</figcaption></figure>
       <p>ファイアウォールは、ポート単位・送信元単位で通信を許可・遮断する仕組みである。セキュリティの基本は「デフォルト拒否」、つまりすべてを閉じたうえで必要なポートだけを開けることである。ufw（Uncomplicated Firewall）はLinuxのファイアウォール機能（カーネル内のnetfilter）を簡単に操作できるようにしたツールで、実習では22番と30000番（<a href="../day5.html#s5-4">第5回</a>で8080番）だけを開けた。</p>
       <p>開いているポートはそれぞれが攻撃の入口になりうるため、<b>「そのポートは本当に外部に公開する必要があるか」を常に考える習慣</b>をつけてほしい。使っていないポートを開けない理由はまさにこれである。</p>
       <p>なお、<a href="../day5.html#s5-2">第5回</a>で使うDockerには注意がある。Dockerが公開するポート（composeの <code>ports:</code>）はカーネルの転送ルールを直接操作するため、ufwの許可・拒否を経由しない。コンテナのポートは「ufwで閉じたつもり」でも外から届く。公開の可否は <code>ports:</code> の記述そのもので制御するのが基本である。</p>
       <dl class="term"><dt>ファイアウォール<small>ufw</small></dt><dd>ポート単位で通信を通すか遮断するかを決める仕組み。「まず全部閉じて、必要な分だけ開ける」（デフォルト拒否）が設計の基本である。</dd></dl>
 
-      <h2 id="c7-6"><span class="no">7-6</span>SSHの仕組み</h2>
+      <h2 id="c7-6"><span class="no">7.6</span>SSHの仕組み</h2>
       <p>SSH（Secure Shell）は、通信をすべて暗号化して遠隔操作を行うプロトコルである。暗号化のおかげで、同じネットワークにいる第三者が通信を盗み見てもパスワードや操作内容は読み取れない。</p>
       <p>初回接続時に表示される「fingerprint」の確認は、接続先が本物のサーバか（偽物にすり替わっていないか）を検証する仕組みで、サーバの「ホスト鍵」の指紋を照合している。2回目以降に何も聞かれないのは、BYOD側の <code>~/.ssh/known_hosts</code> に指紋が記録され、自動照合されているからである。</p>
       <figure><img src="../img/s12.png" alt="図7-3　SSH公開鍵認証の仕組み" width="1800" height="660"><figcaption>図7-3　SSH公開鍵認証の仕組み</figcaption></figure>
@@ -117,7 +117,7 @@
         <p class="a">サーバに登録するのは公開鍵（<code>.pub</code> が付くほう）である。秘密鍵は手元の端末に置いたままにし、他人に渡さない。<code>ssh-copy-id</code> を使えば正しいほうが自動で登録される。</p>
       </div>
 
-      <h2 id="c7-7"><span class="no">7-7</span>ネットワークの調査と転送（ping・ss・wget/curl・scp）</h2>
+      <h2 id="c7-7"><span class="no">7.7</span>ネットワークの調査と転送（ping・ss・wget/curl・scp）</h2>
       <p>ネットワークまわりの道具は「疎通を確かめる」「待ち受けを確かめる」「ファイルを運ぶ」の3種類に整理できる。<a href="../day2.html#s2-7">第2回 2-7</a>の相互接続演習の切り分け（<code>ping</code> → <code>systemctl status</code> → <code>ufw status</code>）に、<code>ss</code> を加えると診断がさらに正確になる。</p>
       <div class="scroll">
       <table class="tbl">
@@ -137,11 +137,11 @@
 <pre><code><span class="in">scp luanti@mc-24s1234.local:~/backup/world_最新.tar.gz . <span class="c"># サーバ → 手元（BYOD側で実行）</span></span>
 <span class="in">scp ./memo.txt taro@mc-24s1234.local:~/ <span class="c"># 手元 → サーバ</span></span></code></pre>
       </div>
-      <div class="call note"><span class="ct">Note</span><p>※ scpの実体はSSHであり、追加の設定なしに暗号化転送ができる。<a href="../day4.html#s4-extra">第4回の発展課題</a>「バックアップを別マシンに転送（3-2-1ルールへの一歩）」は、この1行で実現する。</p></div>
+      <div class="call note"><span class="ct">補足</span><p>※ scpの実体はSSHであり、追加の設定なしに暗号化転送ができる。<a href="../day4.html#s4-extra">第4回の発展課題</a>「バックアップを別マシンに転送（3-2-1ルールへの一歩）」は、この1行で実現する。</p></div>
 
 
-      <h2 id="c7-add-1"><span class="no">7-8</span>ネットワークを調べるコマンド</h2>
-      <p>ここから先は冊子には無い補足である。ネットワークの障害調査は「自分の足元」「相手までの経路」「相手のサービス」の順に外側へ広げていくのが鉄則で、それぞれに対応する道具がある。まず足元を見る道具から順に使い方を身につけよう。</p>
+      <h2 id="c7-add-1"><span class="no">7.8</span>ネットワークを調べるコマンド</h2>
+      <p>ネットワークの障害調査は「自分の足元」「相手までの経路」「相手のサービス」の順に外側へ広げていくのが鉄則で、それぞれに対応する道具がある。まず足元を見る道具から順に使い方を身につけよう。</p>
 
       <h3 id="c7-add-1-a">自分のアドレスと経路を見る（ip / hostname）</h3>
       <p><code>ip</code> はLinuxでネットワーク設定を確認・変更する標準コマンドである。サーバ管理者が最初に打つのはたいてい <code>ip a</code>（アドレス一覧）と <code>ip r</code>（経路表）で、「自分にアドレスが付いているか」「外に出る出口が決まっているか」を一度に確認できる。古い資料にある <code>ifconfig</code> はDebian 12では既定で入っていないので、<code>ip</code> を覚えるのが正解である。</p>
@@ -169,13 +169,13 @@
   <div class="code-head"><span class="code-title">出力の読み方：ip a と ip r</span></div>
 <pre><code><span class="in">ip -br a</span>
 <span class="out">lo               UNKNOWN        127.0.0.1/8 ::1/128</span>
-<span class="out">eth0             UP             10.20.30.41/24 fe80::dea6:32ff:fe12:3456/64</span>
-<span class="out">wlan0            DOWN</span>
+<span class="out">eth0             DOWN</span>
+<span class="out">wlan0            UP             10.20.30.41/24 fe80::dea6:32ff:fe12:3456/64</span>
 <span class="in">ip r</span>
-<span class="out">default via 10.20.30.1 dev eth0 proto dhcp src 10.20.30.41 metric 100</span>
-<span class="out">10.20.30.0/24 dev eth0 proto kernel scope link src 10.20.30.41 metric 100</span></code></pre>
+<span class="out">default via 10.20.30.1 dev wlan0 proto dhcp src 10.20.30.41 metric 600</span>
+<span class="out">10.20.30.0/24 dev wlan0 proto kernel scope link src 10.20.30.41 metric 600</span></code></pre>
       </div>
-      <p>見るべき点は3つである。第1に、使っているインタフェース（有線なら <code>eth0</code>、無線なら <code>wlan0</code>）が <code>UP</code> になっているか。<code>DOWN</code> ならケーブルか無線の接続からやり直す。第2に、そのインタフェースに <code>10.20.30.41/24</code> のようなIPv4アドレスが付いているか。付いていなければDHCPからアドレスをもらえていない。第3に、<code>ip r</code> の1行目に <code>default via</code> の行があるか。この行が無いと、同じLANの中とは話せても外には一切出られない。<code>lo</code>（127.0.0.1）は自分自身を指す特別なインタフェースで、常に存在する。</p>
+      <p>見るべき点は3つである。第1に、使っているインタフェース（有線なら <code>eth0</code>、無線なら <code>wlan0</code>）が <code>UP</code> になっているか。<code>DOWN</code> ならケーブルか無線の接続からやり直す（実習機はWi-Fi接続なので、ケーブルを挿していない <code>eth0</code> が <code>DOWN</code> なのは正常である）。第2に、そのインタフェースに <code>10.20.30.41/24</code> のようなIPv4アドレスが付いているか。付いていなければDHCPからアドレスをもらえていない。第3に、<code>ip r</code> の1行目に <code>default via</code> の行があるか。この行が無いと、同じLANの中とは話せても外には一切出られない。<code>lo</code>（127.0.0.1）は自分自身を指す特別なインタフェースで、常に存在する。</p>
       <div class="call note"><span class="ct">実習ではここで使う</span><p>※ <a href="../day1.html#s1-3">第1回 1-3 SSHでサーバに接続する</a>で「ホスト名.local」が通らないとき、サーバ本体の画面で <code>hostname -I</code> を実行してIPアドレスを調べる場面がこれにあたる。<code>ip -br a</code> まで見ておくと、そもそもアドレスが付いていないのか、名前解決だけの問題なのかを即座に切り分けられる。</p></div>
 
       <h3 id="c7-add-1-b">相手まで届くかを確かめる（ping / traceroute / nc）</h3>
@@ -251,6 +251,7 @@
 <pre><code><span class="in">sudo ss -tulnp</span>
 <span class="out">Netid State  Recv-Q Send-Q Local Address:Port Peer Address:Port Process</span>
 <span class="out">udp   UNCONN 0      0            0.0.0.0:30000      0.0.0.0:*    users:(("luantiserver",pid=921,fd=8))</span>
+<span class="cm">（Luanti 5.12以降は 0.0.0.0:30000 の代わりに [::]:30000 と表示される。どちらも正常）</span>
 <span class="out">tcp   LISTEN 0      128          0.0.0.0:22         0.0.0.0:*    users:(("sshd",pid=512,fd=3))</span>
 <span class="out">tcp   LISTEN 0      128             [::]:22            [::]:*    users:(("sshd",pid=512,fd=4))</span></code></pre>
       </div>
@@ -285,16 +286,16 @@
 <pre><code><span class="in">curl -I http://localhost:8080/</span>
 <span class="out">HTTP/1.1 200 OK</span>
 <span class="out">Server: nginx/1.25.3</span>
-<span class="out">Date: Mon, 12 Oct 2026 04:21:07 GMT</span>
+<span class="out">Date: Sat, 19 Sep 2026 04:21:07 GMT</span>
 <span class="out">Content-Type: text/html</span>
 <span class="out">Content-Length: 1120</span>
-<span class="out">Last-Modified: Mon, 12 Oct 2026 04:00:11 GMT</span></code></pre>
+<span class="out">Last-Modified: Sat, 19 Sep 2026 04:00:11 GMT</span></code></pre>
       </div>
       <p>1行目の <code>200 OK</code> が最重要で、これが出ていればWebサーバは正常に応答している。<code>Server:</code> でどのソフトが応えているか、<code>Content-Length</code> で中身が空でないか、<code>Last-Modified</code> で更新が反映されたかが分かる。<code>curl: (7) Failed to connect</code> なら誰も待ち受けていないかポートが塞がれており、<code>curl: (28)</code> は時間切れである。</p>
       <div class="call note"><span class="ct">実習ではここで使う</span><p>※ <a href="../day5.html#s5-4">第5回 5-4 Web監視ページの公開</a>でnginxコンテナを立ち上げたあと、ブラウザを開く前に <code>curl -I http://localhost:8080/</code> を打つと、サーバ側で完結した確認ができる。ブラウザで見えないときも、これが <code>200 OK</code> なら原因はサーバではなくBYODからの経路側にあると分かる。</p></div>
 
-      <h2 id="c7-add-2"><span class="no">7-9</span>名前解決の全体像</h2>
-      <p>7-3節ではDNSとmDNSの違いに触れた。ここでは、サーバ管理者が知っておくべき名前解決の全体像を整理する。名前からIPアドレスを引く経路は1本ではなく、優先順位のある複数の仕組みが順に試されている。この順番を知っていると、「あるマシンでは引けるのに別のマシンでは引けない」という不可解な現象の説明がつく。</p>
+      <h2 id="c7-add-2"><span class="no">7.9</span>名前解決の全体像</h2>
+      <p>7.3節ではDNSとmDNSの違いに触れた。ここでは、サーバ管理者が知っておくべき名前解決の全体像を整理する。名前からIPアドレスを引く経路は1本ではなく、優先順位のある複数の仕組みが順に試されている。この順番を知っていると、「あるマシンでは引けるのに別のマシンでは引けない」という不可解な現象の説明がつく。</p>
 
       <h3 id="c7-add-2-a">問い合わせが通る順番と /etc/hosts</h3>
       <p>Linuxで名前を引くとき、まず参照されるのは <code>/etc/nsswitch.conf</code> に書かれた優先順位で、通常は「<code>/etc/hosts</code> ファイル、次にmDNS、最後にDNSサーバ」の順である。<code>/etc/hosts</code> は名前とIPアドレスを手書きで対応させる小さな表で、ここに書いた内容はDNSより優先される。少数のサーバを固定的に呼び合うときや、DNSが壊れているときの応急処置に使える。</p>
@@ -366,8 +367,8 @@
         <p class="a">順番に切り分ける。<code>ping 8.8.8.8</code> のようにIPアドレス宛が通るのに名前だけ引けないなら、確かに名前解決の問題である。IPアドレス宛も通らないなら、原因は経路やゲートウェイの側にあり、DNSは無関係である。</p>
       </div>
 
-      <h2 id="c7-add-3"><span class="no">7-10</span>IPアドレスの読み方</h2>
-      <p>7-2節でIPアドレスとDHCPの概要を扱った。ここではもう一歩踏み込んで、<code>10.20.30.41/24</code> という表記が何を意味するのか、なぜ学外から自分のサーバに届かないのかを説明する。ここは丸暗記ではなく「どこまでが同じ町内か」というイメージで理解するとよい。</p>
+      <h2 id="c7-add-3"><span class="no">7.10</span>IPアドレスの読み方</h2>
+      <p>7.2節でIPアドレスとDHCPの概要を扱った。ここではもう一歩踏み込んで、<code>10.20.30.41/24</code> という表記が何を意味するのか、なぜ学外から自分のサーバに届かないのかを説明する。ここは丸暗記ではなく「どこまでが同じ町内か」というイメージで理解するとよい。</p>
 
       <h3 id="c7-add-3-a">サブネットと /24 の意味</h3>
       <p>IPv4アドレスは32ビットの数値で、前半が「ネットワーク部（どの町内か）」、後半が「ホスト部（町内の何番地か）」に分かれる。どこまでが前半かを示すのがサブネットマスクで、<code>/24</code> は「先頭24ビットがネットワーク部」という意味である。<code>10.20.30.41/24</code> なら <code>10.20.30.</code> までが町内で、最後の数値が番地にあたる。同じ町内の相手には直接パケットを届けられ、違う町内が相手ならルータ（デフォルトゲートウェイ）に託す。<code>ip r</code> の出力が2行あったのは、この「直接届く範囲」と「それ以外の行き先」を表していたのである。</p>
@@ -392,7 +393,7 @@
       <dl class="term"><dt>NAT<small>Network Address Translation</small></dt><dd>プライベートアドレスをルータのグローバルアドレスに書き換えて外部と通信させる仕組み。内側から始めた通信しか戻り道が分からないため、外から中への接続は既定では届かない。</dd></dl>
       <div class="call myth"><span class="ct">よくある誤解・トラブル</span>
         <span class="q">NATの内側にいるから、セキュリティ対策は考えなくてよい</span>
-        <p class="a">NATが防いでいるのは「外から突然来る通信」だけである。同じLANの中にいる機器からは普通に届くし、こちらから怪しいサイトに接続すれば通信は成立してしまう。学内LANも不特定多数が同居する場所であり、<a href="ch05.html#c5-2">第5章 5-2</a>の最小権限やパスワードの強度は、NATの内側でも同じように必要である。</p>
+        <p class="a">NATが防いでいるのは「外から突然来る通信」だけである。同じLANの中にいる機器からは普通に届くし、こちらから怪しいサイトに接続すれば通信は成立してしまう。学内LANも不特定多数が同居する場所であり、<a href="ch05.html#c5-2">第5章 5.2</a>の最小権限やパスワードの強度は、NATの内側でも同じように必要である。</p>
       </div>
 
       <h3 id="c7-add-3-c">DHCPと固定IPの使い分け</h3>
@@ -402,12 +403,12 @@
   <div class="code-head"><span class="code-title">現在の設定を読むだけのコマンド（変更はしない）</span></div>
 <pre><code><span class="in">nmcli connection show <span class="c"># 接続プロファイルの一覧</span></span>
 <span class="in">nmcli device status <span class="c"># インタフェースごとの状態</span></span>
-<span class="in">nmcli -f IP4 device show eth0 <span class="c"># 現在のIPv4設定の詳細</span></span></code></pre>
+<span class="in">nmcli -f IP4 device show wlan0 <span class="c"># 現在のIPv4設定の詳細</span></span></code></pre>
       </div>
       <div class="call warn"><span class="ct">注意</span><p>※ ネットワーク設定の変更は、SSHで接続したまま行うと自分の接続ごと切れることがある。やむを得ず変更する場合は、サーバ本体にモニタとキーボードを繋いだ状態で行うか、元に戻す手順を先に紙に書いてから着手すること。</p></div>
 
-      <h2 id="c7-add-4"><span class="no">7-11</span>SSHを使いこなす</h2>
-      <p>7-6節ではSSHの仕組みを扱った。ここでは日々の運用で効いてくる実用的な使い方をまとめる。毎回長いコマンドを打つ必要はなく、設定ファイルを1つ書けばSSHもscpもrsyncも短い名前で呼べるようになる。</p>
+      <h2 id="c7-add-4"><span class="no">7.11</span>SSHを使いこなす</h2>
+      <p>7.6節ではSSHの仕組みを扱った。ここでは日々の運用で効いてくる実用的な使い方をまとめる。毎回長いコマンドを打つ必要はなく、設定ファイルを1つ書けばSSHもscpもrsyncも短い名前で呼べるようになる。</p>
 
       <h3 id="c7-add-4-a">~/.ssh/config で接続先に名前を付ける</h3>
       <p>接続元（BYODや自分のPC）の <code>~/.ssh/config</code> に接続先を登録しておくと、<code>ssh mc</code> のような短い指定で接続できる。ポート番号や鍵ファイル、ユーザ名も接続先ごとに覚えさせられるので、打ち間違いが激減する。ファイルが無ければ新規に作ってよい。</p>
@@ -425,7 +426,7 @@
       </div>
       <div class="code" data-ctx="byod">
   <div class="code-head"><span class="code-title">設定後の使い方（接続元で実行）</span></div>
-<pre><code><span class="in">chmod 600 ~/.ssh/config <span class="c"># 自分だけが読める権限にしておく</span></span>
+<pre><code><span class="in">chmod 600 ~/.ssh/config <span class="c"># 自分だけが読める権限にしておく（macOSのみ。Windowsでは不要）</span></span>
 <span class="in">ssh mc <span class="c"># これだけで接続できる</span></span>
 <span class="in">scp ./memo.txt mc:~/ <span class="c"># scpでも同じ名前が使える</span></span>
 <span class="in">ssh mc 'uptime' <span class="c"># 接続してコマンドを1つだけ実行して戻る</span></span></code></pre>
@@ -487,10 +488,10 @@
 <span class="in">ssh-keygen -R 10.20.30.41 <span class="c"># IPアドレスで記録されている分も削除</span></span>
 <span class="in">ssh mc-24s1234.local <span class="c"># 再接続し、指紋を確認してyesと答える</span></span></code></pre>
       </div>
-      <p>鍵そのものの管理では、次の3点を守れば大きな事故は起きない。第1に、秘密鍵（<code>id_ed25519</code>、<code>.pub</code> の付かないほう）は絶対に他人に渡さず、クラウドストレージや公開リポジトリにも置かない。第2に、鍵を作るときはパスフレーズを付ける。第3に、権限を正しくする。<code>~/.ssh</code> は700、秘密鍵は600、<code>authorized_keys</code> は600でないとSSHは鍵を拒否する（理由は<a href="ch05.html#c5-3">第5章 5-3</a>のパーミッションのとおりである）。</p>
+      <p>鍵そのものの管理では、次の3点を守れば大きな事故は起きない。第1に、秘密鍵（<code>id_ed25519</code>、<code>.pub</code> の付かないほう）は絶対に他人に渡さず、クラウドストレージや公開リポジトリにも置かない。第2に、鍵を作るときはパスフレーズを付ける。第3に、権限を正しくする。<code>~/.ssh</code> は700、秘密鍵は600、<code>authorized_keys</code> は600でないとSSHは鍵を拒否する（理由は<a href="ch05.html#c5-3">第5章 5.3</a>のパーミッションのとおりである）。</p>
       <div class="call note"><span class="ct">実習ではここで使う</span><p>※ 鍵ペアの作成と登録は<a href="../day3.html#s3-7">第3回 3-7 SSHを公開鍵認証に切り替える</a>で行う。<code>~/.ssh/config</code> の作成はそこまで進んだあとに取り組むと、<code>IdentityFile</code> の意味がそのまま理解できる。</p></div>
 
-      <h2 id="c7-add-5"><span class="no">7-12</span>HTTPとTLSの基礎</h2>
+      <h2 id="c7-add-5"><span class="no">7.12</span>HTTPとTLSの基礎</h2>
       <p>Webは最も身近なネットワークサービスであり、<a href="../day5.html#s5-4">第5回</a>で公開する稼働状況ページもHTTPで配信されている。ここではサーバ管理者として最低限知っておきたいHTTPの構造と、HTTPSが何を守っているのかを整理する。</p>
 
       <h3 id="c7-add-5-a">リクエストとレスポンス</h3>
@@ -550,8 +551,8 @@
         <p class="a">同じLANにいる第三者には通信が見えうるし、学内Wi-Fiも不特定多数が同居する場所である。パスワードや個人情報を扱うなら、内部向けでもHTTPSにするか、7-11のSSHポート転送のように別の手段で保護すべきである。</p>
       </div>
 
-      <h2 id="c7-add-6"><span class="no">7-13</span>ufw コマンドリファレンス</h2>
-      <p>7-5節のとおり、ufwはファイアウォールを簡単に操作するためのツールである。日常的に使うのは状態確認と許可の追加、そして不要になった規則の削除の3つだけである。規則は上から順に評価されるのではなく、ufwが内部で整理するため、番号を指定した削除ができるように <code>status numbered</code> をまず覚えるとよい。</p>
+      <h2 id="c7-add-6"><span class="no">7.13</span>ufw コマンドリファレンス</h2>
+      <p>7.5節のとおり、ufwはファイアウォールを簡単に操作するためのツールである。日常的に使うのは状態確認と許可の追加、そして不要になった規則の削除の3つだけである。規則は上から順に評価され、最初に当てはまった規則が使われる。途中に規則を差し込むときは <code>sudo ufw insert 1 ...</code> を使い、番号を指定した削除のために <code>status numbered</code> をまず覚えるとよい。</p>
       <div class="code" data-ctx="server">
   <div class="code-head"><span class="code-title">ufw の基本操作</span></div>
 <pre><code><span class="in">sudo ufw status verbose <span class="c"># 現在の状態と既定の方針を確認</span></span>
@@ -591,7 +592,7 @@
       </div>
       <p>まず1行目の <code>Status: active</code> を見る。<code>inactive</code> なら規則を書いても何も効いていない。各行は左から番号、宛先のポート、動作、送信元である。<code>From</code> が <code>Anywhere</code> なら誰からでも入れる状態で、<code>10.20.30.0/24</code> のようにネットワークが書かれていれば送信元が限定されている。<code>(v6)</code> の行はIPv6用に自動生成された対の規則なので、1つ許可すると2行増えるのが普通である。削除するときは、番号が振り直されるため、<b>1つ消すたびに <code>status numbered</code> を取り直す</b>こと。</p>
       <div class="call warn"><span class="ct">注意</span><p>※ <code>sudo ufw reset</code> はすべての規則を削除してufwを無効化する。作業前に <code>sudo ufw status numbered</code> の出力を実験記録に控えておくこと。また、SSHの規則を消したうえで有効化すると、その瞬間に自分が締め出されて、モニタとキーボードを繋がない限り復旧できなくなる。規則を触る前に <code>sudo ufw status</code> で22番の許可があることを必ず確かめる。</p></div>
-      <div class="call note"><span class="ct">実習ではここで使う</span><p>※ <a href="../day2.html#s2-6">第2回 2-6 ファイアウォールの設定</a>で22番と30000番を開ける。<a href="../day5.html#s5-4">第5回 5-4</a>で8080番を扱うときは、7-5節で述べたとおりDockerが公開するポートはufwを経由しない点を思い出してほしい。</p></div>
+      <div class="call note"><span class="ct">実習ではここで使う</span><p>※ <a href="../day2.html#s2-6">第2回 2-6 ファイアウォールの設定</a>で22番と30000番を開ける。<a href="../day5.html#s5-4">第5回 5-4</a>で8080番を扱うときは、7.5節で述べたとおりDockerが公開するポートはufwを経由しない点を思い出してほしい。</p></div>
 
       <nav class="pager" aria-label="前後のページ">
         <a class="prev" href="ch06.html"><span class="pl">前へ</span><span class="pt">プロセスとサービス管理</span></a>

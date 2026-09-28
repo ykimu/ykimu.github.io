@@ -125,7 +125,7 @@
       <p><strong>広げる：</strong><code>sqlite3</code> の <code>.backup</code> を使ってサービスを止めずに整合性のあるバックアップを取る。さらに「復元して起動できるか」を自動で検証するスクリプトを <code>cron</code> に載せ、結果を <code>backup.log</code> と Web 監視ページに出す。</p>
 
       <h3 id="ca-5-g">構成管理・自動化</h3>
-      <p><strong>まず動かす：</strong>Ansible を BYOD に入れ（Pythonが必要）、<a href="../day2.html">第2回</a>から<a href="../day3.html">第3回</a>で手作業した内容、すなわち <code>ufw</code> のルール、ユニットファイルの配置、<code>luanti</code> ユーザの作成を Playbook にして自分のPiに適用し、同じ状態になることを確認する。</p>
+      <p><strong>まず動かす：</strong>Ansible を BYOD に入れ（Pythonが必要。WindowsではWSLの中に入れる。またはPi自身を制御側にして localhost に適用してもよい）、<a href="../day2.html">第2回</a>から<a href="../day3.html">第3回</a>で手作業した内容、すなわち <code>ufw</code> のルール、ユニットファイルの配置、<code>luanti</code> ユーザの作成を Playbook にして自分のPiに適用し、同じ状態になることを確認する。</p>
       <p><strong>広げる：</strong>初期状態のPi（隣の学生と協力するか、SDを書き直す）に Playbook を適用して、手順書なしで環境が再現されることを実証する。2回目の実行で変更が0になる（冪等性）ことを示せると、Infrastructure as Code の記事として完成する。</p>
 
       <h3 id="ca-5-h">資産のバージョン管理</h3>

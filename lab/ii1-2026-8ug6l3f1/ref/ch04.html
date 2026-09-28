@@ -53,14 +53,14 @@
         </ul></div>
       </div>
 
-      <h2 id="c4-1"><span class="no">4-1</span>なぜ今もviなのか</h2>
+      <h2 id="c4-1"><span class="no">4.1</span>なぜ今もviなのか</h2>
       <p>viは1976年に生まれたテキストエディタであり、現在広く使われているのはその改良版のVimである。半世紀近く前のソフトウェアを今も学ぶ理由は明快で、viはPOSIXという標準規格に含まれており、どんなに最小構成のLinuxサーバにも必ず入っているからである。</p>
       <p>障害対応で緊急ログインしたサーバに、使い慣れたエディタがインストールされている保証はない。<b>viさえ使えれば、世界中のどのUNIX系サーバでも設定ファイルを編集できる。</b></p>
 
       <dl class="term"><dt>vi / Vim<small>vi improved</small></dt><dd>UNIX系OSの標準的なテキストエディタ。現在使われているのはほぼ改良版のVimで、実習で <code>vi</code> と打つと起動するのもVimである。</dd></dl>
       <dl class="term"><dt>POSIX<small>portable operating system interface</small></dt><dd>UNIX系OSが共通して備えるべき機能を定めた標準規格。viがここに含まれるため、どのサーバにも必ず入っていると期待できる。</dd></dl>
 
-      <h2 id="c4-2"><span class="no">4-2</span>モードという考え方</h2>
+      <h2 id="c4-2"><span class="no">4.2</span>モードという考え方</h2>
       <p>viの最大の特徴は、「文字を入力する状態」と「編集操作をする状態」が分かれていることである。通常のエディタでは<kbd>Ctrl</kbd>キーなどとの組み合わせで操作を行うが、viではモードを切り替えることで、単独のキーを強力な編集命令として使う。慣れるとホームポジションから手を動かさずに高速な編集ができるため、現在でも多くのエンジニアが愛用している。</p>
 
       <dl class="term"><dt>コマンドモード<small>normal mode</small></dt><dd>viを起動した直後の状態。キーがそのまま編集命令として働く（<kbd>x</kbd>で1文字削除、<kbd>dd</kbd>で1行切り取りなど）。迷ったら<kbd>Esc</kbd>を押せばここに戻る。</dd></dl>
@@ -75,7 +75,7 @@
         <p class="a">Raspberry Pi OS Lite の標準は最小構成の <code>vim-tiny</code> で、この症状が起きることがある。<code>sudo apt install vim</code> でフル版を入れると解消する（<a href="../day1.html#s1-7">第1回 1-7</a>）。入力モードでは<kbd>h</kbd><kbd>j</kbd><kbd>k</kbd><kbd>l</kbd>も移動にはならないので、いったん<kbd>Esc</kbd>で抜けてから移動するのが確実である。</p>
       </div>
 
-      <h2 id="c4-3"><span class="no">4-3</span>操作リファレンス</h2>
+      <h2 id="c4-3"><span class="no">4.3</span>操作リファレンス</h2>
 
       <div class="scroll">
       <table class="tbl">
@@ -96,7 +96,7 @@
       </table>
       </div>
 
-      <div class="call note"><span class="ct">Note</span><p>※ 独習には、Vimに付属する公式チュートリアル <code>vimtutor</code> が優れている（ターミナルで <code>vimtutor ja</code> と実行。約30分）。<code>vimtutor</code> はフル版の <code>vim</code> パッケージに含まれる。Raspberry Pi OS Lite の標準は最小構成の <code>vim-tiny</code> なので、<code>sudo apt install vim</code> で導入しておく（<a href="../day1.html#s1-7">第1回 1-7</a>）。また、誤操作でおかしくなったら、<kbd>Esc</kbd>を数回押してから <code>:q!</code> で「保存せずに出る」のが安全な脱出方法である。</p></div>
+      <div class="call note"><span class="ct">補足</span><p>※ 独習には、Vimに付属する公式チュートリアル <code>vimtutor</code> が優れている（ターミナルで <code>vimtutor ja</code> と実行。約30分）。<code>vimtutor</code> はフル版の <code>vim</code> パッケージに含まれる。Raspberry Pi OS Lite の標準は最小構成の <code>vim-tiny</code> なので、<code>sudo apt install vim</code> で導入しておく（<a href="../day1.html#s1-7">第1回 1-7</a>）。また、誤操作でおかしくなったら、<kbd>Esc</kbd>を数回押してから <code>:q!</code> で「保存せずに出る」のが安全な脱出方法である。</p></div>
 
       <dl class="term"><dt>vimtutor<small>vimtutor ja</small></dt><dd>Vimに付属する公式の練習用チュートリアル。約30分で基本操作をひととおり体験できる。フル版の <code>vim</code> パッケージに含まれる。</dd></dl>
 
@@ -104,13 +104,13 @@
         <span class="q"><code>:wq</code> と打ったのに <code>E212: Can't open file for writing</code> と出て保存できない</span>
         <p class="a"><code>/etc</code> 以下などの設定ファイルは、一般ユーザには書き込み権限がない。<code>:q!</code> でいったん抜けて、<code>sudo vi ファイル名</code> で開き直す（<a href="ch05.html">第5章</a>）。</p>
         <span class="q">開き直したら <code>E325: ATTENTION</code> とスワップファイルの警告が出る</span>
-        <p class="a">前回viが正常に終了しなかったときに残る作業用ファイルの警告である。同じファイルを別の端末で開いていないことを確かめたうえで、編集内容を取り戻したいなら回復、不要なら削除を選ぶ。判断に迷うときは、いったん終了して<b>教員に確認する</b>のが安全である。</p>
+        <p class="a">前回viが正常に終了しなかったときに残る作業用ファイルの警告である。同じファイルを別の端末で開いていないことを確かめたうえで、編集内容を取り戻したいなら回復、不要なら削除を選ぶ。判断に迷うときは、いったん終了して<b>教員・支援員に確認する</b>のが安全である。</p>
         <span class="q">設定ファイルを保存したのに、サービスの動きが変わらない</span>
-        <p class="a">viでの保存は設定ファイルを書き換えただけである。systemdのユニットファイルなら <code>sudo systemctl daemon-reload</code>、サービスの設定なら再起動が必要になる（<a href="../day2.html#s2-5">第2回 2-5</a>、<a href="ch06.html#c6-2">第6章 6-2</a>）。</p>
+        <p class="a">viでの保存は設定ファイルを書き換えただけである。systemdのユニットファイルなら <code>sudo systemctl daemon-reload</code>、サービスの設定なら再起動が必要になる（<a href="../day2.html#s2-5">第2回 2-5</a>、<a href="ch06.html#c6-2">第6章 6.2</a>）。</p>
       </div>
 
-      <h2 id="c4-add-1"><span class="no">4-4</span>Vimをもう一歩使いこなす</h2>
-      <p><a href="#c4-3">4-3節</a>の操作リファレンスは「設定ファイルを1行直して保存する」ために必要な最小限だった。しかしサーバの運用では、数百行のログを追いかけたり、設定ファイル全体の書式を一括で直したりする場面が出てくる。その場でVimの機能をもう少し知っているだけで、作業時間は目に見えて短くなる。</p>
+      <h2 id="c4-add-1"><span class="no">4.4</span>Vimをもう一歩使いこなす</h2>
+      <p><a href="#c4-3">4.3節</a>の操作リファレンスは「設定ファイルを1行直して保存する」ために必要な最小限だった。しかしサーバの運用では、数百行のログを追いかけたり、設定ファイル全体の書式を一括で直したりする場面が出てくる。その場でVimの機能をもう少し知っているだけで、作業時間は目に見えて短くなる。</p>
       <p>以下で紹介するキー操作は、すべてコマンドモード（<kbd>Esc</kbd>を押した状態）で行う。入力モードのまま打つと文字がそのまま入ってしまうので、迷ったらまず<kbd>Esc</kbd>である。</p>
 
       <h3 id="c4-add-1-a">開き方を使い分ける</h3>
@@ -120,8 +120,8 @@
 <pre><code><span class="in">vi <var>ファイル名</var> <span class="c"># 基本形</span></span>
 <span class="in">vi +42 /etc/systemd/system/luanti.service <span class="c"># 42行目にカーソルを置いて開く</span></span>
 <span class="in">vi +/ExecStart /etc/systemd/system/luanti.service <span class="c"># 最初のExecStartの行に飛んで開く</span></span>
-<span class="in">view /var/log/syslog <span class="c"># 読み取り専用で開く（誤って書き換えない）</span></span>
-<span class="in">vi -O /home/luanti/server/luanti.conf /home/luanti/server/world/world.mt <span class="c"># 2つを左右に並べて開く</span></span></code></pre>
+<span class="in">view /var/log/apt/history.log <span class="c"># 読み取り専用で開く（誤って書き換えない）</span></span>
+<span class="in">sudo -u luanti vi -O /home/luanti/server/luanti.conf /home/luanti/server/world/world.mt <span class="c"># 2つを左右に並べて開く</span></span></code></pre>
       </div>
       <div class="scroll">
       <table class="tbl">
@@ -243,16 +243,16 @@
         <p class="a">sudoで起動したVimはrootの設定（<code>/root/.vimrc</code>）を読む。自分の設定を使いたいなら、その場で <code>:set nu</code> と打つか、rootにも同じ設定ファイルを置く。実習では前者で十分である。</p>
       </div>
 
-      <h2 id="c4-add-2"><span class="no">4-5</span>nanoという選択肢</h2>
+      <h2 id="c4-add-2"><span class="no">4.5</span>nanoという選択肢</h2>
       <p>viは強力だが、モードの切り替えに慣れるまで時間がかかる。Debian系のLinuxには、もう1つnanoという素直なエディタが用意されている。nanoにはモードが無く、開いたらそのまま文字を打てて、画面の下に操作方法が常時表示されている。「設定ファイルを1行だけ直したい」という場面では、nanoのほうが速いことも多い。</p>
-      <p>ただし<a href="#c4-1">4-1節</a>で述べたとおり、nanoが入っていないサーバは実在する。<b>「nanoを使うが、viも読み書きできる」という状態を目指すのがよい。</b></p>
+      <p>ただし<a href="#c4-1">4.1節</a>で述べたとおり、nanoが入っていないサーバは実在する。<b>「nanoを使うが、viも読み書きできる」という状態を目指すのがよい。</b></p>
       <div class="code" data-ctx="server">
         <div class="code-head"><span class="code-title">nanoの導入と起動</span></div>
 <pre><code><span class="in">nano --version <span class="c"># 入っているか確認（バージョンが出れば導入済み）</span></span>
 <span class="in">sudo apt install -y nano <span class="c"># 入っていない場合だけ実行</span></span>
 <span class="in">nano <var>ファイル名</var> <span class="c"># 基本形</span></span>
 <span class="in">sudo nano /etc/systemd/system/luanti.service <span class="c"># システムの設定ファイルはsudoで</span></span>
-<span class="in">nano -l /home/luanti/server/luanti.conf <span class="c"># -l で行番号を表示する</span></span></code></pre>
+<span class="in">sudo -u luanti nano -l /home/luanti/server/luanti.conf <span class="c"># -l で行番号を表示する</span></span></code></pre>
       </div>
       <div class="scroll">
       <table class="tbl">
@@ -276,7 +276,7 @@
         <p class="a">古い設定では長い行を自動改行することがある。ユニットファイルの <code>ExecStart=</code> のような長い行が2行に割れると、サービスは起動しなくなる。心配なら <code>nano -w ファイル名</code>（折り返しを無効にする）で開き、保存後に <code>cat</code> で1行になっているか確かめる。</p>
       </div>
 
-      <h2 id="c4-add-3"><span class="no">4-6</span>設定ファイルを安全に編集する作法</h2>
+      <h2 id="c4-add-3"><span class="no">4.6</span>設定ファイルを安全に編集する作法</h2>
       <p>サーバの障害の多くは、攻撃ではなく「設定ファイルの編集ミス」で起きる。エディタの操作を覚えることと同じくらい、編集の前後で何をするかという作法が大切である。ここでは、実務で当たり前に行われている3つの手順、つまり「取っておく」「見比べる」「確かめる」を扱う。</p>
 
       <h3 id="c4-add-3-a">編集前に取っておく</h3>
@@ -310,7 +310,7 @@
 <pre><code><span class="in">diff -u /etc/systemd/system/luanti.service.bak /etc/systemd/system/luanti.service</span>
 <span class="in">diff -u --color=always a.conf b.conf <span class="c"># 色を付けて見やすくする</span></span>
 <span class="in">diff -q a.conf b.conf <span class="c"># 違いの有無だけを知りたいとき</span></span>
-<span class="in">diff -r /home/luanti/server /home/luanti/server.bak <span class="c"># ディレクトリ全体を比較する</span></span></code></pre>
+<span class="in">sudo -u luanti diff -r /home/luanti/server /home/luanti/server.bak <span class="c"># ディレクトリ全体を比較する</span></span></code></pre>
       </div>
       <div class="scroll">
       <table class="tbl">
@@ -330,15 +330,22 @@
 <pre><code><span class="in">diff -u /etc/systemd/system/luanti.service.bak /etc/systemd/system/luanti.service</span>
 <span class="out">--- /etc/systemd/system/luanti.service.bak	2026-05-12 14:02:11.000000000 +0900</span>
 <span class="out">+++ /etc/systemd/system/luanti.service	2026-05-12 14:18:47.000000000 +0900</span>
-<span class="out">@@ -5,7 +5,8 @@</span>
+<span class="out">@@ -4,9 +4,10 @@</span>
+<span class="out"> Wants=network-online.target</span>
+<span class="out"> </span>
 <span class="out"> [Service]</span>
 <span class="out">-User=taro</span>
+<span class="out">-WorkingDirectory=/home/taro/server</span>
+<span class="out">-ExecStart=/usr/games/luantiserver --world /home/taro/server/world --gameid minetest --config /home/taro/server/luanti.conf --logfile ""</span>
 <span class="out">+User=luanti</span>
 <span class="out">+Environment=HOME=/home/luanti</span>
-<span class="out"> WorkingDirectory=/home/luanti/server</span>
-<span class="out"> Restart=on-failure</span></code></pre>
+<span class="out">+WorkingDirectory=/home/luanti/server</span>
+<span class="out">+ExecStart=/usr/games/luantiserver --world /home/luanti/server/world --gameid minetest --config /home/luanti/server/luanti.conf --logfile ""</span>
+<span class="out"> Restart=on-failure</span>
+<span class="out"> </span>
+<span class="out"> [Install]</span></code></pre>
       </div>
-      <p>先頭の <code>---</code> が変更前のファイル、<code>+++</code> が変更後のファイルである。<code>@@ -5,7 +5,8 @@</code> は「変更前は5行目から7行分、変更後は5行目から8行分」を表しており、この部分を見れば行数が1行増えたことも分かる。以降、行頭が <code>-</code> の行は削除、<code>+</code> の行は追加、半角スペースの行は変更なしである。この例では <code>User=</code> を書き換え、<code>Environment=HOME=/home/luanti</code> を1行追加したことが読み取れる（<a href="../day3.html#s3-3">第3回 3-3</a>で実際に行う変更である）。</p>
+      <p>先頭の <code>---</code> が変更前のファイル、<code>+++</code> が変更後のファイルである。<code>@@ -4,9 +4,10 @@</code> は「変更前は4行目から9行分、変更後は4行目から10行分」を表しており、この部分を見れば行数が1行増えたことも分かる。以降、行頭が <code>-</code> の行は削除、<code>+</code> の行は追加、半角スペースの行は変更なしである。この例では <code>User</code>・<code>WorkingDirectory</code>・<code>ExecStart</code> を書き換え、<code>Environment</code> を1行追加したことが読み取れる（<a href="../day3.html#s3-3">第3回 3-3</a>で実際に行う変更である）。</p>
       <p><b>意図していない行が <code>-</code> や <code>+</code> に現れていないかを確認するのが、この作業のいちばんの目的である。</b>見覚えのない差分があれば、それは打ち間違いか、カーソルが違う行にあったまま編集したかのどちらかである。</p>
       <dl class="term"><dt>diff<small>diff -u / unified形式</small></dt><dd>2つのファイルの違いだけを表示するコマンド。<code>-u</code>を付けた形式では、<code>-</code>で始まる行が削除、<code>+</code>で始まる行が追加を表す。編集前のバックアップと見比べるのが定番の使い方である。</dd></dl>
 
@@ -359,8 +366,8 @@
 <span class="cm">（誤りが無い場合は、何も表示されずにプロンプトが戻る）</span></code></pre>
       </div>
       <p>出力は「ファイル名:行番号: 内容」の形である。この例は9行目の <code>ExecStart</code> を <code>ExecStar</code> と打ち間違えた場合で、systemdは知らない項目を黙って無視するため、検査しなければ「起動コマンドが書かれていないサービス」ができあがってしまう。<b>何も表示されないことが正常である</b>点に注意したい。エラーが出たら、<code>vi +9 /etc/systemd/system/luanti.service</code> のように行番号を指定して開けばすぐ直せる。</p>
-      <div class="call warn"><span class="ct">注意</span><p>SSHの設定ファイル <code>/etc/ssh/sshd_config</code> を編集して <code>sudo systemctl restart ssh</code> する作業は、<b>書式を誤ると自分がサーバから締め出される</b>。必ず <code>sudo sshd -t</code> で検査し、さらに<b>現在のSSH接続はつないだまま</b>、別のターミナルから新しく接続できることを確かめてから、元の接続を閉じること。接続できなくなった場合は、Raspberry Pi にモニタとキーボードを直接つないで復旧する（<a href="ch05.html#c5-add-4">第5章 5-7</a>）。</p></div>
-      <div class="call note"><span class="ct">実習ではここで使う</span><p><a href="../day2.html#s2-5">第2回 2-5</a>と<a href="../day3.html#s3-3">第3回 3-3</a>でユニットファイルを編集するとき、<a href="../day3.html#s3-7">第3回 3-7</a>でSSHを公開鍵認証に切り替えるときが、この作法の出番である。特に3-7は締め出しの危険がある作業なので、バックアップと検査を省略しないこと。</p></div>
+      <div class="call warn"><span class="ct">注意</span><p>SSHの設定ファイル <code>/etc/ssh/sshd_config</code> を編集して <code>sudo systemctl restart ssh</code> する作業は、<b>書式を誤ると自分がサーバから締め出される</b>。必ず <code>sudo sshd -t</code> で検査し、さらに<b>現在のSSH接続はつないだまま</b>、別のターミナルから新しく接続できることを確かめてから、元の接続を閉じること。接続できなくなった場合は、Raspberry Pi にモニタとキーボードを直接つないで復旧する（<a href="ch05.html#c5-add-4">第5章 5.7</a>）。</p></div>
+      <div class="call note"><span class="ct">実習ではここで使う</span><p><a href="../day2.html#s2-5">第2回 2-5</a>と<a href="../day3.html#s3-3">第3回 3-3</a>でユニットファイルを編集するときが、この作法の出番である。sshd_config を編集するのは最終課題のセキュリティ強化テーマ（<a href="appendix.html#ca-5-d">付録A.5</a>）であり、そのときにこの作法を必ず使うこと。</p></div>
       <dl class="term"><dt>構文チェック<small>systemd-analyze verify / sshd -t</small></dt><dd>設定ファイルの書式だけを検査する機能。サービスを再起動する前に実行すると、起動失敗や締め出しの多くを未然に防げる。何も表示されないのが正常という点に注意する。</dd></dl>
       <div class="mini"><span class="ct">ここまでの確認</span><ul>
         <li><code>:set nu</code> で行番号を出し、<code>:42</code> で42行目へ移動できる</li>

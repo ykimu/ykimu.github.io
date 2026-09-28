@@ -28,7 +28,7 @@
   <div class="hero">
     <p class="eyebrow">GLOSSARY / 用語集</p>
     <h1>用語集</h1>
-    <p class="lead">基礎知識の各章で定義した 115 語を章ごとにまとめた。実習中に分からない言葉が出てきたら、ここで引いてから該当章へ進もう。</p>
+    <p class="lead">基礎知識の各章で定義した 114 語を章ごとにまとめた。実習中に分からない言葉が出てきたら、ここで引いてから該当章へ進もう。</p>
   </div>
 
   <div class="layout">
@@ -37,7 +37,7 @@
       <ol></ol>
     </aside>
     <article class="doc">
-      <input class="glo-search" type="search" id="glo-q" placeholder="用語や説明の一部で絞り込む（例: ポート, systemd, パス）" aria-label="用語を検索">
+      <input class="glo-search" type="search" id="glo-q" placeholder="用語や説明で絞り込む（例: ポート）" aria-label="用語を検索">
       <p class="glo-empty" id="glo-none" hidden>該当する用語がありません。</p>
       <nav class="glo-nav" aria-label="章へ移動"><a href="#g-ch01">第1章</a><a href="#g-ch02">第2章</a><a href="#g-ch03">第3章</a><a href="#g-ch04">第4章</a><a href="#g-ch05">第5章</a><a href="#g-ch06">第6章</a><a href="#g-ch07">第7章</a><a href="#g-ch08">第8章</a><a href="#g-ch09">第9章</a><a href="#g-ch10">第10章</a><a href="#g-ch11">第11章</a></nav>
       <h2 id="g-ch01">第1章 OSとLinux</h2>
@@ -48,7 +48,7 @@
 <dl class="term" data-k="カーネル kernel osの中核。メモリ管理、プロセス管理、ファイルシステム、ネットワーク、デバイスドライバを担う。「linux」とは本来このカーネルの名前である。"><dt>カーネル<small>kernel</small></dt><dd>OSの中核。メモリ管理、プロセス管理、ファイルシステム、ネットワーク、デバイスドライバを担う。「Linux」とは本来このカーネルの名前である。<span class="src"><a href="ch01.html#c1-4">第1章 OSとLinux で詳しく</a></span></dd></dl>
 <dl class="term" data-k="ユーザランド user land カーネルの外側で動く領域。シェル、ls などのコマンド、luantiサーバ本体はすべてここにいる。"><dt>ユーザランド<small>user land</small></dt><dd>カーネルの外側で動く領域。シェル、ls などのコマンド、Luantiサーバ本体はすべてここにいる。<span class="src"><a href="ch01.html#c1-4">第1章 OSとLinux で詳しく</a></span></dd></dl>
 <dl class="term" data-k="ディストリビューション distribution カーネルにシェル・基本コマンド・ライブラリ・パッケージ管理システムなどを組み合わせた、すぐ使えるosの完成品。raspberry pi osもその1つである。"><dt>ディストリビューション<small>distribution</small></dt><dd>カーネルにシェル・基本コマンド・ライブラリ・パッケージ管理システムなどを組み合わせた、すぐ使えるOSの完成品。Raspberry Pi OSもその1つである。<span class="src"><a href="ch01.html#c1-6">第1章 OSとLinux で詳しく</a></span></dd></dl>
-<dl class="term" data-k="bookworm debian 12 のコードネーム debianの版に付けられた愛称。raspberry pi osはdebianを土台にしているため、ネットで手順を探すときは「raspberry pi os」ではなく「debian 12 bookworm」で調べたほうが情報が見つかりやすい。"><dt>bookworm<small>Debian 12 のコードネーム</small></dt><dd>Debianの版に付けられた愛称。Raspberry Pi OSはDebianを土台にしているため、ネットで手順を探すときは「Raspberry Pi OS」ではなく「Debian 12 bookworm」で調べたほうが情報が見つかりやすい。<span class="src"><a href="ch01.html#c1-add-1">第1章 OSとLinux で詳しく</a></span></dd></dl>
+<dl class="term" data-k="bookworm debianの版のコードネーム debianの版に付けられた愛称（12はbookworm、13はtrixie）。自分の版は cat /etc/os-release で確かめる。raspberry pi osはdebianを土台にしているため、ネットで手順を探すときは「raspberry pi os」ではなく「debian」と自分の版の番号やコードネームで調べたほうが情報が見つかりやすい。"><dt>bookworm<small>Debianの版のコードネーム</small></dt><dd>Debianの版に付けられた愛称（12はbookworm、13はtrixie）。自分の版は cat /etc/os-release で確かめる。Raspberry Pi OSはDebianを土台にしているため、ネットで手順を探すときは「Raspberry Pi OS」ではなく「Debian」と自分の版の番号やコードネームで調べたほうが情報が見つかりやすい。<span class="src"><a href="ch01.html#c1-add-1">第1章 OSとLinux で詳しく</a></span></dd></dl>
 <dl class="term" data-k="リポジトリ repository パッケージが置かれている配布元のサーバ。どこを見に行くかは /etc/apt/sources.list と /etc/apt/sources.list.d/ 以下のファイルに書かれている。"><dt>リポジトリ<small>repository</small></dt><dd>パッケージが置かれている配布元のサーバ。どこを見に行くかは /etc/apt/sources.list と /etc/apt/sources.list.d/ 以下のファイルに書かれている。<span class="src"><a href="ch01.html#c1-add-3">第1章 OSとLinux で詳しく</a></span></dd></dl>
 <dl class="term" data-k="依存関係 dependency あるパッケージが動くために必要な別のパッケージ。apt は依存を自動で解決して一緒に導入し、不要になったものは apt autoremove で外せる。"><dt>依存関係<small>dependency</small></dt><dd>あるパッケージが動くために必要な別のパッケージ。apt は依存を自動で解決して一緒に導入し、不要になったものは apt autoremove で外せる。<span class="src"><a href="ch01.html#c1-add-3">第1章 OSとLinux で詳しく</a></span></dd></dl>
 <dl class="term" data-k="マニュアルページ man page コマンドや設定ファイルの公式な説明書。man ls のように引き、/ で検索、q で終了する。節番号（1はコマンド、5はファイル書式）で同名の別内容が区別される。"><dt>マニュアルページ<small>man page</small></dt><dd>コマンドや設定ファイルの公式な説明書。man ls のように引き、/ で検索、q で終了する。節番号（1はコマンド、5はファイル書式）で同名の別内容が区別される。<span class="src"><a href="ch01.html#c1-add-4">第1章 OSとLinux で詳しく</a></span></dd></dl>
@@ -149,7 +149,6 @@
 <dl class="term" data-k="しきい値 threshold これを超えたら異常とみなす境界の値。平常時の値を先に知らないと決められない。厳しすぎると通知が多すぎて無視され、緩すぎると手遅れになる。"><dt>しきい値<small>threshold</small></dt><dd>これを超えたら異常とみなす境界の値。平常時の値を先に知らないと決められない。厳しすぎると通知が多すぎて無視され、緩すぎると手遅れになる。<span class="src"><a href="ch08.html#c8-add-5">第8章 サーバ運用の基礎 で詳しく</a></span></dd></dl>
 <dl class="term" data-k="切り分け isolation 障害の原因がどこにあるかを、範囲を狭めながら特定していく作業。自分側、経路、相手側の順に確かめるのが基本で、思いつきで試すより早く確実である。"><dt>切り分け<small>isolation</small></dt><dd>障害の原因がどこにあるかを、範囲を狭めながら特定していく作業。自分側、経路、相手側の順に確かめるのが基本で、思いつきで試すより早く確実である。<span class="src"><a href="ch08.html#c8-add-6">第8章 サーバ運用の基礎 で詳しく</a></span></dd></dl>
 <dl class="term" data-k="ポストモーテム postmortem 障害が収まった後に、何が起きて、どう直して、次にどう防ぐかをまとめる文書。人を責めるのではなく仕組みを直すことを目的とする。"><dt>ポストモーテム<small>postmortem</small></dt><dd>障害が収まった後に、何が起きて、どう直して、次にどう防ぐかをまとめる文書。人を責めるのではなく仕組みを直すことを目的とする。<span class="src"><a href="ch08.html#c8-add-6">第8章 サーバ運用の基礎 で詳しく</a></span></dd></dl>
-<dl class="term" data-k="手順書 runbook 定型作業や復旧作業の手順を、その場にいない人でも実行できるように書いた文書。前提、手順、成功の判定方法、失敗時の戻し方の4点が揃っていることが条件である。"><dt>手順書<small>runbook</small></dt><dd>定型作業や復旧作業の手順を、その場にいない人でも実行できるように書いた文書。前提、手順、成功の判定方法、失敗時の戻し方の4点が揃っていることが条件である。<span class="src"><a href="ch08.html#c8-add-6">第8章 サーバ運用の基礎 で詳しく</a></span></dd></dl>
 </div>
 <h2 id="g-ch09">第9章 シェルスクリプト入門</h2>
 <div class="glo">

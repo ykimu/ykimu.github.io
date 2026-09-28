@@ -53,7 +53,7 @@
         </ul></div>
       </div>
 
-      <h2 id="c1-1"><span class="no">1-1</span>コンピュータの構成要素</h2>
+      <h2 id="c1-1"><span class="no">1.1</span>コンピュータの構成要素</h2>
       <p>コンピュータは大きく4つの部品でできている。CPU（中央処理装置）はプログラムの命令を実行する頭脳、メモリ（主記憶、RAM）は実行中のプログラムとデータを置く作業机、ストレージ（補助記憶。SSDやmicroSDカード）はプログラムやファイルを保存しておく本棚、そしてネットワークインタフェース（有線LANやWi-Fi）が外部との通信を担う。Raspberry Pi 400も、ノートPCも、スマートフォンも、データセンターの大型サーバも、規模こそ違えこの4点セットで構成されている点はまったく同じである。</p>
       <p>特に重要なのがメモリとストレージの違いである。メモリは高速だが、電源を切ると内容が消える（揮発性）。ストレージは低速だが、電源を切っても内容が残る（不揮発性）。プログラムの実行とは「ストレージ上のプログラムをメモリに読み込み、CPUが命令を1つずつ実行すること」であり、ファイルの保存とは「メモリ上の作業結果をストレージに書き戻すこと」である。</p>
       <p>Luantiサーバでいえば、プレイ中のワールドはメモリ上で更新されており、それが定期的に<code>world</code>ディレクトリ（ストレージ）へ保存されるからこそ再起動後も残る。また、速度の序列（CPU内部＞メモリ≫ストレージ≫ネットワーク）を頭に入れておくと、<a href="ch06.html">第6章</a>で学ぶ「スワップはなぜ遅いのか」、<a href="ch08.html">第8章</a>の「バックアップはなぜ時間がかかるのか」が自然に理解できる。</p>
@@ -63,7 +63,7 @@
 
       <figure><img src="../img/s01.png" alt="図1-1　コンピュータの構成要素とデータの流れ" width="1800" height="770"><figcaption>図1-1　コンピュータの構成要素とデータの流れ</figcaption></figure>
 
-      <div class="call note"><span class="ct">Note</span><p>※ ビットとバイト：コンピュータ内部の情報は、すべて0と1の並び（ビット）で表現される。8ビット＝1バイトが容量の基本単位で、約1000倍ごとにKB→MB→GB→TBと呼び名が変わる。「メモリ4GB」「microSD 32GB」という数字は、この単位で作業机と本棚の広さを表している。</p></div>
+      <div class="call note"><span class="ct">補足</span><p>※ ビットとバイト：コンピュータ内部の情報は、すべて0と1の並び（ビット）で表現される。8ビット＝1バイトが容量の基本単位で、約1000倍ごとにKB→MB→GB→TBと呼び名が変わる。「メモリ4GB」「microSD 32GB」という数字は、この単位で作業机と本棚の広さを表している。</p></div>
 
       <div class="call myth"><span class="ct">よくある誤解・トラブル</span>
         <span class="q">電源ボタンで切っても、ワールドは勝手に保存されている</span>
@@ -72,7 +72,7 @@
         <p class="a">メモリ（作業机）とストレージ（本棚）はまったく別の資源である。メモリの残りは <code>free -h</code>、ストレージの残りは <code>df -h</code> と、見るコマンドも異なる。</p>
       </div>
 
-      <h2 id="c1-2"><span class="no">1-2</span>サーバとクライアント</h2>
+      <h2 id="c1-2"><span class="no">1.2</span>サーバとクライアント</h2>
       <p>「サーバ」とは特別な機械の名前ではなく、役割の名前である。ネットワーク越しにサービス（機能）を提供する側をサーバ、それを利用する側をクライアントと呼ぶ。Webページを提供すればWebサーバ、ゲームのワールドを提供すればゲームサーバ（Luanti）、遠隔ログインを受け付ければSSHサーバ（<code>sshd</code>）である。1台のRaspberry Piが同時に複数のサーバ役をこなせること、高価な機械でなくてもサーバになれることは、実習で体験したとおりである。</p>
 
       <dl class="term"><dt>サーバ<small>server</small></dt><dd>ネットワーク越しにサービスを提供する側の役割の名前。機械の種類ではない。1台のRaspberry PiがSSHサーバとLuantiサーバを同時に兼ねることもできる。</dd></dl>
@@ -95,12 +95,12 @@
         <p class="a">サーバはモニタもキーボードも付けずに運用するのが普通である。だからこそ遠隔から操作するSSHと、画面がなくても勝手に起動するサービス化（systemd）を最初に学ぶ。</p>
       </div>
 
-      <h2 id="c1-3"><span class="no">1-3</span>オペレーティングシステムの役割</h2>
+      <h2 id="c1-3"><span class="no">1.3</span>オペレーティングシステムの役割</h2>
       <p>コンピュータの本体は、CPU・メモリ・ストレージ・ネットワーク機器などのハードウェアの集まりである。しかし、アプリケーション（ゲームサーバも含む）がこれらのハードウェアを直接操作するとしたら、すべてのアプリケーションがCPUの取り合いやメモリの管理を自前で行わなければならず、まともに共存できない。そこで、ハードウェアとアプリケーションの間に立って交通整理をするソフトウェアが必要になる。これがオペレーティングシステム（OS）である。</p>
       <p>OSの仕事は大きく2つにまとめられる。1つ目は資源管理である。複数のプログラムにCPU時間を順番に割り当て（スケジューリング）、メモリを配分し、プログラム同士が互いの領域を壊さないように保護する。</p>
       <p>2つ目は抽象化である。「ファイルに書き込む」「ネットワークにデータを送る」といった単純な命令の裏で、ストレージの種類やネットワーク機器の違いをOSが吸収してくれるため、アプリケーションはハードウェアの詳細を知らなくてよい。実習でLuantiサーバがSDカードの仕組みを一切気にせずワールドを保存できるのは、OSによる抽象化のおかげである。</p>
 
-      <h2 id="c1-4"><span class="no">1-4</span>カーネルとユーザランド</h2>
+      <h2 id="c1-4"><span class="no">1.4</span>カーネルとユーザランド</h2>
       <p>OSの中核部分をカーネルという。カーネルはメモリ管理、プロセス管理、ファイルシステム、ネットワーク機能、デバイスドライバなど、システムの根幹をすべて担う。一方、私たちが直接触れるシェルやコマンド、各種アプリケーションはカーネルの外側で動いており、この領域をユーザランドと呼ぶ。ユーザランドのプログラムは、システムコールという窓口を通じてカーネルに仕事を依頼する。「Linux」という言葉は、厳密にはこのカーネルの名前である。</p>
 
       <dl class="term"><dt>カーネル<small>kernel</small></dt><dd>OSの中核。メモリ管理、プロセス管理、ファイルシステム、ネットワーク、デバイスドライバを担う。「Linux」とは本来このカーネルの名前である。</dd></dl>
@@ -108,12 +108,12 @@
 
       <figure><img src="../img/s03.png" alt="図1-3　ユーザ・シェル・カーネルの関係" width="1800" height="470"><figcaption>図1-3　ユーザ・シェル・カーネルの関係</figcaption></figure>
 
-      <h2 id="c1-5"><span class="no">1-5</span>UNIXからLinuxへ</h2>
+      <h2 id="c1-5"><span class="no">1.5</span>UNIXからLinuxへ</h2>
       <p>Linuxの設計の源流は、1969年に米国ベル研究所で生まれたUNIXにある。UNIXは「小さな道具を組み合わせて大きな仕事をする」という設計思想を持ち、パイプでコマンドをつなぐ操作方法や、階層型のファイルシステム、マルチユーザの仕組みなど、現在のOSの基本形をつくった。</p>
       <p>1991年、当時大学生だったリーナス・トーバルズ氏が、UNIXの設計を参考にしたカーネルを自作しインターネットで公開した。これがLinuxである。ソースコードが公開され、誰でも無償で利用・改変・再配布できるオープンソースソフトウェアとして開発が進んだ結果、世界中の開発者の貢献によって急速に成長した。</p>
       <p>現在、Webサービスやクラウドを支えるサーバの大半、スーパーコンピュータのほぼすべて、Android端末、そして本実習のRaspberry Piまで、LinuxはコンピュータインフラのOSとして事実上の標準になっている。サーバ管理者を目指すうえでLinuxの操作が必須とされるのはこのためである。</p>
 
-      <h2 id="c1-6"><span class="no">1-6</span>ディストリビューション</h2>
+      <h2 id="c1-6"><span class="no">1.6</span>ディストリビューション</h2>
       <p>カーネル単体ではOSとして使えない。シェル、基本コマンド群、ライブラリ、パッケージ管理システム、インストーラなどを組み合わせて初めて実用的なOSになる。この「完成品のセット」をディストリビューションと呼ぶ。ディストリビューションには大きく2つの系統がある。</p>
 
       <dl class="term"><dt>ディストリビューション<small>distribution</small></dt><dd>カーネルにシェル・基本コマンド・ライブラリ・パッケージ管理システムなどを組み合わせた、すぐ使えるOSの完成品。Raspberry Pi OSもその1つである。</dd></dl>
@@ -128,7 +128,7 @@
 
       <p>本実習で使うRaspberry Pi OSはDebianをRaspberry Pi向けに調整したものであり、Ubuntuとも操作方法はほぼ共通である。系統が違ってもLinuxとしての基本操作（ファイル操作、パーミッション、systemd等）は同じなので、どちらか一方を身につければもう一方への応用は難しくない。</p>
 
-      <div class="call note"><span class="ct">Note</span><p>※ 32-bitと64-bit：CPUが一度に扱えるデータの幅の違いで、OSにも32-bit版と64-bit版がある。実習で64-bit版OSを使うのは、Docker等の主要ソフトウェアが64-bit環境を前提に配布されているためである。</p></div>
+      <div class="call note"><span class="ct">補足</span><p>※ 32-bitと64-bit：CPUが一度に扱えるデータの幅の違いで、OSにも32-bit版と64-bit版がある。実習で64-bit版OSを使うのは、Docker等の主要ソフトウェアが64-bit環境を前提に配布されているためである。</p></div>
 
       <div class="call myth"><span class="ct">よくある誤解・トラブル</span>
         <span class="q">Linuxならどれも同じなので、ネットで見つけた <code>dnf install</code> をそのまま実行すればよい</span>
@@ -137,11 +137,11 @@
         <p class="a">Liteはデスクトップ環境（GUI）を含まない構成というだけで、サーバとしての機能は変わらない。GUIを載せない分のメモリとCPUをLuantiサーバに回せるので、むしろサーバ用途では有利である。</p>
       </div>
 
-      <h2 id="c1-add-1"><span class="no">1-7</span>サーバの正体を調べる</h2>
+      <h2 id="c1-add-1"><span class="no">1.7</span>サーバの正体を調べる</h2>
       <p>サーバに初めてログインしたとき、管理者が最初にすることは「この機械は何者か」を確かめることである。OSの版、カーネルの版、CPUの数、メモリとディスクの量。この4つが分かれば、入れられるソフトウェア、耐えられる負荷、取るべきバックアップの大きさがおおよそ決まる。ここではその調査に使うコマンドを、出力の読み方まで含めて整理する。実習で使うRaspberry Pi 400を例にするが、どれもDebian系Linuxで共通に使えるコマンドである。</p>
 
       <h3 id="c1-add-1-a">OSとカーネルを名乗らせる</h3>
-      <p>Linuxでは「OSの名前」と「カーネルの版」が別の情報である（<a href="#c1-4">1-4節</a>）。カーネルの版は<code>uname</code>、ディストリビューションの版は<code>/etc/os-release</code>というテキストファイル、その両方をまとめて見せてくれるのが<code>hostnamectl</code>である。ネット上の手順書を試す前に、まずこの3つで自分の環境を確定させる習慣を付けたい。</p>
+      <p>Linuxでは「OSの名前」と「カーネルの版」が別の情報である（<a href="#c1-4">1.4節</a>）。カーネルの版は<code>uname</code>、ディストリビューションの版は<code>/etc/os-release</code>というテキストファイル、その両方をまとめて見せてくれるのが<code>hostnamectl</code>である。ネット上の手順書を試す前に、まずこの3つで自分の環境を確定させる習慣を付けたい。</p>
 
       <div class="code" data-ctx="server">
         <div class="code-head"><span class="code-title">OSとカーネルを確認する</span></div>
@@ -175,9 +175,9 @@
 <span class="out">          Kernel: Linux 6.6.51+rpt-rpi-v8</span>
 <span class="out">    Architecture: arm64</span></code></pre>
       </div>
-      <p>見るべきは3か所である。先頭から2番目の<code>mc-24s1234</code>はホスト名で、SSHで繋いだ先が本当に自分のサーバかを確認できる。<code>6.6.51+rpt-rpi-v8</code>はカーネルの版で、<code>+rpt</code>はRaspberry Pi財団が配布している版であることを示す。末尾の<code>aarch64</code>（<code>hostnamectl</code>では<code>arm64</code>と表記される）は64-bit ARMという意味で、Dockerイメージを選ぶときにこの値が効いてくる（<a href="../day5.html#s5-2">第5回 5-2</a>）。<code>Operating System</code>の行が<code>Debian GNU/Linux 12 (bookworm)</code>であることが、<code>apt</code>を使うDebian系である何よりの証拠である。</p>
+      <p>見るべきは3か所である。先頭から2番目の<code>mc-24s1234</code>はホスト名で、SSHで繋いだ先が本当に自分のサーバかを確認できる。<code>6.6.51+rpt-rpi-v8</code>はカーネルの版で、<code>+rpt</code>はRaspberry Pi財団が配布している版であることを示す。末尾の<code>aarch64</code>（<code>hostnamectl</code>では<code>arm64</code>と表記される）は64-bit ARMという意味で、Dockerイメージを選ぶときにこの値が効いてくる（<a href="../day5.html#s5-3">第5回 5-3</a>）。<code>Operating System</code>の行が<code>Debian GNU/Linux</code>で始まっていることが、<code>apt</code>を使うDebian系である何よりの証拠である。版の番号とコードネーム（上の例では<code>12 (bookworm)</code>）は配布イメージによって異なるので、自分の画面の値で読み替える。</p>
 
-      <dl class="term"><dt>bookworm<small>Debian 12 のコードネーム</small></dt><dd>Debianの版に付けられた愛称。Raspberry Pi OSはDebianを土台にしているため、ネットで手順を探すときは「Raspberry Pi OS」ではなく「Debian 12 bookworm」で調べたほうが情報が見つかりやすい。</dd></dl>
+      <dl class="term"><dt>bookworm<small>Debianの版のコードネーム</small></dt><dd>Debianの版に付けられた愛称（12はbookworm、13はtrixie）。自分の版は cat /etc/os-release で確かめる。Raspberry Pi OSはDebianを土台にしているため、ネットで手順を探すときは「Raspberry Pi OS」ではなく「Debian」と自分の版の番号やコードネームで調べたほうが情報が見つかりやすい。</dd></dl>
 
       <div class="call myth"><span class="ct">よくある誤解・トラブル</span>
         <span class="q">32-bitのRaspberry Pi OSでも、64-bit用の手順はそのまま使える</span>
@@ -185,7 +185,7 @@
       </div>
 
       <h3 id="c1-add-1-b">資源の量を数える（lscpu・free・df）</h3>
-      <p><a href="#c1-1">1-1節</a>で述べた4点セットのうち、CPU・メモリ・ストレージの量は、それぞれ<code>lscpu</code>・<code>free -h</code>・<code>df -h</code>で数えられる。<code>-h</code>は「human readable（人間に読みやすい単位で）」の意味で、バイト数の生の桁ではなくGiやMといった単位付きで表示させるオプションである。多くのコマンドで共通の作法なので覚えておくとよい。</p>
+      <p><a href="#c1-1">1.1節</a>で述べた4点セットのうち、CPU・メモリ・ストレージの量は、それぞれ<code>lscpu</code>・<code>free -h</code>・<code>df -h</code>で数えられる。<code>-h</code>は「human readable（人間に読みやすい単位で）」の意味で、バイト数の生の桁ではなくGiやMといった単位付きで表示させるオプションである。多くのコマンドで共通の作法なので覚えておくとよい。</p>
 
       <div class="code" data-ctx="server">
         <div class="code-head"><span class="code-title">CPU・メモリ・ディスクの量を調べる</span></div>
@@ -223,7 +223,7 @@
 <span class="out">tmpfs           1.9G     0  1.9G   0% /dev/shm</span>
 <span class="out">/dev/mmcblk0p1  510M   62M  449M  13% /boot/firmware</span></code></pre>
       </div>
-      <p><code>free -h</code>で見るべき列は<code>free</code>ではなく<b><code>available</code></b>である。Linuxは空いているメモリをディスクキャッシュ（<code>buff/cache</code>）に回すので、<code>free</code>の値は常に小さく見えるが、キャッシュは必要になれば即座に手放される。この例では3.3Giがまだ使える。もう1つの要注意点が<code>Swap</code>の<code>used</code>で、ここが増え続けているならメモリ不足であり、microSDを仮想メモリとして酷使している危険な状態である（<a href="ch06.html#c6-3">第6章 6-3</a>）。</p>
+      <p><code>free -h</code>で見るべき列は<code>free</code>ではなく<b><code>available</code></b>である。Linuxは空いているメモリをディスクキャッシュ（<code>buff/cache</code>）に回すので、<code>free</code>の値は常に小さく見えるが、キャッシュは必要になれば即座に手放される。この例では3.3Giがまだ使える。もう1つの要注意点が<code>Swap</code>の<code>used</code>で、ここが増え続けているならメモリ不足であり、microSDを仮想メモリとして酷使している危険な状態である（<a href="ch06.html#c6-3">第6章 6.3</a>）。</p>
       <p><code>df -h</code>では<code>Mounted on</code>が<code>/</code>の行、すなわちシステム全体が入っている領域の<code>Use%</code>を見る。80%を超えたら整理を始め、90%を超えるとログが書けずサービスが止まり始める。<code>/boot/firmware</code>はRaspberry Piの起動用の小さな領域で、カーネル更新のときだけ増える。<code>tmpfs</code>はメモリ上の一時領域なので、ここの数字はディスクの空きとは無関係である。</p>
 
       <div class="call note"><span class="ct">実習ではここで使う</span><p>※ <code>free -h</code> と <code>df -h</code> は<a href="../day3.html#s3-5">第3回 3-5 サーバの監視</a>で定点観測の道具として使う。<code>df</code>が示す使用率は<a href="../day4.html#s4-5">第4回 4-5 障害対応演習</a>のシナリオ「ディスク枯渇」でそのまま判断材料になる。</p></div>
@@ -253,10 +253,10 @@
 <span class="out">[    5.902117] Bluetooth: BNEP socket layer initialized</span>
 <span class="out">[  512.338091] hwmon hwmon1: Undervoltage detected!</span></code></pre>
       </div>
-      <p><code>uptime</code>の<code>up 3 days, 2:11</code>は連続稼働時間である。自分で再起動した覚えがないのにここが数分になっていたら、電源断か異常終了を疑う。末尾の<code>load average</code>は1分・5分・15分の平均待ち行列で、Raspberry Pi 400は4コアなので4を超え続けていれば過負荷である（詳しくは<a href="ch06.html#c6-3">第6章 6-3</a>）。</p>
+      <p><code>uptime</code>の<code>up 3 days, 2:11</code>は連続稼働時間である。自分で再起動した覚えがないのにここが数分になっていたら、電源断か異常終了を疑う。末尾の<code>load average</code>は1分・5分・15分の平均待ち行列で、Raspberry Pi 400は4コアなので4を超え続けていれば過負荷である（詳しくは<a href="ch06.html#c6-3">第6章 6.3</a>）。</p>
       <p><code>vcgencmd measure_temp</code>の<code>temp=47.2'C</code>は平常値である。60度台までは通常運用の範囲、80度に近づくと性能が落ちるので、筐体の通気やヒートシンクを見直す。<code>dmesg</code>の各行の先頭にある数字は起動からの経過秒数で、最後の例の<code>Undervoltage detected!</code>は電源の供給不足を意味する。Raspberry Piで原因不明の再起動や、microSDの破損が起きるときの最有力容疑者がこのメッセージなので、見つけたら電源アダプタとケーブルを疑う。</p>
 
-      <div class="call note"><span class="ct">Note</span><p>※ <code>dmesg</code>は環境によっては一般ユーザで読めず、<code>dmesg: read kernel buffer failed: Operation not permitted</code>と表示される。そのときは<code>sudo dmesg | tail</code>のように<code>sudo</code>を付ける。<code>sudo dmesg -T</code>とすると経過秒数の代わりに実時刻で表示されるので、他のログと突き合わせるときに便利である。</p></div>
+      <div class="call note"><span class="ct">補足</span><p>※ <code>dmesg</code>は環境によっては一般ユーザで読めず、<code>dmesg: read kernel buffer failed: Operation not permitted</code>と表示される。そのときは<code>sudo dmesg | tail</code>のように<code>sudo</code>を付ける。<code>sudo dmesg -T</code>とすると経過秒数の代わりに実時刻で表示されるので、他のログと突き合わせるときに便利である。</p></div>
 
       <div class="call myth"><span class="ct">よくある誤解・トラブル</span>
         <span class="q"><code>vcgencmd</code> が動かないので、このサーバは壊れている</span>
@@ -265,7 +265,7 @@
         <p class="a">Raspberry Piで体感が落ちる原因は、CPUよりも温度による速度低下、電源不足、microSDの遅さであることが多い。<code>vcgencmd measure_temp</code>、<code>sudo dmesg | grep -i voltage</code>、<code>free -h</code>のswapの3点をまず確認する。</p>
       </div>
 
-      <h2 id="c1-add-2"><span class="no">1-8</span>起動と停止の正しい作法</h2>
+      <h2 id="c1-add-2"><span class="no">1.8</span>起動と停止の正しい作法</h2>
       <p>サーバを止めるという操作は、デスクトップPCのそれとは重みが違う。動いているサービスの利用者を切断し、メモリ上の未保存データを書き戻し、ファイルシステムの整合性を保ったうえで電源を落とす必要がある。ここではその手順と、絶対にやってはいけない止め方を確認する。</p>
 
       <h3 id="c1-add-2-a">reboot と shutdown</h3>
@@ -300,14 +300,14 @@
       <div class="code" data-ctx="server">
         <div class="code-head"><span class="code-title">予告付き停止の見え方</span></div>
 <pre><code><span class="in">sudo shutdown -r +5 "kernel update, back in 5 min"</span>
-<span class="out">Shutdown scheduled for Sat 2026-09-19 14:10:00 JST, use 'shutdown -c' to cancel.</span>
+<span class="out">Reboot scheduled for Sat 2026-09-19 14:10:00 JST, use 'shutdown -c' to cancel.</span>
 <span class="out"></span>
 <span class="out">Broadcast message from root@mc-24s1234 on pts/0 (Sat 2026-09-19 14:05:00 JST):</span>
 <span class="out"></span>
 <span class="out">kernel update, back in 5 min</span>
-<span class="out">The system is going down for reboot at Sat 2026-09-19 14:10:00 JST!</span></code></pre>
+<span class="out">The system will reboot at Sat 2026-09-19 14:10:00 JST!</span></code></pre>
       </div>
-      <p>1行目が予約の確認、<code>Broadcast message</code>以降がログイン中の全員の端末に流れる予告である。<code>Shutdown scheduled for</code>の時刻を見て、意図した時刻かどうかを必ず確認する。違っていれば<code>sudo shutdown -c</code>で取り消せる。SSH越しに実行した場合、停止が始まると接続は切断され、端末には<code>Connection to mc-24s1234.local closed by remote host.</code>と表示される。これは異常ではなく、正しく止まった証拠である。</p>
+      <p>1行目が予約の確認、<code>Broadcast message</code>以降がログイン中の全員の端末に流れる予告である。<code>Reboot scheduled for</code>の時刻を見て、意図した時刻かどうかを必ず確認する。違っていれば<code>sudo shutdown -c</code>で取り消せる。SSH越しに実行した場合、停止が始まると接続は切断され、端末には<code>Connection to mc-24s1234.local closed by remote host.</code>と表示される。これは異常ではなく、正しく止まった証拠である。</p>
 
       <h3 id="c1-add-2-b">誰がいつログインしていたかを見る（who・w・last）</h3>
       <p>止める前に確認すべきは「今ほかに誰か作業していないか」であり、止めたあとに確認すべきは「本当に自分の操作で止まったのか」である。前者は<code>who</code>と<code>w</code>、後者は<code>last</code>が答える。<code>last</code>はログインと再起動の履歴を新しい順に並べるコマンドで、身に覚えのない再起動や、見知らぬ接続元を見つける手がかりにもなる。</p>
@@ -327,8 +327,8 @@
 <pre><code><span class="in">w</span>
 <span class="out"> 14:03:21 up 3 days,  2:11,  2 users,  load average: 0.08, 0.12, 0.09</span>
 <span class="out">USER     TTY      FROM             LOGIN@   IDLE   JCPU   PCPU WHAT</span>
-<span class="out">taro     pts/0    192.168.1.23     13:58    0.00s  0.15s  0.02s w</span>
-<span class="out">hanako   pts/1    192.168.1.41     14:01    1:12   0.04s  0.04s -bash</span>
+<span class="out">taro     pts/0    10.20.30.52      13:58    0.00s  0.15s  0.02s w</span>
+<span class="out">hanako   pts/1    10.20.30.57      14:01    1:12   0.04s  0.04s -bash</span>
 <span class="in">last reboot -n 2</span>
 <span class="out">reboot   system boot  6.6.51+rpt-rpi-v8 Wed Sep 16 11:52   still running</span>
 <span class="out">reboot   system boot  6.6.51+rpt-rpi-v8 Tue Sep 15 09:30 - 11:50 (1+02:20)</span></code></pre>
@@ -340,11 +340,11 @@
         <span class="q">SSHの接続が切れたので、サーバが落ちたに違いない</span>
         <p class="a">切れる原因は、サーバの停止、ネットワークの断、無操作によるタイムアウトの3つがある。まずもう一度<code>ssh</code>してみて、繋がるなら単なる切断である。繋がらないなら<code>ping</code>で経路を確認する（<a href="ch07.html">第7章</a>）。</p>
         <span class="q"><code>shutdown -h now</code> を打ったのに、緑のランプが点いたままだ</span>
-        <p class="a">Raspberry Piは停止しても電源が供給されている限りランプが残ることがある。SSHが切れ、画面に<code>reboot: System halted</code>が出ていれば停止は完了している。数秒待ってから電源を抜く。</p>
+        <p class="a">Raspberry Piは停止しても電源が供給されている限りランプが残ることがある。SSHが切れ、画面に<code>reboot: Power down</code>が出ていれば停止は完了している。数秒待ってから電源を抜く。</p>
       </div>
 
-      <h2 id="c1-add-3"><span class="no">1-9</span>パッケージ管理 apt の全体像</h2>
-      <p>Debian系のLinuxでは、ソフトウェアは「パッケージ」という単位で配布され、<code>apt</code>がその出し入れを担当する（<a href="#c1-6">1-6節</a>）。Windowsのようにインストーラを1つずつダウンロードして実行するのではなく、公式のサーバ（リポジトリ）にある一覧から名前を指定して入れる。依存する部品も自動で一緒に入るため、たいていのソフトウェアは1行で導入できる。実習で<code>luanti-server</code>を入れたのがまさにこれである（<a href="../day2.html#s2-1">第2回 2-1</a>）。</p>
+      <h2 id="c1-add-3"><span class="no">1.9</span>パッケージ管理 apt の全体像</h2>
+      <p>Debian系のLinuxでは、ソフトウェアは「パッケージ」という単位で配布され、<code>apt</code>がその出し入れを担当する（<a href="#c1-6">1.6節</a>）。Windowsのようにインストーラを1つずつダウンロードして実行するのではなく、公式のサーバ（リポジトリ）にある一覧から名前を指定して入れる。依存する部品も自動で一緒に入るため、たいていのソフトウェアは1行で導入できる。実習で<code>luanti-server</code>を入れたのがまさにこれである（<a href="../day2.html#s2-2">第2回 2-2</a>）。</p>
 
       <dl class="term"><dt>リポジトリ<small>repository</small></dt><dd>パッケージが置かれている配布元のサーバ。どこを見に行くかは<code>/etc/apt/sources.list</code>と<code>/etc/apt/sources.list.d/</code>以下のファイルに書かれている。</dd></dl>
 
@@ -414,12 +414,13 @@
         <div class="code-head"><span class="code-title">apt-cache policy の出力例</span></div>
 <pre><code><span class="in">apt-cache policy luanti-server</span>
 <span class="out">luanti-server:</span>
-<span class="out">  Installed: 5.9.0+dfsg+~1.9.0mt13-1</span>
-<span class="out">  Candidate: 5.9.0+dfsg+~1.9.0mt13-1</span>
+<span class="out">  Installed: 5.x.x+dfsg-1</span>
+<span class="out">  Candidate: 5.x.x+dfsg-1</span>
 <span class="out">  Version table:</span>
-<span class="out"> *** 5.9.0+dfsg+~1.9.0mt13-1 500</span>
-<span class="out">        500 http://deb.debian.org/debian bookworm/main arm64 Packages</span></code></pre>
+<span class="out"> *** 5.x.x+dfsg-1 500</span>
+<span class="out">        500 http://deb.debian.org/debian （コードネーム）/main arm64 Packages</span></code></pre>
       </div>
+      <p>この例では版番号とコードネームを伏せてある。実際には具体的な数字と、自分のDebianの版のコードネームが表示されるので、自分の画面の値で読み替える。</p>
       <p><code>Installed</code>が今入っている版、<code>Candidate</code>が<code>apt install</code>で入る版である。この2つが同じなら最新で、違えば更新できる。<code>Installed: (none)</code>なら未導入という意味である。<code>*** </code>の印は現在選ばれている版を示し、その下の行が入手元のリポジトリとアーキテクチャ（<code>arm64</code>）である。「入っているつもりなのに動かない」ときは、まずこのコマンドで本当に入っているかを確かめる。</p>
 
       <dl class="term"><dt>依存関係<small>dependency</small></dt><dd>あるパッケージが動くために必要な別のパッケージ。<code>apt</code>は依存を自動で解決して一緒に導入し、不要になったものは<code>apt autoremove</code>で外せる。</dd></dl>
@@ -443,7 +444,7 @@
 <span class="in">cat /var/log/unattended-upgrades/unattended-upgrades.log <span class="c"># 何を当てたかの記録</span></span></code></pre>
       </div>
 
-      <div class="call note"><span class="ct">Note</span><p>※ 自動更新は万能ではない。更新に伴ってサービスの再起動が必要になる場合があり、その瞬間は接続が切れる。実運用では「自動で当てるのはセキュリティ更新だけ」「再起動が要る更新は人が計画して行う」という線引きをするのが定石である。実習のサーバは授業時間中しか使わないので、<a href="../day2.html#s2-1">第2回 2-1</a>のように手動で<code>update</code>と<code>upgrade</code>を実行すればよい。</p></div>
+      <div class="call note"><span class="ct">補足</span><p>※ 自動更新は万能ではない。更新に伴ってサービスの再起動が必要になる場合があり、その瞬間は接続が切れる。実運用では「自動で当てるのはセキュリティ更新だけ」「再起動が要る更新は人が計画して行う」という線引きをするのが定石である。実習のサーバは授業時間中しか使わないので、<a href="../day2.html#s2-1">第2回 2-1</a>のように手動で<code>update</code>と<code>upgrade</code>を実行すればよい。</p></div>
 
       <div class="call myth"><span class="ct">よくある誤解・トラブル</span>
         <span class="q">ネットで見つけた <code>curl ... | sudo bash</code> の1行で入れるのが速くてよい</span>
@@ -452,7 +453,7 @@
         <p class="a"><code>remove</code>は<code>/etc</code>以下の設定を意図的に残す。まっさらにしたいなら<code>sudo apt purge パッケージ名</code>を使う。</p>
       </div>
 
-      <h2 id="c1-add-4"><span class="no">1-10</span>困ったときの調べ方</h2>
+      <h2 id="c1-add-4"><span class="no">1.10</span>困ったときの調べ方</h2>
       <p>コマンドの使い方を覚えることよりも大切なのが、「忘れたときに自力で調べられること」である。Linuxには調べる仕組みが最初から組み込まれており、ネットを検索する前にこちらを引いたほうが速く、しかも自分の環境に正しい答えが得られる。検索結果は別のディストリビューションや別の版の情報であることが珍しくないが、手元の<code>man</code>は今動いているそのコマンドの説明だからである。</p>
 
       <h3 id="c1-add-4-a">man と --help</h3>
@@ -496,10 +497,10 @@
       </div>
       <p>括弧の中の数字が節番号である。上の例では、コマンドとしての使い方を知りたければ<code>man 1 crontab</code>、設定ファイルに何をどう書くかを知りたければ<code>man 5 crontab</code>を読めばよいと分かる（<a href="../day4.html#s4-3">第4回 4-3</a>）。マニュアル本文は<code>NAME</code>（1行要約）、<code>SYNOPSIS</code>（書式）、<code>DESCRIPTION</code>（説明）、<code>OPTIONS</code>（オプション一覧）、<code>EXAMPLES</code>（例）、<code>SEE ALSO</code>（関連）の順に並ぶ。急いでいるときは<code>SYNOPSIS</code>と<code>EXAMPLES</code>だけ読めば足りることが多い。</p>
 
-      <div class="call note"><span class="ct">Note</span><p>※ <code>man</code>が見つからない、あるいは<code>man -k</code>が<code>nothing appropriate</code>としか答えない場合は、マニュアル本体か検索用の索引が無い。<code>sudo apt install -y man-db manpages</code>で導入し、<code>sudo mandb</code>で索引を作り直せば使えるようになる。</p></div>
+      <div class="call note"><span class="ct">補足</span><p>※ <code>man</code>が見つからない、あるいは<code>man -k</code>が<code>nothing appropriate</code>としか答えない場合は、マニュアル本体か検索用の索引が無い。<code>sudo apt install -y man-db manpages</code>で導入し、<code>sudo mandb</code>で索引を作り直せば使えるようになる。</p></div>
 
       <h3 id="c1-add-4-b">そのコマンドの正体を確かめる（type・which）</h3>
-      <p>「打ったコマンドが思ったものと違う」という事故は、<code>type</code>と<code>which</code>で防げる。<code>which</code>はPATH（<a href="ch03.html#c3-3">第3章 3-3</a>）を順に探して実行ファイルの場所を答える。<code>type</code>はさらに賢く、それがエイリアスなのか、シェルに組み込まれた機能なのか、外部のプログラムなのかまで教えてくれる。<code>cd</code>のようにファイルとして存在しないコマンドがあることを知るうえでも役に立つ。</p>
+      <p>「打ったコマンドが思ったものと違う」という事故は、<code>type</code>と<code>which</code>で防げる。<code>which</code>はPATH（<a href="ch03.html#c3-3">第3章 3.3</a>）を順に探して実行ファイルの場所を答える。<code>type</code>はさらに賢く、それがエイリアスなのか、シェルに組み込まれた機能なのか、外部のプログラムなのかまで教えてくれる。<code>cd</code>のようにファイルとして存在しないコマンドがあることを知るうえでも役に立つ。</p>
 
       <div class="code" data-ctx="server">
         <div class="code-head"><span class="code-title">コマンドの正体を調べる</span></div>
@@ -521,7 +522,7 @@
 <span class="in">which nonexistent-command</span>
 <span class="out"></span></code></pre>
       </div>
-      <p>3通りの答えがある。<code>aliased to</code>は<code>~/.bashrc</code>などで定義された別名で、実体は右側のコマンドである。<code>shell builtin</code>はbash自身の機能で、対応するファイルは存在しない（だから<code>which cd</code>は何も答えない）。パスが返れば外部のプログラムである。<code>which</code>が何も出力せず終了した場合、そのコマンドはPATH上に無い。「command not found」に出会ったら、綴り、導入の有無、PATHの3点をこの順で確かめる（<a href="ch03.html#c3-3">第3章 3-3</a>）。</p>
+      <p>3通りの答えがある。<code>aliased to</code>は<code>~/.bashrc</code>などで定義された別名で、実体は右側のコマンドである。<code>shell builtin</code>はbash自身の機能で、対応するファイルは存在しない（だから<code>which cd</code>は何も答えない）。パスが返れば外部のプログラムである。<code>which</code>が何も出力せず終了した場合、そのコマンドはPATH上に無い。「command not found」に出会ったら、綴り、導入の有無、PATHの3点をこの順で確かめる（<a href="ch03.html#c3-3">第3章 3.3</a>）。</p>
 
       <dl class="term"><dt>マニュアルページ<small>man page</small></dt><dd>コマンドや設定ファイルの公式な説明書。<code>man ls</code>のように引き、<kbd>/</kbd>で検索、<kbd>q</kbd>で終了する。節番号（1はコマンド、5はファイル書式）で同名の別内容が区別される。</dd></dl>
 

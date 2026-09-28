@@ -53,7 +53,7 @@
         </ul></div>
       </div>
 
-      <h2 id="c2-1"><span class="no">2-1</span>ファイルとは何か</h2>
+      <h2 id="c2-1"><span class="no">2.1</span>ファイルとは何か</h2>
       <p>ファイルとは、名前の付いたデータのまとまりである。中身はどんなファイルであれ、突き詰めればバイト列（数値の並び）に過ぎず、それを「どう解釈するか」でテキストファイルとバイナリファイルに分かれる。テキストファイルは、バイト列を文字コードの規則にしたがって文字として解釈できるファイルで、<code>cat</code>や<code>vi</code>でそのまま読み書きできる。現在の標準的な文字コードはUTF-8で、日本語を含む世界中の文字を扱える。一方バイナリファイルは、プログラム（<code>luantiserver</code>本体など）、画像、圧縮ファイルのように、それぞれ独自の形式でデータを詰め込んだもので、対応するプログラムでないと解釈できない。</p>
 
       <dl class="term"><dt>テキストファイル<small>text file</small></dt><dd>バイト列を文字コード（現在はUTF-8が標準）の規則で文字として解釈できるファイル。<code>cat</code>で読め、<code>vi</code>で編集でき、<code>grep</code>で検索できる。Linuxの設定ファイルはほぼすべてこれである。</dd></dl>
@@ -61,10 +61,10 @@
 
       <p>Linuxの設定ファイルがほぼすべてテキストファイルなのは偶然ではない。「人間が<code>cat</code>と<code>vi</code>さえあれば内容を確認・修正できる」「<code>grep</code>で検索でき、<code>diff</code>で差分が取れる」というテキストの利点を最大限に活かす設計文化だからである。実習で<code>luanti.conf</code>やユニットファイルを<code>vi</code>で編集できたのも、この文化の恩恵である（<a href="../day2.html#s2-4">第2回 2-4</a>、<a href="../day2.html#s2-5">第2回 2-5</a>）。</p>
 
-      <h2 id="c2-2"><span class="no">2-2</span>「すべてはファイル」という思想</h2>
+      <h2 id="c2-2"><span class="no">2.2</span>「すべてはファイル」という思想</h2>
       <p>UNIX/Linuxには「すべてはファイルである」という設計思想がある。文書やプログラムはもちろん、ディレクトリも、接続されたキーボードやディスクなどのデバイスも（<code>/dev</code>以下のデバイスファイル）、実行中のプロセスの情報も（<code>/proc</code>以下）、すべてファイルとして表現される。この統一のおかげで、「読む・書く」という同じ操作方法をあらゆる対象に使い回せる。たとえば<code>echo</code>で画面に文字を出すのも、リダイレクトでファイルに書くのも、本質的に同じ操作である。</p>
 
-      <h2 id="c2-3"><span class="no">2-3</span>ファイルの種類</h2>
+      <h2 id="c2-3"><span class="no">2.3</span>ファイルの種類</h2>
       <ul>
         <li><strong>通常ファイル：</strong>テキストファイルとバイナリファイル。Linuxでは拡張子は単なるファイル名の一部であり、Windowsのようにアプリケーションと結び付いてはいない（人間が分かりやすいように付ける慣習である）。</li>
         <li><strong>ディレクトリ：</strong>ファイルを束ねる入れ物。実体は「中にあるファイルの一覧表」を持つ特殊なファイルである。</li>
@@ -81,7 +81,7 @@
         <p class="a">ディレクトリも「中にあるファイルの一覧表」を持つ1種類のファイルである。だからディレクトリにもパーミッションがあり、読み書き実行の考え方がそのまま当てはまる（<a href="ch05.html">第5章</a>）。</p>
       </div>
 
-      <h2 id="c2-4"><span class="no">2-4</span>ディレクトリ階層の標準（FHS）</h2>
+      <h2 id="c2-4"><span class="no">2.4</span>ディレクトリ階層の標準（FHS）</h2>
       <p>Linuxのディレクトリ構成はFHS（Filesystem Hierarchy Standard）という標準でおおよそ決まっており、どのディストリビューションでも同じ場所に同じ種類のファイルがある。「どこに何があるか」を知っていることは、障害対応のスピードに直結する。</p>
 
       <dl class="term"><dt>FHS<small>Filesystem Hierarchy Standard</small></dt><dd>Linuxのディレクトリ構成を定めた標準。どのディストリビューションでも、設定は<code>/etc</code>、ログは<code>/var/log</code>というように置き場所が共通になる。</dd></dl>
@@ -104,8 +104,8 @@
 
       <figure><img src="../img/s04.png" alt="図2-1　ディレクトリツリーとパスの表現" width="1800" height="800"><figcaption>図2-1　ディレクトリツリーとパスの表現</figcaption></figure>
 
-      <h2 id="c2-5"><span class="no">2-5</span>パスの表現</h2>
-      <p>ファイルの場所は、ルートディレクトリ「/」からの道順である絶対パスか、現在いる場所（カレントディレクトリ）からの道順である相対パスで表す。スクリプトや設定ファイルに場所を書くときは、実行時のカレントディレクトリに左右されない絶対パスを使うのが安全である。<code>crontab</code>に登録するコマンドを絶対パスで書くのはこのためである（cronはあなたのシェルと違う環境で動くので、相対パスや省略したコマンド名は解決できないことがある。<a href="../day4.html#s4-3">第4回 4-3</a>、<a href="ch08.html#c8-3">第8章 8-3</a>）。</p>
+      <h2 id="c2-5"><span class="no">2.5</span>パスの表現</h2>
+      <p>ファイルの場所は、ルートディレクトリ「/」からの道順である絶対パスか、現在いる場所（カレントディレクトリ）からの道順である相対パスで表す。スクリプトや設定ファイルに場所を書くときは、実行時のカレントディレクトリに左右されない絶対パスを使うのが安全である。<code>crontab</code>に登録するコマンドを絶対パスで書くのはこのためである（cronはあなたのシェルと違う環境で動くので、相対パスや省略したコマンド名は解決できないことがある。<a href="../day4.html#s4-3">第4回 4-3</a>、<a href="ch08.html#c8-3">第8章 8.3</a>）。</p>
 
       <dl class="term"><dt>絶対パス<small>absolute path</small></dt><dd>ルートディレクトリ「<code>/</code>」から書いた道順。<code>/home/taro/backup</code> のように、どこで実行しても同じ場所を指す。スクリプトやcronには必ずこちらを書く。</dd></dl>
       <dl class="term"><dt>相対パス<small>relative path</small></dt><dd>いまいる場所（カレントディレクトリ）から見た道順。<code>../world</code> のように短く書けるが、実行時の居場所によって指す先が変わる。</dd></dl>
@@ -119,11 +119,11 @@
         <p class="a">cronはあなたのシェルとは別の環境で動き、カレントディレクトリもPATHも違う。ファイルもコマンドも絶対パスで書けばこの食い違いはなくなる。</p>
       </div>
 
-      <h2 id="c2-6"><span class="no">2-6</span>マウントとディスク</h2>
+      <h2 id="c2-6"><span class="no">2.6</span>マウントとディスク</h2>
       <p>Windowsではドライブ（C:、D:）ごとに独立したツリーを持つが、Linuxではすべてのストレージが1本のディレクトリツリーに「接ぎ木」される。この接ぎ木をマウントという。たとえばUSBメモリを挿すと <code>/media/ユーザ名/…</code> の位置にマウントされ、その下に入るだけで中身にアクセスできる。<code>df -h</code> が表示する「Mounted on」列は、各ストレージがツリーのどこに接ぎ木されているかを示している。</p>
 
-      <h2 id="c2-7"><span class="no">2-7</span>ファイルの調査と参照（file・du・ln）</h2>
-      <p>Linuxでは拡張子が飾りにすぎない（<a href="#c2-3">2-3節</a>）ため、ファイルの正体は中身で判定する。それを行うのが<code>file</code>コマンドである。また、「ディスクがいっぱい」という障害の調査では、<code>df -h</code> で全体を見たあと、<code>du</code> でどのディレクトリが太っているかを絞り込む。<a href="#c2-3">2-3節</a>で触れたシンボリックリンクは <code>ln -s</code> で作成できる。</p>
+      <h2 id="c2-7"><span class="no">2.7</span>ファイルの調査と参照（file・du・ln）</h2>
+      <p>Linuxでは拡張子が飾りにすぎない（<a href="#c2-3">2.3節</a>）ため、ファイルの正体は中身で判定する。それを行うのが<code>file</code>コマンドである。また、「ディスクがいっぱい」という障害の調査では、<code>df -h</code> で全体を見たあと、<code>du</code> でどのディレクトリが太っているかを絞り込む。<a href="#c2-3">2.3節</a>で触れたシンボリックリンクは <code>ln -s</code> で作成できる。</p>
 
       <div class="code">
         <div class="code-head"><span class="code-title">ファイルとディスクの調査</span></div>
@@ -134,7 +134,7 @@
 <span class="in">ls -l ~/mylog <span class="c"># mylog -&gt; /var/log と表示される</span></span></code></pre>
       </div>
 
-      <div class="call note"><span class="ct">Note</span><p>※ 容量調査の定石は「<code>df -h</code>（どのディスクが満杯か）→ <code>du -sh</code>（どのディレクトリが犯人か）」の順である。<a href="../day4.html#s4-5">第4回の障害対応演習</a>（シナリオD：ディスク枯渇）で実際に使う。</p></div>
+      <div class="call note"><span class="ct">補足</span><p>※ 容量調査の定石は「<code>df -h</code>（どのディスクが満杯か）→ <code>du -sh</code>（どのディレクトリが犯人か）」の順である。<a href="../day4.html#s4-5">第4回の障害対応演習</a>（シナリオD：ディスク枯渇）で実際に使う。</p></div>
 
       <div class="call myth"><span class="ct">よくある誤解・トラブル</span>
         <span class="q">ディスクが足りないので、とりあえず目についたファイルを消していく</span>
@@ -145,7 +145,7 @@
         <p class="a"><code>rm</code> にゴミ箱はなく、削除は取り消せない。戻せるかどうかはバックアップがあるかどうかだけで決まる（<a href="../day4.html#s4-4">第4回 4-4 リストア訓練</a>）。</p>
       </div>
 
-      <h2 id="c2-add-1"><span class="no">2-8</span>ls -la の各列を読む</h2>
+      <h2 id="c2-add-1"><span class="no">2.8</span>ls -la の各列を読む</h2>
       <p><code>ls</code>は最もよく打つコマンドだが、<code>-l</code>を付けたときに並ぶ7つの列を最後まで説明できる人は案外少ない。この列を読めることは、パーミッションの事故（<a href="ch05.html">第5章</a>）、ディスクの浪費、更新日時からの原因追跡のすべてに直結する。ここでは1行を左から右まで分解する。</p>
 
       <div class="code" data-ctx="server" data-cwd="~/server">
@@ -197,7 +197,7 @@
         <p class="a">第2列はリンク数で、同じ実体を指す名前の数である。中身を数えたいなら<code>ls -1 ディレクトリ | wc -l</code>のようにする。</p>
       </div>
 
-      <h2 id="c2-add-2"><span class="no">2-9</span>探す・調べる（find・stat・lsblk）</h2>
+      <h2 id="c2-add-2"><span class="no">2.9</span>探す・調べる（find・stat・lsblk）</h2>
       <p>サーバ管理の仕事の半分は「探すこと」である。設定ファイルがどこにあるのか、どのファイルが肥大しているのか、いつ誰が書き換えたのか。ここではその道具を、日常で本当に使う形に絞って並べる。</p>
 
       <h3 id="c2-add-2-a">find の実用パターン</h3>
@@ -233,18 +233,18 @@
       <div class="code" data-ctx="server">
         <div class="code-head"><span class="code-title">find の出力例</span></div>
 <pre><code><span class="in">find ~/backup -name '*.tar.gz' -mtime +7</span>
-<span class="out">/home/taro/backup/world_20260901_0300.tar.gz</span>
-<span class="out">/home/taro/backup/world_20260902_0300.tar.gz</span>
+<span class="out">/home/taro/backup/world_20260901_030000.tar.gz</span>
+<span class="out">/home/taro/backup/world_20260902_030000.tar.gz</span>
 <span class="in">find /var/log -type f -size +10M</span>
 <span class="out">find: '/var/log/private': Permission denied</span>
 <span class="out">/var/log/journal/3f2a.../system.journal</span></code></pre>
       </div>
-      <p>出力は常に絶対パスまたは指定した起点からのパスである。件数だけ知りたいときは<code>| wc -l</code>をつなぐ。2つ目の例に出ている<code>Permission denied</code>は、一般ユーザでは覗けないディレクトリに入ろうとしたという意味で、異常ではない。邪魔なときは<code>2&gt;/dev/null</code>でエラーだけ捨てるか、<code>sudo find</code>で実行する（<a href="ch03.html#c3-5">第3章 3-5</a>）。</p>
+      <p>出力は常に絶対パスまたは指定した起点からのパスである。件数だけ知りたいときは<code>| wc -l</code>をつなぐ。2つ目の例に出ている<code>Permission denied</code>は、一般ユーザでは覗けないディレクトリに入ろうとしたという意味で、異常ではない。邪魔なときは<code>2&gt;/dev/null</code>でエラーだけ捨てるか、<code>sudo find</code>で実行する（<a href="ch03.html#c3-5">第3章 3.5</a>）。</p>
 
-      <div class="call note"><span class="ct">Note</span><p>※ <code>locate</code>（高速なファイル検索）はRaspberry Pi OS Liteには最初から入っていない。使いたい場合は<code>sudo apt install -y plocate</code>で導入し、<code>sudo updatedb</code>で索引を作る。索引を作った時点の情報しか返らないため、さきほど作ったファイルは見つからない。確実さを優先するなら<code>find</code>を使う。</p></div>
+      <div class="call note"><span class="ct">補足</span><p>※ <code>locate</code>（高速なファイル検索）はRaspberry Pi OS Liteには最初から入っていない。使いたい場合は<code>sudo apt install -y plocate</code>で導入し、<code>sudo updatedb</code>で索引を作る。索引を作った時点の情報しか返らないため、さきほど作ったファイルは見つからない。確実さを優先するなら<code>find</code>を使う。</p></div>
 
       <h3 id="c2-add-2-b">1つのファイルを詳しく調べる（stat・file）</h3>
-      <p><code>ls -l</code>より詳しい情報が要るときは<code>stat</code>を使う。特に3つの日時（アクセス、内容の更新、属性の変更）を区別して表示できる点が<code>ls</code>との違いである。<code>file</code>は中身のバイト列からファイルの正体を判定するコマンドで、拡張子が飾りにすぎないLinuxでは必須の道具である（<a href="#c2-3">2-3節</a>）。</p>
+      <p><code>ls -l</code>より詳しい情報が要るときは<code>stat</code>を使う。特に3つの日時（アクセス、内容の更新、属性の変更）を区別して表示できる点が<code>ls</code>との違いである。<code>file</code>は中身のバイト列からファイルの正体を判定するコマンドで、拡張子が飾りにすぎないLinuxでは必須の道具である（<a href="#c2-3">2.3節</a>）。</p>
 
       <div class="code" data-ctx="server">
         <div class="code-head"><span class="code-title">ファイル1件の詳細</span></div>
@@ -273,7 +273,7 @@
       <dl class="term"><dt>inode<small>アイノード</small></dt><dd>ファイルの中身ではなく、サイズ・所有者・権限・日時・データの置き場所を記録した管理票。ファイル名はこの番号への参照にすぎない。数には上限があり、小さなファイルを大量に作ると容量が余っていても<code>No space left on device</code>になることがある。</dd></dl>
 
       <h3 id="c2-add-2-c">ディスクとマウントの全体像（lsblk・findmnt）</h3>
-      <p><a href="#c2-6">2-6節</a>で述べたマウントの状況は、<code>lsblk</code>で一目で分かる。物理的なディスクと、その中の区画（パーティション）、それぞれがツリーのどこに接ぎ木されているかが階層で表示される。バックアップ先を外付けディスクにするときや、「どの区画が満杯なのか」を突き止めるときの出発点になる。</p>
+      <p><a href="#c2-6">2.6節</a>で述べたマウントの状況は、<code>lsblk</code>で一目で分かる。物理的なディスクと、その中の区画（パーティション）、それぞれがツリーのどこに接ぎ木されているかが階層で表示される。バックアップ先を外付けディスクにするときや、「どの区画が満杯なのか」を突き止めるときの出発点になる。</p>
 
       <div class="code" data-ctx="server">
         <div class="code-head"><span class="code-title">ディスクとマウントを調べる</span></div>
@@ -297,7 +297,7 @@
       </div>
       <p><code>mmcblk0</code>がmicroSDカード本体、その下の<code>mmcblk0p1</code>と<code>mmcblk0p2</code>が区画である。<code>MOUNTPOINTS</code>が空の行は、まだツリーに接ぎ木されていない（マウントされていない）ことを意味する。外付けUSBメモリは<code>sda</code>として現れ、<code>RM</code>（removable）の列が1になる。</p>
 
-      <div class="call note"><span class="ct">Note</span><p>※ 教科書やネットの記事では<code>mount | grep sd</code>という例をよく見るが、これは内蔵ディスクが<code>/dev/sda</code>である一般のPCを前提にした書き方である。Raspberry PiのmicroSDカードは<code>/dev/mmcblk0</code>という別の名前になるため、<code>mount | grep mmcblk</code>あるいは<code>lsblk</code>や<code>findmnt</code>を使うほうが確実である。ハードウェアが変わればデバイス名も変わる、という一例として覚えておくとよい。</p></div>
+      <div class="call note"><span class="ct">補足</span><p>※ 教科書やネットの記事では<code>mount | grep sd</code>という例をよく見るが、これは内蔵ディスクが<code>/dev/sda</code>である一般のPCを前提にした書き方である。Raspberry PiのmicroSDカードは<code>/dev/mmcblk0</code>という別の名前になるため、<code>mount | grep mmcblk</code>あるいは<code>lsblk</code>や<code>findmnt</code>を使うほうが確実である。ハードウェアが変わればデバイス名も変わる、という一例として覚えておくとよい。</p></div>
 
       <div class="call myth"><span class="ct">よくある誤解・トラブル</span>
         <span class="q">容量はまだ空いているのに <code>No space left on device</code> と言われる</span>
@@ -306,7 +306,7 @@
         <p class="a">認識されていることと、ツリーに接ぎ木されていること（マウント）は別である。<code>MOUNTPOINTS</code>が空なら未マウントで、その場合は中身に入る道がまだ無い。</p>
       </div>
 
-      <h2 id="c2-add-3"><span class="no">2-10</span>アーカイブと圧縮（tar・gzip・rsync）</h2>
+      <h2 id="c2-add-3"><span class="no">2.10</span>アーカイブと圧縮（tar・gzip・rsync）</h2>
       <p>バックアップも配布も、まず「たくさんのファイルを1つにまとめる」ところから始まる。Linuxではこのまとめる操作（アーカイブ）と、小さくする操作（圧縮）が別々の道具として存在し、それを1つのコマンドで通しで行うのが<code>tar</code>である。<a href="../day4.html#s4-1">第4回 4-1</a>でワールドを<code>.tar.gz</code>にまとめたのがこれである。</p>
 
       <h3 id="c2-add-3-a">tar の3つの型</h3>
@@ -330,7 +330,7 @@
           <tr><td><code>z</code></td><td>gzipによる圧縮・展開を同時に行う（<code>.tar.gz</code>用）</td><td><code>tar czf</code></td></tr>
           <tr><td><code>f ファイル名</code></td><td>対象のアーカイブファイルを指定する。必ず最後に置く</td><td><code>tar czf out.tar.gz</code></td></tr>
           <tr><td><code>v</code></td><td>処理したファイル名を表示する（verbose）</td><td><code>tar czvf</code></td></tr>
-          <tr><td><code>-C ディレクトリ</code></td><td>そのディレクトリに移動してから処理する。絶対パスの混入を防ぐ</td><td><code>-C ~/server world</code></td></tr>
+          <tr><td><code>-C ディレクトリ</code></td><td>そのディレクトリに移動してから処理する。余計な上位階層を含めない</td><td><code>-C ~/server world</code></td></tr>
         </tbody>
       </table>
       </div>
@@ -344,13 +344,13 @@
 <span class="out">world/</span>
 <span class="out">world/world.mt</span>
 <span class="out">world/map.sqlite</span>
-<span class="out">world/players/</span>
+<span class="out">world/players.sqlite</span>
 <span class="in">ls -lh ~/backup/world_20260919.tar.gz</span>
 <span class="out">-rw-r--r-- 1 taro taro 12M Sep 19 14:05 /home/taro/backup/world_20260919.tar.gz</span></code></pre>
       </div>
-      <p>先頭が<code>world/</code>という相対パスで始まっていることが重要である。<code>-C ~/server world</code>と書いたおかげで、展開先を自由に選べるアーカイブになっている。ここが<code>/home/taro/server/world/</code>のような絶対パスで始まっていると、展開時に元の場所へ書き戻ってしまい、確認のつもりが上書き事故になる。作ったら<code>tar tzf</code>で中身を見て、<code>ls -lh</code>でサイズが0でないことを確かめる。この2つがバックアップの最低限の検証である。</p>
+      <p>先頭が<code>world/</code>という相対パスで始まっていることが重要である。<code>-C ~/server world</code>と書いたおかげで、展開先を自由に選べるアーカイブになっている。ここが<code>home/taro/server/world/</code>のように途中からのパスで始まっていると、展開先に余計な深い階層ができて、元の場所に戻すつもりが別の場所に置かれる。作ったら<code>tar tzf</code>で中身を見て、<code>ls -lh</code>でサイズが0でないことを確かめる。この2つがバックアップの最低限の検証である。</p>
 
-      <div class="call note"><span class="ct">実習ではここで使う</span><p>※ <a href="../day4.html#s4-1">第4回 4-1</a>のバックアップと<a href="../day4.html#s4-4">4-4 リストア訓練</a>、そして<a href="../day5.html#s5-4">第5回 5-4 ワールドの移行</a>で<code>tar</code>を使う。<code>.tar.gz</code>を作れることと、その中身を<code>tar tzf</code>で確認できることはセットで身につけること。</p></div>
+      <div class="call note"><span class="ct">実習ではここで使う</span><p>※ <a href="../day4.html#s4-1">第4回 4-1</a>のバックアップと<a href="../day4.html#s4-4">4-4 リストア訓練</a>、そして<a href="../day5.html#s5-3-a">第5回 5-3 ワールドの移行</a>で<code>tar</code>を使う。<code>.tar.gz</code>を作れることと、その中身を<code>tar tzf</code>で確認できることはセットで身につけること。</p></div>
 
       <h3 id="c2-add-3-b">gzip・zip と、圧縮しないという選択</h3>
       <p>1つのファイルだけを小さくしたいときは<code>gzip</code>である。<code>gzip file</code>は元のファイルを消して<code>file.gz</code>に置き換える点が<code>tar</code>と違うので、原本を残したいときは<code>-k</code>を付ける。Windowsとやり取りするなら<code>zip</code>のほうが確実だが、Raspberry Pi OS Liteには入っていないため導入が要る。</p>
@@ -400,7 +400,7 @@
 <pre><code><span class="in">rsync -av --dry-run ~/server/world/ ~/backup/world-mirror/</span>
 <span class="out">sending incremental file list</span>
 <span class="out">map.sqlite</span>
-<span class="out">players/taro</span>
+<span class="out">players.sqlite</span>
 <span class="out"></span>
 <span class="out">sent 1,204 bytes  received 33 bytes  2,474.00 bytes/sec</span>
 <span class="out">total size is 12,884,901  speedup is 10,416.25</span></code></pre>
@@ -414,7 +414,7 @@
         <p class="a">作っただけでは検証していない。<code>tar tzf</code>で中身を確認し、できれば<code>/tmp</code>に展開して開けることまで確かめる。復元できないバックアップは無いのと同じである（<a href="../day4.html#s4-4">第4回 4-4</a>）。</p>
       </div>
 
-      <h2 id="c2-add-4"><span class="no">2-11</span>ディスクが一杯になったら</h2>
+      <h2 id="c2-add-4"><span class="no">2.11</span>ディスクが一杯になったら</h2>
       <p>サーバの障害で最も多い原因の1つが、ディスクの枯渇である。空きが尽きるとログが書けず、データベースが更新できず、次の再起動で立ち上がらなくなることさえある。しかも突然起きるのではなく、毎日少しずつ溜まった結果として起きる。何が溜まるのかを知っていれば、多くは事前に防げる。</p>
 
       <h3 id="c2-add-4-a">何が溜まるのか</h3>

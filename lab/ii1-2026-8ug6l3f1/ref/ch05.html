@@ -53,7 +53,7 @@
         </ul></div>
       </div>
 
-      <h2 id="c5-1"><span class="no">5-1</span>マルチユーザシステム</h2>
+      <h2 id="c5-1"><span class="no">5.1</span>マルチユーザシステム</h2>
       <p>Linuxは誕生のときから、1台のコンピュータを複数の人間が同時に使うことを前提に設計されている。各ユーザには一意の番号（UID：User ID）が割り当てられ、ユーザは1つ以上のグループ（GID：Group ID）に所属する。ファイルの所有権もアクセス権もこのUID/GIDに基づいて管理される。実習でluantiユーザを作ってサービスを動かした（<a href="../day3.html#s3-3">第3回 3-3</a>）のは、このマルチユーザの仕組みを「権限の分離」に応用したものである。</p>
       <dl class="term"><dt>UID・GID<small>User ID / Group ID</small></dt><dd>ユーザとグループに割り当てられる一意の番号。Linuxが権限を判断するときに見ているのは、画面に表示される名前ではなくこの番号である。</dd></dl>
       <p>ユーザの情報は次のファイルに保存されている。これらは「設定はテキストファイルに保存される」というLinuxの原則の好例であり、<code>cat</code>で中身を見ることができる。</p>
@@ -67,9 +67,9 @@
         </tbody>
       </table>
       </div>
-      <div class="call note"><span class="ct">Note</span><p>※ パスワードは平文ではなく「ハッシュ値」で保存される。ハッシュは一方向の変換であり、元のパスワードには戻せない。ログイン時は入力をハッシュ化して保存値と比較する。パスワードを忘れたとき管理者でも「教える」ことができず「リセット」しかできないのはこのためである。</p></div>
+      <div class="call note"><span class="ct">補足</span><p>※ パスワードは平文ではなく「ハッシュ値」で保存される。ハッシュは一方向の変換であり、元のパスワードには戻せない。ログイン時は入力をハッシュ化して保存値と比較する。パスワードを忘れたとき管理者でも「教える」ことができず「リセット」しかできないのはこのためである。</p></div>
 
-      <h2 id="c5-2"><span class="no">5-2</span>rootとsudo</h2>
+      <h2 id="c5-2"><span class="no">5.2</span>rootとsudo</h2>
       <p>UID 0 のユーザをrootといい、すべての権限チェックを素通りできる特別な存在である。強力である反面、<code>rm -rf</code> の対象を打ち間違えるだけでシステムを破壊できる。そこで現代の運用では、rootで直接ログインする代わりに、一般ユーザとして作業し、必要なコマンドだけを<code>sudo</code>で実行する。</p>
       <dl class="term"><dt>root<small>UID 0</small></dt><dd>すべての権限チェックを免除される管理者ユーザ。できないことがない代わりに、打ち間違い1つでシステムを壊せる。</dd></dl>
       <p>sudoには次の利点がある。</p>
@@ -89,7 +89,7 @@
         <p class="a">Permission denied の原因は「所有者が違う」「ディレクトリにxが無くて入れない」など様々である。まず <code>ls -l</code> で所有者とパーミッションを見て、本来そのユーザが触るべきファイルなら <code>chown</code> で所有者を直すのが筋である。サービス用のファイルにsudoで書き込んでしまうと、以後そのサービスが自分のファイルを書けなくなることがある。</p>
       </div>
 
-      <h2 id="c5-3"><span class="no">5-3</span>パーミッションの仕組み</h2>
+      <h2 id="c5-3"><span class="no">5.3</span>パーミッションの仕組み</h2>
       <figure><img src="../img/s07.png" alt="図5-1　パーミッション表記の読み方" width="1800" height="590"><figcaption>図5-1　パーミッション表記の読み方</figcaption></figure>
       <p>ファイルのアクセス権は、所有者・所有グループ・その他ユーザの3者それぞれに、r（読み取り）・w（書き込み）・x（実行）の3種類を設定する。ディレクトリの場合は意味が少し変わり、rは「中の一覧を見られる」、wは「中にファイルを作成・削除できる」、xは「中に入れる（<code>cd</code>できる）」である。</p>
       <p>数値表記はr=4、w=2、x=1の合計で表し、<code>chmod 755</code> のように使う。よく使うパターンを覚えておくとよい。実際に <code>chmod</code> と <code>chown</code> を手で動かすのは<a href="../day3.html#s3-1">第3回 3-1</a>である。</p>
@@ -114,8 +114,8 @@
         <p class="a">秘密鍵のパーミッションが緩いと、SSHは安全でないとみなして鍵の使用を拒否する。秘密鍵は <code>600</code>、<code>~/.ssh</code> ディレクトリは <code>700</code> が原則である（<a href="../day3.html#s3-7">第3回 3-7</a>）。</p>
       </div>
 
-      <h2 id="c5-add-1"><span class="no">5-4</span>アカウントを操作するコマンド</h2>
-      <p><a href="#c5-1">5-1節</a>ではユーザとグループの仕組みを見た。ここでは、その仕組みを実際に動かすコマンドを整理する。サーバ管理者がユーザを触るのは、人を増やすときだけではない。<a href="../day3.html#s3-3">第3回 3-3</a>で作ったluantiユーザのように、<b>サービスを動かすためだけの人間ではないユーザ</b>を作る場面のほうが、実務では多い。</p>
+      <h2 id="c5-add-1"><span class="no">5.4</span>アカウントを操作するコマンド</h2>
+      <p><a href="#c5-1">5.1節</a>ではユーザとグループの仕組みを見た。ここでは、その仕組みを実際に動かすコマンドを整理する。サーバ管理者がユーザを触るのは、人を増やすときだけではない。<a href="../day3.html#s3-3">第3回 3-3</a>で作ったluantiユーザのように、<b>サービスを動かすためだけの人間ではないユーザ</b>を作る場面のほうが、実務では多い。</p>
       <dl class="term"><dt>サービスアカウント<small>service account</small></dt><dd>人間がログインするためではなく、特定のサービスを動かすために作るユーザ。実習のluantiユーザがこれにあたる。乗っ取られたときの被害をそのサービスの範囲に閉じ込めるために用意する。</dd></dl>
 
       <h3 id="c5-add-1-a">ユーザを作る・変える・消す</h3>
@@ -211,8 +211,8 @@
       <p><code>sudo -u luanti</code> は、サービスが起動に失敗したときの切り分けに非常に役立つ。<b>「systemdが悪いのか、それとも権限が足りないのか」を切り分けるには、そのユーザになって同じ操作を手で試すのがいちばん速い。</b>上の例で <code>Permission denied</code> が出れば、原因は <code>chown</code> のし忘れだと分かる。</p>
       <div class="call note"><span class="ct">実習ではここで使う</span><p><a href="../day3.html#s3-3">第3回 3-3 演習：サービスの非root化</a>で <code>adduser</code>・<code>chown -R</code>・<code>su - luanti</code> を、<a href="../day4.html#s4-2">第4回 4-2</a>以降でluantiユーザとしてのバックアップ作業を行う。うまく動かないときは <code>id</code> と <code>sudo -u luanti</code> で切り分けるとよい。</p></div>
 
-      <h2 id="c5-add-2"><span class="no">5-5</span>sudoの設定を読む・書く</h2>
-      <p><a href="#c5-2">5-2節</a>で見たとおり、sudoが使えるかどうかはsudoグループへの所属で決まる。しかし実務では「特定のコマンドだけをパスワードなしで許す」といった細かい設定が必要になる。たとえば監視スクリプトからサービスを再起動させたいが、そのために管理者パスワードを自動化の仕組みに埋め込むのは避けたい、という場面である。その設定を行うのが <code>/etc/sudoers</code> と <code>/etc/sudoers.d/</code> である。</p>
+      <h2 id="c5-add-2"><span class="no">5.5</span>sudoの設定を読む・書く</h2>
+      <p><a href="#c5-2">5.2節</a>で見たとおり、sudoが使えるかどうかはsudoグループへの所属で決まる。しかし実務では「特定のコマンドだけをパスワードなしで許す」といった細かい設定が必要になる。たとえば監視スクリプトからサービスを再起動させたいが、そのために管理者パスワードを自動化の仕組みに埋め込むのは避けたい、という場面である。その設定を行うのが <code>/etc/sudoers</code> と <code>/etc/sudoers.d/</code> である。</p>
       <dl class="term"><dt>sudoers<small>/etc/sudoers</small></dt><dd>誰がどのコマンドをsudoで実行できるかを定めた設定ファイル。書式を誤るとsudoが一切使えなくなるため、必ず <code>visudo</code> 経由で編集する。</dd></dl>
       <div class="call warn"><span class="ct">注意</span><p><code>/etc/sudoers</code> を <code>sudo vi</code> で直接編集してはいけない。書式を1文字でも誤ると<b>sudoがまったく使えなくなり、設定を直すためのsudoも使えないという状態に陥る</b>。<code>visudo</code> は保存時に書式を検査し、誤りがあれば保存を拒んでやり直させてくれる。復旧にはモニタとキーボードを直接つないでrootで入る必要があるため、この一手間を省いてはならない。</p></div>
       <div class="code" data-ctx="server">
@@ -254,10 +254,10 @@
 <span class="out">May 12 14:35:40 mc-24s1234 sudo[2455]:     taro : TTY=pts/0 ; PWD=/home/taro ; USER=root ; COMMAND=/usr/bin/apt update</span>
 <span class="out">May 12 14:38:07 mc-24s1234 sudo[2478]: pam_unix(sudo:auth): authentication failure; logname=taro uid=1000 euid=0 tty=/dev/pts/0 ruser=taro rhost=  user=taro</span></code></pre>
       </div>
-      <p>見るべきは、実行者（コロンの前の名前）、<code>USER=</code>（どのユーザとして実行したか）、<code>COMMAND=</code>（何を実行したか）の3つである。3行目の <code>authentication failure</code> はパスワードの入力ミスで、<b>これが短時間に何度も並んでいれば、誰かが総当たりを試みている可能性を疑う</b>。<code>_COMM=sudo</code> は「sudoというコマンドが出したログだけ」という絞り込みで、ログの読み方は<a href="ch08.html#c8-1">第8章 8.1</a>と<a href="ch06.html#c6-add-3">第6章 6-7</a>でさらに詳しく扱う。</p>
+      <p>見るべきは、実行者（コロンの前の名前）、<code>USER=</code>（どのユーザとして実行したか）、<code>COMMAND=</code>（何を実行したか）の3つである。3行目の <code>authentication failure</code> はパスワードの入力ミスで、<b>これが短時間に何度も並んでいれば、誰かが総当たりを試みている可能性を疑う</b>。<code>_COMM=sudo</code> は「sudoというコマンドが出したログだけ」という絞り込みで、ログの読み方は<a href="ch08.html#c8-1">第8章 8.1</a>と<a href="ch06.html#c6-add-3">第6章 6.7</a>でさらに詳しく扱う。</p>
 
-      <h2 id="c5-add-3"><span class="no">5-6</span>パーミッション実用リファレンス</h2>
-      <p><a href="#c5-3">5-3節</a>で数値表記の読み方を学んだ。ここでは、実際にアクセス権を変えるコマンドと、初心者がはまりやすい落とし穴を扱う。<code>chmod</code> はパーミッション（何ができるか）を、<code>chown</code> は所有者（誰のものか）を変えるコマンドである。<b>「権限が足りない」という症状に対して、どちらを直すべきかを見極めるのがこの節の目的である。</b></p>
+      <h2 id="c5-add-3"><span class="no">5.6</span>パーミッション実用リファレンス</h2>
+      <p><a href="#c5-3">5.3節</a>で数値表記の読み方を学んだ。ここでは、実際にアクセス権を変えるコマンドと、初心者がはまりやすい落とし穴を扱う。<code>chmod</code> はパーミッション（何ができるか）を、<code>chown</code> は所有者（誰のものか）を変えるコマンドである。<b>「権限が足りない」という症状に対して、どちらを直すべきかを見極めるのがこの節の目的である。</b></p>
 
       <h3 id="c5-add-3-a">chmod：数値と記号</h3>
       <p><code>chmod</code> には、<code>755</code> のようにまとめて指定する数値表記と、<code>u+x</code> のように差分を指定する記号表記の2通りがある。「実行権だけ足したい」ような場面では、他の権限を壊さずに済む記号表記のほうが安全である。</p>
@@ -266,7 +266,7 @@
 <pre><code><span class="in">chmod 600 ~/.ssh/id_ed25519 <span class="c"># 秘密鍵は本人だけが読み書きできる状態に</span></span>
 <span class="in">chmod 700 ~/.ssh <span class="c"># 鍵を置くディレクトリは本人専用に</span></span>
 <span class="in">chmod u+x ~/backup.sh <span class="c"># 所有者に実行権を足す（他はそのまま）</span></span>
-<span class="in">chmod go-w /home/luanti/server/luanti.conf <span class="c"># グループと他人から書き込み権を外す</span></span>
+<span class="in">sudo -u luanti chmod go-w /home/luanti/server/luanti.conf <span class="c"># グループと他人から書き込み権を外す</span></span>
 <span class="in">ls -l ~/backup.sh <span class="c"># 結果を確かめる</span></span>
 <span class="out">-rwxr--r-- 1 taro taro 412 May 12 14:40 /home/taro/backup.sh</span></code></pre>
       </div>
@@ -334,10 +334,10 @@
 <span class="out">/usr/bin/su</span></code></pre>
       </div>
       <p>所有者の実行権の位置が <code>x</code> ではなく <code>s</code> になっているのがsetuidの印である。これは「このプログラムを実行している間だけ、実行者ではなく<b>ファイルの所有者（この場合root）の権限で動く</b>」という意味である。だから <code>passwd</code> は一般ユーザが起動しても <code>/etc/shadow</code> を書き換えられる。<code>sudo</code> 自身がrootの権限を持てるのも、同じ仕組みによる。</p>
-      <p>便利な反面、setuidの付いたプログラムに欠陥があれば、そこから誰でもroot権限を得られてしまう。<b>自作のスクリプトにsetuidを付けるのは、原則として避けるべきである</b>（そもそもLinuxのシェルスクリプトではsetuidは無視される）。必要な権限の委譲は、5-5節で見たsudoersで行うのが正しい方法である。</p>
+      <p>便利な反面、setuidの付いたプログラムに欠陥があれば、そこから誰でもroot権限を得られてしまう。<b>自作のスクリプトにsetuidを付けるのは、原則として避けるべきである</b>（そもそもLinuxのシェルスクリプトではsetuidは無視される）。必要な権限の委譲は、5.5節で見たsudoersで行うのが正しい方法である。</p>
       <dl class="term"><dt>setuid<small>setuid bit / rwsr-xr-x</small></dt><dd>実行中だけファイルの所有者の権限で動くようにする特殊な権限。<code>ls -l</code> で <code>s</code> と表示される。<code>passwd</code> や <code>sudo</code> がこれにより動いている。</dd></dl>
 
-      <h2 id="c5-add-4"><span class="no">5-7</span>サーバセキュリティの基本原則</h2>
+      <h2 id="c5-add-4"><span class="no">5.7</span>サーバセキュリティの基本原則</h2>
       <p>権限の話は、そのままサーバのセキュリティの話につながる。この節は実習の範囲を越えた一般的な基礎であり、学内ネットワークの中だけで動く実習サーバには必要のない設定も含む。しかし<b>いずれ自分のサーバをインターネットに公開するときには、ここに書いたことが最低限の出発点になる</b>。考え方を先に知っておいてほしい。</p>
 
       <h3 id="c5-add-4-a">5つの原則</h3>
@@ -390,9 +390,17 @@
       <div class="code" data-ctx="server">
         <div class="code-head"><span class="code-title">fail2banの導入と確認</span></div>
 <pre><code><span class="in">sudo apt install -y fail2ban</span>
+<span class="in">sudo vi /etc/fail2ban/jail.d/sshd-journal.local <span class="c"># 下の枠の2行を書いて保存する</span></span>
+<span class="in">sudo systemctl restart fail2ban <span class="c"># 設定を読み直す</span></span>
 <span class="in">sudo systemctl status fail2ban <span class="c"># active (running) を確認</span></span>
 <span class="in">sudo fail2ban-client status <span class="c"># 有効なjail（監視単位）の一覧</span></span>
 <span class="in">sudo fail2ban-client status sshd <span class="c"># SSHの監視状況</span></span></code></pre>
+      </div>
+      <p>ログを journald だけに持つ環境（rsyslog が無く <code>/var/log/auth.log</code> が存在しない）では、SSHの監視が <code>Have not found any log file for sshd jail</code> というエラーで起動しない。次の2行を書いたファイルを置き、journald からログを読むよう指定する。</p>
+      <div class="code file" data-ctx="file" data-cwd="/etc/fail2ban/jail.d/sshd-journal.local">
+        <div class="code-head"><span class="code-title">/etc/fail2ban/jail.d/sshd-journal.local</span></div>
+<pre><code><span class="in">[sshd]</span>
+<span class="in">backend = systemd</span></code></pre>
       </div>
       <p class="why"><b>出力の読み方：</b>失敗の回数と、いま遮断しているIPアドレスの数を見る。</p>
       <div class="code" data-ctx="server">
@@ -408,7 +416,7 @@
 <span class="out">   |- Total banned:     5</span>
 <span class="out">   `- Banned IP list:   203.0.113.45 198.51.100.7</span></code></pre>
       </div>
-      <p><code>Currently banned</code> がいま遮断中のIPアドレスの数、<code>Total failed</code> が起動以来の認証失敗の総数である。<b>この数字が日々増え続けるのが、インターネットに公開されたサーバの日常である</b>と知っておくとよい。Debian系では導入しただけでSSHの監視が有効になるが、環境によってはログの取得方法（backend）の設定が必要になることがあるので、<code>fail2ban-client status</code> にjailが表示されるかを必ず確かめる。</p>
+      <p><code>Currently banned</code> がいま遮断中のIPアドレスの数、<code>Total failed</code> が起動以来の認証失敗の総数である。<b>この数字が日々増え続けるのが、インターネットに公開されたサーバの日常である</b>と知っておくとよい。Debian系では導入するとSSHの監視が既定で有効になるが、ログをjournaldだけに持つ環境では <code>backend = systemd</code> の指定が必要になる。いずれの場合も<code>fail2ban-client status</code> にjailが表示されるかを必ず確かめる。</p>
       <dl class="term"><dt>fail2ban<small>fail2ban-client</small></dt><dd>認証の失敗ログを監視し、短時間に失敗を繰り返すIPアドレスを一時的に遮断するソフト。総当たり攻撃を現実的でなくする、多層防御の一層である。</dd></dl>
 
       <h3 id="c5-add-4-e">公開してはいけないもの</h3>

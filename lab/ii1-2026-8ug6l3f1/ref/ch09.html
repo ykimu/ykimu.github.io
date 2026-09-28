@@ -130,7 +130,7 @@
         <span class="q">手で実行して動いたのだから、cronでも同じように動くはずだ</span>
         <p class="a">cronの実行環境は対話シェルとは別物で、PATHも短く、<code>~</code> の展開や作業ディレクトリの前提も異なる。パスは絶対パスで書き、出力はログにリダイレクトして残す（<a href="../day4.html#s4-3">第4回 4-3</a>、<a href="ch08.html#c8-3">8.3節</a>）。</p>
       </div>
-      <div class="call note"><span class="ct">Note</span><p>※ 「手で実行すると動くのにcronだと動かない」ときは、まず絶対パスとPATH（<a href="ch08.html#c8-3">8.3節</a>）を疑う。<code>bash -x</code> の出力をリダイレクトでログに残しておくと、cron環境での調査も速くなる。</p></div>
+      <div class="call note"><span class="ct">補足</span><p>※ 「手で実行すると動くのにcronだと動かない」ときは、まず絶対パスとPATH（<a href="ch08.html#c8-3">8.3節</a>）を疑う。<code>bash -x</code> の出力をリダイレクトでログに残しておくと、cron環境での調査も速くなる。</p></div>
 
 
       <h2 id="c9-add-1"><span class="no">9.5</span>文法リファレンス</h2>
@@ -178,7 +178,8 @@
 <span class="out">$NAME</span>
 <span class="in">ls "$NAME"      <span class="c"># 1つのディレクトリ名として渡る（正しい）</span></span>
 <span class="in">ls $NAME        <span class="c"># my と world の2引数に分解される（事故のもと）</span></span>
-<span class="out">ls: 'my' にアクセスできません: そのようなファイルやディレクトリはありません</span></code></pre>
+<span class="out">ls: cannot access 'my': No such file or directory</span>
+<span class="out">ls: cannot access 'world': No such file or directory</span></code></pre>
       </div>
       <div class="call warn"><span class="ct">注意</span><p>※ 引用符を省いた <code>rm -rf $DEST</code> は、<code>DEST</code> が空のときに <code>rm -rf</code> だけが残り、値に空白が入っていれば複数の対象を消しにいく。削除を伴う行では、変数を必ず <code>"$DEST"</code> と囲み、<code>${DEST:?}</code> で未設定を弾き、<code>--</code> を付けてオプション誤認を防ぐ。この3点セットは習慣にしてよい。</p></div>
 
@@ -345,7 +346,7 @@
 <span class="in">mktemp -d <span class="c"># 一時ディレクトリを作る</span></span>
 <span class="out">/tmp/tmp.Hs7mWq0Tzr</span>
 <span class="in">ls -ld /tmp/tmp.Hs7mWq0Tzr</span>
-<span class="out">drwx------ 2 pi pi 4096 Sep 19 14:20 /tmp/tmp.Hs7mWq0Tzr</span></code></pre>
+<span class="out">drwx------ 2 taro taro 4096 Sep 19 14:20 /tmp/tmp.Hs7mWq0Tzr</span></code></pre>
       </div>
       <p>出力の <code>drwx------</code> に注目してほしい。所有者以外は読むことも入ることもできない。これが固定名の一時ファイルとの決定的な違いである（パーミッションの読み方は<a href="ch05.html">第5章</a>）。</p>
 
@@ -393,7 +394,7 @@
       <div class="code" data-ctx="server">
         <div class="code-head"><span class="code-title">shellcheck の出力</span></div>
 <pre><code><span class="in">shellcheck ~/backup.sh</span>
-<span class="out">In /home/pi/backup.sh line 12:</span>
+<span class="out">In /home/luanti/backup.sh line 12:</span>
 <span class="out">tar czf $DEST/world_$DATE.tar.gz -C $HOME/server world</span>
 <span class="out">        ^-- SC2086: Double quote to prevent globbing and word splitting.</span>
 <span class="out"></span>
@@ -445,7 +446,7 @@
 <span class="in">  exit 1</span>
 <span class="in">fi</span></code></pre>
       </div>
-      <p>このスクリプトは <code>systemctl restart</code> を実行するため、root権限が要る。rootのcron（<code>sudo crontab -e</code>）に登録するのが素直である。<code>set -e</code> をあえて外しているのは、<code>is-active</code> が「落ちている」を終了コード3で伝えるためで、ここで止まってしまうと再起動処理に進めない。</p>
+      <p>このスクリプトは <code>systemctl restart</code> を実行するため、root権限が要る。rootのcron（<code>sudo crontab -e</code>）に登録するのが素直である。<code>set -e</code> をあえて外しているのは、<code>systemctl restart</code> が失敗した場合でも止まらずに、後段で失敗を記録し直近のログを残すためである（<code>if</code> の条件に書いたコマンドの失敗では、<code>set -e</code> はもともと発動しない）。</p>
       <div class="code" data-ctx="server">
         <div class="code-head"><span class="code-title">rootのcronに5分ごとで登録する</span></div>
 <pre><code><span class="in">sudo chmod +x /home/luanti/watch-luanti.sh</span>
@@ -488,8 +489,8 @@
 <span class="out">終了コード: 1</span>
 <span class="in">tail -n 3 ~/disk.log</span>
 <span class="out">2026-09-19 14:32:05 WARN / is 27% (threshold 10%)</span>
-<span class="out">180M	/home/pi/backup</span>
-<span class="out">1.2G	/home/pi</span></code></pre>
+<span class="out">180M	/home/taro/backup</span>
+<span class="out">1.2G	/home/taro</span></code></pre>
       </div>
       <p>1行目が判定の結果で、使用率としきい値が両方記録されている点が重要である。あとから見たときに「何パーセントで鳴ったのか」が分かるからである。続く行は容量を食っている上位のディレクトリで、警告が出たらまずここを見る。終了コードを1にしてあるので、cronから呼ぶ側でも失敗として扱える。</p>
       <div class="call note"><span class="ct">実習ではここで使う</span><p>※ しきい値を超えたときの通知や、記録をWebページに出す発展は<a href="../day5.html#s5-4-a">第5回 稼働状況の自動更新（ミニ演習）</a>と、<a href="appendix.html#ca-5-c">付録A.5 監視の高度化</a>につながる。まず記録を残すところから始めるとよい。</p></div>

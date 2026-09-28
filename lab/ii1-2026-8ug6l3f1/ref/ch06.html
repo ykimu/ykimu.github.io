@@ -53,7 +53,7 @@
         </ul></div>
       </div>
 
-      <h2 id="c6-1"><span class="no">6-1</span>プロセスとは</h2>
+      <h2 id="c6-1"><span class="no">6.1</span>プロセスとは</h2>
       <p>実行中のプログラムをプロセスと呼ぶ。ストレージ上のプログラムファイル（例：<code>/usr/games/luantiserver</code>）は単なるデータだが、実行されるとメモリに読み込まれ、CPU時間を割り当てられ、一意の番号（PID：Process ID）を持つプロセスになる。同じプログラムから複数のプロセスを起動することもできる。プロセスは別のプロセスから生み出され（親プロセス・子プロセス）、システム全体で1本の家系図を成す。その頂点（PID 1）が、次に述べるsystemdである。</p>
       <dl class="term"><dt>プロセス<small>process / PID</small></dt><dd>実行中のプログラム1つ分の実体。起動ごとに一意の番号（PID）が付き、<code>ps</code> や <code>kill</code> ではこの番号で相手を指定する。</dd></dl>
       <figure><img src="../img/s08.png" alt="図6-1　プログラムとプロセスの関係" width="1800" height="660"><figcaption>図6-1　プログラムとプロセスの関係</figcaption></figure>
@@ -65,7 +65,7 @@
         <p class="a">SIGKILLはプログラムに保存の機会を与えないため、Luantiサーバなら直前までのワールドの変更が失われうる。まず <code>systemctl stop</code> または <code>kill</code> を試し、数十秒待っても消えない場合の最後の手段として <code>kill -9</code> を使う。</p>
       </div>
 
-      <h2 id="c6-2"><span class="no">6-2</span>systemdとサービス</h2>
+      <h2 id="c6-2"><span class="no">6.2</span>systemdとサービス</h2>
       <p>OSの起動時に最初に立ち上がり、システム全体のサービスを管理するのがsystemdである。サービス（常時稼働するプログラム。デーモンとも呼ぶ）の定義はユニットファイルに記述し、<code>systemctl</code>コマンドで操作する。実習で <code>/etc/systemd/system/luanti.service</code> を書いたのが、まさにこのユニットファイルである（<a href="../day2.html#s2-5">第2回 2-5</a>）。ユニットファイルの主要な項目の意味を整理する。</p>
       <dl class="term"><dt>systemd<small>PID 1 / systemctl</small></dt><dd>Linuxの起動直後から最後まで動き続け、すべてのサービスの起動・停止・再起動・自動起動を管理する仕組み。操作の窓口が <code>systemctl</code> コマンドである。</dd></dl>
       <dl class="term"><dt>ユニットファイル<small>unit file / .service</small></dt><dd>「どのコマンドを、どのユーザで、いつ起動するか」を書いたサービスの定義ファイル。<code>/etc/systemd/system/</code> に置き、編集したら <code>systemctl daemon-reload</code> で読み直させる。</dd></dl>
@@ -89,12 +89,12 @@
         <span class="q">ユニットファイルを直したのに、再起動しても古い設定のまま動く</span>
         <p class="a">systemdは読み込み済みの内容で動いている。<code>sudo systemctl daemon-reload</code> を実行してから <code>restart</code> すること。この順番を忘れると「編集が効かない」という症状になる。</p>
         <span class="q">User= を書き換えるだけで、サービスを別のユーザで動かせる</span>
-        <p class="a">実行ユーザを変えると、そのユーザがワールドや設定ファイルを読み書きできる必要がある。<a href="../day3.html#s3-3">第3回 3-3</a>では <code>chown</code> で所有者を移したうえで、<code>Environment=HOME=/home/luanti</code> の1行も追加している。Luantiは実行ユーザのホームディレクトリを参照するためである。</p>
+        <p class="a">実行ユーザを変えると、そのユーザがワールドや設定ファイルを読み書きできる必要がある。<a href="../day3.html#s3-3">第3回 3-3</a>では <code>chown</code> で所有者を移したうえで、<code>Environment=HOME=/home/luanti</code> の1行も追加している。Luantiは起動時に実行ユーザのホームディレクトリ（環境変数HOME）を必ず参照し、これが無いと起動できない。systemdは <code>User=</code> から HOME を自動で設定するが、どのホームを使うかを読み手にも分かるように明示しておくためである。</p>
       </div>
       <p>サービスのログはjournaldが一元管理しており、<code>journalctl -u サービス名</code> で読める。<code>-e</code>（末尾へ移動）、<code>-f</code>（リアルタイム追跡）、<code>--since "10 min ago"</code>（期間指定）などのオプションを覚えておくと調査が速くなる。ログの読み方そのものは<a href="ch08.html#c8-1">第8章 8.1</a>で扱う。</p>
       <dl class="term"><dt>journald<small>journalctl</small></dt><dd>systemdが管理するサービスの出力を一元的に受け取って保存する仕組み。サービスが画面に出すはずだったメッセージは、すべて <code>journalctl -u サービス名</code> で後から読める。</dd></dl>
 
-      <h2 id="c6-3"><span class="no">6-3</span>負荷の指標を正しく読む</h2>
+      <h2 id="c6-3"><span class="no">6.3</span>負荷の指標を正しく読む</h2>
       <p>load averageは「実行したい（CPU待ちの）プロセスの平均数」である。厳密にはLinuxでは、ディスクI/Oの完了を待っているプロセス（割り込み不能スリープ）も数に入るため、SDカードの遅いRaspberry Piでは、CPUに余裕があってもI/O待ちで値が上がることがある。値がCPUコア数以下なら全プロセスに即座にCPUが行き渡っており、コア数を超えると順番待ちが発生している。Raspberry Pi 400は4コアなので、load averageが4を超え続ける状態は明確な過負荷である。</p>
       <p><code>uptime</code>が表示する3つの数字は1分・5分・15分の平均であり、「1分値だけ高い」なら一時的なスパイク、「15分値まで高い」なら慢性的な過負荷、と時間方向の傾向も読み取れる。実際に負荷をかけて値の変化を見るのが<a href="../day3.html#s3-5-a">第3回 3-5 演習：負荷実験</a>である。</p>
       <dl class="term"><dt>load average<small>uptime / top</small></dt><dd>CPUの順番待ちをしているプロセスの平均数。CPUコア数（Raspberry Pi 400は4）が目安で、これを超え続けていれば処理が追いついていない。</dd></dl>
@@ -106,7 +106,7 @@
         <p class="a">Linuxのload averageはディスクI/O待ちのプロセスも数える。SDカードの遅いRaspberry Piでは、CPUに余裕があってもバックアップ中などに値が跳ね上がることがある。<code>top</code> のCPU使用率と合わせて判断する。</p>
       </div>
 
-      <h2 id="c6-4"><span class="no">6-4</span>プロセスの操作（ps・kill・ジョブ制御）</h2>
+      <h2 id="c6-4"><span class="no">6.4</span>プロセスの操作（ps・kill・ジョブ制御）</h2>
       <p><code>ps aux</code> の出力は、USER（実行ユーザ）、PID（プロセス番号）、%CPU・%MEM（資源の使用率）、STAT（状態）、COMMAND（起動コマンド）と読む。<a href="../day3.html#s3-3">第3回 3-3</a>で「luantiserverがluantiユーザで動いているか」を確かめたのは、このUSER列である。プロセスへの介入は<a href="#c6-1">6.1節</a>で述べたとおりシグナルで行い、その道具が<code>kill</code>である。</p>
       <div class="scroll">
       <table class="tbl">
@@ -121,10 +121,10 @@
         </tbody>
       </table>
       </div>
-      <div class="call note"><span class="ct">Note</span><p>※ 背面のジョブもSSHを切断すると一緒に終了してしまう。「ログアウト後も動き続けるサービス」にはやはりsystemd（<a href="#c6-2">6.2節</a>）が必要である。<a href="../day2.html#s2-5">第2回 2-5</a>でサービス化を学んだ理由がここにある。</p></div>
+      <div class="call note"><span class="ct">補足</span><p>※ 背面のジョブもSSHを切断すると一緒に終了してしまう。「ログアウト後も動き続けるサービス」にはやはりsystemd（<a href="#c6-2">6.2節</a>）が必要である。<a href="../day2.html#s2-5">第2回 2-5</a>でサービス化を学んだ理由がここにある。</p></div>
 
-      <h2 id="c6-add-1"><span class="no">6-5</span>プロセスを見る道具</h2>
-      <p><a href="#c6-4">6-4節</a>では <code>ps aux</code> と <code>kill</code> の要点を押さえた。ここでは、サーバの様子がおかしいときに管理者が実際にたどる順序、つまり「何が動いているかを一覧する」「どれが重いかを見る」「必要なら止める」の3段階を、コマンドごとに整理する。</p>
+      <h2 id="c6-add-1"><span class="no">6.5</span>プロセスを見る道具</h2>
+      <p><a href="#c6-4">6.4節</a>では <code>ps aux</code> と <code>kill</code> の要点を押さえた。ここでは、サーバの様子がおかしいときに管理者が実際にたどる順序、つまり「何が動いているかを一覧する」「どれが重いかを見る」「必要なら止める」の3段階を、コマンドごとに整理する。</p>
 
       <h3 id="c6-add-1-a">ps：いま動いているものを一覧する</h3>
       <p><code>ps</code> は、実行された瞬間のプロセスの一覧を表示するコマンドである。動画ではなく写真だと考えるとよい。<code>ps aux</code> の3文字にはそれぞれ意味があり、<code>a</code> は「自分以外のユーザのプロセスも」、<code>u</code> は「ユーザ名や使用率を含む詳しい形式で」、<code>x</code> は「端末に結び付いていないプロセスも」である。サービスは端末を持たないので、<code>x</code> が無いとLuantiサーバは表示されない。</p>
@@ -159,7 +159,7 @@
 <span class="out">taro   2431  0.0  0.1   6072  1920 pts/0 S+  14:05   0:00 grep luantiserver</span></code></pre>
       </div>
       <p>1行目がLuantiサーバ本体である。USERが <code>luanti</code> になっていれば、<a href="../day3.html#s3-3">第3回 3-3</a>の非root化が効いている。TTYが <code>?</code> なのは端末に結び付いていないサービスだからで、STATの <code>S</code> は待機中、末尾の <code>l</code> は複数のスレッドを持つという意味である。2行目は <code>grep</code> 自身が写り込んだもので、<b>これを本物と勘違いしないこと</b>。<code>pgrep</code> を使えばこの写り込みは起きない。</p>
-      <p>RSSは実際に使っている物理メモリの量（キロバイト）で、<code>free -h</code> の値と合わせて見る。VSZは確保を予約しただけの領域を含むため、大きくても慌てなくてよい。STATの主な値は <code>R</code>（実行中）、<code>S</code>（待機）、<code>D</code>（ディスク待ちで中断不可）、<code>Z</code>（ゾンビ）である。<code>D</code> が並んでいればSDカードのI/Oが詰まっており、これが<a href="#c6-3">6-3節</a>で述べたload averageの上昇として現れる。</p>
+      <p>RSSは実際に使っている物理メモリの量（キロバイト）で、<code>free -h</code> の値と合わせて見る。VSZは確保を予約しただけの領域を含むため、大きくても慌てなくてよい。STATの主な値は <code>R</code>（実行中）、<code>S</code>（待機）、<code>D</code>（ディスク待ちで中断不可）、<code>Z</code>（ゾンビ）である。<code>D</code> が並んでいればSDカードのI/Oが詰まっており、これが<a href="#c6-3">6.3節</a>で述べたload averageの上昇として現れる。</p>
 
       <h3 id="c6-add-1-b">top：時間とともに変わる様子を見る</h3>
       <p><code>ps</code> が写真なら、<code>top</code> は動画である。既定では3秒ごとに更新され、CPU使用率の高い順にプロセスが並ぶ。「重い」と言われたときにまず開く画面であり、<a href="../day3.html#s3-5">第3回 3-5</a>で実際に眺めることになる。<kbd>q</kbd>で終了する。</p>
@@ -178,11 +178,11 @@
 <span class="out">top - 14:12:33 up 3 days,  2:41,  1 user,  load average: 0.42, 0.55, 0.61</span>
 <span class="out">Tasks: 128 total,   1 running, 127 sleeping,   0 stopped,   0 zombie</span>
 <span class="out">%Cpu(s):  4.3 us,  1.2 sy,  0.0 ni, 93.8 id,  0.5 wa,  0.0 hi,  0.2 si,  0.0 st</span>
-<span class="out">MiB Mem :   1848.5 total,    412.3 free,    623.1 used,    813.1 buff/cache</span>
-<span class="out">MiB Swap:    100.0 total,    100.0 free,      0.0 used.   1102.4 avail Mem</span>
+<span class="out">MiB Mem :   3790.2 total,   2354.0 free,    623.1 used,    813.1 buff/cache</span>
+<span class="out">MiB Swap:    100.0 total,    100.0 free,      0.0 used.   3044.3 avail Mem</span>
 <span class="out"></span>
 <span class="out">    PID USER      PR  NI    VIRT    RES    SHR S  %CPU  %MEM     TIME+ COMMAND</span>
-<span class="out">   1892 luanti    20   0  412300  62140  18220 S   3.3   3.4   0:48.21 luantiserver</span>
+<span class="out">   1892 luanti    20   0  412300  62140  18220 S   3.3   1.6   0:48.21 luantiserver</span>
 <span class="out">    412 root      20   0   28140   9820   8100 S   0.3   0.5   0:12.03 systemd-journal</span></code></pre>
       </div>
       <div class="scroll">
@@ -201,7 +201,7 @@
       <p>この例では <code>id</code> が93.8で9割以上遊んでおり、<code>wa</code> も0.5と小さいので健全である。<b>大切なのは1回の値ではなく、平常時の値を知っておくことである。</b>実習では、何も起きていないときの数字を実験記録に残しておくと、後で「いつもと比べてどうか」を判断できる。対話的な <code>top</code> の画面では、<kbd>M</kbd>でメモリ順、<kbd>P</kbd>でCPU順に並べ替えられ、<kbd>1</kbd>でコアごとの使用率を表示できる。</p>
 
       <h3 id="c6-add-1-c">kill・pkill とシグナル</h3>
-      <p><a href="#c6-1">6-1節</a>で述べたとおり、プロセスへの介入はシグナルで行う。<code>kill</code> は「殺す」という名前だが、実体は「シグナルを送る」コマンドである。サービスとして動いているものは <code>systemctl stop</code> で止めるのが筋であり、<code>kill</code> を使うのは手で起動したプログラムや、応答しなくなったプロセスに限られる。</p>
+      <p><a href="#c6-1">6.1節</a>で述べたとおり、プロセスへの介入はシグナルで行う。<code>kill</code> は「殺す」という名前だが、実体は「シグナルを送る」コマンドである。サービスとして動いているものは <code>systemctl stop</code> で止めるのが筋であり、<code>kill</code> を使うのは手で起動したプログラムや、応答しなくなったプロセスに限られる。</p>
       <div class="code" data-ctx="server">
         <div class="code-head"><span class="code-title">シグナルを送る</span></div>
 <pre><code><span class="in">kill -l <span class="c"># 送れるシグナルの一覧を見る</span></span>
@@ -229,7 +229,7 @@
       <p>バックアップのような重い処理は、動かすこと自体は必要だが、ゲームサーバの応答を悪くしてまで急ぐ必要はない。そこで使うのがnice値である。値は -20 から 19 までで、<b>大きいほど「譲る」、つまり優先度が低い</b>。名前のとおり、他人に優しくするという意味だと覚えるとよい。</p>
       <div class="code" data-ctx="server">
         <div class="code-head"><span class="code-title">優先度を指定して実行する</span></div>
-<pre><code><span class="in">nice -n 10 tar czf ~/backup/world.tar.gz /home/luanti/server/world <span class="c"># 譲りながら圧縮する</span></span>
+<pre><code><span class="in">nice -n 10 tar czf ~/backup/world_manual.tar.gz -C ~/server world <span class="c"># luantiユーザ（su - luanti 後）で、譲りながら圧縮する</span></span>
 <span class="in">ps -o pid,ni,cmd -C luantiserver <span class="c"># 現在のnice値を確認する</span></span>
 <span class="out">    PID  NI CMD</span>
 <span class="out">   1892   0 /usr/games/luantiserver --world /home/luanti/server/world</span>
@@ -239,8 +239,8 @@
       <dl class="term"><dt>nice値<small>nice / renice</small></dt><dd>プロセスのCPU優先度を表す -20 から 19 の数値。大きいほど他に譲る。重いバッチ処理に <code>nice -n 10</code> を付けると、本命のサービスの応答を守りやすい。</dd></dl>
       <div class="call note"><span class="ct">実習ではここで使う</span><p><a href="../day3.html#s3-3">第3回 3-3</a>で <code>ps aux | grep luanti</code> により実行ユーザを確かめ、<a href="../day3.html#s3-5">第3回 3-5</a>で <code>top</code> と <code>uptime</code> の値を観察し、<a href="../day3.html#s3-5-a">第3回 3-5 演習：負荷実験</a>で値が動く様子を見る。平常時の数字を先に記録しておくと、この演習が面白くなる。</p></div>
 
-      <h2 id="c6-add-2"><span class="no">6-6</span>systemctl リファレンス</h2>
-      <p><a href="#c6-2">6-2節</a>でsystemdの役割を見た。<code>systemctl</code> はその操作窓口であり、サーバ管理者が1日で最も多く打つコマンドの1つである。ここでは、日常的に使うサブコマンドを用途別に整理する。</p>
+      <h2 id="c6-add-2"><span class="no">6.6</span>systemctl リファレンス</h2>
+      <p><a href="#c6-2">6.2節</a>でsystemdの役割を見た。<code>systemctl</code> はその操作窓口であり、サーバ管理者が1日で最も多く打つコマンドの1つである。ここでは、日常的に使うサブコマンドを用途別に整理する。</p>
 
       <h3 id="c6-add-2-a">動かす・止める</h3>
       <div class="code" data-ctx="server">
@@ -317,7 +317,6 @@
 <span class="in">WorkingDirectory=/home/luanti/server</span>
 <span class="in">ExecStart=/usr/games/luantiserver --world /home/luanti/server/world --gameid minetest --config /home/luanti/server/luanti.conf --logfile ""</span>
 <span class="in">Restart=on-failure</span>
-<span class="in">RestartSec=5</span>
 <span class="in"></span>
 <span class="in">[Install]</span>
 <span class="in">WantedBy=multi-user.target</span></code></pre>
@@ -330,17 +329,17 @@
           <tr><td><code>After</code></td><td>[Unit]</td><td>起動の順序。指定したものより後に起動する</td></tr>
           <tr><td><code>Wants</code></td><td>[Unit]</td><td>できれば一緒に起動してほしい相手。失敗しても自分は起動する</td></tr>
           <tr><td><code>User</code></td><td>[Service]</td><td>実行ユーザ。実習では <code>luanti</code></td></tr>
-          <tr><td><code>Environment</code></td><td>[Service]</td><td>環境変数の設定。<code>HOME=/home/luanti</code> が無いとLuantiは起動に失敗しうる</td></tr>
+          <tr><td><code>Environment</code></td><td>[Service]</td><td>環境変数の設定。<code>HOME=/home/luanti</code> を明示する。Luantiは HOME が無いと起動できない</td></tr>
           <tr><td><code>WorkingDirectory</code></td><td>[Service]</td><td>起動時の作業ディレクトリ</td></tr>
           <tr><td><code>ExecStart</code></td><td>[Service]</td><td>起動コマンド。必ず絶対パスで、1行で書く</td></tr>
           <tr><td><code>Restart</code></td><td>[Service]</td><td>終了時の再起動条件。<code>on-failure</code> は異常終了のときだけ</td></tr>
-          <tr><td><code>RestartSec</code></td><td>[Service]</td><td>再起動までの待ち時間（秒）。既定は100ミリ秒</td></tr>
+          <tr><td><code>RestartSec</code></td><td>[Service]</td><td>（実習では未設定）再起動までの待ち時間。既定は100ミリ秒</td></tr>
           <tr><td><code>WantedBy</code></td><td>[Install]</td><td><code>enable</code> したときに、どの状態の一員として起動するか</td></tr>
         </tbody>
       </table>
       </div>
-      <p><code>Restart=on-failure</code> は異常終了のときだけ再起動する設定で、<code>systemctl stop</code> による正常な停止では再起動しない。ここを <code>Restart=always</code> にすると手で止めても起動し直してしまうため、保守のときに困る。<code>RestartSec=5</code> を添えておくと、起動に失敗し続けるときに5秒間隔となり、ログが一瞬で溢れるのを防げる。</p>
-      <p>なお、systemdは起動に失敗するサービスを無限には再起動しない。既定では10秒間に5回を超えると <code>start request repeated too quickly</code> として諦め、<code>failed</code> のまま止まる。<b>この文言を見たら、再起動を繰り返させている根本の原因（パスの誤り、権限不足）を先に直す</b>必要がある。</p>
+      <p><code>Restart=on-failure</code> は異常終了のときだけ再起動する。<code>Restart=always</code> にすると、サーバ自身が正常終了した場合（ゲーム内の <code>/shutdown</code> など）でも起動し直す。どちらの場合も <code>systemctl stop</code> で止めたときは再起動しない。実習のユニットには書いていないが、<code>RestartSec=5</code> のような行を足すと、起動に失敗し続けるときに5秒間隔となり、ログが一瞬で溢れるのを防げる。</p>
+      <p>なお、systemdは起動に失敗するサービスを無限には再起動しない。既定では10秒間に5回を超えると <code>start request repeated too quickly</code> として諦め、<code>failed</code> のまま止まる。<code>RestartSec</code> を長くすると、この上限に達しにくくなる。<b>この文言を見たら、再起動を繰り返させている根本の原因（パスの誤り、権限不足）を先に直す</b>必要がある。</p>
 
       <h3 id="c6-add-2-d">中身を見る、安全に上書きする</h3>
       <p>ユニットファイルの現在の内容は <code>systemctl cat</code> で確認できる。OSが提供するサービス（sshやcronなど）の設定を変えたいときは、元のファイルを直接書き換えるのではなく、ドロップインという仕組みで一部だけを上書きするのが作法である。パッケージが更新されても自分の変更が消えないという利点がある。</p>
@@ -356,7 +355,7 @@
       <p><code>systemctl edit</code> は <code>/etc/systemd/system/luanti.service.d/override.conf</code> というファイルを作る。ここに書いた項目だけが本体を上書きするので、<code>systemctl cat</code> で「本体」と「上書き」を並べて確認できる。元に戻したいときは <code>sudo systemctl revert luanti</code> でドロップインを削除できる。<b>自分で一から作ったluanti.serviceについては、本体を直接編集するほうが分かりやすい</b>ので、実習ではドロップインを使う必要はない。仕組みとして知っておいてほしい。</p>
       <dl class="term"><dt>ドロップイン設定<small>drop-in / override.conf</small></dt><dd>ユニットファイル本体を書き換えずに、一部の項目だけを上書きする仕組み。<code>systemctl edit</code> で作られ、パッケージ更新で自分の変更が消えないという利点がある。</dd></dl>
 
-      <h2 id="c6-add-3"><span class="no">6-7</span>journalctl リファレンス</h2>
+      <h2 id="c6-add-3"><span class="no">6.7</span>journalctl リファレンス</h2>
       <p>サービスが画面に出すはずだったメッセージは、すべてjournaldが受け取って保存している。それを読み出すのが <code>journalctl</code> である。<b>「サービスが動かない」という相談に対する最初の質問は、いつでも「ログは見たか」である。</b>ここでは、必要な部分だけを素早く取り出すためのオプションを整理する。</p>
       <div class="code" data-ctx="server">
         <div class="code-head"><span class="code-title">ログの絞り込み</span></div>
@@ -407,7 +406,7 @@
       <dl class="term"><dt>ログの優先度<small>priority / -p err</small></dt><dd>ログの重要度を示す段階（emerg、alert、crit、err、warning、notice、info、debug）。<code>journalctl -p err</code> のように指定すると、その段階以上だけを取り出せる。</dd></dl>
       <div class="call note"><span class="ct">実習ではここで使う</span><p><a href="../day2.html#s2-5">第2回 2-5</a>でサービスが起動しないとき、<a href="../day3.html#s3-3">第3回 3-3</a>で非root化に失敗したとき、<a href="../day3.html#s3-6">第3回 3-6 演習：ログ解析</a>でログから原因を突き止めるときに使う。<code>journalctl -u luanti -e</code> を「困ったらまず打つコマンド」として体に覚えさせてほしい。</p></div>
 
-      <h2 id="c6-add-4"><span class="no">6-8</span>systemd timerという選択肢</h2>
+      <h2 id="c6-add-4"><span class="no">6.8</span>systemd timerという選択肢</h2>
       <p><a href="../day4.html#s4-3">第4回 4-3</a>では、決まった時刻にコマンドを実行する仕組みとしてcronを使った。systemdには同じ役割を果たすtimerというユニットがあり、近年の運用ではこちらが選ばれることも多い。実習ではcronを使うが、違いを知っておくと、他人が作ったサーバを引き継いだときに戸惑わずに済む。</p>
       <div class="scroll">
       <table class="tbl">
@@ -446,7 +445,7 @@
 <span class="in">[Install]</span>
 <span class="in">WantedBy=timers.target</span></code></pre>
       </div>
-      <p><code>Type=oneshot</code> は「実行して終わるプログラム」という宣言で、常駐しないバッチ処理に使う。<code>User=luanti</code> と <code>Environment=HOME=/home/luanti</code> を書くのは、luanti.serviceのときと同じ理由である。スクリプトが <code>~/backup</code> のようにホームディレクトリを前提に書かれていると、この行が無いときに意図しない場所へ書き込んでしまう。</p>
+      <p><code>Type=oneshot</code> は「実行して終わるプログラム」という宣言で、常駐しないバッチ処理に使う。<code>User=luanti</code> と <code>Environment=HOME=/home/luanti</code> を書くのは、luanti.serviceのときと同じ理由である。</p>
       <p><code>OnCalendar</code> の書式は「曜日 年-月-日 時:分:秒」で、<code>*</code> は「毎回」を意味する。上の例は「毎日4時30分0秒」である。<code>Persistent=true</code> は、その時刻にサーバの電源が入っていなかった場合、次回の起動後に取りこぼした分を実行するという指定で、1日1回のバックアップには向いている。</p>
       <div class="code" data-ctx="server">
         <div class="code-head"><span class="code-title">タイマーの有効化と確認</span></div>

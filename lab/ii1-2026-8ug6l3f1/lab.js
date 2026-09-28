@@ -1,4 +1,4 @@
-/* インフラ構築基礎実習 (2026) : shared script. Dependency free. No storage. */
+/* インフラ構築基礎実習 (2026) : shared script. Dependency free. Only storage: localStorage['lab-progress']. */
 (function(){
   'use strict';
 
@@ -153,7 +153,7 @@
       ['ref/ch10.html','第10章','仮想化とコンテナ'],
       ['ref/ch11.html','第11章','Luantiサーバの技術'],
       ['ref/appendix.html','付録','さらに学ぶために', 'appx'],
-      ['ref/glossary.html','用語集','115語を章ごとに一覧・検索', 'appx']
+      ['ref/glossary.html','用語集','114語を章ごとに一覧・検索', 'appx']
     ];
     var menus = [];
     var closeAll = function(except){
@@ -162,12 +162,13 @@
     function buildMenu(label, items, inSection, extraClass){
       var wrap = document.createElement('div'); wrap.className = 'daymenu' + (extraClass ? ' ' + extraClass : '');
       var btn = document.createElement('button'); btn.type = 'button';
-      btn.setAttribute('aria-haspopup', 'true'); btn.setAttribute('aria-expanded', 'false');
+      var pid = 'menu-' + (menus.length + 1);
+      btn.setAttribute('aria-expanded', 'false'); btn.setAttribute('aria-controls', pid);
       btn.innerHTML = label + ' <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg>';
-      var panel = document.createElement('div'); panel.className = 'daypanel'; panel.setAttribute('role', 'menu');
+      var panel = document.createElement('div'); panel.className = 'daypanel'; panel.id = pid;
       var isHere = false;
       for (var d = 0; d < items.length; d++){
-        var a = document.createElement('a'); a.href = rel + items[d][0]; a.setAttribute('role', 'menuitem');
+        var a = document.createElement('a'); a.href = rel + items[d][0];
         var cls = items[d][3] || '';
         var file = items[d][0].split('/').pop();
         if (inSection && here === file){ cls += ' here'; a.setAttribute('aria-current', 'page'); isHere = true; }
@@ -194,19 +195,27 @@
       for (var i = 0; i < menus.length; i++) if (menus[i].wrap.contains(e.target)) inside = true;
       if (!inside) closeAll(null);
     });
-    document.addEventListener('keydown', function(e){ if (e.key === 'Escape'){ closeAll(null); if (document.activeElement) document.activeElement.blur(); } });
+    document.addEventListener('keydown', function(e){
+      if (e.key !== 'Escape') return;
+      for (var i = 0; i < menus.length; i++){
+        if (menus[i].wrap.classList.contains('open')){ menus[i].set(false); menus[i].btn.focus(); }
+      }
+    });
   }
+
   /* 5. glossary filter */
-  var q = document.getElementById('glo-q');
-  if (q){
+  (function(){
+    var q = document.getElementById('glo-q');
+    if (!q) return;
     var cards = document.querySelectorAll('.glo .term');
     var groups = document.querySelectorAll('.glo');
     var none = document.getElementById('glo-none');
+    var norm = function(s){ s = String(s || ''); if (s.normalize) s = s.normalize('NFKC'); return s.toLowerCase(); };
     var run = function(){
-      var v = q.value.trim().toLowerCase();
+      var v = norm(q.value.trim());
       var shown = 0;
       for (var i = 0; i < cards.length; i++){
-        var hit = !v || (cards[i].getAttribute('data-k') || '').indexOf(v) !== -1;
+        var hit = !v || norm(cards[i].getAttribute('data-k')).indexOf(v) !== -1;
         cards[i].hidden = !hit; if (hit) shown++;
       }
       for (var g = 0; g < groups.length; g++){
@@ -218,7 +227,9 @@
       if (none) none.hidden = shown > 0;
     };
     q.addEventListener('input', run);
-  }
+    if (q.value) run();
+  })();
+
   /* 6. execution context badge on code blocks */
   var CTX = {server:'サーバで実行（自分のユーザ）', luanti:'サーバで実行（luantiユーザ）', byod:'BYODで実行', local:'Raspberry Pi 本体で実行（モニタ接続時）', chat:'ゲーム内チャットで入力', file:'ファイルの内容（エディタに貼り付け）'};
   var cblocks = document.querySelectorAll('.code[data-ctx]');
@@ -228,8 +239,8 @@
     var strip = document.createElement('span'); strip.className = 'ctx ctx-' + ctx;
     var lab = document.createElement('span'); lab.className = 'ctx-l'; lab.textContent = CTX[ctx]; strip.appendChild(lab);
     var cwd = cblocks[c].getAttribute('data-cwd');
-    if (cwd){ var cw = document.createElement('code'); cw.className = 'ctx-cwd'; cw.textContent = (ctx === 'file' ? '' : 'cd ') + cwd; strip.appendChild(cw); }
     var ttl = head.querySelector('.code-title');
+    if (cwd && !(ctx === 'file' && ttl && ttl.textContent.trim() === cwd)){ var cw = document.createElement('span'); cw.className = 'ctx-cwd'; cw.textContent = (ctx === 'file' ? '保存先 ' : '場所 ') + cwd; strip.appendChild(cw); }
     if (ttl && ttl.nextSibling) head.insertBefore(strip, ttl.nextSibling); else head.appendChild(strip);
   }
 
@@ -261,12 +272,12 @@
       for (var i2 = 0; i2 < items2.length; i2++){
         (function(li, idx, kind){
           var cb = document.createElement('input'); cb.type = 'checkbox'; cb.className = 'pcb'; cb.checked = !!P[page][kind][idx];
-          cb.setAttribute('aria-label', '達成した');
           var lbl = document.createElement('label'); lbl.className = 'plabel';
+          var lid = 'pl-' + kind + '-' + idx; lbl.id = lid; cb.setAttribute('aria-labelledby', lid);
           while (li.firstChild) lbl.appendChild(li.firstChild);
           li.appendChild(cb); li.appendChild(lbl); li.classList.toggle('on', cb.checked);
           cb.addEventListener('change', function(){ P[page][kind][idx] = cb.checked; li.classList.toggle('on', cb.checked); refresh(); });
-          lbl.addEventListener('click', function(e){ if (e.target.closest('a, button')) return; cb.checked = !cb.checked; cb.dispatchEvent(new Event('change')); });
+          lbl.addEventListener('click', function(e){ if (e.target.closest('a, button, code') || String(window.getSelection())) return; cb.checked = !cb.checked; cb.dispatchEvent(new Event('change')); });
           if (kind === 'check'){
             var tb = document.createElement('button'); tb.type = 'button'; tb.className = 'tpl';
             tb.textContent = '記録テンプレをコピー'; tb.title = '実験記録の雛形（日時・回・確認項目番号入り）をコピー';
@@ -289,6 +300,7 @@
       summary = document.createElement('span'); summary.className = 'psum';
       var rs = document.createElement('button'); rs.type = 'button'; rs.className = 'preset'; rs.textContent = 'この回の記録をリセット';
       rs.addEventListener('click', function(){
+        if (!window.confirm('この回のチェックをすべて外します。よろしいですか。')) return;
         var ins = document.querySelectorAll('.pcb');
         for (var k = 0; k < ins.length; k++){ if (ins[k].checked){ ins[k].checked = false; ins[k].dispatchEvent(new Event('change')); } }
       });
@@ -297,32 +309,33 @@
     }
     refresh();
   }
-  /* progress on the lab index cards (shown from the start; totals fall back to the static counts) */
-  var cards = document.querySelectorAll('a.dcard[href^="day"]');
-  if (cards.length){
+
+  /* 8. progress on the lab index cards (shown from the start; totals fall back to the static counts) */
+  var dcards = document.querySelectorAll('a.dcard[href^="day"]');
+  if (dcards.length){
     var PP = loadP(), TOT = {day1:4, day2:3, day3:5, day4:4, day5:5};
     var tot = 0, done = 0;
-    for (var cd = 0; cd < cards.length; cd++){
-      var key = cards[cd].getAttribute('href').replace('.html',''), st2 = PP[key] || {};
+    for (var cd = 0; cd < dcards.length; cd++){
+      var key = dcards[cd].getAttribute('href').replace('.html',''), st2 = PP[key] || {};
       var t2 = st2.checkTotal || TOT[key] || 0, d2 = st2.checkDone || 0;
       if (!t2) continue;
       tot += t2; done += d2;
       var pr = document.createElement('span'); pr.className = 'dprog' + (d2 === t2 ? ' done' : '');
       var pct = Math.round(100 * d2 / t2);
       pr.innerHTML = '<span class="track"><i style="width:' + pct + '%"></i></span><b>確認項目 ' + d2 + ' / ' + t2 + (d2 === t2 ? '　達成' : '') + '</b>';
-      cards[cd].appendChild(pr);
+      dcards[cd].appendChild(pr);
     }
     var daysH = document.getElementById('days');
     if (daysH && tot){
       var ov = document.createElement('div'); ov.className = 'overall';
       var pc = Math.round(100 * done / tot);
-      ov.innerHTML = '<div class="ov-row"><b>全6回の確認項目</b><span>' + done + ' / ' + tot + '（' + pc + '%）' + (done === tot ? '　すべて達成' : '') + '</span></div><div class="ov-bar"><i style="width:' + pc + '%"></i></div>' +
+      ov.innerHTML = '<div class="ov-row"><b>第1回から第5回の確認項目</b><span>' + done + ' / ' + tot + '（' + pc + '%）' + (done === tot ? '　すべて達成' : '') + '</span></div><div class="ov-bar"><i style="width:' + pc + '%"></i></div>' +
         '<p class="ov-note">確認項目は<a href="day6.html#s6-4">最終課題の提出物</a>（実験記録）の一部になる。各ページ末尾の「確認項目」にチェックを入れると、この画面に進み具合が表示される（記録はこのブラウザにだけ保存される）。</p>';
       daysH.parentNode.insertBefore(ov, daysH.nextSibling);
     }
   }
 
-  /* 8. 詰まったら: floating trouble finder */
+  /* 9. 詰まったら: floating trouble finder */
   var relRoot = (function(){ var a = document.querySelector('header.bar .barlinks a'); var m2 = /^((?:\.\.\/)*)index\.html$/.exec(a ? a.getAttribute('href') || '' : ''); return m2 ? m2[1] : ''; })();
   if (document.querySelector('main.page')){
     var fab = document.createElement('button'); fab.type = 'button'; fab.className = 'help-fab'; fab.setAttribute('aria-expanded', 'false');
@@ -365,12 +378,12 @@
         if (window.fetch){ fetch(relRoot + 'trouble.json').then(function(r){ return r.json(); }).then(function(j){ data = j; render(); }).catch(fb); } else fb();
       }
     });
-    pan.querySelector('.hp-close').addEventListener('click', function(){ setHelp(false); });
+    pan.querySelector('.hp-close').addEventListener('click', function(){ setHelp(false); fab.focus(); });
     hq.addEventListener('input', render);
-    document.addEventListener('keydown', function(e){ if (e.key === 'Escape' && !pan.hidden) setHelp(false); });
+    document.addEventListener('keydown', function(e){ if (e.key === 'Escape' && !pan.hidden){ setHelp(false); fab.focus(); } });
   }
 
-  /* 9. term tooltips: first mention of each glossary term in the body text */
+  /* 10. term tooltips: first mention of each glossary term in the body text */
   var docEl = document.querySelector('.doc');
   if (docEl && !document.getElementById('glo-q') && window.fetch){
     fetch(relRoot + 'terms.json').then(function(r){ return r.json(); }).then(function(terms){
@@ -380,18 +393,34 @@
       var walker = document.createTreeWalker(docEl, NodeFilter.SHOW_TEXT, null);
       var nodes = []; var nd; while ((nd = walker.nextNode())) if (nd.nodeValue.trim().length > 1 && !skip(nd)) nodes.push(nd);
       var used = {};
+      /* a match must not be part of a longer katakana or latin word (シェル in シェルスクリプト, cron in crontab) */
+      var WORD = /[\u30A0-\u30FFA-Za-z]/;
+      var findAt = function(txt, term){
+        var from = 0, pos;
+        while ((pos = txt.indexOf(term, from)) !== -1){
+          var prev = pos > 0 ? txt.charAt(pos - 1) : '', next = txt.charAt(pos + term.length);
+          var badNext = next && WORD.test(next) && WORD.test(term.charAt(term.length - 1));
+          var badPrev = prev && WORD.test(prev) && WORD.test(term.charAt(0));
+          if (!badNext && !badPrev) return pos;
+          from = pos + 1;
+        }
+        return -1;
+      };
       for (var t2 = 0; t2 < terms.length; t2++){
         var T = terms[t2]; if (T.term.length < 2 || used[T.term]) continue;
         for (var n2 = 0; n2 < nodes.length; n2++){
           var tn = nodes[n2]; if (!tn.parentNode) continue;
-          var pos = tn.nodeValue.indexOf(T.term); if (pos === -1) continue;
+          var pos = findAt(tn.nodeValue, T.term); if (pos === -1) continue;
           var after = tn.splitText(pos), rest = after.splitText(T.term.length);
           var sp = document.createElement('span'); sp.className = 'tt'; sp.tabIndex = 0; sp.setAttribute('data-def', T.def); sp.setAttribute('data-src', T.chapter); sp.textContent = T.term;
           after.parentNode.replaceChild(sp, after);
           nodes.splice(n2, 1, tn, rest); used[T.term] = true; break;
         }
       }
+      var hideTimer = null;
       var show = function(el){
+        clearTimeout(hideTimer);
+        tip._for = el; tip._at = Date.now();
         tip.innerHTML = '<b></b><span></span><a></a>';
         tip.querySelector('b').textContent = el.textContent; tip.querySelector('span').textContent = el.getAttribute('data-def');
         var la = tip.querySelector('a'); la.href = relRoot + 'ref/' + el.getAttribute('data-src') + '.html'; la.textContent = '用語集・該当章へ';
@@ -403,22 +432,26 @@
         var th = tip.offsetHeight;
         tip.style.top = (r.top - th - 8 > 80 ? r.top - th - 8 : r.bottom + 8) + window.pageYOffset + 'px';
       };
-      var hideT = function(){ tip.hidden = true; };
+      var hideT = function(){ clearTimeout(hideTimer); tip.hidden = true; };
+      var hideSoon = function(){ clearTimeout(hideTimer); hideTimer = setTimeout(hideT, 250); };
+      var hideIfOut = function(){ setTimeout(function(){ var ae = document.activeElement; if (!tip.contains(ae) && ae !== tip._for) hideT(); }, 0); };
       var hoverable = window.matchMedia && window.matchMedia('(hover:hover)').matches;
       var tts = docEl.querySelectorAll('.tt');
       for (var u = 0; u < tts.length; u++){
         (function(el){
-          if (hoverable){ el.addEventListener('mouseenter', function(){ show(el); }); el.addEventListener('mouseleave', hideT); }
-          el.addEventListener('focus', function(){ show(el); }); el.addEventListener('blur', hideT);
-          el.addEventListener('click', function(e){ e.preventDefault(); if (tip.hidden) show(el); else hideT(); });
+          if (hoverable){ el.addEventListener('mouseenter', function(){ show(el); }); el.addEventListener('mouseleave', hideSoon); }
+          el.addEventListener('focus', function(){ if (!tip._mute) show(el); }); el.addEventListener('blur', hideIfOut);
+          el.addEventListener('click', function(e){ e.preventDefault(); if (!tip.hidden && tip._for === el && Date.now() - tip._at > 400) hideT(); else show(el); });
         })(tts[u]);
       }
-      tip.addEventListener('mouseenter', function(){ tip.hidden = false; }); tip.addEventListener('mouseleave', hideT);
+      tip.addEventListener('mouseenter', function(){ clearTimeout(hideTimer); }); tip.addEventListener('mouseleave', hideSoon);
+      tip.addEventListener('focusout', hideIfOut);
+      document.addEventListener('keydown', function(e){ if (e.key === 'Escape' && !tip.hidden){ var f = tip._for, inTip = tip.contains(document.activeElement); hideT(); if (f && inTip){ tip._mute = true; f.focus(); tip._mute = false; } } });
       document.addEventListener('click', function(e){ if (!e.target.closest('.tt, .ttip')) hideT(); });
     }).catch(function(){});
   }
 
-  /* 10. mobile: pin the current "いま何をするか" line to the bottom while its code block is on screen */
+  /* 11. mobile: pin the current "いま何をするか" line to the bottom while its code block is on screen */
   var whys = document.querySelectorAll('.why');
   if (whys.length && 'IntersectionObserver' in window){
     var nb = document.createElement('div'); nb.className = 'nowbar'; nb.hidden = true; document.body.appendChild(nb);
@@ -430,22 +463,24 @@
       for (var e2 = 0; e2 < entries.length; e2++){
         for (var m3 = 0; m3 < map.length; m3++){
           if (map[m3].code !== entries[e2].target) continue;
-          if (entries[e2].isIntersecting){ cur = map[m3]; nb.textContent = ''; var bb = document.createElement('b'); bb.textContent = 'いま：'; nb.appendChild(bb); nb.appendChild(document.createTextNode(map[m3].why.textContent.replace(/^いま何をするか：/, '').trim())); nb.hidden = false; }
+          if (entries[e2].isIntersecting){ cur = map[m3]; nb.textContent = ''; var bb = document.createElement('b'); bb.textContent = 'いま：'; var nt = document.createElement('span'); nt.className = 'nb-t'; nt.appendChild(bb); nt.appendChild(document.createTextNode(map[m3].why.textContent.replace(/^いま何をするか：/, '').trim())); nb.appendChild(nt); nb.hidden = false; }
           else if (cur === map[m3]){ cur = null; nb.hidden = true; }
         }
       }
     }, {rootMargin:'-70px 0px -20% 0px', threshold:0});
     for (var m4 = 0; m4 < map.length; m4++) io2.observe(map[m4].code);
   }
+
   /* 12. figure lightbox */
   var figs = document.querySelectorAll('figure img');
   if (figs.length){
     var lb = document.createElement('div'); lb.className = 'lb'; lb.hidden = true;
-    lb.innerHTML = '<button type="button" class="lb-x" aria-label="閉じる">×</button><img alt=""><p class="lb-cap"></p>';
+    lb.innerHTML = '<button type="button" class="lb-x" aria-label="閉じる">×</button><img alt=""><p class="lb-cap"></p><p class="lb-hint">横にスクロールできる</p>';
     document.body.appendChild(lb);
     var lbImg = lb.querySelector('img'), lbCap = lb.querySelector('.lb-cap');
-    var closeLb = function(){ lb.hidden = true; document.body.classList.remove('lb-open'); };
-    var openLb = function(img){ lbImg.src = img.currentSrc || img.src; lbImg.alt = img.alt; var fc = img.parentNode.querySelector('figcaption'); lbCap.textContent = fc ? fc.textContent : img.alt; lb.hidden = false; document.body.classList.add('lb-open'); lb.querySelector('.lb-x').focus(); };
+    var lastImg = null;
+    var closeLb = function(){ lb.hidden = true; document.body.classList.remove('lb-open'); if (lastImg) lastImg.focus(); };
+    var openLb = function(img){ lastImg = img; lbImg.src = img.currentSrc || img.src; lbImg.alt = img.alt; var fc = img.parentNode.querySelector('figcaption'); lbCap.textContent = fc ? fc.textContent : img.alt; lb.hidden = false; document.body.classList.add('lb-open'); lb.querySelector('.lb-x').focus(); };
     for (var fi = 0; fi < figs.length; fi++){
       (function(img){
         img.classList.add('zoomable'); img.tabIndex = 0; img.setAttribute('role', 'button'); img.title = 'クリックで拡大';

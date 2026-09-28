@@ -113,15 +113,17 @@
       <p>最終課題のテーマ「Mod・ゲーム運用」の出発点となる手順を示す。ModはContentDB（<a href="https://content.luanti.org/">https://content.luanti.org/</a>）からzipで入手し、サーバのmodsディレクトリに展開したうえで、ワールドごとに有効化する。<a href="../day5.html">第5回</a>のコンテナ構成（<code>~/game</code>）では、Modもボリューム内に置く。これも「データは資産」の実践である。</p>
       <div class="code">
         <div class="code-head"><span class="code-title">Modの導入（コンテナ版・第5回の構成）</span></div>
-<pre><code><span class="in">cd ~/game/data &amp;&amp; mkdir -p mods &amp;&amp; cd mods</span>
+<pre><code><span class="in">sudo apt install -y unzip <span class="c"># 初回のみ</span></span>
+<span class="in">cd ~/game/data &amp;&amp; mkdir -p mods &amp;&amp; cd mods</span>
 <span class="in">wget <var>ContentDBのDownloadリンクのURL</var></span>
 <span class="in">unzip <var>ダウンロードしたファイル</var>.zip</span>
+<span class="in">docker compose stop game <span class="c"># 編集中にサーバが world.mt を書き換えないよう止める</span></span>
 <span class="in">vi ../worlds/world/world.mt</span>
 <span class="out">load_mod_<var>Mod名</var> = true　← この1行を追記して有効化</span>
-<span class="in">docker compose restart game</span></code></pre>
+<span class="in">docker compose start game</span></code></pre>
       </div>
       <p>ゲーム全体（実習で使っているMinetest Game以外のゲーム）を導入する場合は、mods ではなく <code>data/games</code> に展開し、compose.yaml の <code>CLI_ARGS</code> の <code>--gameid</code> を新しいゲームのIDに切り替える（実習の構成では minetest を指定している）。ワールドはゲームごとに互換性がないため、新しいワールド名を指定して生成し直すのが安全である。</p>
-      <div class="call note"><span class="ct">Note</span><p>※ Modには依存Modや対応バージョンがある。ContentDBの各ページで依存関係（Dependencies）を確認し、導入は1つずつ・直前にバックアップを取ってから行うこと。起動しなくなったら <code>docker compose logs</code> にModのエラーが出ている。</p></div>
+      <div class="call note"><span class="ct">補足</span><p>※ Modには依存Modや対応バージョンがある。ContentDBの各ページで依存関係（Dependencies）を確認し、導入は1つずつ・直前にバックアップを取ってから行うこと。起動しなくなったら <code>docker compose logs</code> にModのエラーが出ている。</p></div>
 
 
       <h2 id="c11-add-1"><span class="no">11.8</span>luanti.conf 主要設定リファレンス</h2>
@@ -145,7 +147,7 @@
       </div>
       <div class="call warn"><span class="ct">注意</span><p>※ <code>server_announce = true</code> にすると、サーバの情報が世界中に公開されるサーバ一覧に登録される。本実習のサーバは学内ネットワークに閉じており、外部への公開は<a href="../index.html#rules-4">2.4 ネットワーク利用上の注意</a>で禁止されている。この項目は <code>false</code> のまま（または書かないまま）にしておくこと。</p></div>
       <dl class="term"><dt>server_announce<small>公開サーバ一覧への登録</small></dt><dd>Luantiの公開サーバ一覧に自分のサーバを登録するかどうかの設定。既定は <code>false</code> で、本実習では絶対に <code>true</code> にしてはならない。</dd></dl>
-      <p><code>port</code> を変更した場合は、ufwの許可（<code>sudo ufw allow 30000/udp</code>）と、<a href="../day5.html">第5回</a>のコンテナ構成における <code>ports</code> の記述も同時に直す必要がある。設定ファイルだけを変えてもクライアントは届かない。3か所がそろって初めて通る、という点は<a href="ch07.html#c7-5">第7章 7-5</a>のファイアウォールの考え方そのものである。</p>
+      <p><code>port</code> を変更した場合は、ufwの許可（新しい番号で <code>sudo ufw allow <var>新しい番号</var>/udp</code>）と、<a href="../day5.html">第5回</a>のコンテナ構成における <code>ports</code> の記述も同時に直す必要がある。設定ファイルだけを変えてもクライアントは届かない。3か所がそろって初めて通る、という点は<a href="ch07.html#c7-5">第7章 7.5</a>のファイアウォールの考え方そのものである。</p>
 
       <h3 id="c11-add-1-b">アカウントと権限に関する設定</h3>
       <div class="scroll">
@@ -188,7 +190,7 @@
           <tr><td><code>active_block_range</code></td><td>プレイヤーの周囲で常時動かすマップブロックの範囲。既定は4</td><td><code>active_block_range = 2</code></td></tr>
           <tr><td><code>max_block_send_distance</code></td><td>クライアントへ送るマップブロックの最大距離。既定は12</td><td><code>max_block_send_distance = 8</code></td></tr>
           <tr><td><code>max_simultaneous_block_sends_per_client</code></td><td>1人あたり同時に送るブロック数の上限</td><td><code>max_simultaneous_block_sends_per_client = 16</code></td></tr>
-          <tr><td><code>max_objects_per_block</code></td><td>1ブロックに置ける物体の数の上限。増えすぎ対策</td><td><code>max_objects_per_block = 64</code></td></tr>
+          <tr><td><code>max_objects_per_block</code></td><td>1ブロックに置ける物体の数の上限。増えすぎ対策。既定は256（これより小さくはできない）</td><td><code>max_objects_per_block = 256</code></td></tr>
           <tr><td><code>server_unload_unused_data_timeout</code></td><td>使われなくなったデータをメモリから解放するまでの秒数</td><td><code>server_unload_unused_data_timeout = 29</code></td></tr>
           <tr><td><code>max_users</code></td><td>同時接続人数の上限。負荷設計としては最も効く1行</td><td><code>max_users = 5</code></td></tr>
         </tbody>
@@ -270,14 +272,15 @@
       <div class="code" data-ctx="server">
         <div class="code-head"><span class="code-title">ワールドの中身を見る</span></div>
 <pre><code><span class="in">sudo ls -la /home/luanti/server/world</span>
-<span class="out">合計 2216</span>
-<span class="out">drwxr-xr-x 3 luanti luanti    4096  9月 19 14:02 .</span>
-<span class="out">drwxr-xr-x 4 luanti luanti    4096  9月 19 13:02 ..</span>
-<span class="out">-rw-r--r-- 1 luanti luanti   24576  9月 19 14:02 auth.sqlite</span>
-<span class="out">-rw-r--r-- 1 luanti luanti     102  9月 19 14:02 env_meta.txt</span>
-<span class="out">-rw-r--r-- 1 luanti luanti 2179072  9月 19 14:02 map.sqlite</span>
-<span class="out">drwxr-xr-x 2 luanti luanti    4096  9月 19 13:40 players</span>
-<span class="out">-rw-r--r-- 1 luanti luanti      86  9月 19 13:02 world.mt</span></code></pre>
+<span class="out">total 2248</span>
+<span class="out">drwxr-xr-x 2 luanti luanti    4096 Sep 19 14:02 .</span>
+<span class="out">drwxr-xr-x 4 luanti luanti    4096 Sep 19 13:02 ..</span>
+<span class="out">-rw-r--r-- 1 luanti luanti   24576 Sep 19 14:02 auth.sqlite</span>
+<span class="out">-rw-r--r-- 1 luanti luanti     102 Sep 19 14:02 env_meta.txt</span>
+<span class="out">-rw-r--r-- 1 luanti luanti 2179072 Sep 19 14:02 map.sqlite</span>
+<span class="out">-rw-r--r-- 1 luanti luanti   12288 Sep 19 14:02 mod_storage.sqlite</span>
+<span class="out">-rw-r--r-- 1 luanti luanti   16384 Sep 19 14:02 players.sqlite</span>
+<span class="out">-rw-r--r-- 1 luanti luanti      86 Sep 19 13:02 world.mt</span></code></pre>
       </div>
       <div class="scroll">
       <table class="tbl">
@@ -286,7 +289,8 @@
           <tr><td><code>world.mt</code></td><td>使用するゲーム（<code>gameid</code>）、バックエンド、有効なModの一覧</td><td>ワールドとして認識されなくなる</td></tr>
           <tr><td><code>map.sqlite</code></td><td>地形とブロックの本体。最も大きくなるファイル</td><td>建築物がすべて消える</td></tr>
           <tr><td><code>auth.sqlite</code></td><td>アカウント名、パスワードのハッシュ、各人のprivs</td><td>全員が再登録になり、権限もやり直しになる</td></tr>
-          <tr><td><code>players/</code></td><td>プレイヤーごとの位置、体力、持ち物</td><td>持ち物と位置が初期化される</td></tr>
+          <tr><td><code>players.sqlite</code></td><td>プレイヤーごとの位置、体力、持ち物</td><td>持ち物と位置が初期化される</td></tr>
+          <tr><td><code>mod_storage.sqlite</code></td><td>Modが保存するデータ</td><td>Modが記録していた内容が初期化される</td></tr>
           <tr><td><code>env_meta.txt</code></td><td>ゲーム内時刻や経過日数などの環境情報</td><td>時刻と日数が初期化される（影響は小さい）</td></tr>
         </tbody>
       </table>
@@ -303,11 +307,11 @@
 <span class="in">sudo systemctl start luanti <span class="c"># すぐ動かす</span></span>
 <span class="in">systemctl is-active luanti</span>
 <span class="out">active</span>
-<span class="in">ls -lh /home/luanti/backup | tail -n 3</span>
-<span class="out">-rw-r--r-- 1 luanti luanti 1.4M  9月 19 14:35 world_20260919_143512.tar.gz</span></code></pre>
+<span class="in">sudo ls -lh /home/luanti/backup | tail -n 3</span>
+<span class="out">-rw-r--r-- 1 luanti luanti 1.4M Sep 19 14:35 world_20260919_143512.tar.gz</span></code></pre>
       </div>
       <p>確認するのは2点である。<code>is-active</code> が <code>active</code> に戻っていること、そして出来上がったファイルのサイズが前回と比べて極端に小さくないことである。数キロバイトしかないバックアップは、対象を取り違えているか、途中で失敗している。<a href="../day4.html#s4-4">第4回 4-4</a>のとおり、実際に展開して起動できるところまで確かめて初めて「バックアップがある」と言える。</p>
-      <div class="call note"><span class="ct">Note</span><p>※ どうしても止めたくない場合は、<code>sqlite3</code> の <code>.backup</code> コマンドを使うと稼働中でも整合性のあるコピーが取れる（<code>sudo apt install -y sqlite3</code> が必要）。ただし <code>players/</code> や <code>world.mt</code> は別途コピーする必要があり、手順が増える。実習の規模では停止して取るほうが確実である。発展の例は<a href="appendix.html#ca-5-f">付録A.5 バックアップの高度化</a>にある。</p></div>
+      <div class="call note"><span class="ct">補足</span><p>※ どうしても止めたくない場合は、<code>sqlite3</code> の <code>.backup</code> コマンドを使うと稼働中でも整合性のあるコピーが取れる（<code>sudo apt install -y sqlite3</code> が必要）。ただし <code>map.sqlite</code>、<code>auth.sqlite</code>、<code>players.sqlite</code>、<code>mod_storage.sqlite</code> のそれぞれに <code>.backup</code> が必要で、<code>world.mt</code> は別途コピーする必要があり、手順が増える。実習の規模では停止して取るほうが確実である。発展の例は<a href="appendix.html#ca-5-f">付録A.5 バックアップの高度化</a>にある。</p></div>
 
       <h3 id="c11-add-3-c">ログの見方</h3>
       <p><a href="../day2.html#s2-5">第2回 2-5</a>のユニットファイルは <code>--logfile ""</code> を指定しており、Luantiが自前のファイルに書く代わりに、出力がそのままjournaldへ渡るようにしてある。したがってLuantiのログは <code>journalctl</code> で読む（<a href="ch06.html#c6-2">6.2節</a>）。</p>
@@ -316,7 +320,7 @@
 <pre><code><span class="in">journalctl -u luanti -n 30 --no-pager <span class="c"># 直近30行</span></span>
 <span class="in">journalctl -u luanti -f <span class="c"># 接続や切断をリアルタイムで見る</span></span>
 <span class="in">journalctl -u luanti --since today | grep -i "joins game" <span class="c"># 今日の入室だけを抜き出す</span></span>
-<span class="out">Sep 19 14:05:11 mc-24s1234 luantiserver[812]: ACTION[Server]: taro [192.168.1.44] joins game.</span>
+<span class="out">Sep 19 14:05:11 mc-24s1234 luantiserver[812]: ACTION[Server]: taro [10.20.30.52] joins game.</span>
 <span class="out">Sep 19 14:31:02 mc-24s1234 luantiserver[812]: ACTION[Server]: taro leaves game. List of players:</span></code></pre>
       </div>
       <p>見るべきは行頭の分類である。<code>ACTION</code> は入退室やブロックの設置といった通常の出来事、<code>WARNING</code> は動作は続くが注意すべきこと、<code>ERROR</code> は失敗である。<code>joins game</code> の行にはプレイヤー名と接続元のIPアドレスが両方出るので、<a href="../day3.html#s3-6">第3回 3-6 演習：ログ解析</a>ではこの行を数えて利用状況を集計している。コンテナ構成では同じ内容が <code>docker compose logs game</code> に出る。</p>
@@ -338,12 +342,12 @@
           <tr><td><code>/time 時:分</code></td><td>ゲーム内の時刻を変える（<code>/time 6:00</code> で朝）</td><td><code>settime</code></td></tr>
           <tr><td><code>/set キー 値</code></td><td>設定値をその場で変更する（永続化はされない）</td><td><code>server</code></td></tr>
           <tr><td><code>/mods</code> ／ <code>/days</code></td><td>読み込まれているModの一覧 ／ 経過日数</td><td>不要</td></tr>
-          <tr><td><code>/shutdown [秒] [再起動] [メッセージ]</code></td><td>サーバを停止する。予告してから落とせる</td><td><code>server</code></td></tr>
+          <tr><td><code>/shutdown [秒] [-r] [メッセージ]</code></td><td>サーバを停止する。秒数を付けると予告してから落とせる。<code>-r</code> を付けるとクライアントに再接続を促す</td><td><code>server</code></td></tr>
           <tr><td><code>/clearobjects [full|quick]</code></td><td>ワールド上の物体を削除する（後述の注意を必ず読むこと）</td><td><code>server</code></td></tr>
         </tbody>
       </table>
       </div>
-      <p><code>/shutdown 60 false 60秒後に再起動します</code> のように書くと、メッセージを表示してから60秒後に停止する。全員を巻き込む操作なので、必ず予告してから実行すること。なお <code>/shutdown</code> で止めた場合、systemdの <code>Restart=on-failure</code> は正常終了とみなして再起動しない。作業後は <code>sudo systemctl start luanti</code> で自分で起動する。</p>
+      <p><code>/shutdown 60 60秒後にメンテナンスのため停止します</code> のように書くと、メッセージを表示してから60秒後に停止する。予約した停止は <code>/shutdown -1</code> で取り消せる。全員を巻き込む操作なので、必ず予告してから実行すること。なお <code>/shutdown</code> で止めた場合、systemdの <code>Restart=on-failure</code> は正常終了とみなして再起動しない。作業後は <code>sudo systemctl start luanti</code> で自分で起動する。</p>
       <div class="call warn"><span class="ct">注意</span><p>※ <code>/clearobjects</code> は、ワールド上のアイテムや乗り物、Modが置いた物体をまとめて削除する。<code>full</code> を付けると読み込まれていない領域まで対象になり、ワールド全体を走査するためRaspberry Piでは数分間サーバが応答しなくなる。地面に落ちたアイテムが増えすぎて重い、といった明確な理由があるときだけ、バックアップを取り、プレイヤーに予告してから実行すること。取り消しはできない。</p></div>
       <div class="call note"><span class="ct">実習ではここで使う</span><p>※ <code>/status</code>・<code>/privs</code>・<code>/grant</code>・<code>/revoke</code>・<code>/ban</code>・<code>/unban</code> は<a href="../day3.html#s3-4">第3回 3-4 Luantiのプレイヤー管理</a>で実際に打つ。<code>/status</code> の出力は<a href="../day5.html#s5-4">第5回 5-4</a>の監視ページに載せる情報の候補でもある。</p></div>
       <div class="call myth"><span class="ct">よくある誤解・トラブル</span>
