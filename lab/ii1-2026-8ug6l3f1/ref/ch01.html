@@ -168,16 +168,16 @@
       <div class="code" data-ctx="server">
         <div class="code-head"><span class="code-title">uname -a と hostnamectl の出力例</span></div>
 <pre><code><span class="in">uname -a</span>
-<span class="out">Linux mc-24s1234 6.6.51+rpt-rpi-v8 #1 SMP PREEMPT Debian 1:6.6.51-1+rpt3 (2024-10-08) aarch64 GNU/Linux</span>
+<span class="out">Linux mc-24s1234 6.12.47+rpt-rpi-v8 #1 SMP PREEMPT Debian 1:6.12.47-1+rpt1 (2025-09-16) aarch64 GNU/Linux</span>
 <span class="in">hostnamectl</span>
 <span class="out"> Static hostname: mc-24s1234</span>
-<span class="out">Operating System: Debian GNU/Linux 12 (bookworm)</span>
-<span class="out">          Kernel: Linux 6.6.51+rpt-rpi-v8</span>
+<span class="out">Operating System: Debian GNU/Linux 13 (trixie)</span>
+<span class="out">          Kernel: Linux 6.12.47+rpt-rpi-v8</span>
 <span class="out">    Architecture: arm64</span></code></pre>
       </div>
-      <p>見るべきは3か所である。先頭から2番目の<code>mc-24s1234</code>はホスト名で、SSHで繋いだ先が本当に自分のサーバかを確認できる。<code>6.6.51+rpt-rpi-v8</code>はカーネルの版で、<code>+rpt</code>はRaspberry Pi財団が配布している版であることを示す。末尾の<code>aarch64</code>（<code>hostnamectl</code>では<code>arm64</code>と表記される）は64-bit ARMという意味で、Dockerイメージを選ぶときにこの値が効いてくる（<a href="../day5.html#s5-3">第5回 5-3</a>）。<code>Operating System</code>の行が<code>Debian GNU/Linux</code>で始まっていることが、<code>apt</code>を使うDebian系である何よりの証拠である。版の番号とコードネーム（上の例では<code>12 (bookworm)</code>）は配布イメージによって異なるので、自分の画面の値で読み替える。</p>
+      <p>見るべきは3か所である。先頭から2番目の<code>mc-24s1234</code>はホスト名で、SSHで繋いだ先が本当に自分のサーバかを確認できる。<code>6.12.47+rpt-rpi-v8</code>はカーネルの版で、<code>+rpt</code>はRaspberry Pi財団が配布している版であることを示す。末尾の<code>aarch64</code>（<code>hostnamectl</code>では<code>arm64</code>と表記される）は64-bit ARMという意味で、Dockerイメージを選ぶときにこの値が効いてくる（<a href="../day5.html#s5-3">第5回 5-3</a>）。<code>Operating System</code>の行が<code>Debian GNU/Linux</code>で始まっていることが、<code>apt</code>を使うDebian系である何よりの証拠である。版の番号とコードネーム（上の例では<code>13 (trixie)</code>）は配布イメージによって異なるので、自分の画面の値で読み替える。</p>
 
-      <dl class="term"><dt>bookworm<small>Debianの版のコードネーム</small></dt><dd>Debianの版に付けられた愛称（12はbookworm、13はtrixie）。自分の版は cat /etc/os-release で確かめる。Raspberry Pi OSはDebianを土台にしているため、ネットで手順を探すときは「Raspberry Pi OS」ではなく「Debian」と自分の版の番号やコードネームで調べたほうが情報が見つかりやすい。</dd></dl>
+      <dl class="term"><dt>trixie<small>Debian 13 のコードネーム</small></dt><dd>Debianの版に付けられた愛称（13はtrixie、1つ前の12はbookworm）。実習で配布するRaspberry Pi OSはDebian 13を土台にしている。自分の版は cat /etc/os-release で確かめる。Raspberry Pi OSはDebianを土台にしているため、ネットで手順を探すときは「Raspberry Pi OS」ではなく「Debian」と自分の版の番号やコードネームで調べたほうが情報が見つかりやすい。</dd></dl>
 
       <div class="call myth"><span class="ct">よくある誤解・トラブル</span>
         <span class="q">32-bitのRaspberry Pi OSでも、64-bit用の手順はそのまま使える</span>
@@ -320,6 +320,7 @@
 <span class="in">last reboot -n 5 <span class="c"># 直近5回の再起動履歴</span></span>
 <span class="in">last -F <span class="c"># 年まで含む完全な日時で表示</span></span></code></pre>
       </div>
+      <div class="call note"><span class="ct">補足</span><p>※ Debian 13 では <code>last</code> が最初から入っていないことがある（ログイン記録の仕組みが wtmpdb に移ったため）。<code>command not found</code> になったら、ログイン履歴は <code>journalctl -u ssh</code> で、再起動の履歴は <code>journalctl --list-boots</code> で調べればよい。</p></div>
 
       <p class="why"><b>出力の読み方：</b>ログイン状況と再起動履歴の実際の表示を見る。</p>
       <div class="code" data-ctx="server">
@@ -330,8 +331,8 @@
 <span class="out">taro     pts/0    10.20.30.52      13:58    0.00s  0.15s  0.02s w</span>
 <span class="out">hanako   pts/1    10.20.30.57      14:01    1:12   0.04s  0.04s -bash</span>
 <span class="in">last reboot -n 2</span>
-<span class="out">reboot   system boot  6.6.51+rpt-rpi-v8 Wed Sep 16 11:52   still running</span>
-<span class="out">reboot   system boot  6.6.51+rpt-rpi-v8 Tue Sep 15 09:30 - 11:50 (1+02:20)</span></code></pre>
+<span class="out">reboot   system boot  6.12.47+rpt-rpi-v8 Wed Sep 16 11:52   still running</span>
+<span class="out">reboot   system boot  6.12.47+rpt-rpi-v8 Tue Sep 15 09:30 - 11:50 (1+02:20)</span></code></pre>
       </div>
       <p><code>w</code>の<code>FROM</code>列は接続元のIPアドレスで、自分のBYODのアドレスと一致するかを見る。<code>WHAT</code>列は各人が今実行中のコマンドなので、ここに長時間かかる処理が動いていれば、停止を待つべきだと判断できる。<code>IDLE</code>は無操作の時間で、上の例の<code>hanako</code>は1分12秒何もしていない。</p>
       <p><code>last reboot</code>は起動のたびに1行増える。<code>still running</code>が今動いている稼働、その下が前回の稼働で、括弧内の<code>(1+02:20)</code>は1日2時間20分動いていたという意味である。ここに自分の知らない再起動が並んでいたら、電源の瞬断や熱暴走を疑い、<code>sudo dmesg</code>や<code>journalctl -b -1</code>（1つ前の起動のログ）を見に行く。</p>
@@ -363,13 +364,13 @@
       <div class="code" data-ctx="server">
         <div class="code-head"><span class="code-title">apt update の出力例</span></div>
 <pre><code><span class="in">sudo apt update</span>
-<span class="out">Hit:1 http://deb.debian.org/debian bookworm InRelease</span>
-<span class="out">Get:2 http://security.debian.org/debian-security bookworm-security InRelease [48.0 kB]</span>
+<span class="out">Hit:1 http://deb.debian.org/debian trixie InRelease</span>
+<span class="out">Get:2 http://deb.debian.org/debian-security trixie-security InRelease [48.0 kB]</span>
 <span class="out">Fetched 48.0 kB in 2s (24.0 kB/s)</span>
 <span class="out">Reading package lists... Done</span>
 <span class="out">12 packages can be upgraded. Run 'apt list --upgradable' to see them.</span></code></pre>
       </div>
-      <p><code>Hit</code>は「前回から変わっていないので取り直さなかった」、<code>Get</code>は「新しいカタログを取得した」という意味で、どちらも正常である。最後の<code>12 packages can be upgraded</code>が結論で、この数だけ新しい版が出ている。<code>Err</code>や<code>Could not resolve</code>が出た場合はネットワークか名前解決の問題なので、パッケージではなく通信を疑う（<a href="ch07.html">第7章</a>）。<code>bookworm-security</code>の行は、セキュリティ修正専用のリポジトリである。</p>
+      <p><code>Hit</code>は「前回から変わっていないので取り直さなかった」、<code>Get</code>は「新しいカタログを取得した」という意味で、どちらも正常である。最後の<code>12 packages can be upgraded</code>が結論で、この数だけ新しい版が出ている。<code>Err</code>や<code>Could not resolve</code>が出た場合はネットワークか名前解決の問題なので、パッケージではなく通信を疑う（<a href="ch07.html">第7章</a>）。<code>trixie-security</code>の行は、セキュリティ修正専用のリポジトリである。</p>
 
       <div class="call myth"><span class="ct">よくある誤解・トラブル</span>
         <span class="q"><code>sudo apt update</code> を実行したので、ソフトウェアは最新になった</span>
@@ -414,13 +415,15 @@
         <div class="code-head"><span class="code-title">apt-cache policy の出力例</span></div>
 <pre><code><span class="in">apt-cache policy luanti-server</span>
 <span class="out">luanti-server:</span>
-<span class="out">  Installed: 5.x.x+dfsg-1</span>
-<span class="out">  Candidate: 5.x.x+dfsg-1</span>
+<span class="out">  Installed: 5.10.0+dfsg-5+deb13u1</span>
+<span class="out">  Candidate: 5.10.0+dfsg-5+deb13u1</span>
 <span class="out">  Version table:</span>
-<span class="out"> *** 5.x.x+dfsg-1 500</span>
-<span class="out">        500 http://deb.debian.org/debian （コードネーム）/main arm64 Packages</span></code></pre>
+<span class="out"> *** 5.10.0+dfsg-5+deb13u1 500</span>
+<span class="out">        500 http://deb.debian.org/debian trixie/main arm64 Packages</span>
+<span class="out">        500 http://deb.debian.org/debian-security trixie-security/main arm64 Packages</span>
+<span class="out">        100 /var/lib/dpkg/status</span></code></pre>
       </div>
-      <p>この例では版番号とコードネームを伏せてある。実際には具体的な数字と、自分のDebianの版のコードネームが表示されるので、自分の画面の値で読み替える。</p>
+      <p>実習で配布するイメージ（Debian 13 trixie）では、Luanti 5.10.0 がこの形で表示される。<code>+deb13u1</code> はDebian 13向けにセキュリティ更新が1回入った版という意味で、末尾の <code>/var/lib/dpkg/status</code> の行は「今この機械に入っている記録」を指す。日本語ロケールの環境では <code>Installed</code> が「インストールされているバージョン」のように日本語で表示されるが、意味は同じである。</p>
       <p><code>Installed</code>が今入っている版、<code>Candidate</code>が<code>apt install</code>で入る版である。この2つが同じなら最新で、違えば更新できる。<code>Installed: (none)</code>なら未導入という意味である。<code>*** </code>の印は現在選ばれている版を示し、その下の行が入手元のリポジトリとアーキテクチャ（<code>arm64</code>）である。「入っているつもりなのに動かない」ときは、まずこのコマンドで本当に入っているかを確かめる。</p>
 
       <dl class="term"><dt>依存関係<small>dependency</small></dt><dd>あるパッケージが動くために必要な別のパッケージ。<code>apt</code>は依存を自動で解決して一緒に導入し、不要になったものは<code>apt autoremove</code>で外せる。</dd></dl>

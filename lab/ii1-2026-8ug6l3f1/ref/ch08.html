@@ -114,7 +114,7 @@
       <p>8.1節ではログの重要性を述べたが、実際に障害対応をするには「どこを見るか」を知っていなければならない。Linuxのログの窓口は大きく2つ、journald（<code>journalctl</code>）と <code>/var/log</code> 以下のテキストファイルである。どちらを見るべきかは、対象がsystemdのサービスかどうかで決まる。</p>
 
       <h3 id="c8-add-1-a">/var/log の主なファイル</h3>
-      <p>まず <code>ls /var/log</code> で自分の環境に何があるかを確かめる習慣をつけたい。Debian 12系のシステムは、伝統的なテキストログを書くrsyslogが入っている構成と、journaldだけで完結している構成の両方があり、後者では <code>/var/log/syslog</code> が存在しない。<b>手元に無いファイルの話をいくら調べても時間の無駄なので、最初に一覧を見ること</b>である。</p>
+      <p>まず <code>ls /var/log</code> で自分の環境に何があるかを確かめる習慣をつけたい。Debian 12 以降のシステムは、伝統的なテキストログを書くrsyslogが入っている構成と、journaldだけで完結している構成の両方があり、後者では <code>/var/log/syslog</code> が存在しない。<b>手元に無いファイルの話をいくら調べても時間の無駄なので、最初に一覧を見ること</b>である。</p>
       <div class="code" data-ctx="server">
   <div class="code-head"><span class="code-title">ログの置き場所を確かめる</span></div>
 <pre><code><span class="in">ls -lh /var/log <span class="c"># 何があるか、どれが大きいかを一目で</span></span>

@@ -347,3 +347,394 @@ body.lb-open{overflow:hidden}
   *{transition-duration:.001ms !important; animation-duration:.001ms !important}
   html{scroll-behavior:auto}
 }
+
+/* ============================================================
+   Theme A3 (adopted 2026-09): dark green header, high contrast,
+   glass and shadow refinement. Overrides the base rules above.
+   ============================================================ */
+/* ============================================================
+   Theme A3 : Theme A (濃色ヘッダと明確な枠線) refined
+   Override stylesheet, load AFTER lab.css. Light theme only.
+   Dark green header, near black text, 1.5px to 2px borders,
+   thick coloured left bar per callout type, terminal code blocks.
+   ============================================================ */
+:root{
+  --bg:#F4F6F5; --bg-2:#E8EEEB; --bg-3:#DAE3DF; --card:#FFFFFF;
+  --ink:#111111; --ink-2:#1E2522; --muted:#46514C; --faint:#7D8983;
+  --line:#B7C3BD; --hair:rgba(17,17,17,.18); --shell:rgba(255,255,255,.14);
+  --accent:#0E6F5C; --accent-2:#0A5748; --accent-soft:#E1F1EB;
+  --head:#0A3D33; --head-2:#0D4F42;
+  --term:#1B232B; --term-2:#121920; --term-line:#34414E; --term-ink:#E8EEF3;
+  --b:1.5px;
+}
+body{background:var(--bg); color:var(--ink)}
+::selection{background:#BFE3D6}
+
+/* ---------- header ---------- */
+header.bar,header.bar.stuck{background:var(--head); border-bottom:3px solid var(--accent);
+  -webkit-backdrop-filter:none; backdrop-filter:none; box-shadow:0 2px 10px rgba(0,0,0,.18)}
+header.bar .brand{color:#FFFFFF; font-weight:700}
+header.bar .brand small{color:#B9DCD1}
+header.bar .barlinks > a{color:#DCEEE8; font-weight:500}
+header.bar .barlinks > a:hover{background:rgba(255,255,255,.14); color:#FFFFFF}
+header.bar .barlinks > a.here{background:#FFFFFF; color:var(--head); font-weight:700}
+header.bar .daymenu > button{color:#DCEEE8; font-weight:500}
+header.bar .daymenu:hover > button,header.bar .daymenu.open > button{background:rgba(255,255,255,.14); color:#FFFFFF}
+header.bar .daymenu > button.here{background:#FFFFFF; color:var(--head); font-weight:700}
+.daypanel{border:2px solid var(--head); border-radius:12px; box-shadow:0 18px 44px rgba(0,0,0,.22)}
+.daypanel a{color:var(--ink-2)}
+.daypanel a:hover{background:var(--bg-2); color:var(--ink)}
+.daypanel a.here{background:var(--accent-soft); color:var(--ink); font-weight:600; box-shadow:inset 4px 0 0 var(--accent)}
+.daypanel a .dn{color:var(--accent-2); font-weight:700}
+.daypanel a.appx{border-top:var(--b) solid var(--line)}
+.daypanel a.appx .dn{color:var(--muted)}
+
+/* ---------- hero ---------- */
+.hero{border-bottom:3px solid var(--ink); padding-bottom:36px}
+.eyebrow{color:var(--accent-2); font-weight:700; font-size:.76rem}
+.eyebrow::before{width:10px; height:10px; border-radius:2px}
+h1{font-weight:700; color:var(--ink)}
+.lead{color:var(--ink-2); font-weight:500}
+.meta{color:var(--muted)}
+.meta b{color:var(--ink); font-weight:700}
+
+/* ---------- toc ---------- */
+.toc .toc-head{color:var(--ink); font-weight:700}
+.toc ol{border-left:2px solid var(--line)}
+.toc li a{color:#33403A; margin-left:-2px; border-left:3px solid transparent}
+.toc li a:hover{color:var(--ink); background:var(--bg-2)}
+.toc li a.on{color:var(--accent-2); font-weight:700; border-left-color:var(--accent); background:var(--accent-soft)}
+
+/* ---------- typography ---------- */
+.doc h2{font-weight:700; color:var(--ink); border-top:0; padding-top:0; padding-bottom:10px; border-bottom:3px solid var(--accent); margin-top:72px}
+.doc h2 .no{display:inline-block; vertical-align:.18em; margin:0 12px 0 0; padding:3px 10px; border-radius:6px;
+  background:var(--accent); color:#FFFFFF; font-size:.74rem; letter-spacing:.08em; font-weight:700; line-height:1.5}
+.doc h3{font-weight:700; color:var(--ink); padding-left:12px; border-left:4px solid var(--accent); line-height:1.5}
+.doc p,.doc ul,.doc ol{color:var(--ink-2)}
+.doc li::marker{color:var(--accent)}
+.doc code{background:#E4EAE7; color:var(--ink); border:1px solid #C6D0CB; padding:.08em .38em}
+.doc kbd{border:var(--b) solid var(--line); box-shadow:0 2px 0 var(--line)}
+.doc a{text-decoration:underline; text-decoration-thickness:1px; text-underline-offset:3px; text-decoration-color:rgba(10,87,72,.45)}
+.doc a:hover{text-decoration-color:currentColor}
+.doc .flow a,.doc .dcard,.doc .pager a,.doc .list-links a,.doc .glo-nav a{text-decoration:none}
+
+/* ---------- tables ---------- */
+.tbl{border:var(--b) solid #8F9D96; border-radius:8px; background:var(--card)}
+.tbl th{background:var(--head); color:#FFFFFF; font-weight:700; border-bottom:0}
+.tbl td{border-bottom:1px solid #CBD4CF; color:var(--ink-2)}
+.tbl tbody tr:nth-child(even) td{background:#F4F7F5}
+.tbl th a{color:#FFFFFF}
+.scroll{border-radius:8px}
+
+figure img{border:var(--b) solid var(--line); border-radius:8px}
+figcaption{color:var(--muted)}
+
+/* ---------- callouts ---------- */
+.call{--c:#46514C; --cbg:#FFFFFF; --ct:#33403A;
+  border:var(--b) solid var(--line); border-left:7px solid var(--c); border-radius:8px; background:var(--cbg); padding:16px 20px 18px}
+.call .ct{color:var(--ct); font-size:.76rem; font-weight:700; letter-spacing:.1em; margin-bottom:8px}
+.call p,.call ul,.call ol{color:var(--ink-2)}
+.call.note{--c:#1F5FAA; --cbg:#F1F6FC; --ct:#174C8A; border-color:#A9C1DE; border-left-color:var(--c); background:var(--cbg)}
+.call.goal{--c:#0E6F5C; --cbg:#EAF5F0; --ct:#0A5748; border-color:#9CCBBB; border-left-color:var(--c); background:var(--cbg)}
+.call.goal p{color:var(--ink); font-weight:700}
+.call.pit{--c:#C25E00; --cbg:#FFF6EA; --ct:#8A3F00; border-color:#E6BF93; border-left:7px solid var(--c); background:var(--cbg)}
+.call.pit .ct{color:var(--ct)}
+.call.myth{--c:#B42318; --cbg:#FEF2F1; --ct:#912018; border-color:#E8B4AE; border-left:7px solid var(--c); background:var(--cbg)}
+.call.myth .ct{color:var(--ct)}
+.call.myth .q{color:var(--ink)}
+.call.myth .q::before{color:#912018; font-weight:700}
+.call.myth .a::before{color:var(--accent-2); font-weight:700}
+.call.warn{--c:#B42318; --cbg:#FFFFFF; --ct:#912018; border:2px solid var(--c); border-left:7px solid var(--c); background:var(--cbg)}
+.call.warn .ct{color:var(--ct)}
+.call.extra{--c:#4B5A6B; --cbg:#FFFFFF; --ct:#35414E; border:var(--b) dashed #8C98A5; border-left:7px solid var(--c)}
+.call.example{--c:#4B5A6B; --cbg:#EEF1F3; --ct:#35414E; border-color:#B8C1C9; border-left-color:var(--c); color:var(--ink); background:var(--cbg)}
+.call:target{box-shadow:0 0 0 3px var(--accent)}
+
+/* why line */
+.why{color:var(--ink-2); font-size:.92rem}
+.why::before{width:10px; height:10px; border-radius:2px; top:.55em}
+.why b{color:var(--accent-2); font-weight:700}
+
+/* flow strip */
+.flow li{border:var(--b) solid var(--line); border-top:4px solid var(--accent); border-radius:8px; color:var(--ink-2)}
+.flow li::before{color:var(--accent-2); font-size:.78rem; font-weight:700}
+.flow li a{color:var(--ink)}
+.flow li a:hover{color:var(--accent-2)}
+.flow li .fm{color:var(--muted)}
+
+/* check list and mini */
+.check li{border-top:1px solid #CBD4CF; color:var(--ink-2)}
+.check li.on .plabel,.mini li.on .plabel{color:var(--muted)}
+.pbar{background:var(--accent-soft); border:var(--b) solid #9CCBBB; border-radius:8px}
+.psum{color:var(--ink); font-weight:700}
+.preset{color:#33403A}
+.mini{border:var(--b) solid var(--line); border-left:7px solid var(--accent); border-radius:8px; background:var(--card); color:var(--ink-2)}
+.mini .ct{color:var(--accent-2); font-weight:700; font-size:.74rem}
+
+/* chapter intro, term, cards */
+.chapintro .box{border:var(--b) solid var(--line); border-radius:8px}
+.chapintro .box.use{background:var(--accent-soft); border:var(--b) solid #9CCBBB}
+.chapintro .ct{color:#33403A; font-weight:700; font-size:.74rem}
+.chapintro .box.use .ct{color:var(--accent-2)}
+.chapintro ul{color:var(--ink-2)}
+.term{border:var(--b) solid var(--line); border-left:7px solid var(--accent); border-radius:8px}
+.term dt{color:var(--ink)}
+.term dt small{color:var(--muted)}
+.term dd{color:var(--ink-2)}
+.grid2 .dcard,.dcard{border:var(--b) solid var(--line); border-top:5px solid var(--accent); border-radius:10px}
+.dcard:hover{border-color:var(--head); border-top-color:var(--accent)}
+.dcard .dn{color:var(--accent-2); font-weight:700}
+.dcard .dd{color:var(--muted)}
+.list-links{border-top:2px solid var(--ink)}
+.list-links li{border-bottom:1px solid #CBD4CF}
+.list-links a{color:var(--ink-2)}
+.list-links a span:last-child{color:var(--muted)}
+.list-links .ln{color:var(--accent-2); font-weight:700}
+.overall{border:var(--b) solid var(--line); border-radius:10px}
+.ov-note{color:var(--muted)}
+.ov-bar,.dprog .track{background:#D2DBD7}
+.glo-nav a{border:var(--b) solid var(--line); color:var(--ink-2)}
+.glo-nav a:hover{border-color:var(--accent); color:var(--accent-2)}
+.glo-search{border:var(--b) solid #8F9D96; border-radius:8px}
+.glo .term dd .src,.glo-empty{color:var(--muted)}
+
+/* pager and footer */
+.pager{border-top:2px solid var(--ink)}
+.pager a{border:var(--b) solid var(--line); border-radius:10px}
+.pager a:hover{border-color:var(--accent); background:var(--accent-soft)}
+.pager .pl{color:var(--muted); font-weight:700}
+footer.foot{border-top:2px solid var(--ink); color:var(--muted)}
+footer.foot a{color:var(--ink-2)}
+
+/* ---------- code blocks (terminal) ---------- */
+.code{border:2px solid var(--term-2); border-radius:8px; background:var(--term)}
+.code-head{background:var(--term-2); border-bottom:1px solid var(--term-line); padding:8px 12px 8px 16px}
+.code-title{color:#FFFFFF; font-weight:700}
+.code-title::before{color:#5FD8B6}
+.copy{background:#2D3946; border:var(--b) solid #6A7B8D; color:#FFFFFF; font-weight:600}
+.copy:hover{background:#FFFFFF; border-color:#FFFFFF; color:#111111}
+.copy.ok{background:#0E7A64; border-color:#5FD8B6; color:#FFFFFF}
+.code pre{color:var(--term-ink); font-size:.86rem}
+.code .in::before{color:#5FD8B6}
+.code .out{color:#B8C6D3}
+.code .cm,.code .c{color:#9FB2C3}
+.code var{color:#FFD892; background:rgba(255,216,146,.14)}
+.code.file .in{color:var(--term-ink)}
+.code pre code{border:0; background:none; color:inherit}
+.ctx{background:#1F2933; border:1px solid var(--term-line); color:#C3CFDB}
+.ctx-l{color:#FFFFFF}
+.ctx-cwd{color:#B5C2CF}
+.ctx-server .ctx-l::before,.ctx-chat .ctx-l::before{background:#5FD8B6}
+.ctx-luanti .ctx-l::before{background:#FFFFFF}
+.ctx-byod .ctx-l::before{box-shadow:inset 0 0 0 2px #5FD8B6}
+.ctx-local .ctx-l::before{box-shadow:inset 0 0 0 2px #FFFFFF}
+.ctx-file .ctx-l::before{background:#8FA0B2}
+@media(max-width:520px){.ctx{background:transparent; border:0}}
+
+/* ---------- buttons, help, tips ---------- */
+.tpl{border:var(--b) solid #8F9D96; color:var(--ink-2); font-weight:600}
+.tpl:hover{border-color:var(--accent); color:var(--accent-2)}
+.help-fab{background:var(--head); color:#FFFFFF; border:2px solid var(--head); box-shadow:0 10px 26px rgba(0,0,0,.25)}
+.help-fab svg{stroke:#7FE3C6}
+.help-fab:hover{background:var(--head-2); border-color:#7FE3C6}
+.help-panel{border:2px solid var(--head); border-radius:12px}
+.hp-head{background:var(--head); color:#FFFFFF; padding:12px 14px 12px 16px; margin-bottom:10px}
+.hp-close{background:rgba(255,255,255,.16); color:#FFFFFF}
+.hp-q{border:var(--b) solid #8F9D96}
+.hp-g{color:var(--accent-2); font-weight:700}
+.hp-i{color:var(--ink-2)}
+.hp-empty,.hp-foot{color:var(--muted)}
+.hp-foot{border-top:var(--b) solid var(--line)}
+.tt{border-bottom:2px dotted var(--accent)}
+.ttip{border:2px solid var(--head); border-radius:10px; color:var(--ink-2)}
+.ttip b{color:var(--ink)}
+@media(max-width:1000px){.nowbar{background:var(--head); border:1px solid #2F6B5E} .nowbar b{color:#A9E6D3}}
+
+/* ============================================================
+   Refinement layer (shared by A1, A2, A3)
+   8px spacing rhythm, 1px dark hairlines, 4px callout bars,
+   8 to 10px radii, one soft ambient shadow on cards and code only.
+   ============================================================ */
+:root{
+  --bg:#FCFCFB; --bg-2:#F3F4F2; --bg-3:#E5E8E5; --card:#FFFFFF;
+  --ink:#111111; --ink-2:#262523; --muted:#5E5A54; --faint:#8F8A83;
+  --line:#CDD2CE; --line-2:#E3E6E3; --hair:rgba(17,17,17,.14);
+  --r:8px; --r-lg:10px;
+  --shadow:0 1px 2px rgba(17,24,22,.04), 0 8px 24px -8px rgba(17,24,22,.10);
+  --b:1px;
+  --ease2:cubic-bezier(.22,.61,.36,1);
+}
+body{background:var(--bg); color:var(--ink); letter-spacing:.005em}
+
+/* header: deep green, subtle vertical gradient, lighter top hairline */
+header.bar,header.bar.stuck{background:linear-gradient(180deg,#0B3F35 0%,#0A3D33 100%); border-bottom:1px solid #062A23;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.12)}
+header.bar .brand{font-weight:600; letter-spacing:.01em}
+header.bar .brand small{color:#B4D6CB; font-weight:500}
+header.bar .barlinks > a,header.bar .daymenu > button{position:relative; background:transparent; color:#D8EBE5; font-weight:500; border-radius:0}
+header.bar .barlinks > a::after,header.bar .daymenu > button::after{content:""; position:absolute; left:14px; right:14px; bottom:6px; height:1.5px;
+  background:#8FE3C9; transform:scaleX(0); transform-origin:left center; transition:transform .38s var(--ease2)}
+header.bar .barlinks > a:hover,header.bar .daymenu:hover > button,header.bar .daymenu.open > button{background:transparent; color:#FFFFFF}
+header.bar .barlinks > a:hover::after,header.bar .daymenu:hover > button::after,header.bar .daymenu.open > button::after{transform:scaleX(1)}
+header.bar .barlinks > a.here,header.bar .daymenu > button.here{background:transparent; color:#FFFFFF; font-weight:600}
+header.bar .barlinks > a.here::after,header.bar .daymenu > button.here::after{transform:scaleX(1); background:#FFFFFF}
+@media(max-width:520px){header.bar .barlinks > a::after,header.bar .daymenu > button::after{left:8px; right:8px; bottom:4px}}
+.daypanel{border:1px solid #9FB0A9; border-radius:var(--r-lg); box-shadow:0 1px 2px rgba(0,0,0,.06), 0 16px 40px -12px rgba(10,40,33,.28); padding:8px}
+.daypanel a{border-radius:6px; padding:8px 12px}
+.daypanel a.here{background:#EEF6F2; box-shadow:inset 2px 0 0 var(--accent); font-weight:600}
+.daypanel a.appx{border-top:1px solid var(--line-2)}
+
+/* hero */
+.hero{border-bottom:0; padding:56px 0 0; margin-bottom:48px}
+.hero::after{content:""; display:block; height:1px; margin-top:32px;
+  background:linear-gradient(90deg, var(--accent) 0, rgba(14,111,92,.55) 24%, rgba(17,17,17,.14) 60%, rgba(17,17,17,.04) 100%)}
+.eyebrow{font-size:.72rem; font-weight:600; letter-spacing:.24em; color:var(--accent-2); margin-bottom:16px}
+.eyebrow::before{width:16px; height:1px; border-radius:0; background:var(--accent)}
+h1{font-family:var(--disp); font-weight:600; letter-spacing:-.025em; line-height:1.18; margin-bottom:16px}
+.lead{font-weight:400; color:var(--ink-2); font-size:1.06rem}
+.meta{margin-top:24px; gap:8px 24px; color:var(--muted)}
+.meta b{font-weight:600; color:var(--ink)}
+
+/* toc: 2px accent bar, no fill */
+.toc .toc-head{font-weight:600; letter-spacing:.22em; color:var(--muted); margin-bottom:8px}
+.toc ol{border-left:1px solid var(--line)}
+.toc li a{color:#3E3B37; margin-left:-1px; border-left:2px solid transparent; padding:4px 0 4px 16px; background:transparent}
+.toc li a:hover{color:var(--ink); background:transparent}
+.toc li a.on{color:var(--ink); background:transparent; font-weight:600; border-left-color:var(--accent)}
+.toc li.sub a{padding-left:28px}
+
+/* headings */
+.doc h2{font-family:var(--disp); font-weight:600; letter-spacing:-.018em; margin:72px 0 24px; padding:0 0 12px; border-bottom:1px solid rgba(14,111,92,.35);
+  background:linear-gradient(var(--accent),var(--accent)) no-repeat left bottom / 64px 2px}
+.doc h2 .no{display:inline-block; vertical-align:.2em; margin:0 12px 0 0; padding:0 10px; border-radius:999px; background:transparent;
+  border:1px solid var(--accent); color:var(--accent-2); font:600 .72rem/1.9 var(--disp); letter-spacing:.1em}
+.doc h3{font-weight:600; border-left:2px solid var(--accent); padding-left:12px; margin:40px 0 8px}
+.doc p{margin-bottom:16px}
+.doc code{background:#EFF2EF; border:1px solid #DDE2DE; border-radius:5px}
+
+/* tables: very subtle zebra */
+.tbl{border:1px solid #BFC6C1; border-radius:var(--r); margin:16px 0 24px}
+.tbl th{background:linear-gradient(180deg,#0C4238,#0A3D33); color:#FFFFFF; font-weight:600; letter-spacing:.02em; padding:10px 16px}
+.tbl td{padding:10px 16px; border-bottom:1px solid var(--line-2)}
+.tbl tbody tr:nth-child(even) td{background:#FAFBFA}
+.scroll{border-radius:var(--r)}
+figure img{border:1px solid var(--line); border-radius:var(--r)}
+
+/* callouts: 4px bar, 1px border in the same hue at low alpha */
+.call{--c:#5E5A54; --cb:rgba(94,90,84,.22); --cbg:#FFFFFF; --ct:#4A4640;
+  border:1px solid var(--cb); border-left:4px solid var(--c); border-radius:var(--r); background:var(--cbg); padding:16px 24px 16px 20px; margin:24px 0}
+.call .ct{font:600 .7rem/1.6 var(--disp); letter-spacing:.2em; color:var(--ct); margin-bottom:8px}
+.call.note,.call.goal,.call.pit,.call.myth,.call.warn,.call.extra,.call.example{border:1px solid var(--cb); border-left:4px solid var(--c); background:var(--cbg)}
+.call.extra{border-style:dashed; border-left-style:solid}
+.call.note .ct,.call.goal .ct,.call.pit .ct,.call.myth .ct,.call.warn .ct,.call.extra .ct,.call.example .ct{color:var(--ct)}
+.call.goal p{font-weight:600}
+.call:target{box-shadow:0 0 0 2px rgba(14,111,92,.45)}
+.why{margin:24px 0 -8px; padding-left:20px}
+.why::before{width:6px; height:6px; border-radius:50%; top:.72em; left:4px}
+.why b{font-weight:600}
+
+/* flow strip: large light numeral in the corner */
+.flow{gap:8px; margin-bottom:40px}
+.flow li{border:1px solid var(--line); border-top:2px solid var(--accent); border-radius:var(--r); padding:16px 16px 16px; overflow:hidden}
+.flow li::before{display:block; margin:0 0 8px; font:300 1.9rem/1 var(--disp); letter-spacing:-.02em; color:#5B9383}
+.flow li a{font-weight:600}
+.flow li .fm{margin-top:8px}
+
+/* check list, mini, pbar */
+.check li{border-top:1px solid var(--line-2); padding:8px 0 8px 32px}
+.check li .pcb{top:13px}
+.pbar{background:#F2F7F4; border:1px solid rgba(14,111,92,.25); border-radius:var(--r); padding:8px 16px}
+.mini{border:1px solid rgba(14,111,92,.22); border-left:4px solid var(--accent); border-radius:var(--r); padding:16px 20px; margin:24px 0 32px}
+.mini .ct{font:600 .68rem/1.6 var(--disp); letter-spacing:.2em}
+
+/* chapter intro, term, cards */
+.chapintro{gap:16px}
+.chapintro .box{border:1px solid var(--line); border-radius:var(--r); padding:16px 24px}
+.chapintro .box.use{border:1px solid rgba(14,111,92,.28); background:#F0F7F4}
+.chapintro .ct{letter-spacing:.2em; font-weight:600}
+.term{border:1px solid var(--line); border-left:4px solid var(--accent); border-radius:var(--r); padding:16px 24px 16px 20px}
+.grid2{gap:16px}
+.grid2 .dcard,.dcard{border:1px solid var(--line); border-top:3px solid var(--accent); border-radius:var(--r-lg); padding:16px 24px; box-shadow:var(--shadow)}
+.dcard:hover{border-color:#9FB0A9; border-top-color:var(--accent); transform:translateY(-2px)}
+.dcard .dn{letter-spacing:.2em; font-weight:600}
+.dcard .dt{margin:8px 0 4px}
+.overall{border:1px solid var(--line); border-radius:var(--r-lg); padding:16px 24px}
+.pager{border-top:1px solid var(--ink); padding-top:24px; margin-top:72px}
+.pager a{border:1px solid var(--line); border-radius:var(--r-lg); padding:16px 24px}
+.pager a:hover{border-color:var(--accent); background:#F5FAF8}
+.pager .pl{letter-spacing:.2em; font-weight:600}
+footer.foot{border-top:1px solid var(--line); padding-top:24px}
+.list-links{border-top:1px solid var(--ink)}
+.list-links li{border-bottom:1px solid var(--line-2)}
+.glo-nav a{border:1px solid var(--line)}
+.glo-search{border:1px solid #9FB0A9}
+
+/* code blocks: one soft ambient shadow, thin head rule, monospace title, ghost copy */
+.code{border:1px solid #0B1512; border-radius:var(--r); box-shadow:var(--shadow); margin:16px 0 24px}
+.code-head{border-bottom:1px solid rgba(255,255,255,.09); padding:8px 12px 8px 16px}
+.code-title{font:500 .78rem/1.5 var(--mono); letter-spacing:0; color:#EEF3F1}
+.copy{background:transparent; border:1px solid rgba(255,255,255,.38); color:#F2F6F4; font:500 .74rem/1 var(--sans); padding:7px 12px; border-radius:999px;
+  transition:background .25s var(--ease2), color .25s var(--ease2), border-color .25s var(--ease2)}
+.copy:hover{background:#FFFFFF; border-color:#FFFFFF; color:#111111}
+.copy.ok{background:var(--accent); border-color:var(--accent); color:#FFFFFF}
+.code pre{padding:16px; line-height:1.8}
+.ctx{background:transparent; border:1px solid rgba(255,255,255,.2); padding:2px 10px}
+
+/* buttons, help, tips */
+.tpl{background:transparent; border:1px solid #9FB0A9; color:var(--ink-2); font-weight:500; padding:6px 12px}
+.tpl:hover{background:var(--accent-2); border-color:var(--accent-2); color:#FFFFFF}
+.help-fab{background:linear-gradient(180deg,#0B3F35,#0A3D33); border:1px solid #062A23; box-shadow:inset 0 1px 0 rgba(255,255,255,.12), 0 8px 24px -6px rgba(10,40,33,.35)}
+.help-panel{border:1px solid #9FB0A9; border-radius:var(--r-lg); box-shadow:0 1px 2px rgba(0,0,0,.06), 0 24px 56px -16px rgba(10,40,33,.32)}
+.hp-head{background:linear-gradient(180deg,#0B3F35,#0A3D33); color:#FFFFFF; margin-bottom:8px}
+.hp-q{border:1px solid #9FB0A9; border-radius:6px}
+.ttip{border:1px solid #9FB0A9; border-radius:var(--r); box-shadow:0 12px 32px -8px rgba(10,40,33,.25)}
+.tt{border-bottom:1px dotted var(--accent)}
+/* menu items wrap inside the panel on narrow screens (lab.css .barlinks a sets nowrap) */
+.daypanel a{white-space:normal}
+
+/* ============================================================
+   Variant A3 : ガラスと影
+   Frosted sticky header, layered soft shadows, 10px radii,
+   6% callout tints, deep navy green code with an inner glow line,
+   gradient section chips and buttons, pill eyebrow.
+   ============================================================ */
+:root{--shadow:0 1px 1px rgba(17,24,22,.04), 0 2px 6px rgba(17,24,22,.04), 0 14px 32px -12px rgba(17,24,22,.16); --r:10px}
+header.bar,header.bar.stuck{background:linear-gradient(180deg,rgba(11,63,53,.94) 0%,rgba(10,61,51,.90) 100%);
+  -webkit-backdrop-filter:saturate(1.3) blur(12px); backdrop-filter:saturate(1.3) blur(12px);
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.14), 0 8px 24px -10px rgba(6,32,26,.55)}
+.eyebrow{background:#E6F2EE; border:1px solid rgba(14,111,92,.28); border-radius:999px; padding:4px 14px 4px 12px; letter-spacing:.2em}
+.eyebrow::before{width:6px; height:6px; border-radius:50%}
+.doc h2 .no{border:0; color:#FFFFFF; background:linear-gradient(135deg,#0F7A65 0%,#0A5748 100%); box-shadow:0 2px 6px -2px rgba(10,87,72,.5); padding:0 12px}
+
+.call,.mini,.term,.chapintro .box{border-radius:10px; box-shadow:var(--shadow)}
+.call.note{--c:#1F5FAA; --cb:rgba(31,95,170,.20); --cbg:#F2F5FA; --ct:#1A4F8E}
+.call.goal{--c:#0E6F5C; --cb:rgba(14,111,92,.22); --cbg:#F0F6F5; --ct:#0A5748}
+.call.pit{--c:#C25E00; --cb:rgba(194,94,0,.24); --cbg:#FBF5F0; --ct:#8A3F00}
+.call.myth{--c:#B42318; --cb:rgba(180,35,24,.20); --cbg:#FBF2F1; --ct:#912018}
+.call.warn{--c:#B42318; --cb:rgba(180,35,24,.30); --cbg:#FFFFFF; --ct:#912018}
+.call.extra{--c:#4B5A6B; --cb:rgba(75,90,107,.36); --cbg:#FFFFFF; --ct:#3A4756}
+.call.example{--c:#4B5A6B; --cb:rgba(75,90,107,.22); --cbg:#F4F5F6; --ct:#3A4756}
+.mini{background:#FFFFFF}
+.flow li{box-shadow:0 1px 2px rgba(17,24,22,.04); border-radius:10px}
+.grid2 .dcard,.dcard,.pager a,.overall{border-radius:12px}
+.dcard:hover{box-shadow:0 1px 2px rgba(17,24,22,.05), 0 20px 40px -14px rgba(10,40,33,.28)}
+
+/* code: deep navy green with a soft inner glow line on top */
+.code{background:#0F1F2A; border:1px solid #0A151D; border-radius:10px}
+.code-head{background:linear-gradient(180deg,#132836,#0F1F2A); border-bottom:1px solid rgba(143,227,201,.12); box-shadow:inset 0 1px 0 rgba(143,227,201,.30)}
+.code pre{color:#E6EEF3}
+.code-title::before,.code .in::before{color:#7FE0C2}
+.code .out{color:#B6C6D2}
+.code .cm,.code .c{color:#9AAFBF}
+.code var{color:#FFD892; background:rgba(255,216,146,.12)}
+.code.file .in{color:#E6EEF3}
+
+/* buttons with a subtle gradient */
+.copy{background:linear-gradient(180deg,rgba(255,255,255,.12),rgba(255,255,255,.03)); border:1px solid rgba(255,255,255,.30)}
+.copy:hover{background:linear-gradient(180deg,#FFFFFF,#E9EFEC); border-color:#FFFFFF; color:#111111}
+.copy.ok{background:linear-gradient(180deg,#139077,#0E6F5C); border-color:#0E6F5C; color:#FFFFFF}
+.tpl{background:linear-gradient(180deg,#FFFFFF,#F1F4F2); box-shadow:0 1px 1px rgba(17,24,22,.06)}
+.tpl:hover{background:linear-gradient(180deg,#0E6F5C,#0A5748); color:#FFFFFF}
+.tpl.ok{background:linear-gradient(180deg,#139077,#0E6F5C); color:#FFFFFF}
+.help-fab{background:linear-gradient(180deg,#0F5244,#0A3D33)}
+.help-panel{border-radius:12px}

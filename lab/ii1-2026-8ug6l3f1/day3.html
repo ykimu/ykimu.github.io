@@ -329,7 +329,7 @@
         <ul>
           <li>luanti.confの負荷関連の設定（<code>max_block_send_distance</code>、<code>active_block_range</code> など）を調べて、性能と負荷のバランスを調整してみよう。</li>
           <li>ワンライナーに挑戦：<code>journalctl</code>と<code>grep</code>、<code>sort</code>、<code>uniq</code>を組み合わせ、「プレイヤーごとの入室回数ランキング」を1行のコマンドで出力してみよう。</li>
-          <li><code>last</code>コマンドと<code>journalctl _COMM=sshd</code> で、自分のサーバへのSSHログイン履歴を調べてみよう。</li>
+          <li><code>last</code>コマンドと<code>journalctl _COMM=sshd</code> で、自分のサーバへのSSHログイン履歴を調べてみよう。（<code>last</code> が無い、または <code>_COMM=sshd</code> で認証の行が出ない環境では <code>journalctl -u ssh</code> を使う。Debian 13 のSSHは認証を sshd-session という別プロセスが担当している）</li>
         </ul>
       </div>
 

@@ -376,7 +376,7 @@
 <span class="in"># 認証に失敗し続ける接続を早めに切る</span>
 <span class="in">MaxAuthTries 3</span></code></pre>
       </div>
-      <p>Debian 12 の <code>/etc/ssh/sshd_config</code> は先頭付近に <code>Include /etc/ssh/sshd_config.d/*.conf</code> という行を持つ。そのため、本体を書き換えるより、上のように <code>/etc/ssh/sshd_config.d/</code> に設定ファイルを1つ置くほうが分かりやすく、元に戻すのもファイルを消すだけで済む。</p>
+      <p>Debian 12 以降の <code>/etc/ssh/sshd_config</code> は先頭付近に <code>Include /etc/ssh/sshd_config.d/*.conf</code> という行を持つ。そのため、本体を書き換えるより、上のように <code>/etc/ssh/sshd_config.d/</code> に設定ファイルを1つ置くほうが分かりやすく、元に戻すのもファイルを消すだけで済む。</p>
       <div class="code" data-ctx="server">
         <div class="code-head"><span class="code-title">設定の検査と反映</span></div>
 <pre><code><span class="in">sudo sshd -t <span class="c"># 書式の検査（何も出なければ正常）</span></span>

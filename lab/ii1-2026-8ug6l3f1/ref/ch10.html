@@ -225,7 +225,7 @@
 <pre><code><span class="in">docker run --rm hello-world <span class="c"># 動作確認。--rm で終了後に自動削除</span></span>
 <span class="in">docker run -d --name web -p 8080:80 -v "$PWD/html:/usr/share/nginx/html:ro" --restart unless-stopped nginx:alpine</span>
 <span class="in">docker run -d --name game -p 30000:30000/udp -v "$PWD/data:/config/.minetest" -e TZ=Asia/Tokyo lscr.io/linuxserver/luanti</span>
-<span class="in">docker run --rm -it debian:bookworm-slim bash <span class="c"># 使い捨てのシェルで試す</span></span></code></pre>
+<span class="in">docker run --rm -it debian:trixie-slim bash <span class="c"># 使い捨てのシェルで試す</span></span></code></pre>
       </div>
       <div class="scroll">
       <table class="tbl">
